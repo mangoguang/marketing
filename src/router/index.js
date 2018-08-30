@@ -6,11 +6,15 @@ Vue.use(VueRouter)
 export var router = new VueRouter({
   routes: [{
     path: '/',
+    name: 'Login',
+    component: resolve => require(['../pages/login'], resolve)
+  }, {
+    path: '/home',
     name: 'Home',
     component: resolve => require(['../pages/home'], resolve)
   }, {
-    path: '/child',
-    name: 'Child',
-    component: resolve => require(['../pages/child'], resolve)
+    path: '/sales',
+    name: 'Sales',
+    component: resolve => require(['../pages/sales'], resolve)
   }]
 })

@@ -1,28 +1,8 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="home">
-    <ul>
-      <li>整体品牌占比</li>
-      <li v-for="(item, index) in brandData.seriesData" :key="`${index}11`">
-        <Pie
-          :yAxisData="brandData.yAxisData"
-          :seriesData="item.data"
-          :title="item.name"
-          :category="'整体品牌占比'"></Pie>
-      </li>
-      <li><Bar :data="brandData" :vertical="'horizontal'"></Bar></li>
-    </ul>
-    <ul>
-      <li>整体品类占比</li>
-      <li v-for="(item, index) in categoryData.seriesData" :key="`${index}11`">
-        <Pie
-          :yAxisData="categoryData.yAxisData"
-          :seriesData="item.data"
-          :title="item.name"
-          :category="'整体品类占比'"></Pie>
-      </li>
-      <li><Bar :data="categoryData" :vertical="'horizontal'"></Bar></li>
-    </ul>
+  <div class="sales">
+    <Bar :data="brandData" :vertical="'vertical'"></Bar>
+    <Bar :data="categoryData" :vertical="'vertical'"></Bar>
   </div>
 </template>
 <!-- </keep-alive> -->
@@ -36,11 +16,11 @@ import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../components/charts/bar'
-import Pie from '../components/charts/pie'
+// import Pie from '../components/charts/pie'
 export default {
-  name: 'home',
+  name: 'sales',
   components: {
-    Bar, Pie
+    Bar
   },
   data () {
     return {
@@ -57,7 +37,7 @@ export default {
       }, 
       categoryData: {
         legendData: ['利润', '支出', '收入'],
-        yAxisData: ['床垫', '床头柜', '排骨架', '床架', '床品', '助眠'],
+        yAxisData: ['广东', '广西', '福建', '江苏', '床湖南品', '上海'],
         seriesData: [{
           "data": [ 107, 121, 183, 191, 302, 288 ],
           "name": "2018-07"
@@ -127,14 +107,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.home{
-  width: 100vw;
-  height: 100vh;
-  /* background: #ff0000; */
-}
-.main{
-  width: 100vw;
-  height: 100vw;
-}
+
 </style>
  
