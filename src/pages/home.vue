@@ -103,7 +103,7 @@ export default {
     // }
     // ajax请求
     getBrandData() {
-      const url = 'https://derucci.net/app/login.api'
+      const url = 'http://172.16.10.141/app/login.api'
       // return new Promise((resolve, reject) => {
         axios({
           method: 'post',
@@ -112,7 +112,7 @@ export default {
             'UUID': 'e10adc3949ba59abbe56e057f20f883e'
           },
           params: {
-            account: '18080028',
+            account: '18080001',
             password: 'e10adc3949ba59abbe56e057f20f883e'
           }
         })
