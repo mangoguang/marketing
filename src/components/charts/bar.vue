@@ -59,7 +59,7 @@ export default {
       }
     },
     series() {
-      let arr = this.data.seriesData.map((item) => {
+      let arr = this.data.series.map((item) => {
         return {
           name: item.name,
           type: 'bar',

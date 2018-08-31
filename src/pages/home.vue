@@ -3,7 +3,7 @@
   <div class="home">
     <ul>
       <li>整体品牌占比</li>
-      <li v-for="(item, index) in brandData.seriesData" :key="`${index}11`">
+      <li v-for="(item, index) in brandData.series" :key="`${index}11`">
         <Pie
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"
@@ -14,7 +14,7 @@
     </ul>
     <ul>
       <li>整体品类占比</li>
-      <li v-for="(item, index) in categoryData.seriesData" :key="`${index}11`">
+      <li v-for="(item, index) in categoryData.series" :key="`${index}11`">
         <Pie
           :yAxisData="categoryData.yAxisData"
           :seriesData="item.data"
@@ -47,7 +47,7 @@ export default {
       brandData: {
         legendData: ['利润', '支出', '收入'],
         yAxisData: ['3D', 'V6', '0769', '凯奇', '慕思儿童'],
-        seriesData: [{
+        series: [{
           "data": [ 7, 1, 3, 1, 2 ],
           "name": "2018-07"
         }, {
@@ -58,7 +58,7 @@ export default {
       categoryData: {
         legendData: ['利润', '支出', '收入'],
         yAxisData: ['床垫', '床头柜', '排骨架', '床架', '床品', '助眠'],
-        seriesData: [{
+        series: [{
           "data": [ 107, 121, 183, 191, 302, 288 ],
           "name": "2018-07"
         }, {
@@ -98,27 +98,54 @@ export default {
     goToChild() {
       this.$router.push({ path: '/child' })
     },
-    // asyn function() {
-
-    // }
     // ajax请求
     getBrandData() {
-      const url = 'http://172.16.10.141/app/login.api'
+      const [url, token] = ['http://10.11.8.7:8086/v1/app/report/brand/proportion', '7p9axihTkF5KD2PVMUfh7R1oP3w28spjDhyI1t9QtM8EEa1tgfjcgPMuaOQ4QQX4Zekxu7CVnk35ESwRWgyHQq==']
+      let arr = [
+        ['date', '2018-08'],
+        ['tenantId', '1035043364413706242']
+      ]
+      let sign = mango.getSign(arr, token)
+      console.log('sign', sign)
       // return new Promise((resolve, reject) => {
         axios({
-          method: 'post',
+          method: 'get',
           url: url,
           headers: {
-            'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+            'token': token,
+            'UUID': 'e10adc3949ba59abbe56e057f20f883e',
+            'sign': sign
           },
           params: {
-            account: '18080001',
-            password: 'e10adc3949ba59abbe56e057f20f883e'
+            tenantId: '1035043364413706242',
+            date: '2018-08'
           }
         })
         .then((res) => {
-          console.log(123, res)
+          if (res.data) {
+            res = res.data.data
+            // res.legendData = ['利润', '支出', '收入']
+            console.log('报表数据', res)
+          }
         })
+      // })
+
+      // const url = 'http://10.11.8.181/app/login.api'
+      // return new Promise((resolve, reject) => {
+      //   axios({
+      //     method: 'post',
+      //     url: url,
+      //     headers: {
+      //       'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+      //     },
+      //     params: {
+      //       account: '18080001',
+      //       password: 'e10adc3949ba59abbe56e057f20f883e'
+      //     }
+      //   })
+      //   .then((res) => {
+      //     console.log(123, res)
+      //   })
       // })
     }
   }
