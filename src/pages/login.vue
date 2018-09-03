@@ -39,7 +39,7 @@ export default {
     }
   },
   mounted(){
-    // mango.test()
+    mango.test()
     // console.log(11223344, this.$refs.main)
     // this.setHomeArr([1, 2, 3, 4])
     // this.setHomeTit('首页标题')
