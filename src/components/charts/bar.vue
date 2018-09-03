@@ -20,12 +20,31 @@ export default {
       seriesPosition: 'right'
     }
   },
+  beforeMount() {
+
+  },
   mounted() {
-    echarts.init(this.$refs.main).setOption(this.option())
-    
+    console.log(222222, this.barData)
+    // echarts.init(this.$refs.main).setOption(this.option())
+  },
+  updated() {
+
+  },
+  watch: {
+    data(val){
+      echarts.init(this.$refs.main).setOption(this.option())
+    }
   },
   computed: {
-
+    barData: function() {
+      // console.log('父组件数据：', this.data)
+      return this.data
+    }
+    // ...mapState({
+    //   homeTit: state => 'just test',
+    //   homeText: state => state.home.homeText,
+    //   homeArr: state => state.home.homeArr
+    // }),
   },
   methods: {
     option() {
@@ -33,15 +52,15 @@ export default {
       // this.vertical === horizontal,柱状图为水平方向，否则为垂直方向
       if (this.vertical === 'horizontal') {
         console.log('水平方向', this.vertical)
-        yAxis = {data: this.data.yAxisData}
+        yAxis = {data: this.barData.yAxisData}
       } else {
         console.log('垂直方向', this.vertical)
         this.seriesPosition = 'top'
-        xAxis = {data: this.data.yAxisData}
+        xAxis = {data: this.barData.yAxisData}
       }
       return {
         legend: {
-          data: this.data.legendData
+          data: this.barData.legendData
         },
         tooltip : {
           trigger: 'axis',
@@ -59,7 +78,7 @@ export default {
       }
     },
     series() {
-      let arr = this.data.series.map((item) => {
+      let arr = this.barData.series.map((item) => {
         return {
           name: item.name,
           type: 'bar',

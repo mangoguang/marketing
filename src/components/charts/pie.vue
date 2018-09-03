@@ -21,12 +21,18 @@ export default {
     }
   },
   mounted() {
-    console.log(123123, this.seriesData)
     echarts.init(this.$refs.main).setOption(this.option())
+  },
+  updated() {
     
   },
   computed: {
 
+  },
+  watch: {
+    yAxisData: function(val) {
+      echarts.init(this.$refs.main).setOption(this.option())
+    }
   },
   methods: {
     option() {
@@ -46,7 +52,7 @@ export default {
           orient: 'horizontal',
           left: '3%',
           right: '3%',
-          top: '10%',
+          top: '8%',
           bottom: 20,
           data: this.yAxisData,
           selected: this.yAxisData
