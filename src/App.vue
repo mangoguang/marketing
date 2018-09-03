@@ -105,4 +105,24 @@ input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
     color: #fff;
     font-size: 20px;
   }
+  .nav{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 10vw;
+    display: flex;
+    li{
+      width: 50%;
+      text-align: center;
+      background: rgba(0, 0, 0, .8);
+      a{
+        display: block;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        line-height: 10vw;
+      }
+    }
+  }
 </style>
