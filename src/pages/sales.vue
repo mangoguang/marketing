@@ -68,7 +68,7 @@ export default {
   mounted(){
     this.getSalesData()
     this.getAreaSalesData()
-    mango.test()
+    // mango.test()
     console.log(11223344, this.$refs.main)
     this.setHomeArr([1, 2, 3, 4])
     this.setHomeTit('首页标题')
@@ -102,14 +102,20 @@ export default {
     // ajax请求
     getSalesData() {
       let _this = this
-      const url = 'http://10.11.8.7:8086/v1/app/report/sales'
-      let arr = [
-        ['cityLevel', '2'],
-        ['cityName', '广州'],
-        ['date', '2018-08'],
-        ['tenantId', this.ajaxData.tenantId]
-      ]
-      let sign = mango.getSign(arr, this.ajaxData.token)
+      const url = `${mango.path}report/sales`
+      let obj = {
+        cityLevel: 2,
+        cityName: '广州',
+        date: '2018-08',
+        tenantId: this.ajaxData.tenantId
+      }
+      // [
+      //   ['cityLevel', '2'],
+      //   ['cityName', '广州'],
+      //   ['date', '2018-08'],
+      //   ['tenantId', this.ajaxData.tenantId]
+      // ]
+      let sign = mango.getSign(obj, this.ajaxData.token)
       axios({
         method: 'get',
         url: url,
@@ -152,11 +158,11 @@ export default {
     getAreaSalesData() {
       let _this = this
       const url = 'http://10.11.8.7:8086/v1/app/report/area/sales'
-      let arr = [
-        ['date', '2018-08'],
-        ['tenantId', this.ajaxData.tenantId]
-      ]
-      let sign = mango.getSign(arr, this.ajaxData.token)
+      let obj = {
+        date: '2018-08',
+        tenantId: this.ajaxData.tenantId
+      }
+      let sign = mango.getSign(obj, this.ajaxData.token)
       axios({
         method: 'get',
         url: url,
@@ -173,22 +179,23 @@ export default {
       .then((res) => {
         if (res.data) {
           res = res.data.data
+          res.legendData = ['利润', '支出', '收入']
           console.log('报表数据123', res)
-          let tempObj = {
-            legendData: ['利润'],
-            yAxisData: res.map(function(item) {
-              return item.name
-            }),
-            series: res.map(function(item) {
-              return {
-                "data": item.data.map(function(key) {
-                  return key.value
-                }),
-                "name": "2018-07"
-              }
-            })
-          }
-          _this.areaSalesData = tempObj
+          // let tempObj = {
+          //   legendData: ['利润'],
+          //   yAxisData: res.map(function(item) {
+          //     return item.name
+          //   }),
+          //   series: res.map(function(item) {
+          //     return {
+          //       "data": item.series.data.map(function(key) {
+          //         return key.value
+          //       }),
+          //       "name": "2018-07"
+          //     }
+          //   })
+          // }
+          _this.areaSalesData = res
           console.log(333333, _this.areaSalesData)
         }
       })

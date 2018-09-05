@@ -87,7 +87,7 @@ export default {
     // Vue.$set(0, {name: 1})
     this.getBrandData()
     this.getCategoryData()
-    mango.test()
+    // mango.test()
     console.log(11223344, this.$refs.main)
     this.setHomeArr([1, 2, 3, 4])
     this.setHomeTit('首页标题')
@@ -119,12 +119,12 @@ export default {
     // ajax请求
     getBrandData() {
       let _this = this
-      const url = 'http://10.11.8.7:8086/v1/app/report/brand/proportion'
-      let arr = [
-        ['date', '2018-08'],
-        ['tenantId', this.ajaxData.tenantId]
-      ]
-      let sign = mango.getSign(arr, this.ajaxData.token)
+      const url = `${mango.path}brand/proportion`
+      let obj = {
+        date: '2018-08',
+        tenantId: this.ajaxData.tenantId
+      }
+      let sign = mango.getSign(obj, this.ajaxData.token)
       axios({
         method: 'get',
         url: url,
@@ -151,12 +151,12 @@ export default {
     },
     getCategoryData() {
       let _this = this
-      const url = 'http://10.11.8.7:8086/v1/app/report/category/proportion'
-      let arr = [
-        ['date', '2018-08'],
-        ['tenantId', this.ajaxData.tenantId]
-      ]
-      let sign = mango.getSign(arr, this.ajaxData.token)
+      const url = `${mango.path}category/proportion`
+      let obj = {
+        date: '2018-08',
+        tenantId: this.ajaxData.tenantId
+      }
+      let sign = mango.getSign(obj, this.ajaxData.token)
       axios({
         method: 'get',
         url: url,
