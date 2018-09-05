@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
-    path: '/',
+    path: '/Login',
     name: 'Login',
     component: resolve => require(['../pages/login'], resolve)
   }, {
@@ -16,5 +16,10 @@ export var router = new VueRouter({
     path: '/sales',
     name: 'Sales',
     component: resolve => require(['../pages/sales'], resolve)
+  },{
+    path: '/',
+    name: 'Login2',
+    component: resolve => require(['../pages/Login2'], resolve)
   }]
+  
 })
