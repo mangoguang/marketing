@@ -38,7 +38,7 @@
 // import echarts from 'echarts'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../js/variable'
+import mango from '../js'
 import axios from 'axios'
 // import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
@@ -64,11 +64,13 @@ export default {
     }
   },
   mounted(){
-    // mango.test()
-    // console.log(11223344, this.$refs.main)
-    // this.setHomeArr([1, 2, 3, 4])
-    // this.setHomeTit('首页标题')
-    // this.setHomeText('123木头人')
+    let obj = {
+      name: 'guang',
+      age: '26',
+      work: 'qianduan'
+    }
+    mango.getSign(obj)
+    // console.log(mango.getSign1)
     //获取缓存
      this.getAccountMsg();
       if(this.ruleForm.pwd.length){
