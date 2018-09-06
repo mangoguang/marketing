@@ -89,22 +89,22 @@ a:hover{text-decoration:none;}
 }
 
 //设置input框的placeholder样式
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-    color: #fff;
-    font-size: 20px;
-  } 
-  input:-moz-placeholder, textarea:-moz-placeholder {
-    color: #fff;
-    font-size: 20px;
-  } 
-  input::-moz-placeholder, textarea::-moz-placeholder {
-    color: #fff;
-    font-size: 20px;
-  } 
-  input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-    color: #fff;
-    font-size: 20px;
-  }
+// input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+//     color: #fff;
+//     font-size: 20px;
+//   } 
+//   input:-moz-placeholder, textarea:-moz-placeholder {
+//     color: #fff;
+//     font-size: 20px;
+//   } 
+//   input::-moz-placeholder, textarea::-moz-placeholder {
+//     color: #fff;
+//     font-size: 20px;
+//   } 
+//   input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+//     color: #fff;
+//     font-size: 20px;
+//   }
   .nav{
     position: fixed;
     bottom: 0;
