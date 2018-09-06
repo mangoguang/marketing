@@ -23,14 +23,6 @@
       </li>
       <li><Bar :data="categoryData" :vertical="'horizontal'"></Bar></li>
     </ul>
-    <ul class="nav">
-      <li>
-        <router-link to="/home">品牌/品类</router-link>
-      </li>
-      <li>
-        <router-link to="/sales">销售额</router-link>
-      </li>
-    </ul>
   </div>
 </template>
 <!-- </keep-alive> -->
@@ -53,28 +45,8 @@ export default {
   data () {
     return {
       ajaxData: {},
-      brandData: {
-        legendData: ['利润', '支出', '收入'],
-        yAxisData: ['3D', 'V6', '0769', '凯奇', '慕思儿童'],
-        series: [{
-          "data": [ 7, 1, 3, 1, 2 ],
-          "name": "2018-07"
-        }, {
-          "data": [ 2, 5, 18, 1, 6 ],
-          "name": "2017-08"
-        }]
-      }, 
-      categoryData: {
-        legendData: ['利润', '支出', '收入'],
-        yAxisData: ['床垫', '床头柜', '排骨架', '床架', '床品', '助眠'],
-        series: [{
-          "data": [ 107, 121, 183, 191, 302, 288 ],
-          "name": "2018-07"
-        }, {
-          "data": [ 112, 145, 198, 171, 186, 300 ],
-          "name": "2017-08"
-        }]
-      }
+      brandData: {}, 
+      categoryData: {}
     }
   },
   created() {
@@ -119,65 +91,25 @@ export default {
     // ajax请求
     getBrandData() {
       let _this = this
-      const url = `${mango.path}brand/proportion`
-      let obj = {
-        date: '2018-08',
-        tenantId: this.ajaxData.tenantId
-      }
-      let sign = mango.getSign(obj, this.ajaxData.token)
-      axios({
-        method: 'get',
-        url: url,
-        headers: {
-          'token': _this.ajaxData.token,
-          'UUID': _this.ajaxData.uuid,
-          'sign': sign
-        },
-        params: {
-          tenantId: _this.ajaxData.tenantId,
-          date: '2018-08'
-        }
-      })
-      .then((res) => {
-        if (res.data) {
-          res = res.data.data
-          res.legendData = ['利润', '支出', '收入']
+      mango.getAjax(this, 'brand/proportion', {
+        tenantId: this.ajaxData.tenantId,
+        date: '2018-08'
+      }).then((res) => {
+        if (res) {
+          res = res.data
           _this.brandData = res
-          // _this.setBarData(res)
-          // _this.set(_this.brandData, res)
-          console.log('报表数据', _this.brandData)
         }
       })
     },
     getCategoryData() {
       let _this = this
-      const url = `${mango.path}category/proportion`
-      let obj = {
-        date: '2018-08',
-        tenantId: this.ajaxData.tenantId
-      }
-      let sign = mango.getSign(obj, this.ajaxData.token)
-      axios({
-        method: 'get',
-        url: url,
-        headers: {
-          'token': _this.ajaxData.token,
-          'UUID': _this.ajaxData.uuid,
-          'sign': sign
-        },
-        params: {
-          tenantId: _this.ajaxData.tenantId,
-          date: '2018-08'
-        }
-      })
-      .then((res) => {
-        if (res.data) {
-          res = res.data.data
-          res.legendData = ['利润', '支出', '收入']
+      mango.getAjax(this, 'category/proportion', {
+        tenantId: this.ajaxData.tenantId,
+        date: '2018-08'
+      }).then((res) => {
+        if (res) {
+          res = res.data
           _this.categoryData = res
-          // _this.setBarData(res)
-          // _this.set(_this.brandData, res)
-          console.log('报表数据', _this.brandData)
         }
       })
     }

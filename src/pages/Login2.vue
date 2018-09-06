@@ -1,48 +1,52 @@
 <template>
-  <div class="login2">
-    <div class="topBar">
-      <div class="line"></div>
-      <div class="sriangle"></div>
+  <div class="login2" :style="{background:bgcolors}">
+    <div class="topBar" :style="{background:topBarcolors}">
+      <div class="line" :style="{background:lineTopcolors}"></div>
+      <div class="sriangle" :style="{'border-bottom-color':bgcolors,'border-right-color':bgcolors}"></div>
     </div>
-  <div class="login">
-    <div class="box">
-      <h1>Hi,欢迎使用慕思营销助手</h1>
-      <form>
+  <div class="login" :style="{background:bgcolors}">
+    <div class="box" :style="{background:bgcolors}">
+      <h1 :style="{color:titlecolors}">Hi,欢迎使用慕思营销助手</h1>
+      <form >
         <ul>
           <li>
-            <label for="account" v-bind:class='`${usname}`'><span>账号</span></label>
+            <label for="account" v-bind:class='`${usname}`'><span :style="{color:unamecolors}">账号</span></label>
             <input id="account" type="text"  v-bind:class="`${username}`"
               v-on:focus='focusName()'  @blur="blurName()"
-              v-model="ruleForm.user" maxlength="15" autocomplete="off" >
+              v-model="ruleForm.user" maxlength="15" autocomplete="off" 
+              :style="{'border-bottom-color':inputLinecolors,color:inputcolors}">
           </li>
           <li>
-            <label for="password" v-bind:class='`${upwd}`'><span>密码</span></label>
+            <label for="password" v-bind:class='`${upwd}`'><span :style="{color:unamecolors}">密码</span></label>
             <input id="password" type="password"  v-bind:class="`${userpassword}`"
               @focus ='focusPwd()'  @blur="blurPwd()"
-              v-model="ruleForm.pwd" maxlength="15"> 
+              v-model="ruleForm.pwd" maxlength="15" :style="{'border-bottom-color':inputLinecolors}"> 
           </li>
           <li class="tips clearfix">
-            <input type="checkbox" id="remember" name="remember" value='remember' v-model="checked">
+            <input type="checkbox" id="remember" name="remember" value='remember' 
+            v-model="checked" >
             <label for="remember" class="rem"></label>
-            <label for="remember"><div class="rempwd">记住密码</div></label>
-            <div class="forgetpwd">忘记密码?</div>
+            <label for="remember"><div class="rempwd" :style="{color:unamecolors}">记住密码</div></label>
+            <div class="forgetpwd" :style="{color:unamecolors}">忘记密码?</div>
           </li>
           <li>
-            <button type="button" @click="submitForm('ruleForm')">登录</button>
+            <button type="button" @click="submitForm('ruleForm')" 
+            :style="{background:submitcolors,color:logincolors}">登录</button>
           </li>
         </ul>
       </form>
-      <div class="wechatLogin">
-        <div class="wechatText">
-          <hr>
-          <span>第三方账号登录</span>
-          <hr>
-        </div>
-        <div class="wechat-icon"></div>
-      </div>
     </div>
-   
   </div>
+   <div class="wechatLogin" :style="{background:bgcolors}">
+      <div class="wechatText" >
+        <hr>
+        <span>第三方账号登录</span>
+        <hr>
+      </div>
+      <div class="wechat-icon"></div>
+    </div>
+    <div class="changeColor1" @click="changeColor1" >主题1</div>
+    <div class="changeColor2" @click="changeColor2" >主题2</div>
   </div>
 </template>
 
@@ -51,6 +55,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../js'
 import axios from 'axios'
+
 
 export default {
   name: 'login',
@@ -68,7 +73,16 @@ export default {
         user:'',
         pwd:''
       },
-      checked:true
+      checked:true,
+      topBarcolors:'#e1e1e1',
+      bgcolors:'#fff',
+      lineTopcolors:'#020202',
+      titlecolors:'#010101',
+      unamecolors:'#909090',
+      inputLinecolors:'#ccc',
+      inputcolors:'#262628',
+      submitcolors:'#363636',
+      logincolors:'#eff9fd'
     }
   },
   mounted(){
@@ -92,9 +106,31 @@ export default {
       }
   },
   computed: {
-    
+
   },
   methods:{
+    changeColor1:function(){
+      this.topBarcolors = '#e1e1e1'
+      this.bgcolors = '#fff'
+      this.lineTopcolors = '#020202'
+      this.titlecolors = '#010101'
+      this.unamecolors = '#909090'
+      this.inputLinecolors = '#ccc'
+      this.inputcolors = '#262628'
+      this.submitcolors = '#363636'
+      this.logincolors = '#eff9fd'
+    },
+    changeColor2:function(){
+      this.topBarcolors = '#39424b'
+      this.bgcolors = '#2e353d'
+      this.lineTopcolors = '#fff'
+      this.titlecolors = '#fefefe'
+      this.unamecolors = '#95999c'
+      this.inputLinecolors = '#2b323a'
+      this.inputcolors = '#fff'
+      this.submitcolors = '#f8f8f8'
+      this.logincolors = '#2e353d'
+    },
      //光标获得焦点，失去焦点触发的事件。
     focusName : function(){
       if(this.ruleForm.user.length){
@@ -194,7 +230,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+
+<style lang="scss" scoped> 
 @font-face {
   font-family: 'PINGPANG';
   src: url('../assets/font/PingFang Regular.ttf');
@@ -206,20 +243,20 @@ export default {
 }
 .login2{
   font-family: 'PINGPANG';
+ 
   .topBar{
     width: 100vw;
     height: 44vw;
     background: #e1e1e1;
     box-sizing: border-box;
     padding-top: 22vw;
-    border-bottom: 1px solid #fff;
     position: relative;
     .sriangle{
       border-top: 11vw solid transparent;
       border-bottom: 11vw solid #fff;
       border-right: 50vw solid #fff;
       border-left: 50vw solid transparent;
-       box-sizing: border-box;
+      box-sizing: border-box;
     }
     .line{
       width: 14.66vw;
@@ -443,8 +480,11 @@ export default {
         margin-top: 6vw;
       }
     }
-    .wechatLogin{
+  }
+  }
+   .wechatLogin{
       margin-top: 13.33vw;
+      padding: 0 4vw;
       .wechatText{
         display: flex;
         justify-content: space-between;
@@ -466,7 +506,21 @@ export default {
         background-size: 100% 100%
       }
     }
-  }
-  }
+    .changeColor1{
+     width: 20vw;
+     height: 10vw;
+     text-align: center;
+     line-height: 10vw;
+     background: #e1e1e1;
+     border-radius: 4px;
+    }
+    .changeColor2{
+     width: 20vw;
+     height: 10vw;
+     text-align: center;
+     line-height: 10vw;
+     background: #2e353d;
+     border-radius: 4px;
+    }
 }
 </style>
