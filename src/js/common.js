@@ -1,4 +1,5 @@
 import sha1 from 'js-sha1'
+import axios from 'axios'
 
 export default class Common {
   constructor() {
@@ -26,9 +27,28 @@ export default class Common {
     // console.log('生成的sign字符串', str)
     return sha1.hex(str + token)
   }
-  getAjax(url, params) {
+  getAjax(_vue, port, params) {
+    let _this = this
     return new Promise((resolve, reject) => {
-
+      const url = `${this.path}${port}`
+      let sign = this.getSign(params, _vue.ajaxData.token)
+      axios({
+        method: 'get',
+        url: url,
+        headers: {
+          'token': _vue.ajaxData.token,
+          'UUID': _vue.ajaxData.uuid,
+          'sign': sign
+        },
+        params: params
+      })
+      .then((res) => {
+        if (res.data) {
+          resolve(res.data)
+        } else {
+          resolve(false)
+        }
+      })
     })
   }
 }

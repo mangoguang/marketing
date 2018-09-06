@@ -77,8 +77,12 @@ export default {
         series: this.series()
       }
     },
+    /*
+    参数说明：
+      average：该参数为number类型,在加载bar组件时传入，传入时需要显示平均参考线，不传时不显示
+    */
     series() {
-      let arr = this.barData.series.map((item) => {
+      let arr = this.barData.series.map((item, index) => {
         return {
           name: item.name,
           type: 'bar',
@@ -88,7 +92,15 @@ export default {
               position: this.seriesPosition
             }
           },
-          data: item.data
+          data: item.data,
+          markLine: this.barData.average && index === 0 ? {
+            // this.vertical === horizontal,柱状图为水平方向，否则为垂直方向
+            data: this.vertical === 'horizontal' ? [
+              {xAxis : this.barData.average, name: '平均值'}
+            ] : [
+              {yAxis : this.barData.average, name: '平均值'}
+            ]
+          } : {}
         }
       })
       return arr
