@@ -20,6 +20,10 @@ export var router = new VueRouter({
     path: '/',
     name: 'Login2',
     component: resolve => require(['../pages/Login2'], resolve)
+  },{
+    path: '/ReportForms',
+    name: 'ReportForms',
+    component: resolve => require(['../pages/ReportForms'], resolve)
   }]
   
 })
