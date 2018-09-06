@@ -1,0 +1,7 @@
+@import './mixin.scss';
+// 设置主题颜色
+@for $i from 1 to 2{
+  .color#{$i}{
+    color:nth($colors,$i)
+  }
+}
