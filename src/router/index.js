@@ -24,6 +24,15 @@ export var router = new VueRouter({
     path: '/ReportForms',
     name: 'ReportForms',
     component: resolve => require(['../pages/ReportForms'], resolve)
-  }]
+  },{
+    path: '/ForgetPwd',
+    name: '/ForgetPwd',
+    component: resolve => require(['../pages/ForgetPwd'],resolve)
+  },{
+    path: '/ResetPwd',
+    name: '/ResetPwd',
+    component: resolve => require(['../pages/ResetPwd'],resolve)
+  }
+]
   
 })
