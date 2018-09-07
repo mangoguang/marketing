@@ -1,7 +1,8 @@
 <template>
   <div class="footer">
     <ul>
-      <li v-for="(foot,index) in x" :key="index" @click="linkTo">
+      <li v-for="(foot,index) in x" :key="index"
+       @click="linkTo(index)">
         <div class="footer-icon">
           <img :src ="`./static/images/icon${index+1}.png`" alt="">
         </div>
@@ -17,15 +18,15 @@ export default {
     return{
       foot:[
         {
-          text:'首页'
+          text:'首页',methods:'linkto1'
         },{
-          text:'报表'
+          text:'报表',methods:'linkto2'
         },{
-          text:'财务'
+          text:'财务',methods:'linkto3'
         },{
-          text:'消息'
+          text:'消息',methods:'linkto4'
         },{
-          text:'个人'
+          text:'个人',methods:'linkto5'
         }
       ],
       x:5,
@@ -37,23 +38,16 @@ export default {
   //  console.log(this.f[1].icon)
   },
   methods:{
-    linkTo:function(e){
-      console.log(e.target.className)
-      // 获取图片的地址
-      let src = e.target.src
-      let len = src.length
-      let len1 = len - 4
-      let src1 = src.slice(0,len1)
-      //匹配第几张图片
-      let reg = /^i|[0-9]$/gm
-      let num = src1.match(reg)
-      console.log(num)
-      if(num == 1){
+    linkTo:function(index){
+      if(index == 0){
          this.$router.push({path:'/home'}) 
-      }else if(num ==2){
+      }else if(index == 1){
          this.$router.push({path:'/sales'}) 
+      }else{
+        alert('该模块尚未开发')
       }
-     
+      console.log(index)
+    
     }
   }
 }

@@ -11,7 +11,7 @@
     <div class="forms">
       <div class="title">报表模块</div>
       <ul>
-        <li v-for="(forms,index) in x" :key="index" @click="linkTo" :class="`${index}`">
+        <li v-for="(forms,index) in x" :key="index" @click="linkTo(index)" :class="`${index}`">
           <div class="icon" :style="{background:t[index].color}">
             <div class="icon-forms"></div>
           </div>
@@ -61,9 +61,13 @@ export default {
   //  console.log(this.forms[0].text)
   },
   methods:{
-    linkTo:function(e){
-      console.log(e.path[2].className)
-      this.$router.push({path:'/home'})
+    linkTo:function(index){
+      if(index == 0){
+        // this.$router.push({path:'/home'})
+      }else{
+        // this.$router.push({path:'/home'})
+      }
+     
     }
   }
 }
@@ -78,7 +82,6 @@ export default {
     border-radius:2.66vw;
     margin: 0 auto;
     background: #e1e1e1;
-    opacity: .2;
     position: relative;
     .search-icon{
       background: url(../assets/imgs/search.png) no-repeat;
@@ -94,7 +97,7 @@ export default {
       padding-left: 7vw;
       height: 7.73vw;
       font-size: 3.2vw;
-      color: #999;
+      color: #8e8e93;
     }
   }
   .topList{
