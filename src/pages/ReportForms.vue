@@ -13,7 +13,9 @@
       <ul>
         <li v-for="(forms,index) in x" :key="index" @click="linkTo(index)" :class="`${index}`">
           <div class="icon" :style="{background:t[index].color}">
-            <div class="icon-forms"></div>
+            <div class="icon-forms">
+              <img :src ="`./static/images/char${index+1}.png`" alt="">
+            </div>
           </div>
           <p>{{t[index].text}}</p>
         </li>
@@ -43,17 +45,19 @@ export default {
         },{
           color:'#5856d6',text:'铁三角'
         },{
-          color:'#5ac8fa',text:'品牌、品类'
+          color:'#5ac8fa',text:'品牌'
         },{
-          color:'#ff2d55',text:'坪效'
+          color:'#ff2d55',text:'品类'
         },{
-          color:'#ff964b',text:'人效'
+          color:'#ff964b',text:'坪效'
         },{
-          color:'#ffcc00',text:'客户来源'
+          color:'#ffcc00',text:'人效'
+        },{
+          color:'#f93580',text:'客户来源'
         }
 
       ],
-      x:6
+      x:7
     }
   },
   created(){
@@ -154,9 +158,7 @@ export default {
           box-shadow: 0px 1px 0px 0px 	rgba(0, 0, 0, 0.6);
           border-radius: 2.66vw;
           position: relative;
-          .icon-forms{
-            background: url(../assets/imgs/forms.png) no-repeat center;
-            background-size: 100% 100%;
+          .icon-forms img{
             width: 11.46vw;
             height: 12vw;
             position: absolute;
