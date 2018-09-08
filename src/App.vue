@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-on:newPwd='getPwd' v-bind:nweP='nweP'></router-view>
   </div>
 </template>
 
@@ -11,7 +11,18 @@ import store from './store'
 
 export default{
   name: 'app',
-  store
+  store,
+  data(){
+    return{
+      nweP:''
+    }
+  },
+  methods:{
+    //获取更改后新的密码，传到登录页面更新缓存。
+    getPwd(data){
+      this.nweP = data
+    }
+  }
 }
 </script>
 
