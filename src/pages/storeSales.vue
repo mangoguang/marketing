@@ -1,19 +1,9 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="sales">
+  <div class="storeSales">
     <div class="barBox">
-      <chartsTit :text="'整体销售额对比'"></chartsTit>
-      <Bar @chartsClick="chartsEvent" :data="salesData" :vertical="'vertical'"></Bar>
-      <RouterLink class="routerLink" :text="'各门店销售额对比>'">
-        <router-link :to="'brand'">各门店销售额对比 ></router-link>
-      </RouterLink>
-    </div>
-    <div class="barBox">
-      <chartsTit :text="'整体销售额对比'"></chartsTit>
-      <Bar :data="areaSalesData" :vertical="'vertical'"></Bar>
-      <RouterLink class="routerLink" :text="'各门店销售额对比>'">
-        <router-link :to="'brand'">各门店销售额对比 ></router-link>
-      </RouterLink>
+      <chartsTit :text="'各门店销售额对比'"></chartsTit>
+      <Bar @chartsClick="chartsEvent" :data="storeSalesData" :vertical="'horizontal'"></Bar>
     </div>
   </div>
 </template>
@@ -31,7 +21,7 @@ import Bar from '../components/charts/bar'
 import chartsTit from '../components/charts/title'
 import RouterLink from '../components/charts/routerLink'
 export default {
-  name: 'sales',
+  name: 'storeSales',
   components: {
     Bar,
     chartsTit,
@@ -40,8 +30,7 @@ export default {
   data () {
     return {
       ajaxData: {},
-      salesData: {}, 
-      areaSalesData: {}
+      storeSalesData: {}
     }
   },
   created() {
@@ -50,26 +39,10 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    this.getSalesData()
-    this.getAreaSalesData()
-    // mango.test()
-    console.log(11223344, this.$refs.main)
-    this.setHomeArr([1, 2, 3, 4])
-    this.setHomeTit('首页标题')
-    this.setHomeText('123木头人')
+    this.getStoreSalesData()
   },
   computed: {
-    test() {
-      console.log(333, this.$store)
-    },
-    ...mapState({
-      homeTit: state => 'just test',
-      homeText: state => state.home.homeText,
-      homeArr: state => state.home.homeArr
-    }),
-    ...mapGetters([
-      'homeArrFilter'
-    ])
+
   },
   methods:{
     ...mapMutations([
@@ -81,7 +54,7 @@ export default {
     //   this.$router.push({ path: '/child' })
     // },
     // ajax请求
-    getSalesData() {
+    getStoreSalesData() {
       let _this = this
       mango.getAjax(this, 'sales', {
         cityLevel: 2,
@@ -103,19 +76,7 @@ export default {
               "name": "2017-08"
             }]
           }
-          _this.salesData = tempObj
-        }
-      })
-    },
-    getAreaSalesData() {
-      let _this = this
-      mango.getAjax(this, 'area/sales', {
-        date: '2018-08',
-        tenantId: this.ajaxData.tenantId
-      }).then((res) => {
-        if (res) {
-          res = res.data
-          _this.areaSalesData = res
+          _this.storeSalesData = tempObj
         }
       })
     },

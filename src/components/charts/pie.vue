@@ -22,6 +22,7 @@ export default {
   },
   mounted() {
     echarts.init(this.$refs.main).setOption(this.option())
+    console.log(99887766, this.title)
   },
   updated() {
     
@@ -43,6 +44,11 @@ export default {
           y: '2%',
           x:'center'
         },
+        grid: {
+          left: '3%',
+          top: '25%',
+          containLabel: true
+        },
         tooltip: {
           trigger: 'item',
           formatter: "{a} <br/>{b} : {c} ({d}%)"
@@ -52,11 +58,11 @@ export default {
           orient: 'horizontal',
           left: '3%',
           right: '3%',
-          top: '8%',
-          bottom: 20,
+          top: '10%',
           data: this.yAxisData,
           selected: this.yAxisData
         },
+        color: ['#ff2d55','#ffcc00', '#5ac8fa', '#007aff', '#5856d6','#ff964b',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
         series: [
           {
             name: this.category,
@@ -76,11 +82,12 @@ export default {
       }
     },
     series() {
-      let [arr, yAxisData, seriesData] = [[], this.yAxisData, this.seriesData]
+      let [arr, yAxisData, seriesData, maxNum] = [[], this.yAxisData, this.seriesData, Math.max(...this.seriesData)]
       for (let i = 0; i < yAxisData.length; i++) {
         arr.push({
           name: yAxisData[i],
-          value: seriesData[i]
+          value: seriesData[i],
+          selected: seriesData[i] === maxNum
         })
       }
       return arr
@@ -93,6 +100,6 @@ export default {
 <style scoped>
   .main{
     width: 100%;
-    height: 100vw;
+    height: 110vw;
   }
 </style>

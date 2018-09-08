@@ -205,7 +205,7 @@ export default {
               "uuid": "${res.uuid}"
             }`
             localStorage.setItem("ajaxData", ajaxData)
-            _this.$router.push({ path: '/home' })
+            _this.$router.push({ path: '/brand' })
             // let obj = JSON.parse(ajaxData)
           }
         })
