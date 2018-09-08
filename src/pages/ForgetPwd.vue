@@ -15,7 +15,7 @@
           v-model="changePwd.num">
         </li>
         <li class="getCode">
-          <button @click="getCode">获取验证码</button>
+          <input @click="getCode" v-model="getCodeValue"  type="text" readonly>
         </li>
         <li>
           <label for="code" v-bind:class='`${vfCode}`'><span>验证码</span></label>
@@ -33,10 +33,9 @@
 </template>
 
 <script>
-import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../js'
+import axios from 'axios'
 import port from '../js/variable'
 
 export default {
@@ -50,23 +49,12 @@ data () {
       changePwd:{
         num:'',
         pwd:''
-      },
-      name:'',
-      phone:'',
-      verifyCode:'',
-      unionId:'',
-      code:port.getQueryString('code')
+      } ,
+      getCodeValue:'获取验证码' 
       
     }
   },
   mounted(){
-    let obj = {
-      name: 'guang',
-      age: '26',
-      work: 'qianduan'
-    }
-    mango.getSign(obj)
-    console.log(mango.getSign)
     //去除开头动画
     if(this.changePwd.num.length){
       this.inputPNum = 'inputPNum1'
@@ -125,43 +113,52 @@ data () {
     }
     port.key = false
     let _this = this        
-          if (port.testPhone(this.changePwd.num)) { // 检测手机格式
-            if (port.verifyPhone) {
-              port.verifyPhone(this.changePwd.num, this.verifyCode).then(function(result) {
-                port.key = true
-                let data = result.status
-                if (result.status) {
-                 console.log(data)
-                } else {
-                  this.verifyCode = ''
-                  alert(result.msg)
-                }
-              })
-             
-            } else {
-              alert('请重新打开页面！')
-            }
+    if (port.testPhone(this.changePwd.num)) { // 检测手机格式
+      if (port.verifyPhone) {    //验证验证码
+        port.verifyPhone(this.changePwd.num, this.changePwd.pwd).then(function(result) {
+          port.key = true
+          let data = result.status
+          if (result.status) {
+            console.log(data)
+            console.log('验证成功')
+           _this.$router.push({path:'/ResetPwd'})  //验证成功后跳转重置密码
           } else {
-            alert('手机格式错误！')
-            port.key = true
-            return
+            alert(result.msg)
           }
-       
-
-   
-         
-      // this.$router.push({path:'/ResetPwd'}) 
+        }).catch(function(error){
+          console.log(error)
+        })
+      } else {
+        alert('请重新打开页面！')
+      }
+    } else {
+      alert('手机格式错误！')
+      port.key = true
+      return
+    }   
+     
 
     },
     //发送手机验证码
     getCode:function(){
       let that = this
       port.sendPhoneVerify(this.changePwd.num).then(function(res){
-        if(res){
-          console.log(res)
+        if(res){   //验证码发送成功后倒计时120s后才可以重新发送
+          var num = 120
+          var timer = setInterval(function(){
+            num -- 
+            that.getCodeValue = num + 's后重新获取'
+            if(num === 0){
+              that.getCodeValue = '获取验证码'
+              clearInterval(timer)
+            }
+          },1000)
         }
+      }).catch(function(error){
+        console.log(error)
       })
     }
+   
 
   }
 }
@@ -221,10 +218,10 @@ data () {
         position: absolute;
         top: 0;
         right: 0; 
-        button{
+        input{
           font-size: 3.46vw;
           color: #666;
-          width: 21.33vw;
+          width: 25vw;
           height:7.46vw ;
           border: 1px solid #e1e1e1;
           text-align: center;
