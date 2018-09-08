@@ -27,7 +27,7 @@
             v-model="checked" >
             <label for="remember" class="rem"></label>
             <label for="remember"><div class="rempwd" :style="{color:unamecolors}">记住密码</div></label>
-            <div class="forgetpwd" :style="{color:unamecolors}">忘记密码?</div>
+            <div class="forgetpwd" :style="{color:unamecolors}" @click="forgetPwd">忘记密码?</div>
           </li>
           <li>
             <button type="button" @click="submitForm('ruleForm')" 
@@ -85,7 +85,11 @@ export default {
       logincolors:'#eff9fd'
     }
   },
+  props:[
+    'nweP' //更改后的密码。
+  ],
   mounted(){
+    console.log(this.nweP)
     let obj = {
       name: 'guang',
       age: '26',
@@ -225,6 +229,9 @@ export default {
       let trimName = this.trimStr(oldaccountMsg['name'])
       this.ruleForm.user = trimName
       this.ruleForm.pwd = oldaccountMsg['pwd']
+    },
+    forgetPwd:function(){
+      this.$router.push({path:'/ForgetPwd'})
     }
   }
 }
