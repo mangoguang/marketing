@@ -13,9 +13,13 @@
         </div>
       </li>
       <li>
-        <div :style="{height: height}" class="barBox">
+        <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
-          <Bar :data="brandData" :vertical="'horizontal'" :title="'整体品牌占比'"></Bar>
+          <Bar
+          :data="brandData"
+          :vertical="'horizontal'"
+          :title="'整体品牌占比'"
+          :height="80"></Bar>
         </div>
       </li>
     </ul>
@@ -33,7 +37,11 @@
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
-          <Bar :data="categoryData" :vertical="'horizontal'" :title="'整体品类占比'"></Bar>
+          <Bar
+          :data="categoryData"
+          :vertical="'horizontal'"
+          :title="'整体品类占比'"
+          :height="190"></Bar>
         </div>
       </li>
     </ul>
@@ -62,8 +70,7 @@ export default {
     return {
       ajaxData: {},
       brandData: {}, 
-      categoryData: {},
-      height: '110vw'
+      categoryData: {}
     }
   },
   created() {
@@ -115,9 +122,6 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          if (res.yAxisData) {
-            _this.height = `${(res.yAxisData.length * 10 + 30)}vw`
-          }
           // 过滤数组
           let tempArr = res.yAxisData.map((item) => {
             let arr = item.split('-')
@@ -137,6 +141,7 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
+          console.log('品类', res)
           _this.categoryData = res
         }
       })
