@@ -1,13 +1,19 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="storeSales">
+  <div class="areaStoreSales">
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
-      <Bar
-      @chartsClick="chartsEvent"
-      :data="storeSalesData"
-      :vertical="'horizontal'"
-      :height="250"></Bar>
+      <ul class="areaStoreBox">
+        <li v-for="(item, index) in areaStoreSalesData" :key="`${index}areaStore`">
+          <h4>{{item.name}}</h4>
+          <p></p>
+          <Bar
+          @chartsClick="chartsEvent"
+          :data="item"
+          :vertical="'horizontal'"
+          :height="item.yAxisData ? item.yAxisData.length * 10 + 50 : 30"></Bar>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -25,7 +31,7 @@ import Bar from '../components/charts/bar'
 import chartsTit from '../components/charts/title'
 import RouterLink from '../components/charts/routerLink'
 export default {
-  name: 'storeSales',
+  name: 'areaStoreSales',
   components: {
     Bar,
     chartsTit,
@@ -34,7 +40,7 @@ export default {
   data () {
     return {
       ajaxData: {},
-      storeSalesData: {}
+      areaStoreSalesData: []
     }
   },
   created() {
@@ -49,28 +55,23 @@ export default {
 
   },
   methods:{
-    ...mapMutations([
-      'setHomeTit',
-      'setHomeText',
-      'setHomeArr'
-    ]),
-    // goToChild() {
-    //   this.$router.push({ path: '/child' })
-    // },
-    // ajax请求
     getStoreSalesData() {
       let _this = this
-      mango.getAjax(this, 'shops/sales', {
+      mango.getAjax(this, 'area/shop/sales', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         if (res) {
           res = res.data
-          let tempArr = res.yAxisData.map((item) => {
-            return '3d'
-          })
-          res.yAxisData = tempArr
-          _this.storeSalesData = res
+          // 柱状图需要检测到数据改变时才渲染，故开始时数据需要有初始状态。
+          let arr = []
+          for (let i =0; i < res.length; i++) {
+            arr.push({})
+          }
+          _this.areaStoreSalesData = arr
+          setTimeout(() => {
+            _this.areaStoreSalesData = res
+          }, 10);
         }
       })
     },
@@ -83,7 +84,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.sales{
+.areaStoreSales{
   // background:#f8f8f8;
 }
 </style>

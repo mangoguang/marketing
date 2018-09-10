@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="main" ref="main"></div>
+  <div :style="{height: `${height}vw`}" class="main" id="main" ref="main"></div>
 </template>
 <!-- </keep-alive> -->
 
@@ -14,7 +14,7 @@ import echarts from 'echarts'
 // Vue.use(Vuex)
 export default {
   name: 'bar',
-  props: ['data', 'vertical', 'title'],
+  props: ['data', 'vertical', 'title', 'height'],
   data () {
     return {
       seriesPosition: 'right',
@@ -25,22 +25,21 @@ export default {
     console.log('组件挂载前', this.data)
   },
   mounted() {
+    console.log(321123, this.data)
     this.select()
     console.log('组件加载', this.data)
   },
   updated() {
     // console.log('组件更新', this.data, this.$refs.main.style.height)
-    echarts.init(this.$refs.main).setOption(this.option())
   },
   beforeUpdate() {
     console.log('组件更新前', this.data)
   },
   watch: {
     data(val){
-      // // 如果图标水平，设置图标高度。
-      // if (this.vertical === 'horizontal') {
-      //   this.height = `${(this.data.yAxisData.length * 10 + 30)}vw`
-      // }
+      console.log(321123, this.data)
+      echarts.init(this.$refs.main).setOption(this.option())
+      // echarts.init(this.$refs.main).setOption(this.option())
     }
   },
   computed: {
@@ -103,7 +102,6 @@ export default {
         grid: {
           left: '3%',
           top: '80',
-          // height: (this.data.yAxisData.length * 15) * (this.width/100),
           containLabel: true
         },
         color: ['#007aff', '#5ac8fa', '#ff2d55','#ffcc00', '#5856d6','#ff964b',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
@@ -160,6 +158,5 @@ export default {
 <style scoped>
   .main{
     width: 100%;
-    height: 100%;
   }
 </style>

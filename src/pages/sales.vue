@@ -3,17 +3,20 @@
   <div class="sales">
     <div class="barBox">
       <chartsTit :text="'整体销售额对比'"></chartsTit>
-      <Bar @chartsClick="chartsEvent" :data="salesData" :vertical="'vertical'"></Bar>
-      <RouterLink class="routerLink" :text="'各门店销售额对比>'">
-        <router-link :to="'brand'">各门店销售额对比 ></router-link>
-      </RouterLink>
+      <Bar
+      @chartsClick="chartsEvent"
+      :data="salesData"
+      :vertical="'vertical'"
+      :height="100"></Bar>
+      <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
-      <chartsTit :text="'整体销售额对比'"></chartsTit>
-      <Bar :data="areaSalesData" :vertical="'vertical'"></Bar>
-      <RouterLink class="routerLink" :text="'各门店销售额对比>'">
-        <router-link :to="'brand'">各门店销售额对比 ></router-link>
-      </RouterLink>
+      <chartsTit :text="'区域销售额对比'"></chartsTit>
+      <Bar
+      :data="areaSalesData"
+      :vertical="'vertical'"
+      :height="100"></Bar>
+      <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
   </div>
 </template>
@@ -52,11 +55,6 @@ export default {
   mounted(){
     this.getSalesData()
     this.getAreaSalesData()
-    // mango.test()
-    console.log(11223344, this.$refs.main)
-    this.setHomeArr([1, 2, 3, 4])
-    this.setHomeTit('首页标题')
-    this.setHomeText('123木头人')
   },
   computed: {
     test() {
@@ -80,6 +78,9 @@ export default {
     // goToChild() {
     //   this.$router.push({ path: '/child' })
     // },
+    toStoreSales() {
+      this.$router.push({ path: '/storeSales' })
+    },
     // ajax请求
     getSalesData() {
       let _this = this
@@ -120,7 +121,9 @@ export default {
       })
     },
     chartsEvent(data) {
-      console.log('点击图表传回的数据：', data)
+      if (data.componentType === "series") {
+        
+      }
     }
   }
 }

@@ -36,7 +36,9 @@ export var router = new VueRouter({
     path: '/ResetPwd',
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
-  }
-]
-  
+  },{
+    path: '/areaStoreSales',
+    name: '/AreaStoreSales',
+    component: resolve => require(['../pages/areaStoreSales'],resolve)
+  }]
 })
