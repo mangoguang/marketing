@@ -52,8 +52,6 @@ export default {
       if(e.path[1].id){
         alert('该模块尚未开发')
       }
-     
-    
     }
   }
 }

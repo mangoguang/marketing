@@ -114,7 +114,8 @@ export default {
       if(p !== ''){
         if(p === newp){
           this.$emit('newPwd',p)
-          this.$router.push({path:'/'})
+         this.getApi()
+          // this.$router.push({path:'/'})
           console.log('yes')
         }else{
           alert('两次输入的密码不一致')
@@ -122,7 +123,38 @@ export default {
       }else{
         alert('请输入密码')
       }
-    }
+    },//发起请求，后台修改密码。
+       getApi:function() {
+        const url = 'http://10.11.8.7:8086/app/login.api'
+        let newp = this.resetForm.pwd
+      // return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: url,
+        headers: {
+          'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+        },
+        params: {
+          account: '18080001',
+          password:'e10adc3949ba59abbe56e057f20f883e',
+          newpassword:newp
+        }
+      })
+        .then((res) => {
+          if (res.data) {
+            res = res.data.data
+            console.log(res)
+            // let ajaxData = `{
+            //   "tenantId": "${res.tenantId}",
+            //   "token": "${res.token}",
+            //   "uuid": "${res.uuid}"
+            // }`
+            // localStorage.setItem("ajaxData", ajaxData)
+           
+            // let obj = JSON.parse(ajaxData)
+          }
+        })
+       }
 
   }
 };
