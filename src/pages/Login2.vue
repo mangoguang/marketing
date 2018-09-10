@@ -187,19 +187,19 @@ export default {
       }
       //登陆接口
        function getApi() {
-         const url = 'http://10.11.8.7:8086/app/login.api'
-        // return new Promise((resolve, reject) => {
-        axios({
-          method: 'post',
-          url: url,
-          headers: {
-            'UUID': 'e10adc3949ba59abbe56e057f20f883e'
-          },
-          params: {
-            account: '18080001',
-            password: 'e10adc3949ba59abbe56e057f20f883e'
-          }
-        })
+        const url = 'http://10.11.8.7:8086/app/login.api'
+      // return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: url,
+        headers: {
+          'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+        },
+        params: {
+          account: '18080001',
+          password: 'e10adc3949ba59abbe56e057f20f883e'
+        }
+      })
         .then((res) => {
           if (res.data) {
             res = res.data.data
@@ -209,7 +209,7 @@ export default {
               "uuid": "${res.uuid}"
             }`
             localStorage.setItem("ajaxData", ajaxData)
-            _this.$router.push({ path: '/home' })
+            _this.$router.push({ path: '/ReportForms' })
             // let obj = JSON.parse(ajaxData)
           }
         })
