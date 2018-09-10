@@ -103,3 +103,6 @@ a {
     line-height: 0;
     content: "";
     clear: both; }
+.barBox{
+  background: #fff;
+}

@@ -109,42 +109,9 @@ a:hover {
 .line100 {
   height: 100px;
 }
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-  color: #fff;
-  font-size: 20px;
-}
-input:-moz-placeholder, textarea:-moz-placeholder {
-  color: #fff;
-  font-size: 20px;
-}
-input::-moz-placeholder, textarea::-moz-placeholder {
-  color: #fff;
-  font-size: 20px;
-}
-input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-  color: #fff;
-  font-size: 20px;
-}
-.nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 10vw;
-  display: -ms-flexbox;
-  display: flex;
-}
-.nav li {
-    width: 50%;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.8);
-}
-.nav li a {
-      display: block;
-      width: 100%;
-      height: 100%;
-      color: #fff;
-      line-height: 10vw;
+.barBox {
+  background: #fff;
+  border-bottom: 1vw solid #f8f8f8;
 }
 
-/*# sourceMappingURL=app.829d2ee1423076b224345db27c895312.css.map*/
+/*# sourceMappingURL=app.5d0f8cba61585ecc91d6476df23cd78d.css.map*/

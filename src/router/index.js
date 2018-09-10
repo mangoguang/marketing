@@ -9,9 +9,9 @@ export var router = new VueRouter({
     name: 'Login',
     component: resolve => require(['../pages/login'], resolve)
   }, {
-    path: '/home',
-    name: 'Home',
-    component: resolve => require(['../pages/home'], resolve)
+    path: '/brand',
+    name: 'Brand',
+    component: resolve => require(['../pages/brand'], resolve)
   }, {
     path: '/sales',
     name: 'Sales',
@@ -24,6 +24,10 @@ export var router = new VueRouter({
     path: '/ReportForms',
     name: 'ReportForms',
     component: resolve => require(['../pages/ReportForms'], resolve)
+  },{
+    path: '/storeSales',
+    name: 'StoreSales',
+    component: resolve => require(['../pages/storeSales'], resolve)
   },{
     path: '/ForgetPwd',
     name: '/ForgetPwd',
