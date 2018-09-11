@@ -55,7 +55,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../js'
 import axios from 'axios'
-
+import md5 from 'js-md5'
 
 export default {
   name: 'login',
