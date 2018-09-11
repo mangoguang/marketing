@@ -209,11 +209,7 @@ export default {
               "uuid": "${res.uuid}"
             }`
             localStorage.setItem("ajaxData", ajaxData)
-<<<<<<< HEAD
-            _this.$router.push({ path: '/ReportForms' })
-=======
             _this.$router.push({ path: '/brand' })
->>>>>>> ba9b7609481482eaf3f17d144b0db35f4a4b306d
             // let obj = JSON.parse(ajaxData)
           }
         })
