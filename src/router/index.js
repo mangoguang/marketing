@@ -44,5 +44,9 @@ export var router = new VueRouter({
     path: '/areaEffectiveness',
     name: '/AreaEffectiveness',
     component: resolve => require(['../pages/AreaEffectiveness'],resolve)
+  },{
+    path: '/audioTechnica',
+    name: '/AudioTechnica',
+    component: resolve => require(['../pages/audioTechnica'],resolve)
   }]
 })
