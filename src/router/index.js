@@ -11,11 +11,11 @@ export var router = new VueRouter({
   }, {
     path: '/brand',
     name: 'Brand',
-    component: resolve => require(['../pages/brand'], resolve)
+    component: resolve => require(['../pages/Brand/brand'], resolve)
   }, {
     path: '/sales',
     name: 'Sales',
-    component: resolve => require(['../pages/sales'], resolve)
+    component: resolve => require(['../pages/Sales/sales'], resolve)
   },{
     path: '/',
     name: 'Login2',
@@ -27,7 +27,7 @@ export var router = new VueRouter({
   },{
     path: '/storeSales',
     name: 'StoreSales',
-    component: resolve => require(['../pages/storeSales'], resolve)
+    component: resolve => require(['../pages/Sales/storeSales'], resolve)
   },{
     path: '/ForgetPwd',
     name: '/ForgetPwd',
@@ -39,14 +39,14 @@ export var router = new VueRouter({
   },{
     path: '/areaStoreSales',
     name: '/AreaStoreSales',
-    component: resolve => require(['../pages/areaStoreSales'],resolve)
+    component: resolve => require(['../pages/Sales/areaStoreSales'],resolve)
   },{
     path: '/areaEffectiveness',
     name: '/AreaEffectiveness',
-    component: resolve => require(['../pages/AreaEffectiveness'],resolve)
+    component: resolve => require(['../pages/AreaEffectiveness/areaEffectiveness'],resolve)
   },{
     path: '/audioTechnica',
     name: '/AudioTechnica',
-    component: resolve => require(['../pages/audioTechnica'],resolve)
+    component: resolve => require(['../pages/AudioTechnica/audioTechnica'],resolve)
   }]
 })
