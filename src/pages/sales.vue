@@ -7,7 +7,8 @@
       @chartsClick="chartsEvent"
       :data="salesData"
       :vertical="'vertical'"
-      :height="100"></Bar>
+      :height="100"
+      :salesVal="true"></Bar>
       <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
@@ -15,8 +16,9 @@
       <Bar
       :data="areaSalesData"
       :vertical="'vertical'"
-      :height="100"></Bar>
-      <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
+      :height="100"
+      :salesVal="true"></Bar>
+      <RouterLink @click.native="toAreaStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
   </div>
 </template>
@@ -80,6 +82,9 @@ export default {
     // },
     toStoreSales() {
       this.$router.push({ path: '/storeSales' })
+    },
+    toAreaStoreSales() {
+      this.$router.push({ path: '/areaStoreSales' })
     },
     // ajax请求
     getSalesData() {

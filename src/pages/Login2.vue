@@ -187,7 +187,7 @@ export default {
       }
       //登陆接口
        function getApi() {
-        const url = 'http://10.11.8.7:8086/app/login.api'
+        const url = `${mango.port}app/login.api`
       // return new Promise((resolve, reject) => {
       axios({
         method: 'post',
@@ -209,8 +209,7 @@ export default {
               "uuid": "${res.uuid}"
             }`
             localStorage.setItem("ajaxData", ajaxData)
-            _this.$router.push({ path: '/brand' })
-            // let obj = JSON.parse(ajaxData)
+            _this.$router.push({ path: '/ReportForms' })
           }
         })
        }

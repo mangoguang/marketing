@@ -7,7 +7,8 @@
       @chartsClick="chartsEvent"
       :data="storeSalesData"
       :vertical="'horizontal'"
-      :height="250"></Bar>
+      :height="250"
+      :salesVal="true"></Bar>
     </div>
   </div>
 </template>
@@ -66,10 +67,10 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          let tempArr = res.yAxisData.map((item) => {
-            return '3d'
-          })
-          res.yAxisData = tempArr
+          // let tempArr = res.yAxisData.map((item) => {
+          //   return '3d'
+          // })
+          // res.yAxisData = tempArr
           _this.storeSalesData = res
         }
       })

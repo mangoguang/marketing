@@ -141,7 +141,7 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          console.log('品类', res)
+          // console.log('品类',)
           _this.categoryData = res
         }
       })
