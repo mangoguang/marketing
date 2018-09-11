@@ -187,6 +187,8 @@ export default {
       }
       //登陆接口
        function getApi() {
+        let Name = _this.ruleForm.user
+        let Pwd = _this.ruleForm.pwd
         const url = `${mango.port}app/login.api`
       // return new Promise((resolve, reject) => {
       axios({
@@ -196,8 +198,9 @@ export default {
           'UUID': 'e10adc3949ba59abbe56e057f20f883e'
         },
         params: {
-          account: '18080001',
-          password: 'e10adc3949ba59abbe56e057f20f883e'
+          // account: '18080001',
+          account:Name,
+          password: md5(Pwd)
         }
       })
         .then((res) => {

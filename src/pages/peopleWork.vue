@@ -1,17 +1,18 @@
 <template>
-  <div class="areaEffectiveness">
+  <div class="peopleWork">
     <div class="barBox">
-      <chartsTit :text="'坪效-整体'"></chartsTit>
+      <chartsTit :text="'人效-整体'"></chartsTit>
       <Bar
       @chartsClick="chartsEvent"
-      :data="areaEffectivenessData"
+      :data="peopleWorkData"
       :vertical="'vertical'"
       :height="100"></Bar>
     </div>
     <div class="barBox">
-      <chartsTit :text="'坪效-各店'"></chartsTit>
+      <chartsTit :text="'人效-各店'"></chartsTit>
       <Bar
-      :data="areaEffectivenessShopData"
+      @chartsClick="chartsEvent"
+      :data="areaPeopleWorkData"
       :vertical="'horizontal'"
       :height="100"></Bar>
     </div>
@@ -31,7 +32,7 @@ import chartsTit from '../components/charts/title'
 import RouterLink from '../components/charts/routerLink'
 
 export default {
-  name:'areaEffectiveness',
+  name:'peopleWork',
   components:{
     Bar,
     chartsTit,
@@ -39,19 +40,18 @@ export default {
   },data(){
     return{
       ajaxData: {},
-      areaEffectivenessData: {}, 
-      areaEffectivenessShopData: {}
-     
+      peopleWorkData: {}, 
+      areaPeopleWorkData: {},
+      height: 100
     }
-  },
-  created() {
+  }, created() {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    this.getareaEffectivenessData()
-    this.getareaEffectivenessShopData()
+    this.getpeopleWorkData()
+    this.getareaPeopleWorkData()
   },
   computed: {
     test() {
@@ -76,9 +76,9 @@ export default {
     //   this.$router.push({ path: '/child' })
     // },
     // ajax请求
-    getareaEffectivenessData() {
+    getpeopleWorkData() {
       let _this = this
-      mango.getAjax(this, 'area/effectiveness', {
+      mango.getAjax(this, 'people/work', {
         cityLevel: 2,
         cityName: '苏州市',
         date: '2018-08',
@@ -89,7 +89,7 @@ export default {
           let arr = res.series
           let tempObj = {
             legendData: ['利润'],
-            yAxisData: ['我的坪效情况'],
+            yAxisData: ['广州天河3D/V6店'],
             average: res.series[2].data[0],
             series: [{
               "data": [ arr[0].data[0] ],
@@ -99,13 +99,13 @@ export default {
               "name": "2017-08"
             }]
           }
-          _this.areaEffectivenessData = tempObj
+          _this.peopleWorkData = tempObj
         }
       })
     },
-    getareaEffectivenessShopData() {
+    getareaPeopleWorkData() {  //接口没有
       let _this = this
-      mango.getAjax(this, 'area/effectiveness/shop', {
+      mango.getAjax(this, 'store/number/all', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId,
         cityLevel: 2,
@@ -114,7 +114,7 @@ export default {
         if (res) {
           res = res.data
           // _this.height = 200
-          _this.areaEffectivenessShopData = res
+          _this.areaPeopleWorkData = res
         }
       })
     },
@@ -126,4 +126,3 @@ export default {
   }
 }
 </script>
-

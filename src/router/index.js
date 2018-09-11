@@ -48,5 +48,17 @@ export var router = new VueRouter({
     path: '/audioTechnica',
     name: '/AudioTechnica',
     component: resolve => require(['../pages/audioTechnica'],resolve)
+  },{
+    path: '/category',
+    name: '/Category',
+    component: resolve => require(['../pages/Category'],resolve)
+  },{
+    path: '/peopleWork',
+    name: '/PeopleWork',
+    component: resolve => require(['../pages/PeopleWork'],resolve)
+  },{
+    path: '/customerSource',
+    name: '/CustomerSource',
+    component: resolve => require(['../pages/CustomerSource'],resolve)
   }]
 })
