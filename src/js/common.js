@@ -4,6 +4,7 @@ import axios from 'axios'
 export default class Common {
   constructor() {
     this.path = 'http://10.11.8.7:8086/v1/app/report/'
+    // this.path = 'http://172.16.11.127/v1/app/report/'
   }
   // 对象排序
   sortObj(obj) {

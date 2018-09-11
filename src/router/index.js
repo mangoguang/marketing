@@ -40,5 +40,9 @@ export var router = new VueRouter({
     path: '/areaStoreSales',
     name: '/AreaStoreSales',
     component: resolve => require(['../pages/areaStoreSales'],resolve)
+  },{
+    path: '/areaEffectiveness',
+    name: '/AreaEffectiveness',
+    component: resolve => require(['../pages/AreaEffectiveness'],resolve)
   }]
 })

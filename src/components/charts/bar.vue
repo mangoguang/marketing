@@ -25,7 +25,7 @@ export default {
     console.log('组件挂载前', this.data)
   },
   mounted() {
-    console.log(321123, this.data)
+    console.log(333333, this.data)
     this.select()
     console.log('组件加载', this.data)
   },
@@ -102,6 +102,7 @@ export default {
         grid: {
           left: '3%',
           top: '80',
+          // height: 700,
           containLabel: true
         },
         color: ['#007aff', '#5ac8fa', '#ff2d55','#ffcc00', '#5856d6','#ff964b',  '#ca8622', '#bda29a','#6e7074', '#546570', '#c4ccd3'],
