@@ -139,7 +139,7 @@ export default {
       }
       //登陆接口
        function getApi() {
-         const url = 'http://10.11.8.7:8086/app/login.api'
+         const url = 'http://172.16.11.127/app/login.api'
         // return new Promise((resolve, reject) => {
         axios({
           method: 'post',

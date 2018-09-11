@@ -5,13 +5,15 @@
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
       <ul class="areaStoreBox">
         <li v-for="(item, index) in areaStoreSalesData" :key="`${index}areaStore`">
+          <Banner></Banner>
           <h4>{{item.name}}</h4>
           <p></p>
           <Bar
           @chartsClick="chartsEvent"
           :data="item"
           :vertical="'horizontal'"
-          :height="item.yAxisData ? item.yAxisData.length * 10 + 50 : 30"></Bar>
+          :height="100"
+          :salesVal="true"></Bar>
         </li>
       </ul>
     </div>
@@ -30,12 +32,14 @@ Vue.use(Vuex)
 import Bar from '../components/charts/bar'
 import chartsTit from '../components/charts/title'
 import RouterLink from '../components/charts/routerLink'
+import Banner from '../components/banner'
 export default {
   name: 'areaStoreSales',
   components: {
     Bar,
     chartsTit,
-    RouterLink
+    RouterLink,
+    Banner
   },
   data () {
     return {
@@ -86,6 +90,18 @@ export default {
 <style lang="scss" scoped>
 .areaStoreSales{
   // background:#f8f8f8;
+}
+.areaStoreBox{
+  background: #f8f8f8;
+  h4{
+    margin: 0 2%;
+    padding-left: 5vw;
+  }
+  h4:after{
+    width: 1vw;
+    height: 1vw;
+    background: #363636;
+  }
 }
 </style>
  

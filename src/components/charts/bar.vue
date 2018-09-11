@@ -14,23 +14,33 @@ import echarts from 'echarts'
 // Vue.use(Vuex)
 export default {
   name: 'bar',
-  props: ['data', 'vertical', 'title', 'height'],
+  // 参数说明：
+  // data：图标数据
+  // vertical设置柱状图的横向排布和纵向排布
+  // height设置图标容器main的高度
+  // salesVal标记是否为销售额，主要用于改变数据单位
+  props: ['data', 'vertical', 'title', 'height', 'salesVal'],
   data () {
     return {
       seriesPosition: 'right',
-      width: window.innerWidth
+      width: window.innerWidth,
+      barData: {}
     }
   },
   beforeMount() {
     console.log('组件挂载前', this.data)
   },
   mounted() {
-    console.log(321123, this.data)
+    // this.$nextTick(function () {
+    //     setTimeout(() => {
+    //       echarts.init(this.$refs.main).setOption(this.option())
+    //     }, 10)
+    //   })
     this.select()
     console.log('组件加载', this.data)
   },
   updated() {
-    // console.log('组件更新', this.data, this.$refs.main.style.height)
+
   },
   beforeUpdate() {
     console.log('组件更新前', this.data)
@@ -38,14 +48,15 @@ export default {
   watch: {
     data(val){
       console.log(321123, this.data)
+      this.barData = val
+      console.log(9999999, this.salesVal)
       echarts.init(this.$refs.main).setOption(this.option())
-      // echarts.init(this.$refs.main).setOption(this.option())
     }
   },
   computed: {
-    barData: function() {
-      return this.data
-    }
+    // barData: function() {
+    //   return this.data
+    // }
   },
   methods: {
     option() {
@@ -137,7 +148,10 @@ export default {
               position: this.seriesPosition
             }
           },
-          data: item.data,
+          data: this.salesVal ? item.data.map((key) => {
+            console.log(888888, key)
+            return (key/10000).toFixed(2)
+          }) : item.data,
           markLine: this.barData.average && index === 0 ? {
             // this.vertical === horizontal,柱状图为水平方向，否则为垂直方向
             data: this.vertical === 'horizontal' ? [
