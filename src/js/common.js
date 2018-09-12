@@ -26,7 +26,7 @@ export default class Common {
     for (let key in obj) {
       str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
     }
-    // console.log('生成的sign字符串', str)
+    console.log('生成的sign字符串', str)
     return sha1.hex(str + token)
   }
   getAjax(_vue, port, params) {
@@ -34,6 +34,7 @@ export default class Common {
     return new Promise((resolve, reject) => {
       const url = `${this.path}${port}`
       let sign = this.getSign(params, _vue.ajaxData.token)
+      console.log('header参数', _vue, sign)
       axios({
         method: 'get',
         url: url,

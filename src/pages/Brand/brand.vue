@@ -16,6 +16,7 @@
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
           <Bar
+          @chartsClick="chartsEvent"
           :data="brandData"
           :vertical="'horizontal'"
           :title="'整体品牌占比'"
@@ -53,14 +54,14 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../js'
+import mango from '../../js'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
-import Bar from '../components/charts/bar'
-import Pie from '../components/charts/pie'
-import chartsTit from '../components/charts/title'
-import RouterLink from '../components/charts/routerLink'
+import Bar from '../../components/charts/bar'
+import Pie from '../../components/charts/pie'
+import chartsTit from '../../components/charts/title'
+import RouterLink from '../../components/charts/routerLink'
 export default {
   name: 'brand',
   components: {
@@ -145,6 +146,12 @@ export default {
           _this.categoryData = res
         }
       })
+    },
+    chartsEvent(data) {
+      if (data.componentType === 'series') {
+        this.$router.push({path: '/brandCatogrySales'})
+      }
+      console.log('报表组件传回的数据：', data)
     }
   }
 }

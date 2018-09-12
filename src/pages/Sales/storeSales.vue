@@ -18,13 +18,13 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../js'
+import mango from '../../js'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
-import Bar from '../components/charts/bar'
-import chartsTit from '../components/charts/title'
-import RouterLink from '../components/charts/routerLink'
+import Bar from '../../components/charts/bar'
+import chartsTit from '../../components/charts/title'
+import RouterLink from '../../components/charts/routerLink'
 export default {
   name: 'storeSales',
   components: {
@@ -76,6 +76,10 @@ export default {
       })
     },
     chartsEvent(data) {
+      if (data[0].componentType === 'series') {
+        console.log('shopId', data)
+        this.$router.push({path: `/personalSales?shopId=${data[1][data[0].dataIndex]}&name=${data[0].name}`})
+      }
       console.log('点击图表传回的数据：', data)
     }
   }
