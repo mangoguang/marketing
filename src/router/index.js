@@ -5,6 +5,10 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
+    path: '/',
+    name: 'Login2',
+    component: resolve => require(['../pages/Login2'], resolve)
+  },{
     path: '/Login',
     name: 'Login',
     component: resolve => require(['../pages/login'], resolve)
@@ -12,22 +16,26 @@ export var router = new VueRouter({
     path: '/brand',
     name: 'Brand',
     component: resolve => require(['../pages/Brand/brand'], resolve)
-  }, {
+  }, {  // 销售
     path: '/sales',
     name: 'Sales',
     component: resolve => require(['../pages/Sales/sales'], resolve)
   },{
-    path: '/',
-    name: 'Login2',
-    component: resolve => require(['../pages/Login2'], resolve)
-  },{
-    path: '/ReportForms',
-    name: 'ReportForms',
-    component: resolve => require(['../pages/ReportForms'], resolve)
+    path: '/areaStoreSales',
+    name: '/AreaStoreSales',
+    component: resolve => require(['../pages/Sales/areaStoreSales'],resolve)
   },{
     path: '/storeSales',
     name: 'StoreSales',
     component: resolve => require(['../pages/Sales/storeSales'], resolve)
+  },{
+    path: '/personalSales',
+    name: '/PersonalSales',
+    component: resolve => require(['../pages/Sales/personalSales'],resolve)
+  },{
+    path: '/ReportForms',
+    name: 'ReportForms',
+    component: resolve => require(['../pages/ReportForms'], resolve)
   },{
     path: '/ForgetPwd',
     name: '/ForgetPwd',
@@ -36,10 +44,6 @@ export var router = new VueRouter({
     path: '/ResetPwd',
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
-  },{
-    path: '/areaStoreSales',
-    name: '/AreaStoreSales',
-    component: resolve => require(['../pages/Sales/areaStoreSales'],resolve)
   },{
     path: '/areaEffectiveness',
     name: '/AreaEffectiveness',

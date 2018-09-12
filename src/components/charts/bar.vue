@@ -131,7 +131,7 @@ export default {
     select() {
       let _this = this
       echarts.init(this.$refs.main).on('click', function (params) {
-        _this.$emit('chartsClick', params)
+        _this.$emit('chartsClick', [params, _this.data.idsData])
       })
     },
     /*
@@ -150,7 +150,6 @@ export default {
             }
           },
           data: this.salesVal ? item.data.map((key) => {
-            console.log(888888, key)
             return (key/10000).toFixed(2)
           }) : item.data,
           markLine: this.barData.average && index === 0 ? {

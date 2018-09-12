@@ -1,13 +1,12 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="storeSales">
+  <div class="personalSales">
     <div class="barBox">
-      <chartsTit :text="'各门店销售额对比'"></chartsTit>
+      <chartsTit :text="`${shopName}-职员销售额对比`"></chartsTit>
       <Bar
-      @chartsClick="chartsEvent"
-      :data="storeSalesData"
+      :data="personalSalesData"
       :vertical="'horizontal'"
-      :height="250"
+      :height="300"
       :salesVal="true"></Bar>
     </div>
   </div>
@@ -23,19 +22,20 @@ import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
+import Pie from '../../components/charts/pie'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
 export default {
-  name: 'storeSales',
+  name: 'personalSales',
+  props: ['data'],
   components: {
-    Bar,
-    chartsTit,
-    RouterLink
+    Bar, Pie, chartsTit, RouterLink
   },
   data () {
     return {
       ajaxData: {},
-      storeSalesData: {}
+      personalSalesData: {},
+      shopName: this.$route.query.name
     }
   },
   created() {
@@ -44,43 +44,27 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    this.getStoreSalesData()
+    console.log('路由参数', this.$route)
+    this.getPersonalSalesData()
   },
   computed: {
 
   },
   methods:{
-    ...mapMutations([
-      'setHomeTit',
-      'setHomeText',
-      'setHomeArr'
-    ]),
-    // goToChild() {
-    //   this.$router.push({ path: '/child' })
-    // },
-    // ajax请求
-    getStoreSalesData() {
+    getPersonalSalesData() {
       let _this = this
-      mango.getAjax(this, 'shops/sales', {
+      mango.getAjax(this, 'shop/sales', {
         date: '2018-08',
-        tenantId: this.ajaxData.tenantId
+        tenantId: this.ajaxData.tenantId,
+        shopId: this.$route.query.shopId
       }).then((res) => {
         if (res) {
           res = res.data
-          // let tempArr = res.yAxisData.map((item) => {
-          //   return '3d'
-          // })
-          // res.yAxisData = tempArr
-          _this.storeSalesData = res
+          res.average = res.shopAvg
+          console.log('店内员工销售额：', res)
+          _this.personalSalesData = res
         }
       })
-    },
-    chartsEvent(data) {
-      if (data[0].componentType === 'series') {
-        console.log('shopId', data)
-        this.$router.push({path: `/personalSales?shopId=${data[1][data[0].dataIndex]}&name=${data[0].name}`})
-      }
-      console.log('点击图表传回的数据：', data)
     }
   }
 }
@@ -88,8 +72,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.sales{
-  // background:#f8f8f8;
+.audioTechnica{
+
 }
 </style>
  
