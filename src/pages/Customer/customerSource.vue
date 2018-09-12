@@ -89,6 +89,9 @@ export default {
           let arr = res.series
           let tempObj = {
             legendData: ['利润'],
+            legend:{
+              data:['2017-08','2018-08','同级客户来源']
+            },
             yAxisData: ["自然进店", "老客带单", "异业联盟", "设计师介绍"],
             series: [{
               "data": [ arr[0].data[0],arr[0].data[1],arr[0].data[2],arr[0].data[3] ],
@@ -113,21 +116,22 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
+          console.log(res)
           // _this.height = 200
-          let arr = res.series
-          let tempObj = {
-            legendData: ['利润'],
-            yAxisData: ["自然进店", "老客带单", "异业联盟", "设计师介绍"],
-            series: [{
-              "data": [ arr[0].data[0],arr[0].data[1],arr[0].data[2],arr[0].data[3] ],
-              "name": "2018-08"
-            }, {
-              "data": [ arr[1].data[0],arr[1].data[1],arr[1].data[2],arr[1].data[3] ],
-              "name": "2017-08"
-            }] 
-          }
+          // let arr = res.series
+          // let tempObj = {
+          //   legendData: ['利润'],
+          //   yAxisData: ["自然进店", "老客带单", "异业联盟", "设计师介绍"],
+          //   series: [{
+          //     "data": [ arr[0].data[0],arr[0].data[1],arr[0].data[2],arr[0].data[3] ],
+          //     "name": "2018-08"
+          //   }, {
+          //     "data": [ arr[1].data[0],arr[1].data[1],arr[1].data[2],arr[1].data[3] ],
+          //     "name": "2017-08"
+          //   }] 
+          // }
          
-          _this.areaCustomerSourceData = tempObj
+          _this.areaCustomerSourceData = res
         }
       })
     },
