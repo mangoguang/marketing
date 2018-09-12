@@ -67,9 +67,19 @@ export default {
   methods:{
     linkTo:function(index){
       if(index == 0){
-        // this.$router.push({path:'/home'})
-      }else{
-        // this.$router.push({path:'/home'})
+        this.$router.push({path:'/sales'})
+      }else if(index == 1){
+        this.$router.push({path:'/audioTechnica'})
+      }else if(index == 2){
+        this.$router.push({path:'/brand'})
+      }else if(index == 3){
+        this.$router.push({path:'/category'})
+      }else if(index == 4){
+        this.$router.push({path:'/areaEffectiveness'})
+      }else if(index == 5){
+        this.$router.push({path:'/peopleWork'})
+      }else if(index == 6){
+        this.$router.push({path:'/customerSource'})
       }
      
     }
