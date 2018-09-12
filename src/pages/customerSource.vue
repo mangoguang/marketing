@@ -1,17 +1,18 @@
 <template>
-  <div class="areaEffectiveness">
+  <div class="customerSource">
     <div class="barBox">
-      <chartsTit :text="'坪效-整体'"></chartsTit>
+      <chartsTit :text="'客户来源-整体'"></chartsTit>
       <Bar
       @chartsClick="chartsEvent"
       :data="areaEffectivenessData"
-      :vertical="'vertical'"
+      :vertical="'horizontal'"
       :height="100"></Bar>
     </div>
     <div class="barBox">
-      <chartsTit :text="'坪效-各店'"></chartsTit>
+      <chartsTit :text="'客户来源-各店'"></chartsTit>
       <Bar
-      :data="areaEffectivenessShopData"
+      @chartsClick="chartsEvent"
+      :data="areaEffectivenessData"
       :vertical="'horizontal'"
       :height="100"></Bar>
     </div>
@@ -31,7 +32,7 @@ import chartsTit from '../components/charts/title'
 import RouterLink from '../components/charts/routerLink'
 
 export default {
-  name:'areaEffectiveness',
+  name:'customerSource',
   components:{
     Bar,
     chartsTit,
@@ -41,9 +42,8 @@ export default {
       ajaxData: {},
       areaEffectivenessData: {}, 
       areaEffectivenessShopData: {}
-     
     }
-  },
+  },  
   created() {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
@@ -78,7 +78,7 @@ export default {
     // ajax请求
     getareaEffectivenessData() {
       let _this = this
-      mango.getAjax(this, 'area/effectiveness', {
+      mango.getAjax(this, 'customer/source', {
         cityLevel: 2,
         cityName: '苏州市',
         date: '2018-08',
@@ -89,13 +89,13 @@ export default {
           let arr = res.series
           let tempObj = {
             legendData: ['利润'],
-            yAxisData: ['我的坪效情况'],
-            average: res.series[2].data[0],
+            yAxisData: ["自然进店", "老客带单", "异业联盟", "设计师介绍"],
+            average:arr[2].data[0],
             series: [{
-              "data": [ arr[0].data[0] ],
+              "data": [ arr[0].data[0],arr[0].data[1],arr[0].data[2],arr[0].data[3] ],
               "name": "2018-08"
             }, {
-              "data": [ arr[1].data[0] ],
+              "data": [ arr[1].data[0],arr[1].data[1],arr[1].data[2],arr[1].data[3] ],
               "name": "2017-08"
             }]
           }
@@ -105,7 +105,7 @@ export default {
     },
     getareaEffectivenessShopData() {
       let _this = this
-      mango.getAjax(this, 'area/effectiveness/shop', {
+      mango.getAjax(this, 'customer/source/shop', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId,
         cityLevel: 2,
@@ -114,7 +114,22 @@ export default {
         if (res) {
           res = res.data
           // _this.height = 200
-          _this.areaEffectivenessShopData = res
+          res = res.data
+          let arr = res.series
+          let tempObj = {
+            legendData: ['利润'],
+            yAxisData: ["自然进店", "老客带单", "异业联盟", "设计师介绍"],
+            average:arr[2].data[0],
+            series: [{
+              "data": [ arr[0].data[0],arr[0].data[1],arr[0].data[2],arr[0].data[3] ],
+              "name": "2018-08"
+            }, {
+              "data": [ arr[1].data[0],arr[1].data[1],arr[1].data[2],arr[1].data[3] ],
+              "name": "2017-08"
+            }] 
+          }
+         
+          _this.areaEffectivenessData = tempObj
         }
       })
     },
