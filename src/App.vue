@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <router-view v-on:newPwd='getPwd' v-bind:nweP='nweP'></router-view>
   </div>
 </template>
 
@@ -11,7 +11,18 @@ import store from './store'
 
 export default{
   name: 'app',
-  store
+  store,
+  data(){
+    return{
+      nweP:''
+    }
+  },
+  methods:{
+    //获取更改后新的密码，传到登录页面更新缓存。
+    getPwd(data){
+      this.nweP = data
+    }
+  }
 }
 </script>
 
@@ -105,24 +116,8 @@ a:hover{text-decoration:none;}
 //     color: #fff;
 //     font-size: 20px;
 //   }
-  .nav{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 10vw;
-    display: flex;
-    li{
-      width: 50%;
-      text-align: center;
-      background: rgba(0, 0, 0, .8);
-      a{
-        display: block;
-        width: 100%;
-        height: 100%;
-        color: #fff;
-        line-height: 10vw;
-      }
-    }
-  }
+.barBox{
+  background: #fff;
+  border-bottom: 1vw solid #f8f8f8;
+}
 </style>

@@ -1,27 +1,49 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="home">
+  <div class="brand">
     <ul>
-      <li><h3>整体品牌占比</h3></li>
       <li v-for="(item, index) in brandData.series" :key="`${index}11`">
-        <Pie
+        <div class="barBox">
+          <!-- <chartsTit :text="'整体品牌对比'"></chartsTit> -->
+          <Pie
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"
-          :title="item.name"
+          :title="`各品牌占比-${item.name}`"
           :category="'整体品牌占比'"></Pie>
+        </div>
       </li>
-      <li><Bar :data="brandData" :vertical="'horizontal'"></Bar></li>
+      <li>
+        <div class="barBox">
+          <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
+          <Bar
+          :data="brandData"
+          :vertical="'horizontal'"
+          :title="'整体品牌占比'"
+          :height="80"></Bar>
+        </div>
+      </li>
     </ul>
     <ul>
-      <li><h3>整体品类占比</h3></li>
       <li v-for="(item, index) in categoryData.series" :key="`${index}11`">
-        <Pie
+        <div class="barBox">
+          <!-- <chartsTit :text="'整体品类对比'"></chartsTit> -->
+          <Pie
           :yAxisData="categoryData.yAxisData"
           :seriesData="item.data"
-          :title="item.name"
+          :title="`各品类占比-${item.name}`"
           :category="'整体品类占比'"></Pie>
+        </div>
       </li>
-      <li><Bar :data="categoryData" :vertical="'horizontal'"></Bar></li>
+      <li>
+        <div class="barBox">
+          <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
+          <Bar
+          :data="categoryData"
+          :vertical="'horizontal'"
+          :title="'整体品类占比'"
+          :height="190"></Bar>
+        </div>
+      </li>
     </ul>
   </div>
 </template>
@@ -37,10 +59,12 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../components/charts/bar'
 import Pie from '../components/charts/pie'
+import chartsTit from '../components/charts/title'
+import RouterLink from '../components/charts/routerLink'
 export default {
-  name: 'home',
+  name: 'brand',
   components: {
-    Bar, Pie
+    Bar, Pie, chartsTit, RouterLink
   },
   data () {
     return {
@@ -93,10 +117,17 @@ export default {
       let _this = this
       mango.getAjax(this, 'brand/proportion', {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08'
+        date: '2018-08',
+        type: 'count'
       }).then((res) => {
         if (res) {
           res = res.data
+          // 过滤数组
+          let tempArr = res.yAxisData.map((item) => {
+            let arr = item.split('-')
+            return arr[1]
+          })
+          res.yAxisData = tempArr
           _this.brandData = res
         }
       })
@@ -105,10 +136,12 @@ export default {
       let _this = this
       mango.getAjax(this, 'category/proportion', {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08'
+        date: '2018-08',
+        type: 'count'
       }).then((res) => {
         if (res) {
           res = res.data
+          // console.log('品类',)
           _this.categoryData = res
         }
       })
@@ -119,13 +152,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.home{
+.brand{
   width: 100vw;
   height: 100vh;
-  /* background: #ff0000; */
-  h3{
-    text-align: center;
-  }
+  background: #f8f8f8;
 }
 .main{
   width: 100vw;

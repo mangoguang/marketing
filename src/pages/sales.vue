@@ -1,8 +1,25 @@
 <!-- <keep-alive> -->
 <template>
   <div class="sales">
-    <Bar :data="salesData" :vertical="'vertical'"></Bar>
-    <Bar :data="areaSalesData" :vertical="'vertical'"></Bar>
+    <div class="barBox">
+      <chartsTit :text="'整体销售额对比'"></chartsTit>
+      <Bar
+      @chartsClick="chartsEvent"
+      :data="salesData"
+      :vertical="'vertical'"
+      :height="100"
+      :salesVal="true"></Bar>
+      <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
+    </div>
+    <div class="barBox">
+      <chartsTit :text="'区域销售额对比'"></chartsTit>
+      <Bar
+      :data="areaSalesData"
+      :vertical="'vertical'"
+      :height="100"
+      :salesVal="true"></Bar>
+      <RouterLink @click.native="toAreaStoreSales" :text="'各门店销售额对比'"></RouterLink>
+    </div>
   </div>
 </template>
 <!-- </keep-alive> -->
@@ -16,10 +33,14 @@ import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../components/charts/bar'
+import chartsTit from '../components/charts/title'
+import RouterLink from '../components/charts/routerLink'
 export default {
   name: 'sales',
   components: {
-    Bar
+    Bar,
+    chartsTit,
+    RouterLink
   },
   data () {
     return {
@@ -36,11 +57,6 @@ export default {
   mounted(){
     this.getSalesData()
     this.getAreaSalesData()
-    // mango.test()
-    console.log(11223344, this.$refs.main)
-    this.setHomeArr([1, 2, 3, 4])
-    this.setHomeTit('首页标题')
-    this.setHomeText('123木头人')
   },
   computed: {
     test() {
@@ -64,6 +80,12 @@ export default {
     // goToChild() {
     //   this.$router.push({ path: '/child' })
     // },
+    toStoreSales() {
+      this.$router.push({ path: '/storeSales' })
+    },
+    toAreaStoreSales() {
+      this.$router.push({ path: '/areaStoreSales' })
+    },
     // ajax请求
     getSalesData() {
       let _this = this
@@ -102,13 +124,20 @@ export default {
           _this.areaSalesData = res
         }
       })
+    },
+    chartsEvent(data) {
+      if (data.componentType === "series") {
+        
+      }
     }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
+<style lang="scss" scoped>
+.sales{
+  // background:#f8f8f8;
+}
 </style>
  

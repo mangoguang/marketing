@@ -27,7 +27,7 @@
             v-model="checked" >
             <label for="remember" class="rem"></label>
             <label for="remember"><div class="rempwd" :style="{color:unamecolors}">记住密码</div></label>
-            <div class="forgetpwd" :style="{color:unamecolors}">忘记密码?</div>
+            <div class="forgetpwd" :style="{color:unamecolors}" @click="forgetPwd">忘记密码?</div>
           </li>
           <li>
             <button type="button" @click="submitForm('ruleForm')" 
@@ -55,7 +55,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../js'
 import axios from 'axios'
-
+import md5 from 'js-md5'
 
 export default {
   name: 'login',
@@ -85,7 +85,11 @@ export default {
       logincolors:'#eff9fd'
     }
   },
+  props:[
+    'nweP' //更改后的密码。
+  ],
   mounted(){
+    console.log(this.nweP)
     let obj = {
       name: 'guang',
       age: '26',
@@ -183,19 +187,22 @@ export default {
       }
       //登陆接口
        function getApi() {
-         const url = 'http://10.11.8.7:8086/app/login.api'
-        // return new Promise((resolve, reject) => {
-        axios({
-          method: 'post',
-          url: url,
-          headers: {
-            'UUID': 'e10adc3949ba59abbe56e057f20f883e'
-          },
-          params: {
-            account: '18080001',
-            password: 'e10adc3949ba59abbe56e057f20f883e'
-          }
-        })
+        let Name = _this.ruleForm.user
+        let Pwd = _this.ruleForm.pwd
+        const url = `${mango.port}app/login.api`
+      // return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: url,
+        headers: {
+          'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+        },
+        params: {
+          // account: '18080001',
+          account:Name,
+          password: md5(Pwd)
+        }
+      })
         .then((res) => {
           if (res.data) {
             res = res.data.data
@@ -205,8 +212,7 @@ export default {
               "uuid": "${res.uuid}"
             }`
             localStorage.setItem("ajaxData", ajaxData)
-            _this.$router.push({ path: '/home' })
-            // let obj = JSON.parse(ajaxData)
+            _this.$router.push({ path: '/ReportForms' })
           }
         })
        }
@@ -225,6 +231,9 @@ export default {
       let trimName = this.trimStr(oldaccountMsg['name'])
       this.ruleForm.user = trimName
       this.ruleForm.pwd = oldaccountMsg['pwd']
+    },
+    forgetPwd:function(){
+      this.$router.push({path:'/ForgetPwd'})
     }
   }
 }
