@@ -14,7 +14,7 @@
       @chartsClick="chartsEvent"
       :data="areaCustomerSourceData"
       :vertical="'horizontal'"
-      :height="100"></Bar>
+      :height="400"></Bar>
     </div>
   </div>
 </template>
