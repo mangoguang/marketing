@@ -1,6 +1,8 @@
 <template>
-  <div class="login2" :style="{background:bgcolors}">
+  <div class="login2" :style="{background:bgcolors}"> 
     <div class="topBar" :style="{background:topBarcolors}">
+      <tips-error class="active"></tips-error>
+      <tips-web class="active"></tips-web>
       <div class="line" :style="{background:lineTopcolors}"></div>
       <div class="sriangle" :style="{'border-bottom-color':bgcolors,'border-right-color':bgcolors}"></div>
     </div>
@@ -56,11 +58,15 @@ import VueRouter from 'vue-router'
 import mango from '../js'
 import axios from 'axios'
 import md5 from 'js-md5'
+import tipsError from '../components/charts/tipsError'
+import tipsWeb from '../components/charts/tipsWeb'
 
 export default {
   name: 'login',
   components: {
     // MyChart
+    tipsError,
+    tipsWeb
   },
   data () {
     return {
@@ -252,7 +258,6 @@ export default {
 }
 .login2{
   font-family: 'PINGPANG';
- 
   .topBar{
     width: 100vw;
     height: 44vw;
