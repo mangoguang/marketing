@@ -12,7 +12,7 @@
       <Bar
       :data="areaPeopleWorkData"
       :vertical="'horizontal'"
-      :height="100"></Bar>
+      :height="300"></Bar>
     </div>
   </div>
 </template>
@@ -91,7 +91,7 @@ export default {
     },
     getareaPeopleWorkData() {  //接口没有
       let _this = this
-      mango.getAjax(this, 'store/number/all', {
+      mango.getAjax(this, 'people/work/shop', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId,
         cityLevel: 2,
