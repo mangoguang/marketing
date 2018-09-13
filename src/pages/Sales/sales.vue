@@ -97,19 +97,7 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          let tempObj = {
-            legendData: ['利润'],
-            yAxisData: ['整体销售额对比'],
-            average: res[2].siblings,
-            series: [{
-              "data": [ res[0].currDate ],
-              "name": "2018-07"
-            }, {
-              "data": [ res[1].preDate ],
-              "name": "2017-08"
-            }]
-          }
-          _this.salesData = tempObj
+          _this.salesData = res
         }
       })
     },

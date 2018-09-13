@@ -2,7 +2,7 @@
 <template>
   <div class="title">
     <h3 class="chartsTit">{{text}}</h3>
-    <h6>单位：万</h6>
+    <slot></slot>
   </div>
 </template>
 <!-- </keep-alive> -->
