@@ -88,6 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .reportForms{
   background: #f8f8f8;
   .search{
@@ -155,12 +156,15 @@ export default {
       margin: 0 auto;
       padding-top: 10.8vw;
       border-top: 1px solid #e1e1e1;
+      background: #fff;
+      height: 100vw;
       li{
         width: 20vw;
         height: 26.66vw;
         float: left;
         margin-right: 12vw;
         margin-bottom: 8.1vw;
+        
         .icon{
           width: 20vw;
           height: 20vw;
