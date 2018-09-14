@@ -39,7 +39,7 @@ export default {
         top: -9vw
       }
       to{
-        top: 0vw
+        top: 8vw
       }
       
     }

@@ -173,6 +173,8 @@ export default {
 }
 .resetPwd{
   font-family: 'PINGPANG';
+  height: 100vh;
+  background: #fff;
   .login{
     background: #fff;
   }
