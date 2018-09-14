@@ -177,6 +177,7 @@ data () {
 .forgetPwd{
   font-family: 'PINGPANG';
   background:#fff;
+  height: 100vh;
   .login{
     background: #fff;
   }
