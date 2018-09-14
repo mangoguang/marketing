@@ -2,7 +2,9 @@
 <template>
   <div class="sales">
     <div class="barBox">
-      <chartsTit :text="'整体销售额对比'"></chartsTit>
+      <chartsTit :text="'整体销售额对比'">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <Bar
       @chartsClick="chartsEvent"
       :data="salesData"
@@ -12,7 +14,9 @@
       <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
-      <chartsTit :text="'区域销售额对比'"></chartsTit>
+      <chartsTit :text="'区域销售额对比'">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <Bar
       :data="areaSalesData"
       :vertical="'vertical'"
@@ -97,19 +101,7 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          let tempObj = {
-            legendData: ['利润'],
-            yAxisData: ['整体销售额对比'],
-            average: res[2].siblings,
-            series: [{
-              "data": [ res[0].currDate ],
-              "name": "2018-07"
-            }, {
-              "data": [ res[1].preDate ],
-              "name": "2017-08"
-            }]
-          }
-          _this.salesData = tempObj
+          _this.salesData = res
         }
       })
     },

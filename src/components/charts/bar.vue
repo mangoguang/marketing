@@ -28,7 +28,7 @@ export default {
     }
   },
   beforeMount() {
-    console.log('组件挂载前', this.data)
+    // console.log('组件挂载前', this.data)
   },
   mounted() {
     // this.$nextTick(function () {
@@ -37,7 +37,7 @@ export default {
     //     }, 10)
     //   })
     this.select()
-    console.log('组件加载', this.data)
+    // console.log('组件加载', this.data)
   },
   updated() {
 
@@ -47,9 +47,7 @@ export default {
   },
   watch: {
     data(val){
-      console.log(321123, this.data)
       this.barData = val
-      console.log(9999999, this.salesVal)
       echarts.init(this.$refs.main).setOption(this.option())
     }
   },
@@ -96,19 +94,21 @@ export default {
         xAxis.data = this.barData.yAxisData
       }
       return {
-        title: {
+        title: this.title ? {
           text: this.title,
           // subtext: '纯属虚构',
           y: '10',
           x:'center'
-        },
+        } : {},
         legend: {
           type: 'scroll',
           orient: 'horizontal',
           left: '3%',
           right: '3%',
           top: '40',
-          data: ['2017-08', '2018-08']
+          data: this.barData.series.map((item) => {
+            return item.name
+          })
         },
         grid: {
           left: '3%',
@@ -152,14 +152,16 @@ export default {
           data: this.salesVal ? item.data.map((key) => {
             return (key/10000).toFixed(2)
           }) : item.data,
-          markLine: this.barData.average && index === 0 ? {
+          markLine: this.barData.siblings ? {
             // this.vertical === horizontal,柱状图为水平方向，否则为垂直方向
             data: this.vertical === 'horizontal' ? [
-              {xAxis : this.barData.average, name: '平均值'}
+              {xAxis : this.salesVal ? (this.barData.siblings/10000) : this.barData.siblings, name: '平均值'}
             ] : [
-              {yAxis : this.barData.average, name: '平均值'}
+              {yAxis : this.salesVal ? (this.barData.siblings/10000) : this.barData.siblings, name: '平均值'}
             ]
-          } : {}
+          } : {
+            data: [{type : 'average', name : '平均值'}]
+          }
         }
       })
       return arr

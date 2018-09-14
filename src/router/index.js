@@ -32,6 +32,14 @@ export var router = new VueRouter({
     path: '/personalSales',
     name: '/PersonalSales',
     component: resolve => require(['../pages/Sales/personalSales'],resolve)
+  },{  // 铁三角
+    path: '/audioTechnica',
+    name: '/AudioTechnica',
+    component: resolve => require(['../pages/AudioTechnica/audioTechnica'],resolve)
+  },{
+    path: '/personal',
+    name: '/Personal',
+    component: resolve => require(['../pages/AudioTechnica/personal'],resolve)
   },{
     path: '/ReportForms',
     name: 'ReportForms',
@@ -48,10 +56,6 @@ export var router = new VueRouter({
     path: '/areaEffectiveness',
     name: '/AreaEffectiveness',
     component: resolve => require(['../pages/AreaEffectiveness/areaEffectiveness'],resolve)
-  },{
-    path: '/audioTechnica',
-    name: '/AudioTechnica',
-    component: resolve => require(['../pages/AudioTechnica/audioTechnica'],resolve)
   },{
     path: '/category',
     name: '/Category',

@@ -1,20 +1,24 @@
 <template>
   <div class="peopleWork">
     <div class="barBox">
-      <chartsTit :text="'人效-整体'"></chartsTit>
+      <chartsTit :text="'人效-整体'">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <Bar
-      @chartsClick="chartsEvent"
       :data="peopleWorkData"
       :vertical="'vertical'"
-      :height="100"></Bar>
+      :height="100"
+      :salesVal="true"></Bar>
     </div>
     <div class="barBox">
-      <chartsTit :text="'人效-各店'"></chartsTit>
+      <chartsTit :text="'人效-各店'">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <Bar
-      @chartsClick="chartsEvent"
       :data="areaPeopleWorkData"
       :vertical="'horizontal'"
-      :height="300"></Bar>
+      :height="300"
+      :salesVal="true"></Bar>
     </div>
   </div>
 </template>
@@ -86,20 +90,8 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          let arr = res.series
-          let tempObj = {
-            legendData: ['利润'],
-            yAxisData: ['广州天河3D/V6店'],
-            average: res.series[2].data[0],
-            series: [{
-              "data": [ arr[0].data[0] ],
-              "name": "2018-08"
-            }, {
-              "data": [ arr[1].data[0] ],
-              "name": "2017-08"
-            }]
-          }
-          _this.peopleWorkData = tempObj
+          res.average = res.siblings
+          _this.peopleWorkData = res
         }
       })
     },
@@ -117,11 +109,6 @@ export default {
           _this.areaPeopleWorkData = res
         }
       })
-    },
-    chartsEvent(data) {
-      if (data.componentType === "series") {
-        
-      }
     }
   }
 }

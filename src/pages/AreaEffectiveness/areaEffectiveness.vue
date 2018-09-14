@@ -3,7 +3,6 @@
     <div class="barBox">
       <chartsTit :text="'坪效-整体'"></chartsTit>
       <Bar
-      @chartsClick="chartsEvent"
       :data="areaEffectivenessData"
       :vertical="'vertical'"
       :height="100"></Bar>
@@ -13,7 +12,7 @@
       <Bar
       :data="areaEffectivenessShopData"
       :vertical="'horizontal'"
-      :height="100"></Bar>
+      :height="250"></Bar>
     </div>
   </div>
 </template>
@@ -86,20 +85,7 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          let arr = res.series
-          let tempObj = {
-            legendData: ['利润'],
-            yAxisData: ['我的坪效情况'],
-            average: res.series[2].data[0],
-            series: [{
-              "data": [ arr[0].data[0] ],
-              "name": "2018-08"
-            }, {
-              "data": [ arr[1].data[0] ],
-              "name": "2017-08"
-            }]
-          }
-          _this.areaEffectivenessData = tempObj
+          _this.areaEffectivenessData = res
         }
       })
     },
@@ -117,11 +103,6 @@ export default {
           _this.areaEffectivenessShopData = res
         }
       })
-    },
-    chartsEvent(data) {
-      if (data.componentType === "series") {
-        
-      }
     }
   }
 }
