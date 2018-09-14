@@ -21,13 +21,21 @@ export default {
       background: #cc2934;
       opacity: .7;
       position: absolute;
-      top: 0;
+      top: -9vw;
       left: 0;
       color: #fff;
       font-size: 3.46w;
       line-height: 9vw;
       padding-left: 4.26vw;
-      display: none
+      animation: move1 2s;
+      @keyframes move1 {
+        from{
+          top:-9vw
+        }
+        to{
+          top: 0vw
+        }
+      }
     }
 }
   

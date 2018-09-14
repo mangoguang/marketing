@@ -1,8 +1,8 @@
 <template>
   <div class="login2" :style="{background:bgcolors}"> 
     <div class="topBar" :style="{background:topBarcolors}">
-      <tips-error class="active"></tips-error>
-      <tips-web class="active"></tips-web>
+      <tips-error :style="{display:display}"></tips-error>
+      <tips-web :style="{display:display1}"></tips-web>
       <div class="line" :style="{background:lineTopcolors}"></div>
       <div class="sriangle" :style="{'border-bottom-color':bgcolors,'border-right-color':bgcolors}"></div>
     </div>
@@ -88,8 +88,11 @@ export default {
       inputLinecolors:'#ccc',
       inputcolors:'#262628',
       submitcolors:'#363636',
-      logincolors:'#eff9fd'
+      logincolors:'#eff9fd',
+      display:'none',
+      display1:'none'
     }
+   
   },
   props:[
     'nweP' //更改后的密码。
@@ -188,6 +191,7 @@ export default {
       if (this.checked) {
         this.setAccountMsg(this.ruleForm.user, this.ruleForm.pwd);
         getApi()
+        _this.display = 'none'
       } else {
         this.setAccountMsg('', '');
       }
@@ -210,7 +214,12 @@ export default {
         }
       })
         .then((res) => {
-          if (res.data) {
+          let status = res.data.status  
+          if(status == 0){           //如果为0，账号或密码错误，出现弹框。
+            console.log('密码或账号错误')
+            _this.display = 'block' 
+          }else{
+            console.log('正确')
             res = res.data.data
             let ajaxData = `{
               "tenantId": "${res.tenantId}",
