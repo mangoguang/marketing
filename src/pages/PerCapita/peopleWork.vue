@@ -1,18 +1,24 @@
 <template>
   <div class="peopleWork">
     <div class="barBox">
-      <chartsTit :text="'人效-整体'"></chartsTit>
+      <chartsTit :text="'人效-整体'">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <Bar
       :data="peopleWorkData"
       :vertical="'vertical'"
-      :height="100"></Bar>
+      :height="100"
+      :salesVal="true"></Bar>
     </div>
     <div class="barBox">
-      <chartsTit :text="'人效-各店'"></chartsTit>
+      <chartsTit :text="'人效-各店'">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <Bar
       :data="areaPeopleWorkData"
       :vertical="'horizontal'"
-      :height="300"></Bar>
+      :height="300"
+      :salesVal="true"></Bar>
     </div>
   </div>
 </template>
