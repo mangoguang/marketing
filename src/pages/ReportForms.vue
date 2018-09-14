@@ -141,7 +141,7 @@ export default {
   .forms{
     width: 100vw;
     background: #fff;
-    margin-bottom: 30vw;
+    padding-bottom: 30vw;
     .title{
       font-size: 4.8vw;
       font-weight: bold;
