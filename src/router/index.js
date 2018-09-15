@@ -57,10 +57,6 @@ export var router = new VueRouter({
     name: '/AreaEffectiveness',
     component: resolve => require(['../pages/AreaEffectiveness/areaEffectiveness'],resolve)
   },{
-    path: '/category',
-    name: '/Category',
-    component: resolve => require(['../pages/Category/Category'],resolve)
-  },{
     path: '/peopleWork',
     name: '/PeopleWork',
     component: resolve => require(['../pages/PerCapita/PeopleWork'],resolve)
