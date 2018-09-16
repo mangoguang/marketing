@@ -27,7 +27,7 @@ export default {
       font-size: 3.46w;
       line-height: 9vw;
       padding-left: 4.26vw;
-      animation: move1 2s;
+      animation: move1 4s;
       @keyframes move1 {
         from{
           top:-9vw

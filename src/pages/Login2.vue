@@ -209,6 +209,7 @@ export default {
         headers: {
           'UUID': 'e10adc3949ba59abbe56e057f20f883e'
         },
+        timeout: 3000,
         params: {
           // account: '18080001',
           account:Name,
@@ -234,9 +235,11 @@ export default {
             }
           }else{  //状态不为200，请求失败
             console.log(res.status)
-            _this.display1 = 'block'
-          }
-        
+          }      
+        })
+        .catch(function(error){
+          console.log('返回错误方法：', error)
+           _this.display1 = 'block'
         })
        }
   },
