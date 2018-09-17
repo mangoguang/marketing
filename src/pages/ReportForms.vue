@@ -71,9 +71,9 @@ export default {
       }else if(index == 1){
         this.$router.push({path:'/audioTechnica'})
       }else if(index == 2){
-        this.$router.push({path:'/brand'})
+        this.$router.push({path:'/brand?type=brand'})
       }else if(index == 3){
-        this.$router.push({path:'/category'})
+        this.$router.push({path:'/brand?type=category'})
       }else if(index == 4){
         this.$router.push({path:'/areaEffectiveness'})
       }else if(index == 5){

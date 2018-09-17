@@ -5,6 +5,7 @@
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
+      <SelectComponent></SelectComponent>
       <Bar
       @chartsClick="chartsEvent"
       :data="salesData"
@@ -39,12 +40,14 @@ Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import SelectComponent from '../../components/select/selectComponent'
 export default {
   name: 'sales',
   components: {
     Bar,
     chartsTit,
-    RouterLink
+    RouterLink,
+    SelectComponent
   },
   data () {
     return {
@@ -103,7 +106,9 @@ export default {
           res = res.data
           _this.salesData = res
         }
-      })
+      }).catch(function (error) {
+        console.log(11111, error);
+      });
     },
     getAreaSalesData() {
       let _this = this

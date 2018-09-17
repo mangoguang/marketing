@@ -38,6 +38,7 @@ export default class Common {
       axios({
         method: 'get',
         url: url,
+        // timeout: 3000,
         headers: {
           'token': _vue.ajaxData.token,
           'UUID': _vue.ajaxData.uuid,

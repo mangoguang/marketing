@@ -4,12 +4,12 @@
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}11`">
         <div class="barBox">
-          <!-- <chartsTit :text="'整体品牌对比'"></chartsTit> -->
+          <chartsTit :text="index === 0 ? `整体${typeName}占比` : ''"></chartsTit>
           <Pie
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"
-          :title="`各品牌占比-${item.name}`"
-          :category="'整体品牌占比'"></Pie>
+          :title="`各${typeName}金额占比-${item.name}`"
+          :category="`整体${typeName}占比`"></Pie>
         </div>
       </li>
       <li>
@@ -19,8 +19,9 @@
           @chartsClick="chartsEvent"
           :data="brandData"
           :vertical="'horizontal'"
-          :title="'整体品牌占比'"
-          :height="80"></Bar>
+          :title="`各${typeName}金额对比`"
+          :height="120"
+          :salesVal="true"></Bar>
         </div>
       </li>
     </ul>
@@ -31,8 +32,8 @@
           <Pie
           :yAxisData="categoryData.yAxisData"
           :seriesData="item.data"
-          :title="`各品类占比-${item.name}`"
-          :category="'整体品类占比'"></Pie>
+          :title="`各${typeName}数量占比-${item.name}`"
+          :category="`各${typeName}数量占比`"></Pie>
         </div>
       </li>
       <li>
@@ -41,8 +42,8 @@
           <Bar
           :data="categoryData"
           :vertical="'horizontal'"
-          :title="'整体品类占比'"
-          :height="190"></Bar>
+          :title="`各${typeName}数量对比`"
+          :height="120"></Bar>
         </div>
       </li>
     </ul>
@@ -71,7 +72,10 @@ export default {
     return {
       ajaxData: {},
       brandData: {}, 
-      categoryData: {}
+      categoryData: {},
+      type: this.$route.query.type,
+      typeName: this.$route.query.type === 'brand' ? '品牌' : '品类',
+      port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion'
     }
   },
   created() {
@@ -116,26 +120,27 @@ export default {
     // ajax请求
     getBrandData() {
       let _this = this
-      mango.getAjax(this, 'brand/proportion', {
+      mango.getAjax(this, this.port, {
         tenantId: this.ajaxData.tenantId,
         date: '2018-08',
-        type: 'count'
+        type: 'sum'
       }).then((res) => {
         if (res) {
           res = res.data
           // 过滤数组
-          let tempArr = res.yAxisData.map((item) => {
-            let arr = item.split('-')
-            return arr[1]
-          })
-          res.yAxisData = tempArr
+          // let tempArr = res.yAxisData.map((item) => {
+          //   let arr = item.split('-')
+          //   return arr[1]
+          // })
+          // res.yAxisData = tempArr
+          console.log('数据:', res)
           _this.brandData = res
         }
       })
     },
     getCategoryData() {
       let _this = this
-      mango.getAjax(this, 'category/proportion', {
+      mango.getAjax(this, this.port, {
         tenantId: this.ajaxData.tenantId,
         date: '2018-08',
         type: 'count'
