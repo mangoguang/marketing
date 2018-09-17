@@ -1,6 +1,8 @@
 <template>
-  <div class="login2" :style="{background:bgcolors}">
+  <div class="login2" :style="{background:bgcolors}"> 
     <div class="topBar" :style="{background:topBarcolors}">
+      <tips-error :style="{display:display}"></tips-error>
+      <tips-web :style="{display:display1}"></tips-web>
       <div class="line" :style="{background:lineTopcolors}"></div>
       <div class="sriangle" :style="{'border-bottom-color':bgcolors,'border-right-color':bgcolors}"></div>
     </div>
@@ -56,11 +58,15 @@ import VueRouter from 'vue-router'
 import mango from '../js'
 import axios from 'axios'
 import md5 from 'js-md5'
+import tipsError from '../components/charts/tipsError'
+import tipsWeb from '../components/charts/tipsWeb'
 
 export default {
   name: 'login',
   components: {
     // MyChart
+    tipsError,
+    tipsWeb
   },
   data () {
     return {
@@ -82,8 +88,11 @@ export default {
       inputLinecolors:'#ccc',
       inputcolors:'#262628',
       submitcolors:'#363636',
-      logincolors:'#eff9fd'
+      logincolors:'#eff9fd',
+      display:'none',
+      display1:'none'
     }
+   
   },
   props:[
     'nweP' //更改后的密码。
@@ -99,7 +108,7 @@ export default {
     // console.log(mango.getSign1)
     //获取缓存
      this.getAccountMsg();
-      if(this.ruleForm.pwd.length){
+      if(this.ruleForm.user.length){
         this.username = 'userName1'
         this.usname = 'usname2'
         this.userpassword = 'userPassword1'
@@ -181,10 +190,13 @@ export default {
       let _this = this
       if (this.checked) {
         this.setAccountMsg(this.ruleForm.user, this.ruleForm.pwd);
-        getApi()
+        
       } else {
         this.setAccountMsg('', '');
       }
+        getApi()
+        _this.display = 'none'
+        _this.display1 = 'none'
       //登陆接口
        function getApi() {
         let Name = _this.ruleForm.user
@@ -204,16 +216,27 @@ export default {
         }
       })
         .then((res) => {
-          if (res.data) {
-            res = res.data.data
-            let ajaxData = `{
-              "tenantId": "${res.tenantId}",
-              "token": "${res.token}",
-              "uuid": "${res.uuid}"
-            }`
-            localStorage.setItem("ajaxData", ajaxData)
-            _this.$router.push({ path: '/ReportForms' })
+          let status = res.data.status  
+          if(res.status == 200){    //状态200，请求成功
+            if(status == 0){           //如果为0，账号或密码错误，出现弹框。
+            console.log('密码或账号错误',res.status)
+            _this.display = 'block' 
+            }else{                    //账号密码正确，跳转页面。
+              console.log('正确')  
+              res = res.data.data
+              let ajaxData = `{
+                "tenantId": "${res.tenantId}",
+                "token": "${res.token}",
+                "uuid": "${res.uuid}"
+              }`
+              localStorage.setItem("ajaxData", ajaxData)
+              _this.$router.push({ path: '/ReportForms' })
+            }
+          }else{  //状态不为200，请求失败
+            console.log(res.status)
+            _this.display1 = 'block'
           }
+        
         })
        }
   },
@@ -252,7 +275,6 @@ export default {
 }
 .login2{
   font-family: 'PINGPANG';
- 
   .topBar{
     width: 100vw;
     height: 44vw;

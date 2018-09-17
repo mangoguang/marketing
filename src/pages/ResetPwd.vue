@@ -34,6 +34,7 @@ import axios from "axios";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import mango from "../js";
+import md5 from 'js-md5'
 
 export default {
   data () {
@@ -109,13 +110,13 @@ export default {
     },
     submitForm:function(){
       //如果密码两次相同，保存新的密码。跳转到登录页面。
-      let p = this.resetForm.Pwd
-      let newp = this.resetForm.pwd
+      let p = md5(this.resetForm.Pwd)
+      let newp = md5(this.resetForm.pwd)
       if(p !== ''){
         if(p === newp){
           this.$emit('newPwd',p)
          this.getApi()
-          // this.$router.push({path:'/'})
+          this.$router.push({path:'/'})
           console.log('yes')
         }else{
           alert('两次输入的密码不一致')
@@ -126,7 +127,7 @@ export default {
     },//发起请求，后台修改密码。
        getApi:function() {
         const url = 'http://10.11.8.7:8086/app/login.api'
-        let newp = this.resetForm.pwd
+        let newp = md5(this.resetForm.pwd)
       // return new Promise((resolve, reject) => {
       axios({
         method: 'post',
@@ -172,6 +173,8 @@ export default {
 }
 .resetPwd{
   font-family: 'PINGPANG';
+  height: 100vh;
+  background: #fff;
   .login{
     background: #fff;
   }
