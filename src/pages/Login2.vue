@@ -90,8 +90,10 @@ export default {
       submitcolors:'#363636',
       logincolors:'#eff9fd',
       display:'none',
-      display1:'none'
+      display1:'none',
+      key:true
     }
+    
    
   },
   props:[
@@ -190,17 +192,19 @@ export default {
       let _this = this
       if (this.checked) {
         this.setAccountMsg(this.ruleForm.user, this.ruleForm.pwd);
-        
       } else {
         this.setAccountMsg('', '');
       }
-        getApi()
-        _this.display = 'none'
-        _this.display1 = 'none'
+        if(_this.key){   //如果请求失败，只可以请求一次
+          _this.key = false
+          getApi()
+          _this.display = 'none'
+          _this.display1 = 'none'
+        }
       //登陆接口
        function getApi() {
-        let Name = _this.ruleForm.user
-        let Pwd = _this.ruleForm.pwd
+        let Name = _this.ruleForm.user 
+        let Pwd = _this.ruleForm.pwd 
         const url = `${mango.port}app/login.api`
       // return new Promise((resolve, reject) => {
       axios({
@@ -209,6 +213,7 @@ export default {
         headers: {
           'UUID': 'e10adc3949ba59abbe56e057f20f883e'
         },
+        timeout: 3000,
         params: {
           // account: '18080001',
           account:Name,
@@ -221,6 +226,7 @@ export default {
             if(status == 0){           //如果为0，账号或密码错误，出现弹框。
             console.log('密码或账号错误',res.status)
             _this.display = 'block' 
+            _this.key = true
             }else{                    //账号密码正确，跳转页面。
               console.log('正确')  
               res = res.data.data
@@ -234,9 +240,11 @@ export default {
             }
           }else{  //状态不为200，请求失败
             console.log(res.status)
-            _this.display1 = 'block'
-          }
-        
+          }      
+        })
+        .catch(function(error){
+          console.log('返回错误方法：', error)
+           _this.display1 = 'block'
         })
        }
   },
