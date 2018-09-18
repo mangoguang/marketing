@@ -5,7 +5,7 @@
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <SelectComponent></SelectComponent>
+      <!-- <SelectComponent></SelectComponent> -->
       <Bar
       @chartsClick="chartsEvent"
       :data="salesData"
@@ -34,6 +34,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+// import option from '../../js/option'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -62,6 +63,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
+    // console.log('bar data:', option())
     this.getSalesData()
     this.getAreaSalesData()
   },

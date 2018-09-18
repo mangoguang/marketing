@@ -2,11 +2,12 @@
 <template>
   <ul class="selectComponent">
     <li is="citySelect"></li>
-    <li><input type="input" v-model="startTime" disabled="disabled"></li>
-    <li><input type="input" v-model="endTime" disabled="disabled"></li>
+    <li><input @click="openStartPicker" type="input" v-model="startTime"></li>
+    <li><input @click="openEndPicker" type="input" v-model="endTime"></li>
     <mt-datetime-picker
       ref="picker"
       type="date"
+      v-model="pickerValue"
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
@@ -21,6 +22,8 @@ import Vue from 'vue'
 import citySelect from './citySelect'
 import { DatetimePicker } from 'mint-ui'
 
+import 'mint-ui/lib/style.min.css'
+
 Vue.component(DatetimePicker.name, DatetimePicker)
 
 export default {
@@ -28,16 +31,48 @@ export default {
   components: {citySelect, DatetimePicker},
   data () {
     return {
-      startTime: '2018-07',
-      endTime: '2018-08'
+      startTime: '',
+      endTime: '2018-08',
+      pickerValue: new Date(),
+      timeType: 'start'
     }
+  },
+  created() {
+    this.getLocalStorageTime()
   },
   mounted() {
 
   },
   methods: {
     handleConfirm(date) {
-      this.dateVal = date.toLocaleDateString().split('/').join('-')
+      if (this.timeType === 'start') {
+        this.startTime = date.toLocaleDateString().split('/').join('-')
+        localStorage.setItem('startTime', this.startTime)
+      } else {
+        this.endTime = date.toLocaleDateString().split('/').join('-')
+        localStorage.setItem('endTime', this.endTime)
+      }
+    },
+    openStartPicker() {
+      this.timeType = 'start'
+      this.$refs.picker.open()
+    },
+    openEndPicker() {
+      this.timeType = 'end'
+      this.$refs.picker.open()
+    },
+    getLocalStorageTime() {
+      let [startTime, endTime] = [localStorage.getItem('startTime'), localStorage.getItem('endTime')]
+      if (startTime) {
+        this.startTime = startTime
+      } else {
+        this.startTime = '开始时间'
+      }
+      if (endTime) {
+        this.endTime = endTime
+      } else {
+        this.endTime = '结束时间'
+      }
     }
   }
 }
