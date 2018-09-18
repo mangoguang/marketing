@@ -245,6 +245,7 @@ export default {
         .catch(function(error){
           console.log('返回错误方法：', error)
            _this.display1 = 'block'
+           _this.key = true
         })
        }
   },
