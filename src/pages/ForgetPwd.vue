@@ -37,6 +37,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import axios from 'axios'
 import port from '../js/variable'
+import 'mint-ui/lib/style.css'
+import {Indicator} from 'mint-ui'
 
 export default {
 data () {
@@ -142,8 +144,15 @@ data () {
     //发送手机验证码
     getCode:function(){
       let that = this
+      //发送验证码等请求回来时候的动画特效
+      Indicator.open({
+          spinnerType:'fading-circle'
+        })
       port.sendPhoneVerify(this.changePwd.num).then(function(res){
-        if(res){   //验证码发送成功后倒计时120s后才可以重新发送
+        if(res){   
+          //验证码发送成功后倒计时120s后才可以重新发送
+          //关闭动画
+          Indicator.close()
           var num = 120
           var timer = setInterval(function(){
             num -- 
