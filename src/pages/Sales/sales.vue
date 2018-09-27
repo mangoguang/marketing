@@ -35,9 +35,8 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import echarts from 'echarts'
 import mango from '../../js'
-import option from '../../utils/option'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -84,12 +83,20 @@ export default {
   },
   watch: {
     salesData() {
-      echarts.init(this.$refs.salesContainer).setOption(option(this.salesData, 'vertical', 100, true))
-      // console.log(this.$refs.main)
-      console.log('bar data:', option(this.areaSalesData, 'vertical', 100, true))
+      // 参数说明：
+      // data：图标数据
+      // vertical设置柱状图的横向排布和纵向排布
+      // height设置图标容器main的高度
+      // salesVal标记是否为销售额，主要用于改变数据单位
+      chartsInit(this, 'sales', 'vertical', true)
     },
     areaSalesData() {
-      echarts.init(this.$refs.areaSalesContainer).setOption(option(this.areaSalesData, 'vertical', 100, true))      
+      // 参数说明：
+      // data：图标数据
+      // vertical设置柱状图的横向排布和纵向排布
+      // height设置图标容器main的高度
+      // salesVal标记是否为销售额，主要用于改变数据单位
+      chartsInit(this, 'areaSales', 'vertical', true)
     }
   },
   methods:{

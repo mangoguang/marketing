@@ -1,4 +1,4 @@
-export default function(data, vertical, height, salesVal, title) {
+export default function(data, vertical, salesVal, title) {
   // 参数说明：
   // data：图标数据
   // vertical设置柱状图的横向排布和纵向排布

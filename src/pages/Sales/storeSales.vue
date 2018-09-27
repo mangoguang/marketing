@@ -3,7 +3,7 @@
   <div class="storeSales">
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
-      <div :style="{height: `${height}vw`}" ref="storeSalesContainer" ></div>
+      <div ref="storeSalesContainer" ></div>
       <!-- <Bar
       @chartsClick="chartsEvent"
       :data="storeSalesData"
@@ -18,8 +18,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
-import echarts from 'echarts'
-import option from '../../utils/option'
+import chartsInit from '../../utils/chartsInit'
 import VueRouter from 'vue-router'
 import mango from '../../js'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
@@ -38,8 +37,7 @@ export default {
   data () {
     return {
       ajaxData: {},
-      storeSalesData: {},
-      height: 100
+      storeSalesData: {}
     }
   },
   created() {
@@ -55,9 +53,12 @@ export default {
   },
   watch: {
     storeSalesData() {
-      let temp = this.storeSalesData.series
-      // this.height = temp ? 
-      echarts.init(this.$refs.storeSalesContainer).setOption(option(this.storeSalesData, 'horizontal', 100, true))
+      // 参数说明：
+      // data：图标数据
+      // vertical设置柱状图的横向排布和纵向排布
+      // height设置图标容器main的高度
+      // salesVal标记是否为销售额，主要用于改变数据单位
+      chartsInit(this, 'storeSales', 'horizontal', true)
     }
   },
   methods:{
