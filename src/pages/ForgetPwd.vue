@@ -227,7 +227,7 @@ data () {
       }
       .getCode{
         position: absolute;
-        top: 0;
+        top: -1vw;
         right: 0; 
         input{
           font-size: 3.46vw;

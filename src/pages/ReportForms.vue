@@ -165,12 +165,9 @@ export default {
         float: left;
         margin-right: 12vw;
         margin-bottom: 8.1vw;
-        
         .icon{
           width: 20vw;
           height: 20vw;
-          background-image: linear-gradient(45deg, 	#f8f8f8 0%, 	#ffffff 100%);
-          box-shadow: 0px 1px 0px 0px 	rgba(0, 0, 0, 0.6);
           border-radius: 2.66vw;
           position: relative;
           .icon-forms img{
@@ -178,7 +175,7 @@ export default {
             height: 12vw;
             position: absolute;
             top: 4vw;
-            left: 5vw;
+            left: 4.4vw;
           }
         } 
         p{
