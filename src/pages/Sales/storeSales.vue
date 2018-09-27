@@ -3,12 +3,13 @@
   <div class="storeSales">
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
-      <Bar
+      <div :style="{height: `${height}vw`}" ref="storeSalesContainer" ></div>
+      <!-- <Bar
       @chartsClick="chartsEvent"
       :data="storeSalesData"
       :vertical="'horizontal'"
       :height="250"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
     </div>
   </div>
 </template>
@@ -17,6 +18,8 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
+import echarts from 'echarts'
+import option from '../../utils/option'
 import VueRouter from 'vue-router'
 import mango from '../../js'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
@@ -35,7 +38,8 @@ export default {
   data () {
     return {
       ajaxData: {},
-      storeSalesData: {}
+      storeSalesData: {},
+      height: 100
     }
   },
   created() {
@@ -48,6 +52,13 @@ export default {
   },
   computed: {
 
+  },
+  watch: {
+    storeSalesData() {
+      let temp = this.storeSalesData.series
+      // this.height = temp ? 
+      echarts.init(this.$refs.storeSalesContainer).setOption(option(this.storeSalesData, 'horizontal', 100, true))
+    }
   },
   methods:{
     ...mapMutations([

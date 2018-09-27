@@ -5,24 +5,26 @@
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <!-- <SelectComponent></SelectComponent> -->
-      <Bar
+      <SelectComponent></SelectComponent>
+      <div :style="{height: `100vw`}" ref="salesContainer" ></div>
+      <!-- <Bar
       @chartsClick="chartsEvent"
       :data="salesData"
       :vertical="'vertical'"
       :height="100"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
       <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
       <chartsTit :text="'区域销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <Bar
+      <div :style="{height: `100vw`}" ref="areaSalesContainer" ></div>
+      <!-- <Bar
       :data="areaSalesData"
       :vertical="'vertical'"
       :height="100"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
       <RouterLink @click.native="toAreaStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
   </div>
@@ -33,8 +35,9 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import echarts from 'echarts'
 import mango from '../../js'
-// import option from '../../js/option'
+import option from '../../utils/option'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -63,7 +66,6 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    // console.log('bar data:', option())
     this.getSalesData()
     this.getAreaSalesData()
   },
@@ -79,6 +81,16 @@ export default {
     ...mapGetters([
       'homeArrFilter'
     ])
+  },
+  watch: {
+    salesData() {
+      echarts.init(this.$refs.salesContainer).setOption(option(this.salesData, 'vertical', 100, true))
+      // console.log(this.$refs.main)
+      console.log('bar data:', option(this.areaSalesData, 'vertical', 100, true))
+    },
+    areaSalesData() {
+      echarts.init(this.$refs.areaSalesContainer).setOption(option(this.areaSalesData, 'vertical', 100, true))      
+    }
   },
   methods:{
     ...mapMutations([

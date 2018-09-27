@@ -5,8 +5,10 @@ export default function(data, vertical, height, salesVal, title) {
   // height设置图标容器main的高度
   // salesVal标记是否为销售额，主要用于改变数据单位
   // 图标标题
+  console.log('chartsData', data)
   
-  let [xAxis, yAxis] = [{
+  let [seriesPosition, xAxis, yAxis, series] = [
+    'right', {
     // 直角坐标相关设置。
       axisTick: {
         show: false
@@ -33,13 +35,37 @@ export default function(data, vertical, height, salesVal, title) {
       axisLabel: {
         color: "#999"
       }
-    }]
+    }, data.series.map((item, index) => {
+      return {
+        name: item.name,
+        type: 'bar',
+        label: {
+          normal: {
+            show: true,
+            position: seriesPosition
+          }
+        },
+        data: salesVal ? item.data.map((key) => {
+          return (key/10000).toFixed(2)
+        }) : item.data,
+        markLine: data.siblings ? {
+          // this.vertical === horizontal,柱状图为水平方向，否则为垂直方向
+          data: vertical === 'horizontal' ? [
+            {xAxis : salesVal ? (data.siblings/10000) : data.siblings, name: '平均值'}
+          ] : [
+            {yAxis : salesVal ? (data.siblings/10000) : data.siblings, name: '平均值'}
+          ]
+        } : {
+          data: [{type : 'average', name : '平均值'}]
+        }
+      }
+    })]
   // vertical === horizontal,柱状图为水平方向，否则为垂直方向
   if (vertical === 'horizontal') {
-    yAxis.data = barData.yAxisData
+    yAxis.data = data.yAxisData
   } else {
     seriesPosition = 'top'
-    xAxis.data = barData.yAxisData
+    xAxis.data = data.yAxisData
   }
   return {
     title: title ? {
@@ -54,7 +80,7 @@ export default function(data, vertical, height, salesVal, title) {
       left: '3%',
       right: '3%',
       top: '40',
-      data: barData.series.map((item) => {
+      data: data.series.map((item) => {
         return item.name
       })
     },
@@ -73,6 +99,6 @@ export default function(data, vertical, height, salesVal, title) {
     },
     xAxis: xAxis,
     yAxis: yAxis,
-    series: series()
+    series: series
   }
 }
