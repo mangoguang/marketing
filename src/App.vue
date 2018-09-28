@@ -8,6 +8,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import store from './store'
+import 'mint-ui/lib/style.min.css'
 
 export default{
   name: 'app',

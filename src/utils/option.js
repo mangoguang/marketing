@@ -79,14 +79,14 @@ export default function(data, vertical, salesVal, title) {
       orient: 'horizontal',
       left: '3%',
       right: '3%',
-      top: '40',
+      top: title ? '40' : '0',
       data: data.series.map((item) => {
         return item.name
       })
     },
     grid: {
       left: '3%',
-      top: '80',
+      top: title ? '80' : '40',
       // height: 700,
       containLabel: true
     },

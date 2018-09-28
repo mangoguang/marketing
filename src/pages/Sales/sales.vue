@@ -55,56 +55,53 @@ export default {
   data () {
     return {
       ajaxData: {},
+      endTime: '',
       salesData: {}, 
       areaSalesData: {}
     }
   },
   created() {
     // 获取本地存储信息
-    let ajaxData = localStorage.getItem('ajaxData')
+    let [ajaxData, endTime] = [localStorage.getItem('ajaxData'), localStorage.getItem('endTime')]
     this.ajaxData = JSON.parse(ajaxData)
+    this.endTime = endTime
   },
   mounted(){
-    this.getSalesData()
-    this.getAreaSalesData()
+    this.getAreaSalesData(this.endTime)
   },
   computed: {
     test() {
       console.log(333, this.$store)
     },
     ...mapState({
-      homeTit: state => 'just test',
-      homeText: state => state.home.homeText,
-      homeArr: state => state.home.homeArr
+      citySelect: state => state.select.citySelect,
+      startTimeSelect: state => state.select.startTimeSelect,
+      endTimeSelect: state => state.select.endTimeSelect
     }),
     ...mapGetters([
       'homeArrFilter'
     ])
   },
   watch: {
-    salesData() {
-      // 参数说明：
-      // data：图标数据
-      // vertical设置柱状图的横向排布和纵向排布
-      // height设置图标容器main的高度
-      // salesVal标记是否为销售额，主要用于改变数据单位
-      chartsInit(this, 'sales', 'vertical', true)
+    citySelect() {
+      this.getSalesData(this.citySelect.cityName)
     },
+    endTimeSelect() {
+      this.getAreaSalesData(this.endTimeSelect)
+    },
+    // 整体销售额对比
+    salesData() {
+      const chartsName = 'sales'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'vertical', true)
+      }
+    },
+    // 区域销售额对比
     areaSalesData() {
-      // 参数说明：
-      // data：图标数据
-      // vertical设置柱状图的横向排布和纵向排布
-      // height设置图标容器main的高度
-      // salesVal标记是否为销售额，主要用于改变数据单位
       chartsInit(this, 'areaSales', 'vertical', true)
     }
   },
   methods:{
-    ...mapMutations([
-      'setHomeTit',
-      'setHomeText',
-      'setHomeArr'
-    ]),
     // goToChild() {
     //   this.$router.push({ path: '/child' })
     // },
@@ -115,28 +112,33 @@ export default {
       this.$router.push({ path: '/areaStoreSales' })
     },
     // ajax请求
-    getSalesData() {
+    getSalesData(cityName) {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'sales', {
         cityLevel: 2,
-        cityName: '广州',
+        cityName: cityName,
         date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.salesData = res
         }
       }).catch(function (error) {
+        mango.loading('close')
         console.log(11111, error);
       });
     },
-    getAreaSalesData() {
+    getAreaSalesData(time) {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'area/sales', {
-        date: '2018-08',
+        date: time,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.areaSalesData = res

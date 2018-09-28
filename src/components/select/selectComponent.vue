@@ -2,7 +2,7 @@
 <template>
   <ul class="selectComponent">
     <li is="citySelect"></li>
-    <li><input @click="openStartPicker" type="input" v-model="startTime"></li>
+    <!-- <li><input @click="openStartPicker" type="input" v-model="startTime"></li> -->
     <li><input @click="openEndPicker" type="input" v-model="endTime"></li>
     <mt-datetime-picker
       ref="picker"
@@ -10,7 +10,6 @@
       v-model="pickerValue"
       year-format="{value} 年"
       month-format="{value} 月"
-      date-format="{value} 日"
       @confirm="handleConfirm">
     </mt-datetime-picker>
   </ul>
@@ -19,10 +18,9 @@
 
 <script>
 import Vue from 'vue'
+import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import citySelect from './citySelect'
 import { DatetimePicker } from 'mint-ui'
-
-import 'mint-ui/lib/style.min.css'
 
 Vue.component(DatetimePicker.name, DatetimePicker)
 
@@ -44,14 +42,21 @@ export default {
 
   },
   methods: {
+    ...mapMutations([
+      'setStartTimeSelect',
+      'setEndTimeSelect'
+    ]),
     handleConfirm(date) {
-      if (this.timeType === 'start') {
-        this.startTime = date.toLocaleDateString().split('/').join('-')
-        localStorage.setItem('startTime', this.startTime)
-      } else {
-        this.endTime = date.toLocaleDateString().split('/').join('-')
-        localStorage.setItem('endTime', this.endTime)
+      console.log('选择的时间： ', date)
+      // 选择时间
+      let str = `${this.timeType}Time`
+      this[str] = date.toLocaleDateString().split('/').slice(0, 2)
+      if (this[str][1] < 10) {
+        this[str][1] = `0${this[str][1]}`
       }
+      this[str] = this[str].join('-')
+      localStorage.setItem(str, this[str])
+      this.setEndTimeSelect(this[str])
     },
     openStartPicker() {
       this.timeType = 'start'
@@ -86,6 +91,7 @@ export default {
     align-items: center;
     height: 8vw;
     margin-right: 2%;
+    padding: 3vw;
     &>li{
       width: 25vw;
       height: 8vw;

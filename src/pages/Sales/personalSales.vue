@@ -3,11 +3,12 @@
   <div class="personalSales">
     <div class="barBox">
       <chartsTit :text="`${shopName}-职员销售额对比`"></chartsTit>
-      <Bar
+      <div ref="personalSalesContainer" ></div>
+      <!-- <Bar
       :data="personalSalesData"
       :vertical="'horizontal'"
       :height="300"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
     </div>
   </div>
 </template>
@@ -18,6 +19,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -49,6 +51,16 @@ export default {
   },
   computed: {
 
+  },
+  watch: {
+    personalSalesData() {
+      // 参数说明：
+      // data：图标数据
+      // vertical设置柱状图的横向排布和纵向排布
+      // height设置图标容器main的高度
+      // salesVal标记是否为销售额，主要用于改变数据单位
+      chartsInit(this, 'personalSales', 'horizontal', true)
+    }
   },
   methods:{
     getPersonalSalesData() {

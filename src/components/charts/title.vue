@@ -54,8 +54,8 @@ export default {
   .chartsTit{
     position: relative;
     font-size: 22px;
-    line-height: 3em;
-    padding-left: 3vw;
+    line-height: 30px;
+    padding: 16px 3vw;
   }
   .chartsTit::after{
     display: block;
