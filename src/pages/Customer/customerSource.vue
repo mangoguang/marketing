@@ -77,6 +77,7 @@ export default {
     // },
     // ajax请求
     getcustomerSourceData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'customer/source', {
         cityLevel: 2,
@@ -84,6 +85,7 @@ export default {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+         mango.loading('close')
         if (res) {
           res = res.data
           let arr = res.series
@@ -109,11 +111,13 @@ export default {
       })
     },
     getareaCustomerSourceData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'customer/source/shop', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId       
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           console.log(res)

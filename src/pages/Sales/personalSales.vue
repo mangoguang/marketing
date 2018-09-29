@@ -64,12 +64,14 @@ export default {
   },
   methods:{
     getPersonalSalesData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'shop/sales', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId,
         shopId: this.$route.query.shopId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           res.average = res.shopAvg

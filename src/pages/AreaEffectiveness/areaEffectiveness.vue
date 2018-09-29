@@ -76,6 +76,7 @@ export default {
     // },
     // ajax请求
     getareaEffectivenessData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'area/effectiveness', {
         cityLevel: 2,
@@ -83,6 +84,7 @@ export default {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.areaEffectivenessData = res
@@ -90,6 +92,7 @@ export default {
       })
     },
     getareaEffectivenessShopData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'area/effectiveness/shop', {
         date: '2018-08',
@@ -97,6 +100,7 @@ export default {
         cityLevel: 2,
         cityName: '苏州市'
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           // _this.height = 200

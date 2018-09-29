@@ -75,11 +75,13 @@ export default {
   },
   methods:{
     getStoreSalesData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'area/shop/sales', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           // 柱状图需要检测到数据改变时才渲染，故开始时数据需要有初始状态。

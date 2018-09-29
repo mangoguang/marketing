@@ -134,6 +134,7 @@ export default {
     },
     // 整体进店数
     getStoreGetInTotalData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/number/all', {
         tenantId: this.ajaxData.tenantId,
@@ -141,6 +142,7 @@ export default {
         cityLevel: 2,
         cityName: '苏州市'
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.storeGetInTotalData = res
@@ -149,11 +151,13 @@ export default {
     },
     // 各门店进店数
     getPerStoreGetInData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/number', {
         tenantId: this.ajaxData.tenantId,
         date: '2018-08'
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.perStoreGetInData = res
@@ -162,6 +166,7 @@ export default {
     },
     // 整体成交率
     getAchieveRatioTotalData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'turnover/ratio', {
         tenantId: this.ajaxData.tenantId,
@@ -169,6 +174,7 @@ export default {
         cityLevel: 2,
         cityName: '苏州市'
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.achieveRatioTotalData = res
@@ -177,6 +183,7 @@ export default {
     },
     // 各门店成交率
     getPerAchieveRatioData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/turnover/ratio', {
         tenantId: this.ajaxData.tenantId,
@@ -184,6 +191,7 @@ export default {
         cityLevel: 2,
         cityName: '苏州市'
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.perAchieveRatioData = res
@@ -192,6 +200,7 @@ export default {
     },
     // 整体客单值
     getOrderFormTotalData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'guest/order', {
         tenantId: this.ajaxData.tenantId,
@@ -199,6 +208,7 @@ export default {
         cityLevel: 2,
         cityName: '苏州市'
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.orderFormTotalData = res
@@ -207,6 +217,7 @@ export default {
     },
     // 各门店成交率
     getPerOrderFormData() {
+       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/guest/order', {
         tenantId: this.ajaxData.tenantId,
@@ -214,6 +225,7 @@ export default {
         cityLevel: 2,
         cityName: '苏州市'
       }).then((res) => {
+         mango.loading('close')
         if (res) {
           res = res.data
           _this.perOrderFormData = res

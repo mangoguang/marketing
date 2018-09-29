@@ -119,12 +119,14 @@ export default {
     },
     // ajax请求
     getBrandData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, this.port, {
         tenantId: this.ajaxData.tenantId,
         date: '2018-08',
         type: 'sum'
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           // 过滤数组
@@ -139,12 +141,14 @@ export default {
       })
     },
     getCategoryData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, this.port, {
         tenantId: this.ajaxData.tenantId,
         date: '2018-08',
         type: 'count'
       }).then((res) => {
+         mango.loading('close')
         if (res) {
           res = res.data
           // console.log('品类',)

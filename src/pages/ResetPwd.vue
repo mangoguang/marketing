@@ -126,6 +126,7 @@ export default {
       }
     },//发起请求，后台修改密码。
        getApi:function() {
+        mango.loading('open')
         const url = 'http://10.11.8.7:8086/app/login.api'
         let newp = md5(this.resetForm.pwd)
       // return new Promise((resolve, reject) => {
@@ -142,6 +143,7 @@ export default {
         }
       })
         .then((res) => {
+          mango.loading('close')
           if (res.data) {
             res = res.data.data
             console.log(res)
