@@ -203,6 +203,7 @@ export default {
         }
       //登陆接口
        function getApi() {
+        mango.loading('open')
         let Name = _this.ruleForm.user 
         let Pwd = _this.ruleForm.pwd 
         const url = `${mango.port}app/login.api`
@@ -221,6 +222,7 @@ export default {
         }
       })
         .then((res) => {
+          mango.loading('close')
           let status = res.data.status  
           if(res.status == 200){    //状态200，请求成功
             if(status == 0){           //如果为0，账号或密码错误，出现弹框。
@@ -243,6 +245,7 @@ export default {
           }      
         })
         .catch(function(error){
+          mango.loading('close')
           console.log('返回错误方法：', error)
            _this.display1 = 'block'
            _this.key = true

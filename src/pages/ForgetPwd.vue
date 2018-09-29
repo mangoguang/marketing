@@ -143,16 +143,18 @@ data () {
     },
     //发送手机验证码
     getCode:function(){
+      mango.loading('open')
       let that = this
       //发送验证码等请求回来时候的动画特效
-      Indicator.open({
-          spinnerType:'fading-circle'
-        })
+      // Indicator.open({
+      //     spinnerType:'fading-circle'
+      //   })
       port.sendPhoneVerify(this.changePwd.num).then(function(res){
+        mango.loading('close')
         if(res){   
           //验证码发送成功后倒计时120s后才可以重新发送
           //关闭动画
-          Indicator.close()
+          // Indicator.close()
           var num = 120
           var timer = setInterval(function(){
             num -- 
@@ -164,6 +166,7 @@ data () {
           },1000)
         }
       }).catch(function(error){
+        mango.loading('close')
         console.log(error)
       })
     }

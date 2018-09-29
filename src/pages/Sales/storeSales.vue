@@ -75,11 +75,13 @@ export default {
     // },
     // ajax请求
     getStoreSalesData() {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'shops/sales', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           // let tempArr = res.yAxisData.map((item) => {

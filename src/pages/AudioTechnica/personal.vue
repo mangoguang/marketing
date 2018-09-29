@@ -65,12 +65,14 @@ export default {
   methods:{
     // ajax请求
     getPersonalData(url) {
+       mango.loading('open')
       let _this = this
       mango.getAjax(this, url, {
         tenantId: this.ajaxData.tenantId,
         date: '2018-08',
         shopId: this.$route.query.shopId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.personalData = res
