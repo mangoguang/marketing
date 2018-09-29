@@ -1,13 +1,14 @@
 <!-- <keep-alive> -->
 <template>
   <li class="citySelect">
-    <input @click="showCityList" type="input" v-model="cityName">
+    <input @click="showCityList" type="input" v-model="cityMsg.cityName">
     <ul :class="{active: isActive}">
       <li
         v-for="(city, index) in cityList"
         :key="`${index}22`"
         @click="changeCity($event)"
-        >{{city}}</li>
+        :title="city.level"
+        >{{city.name}}</li>
     </ul>
   </li>
 </template>
@@ -15,31 +16,76 @@
 
 <script>
 import Vue from 'vue'
+import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
+Vue.use(Vuex)
+
+import mango from '../../js'
 export default {
   name: 'citySelect',
   data () {
     return {
-      cityName: '苏州市',
-      cityList: ['苏州市', '广州'],
+      ajaxData: {},
+      cityMsg: {name: '苏州市', level: 2},
+      cityList: [{name: '苏州市', level: 2}, {name: '广州', level: 1}],
       isActive: true
     }
+  },
+  created() {
+    // 获取本地存储信息
+    let cityMsg = localStorage.getItem('cityMsg')
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {}
+    this.ajaxData = JSON.parse(ajaxData)
+    // 获取城市等级数据
+    this.getCityLevel()
   },
   mounted() {
     this.changeCity()
   },
   methods: {
+    ...mapMutations([
+      'setCitySelect'
+    ]),
     changeCity(e) {
-      let city
+      let [cityName, cityLevel, cityMsg] = ['', 1, {}]
       if (e) {
         let target = e.target
-        city = target.innerText
-        this.cityName = city
+        cityName = target.innerText
+        cityLevel = target.title
+        cityMsg = {cityName: cityName, cityLevel: cityLevel}
+        this.cityMsg = cityMsg
+        this.setCitySelect(cityMsg)
         this.isActive = true
+        // 将选择信息存储到本地
+        localStorage.setItem('cityMsg', `{
+          "cityName": "${cityName}",
+          "cityLevel": "${cityLevel}"
+        }`)
       }
     },
     showCityList() {
-      console.log('success')
       this.isActive = false
+    },
+    getCityLevel() {
+      let _this = this
+      mango.getAjax(this, 'getCityLevel', {
+        tenantId: this.ajaxData.tenantId
+      }).then((res) => {
+        if (res) {
+          res = res.data
+          // 如果本地存储了城市选择，则选择本地存储，否则选择城市列表第一个城市
+          if (!_this.cityMsg.cityName) {
+            _this.cityMsg = {
+              cityName: res[0].empowerCity,
+              cityLevel: res[0].cityLevel
+            }
+          }
+          _this.setCitySelect(_this.cityMsg)
+          _this.cityList = res.map((item) => {
+            return {name: item.empowerCity, level: item.cityLevel}
+          })
+        }
+      })
     }
   }
 }
@@ -70,9 +116,16 @@ export default {
       color: #666;
       font-weight: 300;
       border-top: none;
+      line-height: 8vw;
     }
     li:first-child{
       border-top: 1px solid #e1e1e1;
+      border-top-left-radius: 4vw;
+      border-top-right-radius: 4vw;
+    }
+    li:last-child{
+      border-bottom-left-radius: 4vw;
+      border-bottom-right-radius: 4vw;
     }
     input{
       border-radius: 4vw;

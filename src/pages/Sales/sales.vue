@@ -6,23 +6,25 @@
         <h6>单位：万元</h6>
       </chartsTit>
       <SelectComponent></SelectComponent>
-      <Bar
+      <div :style="{height: `100vw`}" ref="salesContainer" ></div>
+      <!-- <Bar
       @chartsClick="chartsEvent"
       :data="salesData"
       :vertical="'vertical'"
       :height="100"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
       <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
       <chartsTit :text="'区域销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <Bar
+      <div :style="{height: `100vw`}" ref="areaSalesContainer" ></div>
+      <!-- <Bar
       :data="areaSalesData"
       :vertical="'vertical'"
       :height="100"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
       <RouterLink @click.native="toAreaStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
   </div>
@@ -34,6 +36,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -52,38 +55,53 @@ export default {
   data () {
     return {
       ajaxData: {},
+      endTime: '',
       salesData: {}, 
       areaSalesData: {}
     }
   },
   created() {
     // 获取本地存储信息
-    let ajaxData = localStorage.getItem('ajaxData')
+    let [ajaxData, endTime] = [localStorage.getItem('ajaxData'), localStorage.getItem('endTime')]
     this.ajaxData = JSON.parse(ajaxData)
+    this.endTime = endTime
   },
   mounted(){
-    this.getSalesData()
-    this.getAreaSalesData()
+    this.getAreaSalesData(this.endTime)
   },
   computed: {
     test() {
       console.log(333, this.$store)
     },
     ...mapState({
-      homeTit: state => 'just test',
-      homeText: state => state.home.homeText,
-      homeArr: state => state.home.homeArr
+      citySelect: state => state.select.citySelect,
+      startTimeSelect: state => state.select.startTimeSelect,
+      endTimeSelect: state => state.select.endTimeSelect
     }),
     ...mapGetters([
       'homeArrFilter'
     ])
   },
+  watch: {
+    citySelect() {
+      this.getSalesData(this.citySelect.cityName)
+    },
+    endTimeSelect() {
+      this.getAreaSalesData(this.endTimeSelect)
+    },
+    // 整体销售额对比
+    salesData() {
+      const chartsName = 'sales'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'vertical', true)
+      }
+    },
+    // 区域销售额对比
+    areaSalesData() {
+      chartsInit(this, 'areaSales', 'vertical', true)
+    }
+  },
   methods:{
-    ...mapMutations([
-      'setHomeTit',
-      'setHomeText',
-      'setHomeArr'
-    ]),
     // goToChild() {
     //   this.$router.push({ path: '/child' })
     // },
@@ -94,28 +112,33 @@ export default {
       this.$router.push({ path: '/areaStoreSales' })
     },
     // ajax请求
-    getSalesData() {
+    getSalesData(cityName) {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'sales', {
         cityLevel: 2,
-        cityName: '广州',
+        cityName: cityName,
         date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.salesData = res
         }
       }).catch(function (error) {
+        mango.loading('close')
         console.log(11111, error);
       });
     },
-    getAreaSalesData() {
+    getAreaSalesData(time) {
+      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'area/sales', {
-        date: '2018-08',
+        date: time,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.areaSalesData = res

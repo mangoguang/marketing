@@ -1,5 +1,6 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
+import { Indicator } from 'mint-ui'
 
 export default class Common {
   constructor() {
@@ -54,5 +55,16 @@ export default class Common {
         }
       })
     })
+  }
+  // 加载动画
+  loading(str) {
+    if (str === 'open') {
+      Indicator.open({
+        text: '数据请求中...',
+        spinnerType: 'fading-circle'
+      })
+    } else {
+      Indicator.close()
+    }
   }
 }

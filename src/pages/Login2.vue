@@ -47,8 +47,8 @@
       </div>
       <div class="wechat-icon"></div>
     </div>
-    <div class="changeColor1" @click="changeColor1" >主题1</div>
-    <div class="changeColor2" @click="changeColor2" >主题2</div>
+    <!-- <div class="changeColor1" @click="changeColor1" >主题1</div>
+    <div class="changeColor2" @click="changeColor2" >主题2</div> -->
   </div>
 </template>
 

@@ -8,12 +8,13 @@
           <Banner></Banner>
           <h4>{{item.name}}</h4>
           <p></p>
-          <Bar
+          <div :id = "`areaStoreSalesContainer${index}`"></div>
+          <!-- <Bar
           @chartsClick="chartsEvent"
           :data="item"
           :vertical="'horizontal'"
           :height="100"
-          :salesVal="true"></Bar>
+          :salesVal="true"></Bar> -->
         </li>
       </ul>
     </div>
@@ -26,6 +27,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -49,14 +51,27 @@ export default {
   },
   created() {
     // 获取本地存储信息
-    let ajaxData = localStorage.getItem('/..')
+    let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    console.log('本地村粗：：：', this.ajaxData)
   },
   mounted(){
     this.getStoreSalesData()
   },
   computed: {
 
+  },
+  watch: {
+    // 各门店销售额对比
+    areaStoreSalesData() {
+      for (let i = 0; i < this.areaStoreSalesData.length; i++) {
+        chartsInit(this, 'areaStoreSales', 'horizontal', true, null, null, i)
+      }
+      // const chartsName = 'areaStoreSales'
+      // if (this[`${chartsName}Data`].series) {
+      //   chartsInit(this, chartsName, 'horizontal', true)
+      // }
+    }
   },
   methods:{
     getStoreSalesData() {

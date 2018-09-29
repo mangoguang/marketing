@@ -3,12 +3,13 @@
   <div class="storeSales">
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
-      <Bar
+      <div ref="storeSalesContainer" ></div>
+      <!-- <Bar
       @chartsClick="chartsEvent"
       :data="storeSalesData"
       :vertical="'horizontal'"
       :height="250"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
     </div>
   </div>
 </template>
@@ -17,6 +18,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
+import chartsInit from '../../utils/chartsInit'
 import VueRouter from 'vue-router'
 import mango from '../../js'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
@@ -48,6 +50,19 @@ export default {
   },
   computed: {
 
+  },
+  watch: {
+    storeSalesData() {
+      // 参数说明：
+      // data：图标数据
+      // vertical设置柱状图的横向排布和纵向排布
+      // height设置图标容器main的高度
+      // salesVal标记是否为销售额，主要用于改变数据单位
+      let routeTo = (data, _this) => {
+        _this.$router.push({path: `/personalSales?shopId=${this.storeSalesData.idsData[data.dataIndex]}&name=${data.name}`})
+      }
+      chartsInit(this, 'storeSales', 'horizontal', true, '', routeTo)
+    }
   },
   methods:{
     ...mapMutations([

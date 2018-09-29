@@ -2,14 +2,14 @@
 <template>
   <ul class="selectComponent">
     <li is="citySelect"></li>
-    <li><input type="input" v-model="startTime" disabled="disabled"></li>
-    <li><input type="input" v-model="endTime" disabled="disabled"></li>
+    <!-- <li><input @click="openStartPicker" type="input" v-model="startTime"></li> -->
+    <li><input @click="openEndPicker" type="input" v-model="endTime"></li>
     <mt-datetime-picker
       ref="picker"
       type="date"
+      v-model="pickerValue"
       year-format="{value} 年"
       month-format="{value} 月"
-      date-format="{value} 日"
       @confirm="handleConfirm">
     </mt-datetime-picker>
   </ul>
@@ -18,6 +18,7 @@
 
 <script>
 import Vue from 'vue'
+import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import citySelect from './citySelect'
 import { DatetimePicker } from 'mint-ui'
 
@@ -28,16 +29,55 @@ export default {
   components: {citySelect, DatetimePicker},
   data () {
     return {
-      startTime: '2018-07',
-      endTime: '2018-08'
+      startTime: '',
+      endTime: '2018-08',
+      pickerValue: new Date(),
+      timeType: 'start'
     }
+  },
+  created() {
+    this.getLocalStorageTime()
   },
   mounted() {
 
   },
   methods: {
+    ...mapMutations([
+      'setStartTimeSelect',
+      'setEndTimeSelect'
+    ]),
     handleConfirm(date) {
-      this.dateVal = date.toLocaleDateString().split('/').join('-')
+      console.log('选择的时间： ', date)
+      // 选择时间
+      let str = `${this.timeType}Time`
+      this[str] = date.toLocaleDateString().split('/').slice(0, 2)
+      if (this[str][1] < 10) {
+        this[str][1] = `0${this[str][1]}`
+      }
+      this[str] = this[str].join('-')
+      localStorage.setItem(str, this[str])
+      this.setEndTimeSelect(this[str])
+    },
+    openStartPicker() {
+      this.timeType = 'start'
+      this.$refs.picker.open()
+    },
+    openEndPicker() {
+      this.timeType = 'end'
+      this.$refs.picker.open()
+    },
+    getLocalStorageTime() {
+      let [startTime, endTime] = [localStorage.getItem('startTime'), localStorage.getItem('endTime')]
+      if (startTime) {
+        this.startTime = startTime
+      } else {
+        this.startTime = '开始时间'
+      }
+      if (endTime) {
+        this.endTime = endTime
+      } else {
+        this.endTime = '结束时间'
+      }
     }
   }
 }
@@ -51,6 +91,7 @@ export default {
     align-items: center;
     height: 8vw;
     margin-right: 2%;
+    padding: 3vw;
     &>li{
       width: 25vw;
       height: 8vw;

@@ -1,19 +1,3 @@
-// export default {
-//   state: {
-//     homeTit: '',
-//     homeArr: [1, 2]
-//   },
-//   mutations: {
-//     homeTit: (state, str) => state.homeTit = str,
-//     homeArr: (state, arr) => state.homeArr = arr
-//   },
-//   actions: {
-
-//   },
-//   getters: {
-
-//   }
-// }
 const state = {
   homeTit: '',
   homeText: '123',
