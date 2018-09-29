@@ -95,7 +95,7 @@ export default {
     height: 7.73vw;
     width: 91.46vw;
     border-radius:2.66vw;
-    margin: 0 auto;
+    margin: 3vw auto;
     background: #e1e1e1;
     position: relative;
     .search-icon{
@@ -119,7 +119,6 @@ export default {
     width: 100vw;
     height: 26.66vw;
     border-top: 1px solid #a6a6a6;
-    margin-top: 1.33vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
