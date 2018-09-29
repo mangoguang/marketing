@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :style="{'min-height': `${height}px`, background: '#fff'}">
     <router-view v-on:newPwd='getPwd' v-bind:nweP='nweP'></router-view>
   </div>
 </template>
@@ -15,6 +15,7 @@ export default{
   store,
   data(){
     return{
+      height: window.innerHeight,
       nweP:''
     }
   },
