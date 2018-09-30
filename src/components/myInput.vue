@@ -1,15 +1,19 @@
 <template>
 <div class="myinput">
   <li>
-    <label for="account" v-bind:class='`${newpwd}`'>
-      <span>新密码</span>
+    <label for="account" 
+      v-bind:class='`${newpwd}`'>
+      <span>{{myinput}}</span>
     </label>
-    <input id="account" type="password" 
+    <input id="account" 
+      type="password" 
       v-bind:class="`${inputPwd}`"
-      v-on:focus='focusPwd()'  @blur="blurPwd()"
-      v-model="resetForm.Pwd" maxlength="20">
+      v-on:focus='focusPwd()'  
+      @blur="blurPwd()"
+      v-model="resetForm.Pwd"
+      maxlength="20">
   </li>
-  </div>
+</div>
 </template>
 
 <script>
@@ -19,15 +23,50 @@ export default {
       inputPwd:'inputPwd',
       inputNewPwd:'inputNewPwd',
       newpwd:'newpwd',
-      newPwd:'newPwd',
       resetForm:{
         Pwd:'',
         pwd:''
-      }
+      },
+      myinput:'新密码'
     }
   },
   methods:{
-    
+    focusPwd : function(){
+      if(this.resetForm.Pwd.length){
+        this.inputPwd = 'inputPwd1'
+        this.newpwd = 'newpwd2'
+      }else{
+        this.inputPwd = 'inputPwd1'
+        this.newpwd = 'newpwd1'
+      }  
+    },
+    focusCode : function(){
+      if(this.resetForm.pwd.length){
+        this.inputNewPwd = 'inputNewPwd1'
+        this.newPwd = 'newPwd2'
+      }else{
+        this.inputNewPwd = 'inputNewPwd1'
+        this.newPwd = 'newPwd1'
+      }
+    },
+    blurPwd:function(){
+      if(this.resetForm.Pwd.length){
+        this.inputPwd = 'inputPwd1'
+        this.newpwd = 'newpwd2'
+      }else{
+        this.inputPwd = 'inputPwd'
+        this.newpwd = 'newpwd'
+      }
+    },
+    blurCode:function(){
+      if(this.resetForm.pwd.length){
+        this.inputNewPwd = 'inputNewPwd1'
+        this.newPwd = 'newPwd2'
+      }else{
+        this.inputNewPwd = 'inputNewPwd'
+        this.newPwd = 'newPwd'
+      }
+    }
   }
 }
 </script>
@@ -35,8 +74,10 @@ export default {
 <style lang="scss" scoped>
 .myinput{
   position: relative;
-
-.newpwd,.newPwd{
+  li{
+    list-style: none;
+  }
+.newpwd{
         font-size: 4vw;
         letter-spacing: .66vw;
         color: #909090;   
@@ -97,20 +138,7 @@ export default {
           line-height: 10vw; 
         }
       }
-      .newPwd{
-        position: absolute;
-        left: 1px;
-        top: 17.2vw;
-        animation: moveDown1 .5s;
-        @keyframes moveDown1 {
-          from{
-            top: 12vw;
-          }
-          to{
-            top: 17.2vw;
-          }
-        }
-      }
+     
       .newPwd1{
         position: absolute;
         left: 1px;
