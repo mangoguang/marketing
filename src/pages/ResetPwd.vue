@@ -116,15 +116,16 @@ export default {
       }
     },
     submitForm:function(){
-      //如果密码两次相同，保存新的密码。跳转到登录页面。
-      let p = md5(this.resetForm.Pwd)
-      let newp = md5(this.resetForm.pwd)
+      //如果密码两次相同，保存新的密码。跳转到登录页面。密码加密。
+      let p = this.resetForm.Pwd
       if(p !== ''){
-        if(p === newp){
-          this.$emit('newPwd',p)
-         this.getApi()
+        let md5P = md5(p)
+        let newp = md5(this.resetForm.pwd)
+        if(md5P === newp){
+          this.$emit('newPwd',md5P)
+          this.getApi()
           this.$router.push({path:'/'})
-          console.log('yes')
+          // console.log('yes')
         }else{
           alert('两次输入的密码不一致')
         }
@@ -174,11 +175,6 @@ export default {
 @font-face {
   font-family: 'PINGPANG';
   src: url('../assets/font/PingFang Regular.ttf');
-}
-.clearfix::after{
-  content:'';
-  display: block;
-  clear: both;
 }
 .resetPwd{
   font-family: 'PINGPANG';
