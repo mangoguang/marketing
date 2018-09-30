@@ -67,4 +67,15 @@ export default class Common {
       Indicator.close()
     }
   }
+  // 获取当前日期，以2018-08-30的格式返回
+  indexTime(date) {
+    if (!date) {
+      date = new Date()
+    }
+    let tempArr = date.toLocaleDateString().split('/').slice(0, 2)
+    if (tempArr[1] < 10) {
+      tempArr[1] = `0${tempArr[1]}`
+    }
+    return tempArr.join('-')
+  }
 }

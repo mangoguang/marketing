@@ -91,6 +91,7 @@ export default {
 
 .reportForms{
   background: #f8f8f8;
+  overflow: hidden;
   .search{
     height: 7.73vw;
     width: 91.46vw;
