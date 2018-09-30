@@ -67,7 +67,11 @@ export default {
     //   endTime = 
     // }
     this.ajaxData = JSON.parse(ajaxData)
-    this.endTime = endTime
+    if (endTime) {
+      this.endTime = endTime
+    } else {
+      this.endTime = mango.indexTime()
+    }                                                                 
   },
   mounted(){
     this.getAreaSalesData(this.endTime)

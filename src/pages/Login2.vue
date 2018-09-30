@@ -263,7 +263,7 @@ export default {
       // console.log(oldaccountMsg)
       // console.log('获取本地缓存的账号信息', oldaccountMsg['name'],oldaccountMsg['pwd'])
       //去除空格
-      let trimName = this.trimStr(oldaccountMsg['name'])
+      let trimName = oldaccountMsg ? this.trimStr(oldaccountMsg['name']) : ''
       this.ruleForm.user = trimName
       this.ruleForm.pwd = oldaccountMsg['pwd']
     },
