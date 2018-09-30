@@ -19,6 +19,7 @@
 <script>
 import Vue from 'vue'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
+import mango from '../../js'
 import citySelect from './citySelect'
 import { DatetimePicker } from 'mint-ui'
 
@@ -50,11 +51,12 @@ export default {
       console.log('选择的时间： ', date)
       // 选择时间
       let str = `${this.timeType}Time`
-      this[str] = date.toLocaleDateString().split('/').slice(0, 2)
-      if (this[str][1] < 10) {
-        this[str][1] = `0${this[str][1]}`
-      }
-      this[str] = this[str].join('-')
+      this[str] = mango.indexTime(date)
+      // this[str] = date.toLocaleDateString().split('/').slice(0, 2)
+      // if (this[str][1] < 10) {
+      //   this[str][1] = `0${this[str][1]}`
+      // }
+      // this[str] = this[str].join('-')
       localStorage.setItem(str, this[str])
       this.setEndTimeSelect(this[str])
     },

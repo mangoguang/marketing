@@ -63,6 +63,9 @@ export default {
   created() {
     // 获取本地存储信息
     let [ajaxData, endTime] = [localStorage.getItem('ajaxData'), localStorage.getItem('endTime')]
+    // if (!endTime) {
+    //   endTime = 
+    // }
     this.ajaxData = JSON.parse(ajaxData)
     this.endTime = endTime
   },
