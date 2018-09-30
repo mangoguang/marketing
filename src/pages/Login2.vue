@@ -264,6 +264,7 @@ export default {
     getAccountMsg: function() {
       let accountMsg = localStorage.getItem('accountMsg')
       let oldaccountMsg = JSON.parse(accountMsg)
+<<<<<<< HEAD
       if(oldaccountMsg){
         this.ruleForm.pwd = oldaccountMsg['pwd']
         // 去除空格
@@ -271,6 +272,14 @@ export default {
         this.ruleForm.user = trimName
        console.log('获取本地缓存的账号信息', oldaccountMsg['name'],oldaccountMsg['pwd'])
       }
+=======
+      // console.log(oldaccountMsg)
+      // console.log('获取本地缓存的账号信息', oldaccountMsg['name'],oldaccountMsg['pwd'])
+      //去除空格
+      let trimName = oldaccountMsg ? this.trimStr(oldaccountMsg['name']) : ''
+      this.ruleForm.user = trimName
+      this.ruleForm.pwd = oldaccountMsg['pwd']
+>>>>>>> dff2e3f961e6630732692cc00c053843447f861d
     },
     forgetPwd:function(){
       this.$router.push({path:'/ForgetPwd'})
