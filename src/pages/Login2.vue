@@ -32,8 +32,13 @@
             <div class="forgetpwd" :style="{color:unamecolors}" @click="forgetPwd">忘记密码?</div>
           </li>
           <li>
-            <button type="button" @click="submitForm('ruleForm')" 
-            :style="{background:submitcolors,color:logincolors}">登录</button>
+            <!-- <button type="button" @click="submitForm('ruleForm')" 
+            :style="{background:submitcolors,color:logincolors}">登录</button> -->
+            <btn
+            @click.native="submitForm('ruleForm')"
+            :style="{background:submitcolors,color:logincolors}"
+            :text='text'>
+            </btn>
           </li>
         </ul>
       </form>
@@ -60,18 +65,21 @@ import axios from 'axios'
 import md5 from 'js-md5'
 import tipsError from '../components/charts/tipsError'
 import tipsWeb from '../components/charts/tipsWeb'
+import btn from '../components/btn'
 
 export default {
   name: 'login',
   components: {
     // MyChart
     tipsError,
-    tipsWeb
+    tipsWeb,
+    btn
   },
   data () {
     return {
       height: document.documentElement.clientHeight,
       username:'userName',
+      text:'登录',
       userpassword:'userPassword',
       usname:'usname',
       upwd:'upwd',
@@ -509,18 +517,6 @@ export default {
           float: right;
           text-decoration: underline;
         }
-      }
-      button {
-        width: 100%;
-        height: 13.1vw;
-        background-color: #363636;
-        box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
-        border-radius: 1.3vw;
-        font-family: "MicrosoftYaHei";
-        font-size: 4.5vw;
-        letter-spacing: 5px;
-        color: #eff9fd;
-        margin-top: 6vw;
       }
     }
   }

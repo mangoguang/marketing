@@ -21,7 +21,11 @@
             v-model="resetForm.pwd" maxlength="20"> 
         </li>
         <li>
-          <button type="button" @click="submitForm('resetForm')" class="submit">确认</button>
+          <btn
+            @click.native="submitForm('resetForm')"
+            :text='text'>
+          </btn>
+          <!-- <button type="button" @click="submitForm('resetForm')" class="submit">确认</button> -->
         </li>                    
       </ul>
     </form>
@@ -35,8 +39,10 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import mango from "../js";
 import md5 from 'js-md5'
+import btn from '../components/btn'
 
 export default {
+  components:{btn},
   data () {
     return {
       height: document.documentElement.clientHeight,
@@ -47,7 +53,8 @@ export default {
       resetForm:{
         Pwd:'',
         pwd:''
-      }
+      },
+      text:'确认'
       
     }
   },
@@ -349,17 +356,6 @@ export default {
         margin-top: 10vw;
         color: #262628;
       }
-    }
-    .submit {
-      width: 100%;
-      height: 13.1vw;
-      background-color: #363636;
-      border-radius: 1.3vw;
-      font-family: "MicrosoftYaHei";
-      font-size: 4.5vw;
-      letter-spacing: 5px;
-      color: #eff9fd;
-      margin-top: 6vw;
     }
   }
 }

@@ -9,22 +9,42 @@
     <form>
       <ul>
         <li>
-         <label for="account" v-bind:class='`${phoneNum}`'><span>请输入手机号</span></label>
-         <input id="account" type="number"  v-bind:class="`${inputPNum}`"
-          v-on:focus='focusNum()'  @blur="blurNum()"
-          v-model="changePwd.num">
+         <label for="account" 
+            v-bind:class='`${phoneNum}`'>
+            <span>请输入手机号</span>
+         </label>
+         <input id="account" type="number"  
+            v-bind:class="`${inputPNum}`"
+            v-on:focus='focusNum()'  
+            @blur="blurNum()"
+            v-model="changePwd.num">
         </li>
         <li class="getCode">
-          <input @click="getCode" v-model="getCodeValue"  type="text" readonly>
+          <input 
+            @click="getCode"
+            v-model="getCodeValue"  
+            type="text" 
+            readonly>
         </li>
         <li>
-          <label for="code" v-bind:class='`${vfCode}`'><span>验证码</span></label>
-          <input id="code" type="number"  v-bind:class="`${inputCode}`"
-            @focus ='focusCode()'  @blur="blurCode()"
-            v-model="changePwd.pwd" maxlength="15"> 
+          <label for="code"
+            v-bind:class='`${vfCode}`'>
+               <span>验证码</span>
+          </label>
+          <input 
+            id="code" type="number"  
+            v-bind:class="`${inputCode}`"
+            @focus ='focusCode()'  
+            @blur="blurCode()"
+            v-model="changePwd.pwd" 
+            maxlength="15"> 
         </li>
         <li>
-          <button type="button" @click="submitForm('changePwd')" class="submit">确认</button>
+          <btn 
+          @click.native="submitForm('changePwd')"
+          :text='text'>
+          </btn>
+          <!-- <button type="button" @click="submitForm('changePwd')" class="submit">确认</button> -->
         </li>                    
       </ul>
     </form>
@@ -35,12 +55,15 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import mango from '../js'
 import axios from 'axios'
 import port from '../js/variable'
 import 'mint-ui/lib/style.css'
 import {Indicator} from 'mint-ui'
+import btn from '../components/btn'
 
 export default {
+components:{btn},
 data () {
     return {
       height: document.documentElement.clientHeight,
@@ -52,7 +75,8 @@ data () {
         num:'',
         pwd:''
       } ,
-      getCodeValue:'获取验证码' 
+      getCodeValue:'获取验证码',
+      text:'确认'
       
     }
   },
@@ -143,18 +167,9 @@ data () {
     },
     //发送手机验证码
     getCode:function(){
-      mango.loading('open')
       let that = this
-      //发送验证码等请求回来时候的动画特效
-      // Indicator.open({
-      //     spinnerType:'fading-circle'
-      //   })
       port.sendPhoneVerify(this.changePwd.num).then(function(res){
-        mango.loading('close')
         if(res){   
-          //验证码发送成功后倒计时120s后才可以重新发送
-          //关闭动画
-          // Indicator.close()
           var num = 120
           var timer = setInterval(function(){
             num -- 
@@ -166,7 +181,6 @@ data () {
           },1000)
         }
       }).catch(function(error){
-        mango.loading('close')
         console.log(error)
       })
     }
