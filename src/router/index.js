@@ -64,5 +64,9 @@ export var router = new VueRouter({
     path: '/customerSource',
     name: '/CustomerSource',
     component: resolve => require(['../pages/Customer/customerSource'],resolve)
+  },{
+    path: '/myInput',
+    name: '/myInput',
+    component: resolve => require(['../components/myInput'],resolve)
   }]
 })
