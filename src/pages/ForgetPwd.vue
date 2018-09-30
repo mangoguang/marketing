@@ -29,7 +29,7 @@
         <li>
           <label for="code"
             v-bind:class='`${vfCode}`'>
-               <span>验证码</span>
+              <span>验证码</span>
           </label>
           <input 
             id="code" type="number"  
@@ -194,11 +194,6 @@ data () {
 @font-face {
   font-family: 'PINGPANG';
   src: url('../assets/font/PingFang Regular.ttf');
-}
-.clearfix::after{
-  content:'';
-  display: block;
-  clear: both;
 }
 .forgetPwd{
   font-family: 'PINGPANG';

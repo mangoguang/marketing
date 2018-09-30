@@ -104,21 +104,17 @@ export default {
     
    
   },
-  props:[
-    'nweP' //更改后的密码。
-  ],
   mounted(){
-    console.log(this.nweP)
-    let obj = {
-      name: 'guang',
-      age: '26',
-      work: 'qianduan'
-    }
-    mango.getSign(obj)
+    // let obj = {
+    //   name: 'guang',
+    //   age: '26',
+    //   work: 'qianduan'
+    // }
+    // mango.getSign(obj)
     // console.log(mango.getSign1)
     //获取缓存
-     this.getAccountMsg();
-      if(this.ruleForm.user.length){
+     this.getAccountMsg()
+      if(this.ruleForm.user.length || this.ruleForm.pwd.length){
         this.username = 'userName1'
         this.usname = 'usname2'
         this.userpassword = 'userPassword1'
@@ -268,12 +264,13 @@ export default {
     getAccountMsg: function() {
       let accountMsg = localStorage.getItem('accountMsg')
       let oldaccountMsg = JSON.parse(accountMsg)
-      // console.log(oldaccountMsg)
-      // console.log('获取本地缓存的账号信息', oldaccountMsg['name'],oldaccountMsg['pwd'])
-      //去除空格
-      let trimName = this.trimStr(oldaccountMsg['name'])
-      this.ruleForm.user = trimName
-      this.ruleForm.pwd = oldaccountMsg['pwd']
+      if(oldaccountMsg){
+        this.ruleForm.pwd = oldaccountMsg['pwd']
+        // 去除空格
+        let trimName = this.trimStr(oldaccountMsg['name'])
+        this.ruleForm.user = trimName
+       console.log('获取本地缓存的账号信息', oldaccountMsg['name'],oldaccountMsg['pwd'])
+      }
     },
     forgetPwd:function(){
       this.$router.push({path:'/ForgetPwd'})
