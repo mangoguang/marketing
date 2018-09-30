@@ -48,7 +48,6 @@ let init = (function() {
                 }
               })
               .then(function (response) {
-                
                 key = true
                 let data = response.data
                 if (data.status) {
@@ -58,9 +57,10 @@ let init = (function() {
                   alert(data.msg)
                 }
               })
-              // .catch(function (error) {
-              //   console.log(error)
-              // })
+              .catch(function (error) {
+                mango.loading('close')
+                console.log(error)
+              })
             })
             .catch(function (error) {
               mango.loading('close')
