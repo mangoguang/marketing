@@ -94,6 +94,7 @@ export default {
       this.getSalesData(this.citySelect.cityName)
     },
     endTimeSelect() {
+      this.getSalesData(this.citySelect.cityName)
       this.getAreaSalesData(this.endTimeSelect)
     },
     // 整体销售额对比
@@ -142,7 +143,8 @@ export default {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'area/sales', {
-        date: time,
+        // date: time,
+        date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         mango.loading('close')
