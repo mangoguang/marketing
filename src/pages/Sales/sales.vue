@@ -74,6 +74,7 @@ export default {
     }                                                                 
   },
   mounted(){
+    console.log('初始化页面时的结束时间：', this.endTime, this.citySelect)
     this.getAreaSalesData(this.endTime)
   },
   computed: {
@@ -91,10 +92,12 @@ export default {
   },
   watch: {
     citySelect() {
-      this.getSalesData(this.citySelect.cityName)
+      console.log('选择城市：', this.endTimeSelect, this.citySelect)
+      this.getSalesData(this.citySelect.cityName, this.endTime)
     },
     endTimeSelect() {
-      this.getSalesData(this.citySelect.cityName)
+      console.log('选择的结束时间。')
+      this.getSalesData(this.citySelect.cityName, this.endTimeSelect)
       this.getAreaSalesData(this.endTimeSelect)
     },
     // 整体销售额对比
@@ -120,13 +123,13 @@ export default {
       this.$router.push({ path: '/areaStoreSales' })
     },
     // ajax请求
-    getSalesData(cityName) {
+    getSalesData(cityName, date) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'sales', {
         cityLevel: 2,
         cityName: cityName,
-        date: '2018-08',
+        date: date,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         mango.loading('close')
