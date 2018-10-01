@@ -8,16 +8,11 @@
     <h1>验证了手机号方可修改密码哟~</h1>
     <form>
       <ul>
-        <li>
-         <label for="account" 
-            v-bind:class='`${phoneNum}`'>
-            <span>请输入手机号</span>
-         </label>
-         <input id="account" type="number"  
-            v-bind:class="`${inputPNum}`"
-            v-on:focus='focusNum()'  
-            @blur="blurNum()"
-            v-model="changePwd.num">
+        <li 
+          is='myinput'
+          :type='type'
+          :labelContent='getPhoneNum'
+          v-model="inputValue1">
         </li>
         <li class="getCode">
           <input 
@@ -26,25 +21,17 @@
             type="text" 
             readonly>
         </li>
-        <li>
-          <label for="code"
-            v-bind:class='`${vfCode}`'>
-              <span>验证码</span>
-          </label>
-          <input 
-            id="code" type="number"  
-            v-bind:class="`${inputCode}`"
-            @focus ='focusCode()'  
-            @blur="blurCode()"
-            v-model="changePwd.pwd" 
-            maxlength="15"> 
-        </li>
+         <li 
+          is='myinput'
+          :type='type'
+          :labelContent='verificationCode'
+          v-model="inputValue2">
+          </li>
         <li>
           <btn 
           @click.native="submitForm('changePwd')"
           :text='text'>
           </btn>
-          <!-- <button type="button" @click="submitForm('changePwd')" class="submit">确认</button> -->
         </li>                    
       </ul>
     </form>
@@ -61,87 +48,32 @@ import port from '../js/variable'
 import 'mint-ui/lib/style.css'
 import {Indicator} from 'mint-ui'
 import btn from '../components/btn'
+import myinput from '../components/myInput'
 
 export default {
-components:{btn},
+components:{btn,myinput},
 data () {
     return {
       height: document.documentElement.clientHeight,
-      inputPNum:'inputPNum',
-      inputCode:'inputCode',
-      phoneNum:'phoneNum',
-      vfCode:'vfCode',
-      changePwd:{
-        num:'',
-        pwd:''
-      } ,
       getCodeValue:'获取验证码',
-      text:'确认'
-      
+      text:'确认',
+      type:'number',
+      getPhoneNum:'请输入手机号',
+      verificationCode:'验证码',
+      inputValue1:'',
+      inputValue2:'' 
     }
-  },
-  mounted(){
-    //去除开头动画
-    if(this.changePwd.num.length){
-      this.inputPNum = 'inputPNum1'
-      this.phoneNum = 'phoneNum2'
-      this.inputCode = 'inputCode1'
-      this.vfCode = 'vfCode2'
-    }else{
-      this.phoneNum = 'phoneNum3'
-      this.vfCode = 'vfCode3'
-    }
-  },
-  computed: {
-    
   },
   methods:{
-     //光标获得焦点，失去焦点触发的事件。
-    focusNum : function(){
-      if(this.changePwd.num.length){
-        this.inputPNum = 'inputPNum1'
-        this.phoneNum = 'phoneNum2'
-      }else{
-        this.inputPNum = 'inputPNum1'
-        this.phoneNum = 'phoneNum1'
-      }  
-    },
-    focusCode : function(){
-      if(this.changePwd.pwd.length){
-        this.inputCode = 'inputCode1'
-        this.vfCode = 'vfCode2'
-      }else{
-        this.inputCode = 'inputCode1'
-        this.vfCode = 'vfCode1'
-      }
-    },
-    blurNum:function(){
-      if(this.changePwd.num.length){
-        this.inputPNum = 'inputPNum1'
-        this.phoneNum = 'phoneNum2'
-      }else{
-        this.inputPNum = 'inputPNum'
-        this.phoneNum = 'phoneNum'
-      }
-    },
-    blurCode:function(){
-      if(this.changePwd.pwd.length){
-        this.inputCode = 'inputCode1'
-        this.vfCode = 'vfCode2'
-      }else{
-        this.inputCode = 'inputCode'
-        this.vfCode = 'vfCode'
-      }
-    },
     submitForm:function(){
     if (!port.key) {
       return
     }
     port.key = false
     let _this = this        
-    if (port.testPhone(this.changePwd.num)) { // 检测手机格式
+    if (port.testPhone(this.inputValue1)) { // 检测手机格式
       if (port.verifyPhone) {    //验证验证码
-        port.verifyPhone(this.changePwd.num, this.changePwd.pwd).then(function(result) {
+        port.verifyPhone(this.inputValue1, this.inputValue2).then(function(result) {
           port.key = true
           let data = result.status
           if (result.status) {
@@ -162,13 +94,11 @@ data () {
       port.key = true
       return
     }   
-     
-
     },
     //发送手机验证码
     getCode:function(){
       let that = this
-      port.sendPhoneVerify(this.changePwd.num).then(function(res){
+      port.sendPhoneVerify(this.inputValue1).then(function(res){
         if(res){   
           var num = 120
           var timer = setInterval(function(){
@@ -184,8 +114,6 @@ data () {
         console.log(error)
       })
     }
-   
-
   }
 }
 </script>
@@ -231,12 +159,6 @@ data () {
     }
     ul{
       position: relative;
-      .phoneNum,.vfCode{
-        font-size: 4vw;
-        letter-spacing: .66vw;
-        color: #909090;   
-        line-height: 11.6vw;  
-      }
       .getCode{
         position: absolute;
         top: -1vw;
@@ -254,151 +176,6 @@ data () {
         }
         
       }
-      //span位置
-      .phoneNum{
-        position: absolute;
-        left: 1px;
-        top: -4px;
-        animation: moveDown .5s;
-        @keyframes moveDown {
-          from{
-            top: -6.5vw;
-          }
-          to{
-            top: -4px;
-          }
-        }
-        }
-      .phoneNum1{
-        position: absolute;
-        left: 1px;
-        top: -6.5vw;
-        animation: moveUP .5s;
-        @keyframes moveUP {
-          from{
-            top: 5px;
-          }
-          to{
-            top: -6.5vw;
-          }
-        }
-        span{
-          color: #bebebe;
-          font-size:3.2vw;
-          letter-spacing: .66vw;
-        }
-      }
-      .phoneNum2{
-       position: absolute;
-       left: 1px;
-       top: -6.5vw;
-        span{
-          color: #bebebe;
-          font-size:3.2vw;
-          letter-spacing: .66vw; 
-        }
-      }
-      .phoneNum3{
-        position: absolute;
-        left: 1px;
-        top: -4px;
-         span{
-          font-size: 4vw;
-          letter-spacing: .66vw;
-          color: #909090;   
-          line-height: 10vw; 
-        }
-      }
-      .vfCode{
-        position: absolute;
-        left: 1px;
-        top: 17.2vw;
-        animation: moveDown1 .5s;
-        @keyframes moveDown1 {
-          from{
-            top: 12vw;
-          }
-          to{
-            top: 17.2vw;
-          }
-        }
-      }
-      .vfCode1{
-        position: absolute;
-        left: 1px;
-        top: 12vw;
-        color: #bebebe;
-        font-size:3.2vw;
-        letter-spacing: .66vw; 
-        animation: moveUp1 .5s;
-        @keyframes moveUp1 {
-          from{
-            top: 17.2vw;
-          }
-          to{
-            top: 12vw;
-          }
-        }
-        }
-       .vfCode2{
-        position: absolute;
-        left: 1px;
-        top: 12vw;
-         span{
-          color: #bebebe;
-          font-size:3.2vw;
-          letter-spacing: .66vw; 
-        }
-        }
-       .vfCode3{
-        position: absolute;
-        left: 1px;
-        top: 17.2vw;
-        span{
-          font-size: 4vw;
-          letter-spacing: .66vw;
-          color: #909090;   
-          line-height: 10vw; 
-        }
-       }
-      .inputPNum,.inputCode{
-        display: block;
-        border-bottom: 1px solid #ccc;
-        width: 80vw;
-        height: 8vw;
-        font-size: 4vw;
-        margin-top: 10vw;
-        color: #262628
-      }
-      .inputPNum1{
-        display: block;
-        border-bottom: 2px solid #ccc;
-        width: 80vw;
-        height: 8vw;
-        font-size: 4vw;
-        margin-top: 10vw;
-        color: #262628;     
-        }
-      .inputCode1{
-        display: block;
-        border-bottom: 2px solid #ccc;
-        width: 80vw;
-        height: 8vw;
-        font-size: 4vw;
-        margin-top: 10vw;
-        color: #262628;
-      }
-    }
-    .submit {
-      width: 100%;
-      height: 13.1vw;
-      background-color: #363636;
-      border-radius: 1.3vw;
-      font-family: "MicrosoftYaHei";
-      font-size: 4.5vw;
-      letter-spacing: .66vw;
-      color: #eff9fd;
-      margin-top: 6vw;
     }
   }
 }

@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  props:['type','labelContent','value'],
+  props:['type','labelContent','value','Msg'],
   data(){
     return{
       inputType:'inputType',
@@ -27,13 +27,24 @@ export default {
       labelType:'labelType',
       inputID:'',
       inputContent:''
-      
+    }
+  },
+  mounted(){
+    // console.log('Msg',this.Msg)
+    //页面开始时候有缓存，样式改变。
+    if(this.Msg){
+      if(this.Msg.length){
+        this.labelType = 'labelStatus2'
+        this.inputType = 'inputStatus1'
+      }
     }
   },
   created(){
+    //给每个li组件加一个ID
     this.inputID = Math.floor(Math.random()*10000);
-    console.log(this.inputID)
-    if(this.inputContent.length){
+    // console.log(this.inputID)
+    //页面开始时候输入框为空，不加载动画。
+    if(this.value.length){
 
     }else{
       this.labelType = 'labelStatus3'
@@ -58,7 +69,6 @@ export default {
         this.labelType = 'labelType'
       }
     }
-
   }
 }
 </script>
