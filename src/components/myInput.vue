@@ -79,6 +79,15 @@ li{
   position: relative;
   height: 11.33vw;
 }
+input{
+  outline-style: none;
+  outline-width: 0;
+  border-style: none;
+  text-shadow: none;
+  box-shadow: none;
+  outline-color: transparent
+
+}
 .labelType{
   font-size: 4vw;
   letter-spacing: .66vw;

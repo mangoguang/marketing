@@ -212,7 +212,7 @@ export default {
   font-family: 'PINGPANG';
   .topBar{
     width: 100vw;
-    height: 44vw;
+    height: 43.78vw;
     background: #e1e1e1;
     box-sizing: border-box;
     padding-top: 22vw;
@@ -239,7 +239,7 @@ export default {
     width: 80vw;
     height: 69.2vw;
     margin: 0 auto;
-    margin-top:8.133vw; 
+    padding:8.133vw; 
     h1{
       font-size: 4vw;
       text-align: center;

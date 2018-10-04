@@ -60,13 +60,13 @@ export default {
 <style lang="scss" scoped>
 .footer{
   width: 100vw;
-  height: 22vw;
   position: fixed;
   bottom: 0;
   background: #f8f8f8;
   ul{
     display: flex;
-    justify-content: space-around; 
+    justify-content: space-around;
+    padding-bottom: 1vw; 
     li{
       margin-top: 2vw;
       .iconHome{
