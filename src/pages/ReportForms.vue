@@ -63,6 +63,7 @@ export default {
   created(){
     this.t = this.forms
   //  console.log(this.forms[0].text)
+    
   },
   methods:{
     linkTo:function(index){
