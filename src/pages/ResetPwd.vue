@@ -22,7 +22,7 @@
           </li>
           <li>
             <btn
-              @click.native="submitForm('resetForm')"
+              @touchend.native="submitForm('resetForm')"
               :text='text'>
             </btn>
           </li>                    

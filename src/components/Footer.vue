@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <ul @click="onclick">
+    <ul @touchend="touchend">
       <li id="1">    
       <!-- <router-link to="/" >  -->
       <div class='iconHome'></div>
@@ -47,7 +47,7 @@ export default {
     
   },
   methods:{
-    onclick:function(e){
+    touchend:function(e){
       console.log(e.path[1].id)
       if(e.path[1].id){
         alert('该模块尚未开发')

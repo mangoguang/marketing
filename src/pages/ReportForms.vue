@@ -11,7 +11,7 @@
     <div class="forms">
       <div class="title">报表模块</div>
       <ul>
-        <li v-for="(forms,index) in x" :key="index" @click="linkTo(index)" :class="`${index}`">
+        <li v-for="(forms,index) in x" :key="index" @touchend="linkTo(index)" :class="`${index}`">
           <div class="icon" :style="{background:t[index].color}">
             <div class="icon-forms">
               <img :src ="`./static/images/char${index+1}.png`" alt="">

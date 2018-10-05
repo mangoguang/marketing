@@ -16,7 +16,7 @@
         </li>
         <li class="getCode">
           <input 
-            @click="getCode"
+            @touchend="getCode"
             v-model="getCodeValue"  
             type="text" 
             readonly>
@@ -29,7 +29,7 @@
           </li>
         <li>
           <btn 
-          @click.native="submitForm('changePwd')"
+          @touchend.native="submitForm('changePwd')"
           :text='text'>
           </btn>
         </li>                    

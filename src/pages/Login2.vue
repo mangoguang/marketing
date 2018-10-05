@@ -33,11 +33,11 @@
               <label for="remember">
                 <div class="rempwd" >记住密码</div>
               </label>
-              <div class="forgetpwd" @click="forgetPwd">忘记密码?</div>
+              <div class="forgetpwd" @touchend="forgetPwd">忘记密码?</div>
             </li>
             <li>
               <btn
-              @click.native="submitForm('ruleForm')"
+              @touchend.native="submitForm('ruleForm')"
               :text='text'>
               </btn>
             </li>
