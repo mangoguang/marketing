@@ -2,7 +2,7 @@
 <template>
   <div class="banner">
     <div class="icon-back" @click='cilck'></div>
-    <p>{{title}}</p>
+    <span>{{title}}</span>
   </div>
 </template>
 <!-- </keep-alive> -->
@@ -30,7 +30,7 @@ export default {
 <style lang="scss" scoped>
 .banner{
   z-index: 99;
-  height: 11.466vw;
+  height: 16.466vw;
   width: 100vw;
   box-sizing: border-box;
   display: flex;
@@ -40,6 +40,8 @@ export default {
   align-items: center;
   border-bottom: 1px solid #aaa;
   background: #f8f8f8;
+  padding-top: 5vw;
+  
   .icon-back{
     background: url(../assets/imgs/back.png) no-repeat center;
     background-size: 100%;
@@ -47,7 +49,7 @@ export default {
     height:4.66vw;
     margin-left: 4.266vw;
   }
-  p{
+  span{
     width: 100%;
     text-align: center;
     padding-right: 3.46vw;

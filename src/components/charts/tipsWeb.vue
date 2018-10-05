@@ -33,7 +33,7 @@ export default {
           top:-8vw
         }
         to{
-          top: 0vw
+          top: 5vw
         }
       }
     }
