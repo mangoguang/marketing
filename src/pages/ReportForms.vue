@@ -99,6 +99,7 @@ export default {
     margin: 3vw auto;
     background: #e1e1e1;
     position: relative;
+    margin-top: 8vw;
     .search-icon{
       background: url(../assets/imgs/search.png) no-repeat;
       background-size: 100% 100%;

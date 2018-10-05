@@ -102,7 +102,8 @@ export default {
     //   work: 'qianduan'
     // }
     // mango.getSign(obj)
-    // console.log(mango.getSign1)  
+    // console.log(mango.getSign1) 
+     
   },
   created(){
     this.getAccountMsg()

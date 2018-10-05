@@ -133,7 +133,7 @@ data () {
   height: 100vh;
   .banner{
     width: 100vw;
-    height:  11.466vw;
+    height:  16.466vw;
     position: relative;
     .img1{
       position: absolute;
