@@ -156,7 +156,9 @@ input{
       height: 8vw;
       font-size: 4vw;
       margin-top: 10vw;
-      color: #262628
+      color: #262628;
+      -webkit-appearance:none;/*清除ios默认圆角*/
+      border-radius:0;
     }
     .inputStatus1{
       display: block;
@@ -165,7 +167,9 @@ input{
       height: 8vw;
       font-size: 4vw;
       margin-top: 10vw;
-      color: #262628;     
+      color: #262628;  
+      -webkit-appearance:none;/*清除ios默认圆角*/
+      border-radius:0;   
       }
 
 

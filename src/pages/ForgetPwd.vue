@@ -1,5 +1,6 @@
 <template> 
   <div class="forgetPwd">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="banner">
       <img src="../assets/imgs/banner1.png" alt="头部背景" class="img1">
       <img src="../assets/imgs/banner2.png" alt="头部背景" class="img2">
@@ -49,9 +50,10 @@ import 'mint-ui/lib/style.css'
 import {Indicator} from 'mint-ui'
 import btn from '../components/btn'
 import myinput from '../components/myInput'
+import mybanner from '../components/banner'
 
 export default {
-components:{btn,myinput},
+components:{btn,myinput,mybanner},
 data () {
     return {
       height: document.documentElement.clientHeight,
@@ -61,7 +63,9 @@ data () {
       getPhoneNum:'请输入手机号',
       verificationCode:'验证码',
       inputValue1:'',
-      inputValue2:'' 
+      inputValue2:'',
+      title:'忘记密码',
+      turnPath:'/' 
     }
   },
   methods:{
@@ -127,12 +131,9 @@ data () {
   font-family: 'PINGPANG';
   background:#fff;
   height: 100vh;
-  .login{
-    background: #fff;
-  }
   .banner{
     width: 100vw;
-    height: 23vw;
+    height:  11.466vw;
     position: relative;
     .img1{
       position: absolute;
@@ -150,7 +151,7 @@ data () {
   .content{
     width: 80vw;
     margin: 0 auto;
-    margin-top:7.73vw; 
+    margin-top:15.46vw; 
     h1{
       font-size: 4vw;
       text-align: center;

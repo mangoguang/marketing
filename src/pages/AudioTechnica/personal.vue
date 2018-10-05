@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <ul class="personal">
+    <mybanner :title='mytitle' :turnPath='turnPath'/>
     <!-- 整体进店数 -->
     <li class="barBox">
       <chartsTit :text="`${shopName}进店数-职员`">
@@ -25,17 +26,20 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
 import chartsTit from '../../components/charts/title'
+import mybanner from '../../components/banner'
 export default {
   name: 'personal',
   components: {
-    Bar, chartsTit
+    Bar, chartsTit,mybanner
   },
   data () {
     return {
       ajaxData: {},
       personalData: {},
       shopName: this.$route.query.name,
-      title: ''
+      title: '',
+      mytitle:'销售额报表',
+      turnPath:'./audioTechnica'
     }
   },
   created() {

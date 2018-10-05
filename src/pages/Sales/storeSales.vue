@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="storeSales">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
       <div ref="storeSalesContainer" ></div>
@@ -27,17 +28,21 @@ Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import mybanner from '../../components/banner'
 export default {
   name: 'storeSales',
   components: {
     Bar,
     chartsTit,
-    RouterLink
+    RouterLink,
+    mybanner
   },
   data () {
     return {
       ajaxData: {},
-      storeSalesData: {}
+      storeSalesData: {},
+      turnPath:'./sales',
+      title:'销售额报表'
     }
   },
   created() {

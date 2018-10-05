@@ -1,5 +1,6 @@
 <template>
   <div class="customerSource">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'客户来源-整体'"></chartsTit>
       <Bar
@@ -30,18 +31,22 @@ Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import mybanner from '../../components/banner'
 
 export default {
   name:'customerSource',
   components:{
     Bar,
     chartsTit,
-    RouterLink
+    RouterLink,
+    mybanner
   },data(){
     return{
       ajaxData: {},
       customerSourceData: {}, 
-      areaCustomerSourceData: {}
+      areaCustomerSourceData: {},
+       title:'销售额报表',
+       turnPath:'./ReportForms'
     }
   },  
   created() {
