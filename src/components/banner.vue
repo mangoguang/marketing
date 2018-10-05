@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="banner">
-    <div class="icon-back" @click='click'></div>
+    <div class="icon-back" @click='cilck'></div>
     <p>{{title}}</p>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
     }
   },
   methods:{
-    click:function(){
+    cilck:function(){
       this.$router.push({path:this.turnPath}) 
     }
   }
@@ -34,6 +34,9 @@ export default {
   width: 100vw;
   box-sizing: border-box;
   display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
   align-items: center;
   border-bottom: 1px solid #aaa;
   background: #f8f8f8;

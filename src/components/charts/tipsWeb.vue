@@ -21,7 +21,7 @@ export default {
       background: #cc2934;
       opacity: .7;
       position: absolute;
-      top: -9vw;
+      top: -8vw;
       left: 0;
       color: #fff;
       font-size: 3.46w;
@@ -30,10 +30,10 @@ export default {
       animation: move1 4s;
       @keyframes move1 {
         from{
-          top:-9vw
+          top:-8vw
         }
         to{
-          top: 8vw
+          top: 0vw
         }
       }
     }
