@@ -162,18 +162,18 @@ data () {
       position: relative;
       .getCode{
         position: absolute;
-        top: -1vw;
+        top: -.4vw;
         right: 0; 
         input{
           font-size: 3.46vw;
           color: #666;
           width: 25vw;
-          height:7.46vw ;
           border: 1px solid #e1e1e1;
           text-align: center;
-          line-height: 7.46vw;
+          line-height: 7vw;
           border-radius: 2.66vw;
           background: #f8f8f8;
+          outline: none
         }
         
       }

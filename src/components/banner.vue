@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="banner">
-    <div class="icon-back" @touchend='touchend'></div>
+    <div class="icon-back" @click='click'></div>
     <p>{{title}}</p>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
     }
   },
   methods:{
-    touchend:function(){
+    click:function(){
       this.$router.push({path:this.turnPath}) 
     }
   }
