@@ -38,7 +38,7 @@ export default {
       personalData: {},
       shopName: this.$route.query.name,
       title: '',
-      mytitle:'销售额报表',
+      mytitle:'铁三角报表',
       turnPath:'./audioTechnica'
     }
   },

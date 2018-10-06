@@ -101,7 +101,7 @@ export default {
       perAchieveRatioData: {},
       orderFormTotalData: {},
       perOrderFormData: {},
-      title:'销售额报表',
+      title:'铁三角报表',
       turnPath:'./ReportForms'
     }
   },

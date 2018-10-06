@@ -45,7 +45,7 @@ export default {
       ajaxData: {},
       customerSourceData: {}, 
       areaCustomerSourceData: {},
-       title:'销售额报表',
+       title:'客户来源报表',
        turnPath:'./ReportForms'
     }
   },  

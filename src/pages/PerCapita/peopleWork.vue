@@ -50,7 +50,7 @@ export default {
       peopleWorkData: {}, 
       areaPeopleWorkData: {},
       height: 100,
-      title:'销售额报表',
+      title:'人效报表',
       turnPath:'./ReportForms'
     }
   }, created() {

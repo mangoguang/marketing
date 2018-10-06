@@ -74,7 +74,7 @@ export default {
       ajaxData: {},
       brandData: {}, 
       categoryData: {},
-      title:'销售额报表',
+      title:'',
       turnPath:'./ReportForms'
     }
   },

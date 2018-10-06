@@ -43,7 +43,7 @@ export default {
       ajaxData: {},
       areaEffectivenessData: {}, 
       areaEffectivenessShopData: {},
-      title:'销售额报表',
+      title:'坪效报表',
       turnPath:'./ReportForms'
     }
   },

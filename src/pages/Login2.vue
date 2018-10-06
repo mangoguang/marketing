@@ -91,8 +91,8 @@ export default {
       inputValue1:'',
       inputValue2:'',
       nameMsg:'',
-      pwdMsg:'',
-      model:''
+      pwdMsg:''
+      
      
     }
   },
@@ -108,8 +108,7 @@ export default {
   },
   created(){
     this.getAccountMsg()
-     this.model = api.deviceModel;
-     console.log('model',this.model)
+     
   },
   methods:{
     //去除input输入框的左边空格

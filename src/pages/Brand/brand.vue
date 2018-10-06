@@ -78,7 +78,7 @@ export default {
       type: this.$route.query.type,
       typeName: this.$route.query.type === 'brand' ? '品牌' : '品类',
       port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion',
-      title:'销售额报表',
+      title:'',
       turnPath:'./ReportForms'
 
     }
@@ -88,6 +88,7 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     // this.getBrandData()
+    this.title = this.typeName + '报表'
   },
   mounted(){
     // Vue.$set(0, {name: 1})
