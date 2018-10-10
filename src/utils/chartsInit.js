@@ -28,8 +28,9 @@ export default (_this, chartName, vertical, salesVal, title, routeTo, chartsInde
     if (routeTo) {
       // 如果需要添加点击事件，则添加点击事件。
       echarts.init(dom).on('click', function (data) {
+        console.log('点击的元素：', data)
         if (data.componentType === 'series') {
-          routeTo(data, _this)
+          // routeTo(data, _this)
         }
       })
     }

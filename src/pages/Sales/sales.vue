@@ -62,19 +62,13 @@ export default {
   },
   created() {
     // 获取本地存储信息
-    let [ajaxData, endTime] = [localStorage.getItem('ajaxData'), localStorage.getItem('endTime')]
-    // if (!endTime) {
-    //   endTime = 
-    // }
+    let [ajaxData, endTime] = [localStorage.getItem('ajaxData'), mango.getLocalTime('end')]
     this.ajaxData = JSON.parse(ajaxData)
-    if (endTime) {
-      this.endTime = endTime
-    } else {
-      this.endTime = mango.indexTime()
-    }                                                                 
+    this.endTime = endTime                                                              
   },
   mounted(){
     console.log('初始化页面时的结束时间：', this.endTime, this.citySelect)
+    // this.getSalesData(this.citySelect.cityName, this.endTime)
     this.getAreaSalesData(this.endTime)
   },
   computed: {
@@ -93,7 +87,7 @@ export default {
   watch: {
     citySelect() {
       console.log('选择城市：', this.endTimeSelect, this.citySelect)
-      this.getSalesData(this.citySelect.cityName, this.endTime)
+      this.getSalesData(this.citySelect.cityName, this.endTimeSelect)
     },
     endTimeSelect() {
       console.log('选择的结束时间。')
@@ -124,33 +118,27 @@ export default {
     },
     // ajax请求
     getSalesData(cityName, date) {
-      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'sales', {
         cityLevel: 2,
         cityName: cityName,
-        date: date,
+        date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
-        mango.loading('close')
         if (res) {
           res = res.data
           _this.salesData = res
         }
       }).catch(function (error) {
-        mango.loading('close')
         console.log(11111, error);
       });
     },
     getAreaSalesData(time) {
-      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'area/sales', {
-        // date: time,
-        date: '2018-08',
+        date: time,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
-        mango.loading('close')
         if (res) {
           res = res.data
           _this.areaSalesData = res

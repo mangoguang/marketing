@@ -37,7 +37,8 @@ export default {
   data () {
     return {
       ajaxData: {},
-      storeSalesData: {}
+      storeSalesData: {},
+      endTime: mango.getLocalTime('end')
     }
   },
   created() {
@@ -75,13 +76,11 @@ export default {
     // },
     // ajax请求
     getStoreSalesData() {
-      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'shops/sales', {
-        date: '2018-08',
+        date: this.endTime,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
-        mango.loading('close')
         if (res) {
           res = res.data
           // let tempArr = res.yAxisData.map((item) => {

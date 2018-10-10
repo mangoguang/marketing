@@ -6,9 +6,16 @@ export default function(data, vertical, salesVal, title) {
   // salesVal标记是否为销售额，主要用于改变数据单位
   // 图标标题
   console.log('chartsData', data)
+  let seriesPosition
+  // vertical === horizontal,柱状图为水平方向，否则为垂直方向
+  if (vertical === 'horizontal') {
+    seriesPosition = 'right'
+  } else {
+    seriesPosition = 'inside'
+  }
   
-  let [seriesPosition, xAxis, yAxis, series] = [
-    'right', {
+  let [xAxis, yAxis, series] = [
+    {
     // 直角坐标相关设置。
       axisTick: {
         show: false
@@ -23,6 +30,7 @@ export default function(data, vertical, salesVal, title) {
         color: "#999"
       }
     }, {
+      triggerEvent: true,
       axisTick: {
         show: false
       },
@@ -33,9 +41,11 @@ export default function(data, vertical, salesVal, title) {
         }
       },
       axisLabel: {
-        color: "#999"
+        color: "#999",
+        rotate: 60
       }
     }, data.series.map((item, index) => {
+      console.log(item)
       return {
         name: item.name,
         type: 'bar',
@@ -46,7 +56,14 @@ export default function(data, vertical, salesVal, title) {
           }
         },
         data: salesVal ? item.data.map((key) => {
-          return (key/10000).toFixed(2)
+
+          if (parseInt(key) == 0) {
+            return key
+          } else {
+            console.log(key)
+            // seriesPosition = 'insideRight'
+            return (key/10000).toFixed(2)
+          }
         }) : item.data,
         markLine: data.siblings ? {
           // this.vertical === horizontal,柱状图为水平方向，否则为垂直方向
@@ -60,13 +77,12 @@ export default function(data, vertical, salesVal, title) {
         }
       }
     })]
-  // vertical === horizontal,柱状图为水平方向，否则为垂直方向
-  if (vertical === 'horizontal') {
-    yAxis.data = data.yAxisData
-  } else {
-    seriesPosition = 'top'
-    xAxis.data = data.yAxisData
-  }
+    if (vertical === 'horizontal') {
+      yAxis.data = data.yAxisData
+    } else {
+      xAxis.data = data.yAxisData
+    }
+
   return {
     title: title ? {
       text: title,

@@ -36,6 +36,11 @@ export default class Common {
       const url = `${this.path}${port}`
       let sign = this.getSign(params, _vue.ajaxData.token)
       // console.log('header参数', _vue, sign)
+      this.loading('open')
+      let loadingTimeOut = setTimeout(function() {
+        _this.loading('close')
+        clearTimeout(loadingTimeOut)
+      }, 5000)
       axios({
         method: 'get',
         url: url,
@@ -48,6 +53,7 @@ export default class Common {
         params: params
       })
       .then((res) => {
+        _this.loading('close')
         if (res.data) {
           resolve(res.data)
         } else {
@@ -63,6 +69,9 @@ export default class Common {
         text: '数据请求中...',
         spinnerType: 'fading-circle'
       })
+      let loadingTime = setTimeout(function() {
+        Indicator.close()
+      }, 5000)
     } else {
       Indicator.close()
     }
@@ -77,5 +86,14 @@ export default class Common {
       tempArr[1] = `0${tempArr[1]}`
     }
     return tempArr.join('-')
+  }
+  // 获取本地存储时间
+  getLocalTime(type) {
+    let time = localStorage.getItem(`${type}Time`)
+    if (time) {
+      return time
+    } else {
+      return this.indexTime()
+    } 
   }
 }

@@ -1,59 +1,58 @@
 <template>
-  <div class="login2" :style="{background:bgcolors}"> 
-    <div class="topBar" :style="{background:topBarcolors}">
+  <div class="login2" > 
+    <div class="topBar">
       <tips-error :style="{display:display}"></tips-error>
       <tips-web :style="{display:display1}"></tips-web>
-      <div class="line" :style="{background:lineTopcolors}"></div>
-      <div class="sriangle" :style="{'border-bottom-color':bgcolors,'border-right-color':bgcolors}"></div>
+      <div class="line"></div>
+      <div class="sriangle" ></div>
     </div>
-  <div class="login" :style="{background:bgcolors}">
-    <div class="box" :style="{background:bgcolors}">
-      <h1 :style="{color:titlecolors}">Hi,欢迎使用慕思营销助手</h1>
-      <form >
-        <ul>
-          <li>
-            <label for="account" v-bind:class='`${usname}`'><span :style="{color:unamecolors}">账号</span></label>
-            <input id="account" type="text"  v-bind:class="`${username}`"
-              v-on:focus='focusName()'  @blur="blurName()"
-              v-model="ruleForm.user" maxlength="15" autocomplete="off" 
-              :style="{'border-bottom-color':inputLinecolors,color:inputcolors}">
-          </li>
-          <li>
-            <label for="password" v-bind:class='`${upwd}`'><span :style="{color:unamecolors}">密码</span></label>
-            <input id="password" type="password"  v-bind:class="`${userpassword}`"
-              @focus ='focusPwd()'  @blur="blurPwd()"
-              v-model="ruleForm.pwd" maxlength="15" :style="{'border-bottom-color':inputLinecolors}"> 
-          </li>
-          <li class="tips clearfix">
-            <input type="checkbox" id="remember" name="remember" value='remember' 
-            v-model="checked" >
-            <label for="remember" class="rem"></label>
-            <label for="remember"><div class="rempwd" :style="{color:unamecolors}">记住密码</div></label>
-            <div class="forgetpwd" :style="{color:unamecolors}" @click="forgetPwd">忘记密码?</div>
-          </li>
-          <li>
-            <!-- <button type="button" @click="submitForm('ruleForm')" 
-            :style="{background:submitcolors,color:logincolors}">登录</button> -->
-            <btn
-            @click.native="submitForm('ruleForm')"
-            :style="{background:submitcolors,color:logincolors}"
-            :text='text'>
-            </btn>
-          </li>
-        </ul>
-      </form>
-    </div>
-  </div>
-   <div class="wechatLogin" :style="{background:bgcolors}">
-      <div class="wechatText" >
-        <hr>
-        <span>第三方账号登录</span>
-        <hr>
+    <div class="login">
+      <div class="box">
+        <h1>Hi,欢迎使用慕思营销助手</h1>
+        <form >
+          <ul>
+            <li 
+              is='myinput'
+              :type='type1'
+              :labelContent='account'
+              v-model="inputValue1"
+              autocomplete="off"
+              :Msg='nameMsg'>
+            </li>
+            <li 
+              is='myinput'
+              :type='type2'
+              :labelContent='pwd'
+              v-model="inputValue2"
+              :Msg='pwdMsg'>
+            </li>
+            <li class="tips clearfix">
+              <input type="checkbox" id="remember" name="remember" value='remember' 
+              v-model="checked" >
+              <label for="remember" class="rem"></label>
+              <label for="remember">
+                <div class="rempwd" >记住密码</div>
+              </label>
+              <div class="forgetpwd" @click="forgetPwd">忘记密码?</div>
+            </li>
+            <li>
+              <btn
+              @click.native="submitForm('ruleForm')"
+              :text='text'>
+              </btn>
+            </li>
+          </ul>
+        </form>
       </div>
-      <div class="wechat-icon"></div>
     </div>
-    <!-- <div class="changeColor1" @click="changeColor1" >主题1</div>
-    <div class="changeColor2" @click="changeColor2" >主题2</div> -->
+    <div class="wechatLogin">
+        <div class="wechatText" >
+          <hr>
+          <span>第三方账号登录</span>
+          <hr>
+        </div>
+        <div class="wechat-icon"></div>
+    </div>
   </div>
 </template>
 
@@ -66,6 +65,7 @@ import md5 from 'js-md5'
 import tipsError from '../components/charts/tipsError'
 import tipsWeb from '../components/charts/tipsWeb'
 import btn from '../components/btn'
+import myinput from '../components/myInput'
 
 export default {
   name: 'login',
@@ -73,36 +73,27 @@ export default {
     // MyChart
     tipsError,
     tipsWeb,
-    btn
+    btn,
+    myinput
   },
   data () {
     return {
       height: document.documentElement.clientHeight,
-      username:'userName',
       text:'登录',
-      userpassword:'userPassword',
-      usname:'usname',
-      upwd:'upwd',
-      ruleForm:{
-        user:'',
-        pwd:''
-      },
       checked:true,
-      topBarcolors:'#e1e1e1',
-      bgcolors:'#fff',
-      lineTopcolors:'#020202',
-      titlecolors:'#010101',
-      unamecolors:'#909090',
-      inputLinecolors:'#ccc',
-      inputcolors:'#262628',
-      submitcolors:'#363636',
-      logincolors:'#eff9fd',
       display:'none',
       display1:'none',
-      key:true
+      key:true,
+      type1:'text',
+      type2:'password',
+      account:'账号',
+      pwd:'密码',
+      inputValue1:'',
+      inputValue2:'',
+      nameMsg:'',
+      pwdMsg:''
+     
     }
-    
-   
   },
   mounted(){
     // let obj = {
@@ -111,91 +102,21 @@ export default {
     //   work: 'qianduan'
     // }
     // mango.getSign(obj)
-    // console.log(mango.getSign1)
-    //获取缓存
-     this.getAccountMsg()
-      if(this.ruleForm.user.length || this.ruleForm.pwd.length){
-        this.username = 'userName1'
-        this.usname = 'usname2'
-        this.userpassword = 'userPassword1'
-        this.upwd = 'upwd2'
-      }else{
-        this.usname = 'usname3'
-        this.upwd = 'upwd3'
-      }
+    // console.log(mango.getSign1)  
   },
-  computed: {
-
+  created(){
+    this.getAccountMsg()
   },
   methods:{
-    changeColor1:function(){
-      this.topBarcolors = '#e1e1e1'
-      this.bgcolors = '#fff'
-      this.lineTopcolors = '#020202'
-      this.titlecolors = '#010101'
-      this.unamecolors = '#909090'
-      this.inputLinecolors = '#ccc'
-      this.inputcolors = '#262628'
-      this.submitcolors = '#363636'
-      this.logincolors = '#eff9fd'
-    },
-    changeColor2:function(){
-      this.topBarcolors = '#39424b'
-      this.bgcolors = '#2e353d'
-      this.lineTopcolors = '#fff'
-      this.titlecolors = '#fefefe'
-      this.unamecolors = '#95999c'
-      this.inputLinecolors = '#2b323a'
-      this.inputcolors = '#fff'
-      this.submitcolors = '#f8f8f8'
-      this.logincolors = '#2e353d'
-    },
-     //光标获得焦点，失去焦点触发的事件。
-    focusName : function(){
-      if(this.ruleForm.user.length){
-        this.username = 'userName1'
-        this.usname = 'usname2'
-      }else{
-        this.username = 'userName1'
-        this.usname = 'usname1'
-      }  
-    },
-    focusPwd : function(){
-      if(this.ruleForm.pwd.length){
-        this.userpassword = 'userPassword1'
-        this.upwd = 'upwd2'
-      }else{
-        this.userpassword = 'userPassword1'
-        this.upwd = 'upwd1'
-      }
-    },
-    blurName:function(){
-      if(this.ruleForm.user.length){
-        this.username = 'userName1'
-        this.usname = 'usname2'
-      }else{
-        this.username = 'userName'
-        this.usname = 'usname'
-      }
-    },
-    blurPwd:function(){
-      if(this.ruleForm.pwd.length){
-        this.userpassword = 'userPassword1'
-        this.upwd = 'upwd2'
-      }else{
-        this.userpassword = 'userPassword'
-        this.upwd = 'upwd'
-      }
-    },
     //去除input输入框的左边空格
     trimStr: function(str) {
-      return str.replace(/(^\s*)/g, "")
+      return str.replace(/(^\s*)|(\s*$)/g, "");
     }, 
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
     submitForm(formName) {
       let _this = this
       if (this.checked) {
-        this.setAccountMsg(this.ruleForm.user, this.ruleForm.pwd);
+        this.setAccountMsg(this.inputValue1, this.inputValue2);
       } else {
         this.setAccountMsg('', '');
       }
@@ -208,8 +129,8 @@ export default {
       //登陆接口
        function getApi() {
         mango.loading('open')
-        let Name = _this.ruleForm.user 
-        let Pwd = _this.ruleForm.pwd 
+        let Name = _this.inputValue1 
+        let Pwd = _this.inputValue2 
         const url = `${mango.port}app/login.api`
       // return new Promise((resolve, reject) => {
       axios({
@@ -265,11 +186,13 @@ export default {
       let accountMsg = localStorage.getItem('accountMsg')
       let oldaccountMsg = JSON.parse(accountMsg)
       if(oldaccountMsg){
-        this.ruleForm.pwd = oldaccountMsg['pwd']
         // 去除空格
         let trimName = this.trimStr(oldaccountMsg['name'])
-        this.ruleForm.user = trimName
-      //  console.log('获取本地缓存的账号信息', oldaccountMsg['name'],oldaccountMsg['pwd'])
+        let trimPwd = this.trimStr(oldaccountMsg['pwd'])
+        this.nameMsg = trimName
+        this.pwdMsg = trimPwd
+        this.inputValue2 = trimPwd
+        this.inputValue1 = trimName
       }
     },
     forgetPwd:function(){
@@ -284,11 +207,6 @@ export default {
 @font-face {
   font-family: 'PINGPANG';
   src: url('../assets/font/PingFang Regular.ttf');
-}
-.clearfix::after{
-  content:'';
-  display: block;
-  clear: both;
 }
 .login2{
   font-family: 'PINGPANG';
@@ -329,151 +247,6 @@ export default {
       line-height: 6.4vw;
     }
     ul{
-      position: relative;
-      .usname,.upwd{
-        span {
-        font-size: 4vw;
-        letter-spacing: 5px;
-        color: #909090;   
-        line-height: 10vw;
-        }
-      }
-      //span位置
-      .usname{
-        position: absolute;
-        left: 1px;
-        top: -4px;
-        animation: moveDown .5s;
-        @keyframes moveDown {
-          from{
-            top: -6.5vw;
-          }
-          to{
-            top: -4px;
-          }
-        }
-        }
-      .usname1{
-        position: absolute;
-        left: 1px;
-        top: -6.5vw;
-        animation: moveUP .5s;
-        @keyframes moveUP {
-          from{
-            top: 5px;
-          }
-          to{
-            top: -6.5vw;
-          }
-        }
-        span{
-          color: #bebebe;
-          font-size:3.2vw;
-          letter-spacing: 4px; 
-        }
-      }
-      .usname2{
-       position: absolute;
-       left: 1px;
-       top: -6.5vw;
-        span{
-          color: #909090;
-          font-size:3.2vw;
-          letter-spacing: 4px; 
-        }
-      }
-      .usname3{
-        position: absolute;
-        left: 1px;
-        top: -4px;
-         span{
-          font-size: 4vw;
-          letter-spacing: 5px;
-          color: #909090;   
-          line-height: 10vw; 
-        }
-      }
-      .upwd{
-        position: absolute;
-        left: 1px;
-        top: 17.2vw;
-        animation: moveDown1 .5s;
-        @keyframes moveDown1 {
-          from{
-            top: 12vw;
-          }
-          to{
-            top: 17.2vw;
-          }
-        }
-      }
-      .upwd1{
-        position: absolute;
-        left: 1px;
-        top: 12vw;
-        animation: moveUp1 .5s;
-        @keyframes moveUp1 {
-          from{
-            top: 17.2vw;
-          }
-          to{
-            top: 12vw;
-          }
-        }
-        span{
-          color: #bebebe;
-          font-size:3.2vw;
-          letter-spacing: 4px; 
-        }
-        }
-       .upwd2{
-        position: absolute;
-        left: 1px;
-        top: 12vw;
-         span{
-          color: #bebebe;
-          font-size:3.2vw;
-          letter-spacing: 4px; 
-        }
-        }
-       .upwd3{
-        position: absolute;
-        left: 1px;
-        top: 17.2vw;
-        span{
-          font-size: 4vw;
-          letter-spacing: 5px;
-          color: #909090;   
-          line-height: 10vw; 
-        }
-       }
-      .userName,.userPassword{
-        display: block;
-        border-bottom: 1px solid #ccc;
-        width: 80vw;
-        height: 8vw;
-        font-size: 4vw;
-        margin-top: 10vw;
-        color: #262628
-      }
-      .userName1{
-        display: block;
-        border-bottom: 2px solid #ccc;
-        width: 80vw;
-        height: 8vw;
-        font-size: 4vw;
-        margin-top: 10vw;
-        color: #262628;     
-        }
-      .userPassword1{
-        display: block;
-        border-bottom: 2px solid #ccc;
-        width: 80vw;
-        height: 8vw;
-        font-size: 4vw;
-        margin-top: 10vw;
-        color: #262628;
-      }
       //按钮
       .tips{
         margin-top: 2vw;
@@ -541,22 +314,6 @@ export default {
         background: url(../assets/imgs/wechat.png) no-repeat center;
         background-size: 100% 100%
       }
-    }
-    .changeColor1{
-     width: 20vw;
-     height: 10vw;
-     text-align: center;
-     line-height: 10vw;
-     background: #e1e1e1;
-     border-radius: 4px;
-    }
-    .changeColor2{
-     width: 20vw;
-     height: 10vw;
-     text-align: center;
-     line-height: 10vw;
-     background: #2e353d;
-     border-radius: 4px;
     }
 }
 </style>
