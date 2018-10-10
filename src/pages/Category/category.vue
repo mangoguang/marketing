@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="category">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}12`">
         <div class="barBox">
@@ -62,16 +63,19 @@ import Bar from '../../components/charts/bar'
 import Pie from '../../components/charts/pie'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import mybanner from '../../components/banner'
 export default {
   name: 'brand',
   components: {
-    Bar, Pie, chartsTit, RouterLink
+    Bar, Pie, chartsTit, RouterLink,mybanner
   },
   data () {
     return {
       ajaxData: {},
       brandData: {}, 
-      categoryData: {}
+      categoryData: {},
+      title:'',
+      turnPath:'./ReportForms'
     }
   },
   created() {

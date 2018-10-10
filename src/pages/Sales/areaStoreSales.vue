@@ -1,11 +1,12 @@
 <!-- <keep-alive> -->
 <template>
   <div class="areaStoreSales">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
       <ul class="areaStoreBox">
         <li v-for="(item, index) in areaStoreSalesData" :key="`${index}areaStore`">
-          <Banner></Banner>
+          
           <h4>{{item.name}}</h4>
           <p></p>
           <div :id = "`areaStoreSalesContainer${index}`"></div>
@@ -34,19 +35,21 @@ Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
-import Banner from '../../components/banner'
+import mybanner from '../../components/banner'
 export default {
   name: 'areaStoreSales',
   components: {
     Bar,
     chartsTit,
     RouterLink,
-    Banner
+    mybanner
   },
   data () {
     return {
       ajaxData: {},
-      areaStoreSalesData: []
+      areaStoreSalesData: [],
+      title:'销售额报表',
+      turnPath:'./sales'
     }
   },
   created() {

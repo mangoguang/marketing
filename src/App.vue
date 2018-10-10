@@ -1,6 +1,7 @@
 <template>
   <div id="app" :style="{'min-height': `${height}px`, background: '#fff'}">
-    <router-view v-on:newPwd='getPwd' v-bind:nweP='nweP'></router-view>
+    <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
+    <router-view> </router-view>
   </div>
 </template>
 
@@ -9,21 +10,22 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import store from './store'
 import 'mint-ui/lib/style.min.css'
+// import mybanner from '../src/components/banner'
 
 export default{
   name: 'app',
+  props:['title','turnPath'],
   store,
+  // components:{mybanner},
   data(){
     return{
-      height: window.innerHeight,
-      nweP:''
+      height: window.innerHeight
+      
     }
   },
   methods:{
     //获取更改后新的密码，传到登录页面更新缓存。
-    getPwd(data){
-      this.nweP = data
-    }
+   
   }
 }
 </script>

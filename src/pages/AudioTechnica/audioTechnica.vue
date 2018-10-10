@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <ul class="audioTechnica">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <!-- 整体进店数 -->
     <li class="barBox">
       <chartsTit :text="'进店数-整体'">
@@ -85,10 +86,11 @@ import Bar from '../../components/charts/bar'
 import Pie from '../../components/charts/pie'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import mybanner from '../../components/banner'
 export default {
   name: 'audioTechnica',
   components: {
-    Bar, Pie, chartsTit, RouterLink
+    Bar, Pie, chartsTit, RouterLink,mybanner
   },
   data () {
     return {
@@ -98,7 +100,9 @@ export default {
       achieveRatioTotalData: {},
       perAchieveRatioData: {},
       orderFormTotalData: {},
-      perOrderFormData: {}
+      perOrderFormData: {},
+      title:'铁三角报表',
+      turnPath:'./ReportForms'
     }
   },
   created() {

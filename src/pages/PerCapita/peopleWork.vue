@@ -1,5 +1,6 @@
 <template>
   <div class="peopleWork">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'人效-整体'">
         <h6>单位：万元</h6>
@@ -34,19 +35,23 @@ Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import mybanner from '../../components/banner'
 
 export default {
   name:'peopleWork',
   components:{
     Bar,
     chartsTit,
-    RouterLink
+    RouterLink,
+    mybanner
   },data(){
     return{
       ajaxData: {},
       peopleWorkData: {}, 
       areaPeopleWorkData: {},
-      height: 100
+      height: 100,
+      title:'人效报表',
+      turnPath:'./ReportForms'
     }
   }, created() {
     // 获取本地存储信息

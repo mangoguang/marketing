@@ -79,6 +79,15 @@ li{
   position: relative;
   height: 11.33vw;
 }
+input{
+  outline-style: none;
+  outline-width: 0;
+  border-style: none;
+  text-shadow: none;
+  box-shadow: none;
+  outline-color: transparent
+
+}
 .labelType{
   font-size: 4vw;
   letter-spacing: .66vw;
@@ -147,7 +156,9 @@ li{
       height: 8vw;
       font-size: 4vw;
       margin-top: 10vw;
-      color: #262628
+      color: #262628;
+      -webkit-appearance:none;/*清除ios默认圆角*/
+      border-radius:0;
     }
     .inputStatus1{
       display: block;
@@ -156,7 +167,9 @@ li{
       height: 8vw;
       font-size: 4vw;
       margin-top: 10vw;
-      color: #262628;     
+      color: #262628;  
+      -webkit-appearance:none;/*清除ios默认圆角*/
+      border-radius:0;   
       }
 
 
