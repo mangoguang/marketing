@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="personalSales">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="`${shopName}-职员销售额对比`"></chartsTit>
       <div ref="personalSalesContainer" ></div>
@@ -27,17 +28,20 @@ import Bar from '../../components/charts/bar'
 import Pie from '../../components/charts/pie'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import mybanner from '../../components/banner'
 export default {
   name: 'personalSales',
   props: ['data'],
   components: {
-    Bar, Pie, chartsTit, RouterLink
+    Bar, Pie, chartsTit, RouterLink,mybanner
   },
   data () {
     return {
       ajaxData: {},
       personalSalesData: {},
-      shopName: this.$route.query.name
+      shopName: this.$route.query.name,
+      turnPath:'./storeSales',
+      title:'销售额报表' 
     }
   },
   created() {

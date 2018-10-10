@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="sales">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
@@ -44,20 +45,24 @@ import Bar from '../../components/charts/bar'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
 import SelectComponent from '../../components/select/selectComponent'
+import mybanner from '../../components/banner'
 export default {
   name: 'sales',
   components: {
     Bar,
     chartsTit,
     RouterLink,
-    SelectComponent
+    SelectComponent,
+    mybanner
   },
   data () {
     return {
       ajaxData: {},
       endTime: '',
       salesData: {}, 
-      areaSalesData: {}
+      areaSalesData: {},
+      title:'销售额报表',
+      turnPath:'./ReportForms'
     }
   },
   created() {

@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="brand">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}11`">
         <div class="barBox">
@@ -63,10 +64,11 @@ import Bar from '../../components/charts/bar'
 import Pie from '../../components/charts/pie'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import mybanner from '../../components/banner'
 export default {
   name: 'brand',
   components: {
-    Bar, Pie, chartsTit, RouterLink
+    Bar, Pie, chartsTit, RouterLink,mybanner
   },
   data () {
     return {
@@ -75,7 +77,10 @@ export default {
       categoryData: {},
       type: this.$route.query.type,
       typeName: this.$route.query.type === 'brand' ? '品牌' : '品类',
-      port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion'
+      port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion',
+      title:'',
+      turnPath:'./ReportForms'
+
     }
   },
   created() {
@@ -83,6 +88,7 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     // this.getBrandData()
+    this.title = this.typeName + '报表'
   },
   mounted(){
     // Vue.$set(0, {name: 1})

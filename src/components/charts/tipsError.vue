@@ -33,13 +33,13 @@ export default {
     background: #fff;
     color: #cc2934;
     font-size: 3.46vw;
-    animation: move 2s;
+    animation: move 4s;
     @keyframes move {
       from{
         top: -9vw
       }
       to{
-        top: 8vw
+        top: 5vw
       }
       
     }

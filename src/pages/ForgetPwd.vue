@@ -1,5 +1,6 @@
 <template> 
   <div class="forgetPwd">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="banner">
       <img src="../assets/imgs/banner1.png" alt="头部背景" class="img1">
       <img src="../assets/imgs/banner2.png" alt="头部背景" class="img2">
@@ -16,7 +17,7 @@
         </li>
         <li class="getCode">
           <input 
-            @click="getCode"
+            @touchend="getCode"
             v-model="getCodeValue"  
             type="text" 
             readonly>
@@ -29,7 +30,7 @@
           </li>
         <li>
           <btn 
-          @click.native="submitForm('changePwd')"
+          @touchend.native="submitForm('changePwd')"
           :text='text'>
           </btn>
         </li>                    
@@ -49,9 +50,10 @@ import 'mint-ui/lib/style.css'
 import {Indicator} from 'mint-ui'
 import btn from '../components/btn'
 import myinput from '../components/myInput'
+import mybanner from '../components/banner'
 
 export default {
-components:{btn,myinput},
+components:{btn,myinput,mybanner},
 data () {
     return {
       height: document.documentElement.clientHeight,
@@ -61,7 +63,9 @@ data () {
       getPhoneNum:'请输入手机号',
       verificationCode:'验证码',
       inputValue1:'',
-      inputValue2:'' 
+      inputValue2:'',
+      title:'忘记密码',
+      turnPath:'/' 
     }
   },
   methods:{
@@ -127,12 +131,9 @@ data () {
   font-family: 'PINGPANG';
   background:#fff;
   height: 100vh;
-  .login{
-    background: #fff;
-  }
   .banner{
     width: 100vw;
-    height: 23vw;
+    height:  16.466vw;
     position: relative;
     .img1{
       position: absolute;
@@ -150,7 +151,7 @@ data () {
   .content{
     width: 80vw;
     margin: 0 auto;
-    margin-top:7.73vw; 
+    margin-top:15.46vw; 
     h1{
       font-size: 4vw;
       text-align: center;
@@ -161,18 +162,18 @@ data () {
       position: relative;
       .getCode{
         position: absolute;
-        top: -1vw;
+        top: -.4vw;
         right: 0; 
         input{
           font-size: 3.46vw;
           color: #666;
           width: 25vw;
-          height:7.46vw ;
           border: 1px solid #e1e1e1;
           text-align: center;
-          line-height: 7.46vw;
+          line-height: 7vw;
           border-radius: 2.66vw;
           background: #f8f8f8;
+          outline: none
         }
         
       }

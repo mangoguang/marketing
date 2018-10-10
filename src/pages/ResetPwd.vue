@@ -1,5 +1,6 @@
 <template>
   <div class="resetPwd">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="banner">
       <img src="../assets/imgs/banner1.png" alt="头部背景" class="img1">
       <img src="../assets/imgs/banner2.png" alt="头部背景" class="img2">
@@ -22,7 +23,7 @@
           </li>
           <li>
             <btn
-              @click.native="submitForm('resetForm')"
+              @touchend.native="submitForm('resetForm')"
               :text='text'>
             </btn>
           </li>                    
@@ -40,9 +41,9 @@ import mango from "../js";
 import md5 from 'js-md5'
 import btn from '../components/btn'
 import myinput from '../components/myInput'
-
+import mybanner from '../components/banner'
 export default {
-  components:{btn,myinput},
+  components:{btn,myinput,mybanner},
   data () {
     return {
       height: document.documentElement.clientHeight,
@@ -51,8 +52,9 @@ export default {
       labelContent:'新密码',
       labelContent1:'确认新密码',
       inputValue1:'',
-      inputValue2:''
-      
+      inputValue2:'',
+      title:'修改密码',
+      turnPath:'./ForgetPwd'  
     }
   },
   mounted(){
@@ -129,12 +131,9 @@ export default {
   font-family: 'PINGPANG';
   height: 100vh;
   background: #fff;
-  .login{
-    background: #fff;
-  }
   .banner{
     width: 100vw;
-    height: 23vw;
+    height: 16.466vw;
     position: relative;
     .img1{
       position: absolute;
@@ -152,7 +151,7 @@ export default {
   .content{
     width: 80vw;
     margin: 0 auto;
-    margin-top:7.73vw; 
+    margin-top:15.46vw; 
     h1{
       font-size: 4vw;
       text-align: center;

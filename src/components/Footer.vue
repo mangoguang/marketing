@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
-    <ul @click="onclick">
-      <li id="1">    
+    <ul >
+      <li id="1" @touchend="touchend">    
       <!-- <router-link to="/" >  -->
       <div class='iconHome'></div>
       <p class="iconCharP">首页</p>
@@ -13,19 +13,19 @@
       <p class="iconCharP">报表</p>  
       </router-link>
     </li>
-    <li id="3">
+    <li id="3" @touchend="touchend">
       <!-- <router-link to="/" > -->
        <div class="iconSalary" ></div>
       <p class="iconCharP">财务</p>
       <!-- </router-link> -->
     </li>
-    <li id="4">
+    <li id="4" @touchend="touchend">
       <!-- <router-link to="/" > -->
        <div class="iconMsg" ></div>
       <p class="iconCharP">消息</p>
       <!-- </router-link> -->
     </li>
-    <li id="5">
+    <li id="5" @touchend="touchend">
       <!-- <router-link to="/" > -->
        <div class="iconPerson" ></div>
       <p class="iconCharP">个人</p>
@@ -47,11 +47,12 @@ export default {
     
   },
   methods:{
-    onclick:function(e){
-      console.log(e.path[1].id)
-      if(e.path[1].id){
-        alert('该模块尚未开发')
-      }
+    touchend:function(e){
+      // console.log(e.path[1].id)
+      // if(e.path[1].id){
+      //   alert('该模块尚未开发')
+      // }
+      alert('该模块尚未开发')
     }
   }
 }
@@ -60,13 +61,13 @@ export default {
 <style lang="scss" scoped>
 .footer{
   width: 100vw;
-  height: 22vw;
   position: fixed;
   bottom: 0;
   background: #f8f8f8;
   ul{
     display: flex;
-    justify-content: space-around; 
+    justify-content: space-around;
+    padding-bottom: 1vw; 
     li{
       margin-top: 2vw;
       .iconHome{

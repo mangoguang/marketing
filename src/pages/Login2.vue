@@ -33,11 +33,11 @@
               <label for="remember">
                 <div class="rempwd" >记住密码</div>
               </label>
-              <div class="forgetpwd" @click="forgetPwd">忘记密码?</div>
+              <div class="forgetpwd" @touchend="forgetPwd">忘记密码?</div>
             </li>
             <li>
               <btn
-              @click.native="submitForm('ruleForm')"
+              @touchend.native="submitForm('ruleForm')"
               :text='text'>
               </btn>
             </li>
@@ -92,6 +92,7 @@ export default {
       inputValue2:'',
       nameMsg:'',
       pwdMsg:''
+      
      
     }
   },
@@ -102,10 +103,12 @@ export default {
     //   work: 'qianduan'
     // }
     // mango.getSign(obj)
-    // console.log(mango.getSign1)  
+    // console.log(mango.getSign1) 
+     
   },
   created(){
     this.getAccountMsg()
+     
   },
   methods:{
     //去除input输入框的左边空格
@@ -212,7 +215,7 @@ export default {
   font-family: 'PINGPANG';
   .topBar{
     width: 100vw;
-    height: 44vw;
+    height: 43.78vw;
     background: #e1e1e1;
     box-sizing: border-box;
     padding-top: 22vw;
@@ -239,7 +242,7 @@ export default {
     width: 80vw;
     height: 69.2vw;
     margin: 0 auto;
-    margin-top:8.133vw; 
+    padding:8.133vw; 
     h1{
       font-size: 4vw;
       text-align: center;

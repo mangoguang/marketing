@@ -1,5 +1,6 @@
 <template>
   <div class="areaEffectiveness">
+    <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'坪效-整体'"></chartsTit>
       <Bar
@@ -28,19 +29,22 @@ Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
 import chartsTit from '../../components/charts/title'
 import RouterLink from '../../components/charts/routerLink'
+import mybanner from '../../components/banner'
 
 export default {
   name:'areaEffectiveness',
   components:{
     Bar,
     chartsTit,
-    RouterLink
+    RouterLink,
+    mybanner
   },data(){
     return{
       ajaxData: {},
       areaEffectivenessData: {}, 
-      areaEffectivenessShopData: {}
-     
+      areaEffectivenessShopData: {},
+      title:'坪效报表',
+      turnPath:'./ReportForms'
     }
   },
   created() {

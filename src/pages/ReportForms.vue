@@ -11,7 +11,7 @@
     <div class="forms">
       <div class="title">报表模块</div>
       <ul>
-        <li v-for="(forms,index) in x" :key="index" @click="linkTo(index)" :class="`${index}`">
+        <li v-for="(forms,index) in x" :key="index" @touchend="linkTo(index)" :class="`${index}`">
           <div class="icon" :style="{background:t[index].color}">
             <div class="icon-forms">
               <img :src ="`./static/images/char${index+1}.png`" alt="">
@@ -63,6 +63,7 @@ export default {
   created(){
     this.t = this.forms
   //  console.log(this.forms[0].text)
+    
   },
   methods:{
     linkTo:function(index){
@@ -99,6 +100,7 @@ export default {
     margin: 3vw auto;
     background: #e1e1e1;
     position: relative;
+    margin-top: 8vw;
     .search-icon{
       background: url(../assets/imgs/search.png) no-repeat;
       background-size: 100% 100%;
