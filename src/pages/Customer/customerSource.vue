@@ -1,5 +1,5 @@
 <template>
-  <div class="customerSource">
+  <div class="customerSource paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'客户来源-整体'"></chartsTit>

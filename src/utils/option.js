@@ -1,3 +1,4 @@
+import mango from '../js/index'
 export default function(data, vertical, salesVal, title) {
   // 参数说明：
   // data：图标数据
@@ -5,6 +6,7 @@ export default function(data, vertical, salesVal, title) {
   // height设置图标容器main的高度
   // salesVal标记是否为销售额，主要用于改变数据单位
   // 图标标题
+  mango.sortArrs(data)
   console.log('chartsData', data)
   let seriesPosition
   // vertical === horizontal,柱状图为水平方向，否则为垂直方向
@@ -45,7 +47,8 @@ export default function(data, vertical, salesVal, title) {
         rotate: 60
       }
     }, data.series.map((item, index) => {
-      console.log(item)
+      console.log('数据', item)
+      // item.sort(mango.compare(''))
       return {
         name: item.name,
         type: 'bar',
@@ -58,9 +61,8 @@ export default function(data, vertical, salesVal, title) {
         data: salesVal ? item.data.map((key) => {
 
           if (parseInt(key) == 0) {
-            return key
+            return ''
           } else {
-            console.log(key)
             // seriesPosition = 'insideRight'
             return (key/10000).toFixed(2)
           }
@@ -73,7 +75,7 @@ export default function(data, vertical, salesVal, title) {
             {yAxis : salesVal ? (data.siblings/10000) : data.siblings, name: '平均值'}
           ]
         } : {
-          data: [{type : 'average', name : '平均值'}]
+          // data: [{type : 'average', name : '平均值'}]
         }
       }
     })]

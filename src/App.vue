@@ -124,4 +124,7 @@ a:hover{text-decoration:none;}
   background: #fff;
   border-bottom: 1vw solid #f8f8f8;
 }
+.paddingTop{
+  padding-top: 62px;
+}
 </style>

@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="sales">
+  <div class="sales paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'整体销售额对比'">

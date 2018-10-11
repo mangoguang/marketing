@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <ul class="audioTechnica">
+  <ul class="audioTechnica paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
     <!-- 整体进店数 -->
     <li class="barBox">
