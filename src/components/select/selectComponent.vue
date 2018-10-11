@@ -50,12 +50,12 @@ export default {
     handleConfirm(date) {
       // 选择时间
       let str = `${this.timeType}Time`
-      // this[str] = mango.indexTime(date)
-      this[str] = date.toLocaleDateString().split('/').slice(0, 2)
-      if (this[str][1] < 10) {
-        this[str][1] = `0${this[str][1]}`
-      }
-      this[str] = this[str].join('-')
+      this[str] = mango.indexTime(date)
+      // this[str] = date.toLocaleDateString().split('/').slice(0, 2)
+      // if (this[str][1] < 10) {
+      //   this[str][1] = `0${this[str][1]}`
+      // }
+      // this[str] = this[str].join('-')
       console.log('选择的时间： ', this[str])
       localStorage.setItem(str, this[str])
       this.setEndTimeSelect(this[str])

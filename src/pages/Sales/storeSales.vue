@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="storeSales">
+  <div class="storeSales paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
@@ -41,6 +41,7 @@ export default {
     return {
       ajaxData: {},
       storeSalesData: {},
+      endTime: mango.getLocalTime('end'),
       turnPath:'./sales',
       title:'销售额报表'
     }
@@ -80,13 +81,11 @@ export default {
     // },
     // ajax请求
     getStoreSalesData() {
-      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'shops/sales', {
-        date: '2018-08',
+        date: this.endTime,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
-        mango.loading('close')
         if (res) {
           res = res.data
           // let tempArr = res.yAxisData.map((item) => {

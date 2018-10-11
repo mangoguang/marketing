@@ -40,9 +40,8 @@ import VueRouter from "vue-router";
 import mango from "../js";
 import md5 from 'js-md5'
 import btn from '../components/btn'
-import myinput from '../components/myinput'
+import myinput from '../components/myInput'
 import mybanner from '../components/banner'
-
 export default {
   components:{btn,myinput,mybanner},
   data () {

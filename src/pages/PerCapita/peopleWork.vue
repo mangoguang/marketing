@@ -1,5 +1,5 @@
 <template>
-  <div class="peopleWork">
+  <div class="peopleWork paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'人效-整体'">

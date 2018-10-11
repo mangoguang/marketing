@@ -19,6 +19,7 @@
 
 <script>
 export default {
+  name: 'myInput',
   props:['type','labelContent','value','Msg'],
   data(){
     return{

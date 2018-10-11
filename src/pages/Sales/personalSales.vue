@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="personalSales">
+  <div class="personalSales paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="`${shopName}-职员销售额对比`"></chartsTit>
@@ -68,17 +68,15 @@ export default {
   },
   methods:{
     getPersonalSalesData() {
-      mango.loading('open')
       let _this = this
       mango.getAjax(this, 'shop/sales', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId,
         shopId: this.$route.query.shopId
       }).then((res) => {
-        mango.loading('close')
         if (res) {
           res = res.data
-          res.average = res.shopAvg
+          // res.average = res.shopAvg
           console.log('店内员工销售额：', res)
           _this.personalSalesData = res
         }

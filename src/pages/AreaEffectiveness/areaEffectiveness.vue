@@ -1,5 +1,5 @@
 <template>
-  <div class="areaEffectiveness">
+  <div class="areaEffectiveness paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'坪效-整体'"></chartsTit>

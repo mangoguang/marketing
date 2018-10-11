@@ -160,7 +160,7 @@ export default {
               {yAxis : this.salesVal ? (this.barData.siblings/10000) : this.barData.siblings, name: '平均值'}
             ]
           } : {
-            data: [{type : 'average', name : '平均值'}]
+            // data: [{type : 'average', name : '平均值'}]
           }
         }
       })

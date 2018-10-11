@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <ul class="personal">
+  <ul class="personal paddingTop">
     <mybanner :title='mytitle' :turnPath='turnPath'/>
     <!-- 整体进店数 -->
     <li class="barBox">
