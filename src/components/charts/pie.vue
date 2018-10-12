@@ -67,7 +67,7 @@ export default {
           {
             name: this.category,
             type: 'pie',
-            radius : '55%',
+            radius : '30%',
             center: ['50%', '50%'],
             data: this.series(),
             itemStyle: {

@@ -1,21 +1,20 @@
 import mango from '../js/index'
 export default function(data, vertical, salesVal, title) {
+  mango.sortArrs(data)
   // 参数说明：
   // data：图标数据
   // vertical设置柱状图的横向排布和纵向排布
   // height设置图标容器main的高度
   // salesVal标记是否为销售额，主要用于改变数据单位
   // 图标标题
-  mango.sortArrs(data)
-  console.log('chartsData', data)
   let seriesPosition
   // vertical === horizontal,柱状图为水平方向，否则为垂直方向
   if (vertical === 'horizontal') {
     seriesPosition = 'right'
   } else {
-    seriesPosition = 'inside'
+    seriesPosition = 'top'
   }
-  
+  console.log('option对象数据：', data)
   let [xAxis, yAxis, series] = [
     {
     // 直角坐标相关设置。
@@ -47,7 +46,7 @@ export default function(data, vertical, salesVal, title) {
         rotate: 60
       }
     }, data.series.map((item, index) => {
-      console.log('数据', item)
+      console.log('数据', item.data)
       // item.sort(mango.compare(''))
       return {
         name: item.name,
@@ -66,7 +65,14 @@ export default function(data, vertical, salesVal, title) {
             // seriesPosition = 'insideRight'
             return (key/10000).toFixed(2)
           }
-        }) : item.data,
+        }) : item.data.map((key) => {
+          if (parseInt(key) == 0) {
+            return ''
+          } else {
+            // seriesPosition = 'insideRight'
+            return key
+          }
+        }),
         markLine: data.siblings ? {
           // this.vertical === horizontal,柱状图为水平方向，否则为垂直方向
           data: vertical === 'horizontal' ? [
@@ -79,6 +85,7 @@ export default function(data, vertical, salesVal, title) {
         }
       }
     })]
+    console.log('shuju:', series)
     if (vertical === 'horizontal') {
       yAxis.data = data.yAxisData
     } else {

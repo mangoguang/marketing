@@ -7,10 +7,11 @@
       <chartsTit :text="'进店数-整体'">
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
-      <Bar
+      <div :style="{height: `100vw`}" ref="storeGetInTotalContainer" ></div>
+      <!-- <Bar
       :data="storeGetInTotalData"
       :vertical="'vertical'"
-      :height="80"></Bar>
+      :height="80"></Bar> -->
     </li>
 
     <!-- 各门店进店数 -->
@@ -18,11 +19,12 @@
       <chartsTit :text="'进店数-各门店'">
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
-      <Bar
+      <div ref="perStoreGetInContainer" ></div>
+      <!-- <Bar
       @chartsClick="getInChartsEvent"
       :data="perStoreGetInData"
       :vertical="'horizontal'"
-      :height="200"></Bar>
+      :height="200"></Bar> -->
     </li>
     
     <!-- 整体成交率 -->
@@ -30,10 +32,11 @@
       <chartsTit :text="'成交率-整体'">
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
-      <Bar
+      <div :style="{height: `100vw`}" ref="achieveRatioTotalContainer" ></div>
+      <!-- <Bar
       :data="achieveRatioTotalData"
       :vertical="'vertical'"
-      :height="80"></Bar>
+      :height="80"></Bar> -->
     </li>
 
     <!-- 各门店成交率 -->
@@ -41,11 +44,12 @@
       <chartsTit :text="'成交率-各门店'">
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
-      <Bar
+      <div ref="perAchieveRatioContainer" ></div>
+      <!-- <Bar
       @chartsClick="achieveRatioChartsEvent"
       :data="perAchieveRatioData"
       :vertical="'horizontal'"
-      :height="200"></Bar>
+      :height="200"></Bar> -->
     </li>
 
     <!-- 整体客单值 -->
@@ -53,10 +57,11 @@
       <chartsTit :text="'客单值-整体'">
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
-      <Bar
+      <div :style="{height: `100vw`}" ref="orderFormTotalContainer" ></div>
+      <!-- <Bar
       :data="orderFormTotalData"
       :vertical="'vertical'"
-      :height="80"></Bar>
+      :height="80"></Bar> -->
     </li>
 
     <!-- 各门店客单值 -->
@@ -64,11 +69,12 @@
       <chartsTit :text="'客单值-各门店'">
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
-      <Bar
+      <div ref="perOrderFormContainer" ></div>
+      <!-- <Bar
       @chartsClick="orderFormChartsEvent"
       :data="perOrderFormData"
       :vertical="'horizontal'"
-      :height="200"></Bar>
+      :height="200"></Bar> -->
     </li>
   </ul>
 </template>
@@ -79,6 +85,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -115,6 +122,46 @@ export default {
   },
   computed: {
 
+  },
+  watch: {
+    // 整体进店数对比
+    storeGetInTotalData() {
+      const chartsName = 'storeGetInTotal'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'vertical', true)
+      }
+    },
+    perStoreGetInData() {
+      // 参数说明：查看销售模块样例
+      const chartsName = 'perStoreGetIn'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal')
+      }
+    },
+    achieveRatioTotalData() {
+      const chartsName = 'achieveRatioTotal'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'vertical', true)
+      }
+    },
+    perAchieveRatioData() {
+      const chartsName = 'perAchieveRatio'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal')
+      }
+    },
+    orderFormTotalData() {
+      const chartsName = 'orderFormTotal'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'vertical', true)
+      }
+    },
+    perOrderFormData() {
+      const chartsName = 'perOrderForm'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal')
+      }
+    }
   },
   methods:{
     // ajax请求

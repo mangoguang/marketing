@@ -3,6 +3,7 @@
     <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'客户来源-整体'"></chartsTit>
+      <!-- <div :style="{height: `100vw`}" ref="customerSourceContainer" ></div> -->
       <Bar
       @chartsClick="chartsEvent"
       :data="customerSourceData"
@@ -11,6 +12,7 @@
     </div>
     <div class="barBox">
       <chartsTit :text="'客户来源-各店'"></chartsTit>
+      <!-- <div ref="areaCustomerSourceContainer"></div> -->
       <Bar
       @chartsClick="chartsEvent"
       :data="areaCustomerSourceData"
@@ -25,6 +27,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -71,6 +74,20 @@ export default {
       'homeArrFilter'
     ])
   },
+  // watch: {
+  //   customerSourceData() {
+  //     const chartsName = 'customerSource'
+  //     if (this[`${chartsName}Data`].series) {
+  //       chartsInit(this, chartsName, 'vertical', true)
+  //     }
+  //   },
+  //   areaCustomerSourceData() {
+  //     const chartsName = 'areaCustomerSource'
+  //     if (this[`${chartsName}Data`].series) {
+  //       chartsInit(this, chartsName, 'horizontal', true)
+  //     }
+  //   }
+  // },
   methods:{
     ...mapMutations([
       'setHomeTit',
