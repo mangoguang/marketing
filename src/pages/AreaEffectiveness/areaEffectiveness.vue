@@ -3,17 +3,19 @@
     <mybanner :title='title' :turnPath='turnPath'/>
     <div class="barBox">
       <chartsTit :text="'坪效-整体'"></chartsTit>
-      <Bar
+      <div :style="{height: `100vw`}" ref="areaEffectivenessContainer" ></div>
+      <!-- <Bar
       :data="areaEffectivenessData"
       :vertical="'vertical'"
-      :height="100"></Bar>
+      :height="100"></Bar> -->
     </div>
     <div class="barBox">
       <chartsTit :text="'坪效-各店'"></chartsTit>
-      <Bar
+      <div ref="areaEffectivenessShopContainer" ></div>
+      <!-- <Bar
       :data="areaEffectivenessShopData"
       :vertical="'horizontal'"
-      :height="250"></Bar>
+      :height="250"></Bar> -->
     </div>
   </div>
 </template>
@@ -23,6 +25,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -68,6 +71,20 @@ export default {
     ...mapGetters([
       'homeArrFilter'
     ])
+  },
+  watch: {
+    areaEffectivenessData() {
+      const chartsName = 'areaEffectiveness'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'vertical')
+      }
+    },
+    areaEffectivenessShopData() {
+      const chartsName = 'areaEffectivenessShop'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal')
+      }
+    }
   },
   methods:{
     ...mapMutations([

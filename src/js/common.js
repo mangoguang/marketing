@@ -25,6 +25,11 @@ export default class Common {
   // 使用冒泡排序法，对对象多个关联数组进行排序
   sortArrs(obj) {
     let [series1, series2, yAxisData, idsData] = [obj.series[0].data, obj.series[0].data, obj.yAxisData, obj.idsData]
+    if (obj.series) {
+      for (let i = 0; i < obj.series.length; i++) {
+        
+      }
+    }
     for (let i = 0; i < series1.length; i++) {
       for (let j = 0; j < series1.length - i; j++) {
         if (series1[j] > series1[j + 1]) {

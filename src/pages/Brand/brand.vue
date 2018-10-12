@@ -16,13 +16,14 @@
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
-          <Bar
+          <div ref="brandContainer" ></div>
+          <!-- <Bar
           @chartsClick="chartsEvent"
           :data="brandData"
           :vertical="'horizontal'"
           :title="`各${typeName}金额对比`"
           :height="120"
-          :salesVal="true"></Bar>
+          :salesVal="true"></Bar> -->
         </div>
       </li>
     </ul>
@@ -40,11 +41,12 @@
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
-          <Bar
+          <div ref="categoryContainer" ></div>
+          <!-- <Bar
           :data="categoryData"
           :vertical="'horizontal'"
           :title="`各${typeName}数量对比`"
-          :height="120"></Bar>
+          :height="120"></Bar> -->
         </div>
       </li>
     </ul>
@@ -57,6 +59,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -80,7 +83,6 @@ export default {
       port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion',
       title:'',
       turnPath:'./ReportForms'
-
     }
   },
   created() {
@@ -112,6 +114,22 @@ export default {
     ...mapGetters([
       'homeArrFilter'
     ])
+  },
+  watch: {
+    brandData() {
+      // 参数说明：查看销售模块样例
+      const chartsName = 'brand'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal', true)
+      }
+    },
+    categoryData() {
+      // 参数说明：查看销售模块样例
+      const chartsName = 'category'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal', true)
+      }
+    }
   },
   methods:{
     ...mapMutations([

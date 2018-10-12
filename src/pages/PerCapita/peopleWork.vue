@@ -5,21 +5,23 @@
       <chartsTit :text="'人效-整体'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <Bar
+      <div :style="{height: `100vw`}" ref="peopleWorkContainer" ></div>
+      <!-- <Bar
       :data="peopleWorkData"
       :vertical="'vertical'"
       :height="100"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
     </div>
     <div class="barBox">
       <chartsTit :text="'人效-各店'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <Bar
+      <div ref="areaPeopleWorkContainer" ></div>
+      <!-- <Bar
       :data="areaPeopleWorkData"
       :vertical="'horizontal'"
       :height="300"
-      :salesVal="true"></Bar>
+      :salesVal="true"></Bar> -->
     </div>
   </div>
 </template>
@@ -29,6 +31,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../js'
+import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -74,6 +77,20 @@ export default {
     ...mapGetters([
       'homeArrFilter'
     ])
+  },
+  watch: {
+    peopleWorkData() {
+      const chartsName = 'peopleWork'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'vertical', true)
+      }
+    },
+    areaPeopleWorkData() {
+      const chartsName = 'areaPeopleWork'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal', true)
+      }
+    }
   },
   methods:{
     ...mapMutations([
