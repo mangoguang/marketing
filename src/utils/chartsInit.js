@@ -10,7 +10,7 @@ import option from './option'
 // chartsIndex如果是循环渲染图表，则传图表下标
 export default (_this, chartName, vertical, salesVal, title, routeTo, chartsIndex) => {
   let [dom, chartsData] = [_this.$refs[`${chartName}Container`], _this[`${chartName}Data`]]
-  console.log('传入charts插件的数据：', chartsData)
+  // console.log('传入charts插件的数据：', chartsData)
   if (typeof(chartsIndex) === 'number') {
     dom = document.getElementById(`${chartName}Container${chartsIndex}`)
     chartsData = chartsData[chartsIndex]
@@ -29,7 +29,7 @@ export default (_this, chartName, vertical, salesVal, title, routeTo, chartsInde
     if (routeTo) {
       // 如果需要添加点击事件，则添加点击事件。
       echarts.init(dom).on('click', function (data) {
-        console.log('点击的元素：', data)
+        // console.log('点击的元素：', data)
         if (data.componentType === 'series') {
           routeTo(data, _this)
         }

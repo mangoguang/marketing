@@ -98,10 +98,10 @@ export default {
     },
     chartsEvent(data) {
       if (data[0].componentType === 'series') {
-        console.log('shopId', data)
+        // console.log('shopId', data)
         this.$router.push({path: `/personalSales?shopId=${data[1][data[0].dataIndex]}&name=${data[0].name}`})
       }
-      console.log('点击图表传回的数据：', data)
+      // console.log('点击图表传回的数据：', data)
     }
   }
 }

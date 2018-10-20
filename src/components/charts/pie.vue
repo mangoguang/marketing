@@ -22,7 +22,7 @@ export default {
   },
   mounted() {
     echarts.init(this.$refs.main).setOption(this.option())
-    console.log(99887766, this.title)
+    // console.log(99887766, this.title)
   },
   updated() {
     

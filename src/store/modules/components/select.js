@@ -1,7 +1,7 @@
 const state = {
   citySelect: {},
-  startTimeSelect: '',
-  endTimeSelect: ''
+  startTimeSelect: null,
+  endTimeSelect: null
 }
 
 const mutations = {

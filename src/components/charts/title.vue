@@ -42,7 +42,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .title{
-    margin: 0 2vw;
+    margin: 0 4.266vw;
     h6{
       padding-left: 3vw;
       font-size: 14px;

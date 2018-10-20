@@ -1,13 +1,19 @@
 <!-- <keep-alive> -->
 <template>
-  <li class="citySelect">
-    <input @click="showCityList" type="input" v-model="cityMsg.cityName">
-    <ul :class="{active: isActive}">
+  <li class="citySelect" @click="showCityList">
+    <!-- <input @click="showCityList" type="input" v-model="cityMsg.cityName"> -->
+    <h5>
+      地区
+      <span>{{cityMsg.cityName}}</span>
+    </h5>
+    <!-- <button type="button">{{cityMsg.cityName}}</button> -->
+    <ul v-show="!isActive" :class="{active: isActive}">
       <li
         v-for="(city, index) in cityList"
         :key="`${index}22`"
-        @click="changeCity($event)"
+        @click.stop="changeCity($event)"
         :title="city.level"
+        :class="{on: statusList[index]}"
         >{{city.name}}</li>
     </ul>
   </li>
@@ -26,8 +32,9 @@ export default {
     return {
       ajaxData: {},
       cityMsg: {name: '苏州市', level: 2},
-      cityList: [{name: '苏州市', level: 2}, {name: '广州', level: 1}],
-      isActive: true
+      cityList: [{name: '苏州市', level: 2}, {name: '惠州市', level: 1}, {name: '湖州市', level: 1}, {name: '永州市', level: 1}, {name: '柳州市', level: 1}, {name: '郴州市', level: 1}, {name: '梧州市', level: 1}, {name: '锦州市', level: 1}, {name: '云浮市', level: 1}, {name: '肇庆市', level: 1}, {name: '潮州市', level: 1}, {name: '汕头市', level: 1}, {name: '深圳市', level: 1}],
+      isActive: true,
+      statusList: []
     }
   },
   created() {
@@ -40,27 +47,46 @@ export default {
     this.getCityLevel()
   },
   mounted() {
+    for (let i = 0; i < this.cityList.length; i++) {
+      this.statusList.push(false)
+    }
     this.changeCity()
+    this.cityActive(this.cityMsg.cityName)
   },
   methods: {
     ...mapMutations([
       'setCitySelect'
     ]),
+    // 城市选中状态。
+    cityActive(str) {
+      for (let i = 0; i < this.cityList.length; i++) {
+        this.statusList[i] = false
+      }
+      // 遍历查找所选城市的在城市列表的下标
+      let cityIndex = (this.cityList.map(function(item) {
+        return item.name
+      })).indexOf(str)
+      this.statusList[cityIndex] = true
+    },
     changeCity(e) {
-      let [cityName, cityLevel, cityMsg] = ['', 1, {}]
+      let [cityName, cityLevel, cityMsg, _this] = ['', 1, {}, this]
+      _this.isActive = true
       if (e) {
         let target = e.target
         cityName = target.innerText
-        cityLevel = target.title
-        cityMsg = {cityName: cityName, cityLevel: cityLevel}
-        this.cityMsg = cityMsg
-        this.setCitySelect(cityMsg)
-        this.isActive = true
-        // 将选择信息存储到本地
-        localStorage.setItem('cityMsg', `{
-          "cityName": "${cityName}",
-          "cityLevel": "${cityLevel}"
-        }`)
+        if (cityName !== this.cityMsg.cityName) {
+          cityLevel = target.title
+          cityMsg = {cityName: cityName, cityLevel: cityLevel}
+          this.cityMsg = cityMsg
+          // 选中状态
+          this.cityActive(cityName)
+          this.setCitySelect(cityMsg)
+          // 将选择信息存储到本地
+          localStorage.setItem('cityMsg', `{
+            "cityName": "${cityName}",
+            "cityLevel": "${cityLevel}"
+          }`)
+        }
       }
     },
     showCityList() {
@@ -81,9 +107,9 @@ export default {
             }
           }
           _this.setCitySelect(_this.cityMsg)
-          _this.cityList = res.map((item) => {
-            return {name: item.empowerCity, level: item.cityLevel}
-          })
+          // _this.cityList = res.map((item) => {
+          //   return {name: item.empowerCity, level: item.cityLevel}
+          // })
         }
       })
     }
@@ -94,45 +120,41 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .citySelect{
-    width: 25vw;
-    height: 8vw;
-    position: relative;
-    margin: 0 1vw;
-    ul{
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      z-index: 1000;
-    }
-    li, input{
-      display: block;
-      width: 100%;
-      height: 100%;
-      background: #f8f8f8;
-      text-align: center;
-      border: 1px solid #e1e1e1;
+    background: #f8f8f8;
+    border-bottom: 1px solid #ccc;
+    h5{
+      position: relative;
       color: #666;
       font-weight: 300;
-      border-top: none;
+      line-height: 8vw;
+      span{
+        position: absolute;
+        right: 0;
+      }
+    }
+    ul{
+      width: 100%;
+      height: 100%;
+      // padding-bottom: 2vw;
+      li{
+        display: inline-block;
+        height: 8vw;
+        line-height: 8vw;
+        padding: 0 4vw;
+        background: #e1e1e1;
+        color: #666;
+        border-radius: 4vw;
+        margin: 0 2vw 2vw 0;
+      }
+      li.on{
+        background: #007aff;
+        color: #fff;
+      }
+    }
+    &>li{
+      color: #666;
+      font-weight: 300;
       line-height: 8vw;
     }
-    li:first-child{
-      border-top: 1px solid #e1e1e1;
-      border-top-left-radius: 4vw;
-      border-top-right-radius: 4vw;
-    }
-    li:last-child{
-      border-bottom-left-radius: 4vw;
-      border-bottom-right-radius: 4vw;
-    }
-    input{
-      border-radius: 4vw;
-      border: 1px solid #e1e1e1;;
-    }
-  }
-  .active{
-    display: none;
   }
 </style>

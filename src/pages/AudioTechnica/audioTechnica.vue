@@ -2,16 +2,13 @@
 <template>
   <ul class="audioTechnica paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
+    <SelectComponent></SelectComponent>
     <!-- 整体进店数 -->
     <li class="barBox">
       <chartsTit :text="'进店数-整体'">
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div :style="{height: `100vw`}" ref="storeGetInTotalContainer" ></div>
-      <!-- <Bar
-      :data="storeGetInTotalData"
-      :vertical="'vertical'"
-      :height="80"></Bar> -->
     </li>
 
     <!-- 各门店进店数 -->
@@ -20,11 +17,6 @@
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div ref="perStoreGetInContainer" ></div>
-      <!-- <Bar
-      @chartsClick="getInChartsEvent"
-      :data="perStoreGetInData"
-      :vertical="'horizontal'"
-      :height="200"></Bar> -->
     </li>
     
     <!-- 整体成交率 -->
@@ -33,10 +25,6 @@
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div :style="{height: `100vw`}" ref="achieveRatioTotalContainer" ></div>
-      <!-- <Bar
-      :data="achieveRatioTotalData"
-      :vertical="'vertical'"
-      :height="80"></Bar> -->
     </li>
 
     <!-- 各门店成交率 -->
@@ -45,11 +33,6 @@
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div ref="perAchieveRatioContainer" ></div>
-      <!-- <Bar
-      @chartsClick="achieveRatioChartsEvent"
-      :data="perAchieveRatioData"
-      :vertical="'horizontal'"
-      :height="200"></Bar> -->
     </li>
 
     <!-- 整体客单值 -->
@@ -58,10 +41,6 @@
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div :style="{height: `100vw`}" ref="orderFormTotalContainer" ></div>
-      <!-- <Bar
-      :data="orderFormTotalData"
-      :vertical="'vertical'"
-      :height="80"></Bar> -->
     </li>
 
     <!-- 各门店客单值 -->
@@ -70,11 +49,6 @@
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div ref="perOrderFormContainer" ></div>
-      <!-- <Bar
-      @chartsClick="orderFormChartsEvent"
-      :data="perOrderFormData"
-      :vertical="'horizontal'"
-      :height="200"></Bar> -->
     </li>
   </ul>
 </template>
@@ -87,6 +61,7 @@ import VueRouter from 'vue-router'
 import mango from '../../js'
 import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
+import SelectComponent from '../../components/select/selectComponent'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
@@ -97,7 +72,7 @@ import mybanner from '../../components/banner'
 export default {
   name: 'audioTechnica',
   components: {
-    Bar, Pie, chartsTit, RouterLink,mybanner
+    Bar, Pie, chartsTit, RouterLink, mybanner, SelectComponent
   },
   data () {
     return {
@@ -109,26 +84,43 @@ export default {
       orderFormTotalData: {},
       perOrderFormData: {},
       title:'铁三角报表',
-      turnPath:'./ReportForms'
+      turnPath:'./ReportForms',
+      endTime: mango.getLocalTime('end'),
+      cityMsg: ''
     }
   },
   created() {
     // 获取本地存储信息
-    let ajaxData = localStorage.getItem('ajaxData')
+    let [ajaxData, cityMsg] = [localStorage.getItem('ajaxData'), localStorage.getItem('cityMsg')]
+    this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {}
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
-    this.asyncAjax()
+    this.asyncAjax(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
   },
   computed: {
-
+    ...mapState({
+      citySelect: state => state.select.citySelect,
+      startTimeSelect: state => state.select.startTimeSelect,
+      endTimeSelect: state => state.select.endTimeSelect
+    })
   },
   watch: {
+    citySelect() {
+      if (this.endTimeSelect && this.endTimeSelect != '') {
+        this.asyncAjax(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
+      }
+    },
+    endTimeSelect() {
+      if (this.endTimeSelect && this.endTimeSelect != '') {
+        this.asyncAjax(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
+      }
+    },
     // 整体进店数对比
     storeGetInTotalData() {
       const chartsName = 'storeGetInTotal'
       if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical', true)
+        chartsInit(this, chartsName, 'vertical')
       }
     },
     perStoreGetInData() {
@@ -141,7 +133,7 @@ export default {
     achieveRatioTotalData() {
       const chartsName = 'achieveRatioTotal'
       if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical', true)
+        chartsInit(this, chartsName, 'vertical')
       }
     },
     perAchieveRatioData() {
@@ -153,7 +145,7 @@ export default {
     orderFormTotalData() {
       const chartsName = 'orderFormTotal'
       if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical', true)
+        chartsInit(this, chartsName, 'vertical')
       }
     },
     perOrderFormData() {
@@ -166,32 +158,26 @@ export default {
   methods:{
     // ajax请求
     // 异步函数
-    async asyncAjax() {
+    async asyncAjax(date, city, level) {
       // 进店率
-      await this.getStoreGetInTotalData() // 获取总体进店数数据
-      console.log('获取数据～～～总体进店数')
-      await this.getPerStoreGetInData() // 获取各门店进店数数据
-      console.log('获取数据～～～门店进店数')
+      await this.getStoreGetInTotalData(date, city, level) // 获取总体进店数数据
+      await this.getPerStoreGetInData(date, city, level) // 获取各门店进店数数据
       // 成交率
-      await this.getAchieveRatioTotalData() // 获取总体成交率数据
-      console.log('获取数据～～～总体成交率')
-      await this.getPerAchieveRatioData() // 获取各门店成交率数据
-      console.log('获取数据～～～门店成交率')
+      await this.getAchieveRatioTotalData(date, city, level) // 获取总体成交率数据
+      await this.getPerAchieveRatioData(date, city, level) // 获取各门店成交率数据
       // 客单值
-      await this.getOrderFormTotalData() // 获取总体客单值数据
-      console.log('获取数据～～～总体客单值')
-      await this.getPerOrderFormData() // 获取各门店客单值数据
-      console.log('获取数据～～～门店客单值')
+      await this.getOrderFormTotalData(date, city, level) // 获取总体客单值数据
+      await this.getPerOrderFormData(date, city, level) // 获取各门店客单值数据
     },
     // 整体进店数
-    getStoreGetInTotalData() {
+    getStoreGetInTotalData(date, city, level) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/number/all', {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08',
-        cityLevel: 2,
-        cityName: '苏州市'
+        date: date,
+        cityLevel: level,
+        cityName: city
       }).then((res) => {
         mango.loading('close')
         if (res) {
@@ -201,12 +187,12 @@ export default {
       })
     },
     // 各门店进店数
-    getPerStoreGetInData() {
+    getPerStoreGetInData(date, city, level) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/number', {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08'
+        date: date
       }).then((res) => {
         mango.loading('close')
         if (res) {
@@ -216,14 +202,14 @@ export default {
       })
     },
     // 整体成交率
-    getAchieveRatioTotalData() {
+    getAchieveRatioTotalData(date, city, level) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'turnover/ratio', {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08',
-        cityLevel: 2,
-        cityName: '苏州市'
+        date: date,
+        cityLevel: level,
+        cityName: city
       }).then((res) => {
         mango.loading('close')
         if (res) {
@@ -233,14 +219,14 @@ export default {
       })
     },
     // 各门店成交率
-    getPerAchieveRatioData() {
+    getPerAchieveRatioData(date, city, level) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/turnover/ratio', {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08',
-        cityLevel: 2,
-        cityName: '苏州市'
+        date: date,
+        cityLevel: level,
+        cityName: city
       }).then((res) => {
         mango.loading('close')
         if (res) {
@@ -250,14 +236,14 @@ export default {
       })
     },
     // 整体客单值
-    getOrderFormTotalData() {
+    getOrderFormTotalData(date, city, level) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'guest/order', {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08',
-        cityLevel: 2,
-        cityName: '苏州市'
+        date: date,
+        cityLevel: level,
+        cityName: city
       }).then((res) => {
         mango.loading('close')
         if (res) {
@@ -267,16 +253,16 @@ export default {
       })
     },
     // 各门店成交率
-    getPerOrderFormData() {
+    getPerOrderFormData(date, city, level) {
        mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/guest/order', {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08',
-        cityLevel: 2,
-        cityName: '苏州市'
+        date: date,
+        cityLevel: level,
+        cityName: city
       }).then((res) => {
-         mango.loading('close')
+        mango.loading('close')
         if (res) {
           res = res.data
           _this.perOrderFormData = res

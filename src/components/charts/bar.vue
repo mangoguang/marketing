@@ -43,7 +43,7 @@ export default {
 
   },
   beforeUpdate() {
-    console.log('组件更新前', this.data)
+    // console.log('组件更新前', this.data)
   },
   watch: {
     data(val){

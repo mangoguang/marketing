@@ -3,7 +3,14 @@
   <ul class="selectComponent">
     <li is="citySelect"></li>
     <!-- <li><input @click="openStartPicker" type="input" v-model="startTime"></li> -->
-    <li><input @click="openEndPicker" type="input" v-model="endTime"></li>
+    <li @click="openEndPicker" class="timeBtn">
+      <!-- <input @click="openEndPicker" type="input" v-model="endTime"> -->
+      <h5>
+        时间
+        <span>{{endTime}}</span>
+      </h5>
+      <!-- <button @click="openEndPicker" type="button">{{endTime}}</button> -->
+    </li>
     <mt-datetime-picker
       ref="picker"
       type="date"
@@ -56,7 +63,6 @@ export default {
       //   this[str][1] = `0${this[str][1]}`
       // }
       // this[str] = this[str].join('-')
-      console.log('选择的时间： ', this[str])
       localStorage.setItem(str, this[str])
       this.setEndTimeSelect(this[str])
     },
@@ -88,25 +94,39 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .selectComponent{
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 8vw;
-    margin-right: 2%;
-    padding: 3vw;
-    &>li{
-      width: 25vw;
+    // display: flex;
+    // justify-content: flex-end;
+    // align-items: center;
+    // height: 8vw;
+    // margin-right: 2%;
+    // padding: 3vw;
+    .timeBtn{
       height: 8vw;
+    }
+    h5{
       position: relative;
-      margin: 0 1vw;
-      input, li{
+      color: #666;
+      font-weight: 300;
+      line-height: 8vw;
+      span{
+        position: absolute;
+        right: 0;
+      }
+    }
+    &>li{
+      // width: 100%;
+      // height: 8vw;
+      position: relative;
+      padding: 0 4.266vw;
+      // margin: 0 1vw;
+      input, li, button{
         display: block;
         width: 100%;
         height: 100%;
-        background: #f8f8f8;
+        // background: #f8f8f8;
         text-align: center;
-        border-radius: 4vw;
-        border: 1px solid #e1e1e1;
+        // border-radius: 4vw;
+        border-bottom: 1px solid #ccc;
         color: #666;
         font-weight: 300;
       }
@@ -117,10 +137,10 @@ export default {
         top: 0;
         left: 0;
         z-index: 1000;
-        li{
-          border-radius: 0;
-          border-top: none;
-        }
+        // li{
+        //   border-radius: 0;
+        //   border-top: none;
+        // }
         li:first-child{
           border-top: 1px solid #e1e1e1;
         }

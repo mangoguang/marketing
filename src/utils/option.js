@@ -14,7 +14,7 @@ export default function(data, vertical, salesVal, title) {
   } else {
     seriesPosition = 'top'
   }
-  console.log('option对象数据：', data)
+  // console.log('option对象数据：', data)
   let [xAxis, yAxis, series] = [
     {
     // 直角坐标相关设置。
@@ -46,7 +46,7 @@ export default function(data, vertical, salesVal, title) {
         rotate: 60
       }
     }, data.series.map((item, index) => {
-      console.log('数据', item.data)
+      // console.log('数据', item.data)
       // item.sort(mango.compare(''))
       return {
         name: item.name,
@@ -85,7 +85,7 @@ export default function(data, vertical, salesVal, title) {
         }
       }
     })]
-    console.log('shuju:', series)
+    // console.log('shuju:', series)
     if (vertical === 'horizontal') {
       yAxis.data = data.yAxisData
     } else {

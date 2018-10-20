@@ -2,6 +2,7 @@
 <template>
   <div class="brand">
     <mybanner :title='title' :turnPath='turnPath'/>
+    <SelectComponent></SelectComponent>
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}11`">
         <div class="barBox">
@@ -61,6 +62,7 @@ import VueRouter from 'vue-router'
 import mango from '../../js'
 import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
+import SelectComponent from '../../components/select/selectComponent'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
@@ -71,7 +73,7 @@ import mybanner from '../../components/banner'
 export default {
   name: 'brand',
   components: {
-    Bar, Pie, chartsTit, RouterLink,mybanner
+    Bar, Pie, chartsTit, RouterLink, mybanner, SelectComponent
   },
   data () {
     return {
@@ -82,7 +84,8 @@ export default {
       typeName: this.$route.query.type === 'brand' ? '品牌' : '品类',
       port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion',
       title:'',
-      turnPath:'./ReportForms'
+      turnPath:'./ReportForms',
+      endTime: mango.getLocalTime('end')
     }
   },
   created() {
@@ -94,28 +97,26 @@ export default {
   },
   mounted(){
     // Vue.$set(0, {name: 1})
-    this.getBrandData()
-    this.getCategoryData()
-    // mango.test()
-    console.log(11223344, this.$refs.main)
-    this.setHomeArr([1, 2, 3, 4])
-    this.setHomeTit('首页标题')
-    this.setHomeText('123木头人')
+    this.getBrandData(this.endTime)
+    this.getCategoryData(this.endTime)
   },
   computed: {
     test() {
-      console.log(333, this.$store)
+      // console.log(333, this.$store)
     },
     ...mapState({
-      homeTit: state => 'just test',
-      homeText: state => state.home.homeText,
-      homeArr: state => state.home.homeArr
-    }),
-    ...mapGetters([
-      'homeArrFilter'
-    ])
+      // citySelect: state => state.select.citySelect,
+      startTimeSelect: state => state.select.startTimeSelect,
+      endTimeSelect: state => state.select.endTimeSelect
+    })
   },
   watch: {
+    endTimeSelect() {
+      if (this.endTimeSelect && this.endTimeSelect != '') {
+        this.getBrandData(this.endTimeSelect)
+        this.getCategoryData(this.endTimeSelect)
+      }
+    },
     brandData() {
       // 参数说明：查看销售模块样例
       const chartsName = 'brand'
@@ -132,22 +133,16 @@ export default {
     }
   },
   methods:{
-    ...mapMutations([
-      'setHomeTit',
-      'setHomeText',
-      'setHomeArr',
-      'setBarData'
-    ]),
     goToChild() {
       this.$router.push({ path: '/child' })
     },
     // ajax请求
-    getBrandData() {
+    getBrandData(date) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, this.port, {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08',
+        date: date,
         type: 'sum'
       }).then((res) => {
         mango.loading('close')
@@ -159,17 +154,17 @@ export default {
           //   return arr[1]
           // })
           // res.yAxisData = tempArr
-          console.log('数据:', res)
+          // console.log('数据:', res)
           _this.brandData = res
         }
       })
     },
-    getCategoryData() {
+    getCategoryData(date) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, this.port, {
         tenantId: this.ajaxData.tenantId,
-        date: '2018-08',
+        date: date,
         type: 'count'
       }).then((res) => {
          mango.loading('close')
@@ -196,6 +191,7 @@ export default {
   width: 100vw;
   height: 100vh;
   background: #f8f8f8;
+  padding-top: 19.446vw;
 }
 .main{
   width: 100vw;

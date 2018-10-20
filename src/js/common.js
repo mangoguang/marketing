@@ -24,21 +24,29 @@ export default class Common {
   }
   // 使用冒泡排序法，对对象多个关联数组进行排序
   sortArrs(obj) {
-    let [series1, series2, yAxisData, idsData] = [obj.series[0].data, obj.series[0].data, obj.yAxisData, obj.idsData]
-    if (obj.series) {
-      for (let i = 0; i < obj.series.length; i++) {
-        
+    let [series, newSeries, yAxisData, idsData] = [obj.series, [], obj.yAxisData, obj.idsData]
+    // let [series1, series2, yAxisData, idsData] = [obj.series[0].data, obj.series[0].data, obj.yAxisData, obj.idsData]
+    if (series) {
+      // console.log(`series数据是有效的。长度为${series.length}`)
+      for (let i = 0; i < series.length; i++) {
+        newSeries[i] = series[i].data
       }
     }
-    for (let i = 0; i < series1.length; i++) {
-      for (let j = 0; j < series1.length - i; j++) {
-        if (series1[j] > series1[j + 1]) {
-          let [tempSeries1, tempSeries2, tempYAxisData] = [series1[j], series1[j], yAxisData[j]]
-          series1[j] = series1[j + 1]
-          series2[j] = series2[j + 1]
+    for (let i = 0; i < newSeries[0].length; i++) {
+      for (let j = 0; j < newSeries[0].length - i; j++) {
+        if (newSeries[0][j] > newSeries[0][j + 1]) {
+          let [tempSeries, tempYAxisData] = [[], yAxisData[j]]
+          // let [tempSeries1, tempSeries2, tempYAxisData] = [series1[j], series1[j], yAxisData[j]]
+          // series1[j] = series1[j + 1]
+          // series2[j] = series2[j + 1]
+          for (let k = 0; k < series.length; k++) {
+            tempSeries[k] = newSeries[k][j]
+            newSeries[k][j] = newSeries[k][j + 1]
+            newSeries[k][j + 1] = tempSeries[k]
+          }
           yAxisData[j] = yAxisData[j + 1]
-          series1[j + 1] = tempSeries1
-          series2[j + 1] = tempSeries2
+          // series1[j + 1] = tempSeries1
+          // series2[j + 1] = tempSeries2
           yAxisData[j + 1] = tempYAxisData
           if (idsData) {
             let tempIdsData = idsData[j]
@@ -60,7 +68,6 @@ export default class Common {
     //     }
     //   ]
     // }
-    console.log('处理后数据：', obj)
   }
   // 参数加密
   getSign(obj, token) {

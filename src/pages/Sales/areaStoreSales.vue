@@ -56,7 +56,7 @@ export default {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    console.log('本地村粗：：：', this.ajaxData)
+    // console.log('本地村粗：：：', this.ajaxData)
   },
   mounted(){
     this.getStoreSalesData()
@@ -98,7 +98,7 @@ export default {
       })
     },
     chartsEvent(data) {
-      console.log('点击图表传回的数据：', data)
+      // console.log('点击图表传回的数据：', data)
     }
   }
 }

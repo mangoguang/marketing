@@ -50,7 +50,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    console.log('路由参数', this.$route)
+    // console.log('路由参数', this.$route)
     this.getPersonalSalesData()
   },
   computed: {
@@ -77,7 +77,7 @@ export default {
         if (res) {
           res = res.data
           // res.average = res.shopAvg
-          console.log('店内员工销售额：', res)
+          // console.log('店内员工销售额：', res)
           _this.personalSalesData = res
         }
       })

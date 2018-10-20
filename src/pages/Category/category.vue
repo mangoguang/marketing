@@ -89,14 +89,14 @@ export default {
     this.getBrandData()
     this.getCategoryData()
     // mango.test()
-    console.log(11223344, this.$refs.main)
+    // console.log(11223344, this.$refs.main)
     this.setHomeArr([1, 2, 3, 4])
     this.setHomeTit('首页标题')
     this.setHomeText('123木头人')
   },
   computed: {
     test() {
-      console.log(333, this.$store)
+      // console.log(333, this.$store)
     },
     ...mapState({
       homeTit: state => 'just test',
@@ -159,7 +159,7 @@ export default {
       if (data.componentType === 'series') {
         this.$router.push({path: '/brandCatogrySales'})
       }
-      console.log('报表组件传回的数据：', data)
+      // console.log('报表组件传回的数据：', data)
     }
   }
 }

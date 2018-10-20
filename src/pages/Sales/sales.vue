@@ -2,11 +2,11 @@
 <template>
   <div class="sales paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
+    <SelectComponent></SelectComponent>
     <div class="barBox">
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <SelectComponent></SelectComponent>
       <div :style="{height: `100vw`}" ref="salesContainer" ></div>
       <!-- <Bar
       @chartsClick="chartsEvent"
@@ -58,28 +58,26 @@ export default {
   data () {
     return {
       ajaxData: {},
-      endTime: '',
+      endTime: mango.getLocalTime('end'),
       salesData: {}, 
       areaSalesData: {},
       title:'销售额报表',
-      turnPath:'./ReportForms'
+      turnPath:'./ReportForms',
+      cityMsg: ''
     }
   },
   created() {
     // 获取本地存储信息
-    let [ajaxData, endTime] = [localStorage.getItem('ajaxData'), mango.getLocalTime('end')]
+    let [ajaxData, cityMsg] = [localStorage.getItem('ajaxData'), localStorage.getItem('cityMsg')]
+    this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {}
+    // let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    this.endTime = endTime                                                              
   },
   mounted(){
-    console.log('初始化页面时的结束时间：', this.endTime, this.citySelect)
-    // this.getSalesData(this.citySelect.cityName, this.endTime)
+    this.getSalesData(this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
     this.getAreaSalesData(this.endTime)
   },
   computed: {
-    test() {
-      console.log(333, this.$store)
-    },
     ...mapState({
       citySelect: state => state.select.citySelect,
       startTimeSelect: state => state.select.startTimeSelect,
@@ -91,13 +89,15 @@ export default {
   },
   watch: {
     citySelect() {
-      console.log('选择城市：', this.endTimeSelect, this.citySelect)
-      this.getSalesData(this.citySelect.cityName, this.endTimeSelect)
+      if (this.endTimeSelect && this.endTimeSelect != '') {
+        this.getSalesData(this.citySelect.cityName, this.endTimeSelect, this.citySelect.cityLevel)
+      }
     },
     endTimeSelect() {
-      console.log('选择的结束时间。')
-      this.getSalesData(this.citySelect.cityName, this.endTimeSelect)
-      this.getAreaSalesData(this.endTimeSelect)
+      if (this.endTimeSelect && this.endTimeSelect != '') {
+        this.getSalesData(this.citySelect.cityName, this.endTimeSelect, this.citySelect.cityLevel)
+        this.getAreaSalesData(this.endTimeSelect)
+      }
     },
     // 整体销售额对比
     salesData() {
@@ -108,7 +108,10 @@ export default {
     },
     // 区域销售额对比
     areaSalesData() {
-      chartsInit(this, 'areaSales', 'vertical', true)
+      const chartsName = 'areaSales'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'vertical', true)
+      }
     }
   },
   methods:{
@@ -122,12 +125,12 @@ export default {
       this.$router.push({ path: '/areaStoreSales' })
     },
     // ajax请求
-    getSalesData(cityName, date) {
+    getSalesData(cityName, date, level) {
       let _this = this
       mango.getAjax(this, 'sales', {
-        cityLevel: 2,
+        cityLevel: level,
         cityName: cityName,
-        date: '2018-08',
+        date: date,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         if (res) {

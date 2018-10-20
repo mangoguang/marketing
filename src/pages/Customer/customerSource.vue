@@ -1,23 +1,24 @@
 <template>
   <div class="customerSource paddingTop">
     <mybanner :title='title' :turnPath='turnPath'/>
+    <SelectComponent></SelectComponent>
     <div class="barBox">
       <chartsTit :text="'客户来源-整体'"></chartsTit>
-      <!-- <div :style="{height: `100vw`}" ref="customerSourceContainer" ></div> -->
-      <Bar
+      <div ref="customerSourceContainer" ></div>
+      <!-- <Bar
       @chartsClick="chartsEvent"
       :data="customerSourceData"
       :vertical="'horizontal'"
-      :height="100"></Bar>
+      :height="100"></Bar> -->
     </div>
     <div class="barBox">
       <chartsTit :text="'客户来源-各店'"></chartsTit>
-      <!-- <div ref="areaCustomerSourceContainer"></div> -->
-      <Bar
+      <div ref="areaCustomerSourceContainer"></div>
+      <!-- <Bar
       @chartsClick="chartsEvent"
       :data="areaCustomerSourceData"
       :vertical="'horizontal'"
-      :height="400"></Bar>
+      :height="400"></Bar> -->
     </div>
   </div>
 </template>
@@ -29,6 +30,7 @@ import VueRouter from 'vue-router'
 import mango from '../../js'
 import chartsInit from '../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
+import SelectComponent from '../../components/select/selectComponent'
 Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../../components/charts/bar'
@@ -42,52 +44,64 @@ export default {
     Bar,
     chartsTit,
     RouterLink,
-    mybanner
+    mybanner,
+    SelectComponent
   },data(){
     return{
       ajaxData: {},
       customerSourceData: {}, 
       areaCustomerSourceData: {},
-       title:'客户来源报表',
-       turnPath:'./ReportForms'
+      title:'客户来源报表',
+      turnPath:'./ReportForms',
+      endTime: mango.getLocalTime('end'),
+      cityMsg: ''
     }
   },  
   created() {
     // 获取本地存储信息
-    let ajaxData = localStorage.getItem('ajaxData')
+    let [ajaxData, cityMsg] = [localStorage.getItem('ajaxData'), localStorage.getItem('cityMsg')]
+    this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {}
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    this.getcustomerSourceData()
-    this.getareaCustomerSourceData()
+    this.getcustomerSourceData(this.endTime, this.cityMsg.cityName, this.citySelect.cityLevel)
+    this.getareaCustomerSourceData(this.endTime)
   },
   computed: {
     test() {
-      console.log(333, this.$store)
+      // console.log(333, this.$store)
     },
     ...mapState({
-      homeTit: state => 'just test',
-      homeText: state => state.home.homeText,
-      homeArr: state => state.home.homeArr
-    }),
-    ...mapGetters([
-      'homeArrFilter'
-    ])
+      citySelect: state => state.select.citySelect,
+      startTimeSelect: state => state.select.startTimeSelect,
+      endTimeSelect: state => state.select.endTimeSelect
+    })
   },
-  // watch: {
-  //   customerSourceData() {
-  //     const chartsName = 'customerSource'
-  //     if (this[`${chartsName}Data`].series) {
-  //       chartsInit(this, chartsName, 'vertical', true)
-  //     }
-  //   },
-  //   areaCustomerSourceData() {
-  //     const chartsName = 'areaCustomerSource'
-  //     if (this[`${chartsName}Data`].series) {
-  //       chartsInit(this, chartsName, 'horizontal', true)
-  //     }
-  //   }
-  // },
+  watch: {
+    citySelect() {
+      if (this.endTimeSelect && this.endTimeSelect != '') {
+        this.getpeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
+      }
+    },
+    endTimeSelect() {
+      if (this.endTimeSelect && this.endTimeSelect != '') {
+        this.getpeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
+        this.getareaPeopleWorkData(this.endTimeSelect)
+      }
+    },
+    customerSourceData() {
+      const chartsName = 'customerSource'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal')
+      }
+    },
+    areaCustomerSourceData() {
+      const chartsName = 'areaCustomerSource'
+      if (this[`${chartsName}Data`].series) {
+        chartsInit(this, chartsName, 'horizontal')
+      }
+    }
+  },
   methods:{
     ...mapMutations([
       'setHomeTit',
@@ -98,13 +112,13 @@ export default {
     //   this.$router.push({ path: '/child' })
     // },
     // ajax请求
-    getcustomerSourceData() {
+    getcustomerSourceData(date, city, level) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'customer/source', {
-        cityLevel: 2,
-        cityName: '苏州市',
-        date: '2018-08',
+        cityLevel: level,
+        cityName: city,
+        date: date,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
          mango.loading('close')
@@ -132,17 +146,17 @@ export default {
         }
       })
     },
-    getareaCustomerSourceData() {
+    getareaCustomerSourceData(date) {
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'customer/source/shop', {
-        date: '2018-08',
+        date: date,
         tenantId: this.ajaxData.tenantId       
       }).then((res) => {
         mango.loading('close')
         if (res) {
           res = res.data
-          console.log(res)
+          // console.log(res)
           // _this.height = 200
           // let arr = res.series
           // let tempObj = {
