@@ -2,6 +2,7 @@
   <div id="app" :style="{'min-height': `${height}px`, background: '#fff'}">
     <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
     <router-view> </router-view>
+    <div class="bottom-line"></div>
   </div>
 </template>
 
@@ -14,7 +15,7 @@ import 'mint-ui/lib/style.min.css'
 
 export default{
   name: 'app',
-  props:['title','turnPath'],
+  props:['title'],
   store,
   // components:{mybanner},
   data(){
@@ -36,6 +37,19 @@ $fontcolor: #fff;
 $subfontcolor: #525252;
 $bgcolor: #31c3b0;
   /*reset css */
+  //iphoneX顶部刘海适配
+#app{
+  padding-top: constant(safe-area-inset-top);
+   //iphoneX 底部适配
+  .bottom-line{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: constant(safe-area-inset-bottom);
+    background-color: #fff;
+}
+}
+
 body,dl,dd,ul,ol,h1,h2,h3,h4,h5,h6,pre,form,fieldset,legend,input,textarea,p,thead,tbody,tfoot,th,td {margin:0;padding:0}  
 ul,ol{list-style-type:none;list-style-image:none}
 a{text-decoration:none}a:active{background-color:transparent}  a:active,a:hover{outline:0 none}a:focus{outline:1px dotted}  

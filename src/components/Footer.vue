@@ -62,6 +62,7 @@ export default {
 .footer{
   width: 100vw;
   position: fixed;
+ 
   bottom: 0;
   background: #f8f8f8;
   ul{
