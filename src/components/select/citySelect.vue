@@ -31,8 +31,8 @@ export default {
   data () {
     return {
       ajaxData: {},
-      cityMsg: {name: '苏州市', level: 2},
-      cityList: [{name: '苏州市', level: 2}, {name: '惠州市', level: 1}, {name: '湖州市', level: 1}, {name: '永州市', level: 1}, {name: '柳州市', level: 1}, {name: '郴州市', level: 1}, {name: '梧州市', level: 1}, {name: '锦州市', level: 1}, {name: '云浮市', level: 1}, {name: '肇庆市', level: 1}, {name: '潮州市', level: 1}, {name: '汕头市', level: 1}, {name: '深圳市', level: 1}],
+      cityMsg: {name: '城市1', level: 2},
+      cityList: [{name: '城市1', level: 2}, {name: '城市2', level: 1}, {name: '城市3', level: 1}, {name: '城市4', level: 1}],
       isActive: true,
       statusList: []
     }

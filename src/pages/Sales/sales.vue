@@ -101,15 +101,19 @@ export default {
     // 整体销售额对比
     salesData() {
       const chartsName = 'sales'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical', true)
+      if (this[`${chartsName}Data`]) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'vertical', true)
+        }
       }
     },
     // 区域销售额对比
     areaSalesData() {
       const chartsName = 'areaSales'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical', true)
+      if (this[`${chartsName}Data`]) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'vertical', true)
+        }
       }
     }
   },
@@ -134,6 +138,7 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
+          res.yAxisData = ['整体营销额对比']
           _this.salesData = res
         }
       }).catch(function (error) {

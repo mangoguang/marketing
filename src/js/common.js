@@ -137,12 +137,21 @@ export default class Common {
       Indicator.close()
     }
   }
-  // 获取当前日期，以2018-08-30的格式返回
+  // 转换时间戳，以2018-08-30的格式返回
   indexTime(date) {
     if (!date) {
       date = new Date()
     }
-    let tempArr = date.toLocaleDateString().split('/').slice(0, 2)
+    let tempArr = date.toLocaleDateString().split('/')
+    // let tempArr = date.toLocaleDateString().split('/').slice(0, 2)
+    // 安卓打包的时候，数组顺序是反序的，故需要改回来即年份在前。
+    if (parseInt(tempArr[0]) < parseInt(tempArr[2])) {
+      let temp = tempArr[0]
+      tempArr[0] = tempArr[1]
+      tempArr[1] = temp
+      tempArr.reverse()
+    }
+    tempArr = tempArr.slice(0, 2)
     if (tempArr[1] < 10) {
       tempArr[1] = `0${tempArr[1]}`
     }

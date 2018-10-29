@@ -18,7 +18,7 @@ export default (_this, chartName, vertical, salesVal, title, routeTo, chartsInde
   let series = chartsData.series
   if (dom) {
     if (series) {
-      dom.style.height = `${vertical === 'horizontal' ? (series[0].data.length * (window.innerWidth/100) * 4) + 80/(window.innerWidth/100) : 100}vw`      
+      dom.style.height = `${vertical === 'horizontal' ? (series[0].data.length * (window.innerWidth/100) * 5) + 80/(window.innerWidth/100) : 100}vw`      
     } else {
       dom.style.height = `100vw`
     }

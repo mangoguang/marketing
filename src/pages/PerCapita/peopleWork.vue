@@ -130,7 +130,8 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
-          res.average = res.siblings
+          res.yAxisData = ['人效-整体']
+          // res.average = res.siblings
           _this.peopleWorkData = res
         }
       })

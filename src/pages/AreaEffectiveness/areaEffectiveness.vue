@@ -114,6 +114,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
+          res.yAxisData = ['坪效-整体']
           _this.areaEffectivenessData = res
         }
       })
