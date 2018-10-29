@@ -59,10 +59,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .footer{
   width: 100vw;
   position: fixed;
- 
   bottom: 0;
   background: #f8f8f8;
   ul{
@@ -155,6 +155,7 @@ export default {
     }
   }
 }
+
 
 
 </style>

@@ -1,8 +1,13 @@
 <template>
   <div id="app" :style="{'min-height': `${height}px`, background: '#fff'}">
+  <v-touch 
+  v-on:swiperight="onSwipeRight" 
+  tag="div"
+  v-on:swipeleft="onSwipeLeft"
+  class="touch" :bind=getHeight()>
     <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
     <router-view> </router-view>
-    <div class="bottom-line"></div>
+  </v-touch>
   </div>
 </template>
 
@@ -10,8 +15,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import store from './store'
+//左滑
+
 import 'mint-ui/lib/style.min.css'
 // import mybanner from '../src/components/banner'
+
 
 export default{
   name: 'app',
@@ -25,8 +33,18 @@ export default{
     }
   },
   methods:{
-    //获取更改后新的密码，传到登录页面更新缓存。
-   
+   //左右滑动前进/后退
+    onSwipeRight(){
+      this.$router.go(-1)
+    },
+    onSwipeLeft(){
+      this.$router.go(+1)
+    },
+    //当页面不足100vh的时候，更改height的值。
+    getHeight(){
+      var myTouch = document.getElementsByClassName('touch')[0];
+     console.log(myTouch)
+    }
   }
 }
 </script>
@@ -38,17 +56,9 @@ $subfontcolor: #525252;
 $bgcolor: #31c3b0;
   /*reset css */
   //iphoneX顶部刘海适配
-#app{
-  padding-top: constant(safe-area-inset-top);
-   //iphoneX 底部适配
-  .bottom-line{
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: constant(safe-area-inset-bottom);
-    background-color: #fff;
-}
-}
+
+
+
 
 body,dl,dd,ul,ol,h1,h2,h3,h4,h5,h6,pre,form,fieldset,legend,input,textarea,p,thead,tbody,tfoot,th,td {margin:0;padding:0}  
 ul,ol{list-style-type:none;list-style-image:none}
