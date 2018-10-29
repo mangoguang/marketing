@@ -40,13 +40,8 @@ export default {
       ajaxData: {},
       personalSalesData: {},
       shopName: this.$route.query.name,
-<<<<<<< HEAD
-      title:'销售额报表' 
-=======
-      turnPath:'./storeSales',
       title:'销售额报表',
       endTime: mango.getLocalTime('end')
->>>>>>> 63ef3d2ce92ea141ce14851d96f764d009b7de34
     }
   },
   created() {
