@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="sales paddingTop">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title' />
     <SelectComponent></SelectComponent>
     <div class="barBox">
       <chartsTit :text="'整体销售额对比'">
@@ -62,7 +62,6 @@ export default {
       salesData: {}, 
       areaSalesData: {},
       title:'销售额报表',
-      turnPath:'./ReportForms',
       cityMsg: ''
     }
   },

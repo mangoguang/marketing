@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="areaStoreSales">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title'/>
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
       <ul class="areaStoreBox">
@@ -48,8 +48,7 @@ export default {
     return {
       ajaxData: {},
       areaStoreSalesData: [],
-      title:'销售额报表',
-      turnPath:'./sales'
+      title:'销售额报表'
     }
   },
   created() {

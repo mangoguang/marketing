@@ -1,6 +1,6 @@
 <template>
   <div class="areaEffectiveness paddingTop">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title'/>
     <SelectComponent></SelectComponent>
     <div class="barBox">
       <chartsTit :text="'坪效-整体'"></chartsTit>
@@ -50,7 +50,6 @@ export default {
       areaEffectivenessData: {}, 
       areaEffectivenessShopData: {},
       title:'坪效报表',
-      turnPath:'./ReportForms',
       endTime: mango.getLocalTime('end'),
       cityMsg: ''
     }
