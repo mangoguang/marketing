@@ -6,12 +6,12 @@ Vue.use(VueRouter)
 export var router = new VueRouter({
   routes: [{
     path: '/',
-    name: 'Login2',
-    component: resolve => require(['../pages/Login2'], resolve)
+    name: 'ReportForms',
+    component: resolve => require(['../pages/ReportForms'], resolve)
   },{
     path: '/Login',
     name: 'Login',
-    component: resolve => require(['../pages/login'], resolve)
+    component: resolve => require(['../pages/Login'], resolve)
   }, {
     path: '/brand',
     name: 'Brand',

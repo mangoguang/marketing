@@ -41,7 +41,8 @@ export default {
       personalSalesData: {},
       shopName: this.$route.query.name,
       turnPath:'./storeSales',
-      title:'销售额报表' 
+      title:'销售额报表',
+      endTime: mango.getLocalTime('end')
     }
   },
   created() {
@@ -51,7 +52,7 @@ export default {
   },
   mounted(){
     // console.log('路由参数', this.$route)
-    this.getPersonalSalesData()
+    this.getPersonalSalesData(this.endTime)
   },
   computed: {
 
@@ -67,10 +68,10 @@ export default {
     }
   },
   methods:{
-    getPersonalSalesData() {
+    getPersonalSalesData(date) {
       let _this = this
       mango.getAjax(this, 'shop/sales', {
-        date: '2018-08',
+        date: date,
         tenantId: this.ajaxData.tenantId,
         shopId: this.$route.query.shopId
       }).then((res) => {

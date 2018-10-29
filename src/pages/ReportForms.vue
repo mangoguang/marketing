@@ -61,11 +61,28 @@ export default {
     }
   },
   created(){
+    this.checkLogin()
     this.t = this.forms
   //  console.log(this.forms[0].text)
     
   },
   methods:{
+    checkLogin() {
+      let ajaxData = localStorage.getItem('ajaxData')
+      // console.log(Date.parse(new Date()) - timeLong)
+      if (!ajaxData) {
+        this.$router.push({path: './Login'})
+        return
+      } else {
+        let timeLong = JSON.parse(ajaxData).timestamp
+        timeLong = Date.parse(new Date()) - JSON.parse(ajaxData).timestamp
+        timeLong = timeLong/(60 * 60 * 24 * 1000)
+        if (timeLong > 10) {
+          this.$router.push({path: './Login'})
+          return
+        }
+      }
+    },
     linkTo:function(index){
       if(index == 0){
         this.$router.push({path:'/sales'})

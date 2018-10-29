@@ -6,7 +6,7 @@
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}11`">
         <div class="barBox">
-          <chartsTit :text="index === 0 ? `整体${typeName}占比` : ''"></chartsTit>
+          <!-- <chartsTit :text="index === 0 ? `整体${typeName}占比` : ''"></chartsTit> -->
           <Pie
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"
@@ -17,6 +17,9 @@
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
+          <chartsTit :text="'各门店销售额对比'">
+            <h6>单位：万元</h6>
+          </chartsTit>
           <div ref="brandContainer" ></div>
           <!-- <Bar
           @chartsClick="chartsEvent"
@@ -42,6 +45,7 @@
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
+          <chartsTit :text="'各门店数量对比'"></chartsTit>
           <div ref="categoryContainer" ></div>
           <!-- <Bar
           :data="categoryData"
@@ -128,7 +132,7 @@ export default {
       // 参数说明：查看销售模块样例
       const chartsName = 'category'
       if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal', true)
+        chartsInit(this, chartsName, 'horizontal')
       }
     }
   },

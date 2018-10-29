@@ -17,6 +17,7 @@
       v-model="pickerValue"
       year-format="{value} 年"
       month-format="{value} 月"
+      date-format="{value} 日"
       @confirm="handleConfirm">
     </mt-datetime-picker>
   </ul>

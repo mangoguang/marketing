@@ -182,6 +182,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
+          res.yAxisData = ['进店数-整体']
           _this.storeGetInTotalData = res
         }
       })
@@ -214,6 +215,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
+          res.yAxisData = ['成交率-整体']
           _this.achieveRatioTotalData = res
         }
       })
@@ -248,6 +250,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
+          res.yAxisData = ['客单值-整体']
           _this.orderFormTotalData = res
         }
       })
