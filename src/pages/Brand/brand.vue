@@ -17,7 +17,7 @@
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
-          <chartsTit :text="'各门店销售额对比'">
+          <chartsTit :text="`各${typeName}销售额对比`">
             <h6>单位：万元</h6>
           </chartsTit>
           <div ref="brandContainer" ></div>
@@ -45,7 +45,7 @@
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
-          <chartsTit :text="'各门店数量对比'"></chartsTit>
+          <chartsTit :text="`各${typeName}数量对比`"></chartsTit>
           <div ref="categoryContainer" ></div>
           <!-- <Bar
           :data="categoryData"

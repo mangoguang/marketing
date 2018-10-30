@@ -64,7 +64,8 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    this.getcustomerSourceData(this.endTime, this.cityMsg.cityName, this.citySelect.cityLevel)
+    console.log('数据：', this.citySelect)
+    this.getcustomerSourceData(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
     this.getareaCustomerSourceData(this.endTime)
   },
   computed: {
@@ -79,14 +80,19 @@ export default {
   },
   watch: {
     citySelect() {
+      console.log('111')
       if (this.endTimeSelect && this.endTimeSelect != '') {
-        this.getpeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
+        this.getcustomerSourceData(this.endTime, this.citySelect.cityName, this.citySelect.cityLevel)
+        // this.getpeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
       }
     },
     endTimeSelect() {
+      console.log('222')
       if (this.endTimeSelect && this.endTimeSelect != '') {
-        this.getpeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
-        this.getareaPeopleWorkData(this.endTimeSelect)
+        this.getcustomerSourceData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
+        this.getareaCustomerSourceData(this.endTimeSelect)
+        // this.getpeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
+        // this.getareaPeopleWorkData(this.endTimeSelect)
       }
     },
     customerSourceData() {

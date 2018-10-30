@@ -10,7 +10,7 @@ export default function(data, vertical, salesVal, title) {
   let seriesPosition
   // vertical === horizontal,柱状图为水平方向，否则为垂直方向
   if (vertical === 'horizontal') {
-    seriesPosition = 'right'
+    seriesPosition = 'inside'
   } else {
     seriesPosition = 'top'
   }

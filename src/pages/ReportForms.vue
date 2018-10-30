@@ -31,6 +31,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Footer from '../components/Footer'
+import mango from '../js'
 
 export default {
   components:{
@@ -65,6 +66,11 @@ export default {
     this.t = this.forms
   //  console.log(this.forms[0].text)
     
+  },
+  mounted() {
+    if (mango.version === 'app') {
+      console.log(api.deviceId)
+    }
   },
   methods:{
     checkLogin() {
