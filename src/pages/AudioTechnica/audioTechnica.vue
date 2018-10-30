@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <ul class="audioTechnica paddingTop">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title' />
     <SelectComponent></SelectComponent>
     <!-- 整体进店数 -->
     <li class="barBox">
@@ -84,7 +84,6 @@ export default {
       orderFormTotalData: {},
       perOrderFormData: {},
       title:'铁三角报表',
-      turnPath:'./ReportForms',
       endTime: mango.getLocalTime('end'),
       cityMsg: ''
     }

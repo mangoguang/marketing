@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="storeSales paddingTop">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title'/>
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'"></chartsTit>
       <div ref="storeSalesContainer" ></div>
@@ -42,7 +42,6 @@ export default {
       ajaxData: {},
       storeSalesData: {},
       endTime: mango.getLocalTime('end'),
-      turnPath:'./sales',
       title:'销售额报表'
     }
   },

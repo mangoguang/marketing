@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="brand">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title' />
     <SelectComponent></SelectComponent>
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}11`">
@@ -88,7 +88,6 @@ export default {
       typeName: this.$route.query.type === 'brand' ? '品牌' : '品类',
       port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion',
       title:'',
-      turnPath:'./ReportForms',
       endTime: mango.getLocalTime('end')
     }
   },

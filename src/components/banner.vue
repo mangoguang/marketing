@@ -14,7 +14,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 export default {
   name: 'routerLink',
-  props:['title','turnPath'],
+  props:['title'],
   data () {
     return {
 
@@ -22,7 +22,7 @@ export default {
   },
   methods:{
     cilck:function(){
-      this.$router.push({path:this.turnPath}) 
+      this.$router.back(-1)
     }
   }
 }

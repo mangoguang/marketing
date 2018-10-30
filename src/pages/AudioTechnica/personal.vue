@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <ul class="personal paddingTop">
-    <mybanner :title='mytitle' :turnPath='turnPath'/>
+    <mybanner :title='mytitle' />
     <!-- 整体进店数 -->
     <li class="barBox">
       <chartsTit :text="`${shopName}进店数-职员`">
@@ -38,8 +38,8 @@ export default {
       personalData: {},
       shopName: this.$route.query.name,
       title: '',
-      mytitle:'铁三角报表',
-      turnPath:'./audioTechnica'
+      mytitle:'铁三角报表'
+    
     }
   },
   created() {

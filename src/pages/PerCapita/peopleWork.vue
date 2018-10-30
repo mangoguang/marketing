@@ -1,6 +1,6 @@
 <template>
   <div class="peopleWork paddingTop">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title'/>
     <SelectComponent></SelectComponent>
     <div class="barBox">
       <chartsTit :text="'人效-整体'">
@@ -57,7 +57,6 @@ export default {
       areaPeopleWorkData: {},
       height: 100,
       title:'人效报表',
-      turnPath:'./ReportForms',
       endTime: mango.getLocalTime('end'),
       cityMsg: ''
     }

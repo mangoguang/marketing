@@ -1,6 +1,7 @@
 <template>
   <div class="customerSource paddingTop">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title'
+    />
     <SelectComponent></SelectComponent>
     <div class="barBox">
       <chartsTit :text="'客户来源-整体'"></chartsTit>
@@ -52,7 +53,6 @@ export default {
       customerSourceData: {}, 
       areaCustomerSourceData: {},
       title:'客户来源报表',
-      turnPath:'./ReportForms',
       endTime: mango.getLocalTime('end'),
       cityMsg: ''
     }
