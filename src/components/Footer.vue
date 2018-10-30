@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" :style="{'padding-bottom':`${padding}vw`}">
     <ul >
       <li id="1" @touchend="touchend">    
       <!-- <router-link to="/" >  -->
@@ -39,12 +39,12 @@
 export default {
   data(){
     return{
-      
+      padding:''
       
     }
   },
-  created(){
-    
+  mounted(){
+    this.isIPhoneX() 
   },
   methods:{
     touchend:function(e){
@@ -53,6 +53,19 @@ export default {
       //   alert('该模块尚未开发')
       // }
       alert('该模块尚未开发')
+    },
+    isIPhoneX : function(){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+         if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+            
+            this.padding = '4.53'
+            
+          }else{
+            console.log('no iphonex')
+          } 
+      }
     }
   }
 }
@@ -63,8 +76,8 @@ export default {
 .footer{
   width: 100vw;
   position: fixed;
-  bottom: 0;
   background: #f8f8f8;
+  bottom: 0;
   ul{
     display: flex;
     justify-content: space-around;

@@ -1,10 +1,10 @@
 <template>
-  <div id="app" :style="{'min-height': `${height}px`, background: '#fff'}">
+  <div id="app" :style="{'min-height': `${height}px`, background: '#fff', 'padding-top':`${padding}vw`}">
   <v-touch 
   v-on:swiperight="onSwipeRight" 
-  tag="div"
+  tag="div" 
   v-on:swipeleft="onSwipeLeft"
-  class="touch" :bind=getHeight()>
+  :style="{'min-height': `${height}px`}">
     <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
     <router-view> </router-view>
   </v-touch>
@@ -28,9 +28,12 @@ export default{
   // components:{mybanner},
   data(){
     return{
-      height: window.innerHeight
-      
+      height: window.innerHeight,
+      padding:''
     }
+  },
+  mounted(){
+    this.isIPhoneX()
   },
   methods:{
    //左右滑动前进/后退
@@ -40,11 +43,20 @@ export default{
     onSwipeLeft(){
       this.$router.go(+1)
     },
-    //当页面不足100vh的时候，更改height的值。
-    getHeight(){
-      var myTouch = document.getElementsByClassName('touch')[0];
-     console.log(myTouch)
+    //判断是否iphoneX
+    isIPhoneX : function(fn){
+    var u = navigator.userAgent;
+    var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.padding = '5.86'
+          this.height =  window.innerHeight - 44
+        }else{
+          this.padding = ''
+          console.log(111,this.padding)
+        } 
     }
+  }
   }
 }
 </script>
@@ -55,10 +67,6 @@ $fontcolor: #fff;
 $subfontcolor: #525252;
 $bgcolor: #31c3b0;
   /*reset css */
-  //iphoneX顶部刘海适配
-
-
-
 
 body,dl,dd,ul,ol,h1,h2,h3,h4,h5,h6,pre,form,fieldset,legend,input,textarea,p,thead,tbody,tfoot,th,td {margin:0;padding:0}  
 ul,ol{list-style-type:none;list-style-image:none}
@@ -148,7 +156,7 @@ a:hover{text-decoration:none;}
   background: #fff;
   border-bottom: 1vw solid #f8f8f8;
 }
-.paddingTop{
-  padding-top: 62px;
-}
+// .paddingTop{
+//   padding-top: 62px;
+// }
 </style>

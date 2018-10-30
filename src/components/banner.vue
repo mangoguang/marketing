@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="banner">
+    <div :class="`${fix}`"></div>
     <div class="icon-back" @click='cilck'>
       <div class="icon"></div>
     </div>
@@ -17,12 +18,26 @@ export default {
   props:['title'],
   data () {
     return {
-
+      fix:''
     }
+  },
+  mounted(){
+    this.isIPhoneX()
   },
   methods:{
     cilck:function(){
       this.$router.back(-1)
+    },
+    isIPhoneX : function(fn){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+          if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+            this.fix = 'fix'
+          }else{
+            
+          } 
+      }
     }
   }
 }
@@ -36,13 +51,22 @@ export default {
   width: 100vw;
   box-sizing: border-box;
   display: flex;
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   align-items: center;
   border-bottom: 1px solid #aaa;
   background: #f8f8f8;
   padding-top: 5vw;
+  .fix{
+    position: absolute;
+    background: #f8f8f8;
+    left: 0;
+    top: -6vw;
+    height: 7vw;
+    width: 100%;
+    z-index: 99;
+    }
   .icon-back{
     width: 8vw;
     height: 6.66vw;
@@ -52,7 +76,7 @@ export default {
       background-size: 100%;
       width: 2.66vw;
       height:4.66vw;
-     margin-top: 1vw;
+      margin-top: 1vw;
     }
   }
   span{

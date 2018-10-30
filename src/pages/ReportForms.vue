@@ -1,8 +1,9 @@
 <template>
-  <div class="reportForms">
+  <div class="reportForms" :style="{overflow:`${overflow}`}">
+    <div :class="`${fix}`"></div>
     <div class="search">
       <div class="search-icon"></div>
-      <input type="text" placeholder="请输入门店、职员、品牌、产品等关键字">
+      <input type="text" placeholder="请输入门店、职员、品牌、产品等关键字" >
     </div>
     <div class="topList">
       <div class="shopTop"></div>
@@ -39,6 +40,8 @@ export default {
   data(){
     return{
       t:'',
+      fix:'',
+      overflow:'hidden',
       forms:[
         {
           color:'#007aff',text:'销售额'
@@ -65,6 +68,9 @@ export default {
     this.t = this.forms
   //  console.log(this.forms[0].text)
     
+  },
+  mounted(){
+    this.isIPhoneX()
   },
   methods:{
     checkLogin() {
@@ -100,7 +106,20 @@ export default {
         this.$router.push({path:'/customerSource'})
       }
      
+    },
+    isIPhoneX : function(){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+          if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+            this.fix = 'fix'
+            this.overflow = ''
+          }else{
+            this.overflow = 'hidden'
+          } 
+      }
     }
+     
   }
 }
 </script>
@@ -109,7 +128,16 @@ export default {
 
 .reportForms{
   background: #f8f8f8;
-  overflow: hidden;
+  position: relative;
+   .fix{
+      position: absolute;
+      background: #f8f8f8;
+      left: 0;
+      top: -14vw;
+      height: 14.1vw;
+      width: 100vw;
+      z-index: 99;
+    }
   .search{
     height: 7.73vw;
     width: 91.46vw;
