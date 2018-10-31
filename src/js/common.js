@@ -8,6 +8,7 @@ export default class Common {
     // this.port = 'http://172.16.11.123/'
     // this.port = 'http://10.11.8.7:8086/'
     this.path = `${this.port}v1/app/report/`
+    this.version = 'web'
   }
   //根据对象属性，进行数组对象的排序
   compare(property) {
@@ -101,7 +102,7 @@ export default class Common {
       let loadingTimeOut = setTimeout(function() {
         _this.loading('close')
         clearTimeout(loadingTimeOut)
-      }, 5000)
+      }, 10000)
       axios({
         method: 'get',
         url: url,
