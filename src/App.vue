@@ -162,8 +162,9 @@ a:hover{text-decoration:none;}
 .barBox{
   background: #fff;
   border-bottom: 1vw solid #f8f8f8;
+  // margin-top: 16vw
 }
-// .paddingTop{
-//   padding-top: 62px;
-// }
+.paddingTop{
+  padding-top: 17vw;
+}
 </style>

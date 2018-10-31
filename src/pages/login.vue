@@ -165,7 +165,7 @@ export default {
                 "timestamp": "${Date.parse(new Date())}"
               }`
               localStorage.setItem("ajaxData", ajaxData)
-              _this.$router.push({ path: '/' })
+              _this.$router.push({ path: '/ReportForms' })
             }
           }else{  //状态不为200，请求失败
             console.log(res.status)
@@ -193,8 +193,8 @@ export default {
         let trimPwd = this.trimStr(oldaccountMsg['pwd'])
         this.nameMsg = trimName
         this.pwdMsg = trimPwd
-        // this.inputValue2 = trimPwd
-        // this.inputValue1 = trimName
+        this.inputValue2 = trimPwd
+        this.inputValue1 = trimName
       }
     },
     forgetPwd:function(){
