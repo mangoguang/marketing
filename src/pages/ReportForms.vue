@@ -1,8 +1,9 @@
 <template>
-  <div class="reportForms">
+  <div class="reportForms" :style="{overflow:`${myStyle.formOverFlow}`}">
+    <div :class="`${myStyle.loginFix}`"></div>
     <div class="search">
       <div class="search-icon"></div>
-      <input type="text" placeholder="请输入门店、职员、品牌、产品等关键字">
+      <input type="text" placeholder="请输入门店、职员、品牌、产品等关键字" >
     </div>
     <div class="topList">
       <div class="shopTop"></div>
@@ -66,6 +67,7 @@ export default {
   //  console.log(this.forms[0].text)
     
   },
+  props:['myStyle'],
   methods:{
     checkLogin() {
       let ajaxData = localStorage.getItem('ajaxData')
@@ -101,6 +103,7 @@ export default {
       }
      
     }
+     
   }
 }
 </script>
@@ -109,7 +112,16 @@ export default {
 
 .reportForms{
   background: #f8f8f8;
-  overflow: hidden;
+  position: relative;
+   .fix{
+      position: absolute;
+      background: #f8f8f8;
+      left: 0;
+      top: -14vw;
+      height: 14.1vw;
+      width: 100vw;
+      z-index: 99;
+    }
   .search{
     height: 7.73vw;
     width: 91.46vw;
