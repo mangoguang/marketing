@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="banner">
+  <div class="banner" :style="{'margin-top':`${top}vw`}">
     <div :class="`${fix}`"></div>
     <div class="icon-back" @click='cilck'>
       <div class="icon"></div>
@@ -18,7 +18,8 @@ export default {
   props:['title'],
   data () {
     return {
-      fix:''
+      fix:'',
+      top:''
     }
   },
   mounted(){
@@ -34,6 +35,7 @@ export default {
       if (isIOS) {        
           if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
             this.fix = 'fix'
+            this.top = '6'
           }else{
             
           } 
@@ -51,7 +53,7 @@ export default {
   width: 100vw;
   box-sizing: border-box;
   display: flex;
-  position: relative;
+  position: fixed;
   top: 0;
   left: 0;
   align-items: center;

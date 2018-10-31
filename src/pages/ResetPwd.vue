@@ -1,5 +1,5 @@
 <template>
-  <div class="resetPwd">
+  <div class="resetPwd" :style="{'margin-top':`${myStyle.fgPwdTop}vw`}">
     <mybanner :title='title' />
     <div class="banner">
       <img src="../assets/imgs/banner1.png" alt="头部背景" class="img1">
@@ -57,6 +57,7 @@ export default {
  
     }
   },
+  props:['myStyle'],
   mounted(){
     let obj = {
       name: 'guang',

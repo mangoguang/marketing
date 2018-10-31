@@ -1,6 +1,6 @@
 <template>
-  <div class="reportForms" :style="{overflow:`${overflow}`}">
-    <div :class="`${fix}`"></div>
+  <div class="reportForms" :style="{overflow:`${myStyle.formOverFlow}`}">
+    <div :class="`${myStyle.loginFix}`"></div>
     <div class="search">
       <div class="search-icon"></div>
       <input type="text" placeholder="请输入门店、职员、品牌、产品等关键字" >
@@ -40,8 +40,6 @@ export default {
   data(){
     return{
       t:'',
-      fix:'',
-      overflow:'hidden',
       forms:[
         {
           color:'#007aff',text:'销售额'
@@ -69,9 +67,7 @@ export default {
   //  console.log(this.forms[0].text)
     
   },
-  mounted(){
-    this.isIPhoneX()
-  },
+  props:['myStyle'],
   methods:{
     checkLogin() {
       let ajaxData = localStorage.getItem('ajaxData')
@@ -106,18 +102,6 @@ export default {
         this.$router.push({path:'/customerSource'})
       }
      
-    },
-    isIPhoneX : function(){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-          if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-            this.fix = 'fix'
-            this.overflow = ''
-          }else{
-            this.overflow = 'hidden'
-          } 
-      }
     }
      
   }

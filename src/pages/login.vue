@@ -1,6 +1,6 @@
 <template>
   <div class="login2" > 
-    <div :class="`${fix}`"></div>
+    <div :class="`${myStyle.loginFix}`"></div>
     <div class="topBar">
       <tips-error :style="{display:display}"></tips-error>
       <tips-web :style="{display:display1}"></tips-web>
@@ -77,6 +77,7 @@ export default {
     btn,
     myinput
   },
+  props:['myStyle'],
   data () {
     return {
       height: document.documentElement.clientHeight,
@@ -92,8 +93,8 @@ export default {
       inputValue1:'',
       inputValue2:'',
       nameMsg:'',
-      pwdMsg:'',
-      fix:''
+      pwdMsg:''
+     
     }
   },
   mounted(){
@@ -108,9 +109,6 @@ export default {
   },
   created(){
     this.getAccountMsg()
-  },
-  mounted(){
-    this.isIPhoneX()
   },
   methods:{
     //去除input输入框的左边空格
@@ -201,18 +199,7 @@ export default {
     },
     forgetPwd:function(){
       this.$router.push({path:'/ForgetPwd'})
-    },
-    isIPhoneX : function(fn){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-          if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-            this.fix = 'fix'
-          }else{
-            
-          } 
-      }
-  }
+    }
   }
 }
 </script>
@@ -228,7 +215,7 @@ export default {
   position: relative;
   .fix{
     width: 100%;
-    height: 7vw;
+    height: 6vw;
     background: #e1e1e1;
     position: absolute;
     left: 0;

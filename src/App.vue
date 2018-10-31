@@ -6,7 +6,7 @@
   v-on:swipeleft="onSwipeLeft"
   :style="{'min-height': `${height}px`}">
     <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
-    <router-view> </router-view>
+    <router-view :myStyle = 'myStyle'> </router-view>
   </v-touch>
   </div>
 </template>
@@ -29,7 +29,8 @@ export default{
   data(){
     return{
       height: window.innerHeight,
-      padding:''
+      padding:'',
+      myStyle:[{'fgPwdTop':''},{'loginFix':''},{'formOverFlow':''}]
     }
   },
   mounted(){
@@ -51,10 +52,16 @@ export default{
         if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
           this.padding = '5.86'
           this.height =  window.innerHeight - 44
+          this.myStyle.fgPwdTop = '-6'
+          this.myStyle.loginFix = 'fix'
+          this.myStyle.formOverFlow = ''
         }else{
           this.padding = ''
           console.log(111,this.padding)
+          this.myStyle.formOverFlow = 'hidden'
         } 
+    }else{
+      this.myStyle.formOverFlow = 'hidden'
     }
   }
   }
