@@ -68,15 +68,12 @@ export default {
   //  console.log(this.forms[0].text)
     
   },
-<<<<<<< HEAD
   mounted() {
     if (mango.version === 'app') {
       console.log(api.deviceId)
     }
   },
-=======
   props:['myStyle'],
->>>>>>> a4748f557a306682176a64e9cc959ff4877d8395
   methods:{
     checkLogin() {
       let ajaxData = localStorage.getItem('ajaxData')

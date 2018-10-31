@@ -102,7 +102,7 @@ export default class Common {
       let loadingTimeOut = setTimeout(function() {
         _this.loading('close')
         clearTimeout(loadingTimeOut)
-      }, 5000)
+      }, 10000)
       axios({
         method: 'get',
         url: url,
