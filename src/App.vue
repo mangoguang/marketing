@@ -165,6 +165,6 @@ a:hover{text-decoration:none;}
   // margin-top: 16vw
 }
 .paddingTop{
-  padding-top: 17vw;
+  padding-top: 16.5vw;
 }
 </style>
