@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="personalSales paddingTop">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title' />
     <div class="barBox">
       <chartsTit :text="`${shopName}-职员销售额对比`"></chartsTit>
       <div ref="personalSalesContainer" ></div>
@@ -40,7 +40,6 @@ export default {
       ajaxData: {},
       personalSalesData: {},
       shopName: this.$route.query.name,
-      turnPath:'./storeSales',
       title:'销售额报表',
       endTime: mango.getLocalTime('end')
     }

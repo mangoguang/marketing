@@ -1,6 +1,6 @@
 <template>
-  <div class="resetPwd">
-    <mybanner :title='title' :turnPath='turnPath'/>
+  <div class="resetPwd" :style="{'margin-top':`${myStyle.fgPwdTop}vw`}">
+    <mybanner :title='title' />
     <div class="banner">
       <img src="../assets/imgs/banner1.png" alt="头部背景" class="img1">
       <img src="../assets/imgs/banner2.png" alt="头部背景" class="img2">
@@ -53,10 +53,11 @@ export default {
       labelContent1:'确认新密码',
       inputValue1:'',
       inputValue2:'',
-      title:'修改密码',
-      turnPath:'./ForgetPwd'  
+      title:'修改密码'
+ 
     }
   },
+  props:['myStyle'],
   mounted(){
     let obj = {
       name: 'guang',

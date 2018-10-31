@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="category">
-    <mybanner :title='title' :turnPath='turnPath'/>
+    <mybanner :title='title' />
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}12`">
         <div class="barBox">
@@ -74,8 +74,8 @@ export default {
       ajaxData: {},
       brandData: {}, 
       categoryData: {},
-      title:'',
-      turnPath:'./ReportForms'
+      title:''
+     
     }
   },
   created() {

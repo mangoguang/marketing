@@ -1,6 +1,6 @@
 <template> 
-  <div class="forgetPwd">
-    <mybanner :title='title' :turnPath='turnPath'/>
+  <div class="forgetPwd" :style="{'margin-top':`${myStyle.fgPwdTop}vw`}">
+    <mybanner :title='title'/>
     <div class="banner">
       <img src="../assets/imgs/banner1.png" alt="头部背景" class="img1">
       <img src="../assets/imgs/banner2.png" alt="头部背景" class="img2">
@@ -64,10 +64,11 @@ data () {
       verificationCode:'验证码',
       inputValue1:'',
       inputValue2:'',
-      title:'忘记密码',
-      turnPath:'/' 
+      title:'忘记密码'
+      
     }
   },
+  props:['myStyle'],
   methods:{
     submitForm:function(){
     if (!port.key) {
