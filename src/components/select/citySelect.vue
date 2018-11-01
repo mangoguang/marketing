@@ -35,7 +35,7 @@ export default {
     return {
       ajaxData: {},
       cityMsg: {name: '城市1', level: 2},
-      cityList: [{name: '城市1', level: 2}, {name: '城市2', level: 1}, {name: '城市3', level: 1}, {name: '城市4', level: 1}],
+      cityList: [{name: '城市1', level: 2}],
       isActive: true,
       statusList: [],
       rotate:'rotate(270deg)'
