@@ -17,6 +17,7 @@ export default {
 
 <style lang="scss" scoped>
 .btn{
+  font-family: PINGPANG;
   width: 100%;
   height: 13.1vw;
   background-color: #363636;

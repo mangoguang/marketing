@@ -5,11 +5,11 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
-    path: '/ReportForms',
+    path: '/',
     name: 'ReportForms',
     component: resolve => require(['../pages/ReportForms'], resolve)
   },{
-    path: '/',
+    path: '/Login',
     name: 'Login',
     component: resolve => require(['../pages/Login'], resolve)
   }, {

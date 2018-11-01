@@ -95,6 +95,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .selectComponent{
+     font-family: PINGPANG;
     // display: flex;
     // justify-content: flex-end;
     // align-items: center;

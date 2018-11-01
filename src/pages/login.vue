@@ -118,11 +118,7 @@ export default {
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
     submitForm(formName) {
       let _this = this
-      if (this.checked) {
-        this.setAccountMsg(this.inputValue1, this.inputValue2);
-      } else {
-        this.setAccountMsg('', '');
-      }
+    
         if(_this.key){   //如果请求失败，只可以请求一次
           _this.key = false
           getApi()
@@ -156,7 +152,13 @@ export default {
             if(status == 0){           //如果为0，账号或密码错误，出现弹框。
             _this.display = 'block' 
             _this.key = true
-            }else{                    //账号密码正确，跳转页面。
+            
+            }else{  
+            if (_this.checked) {
+              _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
+            } else {
+              _this.setAccountMsg('', '');
+            }                  //账号密码正确，跳转页面。
               res = res.data.data
               let ajaxData = `{
                 "tenantId": "${res.tenantId}",
@@ -165,7 +167,7 @@ export default {
                 "timestamp": "${Date.parse(new Date())}"
               }`
               localStorage.setItem("ajaxData", ajaxData)
-              _this.$router.push({ path: '/ReportForms' })
+              _this.$router.push({ path: '/' })
             }
           }else{  //状态不为200，请求失败
             console.log(res.status)
@@ -206,12 +208,8 @@ export default {
 
 
 <style lang="scss" scoped> 
-@font-face {
-  font-family: 'PINGPANG';
-  src: url('../assets/font/PingFang Regular.ttf');
-}
 .login2{
-  font-family: 'PINGPANG';
+  font-family: PINGPANG;
   position: relative;
   .fix{
     width: 100%;
@@ -255,6 +253,7 @@ export default {
       text-align: center;
       color:#010101;
       line-height: 6.4vw;
+      font-weight: 600;
     }
     ul{
       //按钮

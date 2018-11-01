@@ -74,7 +74,13 @@ $fontcolor: #fff;
 $subfontcolor: #525252;
 $bgcolor: #31c3b0;
   /*reset css */
-
+ @font-face {
+  font-family: PINGPANG;
+  src: url('./assets/font/pingfang.ttf');
+}
+body{
+  font-family: PINGFANG;
+}
 body,dl,dd,ul,ol,h1,h2,h3,h4,h5,h6,pre,form,fieldset,legend,input,textarea,p,thead,tbody,tfoot,th,td {margin:0;padding:0}  
 ul,ol{list-style-type:none;list-style-image:none}
 a{text-decoration:none}a:active{background-color:transparent}  a:active,a:hover{outline:0 none}a:focus{outline:1px dotted}  
@@ -167,4 +173,5 @@ a:hover{text-decoration:none;}
 .paddingTop{
   padding-top: 16.5vw;
 }
+
 </style>
