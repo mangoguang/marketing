@@ -101,5 +101,6 @@ export default {
   .main{
     width: 100%;
     height: 110vw;
+    font-family: PINGPANG;
   }
 </style>

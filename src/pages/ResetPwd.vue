@@ -47,7 +47,7 @@ export default {
   data () {
     return {
       height: document.documentElement.clientHeight,
-      text:'确认',
+      text:'确认修改',
       type:'password',
       labelContent:'新密码',
       labelContent1:'确认新密码',
@@ -124,12 +124,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@font-face {
-  font-family: 'PINGPANG';
-  src: url('../assets/font/PingFang Regular.ttf');
-}
+
 .resetPwd{
-  font-family: 'PINGPANG';
+  font-family: PINGPANG;
   height: 100vh;
   background: #fff;
   .banner{

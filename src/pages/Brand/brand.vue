@@ -194,7 +194,7 @@ export default {
   width: 100vw;
   height: 100vh;
   background: #f8f8f8;
-  // padding-top: 19.446vw;
+  padding-top:16.5vw;
 }
 .main{
   width: 100vw;

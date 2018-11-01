@@ -124,12 +124,9 @@ data () {
 </script>
 
 <style lang="scss" scoped>
-@font-face {
-  font-family: 'PINGPANG';
-  src: url('../assets/font/PingFang Regular.ttf');
-}
+
 .forgetPwd{
-  font-family: 'PINGPANG';
+  font-family: PINGPANG;
   background:#fff;
   height: 100vh;
   .banner{

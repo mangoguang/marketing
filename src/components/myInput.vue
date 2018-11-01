@@ -76,6 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 li{
+  font-family: PINGPANG;
   list-style: none;
   position: relative;
   height: 11.33vw;
