@@ -122,7 +122,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png);
         background-size: 2100%;
-        background-position: -63.8vw -20.6vw;
+        background-position: -64.2vw -20.6vw;
       }
       p{
         color: #8e8e93;
