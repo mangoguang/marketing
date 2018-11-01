@@ -8,7 +8,7 @@
       <!-- </router-link> -->
     </li>
     <li id="2">  
-      <router-link to="/ReportForms" >
+      <router-link to="/" >
       <div class="iconChar"></div>
       <p class="iconCharP">报表</p>  
       </router-link>
