@@ -107,7 +107,8 @@ export default {
       let _this = this
       mango.getAjax(this, 'area/effectiveness', {
         cityLevel: level,
-        cityName: city,
+        // cityName: city
+        cityName: '苏州市',
         date: date,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
@@ -126,7 +127,8 @@ export default {
         date: date,
         tenantId: this.ajaxData.tenantId,
         cityLevel: level,
-        cityName: city
+        cityName: '苏州市'
+        // cityName: city
       }).then((res) => {
         mango.loading('close')
         if (res) {
