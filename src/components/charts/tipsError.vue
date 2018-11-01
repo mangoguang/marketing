@@ -23,6 +23,7 @@ export default {
 
 <style lang="scss" scoped>
 .tipsError{
+   font-family: PINGPANG;
  .topBox{
     height: 9vw;
     width: 100vw;

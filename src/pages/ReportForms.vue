@@ -12,13 +12,13 @@
     <div class="forms">
       <div class="title">报表模块</div>
       <ul>
-        <li v-for="(forms,index) in x" :key="index" @touchend="linkTo(index)" :class="`${index}`">
-          <div class="icon" :style="{background:t[index].color}">
-            <div class="icon-forms">
-              <img :src ="`./static/images/char${index+1}.png`" alt="">
+        <li v-for="(item,index) in forms" :key="index" @touchend="linkTo(index)" :class="`${index}`">
+          <div class="icon" :style="{background:item.color}">
+            <div class="icon-forms" :style="{'background-position':`${item.iconPosition}`}" >
+              <!-- <img :src ="`./static/images/char${index+1}.png`" alt=""> -->
             </div>
           </div>
-          <p>{{t[index].text}}</p>
+          <p>{{item.text}}</p>
         </li>
       </ul>
     </div>
@@ -40,31 +40,27 @@ export default {
   },
   data(){
     return{
-      t:'',
       forms:[
         {
-          color:'#007aff',text:'销售额'
+          color:'#007aff',text:'销售额',iconPosition:'158.4vw -2vw'
         },{
-          color:'#5856d6',text:'铁三角'
+          color:'#5856d6',text:'铁三角',iconPosition:'135.4vw -2vw'
         },{
-          color:'#5ac8fa',text:'品牌'
+          color:'#5ac8fa',text:'品牌',iconPosition:'112.8vw -1.8vw'
         },{
-          color:'#ff2d55',text:'品类'
+          color:'#ff2d55',text:'品类',iconPosition:'90.4vw -1.8vw'
         },{
-          color:'#ff964b',text:'坪效'
+          color:'#ff964b',text:'坪效',iconPosition:'67.4vw -1.8vw'
         },{
-          color:'#ffcc00',text:'人效'
+          color:'#ffcc00',text:'人效',iconPosition:'45vw -2vw'
         },{
-          color:'#f93580',text:'客户来源'
+          color:'#f93580',text:'客户来源',iconPosition:'22vw -2vw'
         }
-
-      ],
-      x:7
+      ]
     }
   },
   created(){
     this.checkLogin()
-    this.t = this.forms
   //  console.log(this.forms[0].text)
     
   },
@@ -117,6 +113,7 @@ export default {
 <style lang="scss" scoped>
 
 .reportForms{
+  font-family: PINGPANG;
   background: #f8f8f8;
   position: relative;
    .fix{
@@ -207,13 +204,20 @@ export default {
           height: 20vw;
           border-radius: 2.66vw;
           position: relative;
-          .icon-forms img{
-            width: 11.46vw;
-            height: 12vw;
-            position: absolute;
-            top: 4vw;
-            left: 4.4vw;
+          .icon-forms{
+            background-image:url(../assets/imgs/icon.png);
+            width:20vw;
+            height: 20vw;
+            border-radius: 2.66vw;
+            background-size: 800%;
           }
+          // .icon-forms img{
+          //   width: 11.46vw;
+          //   height: 12vw;
+          //   position: absolute;
+          //   top: 4vw;
+          //   left: 4.4vw;
+          // }
         } 
         p{
           text-align: center;

@@ -120,6 +120,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .citySelect{
+    font-family: PINGPANG;
     background: #f8f8f8;
     border-bottom: 1px solid #ccc;
     h5{

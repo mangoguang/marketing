@@ -88,36 +88,41 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png) ;
+        background-size: 2100%;
+        background-position: -7.6vw -20.6vw;
       }
       .iconChar{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon2.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png) ;
+        background-size: 2100%;
+        background-position: -21.6vw -20.6vw;
       }
       .iconSalary{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon3.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png) ;
+        background-size: 2100%;
+        background-position: -35.6vw -20.6vw;
       }
       .iconMsg{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon4.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png);
+        background-size: 2100%;
+        background-position: -49.6vw -20.6vw;
       }
       .iconPerson{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon5.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png);
+        background-size: 2100%;
+        background-position: -63.6vw -20.6vw;
       }
       p{
         color: #8e8e93;
@@ -129,15 +134,17 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon-active1.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png);
+        background-size: 2100%;
+        background-position: -.4vw -20.6vw;
       }
       .router-link-exact-active .iconChar{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon-active2.png) no-repeat center;
-        background-size: 100%;
+        background: url(../assets/imgs/icon.png);
+        background-size: 2100%;
+        background-position: -14.2vw -20.6vw;
       }
       .router-link-exact-active .iconCharP{
         color: #007aff;
@@ -148,22 +155,25 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon-active3.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png);
+        background-size: 2100%;
+        background-position: -28.6vw -20.6vw;
       }
       .router-link-exact-active .iconMsg{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon-active4.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png) ;
+        background-size: 2100%;
+        background-position: -42.6vw -20.6vw;
       }
       .router-link-exact-active .iconPerson{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon-active5.png) no-repeat center;
-        background-size: 100%
+        background: url(../assets/imgs/icon.png);
+        background-size: 2100%;
+        background-position: -52.6vw -20.6vw;
       }
     }
   }

@@ -15,6 +15,7 @@ export default {
 
 <style lang="scss">
 .tipsWeb{
+   font-family: PINGPANG;
   .topBox{
       height: 9vw;
       width: 100vw;

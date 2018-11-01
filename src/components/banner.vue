@@ -48,6 +48,8 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .banner{
+  font-family: PINGPANG;
+  font-weight: 600;
   z-index: 99;
   height: 16.466vw;
   width: 100vw;

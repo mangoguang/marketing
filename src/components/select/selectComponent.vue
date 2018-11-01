@@ -95,13 +95,15 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .selectComponent{
+     font-family: PINGPANG;
     // display: flex;
     // justify-content: flex-end;
     // align-items: center;
     // height: 8vw;
     // margin-right: 2%;
     // padding: 3vw;
-      margin-top: 16vw;
+      // margin-top: 16vw;
+      // margin-bottom: -16vw;
     .timeBtn{
       height: 8vw;
       background: #f8f8f8;
