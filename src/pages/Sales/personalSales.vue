@@ -3,7 +3,9 @@
   <div class="personalSales paddingTop">
     <mybanner :title='title' />
     <div class="barBox">
-      <chartsTit :text="`${shopName}-职员销售额对比`"></chartsTit>
+      <chartsTit :text="`${shopName}-职员销售额对比`">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <div ref="personalSalesContainer" ></div>
       <!-- <Bar
       :data="personalSalesData"
