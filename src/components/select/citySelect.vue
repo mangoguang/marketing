@@ -107,14 +107,14 @@ export default {
             }
           }
           _this.setCitySelect(_this.cityMsg)
+          if (!localStorage.getItem('cityMsg')) {
+            // 将选择信息存储到本地
+            localStorage.setItem('cityMsg', `{
+              "cityName": "${res[0].empowerCity}",
+              "cityLevel": "${res[0].cityLevel}"
+            }`)
+          }
           _this.cityList = res.map((item) => {
-            if (!localStorage.getItem('cityMsg')) {
-              // 将选择信息存储到本地
-              localStorage.setItem('cityMsg', `{
-                "cityName": "${cityName}",
-                "cityLevel": "${cityLevel}"
-              }`)
-            }
             return {name: item.empowerCity, level: item.cityLevel}
           })
         }
