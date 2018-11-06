@@ -34,8 +34,8 @@ export default {
   data () {
     return {
       ajaxData: {},
-      cityMsg: {name: '城市1', level: 2},
-      cityList: [{name: '城市1', level: 2}],
+      cityMsg: {},
+      cityList: [],
       isActive: true,
       statusList: [],
       rotate:'rotate(270deg)'
@@ -51,9 +51,9 @@ export default {
     this.getCityLevel()
   },
   mounted() {
-    for (let i = 0; i < this.cityList.length; i++) {
-      this.statusList.push(false)
-    }
+    // for (let i = 0; i < this.cityList.length; i++) {
+    //   this.statusList.push(false)
+    // }
     this.changeCity()
     this.cityActive(this.cityMsg.cityName)
   },
@@ -115,9 +115,16 @@ export default {
             }
           }
           _this.setCitySelect(_this.cityMsg)
-          // _this.cityList = res.map((item) => {
-          //   return {name: item.empowerCity, level: item.cityLevel}
-          // })
+          if (!localStorage.getItem('cityMsg')) {
+            // 将选择信息存储到本地
+            localStorage.setItem('cityMsg', `{
+              "cityName": "${res[0].empowerCity}",
+              "cityLevel": "${res[0].cityLevel}"
+            }`)
+          }
+          _this.cityList = res.map((item) => {
+            return {name: item.empowerCity, level: item.cityLevel}
+          })
         }
       })
     }

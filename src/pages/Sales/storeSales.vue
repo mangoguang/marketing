@@ -3,7 +3,9 @@
   <div class="storeSales paddingTop">
     <mybanner :title='title'/>
     <div class="barBox">
-      <chartsTit :text="'各门店销售额对比'"></chartsTit>
+      <chartsTit :text="'各门店销售额对比'">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <div ref="storeSalesContainer" ></div>
       <!-- <Bar
       @chartsClick="chartsEvent"
