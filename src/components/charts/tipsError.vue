@@ -25,10 +25,10 @@ export default {
 .tipsError{
    font-family: PINGPANG;
  .topBox{
-    height: 9vw;
+    height: 8vw;
     width: 100vw;
     position: absolute;
-    top: -9vw;
+    top: -8vw;
     left: 0;
     line-height: 11.5vw;
     background: #fff;
@@ -37,7 +37,7 @@ export default {
     animation: move 4s;
     @keyframes move {
       from{
-        top: -9vw
+        top: -8vw
       }
       to{
         top: 5vw

@@ -11,7 +11,7 @@ export var router = new VueRouter({
   },{
     path: '/Login',
     name: 'Login',
-    component: resolve => require(['../pages/Login'], resolve)
+    component: resolve => require(['../pages/login'], resolve)
   }, {
     path: '/brand',
     name: 'Brand',
