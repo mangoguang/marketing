@@ -4,7 +4,10 @@
     <!-- <input @click="showCityList" type="input" v-model="cityMsg.cityName"> -->
     <h5>
       地区
-      <span>{{cityMsg.cityName}}</span>
+      <span>{{cityMsg.cityName}} 
+        <img src="../../assets/imgs/back.png" alt="" class="cityChoose" :style="{transform:`${rotate}`}">
+      </span>
+     
     </h5>
     <!-- <button type="button">{{cityMsg.cityName}}</button> -->
     <ul v-show="!isActive" :class="{active: isActive}">
@@ -34,7 +37,8 @@ export default {
       cityMsg: {},
       cityList: [],
       isActive: true,
-      statusList: []
+      statusList: [],
+      rotate:'rotate(270deg)'
     }
   },
   created() {
@@ -59,6 +63,7 @@ export default {
     ]),
     // 城市选中状态。
     cityActive(str) {
+      
       for (let i = 0; i < this.cityList.length; i++) {
         this.statusList[i] = false
       }
@@ -69,6 +74,7 @@ export default {
       this.statusList[cityIndex] = true
     },
     changeCity(e) {
+      this.rotate = 'rotate(270deg)'
       let [cityName, cityLevel, cityMsg, _this] = ['', 1, {}, this]
       _this.isActive = true
       if (e) {
@@ -81,6 +87,7 @@ export default {
           // 选中状态
           this.cityActive(cityName)
           this.setCitySelect(cityMsg)
+           
           // 将选择信息存储到本地
           localStorage.setItem('cityMsg', `{
             "cityName": "${cityName}",
@@ -91,6 +98,7 @@ export default {
     },
     showCityList() {
       this.isActive = false
+      this.rotate = 'rotate(90deg)'
     },
     getCityLevel() {
       let _this = this
@@ -134,10 +142,15 @@ export default {
       position: relative;
       color: #666;
       font-weight: 300;
-      line-height: 8vw;
+      line-height: 10.6vw;
       span{
         position: absolute;
         right: 0;
+        .cityChoose{
+          width: 1.33vw;
+          height:2.466vw ;
+          margin-left: 2vw;
+        }
       }
     }
     ul{

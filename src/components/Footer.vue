@@ -8,7 +8,7 @@
       <!-- </router-link> -->
     </li>
     <li id="2">  
-      <router-link to="/ReportForms" >
+      <router-link to="/" >
       <div class="iconChar"></div>
       <p class="iconCharP">报表</p>  
       </router-link>
@@ -90,7 +90,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png) ;
         background-size: 2100%;
-        background-position: -7.6vw -20.6vw;
+        background-position: -7.6vw -20.8vw;
       }
       .iconChar{
         width: 6.6vw;
@@ -98,7 +98,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png) ;
         background-size: 2100%;
-        background-position: -21.6vw -20.6vw;
+        background-position: -21.6vw -20.8vw;
       }
       .iconSalary{
         width: 6.6vw;
@@ -106,7 +106,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png) ;
         background-size: 2100%;
-        background-position: -35.6vw -20.6vw;
+        background-position: -35.7vw -21vw;
       }
       .iconMsg{
         width: 6.6vw;
@@ -114,7 +114,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png);
         background-size: 2100%;
-        background-position: -49.6vw -20.6vw;
+        background-position: -49.7vw -20.8vw;
       }
       .iconPerson{
         width: 6.6vw;
@@ -122,7 +122,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png);
         background-size: 2100%;
-        background-position: -63.6vw -20.6vw;
+        background-position: -64.2vw -20.6vw;
       }
       p{
         color: #8e8e93;
@@ -136,7 +136,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png);
         background-size: 2100%;
-        background-position: -.4vw -20.6vw;
+        background-position: -.4vw -20.8vw;
       }
       .router-link-exact-active .iconChar{
         width: 6.6vw;
@@ -144,7 +144,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png);
         background-size: 2100%;
-        background-position: -14.2vw -20.6vw;
+        background-position: -14.2vw -20.8vw;
       }
       .router-link-exact-active .iconCharP{
         color: #007aff;
@@ -157,7 +157,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png);
         background-size: 2100%;
-        background-position: -28.6vw -20.6vw;
+        background-position: -28.6vw -20.8vw;
       }
       .router-link-exact-active .iconMsg{
         width: 6.6vw;
@@ -165,7 +165,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png) ;
         background-size: 2100%;
-        background-position: -42.6vw -20.6vw;
+        background-position: -42.6vw -20.8vw;
       }
       .router-link-exact-active .iconPerson{
         width: 6.6vw;
@@ -173,7 +173,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png);
         background-size: 2100%;
-        background-position: -52.6vw -20.6vw;
+        background-position: -52.6vw -20.8vw;
       }
     }
   }

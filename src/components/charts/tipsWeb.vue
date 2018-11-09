@@ -17,7 +17,7 @@ export default {
 .tipsWeb{
    font-family: PINGPANG;
   .topBox{
-      height: 9vw;
+      height: 8vw;
       width: 100vw;
       background: #cc2934;
       opacity: .7;

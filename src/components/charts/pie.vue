@@ -54,8 +54,8 @@ export default {
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
-          type: 'scroll',
-          orient: 'horizontal',
+          type: 'scroll',//卷页
+          orient: 'horizontal',//水平方向显示
           left: '3%',
           right: '3%',
           top: '10%',

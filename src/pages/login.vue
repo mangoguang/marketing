@@ -1,5 +1,5 @@
 <template>
-  <div class="login2" > 
+  <div class="login" > 
     <div :class="`${myStyle.loginFix}`"></div>
     <div class="topBar">
       <tips-error :style="{display:display}"></tips-error>
@@ -128,8 +128,8 @@ export default {
       //登陆接口
       function getApi() {
         mango.loading('open')
-        let Name = _this.inputValue1 
-        let Pwd = _this.inputValue2 
+        var Name = _this.inputValue1 
+        var Pwd = _this.inputValue2 
         const url = `${mango.port}app/login.api`
       // return new Promise((resolve, reject) => {
       axios({
@@ -140,7 +140,7 @@ export default {
         },
         timeout: 3000,
         params: {
-          // account: '18080001',
+          // account: '18080028',
           account:Name,
           password: md5(Pwd)
         }
@@ -154,11 +154,7 @@ export default {
             _this.key = true
             
             }else{  
-            if (_this.checked) {
-              _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
-            } else {
-              _this.setAccountMsg('', '');
-            }                  //账号密码正确，跳转页面。
+              //账号密码正确，跳转页面。
               res = res.data.data
               let ajaxData = `{
                 "tenantId": "${res.tenantId}",
@@ -167,7 +163,13 @@ export default {
                 "timestamp": "${Date.parse(new Date())}"
               }`
               localStorage.setItem("ajaxData", ajaxData)
+              if (_this.checked) {
+                _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
+              } else {
+                _this.setAccountMsg('', '');
+              } 
               _this.$router.push({ path: '/' })
+              
             }
           }else{  //状态不为200，请求失败
             console.log(res.status)
@@ -208,7 +210,7 @@ export default {
 
 
 <style lang="scss" scoped> 
-.login2{
+.login{
   font-family: PINGPANG;
   position: relative;
   .fix{
