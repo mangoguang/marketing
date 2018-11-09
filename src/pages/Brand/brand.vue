@@ -193,7 +193,7 @@ export default {
 .brand{
   width: 100vw;
   height: 100vh;
-  background: #f8f8f8;
+  // background: #f8f8f8;
   padding-top:16.5vw;
 }
 .main{

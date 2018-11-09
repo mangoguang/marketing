@@ -7,7 +7,9 @@
       <!-- <input @click="openEndPicker" type="input" v-model="endTime"> -->
       <h5>
         时间
-        <span>{{endTime}}</span>
+        <span>{{endTime}}
+          <img src="../../assets/imgs/back.png" alt="" class="cityChoose" :style="{transform:`${rotate}`}">
+        </span>
       </h5>
       <!-- <button @click="openEndPicker" type="button">{{endTime}}</button> -->
     </li>
@@ -18,7 +20,8 @@
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
-      @confirm="handleConfirm">
+      @confirm="handleConfirm"
+      @cancel="cancle">
     </mt-datetime-picker>
   </ul>
 </template>
@@ -41,7 +44,8 @@ export default {
       startTime: '',
       endTime: '2018-08',
       pickerValue: new Date(),
-      timeType: 'start'
+      timeType: 'start',
+      rotate:'rotate(270deg)'
     }
   },
   created() {
@@ -55,6 +59,9 @@ export default {
       'setStartTimeSelect',
       'setEndTimeSelect'
     ]),
+    cancle(){
+      this.rotate = 'rotate(270deg)'
+    },
     handleConfirm(date) {
       // 选择时间
       let str = `${this.timeType}Time`
@@ -66,6 +73,7 @@ export default {
       // this[str] = this[str].join('-')
       localStorage.setItem(str, this[str])
       this.setEndTimeSelect(this[str])
+      this.rotate = 'rotate(270deg)'
     },
     openStartPicker() {
       this.timeType = 'start'
@@ -74,6 +82,7 @@ export default {
     openEndPicker() {
       this.timeType = 'end'
       this.$refs.picker.open()
+      this.rotate = 'rotate(90deg)'
     },
     getLocalStorageTime() {
       let [startTime, endTime] = [localStorage.getItem('startTime'), localStorage.getItem('endTime')]
@@ -95,7 +104,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .selectComponent{
-     font-family: PINGPANG;
     // display: flex;
     // justify-content: flex-end;
     // align-items: center;
@@ -105,17 +113,26 @@ export default {
       // margin-top: 16vw;
       // margin-bottom: -16vw;
     .timeBtn{
-      height: 8vw;
-      background: #f8f8f8;
+     font-family: PINGPANG;
+      height: 10.6vw;
+      // background: #f8f8f8;
+      border-bottom: 1px solid #ccc;
+      // box-shadow: 0px 1px 0px 0px 	#cccccc, inset 0px 1px 0px 0px 	#cccccc;
     }
     h5{
       position: relative;
       color: #666;
       font-weight: 300;
-      line-height: 8vw;
+      line-height: 10.6vw;
+      
       span{
         position: absolute;
         right: 0;
+        .cityChoose{
+          width: 1.33vw;
+          height:2.466vw ;
+          margin-left: 2vw;
+        }
       }
     }
     &>li{
