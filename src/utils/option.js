@@ -100,7 +100,7 @@ export default function(data, vertical, salesVal, title) {
       x:'center'
     } : {},
     legend: {
-      type: 'scroll',
+      // type: 'scroll',
       orient: 'horizontal',
       left: '3%',
       right: '3%',

@@ -6,7 +6,7 @@ export default class Common {
   constructor() {
     this.port = 'https://agency.derucci.com/'
     // this.port = 'http://172.16.11.123/'
-    // this.port = 'http://10.11.8.7:8086/'
+    // this.port = 'http://10.11.8.181/'
     this.path = `${this.port}v1/app/report/`
     this.version = 'web'
   }

@@ -111,8 +111,8 @@ export default {
             if (!localStorage.getItem('cityMsg')) {
               // 将选择信息存储到本地
               localStorage.setItem('cityMsg', `{
-                "cityName": "${cityName}",
-                "cityLevel": "${cityLevel}"
+                "cityName": "${_this.cityMsg.cityName}",
+                "cityLevel": "${_this.cityMsg.cityLevel}"
               }`)
             }
             return {name: item.empowerCity, level: item.cityLevel}

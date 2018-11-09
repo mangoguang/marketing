@@ -46,7 +46,7 @@ export default {
         },
         grid: {
           left: '3%',
-          top: '25%',
+          top: 'center',
           containLabel: true
         },
         tooltip: {
@@ -54,7 +54,7 @@ export default {
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
-          type: 'scroll',
+          // type: 'scroll',
           orient: 'horizontal',
           left: '3%',
           right: '3%',
