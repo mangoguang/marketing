@@ -182,7 +182,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
-          res.yAxisData = ['进店数-整体']
+          res.yAxisData = [`${res.yAxisData[0]}        ${res.yAxisData[1]}        ${res.yAxisData[2]}`]
           _this.storeGetInTotalData = res
         }
       })
@@ -216,7 +216,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
-          res.yAxisData = ['成交率-整体']
+          res.yAxisData = [`${res.yAxisData[0]}        ${res.yAxisData[1]}        ${res.yAxisData[2]}`]
           _this.achieveRatioTotalData = res
         }
       })
@@ -253,7 +253,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
-          res.yAxisData = ['客单值-整体']
+          res.yAxisData = [`${res.yAxisData[0]}        ${res.yAxisData[1]}        ${res.yAxisData[2]}`]
           _this.orderFormTotalData = res
         }
       })

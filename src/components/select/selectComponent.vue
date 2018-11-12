@@ -49,15 +49,20 @@ export default {
   },
   created() {
     this.getLocalStorageTime()
+    
   },
   mounted() {
-
+   
   },
   methods: {
     ...mapMutations([
       'setStartTimeSelect',
       'setEndTimeSelect'
     ]),
+    getMouth(){
+      var myDate = document.getElementsByClassName('picker-slot-center')[2]
+      myDate.style.display = "none"
+    },
     cancle(){
       this.rotate = 'rotate(270deg)'
     },
@@ -79,6 +84,7 @@ export default {
       this.$refs.picker.open()
     },
     openEndPicker() {
+      this.getMouth()
       this.timeType = 'end'
       this.$refs.datePicker.open()
       this.rotate = 'rotate(90deg)'
