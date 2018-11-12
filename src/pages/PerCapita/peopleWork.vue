@@ -131,7 +131,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
-          res.yAxisData = ['人效-整体']
+          res.yAxisData = [mango.chartsBotTit(res)]
           // res.average = res.siblings
           _this.peopleWorkData = res
         }

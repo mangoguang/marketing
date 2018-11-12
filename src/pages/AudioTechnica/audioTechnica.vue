@@ -182,7 +182,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
-          res.yAxisData = [`${res.yAxisData[0]}        ${res.yAxisData[1]}        ${res.yAxisData[2]}`]
+          res.yAxisData = [mango.chartsBotTit(res)]
           _this.storeGetInTotalData = res
         }
       })
@@ -216,7 +216,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
-          res.yAxisData = [`${res.yAxisData[0]}        ${res.yAxisData[1]}        ${res.yAxisData[2]}`]
+          res.yAxisData = [mango.chartsBotTit(res)]
           _this.achieveRatioTotalData = res
         }
       })
@@ -253,7 +253,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
-          res.yAxisData = [`${res.yAxisData[0]}        ${res.yAxisData[1]}        ${res.yAxisData[2]}`]
+          res.yAxisData = [mango.chartsBotTit(res)]
           _this.orderFormTotalData = res
         }
       })
