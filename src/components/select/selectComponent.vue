@@ -44,7 +44,7 @@ export default {
       endTime: '2018-08',
       pickerValue: new Date(),
       timeType: 'start',
-      rotate:'rotate(270deg)'
+      rotate:'rotate(270deg)'   
     }
   },
   created() {
