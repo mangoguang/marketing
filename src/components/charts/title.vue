@@ -2,7 +2,7 @@
 <template>
   <div class="title">
     <h3 class="chartsTit">{{text}}</h3>
-    <h6>单位：万</h6>
+    <slot></slot>
   </div>
 </template>
 <!-- </keep-alive> -->
@@ -42,7 +42,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .title{
-    margin: 0 2vw;
+   
+    margin: 0 4.266vw;
+   
     h6{
       padding-left: 3vw;
       font-size: 14px;
@@ -54,8 +56,8 @@ export default {
   .chartsTit{
     position: relative;
     font-size: 22px;
-    line-height: 3em;
-    padding-left: 3vw;
+    line-height: 30px;
+    padding: 16px 3vw;
   }
   .chartsTit::after{
     display: block;

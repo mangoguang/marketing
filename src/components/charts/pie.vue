@@ -22,7 +22,7 @@ export default {
   },
   mounted() {
     echarts.init(this.$refs.main).setOption(this.option())
-    console.log(99887766, this.title)
+    // console.log(99887766, this.title)
   },
   updated() {
     
@@ -54,8 +54,8 @@ export default {
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
-          type: 'scroll',
-          orient: 'horizontal',
+          type: 'scroll',//卷页
+          orient: 'horizontal',//水平方向显示
           left: '3%',
           right: '3%',
           top: '10%',
@@ -67,7 +67,7 @@ export default {
           {
             name: this.category,
             type: 'pie',
-            radius : '55%',
+            radius : '30%',
             center: ['50%', '50%'],
             data: this.series(),
             itemStyle: {
@@ -101,5 +101,6 @@ export default {
   .main{
     width: 100%;
     height: 110vw;
+    font-family: PINGPANG;
   }
 </style>

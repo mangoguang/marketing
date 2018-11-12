@@ -1,11 +1,12 @@
 import axios from 'axios'
 import sha1 from 'js-sha1'
+import mango from '../js'
 
 let init = (function() {
   let key = true
 
   function Port() {
-    let [_this, path] = [this, 'https://derucci.net/']
+    let [_this, path] = [this, 'http://10.11.8.7:8086/']
     // let [_this, path] = [this, 'http://10.11.8.7:80/']
     // 接口路径
     this.path = `${path}api/vip/v1/`
@@ -32,6 +33,7 @@ let init = (function() {
                 ['timestamp', timestamp]
               ]
               let sign = _this.getSign(arr)
+              mango.loading('open')
               axios({
                 method: 'post',
                 url: url,
@@ -55,11 +57,13 @@ let init = (function() {
                   alert(data.msg)
                 }
               })
-              // .catch(function (error) {
-              //   console.log(error)
-              // })
+              .catch(function (error) {
+                mango.loading('close')
+                console.log(error)
+              })
             })
             .catch(function (error) {
+              mango.loading('close')
               if (error) {
                 key = true
                 alert('获取token失败！')
@@ -72,6 +76,7 @@ let init = (function() {
             alert('token promise未定义。')
           }
         } else {
+          mango.loading('close')
           key = true
           alert('请输入正确的手机号码！')
           return
