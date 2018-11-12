@@ -19,7 +19,6 @@
       v-model="pickerValue"
       year-format="{value} 年"
       month-format="{value} 月"
-      date-format="{value} 日"
       @confirm="handleConfirm"
       @cancel="cancle">
     </mt-datetime-picker>
@@ -112,6 +111,9 @@ export default {
     // padding: 3vw;
       // margin-top: 16vw;
       // margin-bottom: -16vw;
+    .picker-items{
+      background: red
+    }
     .timeBtn{
      font-family: PINGPANG;
       height: 10.6vw;
