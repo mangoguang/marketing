@@ -44,7 +44,7 @@ export default {
       endTime: '2018-08',
       pickerValue: new Date(),
       timeType: 'start',
-      rotate:'rotate(270deg)'
+      rotate:'rotate(270deg)'   
     }
   },
   created() {
@@ -81,7 +81,7 @@ export default {
     openEndPicker() {
       this.timeType = 'end'
       this.$refs.picker.open()
-      this.rotate = 'rotate(90deg)'
+      this.rotate = 'rotate(90deg)'   
     },
     getLocalStorageTime() {
       let [startTime, endTime] = [localStorage.getItem('startTime'), localStorage.getItem('endTime')]
