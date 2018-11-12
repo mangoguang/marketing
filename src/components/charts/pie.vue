@@ -86,7 +86,7 @@ export default {
       for (let i = 0; i < yAxisData.length; i++) {
         arr.push({
           name: yAxisData[i],
-          value: seriesData[i],
+          value: seriesData[i] != 0 ? seriesData[i] : '',
           selected: seriesData[i] === maxNum
         })
       }

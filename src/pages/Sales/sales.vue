@@ -139,7 +139,8 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          res.yAxisData = ['整体营销额对比']
+          res.yAxisData = [`${res.yAxisData[0]}        ${res.yAxisData[1]}        ${res.yAxisData[2]}`]
+          console.log(887799, res)
           _this.salesData = res
         }
       }).catch(function (error) {

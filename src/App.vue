@@ -57,7 +57,6 @@ export default{
           this.myStyle.formOverFlow = ''
         }else{
           this.padding = ''
-          console.log(111,this.padding)
           this.myStyle.formOverFlow = 'hidden'
         } 
     }else{
