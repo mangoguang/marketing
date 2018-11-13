@@ -46,7 +46,7 @@ export default {
         },
         grid: {
           left: '3%',
-          top: '25%',
+          top: 'center',
           containLabel: true
         },
         tooltip: {
@@ -54,8 +54,8 @@ export default {
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
-          type: 'scroll',//卷页
-          orient: 'horizontal',//水平方向显示
+          // type: 'scroll',
+          orient: 'horizontal',
           left: '3%',
           right: '3%',
           top: '10%',
@@ -86,7 +86,7 @@ export default {
       for (let i = 0; i < yAxisData.length; i++) {
         arr.push({
           name: yAxisData[i],
-          value: seriesData[i],
+          value: seriesData[i] != 0 ? seriesData[i] : '',
           selected: seriesData[i] === maxNum
         })
       }

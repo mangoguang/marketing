@@ -14,7 +14,7 @@
       <!-- <button @click="openEndPicker" type="button">{{endTime}}</button> -->
     </li>
     <mt-datetime-picker
-      ref="picker"
+      ref="datePicker"
       type="date"
       v-model="pickerValue"
       year-format="{value} 年"
@@ -37,7 +37,7 @@ Vue.component(DatetimePicker.name, DatetimePicker)
 
 export default {
   name: 'selectComponent',
-  components: {citySelect, DatetimePicker},
+  components: { citySelect, DatetimePicker },
   data () {
     return {
       startTime: '',
@@ -86,8 +86,8 @@ export default {
     openEndPicker() {
       this.getMouth()
       this.timeType = 'end'
-      this.$refs.picker.open()
-      this.rotate = 'rotate(90deg)'   
+      this.$refs.datePicker.open()
+      this.rotate = 'rotate(90deg)'
     },
     getLocalStorageTime() {
       let [startTime, endTime] = [localStorage.getItem('startTime'), localStorage.getItem('endTime')]
@@ -109,23 +109,10 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .selectComponent{
-    // display: flex;
-    // justify-content: flex-end;
-    // align-items: center;
-    // height: 8vw;
-    // margin-right: 2%;
-    // padding: 3vw;
-      // margin-top: 16vw;
-      // margin-bottom: -16vw;
-    .picker-items{
-      background: red
-    }
     .timeBtn{
      font-family: PINGPANG;
       height: 10.6vw;
-      // background: #f8f8f8;
       border-bottom: 1px solid #ccc;
-      // box-shadow: 0px 1px 0px 0px 	#cccccc, inset 0px 1px 0px 0px 	#cccccc;
     }
     h5{
       position: relative;
@@ -167,10 +154,6 @@ export default {
         top: 0;
         left: 0;
         z-index: 1000;
-        // li{
-        //   border-radius: 0;
-        //   border-top: none;
-        // }
         li:first-child{
           border-top: 1px solid #e1e1e1;
         }
