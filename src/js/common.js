@@ -35,20 +35,18 @@ export default class Common {
     }
     for (let i = 0; i < newSeries[0].length; i++) {
       for (let j = 0; j < newSeries[0].length - i; j++) {
-        if (newSeries[0][j] > newSeries[0][j + 1]) {
+        if (parseInt(newSeries[0][j]) > parseInt(newSeries[0][j + 1])) {
           let [tempSeries, tempYAxisData] = [[], yAxisData[j]]
-          // let [tempSeries1, tempSeries2, tempYAxisData] = [series1[j], series1[j], yAxisData[j]]
-          // series1[j] = series1[j + 1]
-          // series2[j] = series2[j + 1]
+          // 对series参数的两个数组进行排序
           for (let k = 0; k < series.length; k++) {
             tempSeries[k] = newSeries[k][j]
             newSeries[k][j] = newSeries[k][j + 1]
             newSeries[k][j + 1] = tempSeries[k]
           }
+          // 对yAxisData参数进行排序
           yAxisData[j] = yAxisData[j + 1]
-          // series1[j + 1] = tempSeries1
-          // series2[j + 1] = tempSeries2
           yAxisData[j + 1] = tempYAxisData
+          // 如果存在店铺id数据，则对店铺id数据进行排序。
           if (idsData) {
             let tempIdsData = idsData[j]
             idsData[j] = idsData[j + 1]
@@ -57,18 +55,6 @@ export default class Common {
         }
       }
     }
-    // obj = {
-    //   series: [
-    //     {
-    //       data: series1,
-    //       name: obj.series[0].name
-    //     },
-    //     {
-    //       data: series2,
-    //       name: obj.series[1].name
-    //     }
-    //   ]
-    // }
   }
   // 参数加密
   getSign(obj, token) {
