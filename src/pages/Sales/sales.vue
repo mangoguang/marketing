@@ -139,7 +139,7 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
-          res.yAxisData = [`${res.yAxisData[0]}        ${res.yAxisData[1]}        ${res.yAxisData[2]}`]
+          res.yAxisData = [mango.chartsBotTit(res)]
           console.log(887799, res)
           _this.salesData = res
         }
