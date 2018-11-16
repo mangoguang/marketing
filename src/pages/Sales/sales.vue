@@ -78,7 +78,7 @@ export default {
   watch: {
     citySelect() {
       if (this.endTimeSelect && this.endTimeSelect != '') {
-        console.log(localStorage.getItem('cityMsg'))
+        // console.log(localStorage.getItem('cityMsg'))
         this.getSalesData(this.citySelect.cityName, this.endTimeSelect, this.citySelect.cityLevel)
       }
     },
@@ -130,11 +130,11 @@ export default {
         if (res) {
           res = res.data
           res.yAxisData = [mango.chartsBotTit(res)]
-          console.log(887799, res)
+          // console.log(887799, res)
           _this.salesData = res
         }
       }).catch(function (error) {
-        console.log(11111, error);
+        console.log(11111, error)
       });
     },
     getAreaSalesData(time) {
