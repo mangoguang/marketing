@@ -1,6 +1,7 @@
 import mango from '../js/index'
 export default function(data, vertical, salesVal, title) {
   mango.sortArrs(data)
+  console.log('报表数据：', data, data.series)
   // 参数说明：
   // data：图标数据
   // vertical设置柱状图的横向排布和纵向排布
@@ -85,13 +86,14 @@ export default function(data, vertical, salesVal, title) {
         }
       }
     })]
+    console.log('变量定义完成：')
     // console.log('shuju:', series)
     if (vertical === 'horizontal') {
       yAxis.data = data.yAxisData
     } else {
       xAxis.data = data.yAxisData
     }
-
+    console.log('坐标轴数据赋值：')
   return {
     title: title ? {
       text: title,

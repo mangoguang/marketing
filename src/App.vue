@@ -170,7 +170,7 @@ a:hover{text-decoration:none;}
   // margin-top: 16vw
 }
 .paddingTop{
-  padding-top: 16.5vw;
+  padding-top: 38vw;
 }
 
 </style>

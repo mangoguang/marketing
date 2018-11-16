@@ -8,12 +8,6 @@
         <h6>单位：万元</h6>
       </chartsTit>
       <div :style="{height: `100vw`}" ref="salesContainer" ></div>
-      <!-- <Bar
-      @chartsClick="chartsEvent"
-      :data="salesData"
-      :vertical="'vertical'"
-      :height="100"
-      :salesVal="true"></Bar> -->
       <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
@@ -21,11 +15,6 @@
         <h6>单位：万元</h6>
       </chartsTit>
       <div :style="{height: `100vw`}" ref="areaSalesContainer" ></div>
-      <!-- <Bar
-      :data="areaSalesData"
-      :vertical="'vertical'"
-      :height="100"
-      :salesVal="true"></Bar> -->
       <RouterLink @click.native="toAreaStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
   </div>
@@ -89,6 +78,7 @@ export default {
   watch: {
     citySelect() {
       if (this.endTimeSelect && this.endTimeSelect != '') {
+        console.log(localStorage.getItem('cityMsg'))
         this.getSalesData(this.citySelect.cityName, this.endTimeSelect, this.citySelect.cityLevel)
       }
     },

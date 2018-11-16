@@ -85,11 +85,12 @@ export default {
       let [arr, yAxisData, seriesData, maxNum] = [[], this.yAxisData, this.seriesData, Math.max(...this.seriesData)]
       for (let i = 0; i < yAxisData.length; i++) {
         arr.push({
-          name: yAxisData[i],
+          name: `${yAxisData[i]}(10.00%)`,
           value: seriesData[i] != 0 ? seriesData[i] : '',
           selected: seriesData[i] === maxNum
         })
       }
+      console.log('pieData', arr)
       return arr
     }
   }

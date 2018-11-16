@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="brand">
+  <div class="brand paddingTop">
     <mybanner :title='title' />
     <SelectComponent></SelectComponent>
     <ul>
@@ -194,7 +194,7 @@ export default {
   width: 100vw;
   height: 100vh;
   // background: #f8f8f8;
-  padding-top:16.5vw;
+  // padding-top:16.5vw;
 }
 .main{
   width: 100vw;
