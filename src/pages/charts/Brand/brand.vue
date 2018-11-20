@@ -20,14 +20,14 @@
           <chartsTit :text="`各${typeName}销售额对比`">
             <h6>单位：万元</h6>
           </chartsTit>
-          <div ref="brandContainer" ></div>
-          <!-- <Bar
+          <!-- <div ref="brandContainer" ></div> -->
+          <Bar
           @chartsClick="chartsEvent"
           :data="brandData"
           :vertical="'horizontal'"
           :title="`各${typeName}金额对比`"
           :height="120"
-          :salesVal="true"></Bar> -->
+          :salesVal="true"></Bar>
         </div>
       </li>
     </ul>
@@ -46,12 +46,12 @@
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
           <chartsTit :text="`各${typeName}数量对比`"></chartsTit>
-          <div ref="categoryContainer" ></div>
-          <!-- <Bar
+          <!-- <div ref="categoryContainer" ></div> -->
+          <Bar
           :data="categoryData"
           :vertical="'horizontal'"
           :title="`各${typeName}数量对比`"
-          :height="120"></Bar> -->
+          :height="120"></Bar>
         </div>
       </li>
     </ul>
@@ -63,17 +63,17 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../../js'
-import chartsInit from '../../utils/chartsInit'
+import mango from '../../../js'
+import chartsInit from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
-import SelectComponent from '../../components/select/selectComponent'
+import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
 Vue.use(Vuex)
-import Bar from '../../components/charts/bar'
-import Pie from '../../components/charts/pie'
-import chartsTit from '../../components/charts/title'
-import RouterLink from '../../components/charts/routerLink'
-import mybanner from '../../components/banner'
+import Bar from '../../../components/charts/bar'
+import Pie from '../../../components/charts/pie'
+import chartsTit from '../../../components/charts/title'
+import RouterLink from '../../../components/charts/routerLink'
+import mybanner from '../../../components/banner'
 export default {
   name: 'brand',
   components: {

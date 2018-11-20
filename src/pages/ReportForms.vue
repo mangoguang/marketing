@@ -12,7 +12,7 @@
     <div class="forms">
       <div class="title">报表模块</div>
       <ul>
-        <li v-for="(item,index) in forms" :key="index" @touchend="linkTo(index)" :class="`${index}`">
+        <li v-for="(item,index) in forms" :key="index" @click="linkTo(index)" :class="`${index}`">
           <div class="icon" :style="{background:item.color}">
             <div class="icon-forms" :style="{'background-position':`${item.iconPosition}`}" >
               <!-- <img :src ="`./static/images/char${index+1}.png`" alt=""> -->

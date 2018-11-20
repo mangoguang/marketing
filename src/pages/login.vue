@@ -38,7 +38,7 @@
             </li>
             <li>
               <btn
-              @touchend.native="submitForm('ruleForm')"
+              @click.native="submitForm('ruleForm')"
               :text='text'>
               </btn>
             </li>

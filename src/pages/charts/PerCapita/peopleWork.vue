@@ -31,16 +31,16 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../../js'
-import chartsInit from '../../utils/chartsInit'
+import mango from '../../../js'
+import chartsInit from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
-import SelectComponent from '../../components/select/selectComponent'
+import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
 Vue.use(Vuex)
-import Bar from '../../components/charts/bar'
-import chartsTit from '../../components/charts/title'
-import RouterLink from '../../components/charts/routerLink'
-import mybanner from '../../components/banner'
+import Bar from '../../../components/charts/bar'
+import chartsTit from '../../../components/charts/title'
+import RouterLink from '../../../components/charts/routerLink'
+import mybanner from '../../../components/banner'
 
 export default {
   name:'peopleWork',
@@ -117,7 +117,7 @@ export default {
     // goToChild() {
     //   this.$router.push({ path: '/child' })
     // },
-    // ajax请求
+    // 人效-整体
     getpeopleWorkData(date, city, level) {
       mango.loading('open')
       let _this = this
@@ -131,6 +131,7 @@ export default {
         mango.loading('close')
         if (res) {
           res = res.data
+          mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
           // res.average = res.siblings
           _this.peopleWorkData = res

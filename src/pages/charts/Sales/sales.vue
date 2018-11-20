@@ -25,16 +25,16 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../../js'
-import chartsInit from '../../utils/chartsInit'
+import mango from '../../../js'
+import chartsInit from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
-import Bar from '../../components/charts/bar'
-import chartsTit from '../../components/charts/title'
-import RouterLink from '../../components/charts/routerLink'
-import SelectComponent from '../../components/select/selectComponent'
-import mybanner from '../../components/banner'
+import Bar from '../../../components/charts/bar'
+import chartsTit from '../../../components/charts/title'
+import RouterLink from '../../../components/charts/routerLink'
+import SelectComponent from '../../../components/select/selectComponent'
+import mybanner from '../../../components/banner'
 export default {
   name: 'sales',
   components: {
@@ -129,6 +129,7 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
+          mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
           // console.log(887799, res)
           _this.salesData = res

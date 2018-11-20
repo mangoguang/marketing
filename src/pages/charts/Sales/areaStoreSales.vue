@@ -27,15 +27,15 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../../js'
-import chartsInit from '../../utils/chartsInit'
+import mango from '../../../js'
+import chartsInit from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
-import Bar from '../../components/charts/bar'
-import chartsTit from '../../components/charts/title'
-import RouterLink from '../../components/charts/routerLink'
-import mybanner from '../../components/banner'
+import Bar from '../../../components/charts/bar'
+import chartsTit from '../../../components/charts/title'
+import RouterLink from '../../../components/charts/routerLink'
+import mybanner from '../../../components/banner'
 export default {
   name: 'areaStoreSales',
   components: {
