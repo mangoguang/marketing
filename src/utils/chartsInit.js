@@ -25,6 +25,7 @@ export default (_this, chartName, vertical, salesVal, title, routeTo, chartsInde
   }
 
   if (series) {
+    // console.log('开始初始化图表：')
     echarts.init(dom).setOption(option(chartsData, vertical, salesVal, title))
     if (routeTo) {
       // 如果需要添加点击事件，则添加点击事件。

@@ -13,11 +13,11 @@
       <p class="iconCharP">报表</p>  
       </router-link>
     </li>
-    <li id="3" @touchend="touchend">
-      <!-- <router-link to="/" > -->
+    <li id="3">
+      <router-link to="/Customer" >
        <div class="iconSalary" ></div>
-      <p class="iconCharP">财务</p>
-      <!-- </router-link> -->
+      <p class="iconCharP">客户</p>
+      </router-link>
     </li>
     <li id="4" @touchend="touchend">
       <!-- <router-link to="/" > -->

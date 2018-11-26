@@ -8,12 +8,6 @@
         <h6>单位：万元</h6>
       </chartsTit>
       <div :style="{height: `100vw`}" ref="salesContainer" ></div>
-      <!-- <Bar
-      @chartsClick="chartsEvent"
-      :data="salesData"
-      :vertical="'vertical'"
-      :height="100"
-      :salesVal="true"></Bar> -->
       <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
@@ -21,11 +15,6 @@
         <h6>单位：万元</h6>
       </chartsTit>
       <div :style="{height: `100vw`}" ref="areaSalesContainer" ></div>
-      <!-- <Bar
-      :data="areaSalesData"
-      :vertical="'vertical'"
-      :height="100"
-      :salesVal="true"></Bar> -->
       <RouterLink @click.native="toAreaStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
   </div>
@@ -36,16 +25,16 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mango from '../../js'
-import chartsInit from '../../utils/chartsInit'
+import mango from '../../../js'
+import chartsInit from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
-import Bar from '../../components/charts/bar'
-import chartsTit from '../../components/charts/title'
-import RouterLink from '../../components/charts/routerLink'
-import SelectComponent from '../../components/select/selectComponent'
-import mybanner from '../../components/banner'
+import Bar from '../../../components/charts/bar'
+import chartsTit from '../../../components/charts/title'
+import RouterLink from '../../../components/charts/routerLink'
+import SelectComponent from '../../../components/select/selectComponent'
+import mybanner from '../../../components/banner'
 export default {
   name: 'sales',
   components: {
@@ -89,6 +78,7 @@ export default {
   watch: {
     citySelect() {
       if (this.endTimeSelect && this.endTimeSelect != '') {
+        // console.log(localStorage.getItem('cityMsg'))
         this.getSalesData(this.citySelect.cityName, this.endTimeSelect, this.citySelect.cityLevel)
       }
     },
@@ -139,12 +129,13 @@ export default {
       }).then((res) => {
         if (res) {
           res = res.data
+          mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
-          console.log(887799, res)
+          // console.log(887799, res)
           _this.salesData = res
         }
       }).catch(function (error) {
-        console.log(11111, error);
+        console.log(11111, error)
       });
     },
     getAreaSalesData(time) {

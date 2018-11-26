@@ -10,6 +10,16 @@ export default class Common {
     this.path = `${this.port}v1/app/report/`
     this.version = 'web'
   }
+  // 如果输出年份顺序不对，则重新排序
+  sortYears(res) {
+    if (res.series && res.series[0]) {
+      if (res.series[0].name < res.series[1].name) {
+        let temp = res.series[0]
+        res.series[0] = res.series[1]
+        res.series[1] = temp
+      }
+    }
+  }
   //根据对象属性，进行数组对象的排序
   compare(property) {
     return function(obj1, obj2) {

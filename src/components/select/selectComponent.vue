@@ -109,6 +109,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .selectComponent{
+    position: fixed;
+    width: 100%;
+    top: 16.5vw;
+    background: #fff;
+    z-index: 1000;
     .timeBtn{
      font-family: PINGPANG;
       height: 10.6vw;
