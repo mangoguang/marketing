@@ -138,7 +138,7 @@ export default {
         headers: {
           'UUID': 'e10adc3949ba59abbe56e057f20f883e'
         },
-        timeout: 3000,
+        timeout: 10000,
         params: {
           // account: '18080028',
           account:Name,

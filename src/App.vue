@@ -15,10 +15,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import store from './store'
-//左滑
-
-import 'mint-ui/lib/style.min.css'
-// import mybanner from '../src/components/banner'
 
 
 export default{

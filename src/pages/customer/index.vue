@@ -1,6 +1,12 @@
 <template>
-  <div class="customer">
-    123
+  <div class="customer paddingTop">
+    <!-- 头部 -->
+    <Header/>
+    <!-- 客户列表 -->
+    <CustomerList/>
+    <!-- 右侧边栏 -->
+    <RightContainer/>
+
     <Footer/>
   </div>
 </template>
@@ -10,12 +16,20 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
+// 组件
 import Footer from '../../components/Footer'
+import Header from '../../components/customer/header'
+import CustomerList from '../../components/customer/customerList'
+import RightContainer from '../../components/customer/rightContainer'
 import mango from '../../js'
 
 export default {
   components:{
-    Footer
+    Footer,
+    Header,
+    CustomerList,
+    RightContainer
   },
   data(){
     return{
@@ -49,6 +63,13 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="scss">
+.paddingTop{
+  padding-top: 19.6vw;
+}
+.customer{
+  background-color: #f8f8f8;
+  height: 100vh;
+  box-sizing: border-box;
+}
 </style>
