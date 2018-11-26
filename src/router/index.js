@@ -65,6 +65,17 @@ export var router = new VueRouter({
   //   name: 'ReportForms',
   //   component: resolve => require(['../pages/ReportForms'], resolve)
   // },
+  /****个人模块****/
+  {
+    path: '/personalMsg',
+    name: '/Personal',
+    component: resolve => require(['../pages/Personal/personalMsg'],resolve)
+  },
+  {
+    path: '/dailyPaper',
+    name: '/dailyPaper',
+    component: resolve => require(['../pages/Personal/dailyPaper'],resolve)
+  },
   {
     path: '/ForgetPwd',
     name: '/ForgetPwd',

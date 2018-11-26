@@ -25,11 +25,11 @@
       <p class="iconCharP">消息</p>
       <!-- </router-link> -->
     </li>
-    <li id="5" @touchend="touchend">
-      <!-- <router-link to="/" > -->
+    <li id="5">
+      <router-link to="/personalMsg" >
        <div class="iconPerson" ></div>
       <p class="iconCharP">个人</p>
-      <!-- </router-link> -->
+      </router-link>
     </li>
     </ul>
   </div>
@@ -173,7 +173,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon.png);
         background-size: 2100%;
-        background-position: -52.6vw -20.8vw;
+        background-position: -56.6vw -20.8vw;
       }
     }
   }

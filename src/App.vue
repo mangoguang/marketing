@@ -26,7 +26,13 @@ export default{
     return{
       height: window.innerHeight,
       padding:'',
-      myStyle:[{'fgPwdTop':''},{'loginFix':''},{'formOverFlow':''}]
+      myStyle:[{
+        fgPwdTop:''
+        },{
+        loginFix:''
+        },{
+        formOverFlow:''
+        }]
     }
   },
   mounted(){
