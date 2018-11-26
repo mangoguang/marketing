@@ -41,96 +41,27 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { InfiniteScroll } from 'mint-ui'
+import Vuex, { mapState } from 'vuex'
 Vue.use(InfiniteScroll)
+Vue.use(Vuex)
 import mango from '../../js'
 export default {
   name: 'customerList',
   props:[],
   data () {
     return {
-      customerList: [
-        {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '91%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '91%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '91%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '90%'
-        }, {
-          name: '陆依依',
-          time: '10月25日',
-          classify: '床垫/床架',
-          percent: '91%'
-        }
-      ]
+      
+    }
+  },
+  computed: {
+    ...mapState({
+      // citySelect: state => state.select.citySelect,
+      customerList: state => state.customer.customerList
+    })
+  },
+  watch: {
+    'customerList': function(val) {
+      console.log(123, val)
     }
   },
   mounted(){
@@ -138,14 +69,14 @@ export default {
   },
   methods:{
     loadMore() {
-      mango.loading('open')
-      setTimeout(() => {
-        let last = this.customerList[this.customerList.length - 1]
-        for (let i = 1; i <= 10; i++) {
-          this.customerList.push(last + i)
-        }
-        mango.loading('open')
-      }, 2500)
+      // mango.loading('open')
+      // setTimeout(() => {
+      //   // let last = this.customerList[this.customerList.length - 1]
+      //   // for (let i = 1; i <= 10; i++) {
+      //   //   this.customerList.push(last + i)
+      //   // }
+      //   // mango.loading('close')
+      // }, 2500)
     }
   }
 }
@@ -154,7 +85,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .customerList{
-  margin-bottom: 18vw;
+  width: 100vw;
+  height: 100vh;
+  padding: 24.6vw 0 18vw 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 .customerContent{
   padding: 0 4.266vw;

@@ -3,17 +3,17 @@
   <header class="header" :style="{'margin-top': `${top}vw`}">
     <div class="top">
       <!-- 模块选择 -->
-      <!-- <ul>
+      <ul :style="{display: !navShow ? 'none' : 'flex'}">
         <li v-for="(item, index) in moduleList"
         :key="`moduleList${index}`">
           <button 
           :class="{on: item.status}"
           @click="moduleSelect(index)">{{item.name}}</button>
-          <button class="search"></button>
+          <button class="search" @click="showNav"></button>
         </li>
-      </ul> -->
-      <div>
-        <button>导航</button>
+      </ul>
+      <div :style="{display: navShow ? 'none' : 'flex'}">
+        <button @click="showNav">导航</button>
         <div>
           <input type="text">
           <button>搜索</button>
@@ -40,39 +40,20 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
+import Vuex, { mapMutations } from 'vuex'
+import mango from '../../js'
 Vue.use(Vuex)
 export default {
   name: 'customerHeader',
   props:[],
   data () {
     return {
+      ajaxData: {},
       top: '',
       ifShow: 'hide',
-      customerClassifyList: [
-        {
-          name: '全部',
-          status: true
-        }, {
-          name: '紧急降序',
-          status: false
-        }, {
-          name: '关键降序',
-          status: false
-        }
-      ],
-      moduleList: [
-        {
-          name: '我的客户',
-          status: true
-        }, {
-          name: '订单查询',
-          status: false
-        }, {
-          name: '成交客户',
-          status: false
-        }
-      ],
+      navShow: true,
+      customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
+      moduleList: mango.btnList(['我的客户', '订单查询', '成交客户'], 0),
       selectBtnText: '全部'
     }
   },
@@ -82,17 +63,26 @@ export default {
   watch:{
 
   },
+  created() {
+    // 获取本地存储信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+  },
   mounted(){
-
+    this.isIPhoneX()
+    this.getCudyomrtList()
   },
   methods:{
     ...mapMutations([
-      'setRightContainerStatus'
+      'setRightContainerStatus',
+      'setCustomerList'
     ]),
+    // 显示右侧边栏
     showRightContainer() {
       console.log('显示侧边栏。')
       this.setRightContainerStatus('show')
     },
+    // 显示类型选择列表
     showCustomerClassify() {
       if (this.ifShow === 'show') {
         this.ifShow = 'hide'
@@ -100,16 +90,36 @@ export default {
         this.ifShow = 'show'
       }
     },
-    customerClassifySelect(index) {
-      this.ifShow = 'hide'
-      this.selectBtnText = this.customerClassifyList[index].name
-      this.customerClassifyList.forEach((element, i) => {
-        element.status = i === index
-      })
+    // 显示导航
+    showNav() {
+      this.navShow = !this.navShow
     },
+    // 选择客户类型
+    customerClassifySelect(i) {
+      this.ifShow = 'hide'
+      this.selectBtnText = this.customerClassifyList[i].name
+      mango.changeBtnStatus(this.customerClassifyList, i)
+    },
+    // 选择页面模块
     moduleSelect(i) {
-      this.moduleList.forEach((element, index) => {
-        element.status = i === index
+      mango.changeBtnStatus(this.moduleList, i)
+    },
+    getCudyomrtList() {
+      mango.getAjax(this, 'customer', {
+        page: 1,   //页数
+        limit: 20,    //每页条数
+        u: 0,   //1:紧急排序，0：非
+        i: 0,   //1关键排序
+        key: '',     //搜索关键字，电话或名字
+        startTime: '',
+        endTime: '',
+        tut: 0,   //只看今天更新数据 ,优先级最高
+        tenantId: this.ajaxData.tenantId
+      }, 'v2').then((res) => {
+        if (res) {
+          console.log('获取的客户列表：', res)
+          this.setCustomerList(res.data)
+        }
       })
     },
     isIPhoneX : function(fn){
@@ -120,9 +130,7 @@ export default {
             this.fix = 'fix'
             this.top = '6'
             console.log(this.top, 333)
-          }else{
-            
-          } 
+          }
       }
     }
   }
@@ -135,11 +143,13 @@ export default {
 header{
   position: fixed;
   top: 0;
+  left: 0;
   width: 100vw;
   box-sizing: border-box;
   padding: 0 4.266vw;
   background: #fff;
   z-index: 999;
+  box-sizing: border-box;
   &>div{
     height: 9vw;
     button{
@@ -148,6 +158,8 @@ header{
     }
   }
   .top{
+    margin-top: 5vw;
+    position: relative;
     ul{
       display: flex;
     }
@@ -168,10 +180,24 @@ header{
           height: 9vw;
         }
         input{
-          width: 52vw;
-          background: #f0f0f0;
+          width: 45vw;
+          background: url(../../assets/imgs/search.png) no-repeat center, #f0f0f0;
+          background-size: 3vw 3vw;
+          background-position: $btnHeight/2 center;
+          padding-left: $btnHeight;
           border-top-left-radius: $btnHeight/2;
           border-bottom-left-radius: $btnHeight/2;
+          color: $fontSubCol;
+          font-size: 14px;
+        }
+        input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+          color: $fontSubCol;
+        } input:-moz-placeholder, textarea:-moz-placeholder {
+          color: $fontSubCol;
+        } input::-moz-placeholder, textarea::-moz-placeholder {
+          color: $fontSubCol;
+        } input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+          color: $fontSubCol;
         }
         button{
           background: $btnCol;
@@ -185,7 +211,7 @@ header{
     button.search{
       position: absolute;
       top: 0;
-      right: 4.266vw;
+      right: 0;
       width: 9vw;
       height: 9vw;
       background: url(../../assets/imgs/search.png) no-repeat center;
