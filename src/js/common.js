@@ -4,10 +4,12 @@ import { Indicator } from 'mint-ui'
 
 export default class Common {
   constructor() {
-    this.port = 'https://agency.derucci.com/'
+    // this.port = 'https://agency.derucci.com/'
     // this.port = 'http://172.16.11.123/'
     // this.port = 'http://10.11.8.181/'
+    this.port = 'http://10.11.8.7:8086/'
     this.path = `${this.port}v1/app/report/`
+    this.v2path = `${this.port}v2/app/`
     this.version = 'web'
   }
   // 如果输出年份顺序不对，则重新排序
@@ -83,15 +85,18 @@ export default class Common {
     obj = sortObj(obj)
     let str = ''
     for (let key in obj) {
-      str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
+      console.log(obj[key])
+      if (obj[key] || (obj[key] === 0 || obj[key] === '0')) {
+        str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
+      }
     }
-    // console.log('生成的sign字符串', str)
+    console.log('生成的sign字符串', str)
     return sha1.hex(str + token)
   }
-  getAjax(_vue, port, params) {
+  getAjax(_vue, port, params, pathVersion,type) {
     let _this = this
     return new Promise((resolve, reject) => {
-      const url = `${this.path}${port}`
+      const url = `${pathVersion === 'v2' ? this.v2path : this.path}${port}`
       let sign = this.getSign(params, _vue.ajaxData.token)
       // console.log('header参数', _vue, sign)
       this.loading('open')
@@ -100,7 +105,7 @@ export default class Common {
         clearTimeout(loadingTimeOut)
       }, 10000)
       axios({
-        method: 'get',
+        method: type,
         url: url,
         // timeout: 3000,
         headers: {
@@ -167,8 +172,22 @@ export default class Common {
   indexTimeB(date){
     if(date){
       date = date.toLocaleDateString().split('/')
+      let b  = date.join('-')
       let a = date[0] + '年' + date[1] + '月' + date[2] + '日'
-      return a
+      return [a,b]
     }
+  }
+  btnList(names, i) {
+    return names.map((item, index) => {
+      return {
+        name: item,
+        status: index === i
+      }
+    })
+  }
+  changeBtnStatus(arr, i) {
+    arr.forEach((element, index) => {
+      element.status = i === index
+    })
   }
 }

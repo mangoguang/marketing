@@ -4,14 +4,17 @@
       <div class="line"></div>
       <p>{{pTitle}}</p>
     </div>
-    <textarea :placeholder="`${pla}`"></textarea>
+    <textarea :placeholder="`${pla}`" 
+      v-on:input="$emit('input',$event.target.value)"
+      :value='value'>
+      </textarea>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 export default {
-  props:['pTitle','pla'],
+  props:['pTitle','pla','value'],
   data(){
     return{
       

@@ -1,5 +1,5 @@
 <template>
-  <div class="customer paddingTop">
+  <div class="customer">
     <!-- 头部 -->
     <Header/>
     <!-- 客户列表 -->
@@ -64,12 +64,12 @@ export default {
 </script>
 
 <style lang="scss">
-.paddingTop{
-  padding-top: 19.6vw;
-}
 .customer{
-  background-color: #f8f8f8;
+  position: relative;
   height: 100vh;
+  width: 100vw;
   box-sizing: border-box;
+  overflow: hidden;
+  background-color: #f8f8f8;
 }
 </style>

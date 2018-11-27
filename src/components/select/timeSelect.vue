@@ -27,32 +27,57 @@ export default {
   components:{DatetimePicker},
   data() {
     return {
-      date: '',
-      pickerVisible :''
-      
+      date: new Date(),
+      pickerVisible :'',
+      ajaxData: {},
+      account:{},
+      dailyData:{}
     };
   },
   computed:{
 
   },
   methods:{
+    //打开日历
     openPicker(){
       this.$refs.datePicker.open()
       
     },
+    //确认选择日期
     sendDate(){
       if(this.pickerVisible){
-        this.date = mango.indexTimeB(this.pickerVisible)
+        this.date = mango.indexTimeB(this.pickerVisible)[0]
       }
-      
+      let date = mango.indexTimeB(this.pickerVisible)[1]
+      this.getData(date)
+    },
+    //获取数据
+    getData(date){
+      mango.getAjax(this, 'daily', {
+        account: this.account.name,
+        date:date,
+        tenantId: this.ajaxData.tenantId
+      }, 'v2','get')
+      .then((res) => {
+        if (res) {
+          this.dailyData = res.data 
+          this.$emit('dailyData',[this.dailyData,date])
+        }
+      })
     }
   },
-    created(){
-    let year = new Date().getFullYear()
-    let month = new Date().getMonth() + 1
-    let day = new Date().getDate()
-    this.date =  year + '年' + month + '月' + day + '日'
-    }
+  created(){
+    let temp = this.date
+    this.date =  mango.indexTimeB(temp)[0]
+    // 获取本地存储信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+    let account = localStorage.getItem('accountMsg')
+    this.account = JSON.parse(account)
+    //获取数据
+    let date = mango.indexTimeB(temp)[1]
+    this.getData(date)
+  }
   }
 
 </script>

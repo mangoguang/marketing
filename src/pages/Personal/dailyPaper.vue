@@ -1,20 +1,42 @@
 <template>
-  <div class="dailyPaper"> 
-    <mybanner :title='title'/>
+  <div class="dailyPaper">
+    <mybanner :title="title"/>
     <div class="date"></div>
-    <timeSelect/>
+    <timeSelect v-on:dailyData="getdailyData"/>
     <ul>
-      <li v-for = "(item,index) in ListTemp" :key='index'>
+      <li>
         <span class="circle"></span>
-        <span>{{item.title}}</span>
-        <p>{{item.number}}</p>
+        <span>您的进店客户数</span>
+        <p>{{dailyData.storeNum}}</p>
+      </li>
+      <li>
+        <span class="circle"></span>
+        <span>您的新增意向客户数</span>
+        <p>{{dailyData.intentionNum}}</p>
+      </li>
+      <li>
+        <span class="circle"></span>
+        <span>您的下单客户数</span>
+        <p>{{dailyData.placeOrderNum}}</p>
+      </li>
+      <li>
+        <span class="circle"></span>
+        <span>您的跟踪客户数</span>
+        <p>{{dailyData.trackRecordNum}}</p>
       </li>
       <div class="line1"></div>
       <div class="line2"></div>
     </ul>
-    <myText :pTitle='pTitle1' :pla='pla1'/>
-    <myText :pTitle='pTitle2' :pla='pla2' style="margin-bottom:21.2vw"/>
-    <Btn :text='text' @click.native="keepPlan"/>
+    <myText 
+      :pTitle="pTitle1" :pla="pla1" 
+      v-model="textSumVal" 
+      :value='textSumVal'/>
+    <myText 
+      :pTitle="pTitle2" :pla="pla2" 
+      style="margin-bottom:21.2vw" 
+      v-model="textPlanVal"  
+      :value='textPlanVal'/>  
+    <Btn :text="text" @click.native="keepPlan"/>
   </div>
 </template>
 
@@ -42,54 +64,54 @@ export default {
       pla1:'接下来该怎么跟进呢？',
       pla2:'一日之计在于晨',
       text:'保存',
-      ListTemp:[
-        {title:'您的进店客户数',number:15},
-        {title:'您的新增意向客户数',number:3},
-        {title:'您的下单客户数',number:2},
-        {title:'您的跟踪客户数',number:6}
-      ]
+      dailyData:{
+        storeNum:'',
+        intentionNum:'',
+        trackRecordNum:'',
+        placeOrderNum:''
+      },
+      textSumVal:'',
+      textPlanVal:'',
+      account:'',
+      thatDay:'',
+      ajaxData:{}
     }
   },
-  mounted(){
-    this.getData()
+  created() {
+     // 获取本地存储信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+    let account = localStorage.getItem('accountMsg')
+    this.account = JSON.parse(account).name
+    let date = new Date()
+    this.thatDay = mango.indexTimeB(date)[1]
   },
   methods:{
-    getData(){
-      let tenantId = JSON.parse(localStorage.getItem('ajaxData')).tenantId
-      console.log(tenantId)
-      axios({
-      method: 'get',
-      url: 'http://10.11.8.7:8086/v2/app/daily',
-      params: {
-        'tenantId':'1035043364413706242',
-        'account':'18080001',
-        'date':'2018-11-14'
-      }
-      })
+    //更新保存计划
+    keepPlan() {
+      mango.getAjax(this, 'daily/update', {
+        summarize: this.textSumVal,
+        date:this.thatDay,
+        plan: this.textPlanVal,
+        account:this.account
+      }, 'v2','post')
       .then((res) => {
-        console.log('success',res)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    },
-    keepPlan(){
-      console.log(123)
-      axios({
-        method: 'get',
-        url: 'http://10.11.8.7:8086/v2/app/daily/update',
-        params: {
-          'tenantId':'1035043364413706242',
-          'account':'18080001',
-          'date':'2018-11-14'
+        if (res) {
+          alert(res.msg)
         }
       })
-      .then((res) => {
-        console.log('success',res)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+    },
+    //从子组件获取数据
+    getdailyData(data) {
+      if(data) {
+        this.dailyData.storeNum = data[0].storeNum
+        this.dailyData.intentionNum = data[0].intentionNum
+        this.dailyData.trackRecordNum = data[0].trackRecordNum
+        this.dailyData.placeOrderNum = data[0].placeOrderNum
+        this.textSumVal = data[0].summarize
+        this.textPlanVal = data[0].plan
+        // this.thatDay = data[1]
+      } 
     }
   }
 }
