@@ -88,7 +88,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png) ;
+        background: url(../assets/imgs/icon1.png) ;
         background-size: 2100%;
         background-position: -7.6vw -20.8vw;
       }
@@ -96,23 +96,23 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png) ;
+        background: url(../assets/imgs/icon1.png) ;
         background-size: 2100%;
-        background-position: -21.6vw -20.8vw;
+        background-position: -21.4vw -20.8vw;
       }
       .iconSalary{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png) ;
+        background: url(../assets/imgs/icon1.png) ;
         background-size: 2100%;
-        background-position: -35.7vw -21vw;
+        background-position: -77.2vw -20.8vw;
       }
       .iconMsg{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png);
+        background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
         background-position: -49.7vw -20.8vw;
       }
@@ -120,9 +120,9 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png);
+        background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
-        background-position: -64.2vw -20.6vw;
+        background-position: -63.2vw -20.8vw;
       }
       p{
         color: #8e8e93;
@@ -134,7 +134,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png);
+        background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
         background-position: -.4vw -20.8vw;
       }
@@ -142,7 +142,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png);
+        background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
         background-position: -14.2vw -20.8vw;
       }
@@ -155,15 +155,15 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png);
+        background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
-        background-position: -28.6vw -20.8vw;
+        background-position: -70.6vw -20.8vw;
       }
       .router-link-exact-active .iconMsg{
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png) ;
+        background: url(../assets/imgs/icon1.png) ;
         background-size: 2100%;
         background-position: -42.6vw -20.8vw;
       }
@@ -171,9 +171,9 @@ export default {
         width: 6.6vw;
         height: 6.6vw; 
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon.png);
+        background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
-        background-position: -56.6vw -20.8vw;
+        background-position: -56.2vw -20.8vw;
       }
     }
   }
