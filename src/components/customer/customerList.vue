@@ -7,17 +7,17 @@
     infinite-scroll-distance="10">
     <li
     class="customerContent"
-    v-for="(item, index) in customerList"
+    v-for="(item, index) in customerList.records"
     :key="`customerList${index}`">
       {{item.name}}
       <ul>
         <li>
           <div></div>
-          <strong>{{item.name}}<i></i></strong>
-          <span>{{item.time}}</span>
+          <strong>{{item.username}}<i></i></strong>
+          <span>{{item.followTime}}</span>
         </li>
-        <li>{{item.classify}}</li>
-        <li>{{item.percent}}</li>
+        <li>{{item.intention}}</li>
+        <li>{{item.probability}}</li>
       </ul>
     </li>
   </ul>
@@ -61,7 +61,7 @@ export default {
   },
   watch: {
     'customerList': function(val) {
-      console.log(123, val)
+      console.log('获取的客户列表：', val)
     }
   },
   mounted(){

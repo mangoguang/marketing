@@ -40,7 +40,7 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Vuex, { mapMutations } from 'vuex'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../js'
 Vue.use(Vuex)
 export default {
@@ -58,7 +58,10 @@ export default {
     }
   },
   computed: {
-    
+    ...mapState({
+      // citySelect: state => state.select.citySelect,
+      customerAjaxParams: state => state.customer.customerAjaxParams
+    })
   },
   watch:{
 
@@ -67,6 +70,8 @@ export default {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    this.customerAjaxParams.tenantId = this.ajaxData.tenantId
+    this.setCustomerAjaxParams(this.customerAjaxParams)
   },
   mounted(){
     this.isIPhoneX()
@@ -75,7 +80,8 @@ export default {
   methods:{
     ...mapMutations([
       'setRightContainerStatus',
-      'setCustomerList'
+      'setCustomerList',
+      'setCustomerAjaxParams'
     ]),
     // 显示右侧边栏
     showRightContainer() {
@@ -97,8 +103,23 @@ export default {
     // 选择客户类型
     customerClassifySelect(i) {
       this.ifShow = 'hide'
-      this.selectBtnText = this.customerClassifyList[i].name
-      mango.changeBtnStatus(this.customerClassifyList, i)
+      if (this.selectBtnText != this.customerClassifyList[i].name) {
+        this.selectBtnText = this.customerClassifyList[i].name
+        mango.changeBtnStatus(this.customerClassifyList, i)
+        switch(i) {
+          case 0:
+            console.log('全部')
+            break
+          case 1:
+            console.log('紧急降序')
+            break
+          case 2:
+            console.log('关键降序')
+            break
+          default:
+            break
+        }
+      }
     },
     // 选择页面模块
     moduleSelect(i) {
@@ -117,7 +138,6 @@ export default {
         tenantId: this.ajaxData.tenantId
       }, 'v2').then((res) => {
         if (res) {
-          console.log('获取的客户列表：', res)
           this.setCustomerList(res.data)
         }
       })
