@@ -44,6 +44,7 @@ export default {
       if(this.pickerVisible){
         this.date = mango.indexTimeB(this.pickerVisible)
       }
+      
     }
   },
     created(){

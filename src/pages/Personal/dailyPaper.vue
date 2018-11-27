@@ -14,7 +14,7 @@
     </ul>
     <myText :pTitle='pTitle1' :pla='pla1'/>
     <myText :pTitle='pTitle2' :pla='pla2' style="margin-bottom:21.2vw"/>
-    <Btn :text='text'/>
+    <Btn :text='text' @click.native="keepPlan"/>
   </div>
 </template>
 
@@ -25,7 +25,7 @@ import mybanner from '../../components/banner'
 import myText from '../../components/personal/myText'
 import Btn from '../../components/personal/Btn'
 import timeSelect from '../../components/select/timeSelect'
-import axios from 'axios'
+import mango from '../../js'
 
 export default {
   components:{
@@ -33,7 +33,7 @@ export default {
     myText,
     Btn,
     timeSelect
-},
+  },
   data(){
     return{
       title:'个人日报',
@@ -50,20 +50,45 @@ export default {
       ]
     }
   },
+  mounted(){
+    this.getData()
+  },
   methods:{
     getData(){
-       axios({
-        method: 'post',
-        url: url,
+      let tenantId = JSON.parse(localStorage.getItem('ajaxData')).tenantId
+      console.log(tenantId)
+      axios({
+      method: 'get',
+      url: 'http://10.11.8.7:8086/v2/app/daily',
+      params: {
+        'tenantId':'1035043364413706242',
+        'account':'18080001',
+        'date':'2018-11-14'
+      }
+      })
+      .then((res) => {
+        console.log('success',res)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    keepPlan(){
+      console.log(123)
+      axios({
+        method: 'get',
+        url: 'http://10.11.8.7:8086/v2/app/daily/update',
         params: {
-          time:time
+          'tenantId':'1035043364413706242',
+          'account':'18080001',
+          'date':'2018-11-14'
         }
       })
       .then((res) => {
-
+        console.log('success',res)
       })
-      .catch(() => {
-
+      .catch((error) => {
+        console.log(error)
       })
     }
   }
