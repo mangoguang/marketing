@@ -96,6 +96,7 @@ export default class Common {
   getAjax(_vue, port, params, pathVersion,type) {
     let _this = this
     return new Promise((resolve, reject) => {
+      let thatType = type === 'post' ? 'post' : 'get'
       const url = `${pathVersion === 'v2' ? this.v2path : this.path}${port}`
       let sign = this.getSign(params, _vue.ajaxData.token)
       // console.log('header参数', _vue, sign)
@@ -105,7 +106,7 @@ export default class Common {
         clearTimeout(loadingTimeOut)
       }, 10000)
       axios({
-        method: type,
+        method: thatType,
         url: url,
         // timeout: 3000,
         headers: {
