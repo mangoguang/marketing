@@ -163,4 +163,12 @@ export default class Common {
       return this.indexTime()
     } 
   }
+  //获取时间
+  indexTimeB(date){
+    if(date){
+      date = date.toLocaleDateString().split('/')
+      let a = date[0] + '年' + date[1] + '月' + date[2] + '日'
+      return a
+    }
+  }
 }

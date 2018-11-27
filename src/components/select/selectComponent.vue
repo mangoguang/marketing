@@ -112,6 +112,7 @@ export default {
     position: fixed;
     width: 100%;
     top: 16.5vw;
+    // top: 22.5vw;
     background: #fff;
     z-index: 1000;
     .timeBtn{
