@@ -65,6 +65,11 @@ export var router = new VueRouter({
   //   name: 'ReportForms',
   //   component: resolve => require(['../pages/ReportForms'], resolve)
   // },
+  {
+    path: '/dealDetails',
+    name: '/dealDetails',
+    component: resolve => require(['../pages/customer/dealDetails'],resolve)
+  },
   /****个人模块****/
   {
     path: '/personalMsg',

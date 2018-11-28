@@ -47,9 +47,10 @@ export default {
     sendDate(){
       if(this.pickerVisible){
         this.date = mango.indexTimeB(this.pickerVisible)[0]
+        let date = mango.indexTimeB(this.pickerVisible)[1]
+        this.getData(date)
       }
-      let date = mango.indexTimeB(this.pickerVisible)[1]
-      this.getData(date)
+      
     },
     //获取数据
     getData(date){
