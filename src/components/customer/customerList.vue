@@ -12,8 +12,8 @@
       {{item.name}}
       <ul>
         <li>
-          <div></div>
-          <strong>{{item.username}}<i></i></strong>
+          <div :class="`urgence${item.urgency}`"></div>
+          <strong>{{item.urgency + item.username + item.important}}<i :class="`important${item.important}`"></i></strong>
           <span>{{item.followTime}}</span>
         </li>
         <li>{{item.intention}}</li>
@@ -108,11 +108,24 @@ export default {
       div{
         position: absolute;
         height: 12vw;
-        width: 2vw;
+        width: 4vw;
         top: 2vw;
         left: 0;
-        background: url(../../assets/imgs/bar.png) no-repeat;
-        background-size: auto 100%;
+      }
+      div.urgence1{
+        background: url(../../assets/imgs/jinji3.png) no-repeat;
+        background-size: 4vw auto;
+        background-position: 0 center;
+      }
+      div.urgence2{
+        background: url(../../assets/imgs/jinji2.png) no-repeat;
+        background-size: 4vw auto;
+        background-position: 0 center;
+      }
+      div.urgence3{
+        background: url(../../assets/imgs/jinji1.png) no-repeat;
+        background-size: 4vw auto;
+        background-position: 0 center;
       }
     }
     strong{
@@ -121,12 +134,24 @@ export default {
       color: #363636;
       i{
         display: inline-block;
-        width: 3.2vw;
-        height: 3.2vw;
-        background: url(../../assets/imgs/redHeart.png) no-repeat;
-        background-size: 100% auto;
-        background-position: center;
+        width: 12vw;
+        height: 2.8vw;
         margin-left: 1vw;
+      }
+      i.important1{
+        background: url(../../assets/imgs/star3.png) no-repeat;
+        background-size: auto 100%;
+        background-position: center;
+      }
+      i.important2{
+        background: url(../../assets/imgs/star3.png) no-repeat;
+        background-size: auto 100%;
+        background-position: center;
+      }
+      i.important3{
+        background: url(../../assets/imgs/star3.png) no-repeat;
+        background-size: auto 100%;
+        background-position: center;
       }
     }
     span{
@@ -135,7 +160,7 @@ export default {
       color: #999;
     }
     li:nth-child(1){
-      padding-left: 3vw;
+      padding-left: 5vw;
     }
     li:nth-child(2){
       font-size: 16px;

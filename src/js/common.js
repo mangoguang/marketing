@@ -85,12 +85,11 @@ export default class Common {
     obj = sortObj(obj)
     let str = ''
     for (let key in obj) {
-      console.log(obj[key])
       if (obj[key] || (obj[key] === 0 || obj[key] === '0')) {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    console.log('生成的sign字符串', str)
+    // console.log('生成的sign字符串', str)
     return sha1.hex(str + token)
   }
   getAjax(_vue, port, params, pathVersion) {
@@ -140,7 +139,8 @@ export default class Common {
     }
   }
   // 转换时间戳，以2018-08-30的格式返回
-  indexTime(date) {
+  // type=day时，返回到日期，否则返回到月份。
+  indexTime(date, type) {
     if (!date) {
       date = new Date()
     }
@@ -153,7 +153,7 @@ export default class Common {
       tempArr[1] = temp
       tempArr.reverse()
     }
-    tempArr = tempArr.slice(0, 2)
+    tempArr = type === 'day' ? tempArr.slice(0, 3) : tempArr.slice(0, 2)
     if (tempArr[1] < 10) {
       tempArr[1] = `0${tempArr[1]}`
     }

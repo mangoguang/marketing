@@ -6,16 +6,16 @@
         <li class="time">
           <h3>时间</h3>
           <ul>
-            <li>
+            <li @click="openDatePicker('start')">
               <p>起始日</p>
-              <strong>11月16日</strong>
+              <strong>{{startDateVal}}</strong>
             </li>
             <li><span>至</span></li>
-            <li>
+            <li @click="openDatePicker('end')">
               <p>结束日</p>
-              <strong>11月24日</strong>
+              <strong>{{endDateVal}}</strong>
             </li>
-            <li><span>共7日</span></li>
+            <li><span>共{{countTime}}日</span></li>
           </ul>
         </li>
         <li>
@@ -40,6 +40,18 @@
             </li>
           </ul>
         </li>
+        <li>
+          <!-- 日期插件 -->
+          <mt-datetime-picker
+            ref="datePicker"
+            type="date"
+            v-model="pickerValue"
+            year-format="{value} 年"
+            month-format="{value} 月"
+            day-format="{value} 日"
+            @confirm="handleConfirm">
+          </mt-datetime-picker>
+        </li>
       </ul>
       <div class="botBtns">
         <button>重置</button>
@@ -48,50 +60,112 @@
     </div>
   </div>
 </template>
-<!-- </keep-alive> -->
+<!-- </keep-alive> --> 
 
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import mango from '../../js'
+import { DatetimePicker } from 'mint-ui'
 Vue.use(Vuex)
+Vue.component(DatetimePicker.name, DatetimePicker)
 export default {
   name: 'rightContainer',
   props:[''],
   data () {
     return {
-      urgencyBtns: mango.btnList(['低', '中', '高']),
+      paramsObj: {},
+      pickerValue: new Date(),
+      startDateVal: '',
+      endDateVal: mango.indexTime(new Date(), 'day'),
+      dateType: '',
+      urgencyBtns: mango.btnList(['高', '中', '低']),
       keyBtns: mango.btnList(['高', '中', '低'])
     }
   },
   computed: {
     ...mapState({
-      // citySelect: state => state.select.citySelect,
-      rightContainerStatus: state => state.rightContainer.rightContainerStatus
-    })
+      rightContainerStatus: state => state.rightContainer.rightContainerStatus,
+      customerAjaxParams: state => state.customer.customerAjaxParams
+    }),
+    // startDateVal() {
+    //   return mango.indexTime(this.startTime, 'day')
+    // },
+    // endDateVal() {
+    //   return mango.indexTime(this.endTime, 'day')
+    // },
+    countTime() {
+      let [start, end] = [(new Date(this.startDateVal)).getTime(), (new Date(this.endDateVal)).getTime()]
+      return (end - start)/86400000
+    }
   },
   watch:{
     rightContainerStatus() {
       console.log(this.rightContainerStatus)
     }
   },
+  created() {
+    this.initStartDateVal()
+  },
   mounted(){
-
+    // 对象深拷贝
+    let temp = this.customerAjaxParams
+    for (let key in temp) {
+      this.paramsObj[key] = temp[key]
+    }
   },
   methods:{
     ...mapMutations([
       'setRightContainerStatus'
     ]),
-    hideRightContainer() {
-      console.log('隐藏侧边栏。', this.rightContainerStatus)
-      this.setRightContainerStatus('hideRightContainer')
+    // 初始化起始日期
+    initStartDateVal() {
+      let date = new Date()
+      date = mango.indexTime(date, 'day')
+      date = `${date.slice(0, 8)}01`
+      this.startDateVal = date
     },
+    // 打开日期插件
+    openDatePicker(type) {
+      this.dateType = type
+      this.$refs.datePicker.open()
+    },
+    // 隐藏右侧边栏
+    hideRightContainer() {
+      this.setRightContainerStatus('hideRightContainer')
+      this.paramsObj.startDateVal = this.startDateVal
+      this.paramsObj.endDateVal = this.endDateVal
+    },
+    // 紧急程度选择
     urgencySelect(i) {
       mango.changeBtnStatus(this.urgencyBtns, i)
+      this.paramsObj.u = i + 1
     },
+    // 关键程度选择
     keySelect(i) {
       mango.changeBtnStatus(this.keyBtns, i)
+      this.paramsObj.i = i + 1
+    },
+    // 选择时间
+    handleConfirm(date) {
+      let [start, end, dateVal] = [null, null, null]
+      if (this.dateType === 'start') {
+        start = new Date(date).getTime()
+        console.log(mango.indexTime(date, 'day'), this.startDateVal)
+        if ((start - new Date(this.endDateVal).getTime()) > 0) {
+          alert('起始日不能大于结束日')
+          return
+        }
+      } else {
+        end = new Date(date).getTime()
+        if ((new Date(this.startDateVal).getTime() - end) > 0) {
+          alert('结束日不能小于起始日')
+          return
+        }
+      }
+      dateVal = mango.indexTime(date, 'day')
+      this[`${this.dateType}DateVal`] = dateVal
     }
   }
 }

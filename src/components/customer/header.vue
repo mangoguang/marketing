@@ -59,12 +59,14 @@ export default {
   },
   computed: {
     ...mapState({
-      // citySelect: state => state.select.citySelect,
       customerAjaxParams: state => state.customer.customerAjaxParams
     })
   },
-  watch:{
-
+  watch: {
+    'customerAjaxParams': function(val) {
+      console.log('更改接口参数：', val)
+      this.getCudyomrtList()
+    }
   },
   created() {
     // 获取本地存储信息
@@ -73,9 +75,10 @@ export default {
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
   },
-  mounted(){
+  mounted() {
     this.isIPhoneX()
     this.getCudyomrtList()
+    console.log('this', this)
   },
   methods:{
     ...mapMutations([
@@ -103,18 +106,32 @@ export default {
     // 选择客户类型
     customerClassifySelect(i) {
       this.ifShow = 'hide'
+      let [temp, tempObj] = [this.customerAjaxParams, {}]
+      // 对象深拷贝
+      for (let key in temp) {
+        tempObj[key] = temp[key]
+      }
       if (this.selectBtnText != this.customerClassifyList[i].name) {
         this.selectBtnText = this.customerClassifyList[i].name
         mango.changeBtnStatus(this.customerClassifyList, i)
         switch(i) {
           case 0:
-            console.log('全部')
+            tempObj.uo = 0
+            tempObj.io = 0
+            this.setCustomerAjaxParams(tempObj)
+            console.log('全部', this.customerAjaxParams)
             break
           case 1:
-            console.log('紧急降序')
+            tempObj.uo = 1
+            tempObj.io = 0
+            this.setCustomerAjaxParams(tempObj)
+            console.log('紧急降序', this.customerAjaxParams)
             break
           case 2:
-            console.log('关键降序')
+            tempObj.uo = 0
+            tempObj.io = 1
+            this.setCustomerAjaxParams(tempObj)
+            console.log('关键降序', this.customerAjaxParams)
             break
           default:
             break
@@ -126,17 +143,7 @@ export default {
       mango.changeBtnStatus(this.moduleList, i)
     },
     getCudyomrtList() {
-      mango.getAjax(this, 'customer', {
-        page: 1,   //页数
-        limit: 20,    //每页条数
-        u: 0,   //1:紧急排序，0：非
-        i: 0,   //1关键排序
-        key: '',     //搜索关键字，电话或名字
-        startTime: '',
-        endTime: '',
-        tut: 0,   //只看今天更新数据 ,优先级最高
-        tenantId: this.ajaxData.tenantId
-      }, 'v2').then((res) => {
+      mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
         if (res) {
           this.setCustomerList(res.data)
         }
