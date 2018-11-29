@@ -117,7 +117,8 @@ export default {
   },
   methods:{
     ...mapMutations([
-      'setRightContainerStatus'
+      'setRightContainerStatus',
+      'setCustomerAjaxParams'
     ]),
     // 初始化起始日期
     initStartDateVal() {
@@ -136,16 +137,32 @@ export default {
       this.setRightContainerStatus('hideRightContainer')
       this.paramsObj.startDateVal = this.startDateVal
       this.paramsObj.endDateVal = this.endDateVal
+      this.setCustomerAjaxParams(mango.customerAjaxParams)
+      this.setCustomerAjaxParams(this.paramsObj)
     },
     // 紧急程度选择
     urgencySelect(i) {
-      mango.changeBtnStatus(this.urgencyBtns, i)
-      this.paramsObj.u = i + 1
+      let status = this.urgencyBtns[i].status
+      if (status) {
+        // 反选
+        this.urgencyBtns[i].status = false
+        this.paramsObj.u = ''
+      } else {
+        mango.changeBtnStatus(this.urgencyBtns, i)
+        this.paramsObj.u = i + 1
+      }
     },
     // 关键程度选择
     keySelect(i) {
-      mango.changeBtnStatus(this.keyBtns, i)
-      this.paramsObj.i = i + 1
+      let status = this.keyBtns[i].status
+      if (status) {
+        // 反选
+        this.keyBtns[i].status = false
+        this.paramsObj.i = ''
+      } else {
+        mango.changeBtnStatus(this.keyBtns, i)
+        this.paramsObj.i = i + 1
+      }
     },
     // 选择时间
     handleConfirm(date) {

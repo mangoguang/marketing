@@ -15,8 +15,8 @@
       <div :style="{display: navShow ? 'none' : 'flex'}">
         <button @click="showNav">导航</button>
         <div>
-          <input type="text">
-          <button>搜索</button>
+          <input v-model="searchKey" type="text" placeholder="请输入姓名或电话">
+          <button @click="searchCustomer">搜索</button>
         </div>
       </div>
     </div>
@@ -54,7 +54,8 @@ export default {
       navShow: true,
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
       moduleList: mango.btnList(['我的客户', '订单查询', '成交客户'], 0),
-      selectBtnText: '全部'
+      selectBtnText: '全部',
+      searchKey: ''
     }
   },
   computed: {
@@ -65,7 +66,7 @@ export default {
   watch: {
     'customerAjaxParams': function(val) {
       console.log('更改接口参数：', val)
-      this.getCudyomrtList()
+      this.getCustomerList()
     }
   },
   created() {
@@ -77,7 +78,7 @@ export default {
   },
   mounted() {
     this.isIPhoneX()
-    this.getCudyomrtList()
+    this.getCustomerList()
     console.log('this', this)
   },
   methods:{
@@ -142,12 +143,17 @@ export default {
     moduleSelect(i) {
       mango.changeBtnStatus(this.moduleList, i)
     },
-    getCudyomrtList() {
+    // ajax请求客户列表
+    getCustomerList() {
       mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
         if (res) {
           this.setCustomerList(res.data)
         }
       })
+    },
+    // 根据手机或名字搜索客户
+    searchCustomer() {
+      this.$emit('search', this.searchKey)
     },
     isIPhoneX : function(fn){
       var u = navigator.userAgent;

@@ -1,7 +1,8 @@
 <template>
   <div class="customer">
     <!-- 头部 -->
-    <Header/>
+    <Header
+    @search="searchCustomer"/>
     <!-- 客户列表 -->
     <CustomerList/>
     <!-- 右侧边栏 -->
@@ -58,6 +59,9 @@ export default {
           return
         }
       }
+    },
+    searchCustomer(key) {
+      console.log('搜索关键字；', key)
     }
   }
 }
