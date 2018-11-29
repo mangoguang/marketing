@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <header class="header" :style="{'margin-top': `${top}vw`}">
+  <header class="header" :style="{'padding-top': `${top}vw`}">
     <div class="top">
       <!-- 模块选择 -->
       <ul :style="{display: !navShow ? 'none' : 'flex'}">

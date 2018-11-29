@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="personalSales paddingTop">
+  <div class="personalSales paddingTop2">
     <mybanner :title='title' />
     <div class="barBox">
       <chartsTit :text="`${shopName}-职员销售额对比`">
