@@ -11,7 +11,6 @@
     <order-info v-if="order"/>
     <trackRecord v-if="trackRecord"/>
     <personalLevel v-if="level"/>
-
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <div class="trackRecord">
     <ul>
-      <li v-for="(item,index) in details" :key="index">
+      <li v-for="(item,index) in details" :key="index" @click="getTrackDetails(index)">
         <p>{{ index + 1}}</p>
         <div class="product">
           <p>{{item.product}}</p>
@@ -27,6 +27,11 @@ export default {
         {'product':'按摩椅',time:'更新时间：2018年10月18日 12：00'},
         {'product':'床头柜',time:'更新时间：2018年10月10日 12：00'}
       ]
+    }
+  },
+  methods:{
+    getTrackDetails(index) {
+      this.$router.push({path:'/trackDetails'})
     }
   }
 }

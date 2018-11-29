@@ -8,7 +8,7 @@
           <span>{{item.num}}</span>
           <span>{{item.status}}</span>
           <span >
-            <img src="../../../assets/imgs/back.png" alt="" :class="{'pullDown':`${rotate}` == index}">
+            <img src="../../../assets/imgs/rightside.png" alt="" :class="{'pullDown':`${rotate}` == index}">
           </span>
         </div>
         <OrderInfoDetails v-show="i == index"/>
@@ -38,13 +38,11 @@ export default {
   },
   methods:{
     pullDown(index){
-      
       if(this.status){
         if(this.rotate == index){
           this.i = -1
           this.status = false
           this.rotate = -1
-          
         }else{
           this.i = index
           this.rotate = index  
@@ -93,10 +91,10 @@ export default {
         img{
           width: 1.6vw;
           height: 3.2vw;
-          transform: rotate(-90deg)
+          transform: rotate(90deg)
         }
         .pullDown{
-          transform: rotate(-270deg)
+          transform: rotate(-90deg)
         }
        
       }
