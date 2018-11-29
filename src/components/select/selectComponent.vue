@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <ul class="selectComponent">
+  <ul class="selectComponent" :style="{'top':`${top}vw`}">
     <li is="citySelect"></li>
     <!-- <li><input @click="openStartPicker" type="input" v-model="startTime"></li> -->
     <li @click="openEndPicker" class="timeBtn">
@@ -44,12 +44,13 @@ export default {
       endTime: '2018-08',
       pickerValue: new Date(),
       timeType: 'start',
-      rotate:'rotate(270deg)'   
+      rotate:'rotate(270deg)' ,
+      top:''  
     }
   },
   created() {
     this.getLocalStorageTime()
-    
+    this.isIPhoneX()
   },
   mounted() {
    
@@ -101,6 +102,19 @@ export default {
       } else {
         this.endTime = '结束时间'
       }
+    },
+    isIPhoneX : function(fn){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.top = '22.3'
+        }else{
+          this.top = '16.5'
+        } 
+      }else{
+        this.top = '16.5'
+      }
     }
   }
 }
@@ -111,7 +125,8 @@ export default {
   .selectComponent{
     position: fixed;
     width: 100%;
-    top: 16.5vw;
+    // top: 16.5vw;
+    // top: 22.5vw;
     background: #fff;
     z-index: 1000;
     .timeBtn{
