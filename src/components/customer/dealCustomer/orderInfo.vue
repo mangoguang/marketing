@@ -2,6 +2,7 @@
   <div class="orderInfo">
     <ul>
       <li v-for="(item,index) in orderInfo" :key="index"  @click="pullDown(index)">
+        <hr v-show="index !== 0">
         <div class="orderList">
           <span>{{index + 1}}</span>
           <span>{{item.num}}</span>
@@ -10,7 +11,7 @@
             <img src="../../../assets/imgs/back.png" alt="" :class="{'pullDown':`${rotate}` == index}">
           </span>
         </div>
-        <p  :class="{'active':`${display}`== index}">123</p>
+        <OrderInfoDetails v-show="i == index"/>
       </li>
     </ul>                    
   </div>
@@ -19,8 +20,10 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import OrderInfoDetails from './orderInfoDetails'
 
 export default {
+  components:{OrderInfoDetails},
   data(){
     return{
       orderInfo:[
@@ -30,29 +33,26 @@ export default {
       ],
       rotate:-1,
       status:false,
-      display:-1
-      
+      i:-1
     }
   },
   methods:{
     pullDown(index){
-     
+      
       if(this.status){
         if(this.rotate == index){
-          this.display = -1
+          this.i = -1
           this.status = false
           this.rotate = -1
           
         }else{
-          this.display = index
+          this.i = index
           this.rotate = index  
-           this.display = 'block'
         }
       }else{
         this.status = true
         this.rotate = index
-         this.display = index
-         this.display = 'block'
+         this.i = index
       }
     }
   }
@@ -61,10 +61,10 @@ export default {
 
 <style lang="scss" scoped>
 .orderInfo{
+  background: #fff;
   width: 100vw;
   ul{
     border-top:1px solid #e1e1e1;
-    padding-left: 4.26vw; 
     margin-top: 2.66vw;
     font-size: 3.73vw;
     border-bottom: 1px solid #e1e1e1;
@@ -75,8 +75,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      
-      border-bottom: 1px solid #e1e1e1;
+      padding-left: 4.26vw;
       line-height: 11.8vw;
       color: #363636;
       span:nth-child(1){
@@ -101,12 +100,16 @@ export default {
         }
        
       }
-      p{
+      .orderDetails{
         display: none
       }
-     .active{
-        display: block
-      }
+    }
+    hr{
+      background: #e1e1e1;
+      height:1px;
+      border: none;
+      margin: 0;
+      margin-left: 4.26vw;
     }
   }
 }

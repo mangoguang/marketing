@@ -8,7 +8,10 @@
         {{item}}
       </li>
     </ul> 
-    <order-info/>
+    <order-info v-if="order"/>
+    <trackRecord v-if="trackRecord"/>
+    <personalLevel v-if="level"/>
+
   </div>
 </template>
 
@@ -18,18 +21,27 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import dealHeader from '../../components/customer/dealCustomer/dealHeader'
 import OrderInfo from '../../components/customer/dealCustomer/orderInfo'
+import trackRecord from '../../components/customer/dealCustomer/trackRecord'
+import personalLevel from '../../components/customer/dealCustomer/personalLevel'
 
 export default {
-  components:{dealHeader,OrderInfo},
+  components:{dealHeader,OrderInfo,trackRecord,personalLevel},
   data(){
     return{
       header:['订单信息','跟踪记录','个人评级'],
-      currentTab:0
+      currentTab:0,
+      order:true,
+      trackRecord:false,
+      level:false
     }
   },
   methods:{
     clickTab(index){
       this.currentTab = index
+      index === 0? this.order = true : this.order = false
+      index === 1? this.trackRecord = true : this.trackRecord = false
+      index === 2? this.level = true : this.level = false
+      
     }
   }
 }
@@ -38,6 +50,8 @@ export default {
 <style lang="scss" scoped>
 .dealDetails{
   position: relative;   
+  background:#f8f8f8;
+  min-height: 100vh;
   ul{
     display: flex;
     justify-content: space-between;
