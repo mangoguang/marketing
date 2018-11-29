@@ -6,9 +6,6 @@ import mango from './js'
 import api from './js/api.js'
 import VueTouch from 'vue-touch'
 import 'mint-ui/lib/style.min.css'
-import { DatePicker } from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(DatePicker);
 Vue.use(VueTouch, {name: 'v-touch'})
 VueTouch.config.swipe = {
   threshold: 100, 

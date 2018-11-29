@@ -3,8 +3,7 @@
     <!-- 头部 -->
     <Header/>
     <!-- 客户列表 -->
-    <!-- <CustomerList/> -->
-    <dealCustomerList/>
+    <CustomerList/>
     <!-- 右侧边栏 -->
     <RightContainer/>
 
@@ -22,8 +21,6 @@ import VueRouter from 'vue-router'
 import Footer from '../../components/Footer'
 import Header from '../../components/customer/header'
 import CustomerList from '../../components/customer/customerList'
-import dealCustomerList from '../../components/customer/dealCustomer/dealCustomerList'
-
 import RightContainer from '../../components/customer/rightContainer'
 import mango from '../../js'
 
@@ -32,8 +29,7 @@ export default {
     Footer,
     Header,
     CustomerList,
-    RightContainer,
-    dealCustomerList
+    RightContainer
   },
   data(){
     return{

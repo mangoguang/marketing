@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="storeSales paddingTop2">
+  <div class="storeSales paddingTop">
     <mybanner :title='title'/>
     <div class="barBox">
       <chartsTit :text="'各门店销售额对比'">

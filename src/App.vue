@@ -26,13 +26,7 @@ export default{
     return{
       height: window.innerHeight,
       padding:'',
-      myStyle:[{
-        fgPwdTop:''
-        },{
-        loginFix:''
-        },{
-        formOverFlow:''
-        }]
+      myStyle:[{'fgPwdTop':''},{'loginFix':''},{'formOverFlow':''}]
     }
   },
   mounted(){
@@ -173,9 +167,6 @@ a:hover{text-decoration:none;}
 }
 .paddingTop{
   padding-top: 38vw;
-}
-.paddingTop2{
-   padding-top: 16vw;
 }
 
 </style>

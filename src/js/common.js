@@ -93,10 +93,9 @@ export default class Common {
     console.log('生成的sign字符串', str)
     return sha1.hex(str + token)
   }
-  getAjax(_vue, port, params, pathVersion,type) {
+  getAjax(_vue, port, params, pathVersion) {
     let _this = this
     return new Promise((resolve, reject) => {
-      let thatType = type === 'post' ? 'post' : 'get'
       const url = `${pathVersion === 'v2' ? this.v2path : this.path}${port}`
       let sign = this.getSign(params, _vue.ajaxData.token)
       // console.log('header参数', _vue, sign)
@@ -106,7 +105,7 @@ export default class Common {
         clearTimeout(loadingTimeOut)
       }, 10000)
       axios({
-        method: thatType,
+        method: 'get',
         url: url,
         // timeout: 3000,
         headers: {
@@ -168,15 +167,6 @@ export default class Common {
     } else {
       return this.indexTime()
     } 
-  }
-  //获取时间
-  indexTimeB(date){
-    if(date){
-      date = date.toLocaleDateString().split('/')
-      let b  = date.join('-')
-      let a = date[0] + '年' + date[1] + '月' + date[2] + '日'
-      return [a,b]
-    }
   }
   btnList(names, i) {
     return names.map((item, index) => {

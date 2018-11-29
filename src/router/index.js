@@ -66,27 +66,6 @@ export var router = new VueRouter({
   //   component: resolve => require(['../pages/ReportForms'], resolve)
   // },
   {
-    path: '/dealDetails',
-    name: '/dealDetails',
-    component: resolve => require(['../pages/customer/dealDetails'],resolve)
-  },
-  {
-    path: '/trackDetails',
-    name: '/trackDetails',
-    component: resolve => require(['../pages/customer/trackDetails'],resolve)
-  },
-  /****个人模块****/
-  {
-    path: '/personalMsg',
-    name: '/Personal',
-    component: resolve => require(['../pages/Personal/personalMsg'],resolve)
-  },
-  {
-    path: '/dailyPaper',
-    name: '/dailyPaper',
-    component: resolve => require(['../pages/Personal/dailyPaper'],resolve)
-  },
-  {
     path: '/ForgetPwd',
     name: '/ForgetPwd',
     component: resolve => require(['../pages/ForgetPwd'],resolve)
