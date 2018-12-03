@@ -54,7 +54,9 @@ export default {
       navShow: true,
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
       moduleList: mango.btnList(['我的客户', '订单查询', '成交客户'], 0),
-      selectBtnText: '全部'
+      selectBtnText: '全部',
+      account:''
+     
     }
   },
   computed: {
@@ -72,6 +74,8 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
+    let account = localStorage.getItem('accountMsg')
+    this.account = JSON.parse(account).name.trim()
   },
   mounted(){
     this.isIPhoneX()
@@ -81,7 +85,8 @@ export default {
     ...mapMutations([
       'setRightContainerStatus',
       'setCustomerList',
-      'setCustomerAjaxParams'
+      'setCustomerAjaxParams',
+      'setDealCustomerList'
     ]),
     // 显示右侧边栏
     showRightContainer() {
@@ -124,6 +129,20 @@ export default {
     // 选择页面模块
     moduleSelect(i) {
       mango.changeBtnStatus(this.moduleList, i)
+      if (i == 2) {
+          mango.getAjax(this, 'order', {
+        account:this.account,
+        page: 1,  //页数
+        limit: '10',  //每页条数
+        key: ""     //搜索关键字，电话或名字
+      }, 'v2')
+      .then((res) => {
+        if (res) {
+         console.log('成交客户数据',res.data)
+          this.setDealCustomerList(res.data)
+        }
+      })
+      }
     },
     getCudyomrtList() {
       mango.getAjax(this, 'customer', {

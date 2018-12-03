@@ -29,10 +29,14 @@ export default {
       ]
     }
   },
+  
   methods:{
     getTrackDetails(index) {
       this.$router.push({path:'/trackDetails'})
     }
+  },
+  created () {
+  
   }
 }
 </script>

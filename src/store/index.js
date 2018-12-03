@@ -5,12 +5,17 @@ import home from './modules/home'
 import customer from './modules/customer'
 import select from './modules/components/select'
 import rightContainer from './modules/components/rightContainer'
+import dealCustomerList from './modules/components/dealCustomerList'
+import dealOrderInfoDetails from './modules/components/dealOrderInfoDetails'
+
 
 export default new Vuex.Store({
   modules: {
     home,
     customer,
     select,
-    rightContainer
+    rightContainer,
+    dealCustomerList,
+    dealOrderInfoDetails
   }
 })

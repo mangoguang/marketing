@@ -20,9 +20,11 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import OrderInfoDetails from './orderInfoDetails'
 
 export default {
+  name:'dealOrderInfoDetails',
   components:{OrderInfoDetails},
   data(){
     return{
@@ -34,6 +36,17 @@ export default {
       rotate:-1,
       status:false,
       i:-1
+    }
+  },
+  computed: {
+    ...mapState({
+      // citySelect: state => state.select.citySelect,
+      dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+    })
+  },
+  watch:{
+    dealOrderInfoDetails() {
+      console.log(123,this.dealOrderInfoDetails)
     }
   },
   methods:{

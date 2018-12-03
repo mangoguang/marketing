@@ -9,7 +9,9 @@
       </li>
     </ul> 
     <order-info v-if="order"/>
-    <trackRecord v-if="trackRecord"/>
+    <!-- <keep-alive include="keep"> -->
+      <trackRecord v-if="trackRecord"/>
+    <!-- </keep-alive> -->
     <personalLevel v-if="level"/>
   </div>
 </template>
@@ -24,9 +26,11 @@ import trackRecord from '../../components/customer/dealCustomer/trackRecord'
 import personalLevel from '../../components/customer/dealCustomer/personalLevel'
 
 export default {
+  name:'keep',
   components:{dealHeader,OrderInfo,trackRecord,personalLevel},
   data(){
     return{
+      includedComponents:'keep',
       header:['订单信息','跟踪记录','个人评级'],
       currentTab:0,
       order:true,
@@ -34,15 +38,15 @@ export default {
       level:false
     }
   },
+  
   methods:{
     clickTab(index){
       this.currentTab = index
       index === 0? this.order = true : this.order = false
       index === 1? this.trackRecord = true : this.trackRecord = false
       index === 2? this.level = true : this.level = false
-      
     }
-  }
+}
 }
 </script>
 

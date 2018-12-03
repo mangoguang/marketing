@@ -73,7 +73,7 @@ export default {
   },
   watch:{
     rightContainerStatus() {
-      console.log(this.rightContainerStatus)
+      console.log(123,this.rightContainerStatus)
     }
   },
   mounted(){
