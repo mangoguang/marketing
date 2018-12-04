@@ -3,11 +3,11 @@
     <div class="content">
       <div class="total-money">
         <p>订单总金额</p>
-        <p class="money">￥<span class="strong">69646</span></p>
+        <p class="money">￥<span class="strong">{{ Math.round(dealOrderInfoDetails.totalAmount) }}</span></p>
       </div>
       <div class="numberOfOrder">
         <p>客户订单数</p>
-        <p class="strong">2</p>
+        <p class="strong">{{ dealOrderInfoDetails.orderCount }}</p>
       </div>
     </div>
     <div class="assessLevel">
@@ -25,6 +25,9 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from 'vuex'
+import mango from '../../../js'
+
 export default {
   data() {
     return{
@@ -33,10 +36,29 @@ export default {
       key:true
     }
   },
+  computed: {
+    ...mapState({
+      dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+    })
+  },
+  created(){
+    //获取本地缓存信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+    this.active = this.dealOrderInfoDetails.level
+  },
   methods:{
     selectLevel(index) {
       this.active = index + 1
-      
+      mango.getAjax(this, 'level/update', {
+        customerId:this.dealOrderInfoDetails.customerId,
+        level:this.active
+      }, 'v2','post')
+      .then((res) => {
+        if (res) {
+         console.log('更新评级',res.status)         
+        }
+      })
     }
   }
 }

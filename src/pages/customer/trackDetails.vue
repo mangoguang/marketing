@@ -1,7 +1,7 @@
 <template>
   <div class="trackDetalis">
     <mybanner :title="title"/>
-    <h1>DR-1103床垫</h1>
+    <h1>{{ product }}</h1>
     <div class="customer-demand">
       <div class="tilte">
         <p></p>
@@ -44,6 +44,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mybanner from '../../components/banner';
 import followDetails from '../../components/customer/dealCustomer/followDetails'
+import mango from '../../js'
 
 export default {  
   components:{mybanner,followDetails},
@@ -66,10 +67,34 @@ export default {
       ],
       pulldown:-1,
       i:-1,
-      status:false
+      status:false,
+      demandId:'',
+      demandList:[],
+      product:''
     }
   },
+  created(){
+    //获取本地缓存信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+    //获取参数
+    this.demandId = this.$route.query.demandId 
+    this.product = this.$route.query.product 
+    this.getTrackDetails()
+  },
   methods:{
+    //获取数据
+    getTrackDetails(){
+      mango.getAjax(this, 'demand',{
+        demandId:this.demandId
+      }, 'v2')
+      .then((res) => {
+        if (res) {
+          this.demandList = res.data
+          console.log('demandId',this.demandList)
+        }
+      }) 
+    },
     pullDown(index) {
       if(this.status){
         if(this.pulldown == index){

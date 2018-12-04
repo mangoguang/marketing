@@ -1,7 +1,8 @@
 <template>
   <div class="trackRecord">
     <ul>
-      <li v-for="(item,index) in this.dealOrderInfoDetails.demandList" :key="index" @click="getTrackDetails(index)">
+      <li v-for="(item,index) in dealOrderInfoDetails.demandList"
+        :key="index" @click="getTrackDetails(index)">
         <p>{{ index + 1}}</p>
         <div class="product">
           <p>{{item.intention}}</p>
@@ -24,26 +25,26 @@ import VueRouter from 'vue-router'
 export default {
   data(){
     return{
-      details:[
-        {'product':'DR-1103床垫',time:'刚刚'},
-        {'product':'按摩椅',time:'更新时间：2018年10月18日 12：00'},
-        {'product':'床头柜',time:'更新时间：2018年10月10日 12：00'}
-      ]
     }
   },
   computed: {
     ...mapState({
-      // citySelect: state => state.select.citySelect,
       dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
     })
   },
-  methods:{
-    getTrackDetails(index) {
-      this.$router.push({path:'/trackDetails'})
-    }
+  created(){
+    console.log(this.dealOrderInfoDetails.demandList[0].demandId)
   },
-  created () {
-  
+  methods:{
+    //进入跟踪详情页面，传入demandId
+    getTrackDetails(index) {
+      this.$router.push({
+        path:'/trackDetails', 
+        query: {
+          demandId: this.dealOrderInfoDetails.demandList[index].demandId,
+          product:this.dealOrderInfoDetails.demandList[index].intention
+          }})
+    }
   }
 }
 </script>

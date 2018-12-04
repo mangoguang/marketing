@@ -9,7 +9,7 @@
     <CustomerList v-show="headerStatus[0].status"/>
     <dealCustomerList
     @changeResultTit="changeResultTit"
-     v-show="headerStatus[1].status || headerStatus[2].status"/>
+     v-show=" headerStatus[2].status"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
 

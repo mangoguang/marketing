@@ -59,7 +59,6 @@ export default {
       navShow: true,
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
       selectBtnText: '全部',
-      account:'',
       searchKey: ''
     }
   },
@@ -81,8 +80,6 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
-    let account = localStorage.getItem('accountMsg')
-    this.account = JSON.parse(account).name.trim()
   },
   mounted() {
     this.isIPhoneX()
