@@ -1,7 +1,10 @@
 <template>
   <div class="dealCustomer">
     <h1>全部客户<span>({{this.dealCustomerList.total == null? '0' :this.dealCustomerList.total}})</span></h1>
-    <ul>
+    <ul  
+      v-infinite-scroll="loadMore"
+      infinite-scroll-disabled="loading"
+      infinite-scroll-distance="0.1">
       <li  v-for="(item, index) in this.dealCustomerList.records"
         :key="`customerList${index}`" @click="getDetails(index)">
         <span>{{index + 1}}</span>
@@ -11,6 +14,9 @@
         <span>{{getLevel(item.level)}}</span>
       </li>
     </ul>
+    <!-- <div>
+      <mt-spinner type="fading-circle"></mt-spinner><span>加载中...</span>
+    </div> -->
   </div>
 </template>
 
@@ -19,6 +25,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../../js'
+import { InfiniteScroll,Spinner } from 'mint-ui';
+
+Vue.component(Spinner.name, Spinner);
+Vue.use(InfiniteScroll);
 
 export default {
   name:'dealCustomerList',
@@ -32,7 +42,8 @@ export default {
         {name:'张三',sex:'男',phone:15999999999,level:'高'},
         {name:'李四',sex:'男',phone:15999999999,level:'低'},
         {name:'张三',sex:'男',phone:15999999999,level:'高'}
-      ]
+      ],
+      loading:''
    
 
     }
@@ -50,12 +61,31 @@ export default {
   },
   methods:{
     ...mapMutations([
-      'setRightContainerStatus',
-      'setCustomerList',
-      'setCustomerAjaxParams',
       'setDealCustomerList',
       'setDealOrderInfoDetails'
     ]),
+    loadMore() {
+      this.loading = true;
+      setTimeout(() => {
+      //   mango.getAjax(this, 'order', {
+      //   account:this.account,
+      //   page: 1,  //页数
+      //   limit: '20',  //每页条数
+      //   key: ""     //搜索关键字，电话或名字
+      // }, 'v2')
+      // .then((res) => {
+      //   if (res) {
+      //    console.log('成交客户数据',res.data)
+      //     this.setDealCustomerList(res.data)
+      //   }
+      // })
+      // let last = this.list[this.list.length - 1];
+      // for (let i = 1; i <= 10; i++) {
+      //   this.list.push(last + i);
+      // }
+      this.loading = false;
+      }, 3500);
+    },
     //获得个人评价等级
     getLevel(level) { 
       if(level == 1) {

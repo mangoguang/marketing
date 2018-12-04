@@ -1,11 +1,11 @@
 <template>
   <div class="trackRecord">
     <ul>
-      <li v-for="(item,index) in details" :key="index" @click="getTrackDetails(index)">
+      <li v-for="(item,index) in this.dealOrderInfoDetails.demandList" :key="index" @click="getTrackDetails(index)">
         <p>{{ index + 1}}</p>
         <div class="product">
-          <p>{{item.product}}</p>
-          <span>{{item.time}}</span>
+          <p>{{item.intention}}</p>
+          <span>{{item.updateTime}}</span>
         </div>
         <span class="details">详情</span>
         <div class="right-icon">
@@ -18,7 +18,9 @@
 
 <script>
 import Vue from 'vue'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import VueRouter from 'vue-router'
+
 export default {
   data(){
     return{
@@ -29,7 +31,12 @@ export default {
       ]
     }
   },
-  
+  computed: {
+    ...mapState({
+      // citySelect: state => state.select.citySelect,
+      dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+    })
+  },
   methods:{
     getTrackDetails(index) {
       this.$router.push({path:'/trackDetails'})
