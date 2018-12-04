@@ -13,6 +13,10 @@
             <p>{{key}}</p>
             <span>{{value}}</span>
           </div>
+          <!-- <div>
+            <p>意向产品</p>
+            <span>{{item.intention }}</span>
+          </div> -->
         </li>
       </ul>
     </div>
@@ -69,7 +73,17 @@ export default {
       i:-1,
       status:false,
       demandId:'',
-      demandList:[],
+      demandList:{},
+      demandKeyList: {
+        buyReason: "购买原因",
+        colorPref: "高贵紫",
+        id: "2",
+        intention: "BCK1-093床架",
+        progress: "装修中",
+        remark: "备注一下",
+        roomNum: "3",
+        stylePref: "豪华"
+      },
       product:''
     }
   },
@@ -91,7 +105,6 @@ export default {
       .then((res) => {
         if (res) {
           this.demandList = res.data
-          console.log('demandId',this.demandList)
         }
       }) 
     },

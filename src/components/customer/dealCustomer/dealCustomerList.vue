@@ -52,14 +52,7 @@ export default {
       if(this.headerStatus[2].status) {
         this.getData()
       }
-    },
-    dealCustomerList() {
-      console.log(77777777, this.dealCustomerList)
-      
     }
-  },
-  mounted() {
-    this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
   },
   created(){
     //获取本地缓存信息
@@ -67,6 +60,8 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
     let account = localStorage.getItem('accountMsg')
     this.account = JSON.parse(account).name.trim()
+    //后退的时候重新请求数据
+    this.getData()
   },
   methods:{
     ...mapMutations([
@@ -84,6 +79,7 @@ export default {
         if (res) {
           // console.log('成交客户数据',res.data)
           this.setDealCustomerList(res.data)
+          this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
         }
       })   
     },

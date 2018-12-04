@@ -41,6 +41,9 @@ export default {
       dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
     })
   },
+  watch:{
+   
+  },
   created(){
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
@@ -48,6 +51,9 @@ export default {
     this.active = this.dealOrderInfoDetails.level
   },
   methods:{
+    ...mapMutations([
+      'setDealCustomerList'
+    ]),
     selectLevel(index) {
       this.active = index + 1
       mango.getAjax(this, 'level/update', {
@@ -56,7 +62,8 @@ export default {
       }, 'v2','post')
       .then((res) => {
         if (res) {
-         console.log('更新评级',res.status)         
+         console.log('更新评级',res.status)   
+          
         }
       })
     }
