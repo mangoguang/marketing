@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div :class="`rightContainer ${rightContainerStatus}`">
+  <div :class="`rightContainer ${rightContainerStatus}`" @click.prevent="test">
     <div>
       <ul>
         <li class="time">
@@ -97,7 +97,8 @@ export default {
     // },
     countTime() {
       let [start, end] = [(new Date(this.startDateVal)).getTime(), (new Date(this.endDateVal)).getTime()]
-      return (end - start)/86400000
+      console.log('time:', start/86400000, end/86400000)
+      return Math.ceil((end - start)/86400000)
     }
   },
   watch:{
@@ -109,6 +110,8 @@ export default {
     this.initStartDateVal()
   },
   mounted(){
+    let str = new Date()
+    console.log(333, str.getTime())
     // 对象深拷贝
     let temp = this.customerAjaxParams
     for (let key in temp) {
@@ -120,6 +123,9 @@ export default {
       'setRightContainerStatus',
       'setCustomerAjaxParams'
     ]),
+    test() {
+      console.log('success')
+    },
     // 初始化起始日期
     initStartDateVal() {
       let date = new Date()
@@ -135,8 +141,9 @@ export default {
     // 隐藏右侧边栏
     hideRightContainer() {
       this.setRightContainerStatus('hideRightContainer')
-      this.paramsObj.startDateVal = this.startDateVal
-      this.paramsObj.endDateVal = this.endDateVal
+      this.paramsObj.startTime = this.startDateVal
+      this.paramsObj.endTime = this.endDateVal
+      console.log(112233, this.paramsObj)
       this.setCustomerAjaxParams(mango.customerAjaxParams)
       this.setCustomerAjaxParams(this.paramsObj)
     },

@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="bot">
+    <div class="bot-select" v-show="botShow[0]">
       <button @click="showCustomerClassify">{{selectBtnText}}</button>
       <button @click="showRightContainer">筛选</button>
       <!-- 客户类型选择 -->
@@ -32,6 +32,12 @@
           @click="customerClassifySelect(index)"
         >{{item.name}}</li>
       </ul>
+    </div>
+    <!-- <div class="bot-result">
+      <p>查询结果</p>
+    </div> -->
+    <div class="bot-total" v-show="botShow[1] || botShow[2]">
+      <slot></slot>
     </div>
   </header>
 </template>
@@ -45,7 +51,7 @@ import mango from '../../js'
 Vue.use(Vuex)
 export default {
   name: 'customerHeader',
-  props:[],
+  props:['botShow'],
   data () {
     return {
       ajaxData: {},
@@ -142,6 +148,10 @@ export default {
     // 选择页面模块
     moduleSelect(i) {
       mango.changeBtnStatus(this.moduleList, i)
+      console.log(this.moduleList)
+      this.$emit('changeNavLineShow', this.moduleList.map((item, index) => {
+        return item.status
+      }))
     },
     // ajax请求客户列表
     getCustomerList() {
@@ -188,6 +198,9 @@ header{
     button{
       font-size: 14px;
       color: #666;
+    }
+    button:first-child{
+      padding-left: 0;
     }
   }
   .top{
@@ -255,11 +268,17 @@ header{
       color: #363636;
     }
   }
-  .bot{
+  .bot-select, .bot-result, .bot-total{
+    line-height: 9vw;
+    button, p{
+      color: $fontCol;
+      font-size: $fontSize;
+    }
+  }
+  .bot-select{
     display: flex;
     position: relative;
     justify-content: space-between;
-    line-height: 9vw;
     button:first-child, button:last-child {
       padding: 0 3vw 0 0;
       background: url(../../assets/imgs/pullDown.png) no-repeat right 0 center;

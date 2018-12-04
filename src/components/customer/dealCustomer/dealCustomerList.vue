@@ -1,6 +1,5 @@
 <template>
   <div class="dealCustomer">
-    <h1>全部客户<span>(7)</span></h1>
     <ul>
       <li  v-for="(item, index) in dealCustomerList"
         :key="`customerList${index}`" @click="getDetails()">
@@ -20,6 +19,7 @@ import VueRouter from 'vue-router'
 
 
 export default {
+  props: ['changeResultTit'],
   data(){
     return{
       dealCustomerList:[
@@ -32,6 +32,9 @@ export default {
         {name:'张三',sex:'男',phone:15999999999,level:'高'}
       ]
     }
+  },
+  mounted() {
+    this.$emit('changeResultTit', `全部客户（7）`)
   },
   methods:{
     getDetails() {
@@ -46,15 +49,6 @@ export default {
 .dealCustomer{
   padding-top: 26vw;
   background: #f8f8f8;
-  h1{
-    font-size: 4vw;
-    color: #666;
-    line-height: 3em;
-    padding-left: 4.26vw;
-    span{
-      padding-left: 2vw;
-    }
-  }
   ul{
     border-top:1px solid #e1e1e1;
     border-bottom: 1px solid #e1e1e1;

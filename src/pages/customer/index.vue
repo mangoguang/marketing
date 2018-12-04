@@ -2,10 +2,15 @@
   <div class="customer">
     <!-- 头部 -->
     <Header
-    @search="searchCustomer"/>
+    :botShow="navLineShow"
+    @search="searchCustomer"
+    @changeNavLineShow="changeNavLineShow">
+      <p>{{resultTit}}</p>
+    </Header>
     <!-- 客户列表 -->
-    <!-- <CustomerList/> -->
-    <dealCustomerList/>
+    <CustomerList v-show="navLineShow[0]"/>
+    <dealCustomerList @changeResultTit="changeResultTit" v-show="navLineShow[1]"/>
+    <dealCustomerList @changeResultTit="changeResultTit" v-show="navLineShow[2]"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
 
@@ -38,7 +43,8 @@ export default {
   },
   data(){
     return{
-
+      navLineShow: [true, false, false],
+      resultTit: ''
     }
   },
   created(){
@@ -66,6 +72,12 @@ export default {
     },
     searchCustomer(key) {
       console.log('搜索关键字；', key)
+    },
+    changeNavLineShow(arr) {
+      this.navLineShow = arr
+    },
+    changeResultTit(str) {
+      this.resultTit = str
     }
   }
 }
