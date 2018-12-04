@@ -7,7 +7,6 @@ import api from './js/api.js'
 import VueTouch from 'vue-touch'
 import 'mint-ui/lib/style.min.css'
 
-
 Vue.use(VueTouch, {name: 'v-touch'})
 VueTouch.config.swipe = {
   threshold: 100, 

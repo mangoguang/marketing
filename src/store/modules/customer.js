@@ -7,8 +7,10 @@ const state = {
   customerAjaxParams: {
     page: 1,   //页数
     limit: 30,    //每页条数
-    u: 0,   //1:紧急排序，0：非
-    i: 0,   //1关键排序
+    u: '',   //1:紧急排序，0：非
+    i: '',   //1关键排序
+    uo: 0,   // 1:紧急排序，0：非
+    io: 0,   // //1关键排序
     key: '',     //搜索关键字，电话或名字
     startTime: '',
     endTime: '',

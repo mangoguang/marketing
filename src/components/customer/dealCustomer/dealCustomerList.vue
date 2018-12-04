@@ -1,6 +1,6 @@
 <template>
   <div class="dealCustomer">
-    <h1>全部客户<span>({{this.dealCustomerList.total == null? '0' :this.dealCustomerList.total}})</span></h1>
+    <!-- <h1>全部客户<span>({{this.dealCustomerList.total == null? '0' :this.dealCustomerList.total}})</span></h1> -->
     <ul  
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
@@ -32,6 +32,7 @@ Vue.use(InfiniteScroll);
 
 export default {
   name:'dealCustomerList',
+  props: ['changeResultTit'],
   data(){
     return{
       dealCustomerList1:[
@@ -43,27 +44,44 @@ export default {
         {name:'李四',sex:'男',phone:15999999999,level:'低'},
         {name:'张三',sex:'男',phone:15999999999,level:'高'}
       ],
-      loading:''
-   
+      loading:'',
+      account:''
 
     }
   },
   computed: {
     ...mapState({
-      // citySelect: state => state.select.citySelect,
-      dealCustomerList: state => state.dealCustomerList.dealCustomerList
+      dealCustomerList: state => state.dealCustomerList.dealCustomerList,
+      headerStatus: state => state.dealCustomerList.headerStatus
     })
   },
   watch:{
-    dealCustomerList() {
-      console.log(123,this.dealCustomerList.records[0])
+    headerStatus() {
+      console.log(555,this.headerStatus)
     }
+  },
+  mounted() {
+    this.$emit('changeResultTit', `全部客户(${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total}`)
   },
   methods:{
     ...mapMutations([
       'setDealCustomerList',
       'setDealOrderInfoDetails'
     ]),
+    getData() {
+      mango.getAjax(this, 'order', {
+        account:this.account,
+        page: 1,  //页数
+        limit: '10',  //每页条数
+        key: ""     //搜索关键字，电话或名字
+      }, 'v2')
+      .then((res) => {
+        if (res) {
+          console.log('成交客户数据',res.data)
+          this.setDealCustomerList(res.data)
+        }
+      })   
+    },
     loadMore() {
       this.loading = true;
       setTimeout(() => {
@@ -117,6 +135,8 @@ export default {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    let account = localStorage.getItem('accountMsg')
+    this.account = JSON.parse(account).name.trim()
   }
 }
 </script>
@@ -126,15 +146,6 @@ export default {
 .dealCustomer{
   padding-top: 26vw;
   background: #f8f8f8;
-  h1{
-    font-size: 4vw;
-    color: #666;
-    line-height: 3em;
-    padding-left: 4.26vw;
-    span{
-      padding-left: 2vw;
-    }
-  }
   ul{
     border-top:1px solid #e1e1e1;
     border-bottom: 1px solid #e1e1e1;

@@ -1,10 +1,15 @@
 <template>
   <div class="customer">
     <!-- 头部 -->
-    <Header/>
+    <Header
+    @search="searchCustomer">
+      {{resultTit}}
+    </Header>
     <!-- 客户列表 -->
-    <!-- <CustomerList/> -->
-    <dealCustomerList/>
+    <CustomerList v-show="headerStatus[0].status"/>
+    <dealCustomerList
+    @changeResultTit="changeResultTit"
+     v-show="headerStatus[1].status || headerStatus[2].status"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
 
@@ -17,6 +22,7 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from 'vuex'
 
 // 组件
 import Footer from '../../components/Footer'
@@ -37,8 +43,13 @@ export default {
   },
   data(){
     return{
-
+      resultTit: ''
     }
+  },
+  computed: {
+    ...mapState({
+      headerStatus: state => state.customerHeader.headerStatus
+    })
   },
   created(){
     this.checkLogin()
@@ -62,6 +73,12 @@ export default {
           return
         }
       }
+    },
+    searchCustomer(key) {
+      console.log('搜索关键字；', key)
+    },
+    changeResultTit(str) {
+      this.resultTit = str
     }
   }
 }

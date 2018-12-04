@@ -4,8 +4,8 @@
     <div class="top">
       <!-- 模块选择 -->
       <ul :style="{display: !navShow ? 'none' : 'flex'}">
-        <li v-for="(item, index) in moduleList"
-        :key="`moduleList${index}`">
+        <li v-for="(item, index) in headerStatus"
+        :key="`this.headerStatus${index}`">
           <button 
           :class="{on: item.status}"
           @click="moduleSelect(index)">{{item.name}}</button>
@@ -15,12 +15,12 @@
       <div :style="{display: navShow ? 'none' : 'flex'}">
         <button @click="showNav">导航</button>
         <div>
-          <input type="text">
-          <button>搜索</button>
+          <input v-model="searchKey" type="text" placeholder="请输入姓名或电话">
+          <button @click="searchCustomer">搜索</button>
         </div>
       </div>
     </div>
-    <div class="bot">
+    <div class="bot-select" v-show="headerStatus[0].status">
       <button @click="showCustomerClassify">{{selectBtnText}}</button>
       <button @click="showRightContainer">筛选</button>
       <!-- 客户类型选择 -->
@@ -32,6 +32,12 @@
           @click="customerClassifySelect(index)"
         >{{item.name}}</li>
       </ul>
+    </div>
+    <!-- <div class="bot-result">
+      <p>查询结果</p>
+    </div> -->
+    <div class="bot-total" v-show="headerStatus[1].status || headerStatus[2].status">
+      <p><slot></slot></p>
     </div>
   </header>
 </template>
@@ -45,7 +51,6 @@ import mango from '../../js'
 Vue.use(Vuex)
 export default {
   name: 'customerHeader',
-  props:[],
   data () {
     return {
       ajaxData: {},
@@ -53,20 +58,22 @@ export default {
       ifShow: 'hide',
       navShow: true,
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
-      moduleList: mango.btnList(['我的客户', '订单查询', '成交客户'], 0),
       selectBtnText: '全部',
-      account:''
-     
+      account:'',
+      searchKey: ''
     }
   },
   computed: {
     ...mapState({
-      // citySelect: state => state.select.citySelect,
-      customerAjaxParams: state => state.customer.customerAjaxParams
+      customerAjaxParams: state => state.customer.customerAjaxParams,
+      headerStatus: state => state.customerHeader.headerStatus
     })
   },
-  watch:{
-
+  watch: {
+    'customerAjaxParams': function(val) {
+      console.log('更改接口参数：', val)
+      this.getCustomerList()
+    }
   },
   created() {
     // 获取本地存储信息
@@ -77,16 +84,17 @@ export default {
     let account = localStorage.getItem('accountMsg')
     this.account = JSON.parse(account).name.trim()
   },
-  mounted(){
+  mounted() {
     this.isIPhoneX()
-    this.getCudyomrtList()
+    this.getCustomerList()
   },
   methods:{
     ...mapMutations([
       'setRightContainerStatus',
       'setCustomerList',
       'setCustomerAjaxParams',
-      'setDealCustomerList'
+      'setDealCustomerList',
+      'setHeaderStatus'
     ]),
     // 显示右侧边栏
     showRightContainer() {
@@ -108,18 +116,32 @@ export default {
     // 选择客户类型
     customerClassifySelect(i) {
       this.ifShow = 'hide'
+      let [temp, tempObj] = [this.customerAjaxParams, {}]
+      // 对象深拷贝
+      for (let key in temp) {
+        tempObj[key] = temp[key]
+      }
       if (this.selectBtnText != this.customerClassifyList[i].name) {
         this.selectBtnText = this.customerClassifyList[i].name
         mango.changeBtnStatus(this.customerClassifyList, i)
         switch(i) {
           case 0:
-            console.log('全部')
+            tempObj.uo = 0
+            tempObj.io = 0
+            this.setCustomerAjaxParams(tempObj)
+            console.log('全部', this.customerAjaxParams)
             break
           case 1:
-            console.log('紧急降序')
+            tempObj.uo = 1
+            tempObj.io = 0
+            this.setCustomerAjaxParams(tempObj)
+            console.log('紧急降序', this.customerAjaxParams)
             break
           case 2:
-            console.log('关键降序')
+            tempObj.uo = 0
+            tempObj.io = 1
+            this.setCustomerAjaxParams(tempObj)
+            console.log('关键降序', this.customerAjaxParams)
             break
           default:
             break
@@ -128,38 +150,24 @@ export default {
     },
     // 选择页面模块
     moduleSelect(i) {
-      mango.changeBtnStatus(this.moduleList, i)
-      if (i == 2) {
-          mango.getAjax(this, 'order', {
-        account:this.account,
-        page: 1,  //页数
-        limit: '10',  //每页条数
-        key: ""     //搜索关键字，电话或名字
-      }, 'v2')
-      .then((res) => {
-        if (res) {
-         console.log('成交客户数据',res.data)
-          this.setDealCustomerList(res.data)
-        }
-      })
-      }
+      // mango.changeBtnStatus(this.moduleList, i)
+      this.setHeaderStatus(mango.btnList(['我的客户', '订单查询', '成交客户'], i))
+      // this.$emit('changeNavLineShow', this.moduleList.map((item, index) => {
+      //   return item.status
+      // }))
+      console.log(122,this.headerStatus[i].status)
     },
-    getCudyomrtList() {
-      mango.getAjax(this, 'customer', {
-        page: 1,   //页数
-        limit: 20,    //每页条数
-        u: 0,   //1:紧急排序，0：非
-        i: 0,   //1关键排序
-        key: '',     //搜索关键字，电话或名字
-        startTime: '',
-        endTime: '',
-        tut: 0,   //只看今天更新数据 ,优先级最高
-        tenantId: this.ajaxData.tenantId
-      }, 'v2').then((res) => {
+    // ajax请求客户列表
+    getCustomerList() {
+      mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
         if (res) {
           this.setCustomerList(res.data)
         }
       })
+    },
+    // 根据手机或名字搜索客户
+    searchCustomer() {
+      this.$emit('search', this.searchKey)
     },
     isIPhoneX : function(fn){
       var u = navigator.userAgent;
@@ -194,6 +202,9 @@ header{
     button{
       font-size: 14px;
       color: #666;
+    }
+    button:first-child{
+      padding-left: 0;
     }
   }
   .top{
@@ -261,11 +272,17 @@ header{
       color: #363636;
     }
   }
-  .bot{
+  .bot-select, .bot-result, .bot-total{
+    line-height: 9vw;
+    button, p{
+      color: $fontCol;
+      font-size: $fontSize;
+    }
+  }
+  .bot-select{
     display: flex;
     position: relative;
     justify-content: space-between;
-    line-height: 9vw;
     button:first-child, button:last-child {
       padding: 0 3vw 0 0;
       background: url(../../assets/imgs/pullDown.png) no-repeat right 0 center;

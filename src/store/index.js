@@ -8,6 +8,7 @@ import rightContainer from './modules/components/rightContainer'
 import dealCustomerList from './modules/components/dealCustomerList'
 import dealOrderInfoDetails from './modules/components/dealOrderInfoDetails'
 import orderInfoDetails from './modules/components/orderInfoDetails'
+import customerHeader from './modules/customer/header'
 
 
 export default new Vuex.Store({
@@ -18,6 +19,7 @@ export default new Vuex.Store({
     rightContainer,
     dealCustomerList,
     dealOrderInfoDetails,
-    orderInfoDetails
+    orderInfoDetails,
+    customerHeader
   }
 })
