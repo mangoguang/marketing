@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
-import home from './modules/home'
+import common from './modules/common'
 import customer from './modules/customer'
 import select from './modules/components/select'
 import rightContainer from './modules/components/rightContainer'
@@ -13,7 +13,7 @@ import customerHeader from './modules/customer/header'
 
 export default new Vuex.Store({
   modules: {
-    home,
+    common,
     customer,
     select,
     rightContainer,

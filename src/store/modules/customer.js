@@ -1,7 +1,3 @@
-// 获取本地存储信息
-let ajaxData = localStorage.getItem('ajaxData')
-ajaxData = JSON.parse(ajaxData)
-
 const state = {
   customerList: [],
   customerAjaxParams: {
