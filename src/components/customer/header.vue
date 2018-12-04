@@ -150,12 +150,7 @@ export default {
     },
     // 选择页面模块
     moduleSelect(i) {
-      // mango.changeBtnStatus(this.moduleList, i)
       this.setHeaderStatus(mango.btnList(['我的客户', '订单查询', '成交客户'], i))
-      // this.$emit('changeNavLineShow', this.moduleList.map((item, index) => {
-      //   return item.status
-      // }))
-      console.log(122,this.headerStatus[i].status)
     },
     // ajax请求客户列表
     getCustomerList() {

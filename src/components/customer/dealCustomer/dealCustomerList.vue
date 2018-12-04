@@ -52,16 +52,18 @@ export default {
   computed: {
     ...mapState({
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
-      headerStatus: state => state.dealCustomerList.headerStatus
+      headerStatus: state => state.customerHeader.headerStatus
     })
   },
   watch:{
     headerStatus() {
-      console.log(555,this.headerStatus)
+      if(this.headerStatus[2].status) {
+        this.getData()
+      }
     }
   },
   mounted() {
-    this.$emit('changeResultTit', `全部客户(${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total}`)
+    this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
   },
   methods:{
     ...mapMutations([
@@ -144,7 +146,7 @@ export default {
 
 <style lang="scss" scoped>
 .dealCustomer{
-  padding-top: 26vw;
+  padding-top: 23vw;
   background: #f8f8f8;
   ul{
     border-top:1px solid #e1e1e1;
