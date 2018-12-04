@@ -26,6 +26,7 @@
 
 <script>
 import Vue from 'vue'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import VueRouter from 'vue-router'
 
 export default {
@@ -38,6 +39,17 @@ export default {
   created(){
     this.isIPhoneX()
   },
+  // computed: {
+  //   ...mapState({
+  //     // citySelect: state => state.select.citySelect,
+  //     dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+  //   })
+  // },
+  // watch:{
+  //   dealOrderInfoDetails() {
+  //     console.log(444,this.dealOrderInfoDetails.orderList[0].username)
+  //   }
+  // },
   methods:{
     goBack(){
       this.$router.back(-1)

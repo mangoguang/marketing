@@ -2,15 +2,14 @@
   <div class="customer">
     <!-- 头部 -->
     <Header
-    :botShow="navLineShow"
-    @search="searchCustomer"
-    @changeNavLineShow="changeNavLineShow">
-      <p>{{resultTit}}</p>
+    @search="searchCustomer">
+      {{resultTit}}
     </Header>
     <!-- 客户列表 -->
-    <CustomerList v-show="navLineShow[0]"/>
-    <dealCustomerList @changeResultTit="changeResultTit" v-show="navLineShow[1]"/>
-    <dealCustomerList @changeResultTit="changeResultTit" v-show="navLineShow[2]"/>
+    <CustomerList v-show="headerStatus[0].status"/>
+    <dealCustomerList
+    @changeResultTit="changeResultTit"
+     v-show="headerStatus[1].status || headerStatus[2].status"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
 
@@ -23,6 +22,7 @@
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from 'vuex'
 
 // 组件
 import Footer from '../../components/Footer'
@@ -43,9 +43,13 @@ export default {
   },
   data(){
     return{
-      navLineShow: [true, false, false],
       resultTit: ''
     }
+  },
+  computed: {
+    ...mapState({
+      headerStatus: state => state.customerHeader.headerStatus
+    })
   },
   created(){
     this.checkLogin()
@@ -73,9 +77,6 @@ export default {
     searchCustomer(key) {
       console.log('搜索关键字；', key)
     },
-    changeNavLineShow(arr) {
-      this.navLineShow = arr
-    },
     changeResultTit(str) {
       this.resultTit = str
     }
@@ -86,7 +87,7 @@ export default {
 <style lang="scss">
 .customer{
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   box-sizing: border-box;
   overflow: hidden;

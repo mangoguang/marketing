@@ -5,26 +5,26 @@
         <div class="product-photo">产品图</div>
         <div class="product-details">
           <div class="details">
-            <span>慕思凯奇DR-1103床垫，其余商品描述</span>
-            <p>180cm*200cm*30cm</p>
+            <span>{{ this.orderInfoDetails.goodsName }}</span>
+            <p>{{ this.orderInfoDetails.goodsSpec }}</p>
           </div>
           <div class="price">
-            <p>￥23800</p>
-            <span>x2</span>
+            <p>￥{{ Math.round(this.orderInfoDetails.price) }}</p>
+            <span>x{{ Math.round(this.orderInfoDetails.quantity) }}</span>
           </div>
         </div>
       </div>
       <div class="total-amount">
         <span>订单总额</span>
-        <span>￥47600</span>
+        <span>￥{{Math.round(this.orderInfoDetails.salesAmount)}}</span>
       </div>
       <div class="discount">
         <span>折扣金额</span>
-        <span>￥12852</span>
+        <span>￥{{ Math.round(this.orderInfoDetails.salesAmount) - Math.round(this.orderInfoDetails.salesAmount) }}</span>
       </div>
       <div class="payment">
         <p>实付款</p>
-        <span>￥47600</span>
+        <span>￥{{Math.round(this.orderInfoDetails.salesAmount)}}</span>
       </div>
     </div>
     <div class="orderInfo">
@@ -33,10 +33,52 @@
         <p>订单信息</p>
       </div>
       <ul>
-        <li v-for="(item,i) in orderInfo" :key="i">
-          <div v-for="(key,value) in item" :key="key">
+        <!-- <li v-for="(item,i) in orderInfo" :key="i">
+          <div v-for="(key,value,index) in item" :key="index">
             <span>{{value}}</span>
             <p>{{key}}</p>
+          </div>
+        </li> -->
+        <li>
+          <div>
+            <span>客户姓名:</span>
+            <p>{{ this.orderInfoDetails.username }}</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <span>客户电话:</span>
+            <p>{{ this.orderInfoDetails.phone }}</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <span>订单号:</span>
+            <p>{{ this.orderInfoDetails.orderNo }}</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <span>订单创建日期:</span>
+            <p>{{ this.orderInfoDetails.recordTime }}</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <span>订单下单日期:</span>
+            <p>{{ this.orderInfoDetails.recordTime }}</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <span>订单需求日期:</span>
+            <p>{{ this.orderInfoDetails.demandTime }}</p>
+          </div>
+        </li>
+        <li> 
+          <div>
+            <span>送货地址:</span>
+            <p>{{ this.orderInfoDetails.address }}</p>
           </div>
         </li>
       </ul>
@@ -47,6 +89,7 @@
 <script>
 import Vue from "vue";
 import VueRouter from "vue-router";
+import Vuex, { mapMutations, mapState } from 'vuex'
 
 export default {
   data(){
@@ -62,7 +105,18 @@ export default {
       ]
     
   }
-}
+},
+ computed: {
+    ...mapState({
+      // citySelect: state => state.select.citySelect,
+      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
+    })
+  },
+ watch:{
+    orderInfoDetails() {
+      console.log(333,this.orderInfoDetails)
+    }
+  }
 }
 </script>
 

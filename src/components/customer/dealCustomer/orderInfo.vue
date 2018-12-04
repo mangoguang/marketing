@@ -1,12 +1,12 @@
 <template>
   <div class="orderInfo">
     <ul>
-      <li v-for="(item,index) in orderInfo" :key="index"  @click="pullDown(index)">
+      <li v-for="(item,index) in this.dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
         <hr v-show="index !== 0">
         <div class="orderList">
           <span>{{index + 1}}</span>
-          <span>{{item.num}}</span>
-          <span>{{item.status}}</span>
+          <span>订单号{{item.orderNo}}</span>
+          <span>{{item.orderStatus}}</span>
           <span >
             <img src="../../../assets/imgs/rightside.png" alt="" :class="{'pullDown':`${rotate}` == index}">
           </span>
@@ -20,9 +20,11 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import OrderInfoDetails from './orderInfoDetails'
 
 export default {
+  name:'dealOrderInfoDetails',
   components:{OrderInfoDetails},
   data(){
     return{
@@ -36,8 +38,23 @@ export default {
       i:-1
     }
   },
+  computed: {
+    ...mapState({
+      // citySelect: state => state.select.citySelect,
+      dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+    })
+  },
+  watch:{
+    dealOrderInfoDetails() {
+      console.log(123,this.dealOrderInfoDetails.orderList[0].username)
+    }
+  },
   methods:{
+    ...mapMutations([
+      'setOrderInfoDetails'
+    ]),
     pullDown(index){
+      this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
       if(this.status){
         if(this.rotate == index){
           this.i = -1
@@ -52,6 +69,8 @@ export default {
         this.rotate = index
          this.i = index
       }
+    
+
     }
   }
 }

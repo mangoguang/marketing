@@ -14,7 +14,8 @@
       <span class="text">评定级别</span>
       <div class="level" 
         v-for="(item,index) in level" :key="index"
-        :class="{'active':flag == index}">
+        :class="{'active':active == index + 1}"
+        @click="selectLevel(index)">
         <span>{{item}}</span>
       </div>
     </div>
@@ -28,11 +29,15 @@ export default {
   data() {
     return{
       level:['高','中','低'],
-      flag:0
+      active:-1,
+      key:true
     }
   },
-  mounted() {
-    // this.flag = 1
+  methods:{
+    selectLevel(index) {
+      this.active = index + 1
+      
+    }
   }
 }
 </script>

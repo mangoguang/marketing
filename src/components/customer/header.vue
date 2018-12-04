@@ -4,8 +4,8 @@
     <div class="top">
       <!-- 模块选择 -->
       <ul :style="{display: !navShow ? 'none' : 'flex'}">
-        <li v-for="(item, index) in moduleList"
-        :key="`moduleList${index}`">
+        <li v-for="(item, index) in headerStatus"
+        :key="`this.headerStatus${index}`">
           <button 
           :class="{on: item.status}"
           @click="moduleSelect(index)">{{item.name}}</button>
@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div class="bot-select" v-show="botShow[0]">
+    <div class="bot-select" v-show="headerStatus[0].status">
       <button @click="showCustomerClassify">{{selectBtnText}}</button>
       <button @click="showRightContainer">筛选</button>
       <!-- 客户类型选择 -->
@@ -36,8 +36,8 @@
     <!-- <div class="bot-result">
       <p>查询结果</p>
     </div> -->
-    <div class="bot-total" v-show="botShow[1] || botShow[2]">
-      <slot></slot>
+    <div class="bot-total" v-show="headerStatus[1].status || headerStatus[2].status">
+      <p><slot></slot></p>
     </div>
   </header>
 </template>
@@ -51,7 +51,6 @@ import mango from '../../js'
 Vue.use(Vuex)
 export default {
   name: 'customerHeader',
-  props:['botShow'],
   data () {
     return {
       ajaxData: {},
@@ -59,14 +58,15 @@ export default {
       ifShow: 'hide',
       navShow: true,
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
-      moduleList: mango.btnList(['我的客户', '订单查询', '成交客户'], 0),
       selectBtnText: '全部',
+      account:'',
       searchKey: ''
     }
   },
   computed: {
     ...mapState({
-      customerAjaxParams: state => state.customer.customerAjaxParams
+      customerAjaxParams: state => state.customer.customerAjaxParams,
+      headerStatus: state => state.customerHeader.headerStatus
     })
   },
   watch: {
@@ -81,17 +81,20 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
+    let account = localStorage.getItem('accountMsg')
+    this.account = JSON.parse(account).name.trim()
   },
   mounted() {
     this.isIPhoneX()
     this.getCustomerList()
-    console.log('this', this)
   },
   methods:{
     ...mapMutations([
       'setRightContainerStatus',
       'setCustomerList',
-      'setCustomerAjaxParams'
+      'setCustomerAjaxParams',
+      'setDealCustomerList',
+      'setHeaderStatus'
     ]),
     // 显示右侧边栏
     showRightContainer() {
@@ -147,11 +150,7 @@ export default {
     },
     // 选择页面模块
     moduleSelect(i) {
-      mango.changeBtnStatus(this.moduleList, i)
-      console.log(this.moduleList)
-      this.$emit('changeNavLineShow', this.moduleList.map((item, index) => {
-        return item.status
-      }))
+      this.setHeaderStatus(mango.btnList(['我的客户', '订单查询', '成交客户'], i))
     },
     // ajax请求客户列表
     getCustomerList() {

@@ -13,7 +13,7 @@
       <ul>
         <li>
           <div :class="`urgence${item.urgency}`"></div>
-          <strong>{{item.urgency + item.username + item.important}}<i :class="`important${item.important}`"></i></strong>
+          <strong>{{item.username}}<i :class="`important${item.important}`"></i></strong>
           <span>{{item.followTime}}</span>
         </li>
         <li>{{item.intention}}</li>

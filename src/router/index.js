@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+
+
 export var router = new VueRouter({
   routes: [{
     path: '/',
@@ -69,6 +71,7 @@ export var router = new VueRouter({
     path: '/dealDetails',
     name: '/dealDetails',
     component: resolve => require(['../pages/customer/dealDetails'],resolve)
+    // meta:{keepAlive:true}
   },
   {
     path: '/trackDetails',
@@ -96,3 +99,4 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/ResetPwd'],resolve)
   }]
 })
+
