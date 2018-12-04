@@ -53,7 +53,6 @@ export default {
   name: 'customerHeader',
   data () {
     return {
-      ajaxData: {},
       top: '',
       ifShow: 'hide',
       navShow: true,
@@ -65,19 +64,20 @@ export default {
   computed: {
     ...mapState({
       customerAjaxParams: state => state.customer.customerAjaxParams,
-      headerStatus: state => state.customerHeader.headerStatus
+      headerStatus: state => state.customerHeader.headerStatus,
+      ajaxData: state => state.common.ajaxData
     })
   },
   watch: {
     'customerAjaxParams': function(val) {
-      console.log('更改接口参数：', val)
       this.getCustomerList()
     }
   },
   created() {
+    console.log('ajaxData:', this.ajaxData, this.ajaxData.tenantId)
     // 获取本地存储信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    // let ajaxData = localStorage.getItem('ajaxData')
+    // this.ajaxData = JSON.parse(ajaxData)
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
   },
@@ -91,7 +91,8 @@ export default {
       'setCustomerList',
       'setCustomerAjaxParams',
       'setDealCustomerList',
-      'setHeaderStatus'
+      'setHeaderStatus',
+      'setSearchKey'
     ]),
     // 显示右侧边栏
     showRightContainer() {
@@ -109,6 +110,7 @@ export default {
     // 显示导航
     showNav() {
       this.navShow = !this.navShow
+      this.setCustomerAjaxParams(mango.customerAjaxParams(this.ajaxData.tenantId))
     },
     // 选择客户类型
     customerClassifySelect(i) {
@@ -159,7 +161,10 @@ export default {
     },
     // 根据手机或名字搜索客户
     searchCustomer() {
-      this.$emit('search', this.searchKey)
+      let paramsObj = mango.customerAjaxParams(this.ajaxData.tenantId)
+      paramsObj.key = this.searchKey
+      paramsObj.tenantId = this.ajaxData.tenantId
+      this.setCustomerAjaxParams(paramsObj)
     },
     isIPhoneX : function(fn){
       var u = navigator.userAgent;

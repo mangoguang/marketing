@@ -1,10 +1,7 @@
 <template>
   <div class="customer">
     <!-- 头部 -->
-    <Header
-    @search="searchCustomer">
-      {{resultTit}}
-    </Header>
+    <Header>{{resultTit}}</Header>
     <!-- 客户列表 -->
     <CustomerList v-show="headerStatus[0].status"/>
     <dealCustomerList

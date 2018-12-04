@@ -8,15 +8,33 @@
         <h2>客户需求</h2>
       </div>
       <ul>
-        <li v-for="(item,index) in demand" :key="index">
-          <div v-for="(value,key) in item" :key="key" class="demand">
-            <p>{{key}}</p>
-            <span>{{value}}</span>
-          </div>
-          <!-- <div>
-            <p>意向产品</p>
-            <span>{{item.intention }}</span>
-          </div> -->
+        <li>
+          <p>意向产品</p>
+          <span>{{demandList.intention }}</span>
+        </li>
+        <li>
+          <p>颜色偏好</p>
+          <span>{{demandList.colorPref }}</span>
+        </li>
+        <li>
+          <p>风格偏好</p>
+          <span>{{demandList.stylePref }}</span>
+        </li>
+        <li>
+          <p>购买原因</p>
+          <span>{{demandList.buyReason }}</span>
+        </li>
+        <li>
+          <p>装修进度</p>
+          <span>{{ demandList.progress }}</span>
+        </li>
+        <li>
+          <p>房间数量</p>
+          <span>{{ demandList.roomNum }}</span>
+        </li>
+        <li>
+          <p>客户备注</p>
+          <span>{{ demandList.remark }}</span>
         </li>
       </ul>
     </div>
@@ -26,11 +44,11 @@
         <h2>跟进历史</h2>
       </div>
       <ul>
-        <li v-for="(item,index) in trackHistory" :key="index" @click="pullDown(index)">
+        <li v-for="(item,index) in demandList.trList" :key="index" @click="pullDown(index)">
           <div class="detail-wrapper">
-            <span class="time">{{item.time}}</span>
-            <span class="people">{{item.person}}</span>
-            <p>{{item.howMuch}}</p>
+            <span class="time">{{item.followTime}}</span>
+            <span class="people">{{item.intention}}</span>
+            <p>{{item.probability}}</p>
             <div class="icon" >
               <img src="../../assets/imgs/rightside.png" alt="" 
               :class="{'pullDown':`${pulldown}` == index}">
@@ -73,17 +91,7 @@ export default {
       i:-1,
       status:false,
       demandId:'',
-      demandList:{},
-      demandKeyList: {
-        buyReason: "购买原因",
-        colorPref: "高贵紫",
-        id: "2",
-        intention: "BCK1-093床架",
-        progress: "装修中",
-        remark: "备注一下",
-        roomNum: "3",
-        stylePref: "豪华"
-      },
+      demandList:[],
       product:''
     }
   },
@@ -105,6 +113,7 @@ export default {
       .then((res) => {
         if (res) {
           this.demandList = res.data
+          console.log(1111,this.demandList)
         }
       }) 
     },
@@ -163,15 +172,14 @@ export default {
       li{
         font-size: 4vw;
         line-height: 2em;
-        .demand{
-          display: flex;
+        display: flex;
           p{
             flex: 0.3;
           }
           span{
             flex: 0.7
           }
-        }
+        
       }
     }
   }
