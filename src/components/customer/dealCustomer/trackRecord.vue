@@ -32,18 +32,15 @@ export default {
       dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
     })
   },
-  created(){
-    console.log(this.dealOrderInfoDetails.demandList[0].demandId)
-  },
   methods:{
     //进入跟踪详情页面，传入demandId
     getTrackDetails(index) {
       this.$router.push({
-        path:'/trackDetails', 
-        query: {
-          demandId: this.dealOrderInfoDetails.demandList[index].demandId,
-          product:this.dealOrderInfoDetails.demandList[index].intention
-          }})
+      path:'/trackDetails', 
+      query: {
+        demandId: this.dealOrderInfoDetails.demandList[index].demandId,
+        product:this.dealOrderInfoDetails.demandList[index].intention
+      }})
     }
   }
 }

@@ -71,13 +71,12 @@ export default {
     getData() {
       mango.getAjax(this, 'order', {
         account:this.account,
-        page: 1,  //页数
-        limit: '20',  //每页条数
-        key: ""     //搜索关键字，电话或名字
+        page: 1, 
+        limit: '20',  
+        key: ""    
       }, 'v2')
       .then((res) => {
         if (res) {
-          // console.log('成交客户数据',res.data)
           this.setDealCustomerList(res.data)
           this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
         }

@@ -8,11 +8,13 @@
         {{item}}
       </li>
     </ul> 
+    <keep-alive>
     <order-info v-if="order"/>
-    <!-- <keep-alive include="keep"> -->
+    
       <trackRecord v-if="trackRecord"/>
-    <!-- </keep-alive> -->
+    
     <personalLevel v-if="level"/>
+    </keep-alive>
   </div>
 </template>
 
@@ -47,6 +49,22 @@ export default {
       index === 2? this.level = true : this.level = false
     }
 }
+//  beforeRouteEnter(to, from, next) {
+//     next(vm => {
+//       /*
+//        如果 to.meta.savedPosition === undefined 说明是刷新页面或可以叫第一次进入页面 需要刷新数据
+//        如果to.meta.keepAlive === false, 那么说明是需要请求的;
+//        此时需要刷新数据，获取新的列表内容。
+//        否则的话 什么都不做，直接使用 keep-alive中的缓存
+//        */
+//       // if (to.meta.savedPosition === undefined) {
+//       //   console.log('3243141414','undefined')
+//       // }
+//       if (!to.meta.keepAlive) {
+//         console.log('3243141414','!to.meta.keepAlive')        
+//       }
+//     })
+//   }
 }
 </script>
 

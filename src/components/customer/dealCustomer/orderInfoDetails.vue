@@ -94,15 +94,6 @@ import Vuex, { mapMutations, mapState } from 'vuex'
 export default {
   data(){
     return{
-      orderInfo:[
-        {'客户姓名:':'张三'},
-        {'客户电话:':'1599999999'},
-        {'订单号:':'2049430230242424'},
-        {'订单创建日期:':'10月06日'},
-        {'订单下单日期:':'10月18日'},
-        {'订单需求日期:':'10月28日'},
-        {'送货地址:':'广东省 东莞市 厚街镇 明丰路38号星月家居'}
-      ]
     
   }
 },
@@ -111,11 +102,6 @@ export default {
       // citySelect: state => state.select.citySelect,
       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
     })
-  },
- watch:{
-    orderInfoDetails() {
-      console.log(333,this.orderInfoDetails)
-    }
   }
 }
 </script>
