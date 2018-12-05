@@ -47,14 +47,14 @@
         <li v-for="(item,index) in demandList.trList" :key="index" @click="pullDown(index)">
           <div class="detail-wrapper">
             <span class="time">{{item.followTime}}</span>
-            <span class="people">{{item.intention}}</span>
+            <span class="people">{{demandList.intention}}</span>
             <p>{{item.probability}}</p>
             <div class="icon" >
               <img src="../../assets/imgs/rightside.png" alt="" 
               :class="{'pullDown':`${pulldown}` == index}">
             </div>
           </div>
-          <followDetails v-show="i == index"/>
+          <followDetails v-show="i == index" />
         </li>
       </ul> 
     </div>
@@ -66,33 +66,26 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mybanner from '../../components/banner';
 import followDetails from '../../components/customer/dealCustomer/followDetails'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../js'
 
 export default {  
   components:{mybanner,followDetails},
+  computed: {
+    ...mapState({
+      followTrackDetails: state => state.followTrackDetails.followTrackDetails  
+    })
+  },
   data() {
     return{
       title:'跟踪详情',
-      demand:[
-        {'意向产品':'DR-1103床垫'},
-        {'颜色偏好':'深海蓝 灰'},
-        {'风格偏好':'简约'},
-        {'购买原因':'新房购置'},
-        {'装修进度':'装修中'},
-        {'房间数量':'2'},
-        {'客户备注':'挑选了几个心仪的款式'}
-      ],
-      trackHistory:[
-        {time:'2018-10-18',person:'导购A',howMuch:'80%'},
-        {time:'2018-10-18',person:'导购A',howMuch:'70%'},
-        {time:'2018-10-18',person:'导购B',howMuch:'60%'}
-      ],
       pulldown:-1,
       i:-1,
       status:false,
       demandId:'',
       demandList:[],
-      product:''
+      product:'',
+      trList:[]
     }
   },
   created(){
@@ -105,6 +98,9 @@ export default {
     this.getTrackDetails()
   },
   methods:{
+    ...mapMutations([
+      'setFollowTrackDetails'
+    ]),
     //获取数据
     getTrackDetails(){
       mango.getAjax(this, 'demand',{
@@ -118,6 +114,9 @@ export default {
       }) 
     },
     pullDown(index) {
+      // this.trList = this.demandList.trList[index]
+      this.setFollowTrackDetails(this.demandList.trList[index])
+      // console.log(this.trList)
       if(this.status){
         if(this.pulldown == index){
           this.i = -1
@@ -141,6 +140,7 @@ export default {
 .trackDetalis{
   color: #363636;
   background: #f8f8f8;
+  min-height: 100vh;
   h1{
     padding-top: 16vw;
     font-size: 5.64vw;
