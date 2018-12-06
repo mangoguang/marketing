@@ -60,7 +60,6 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Vuex, { mapMutations } from 'vuex'
 import mango from '../js'
 import axios from 'axios'
 import md5 from 'js-md5'
@@ -112,9 +111,6 @@ export default {
     this.getAccountMsg()
   },
   methods:{
-    ...mapMutations([
-      'setAjaxData'
-    ]),
     //去除input输入框的左边空格
     trimStr: function(str) {
       return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -166,12 +162,6 @@ export default {
                 "uuid": "${res.uuid}",
                 "timestamp": "${Date.parse(new Date())}"
               }`
-              _this.setAjaxData({
-                tenantId: res.tenantId,
-                token: res.token,
-                uuid: res.uuid,
-                timestamp: Date.parse(new Date())
-              })
               localStorage.setItem("ajaxData", ajaxData)
               if (_this.checked) {
                 _this.setAccountMsg(_this.inputValue1, _this.inputValue2);

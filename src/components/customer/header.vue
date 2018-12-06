@@ -67,7 +67,6 @@ export default {
     ...mapState({
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
-      ajaxData: state => state.common.ajaxData,
       dealCustomerList: state => state.dealCustomerList.dealCustomerList
     })
   },
@@ -78,10 +77,9 @@ export default {
   
   },
   created() {
-    console.log('ajaxData:', this.ajaxData, this.ajaxData.tenantId)
     // 获取本地存储信息
-    // let ajaxData = localStorage.getItem('ajaxData')
-    // this.ajaxData = JSON.parse(ajaxData)
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
     let account = localStorage.getItem('accountMsg')
