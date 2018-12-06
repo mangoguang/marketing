@@ -106,7 +106,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon1.png) ;
         background-size: 2100%;
-        background-position: -77.2vw -20.8vw;
+        background-position: -77.8vw -20.8vw;
       }
       .iconMsg{
         width: 6.6vw;
@@ -157,7 +157,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
-        background-position: -70.6vw -20.8vw;
+        background-position: -71vw -20.8vw;
       }
       .router-link-exact-active .iconMsg{
         width: 6.6vw;

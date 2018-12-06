@@ -28,6 +28,5 @@ export default {
   text-align: center;
   line-height: 13.73vw;
   margin: auto;
-  margin-bottom: 6.66vw;
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
   <div class="customer">
     <!-- 头部 -->
-    <Header>{{resultTit}}</Header>
+    <Header  @changeResultTit="changeResultTit">{{resultTit}}</Header>
     <!-- 客户列表 -->
     <CustomerList v-show="headerStatus[0].status"/>
     <dealCustomerList
     @changeResultTit="changeResultTit"
-     v-show="headerStatus[1].status || headerStatus[2].status"/>
+     v-show=" headerStatus[2].status"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
 
@@ -77,6 +77,12 @@ export default {
     changeResultTit(str) {
       this.resultTit = str
     }
+  },
+  //跳转缓存刷新
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由meta
+    to.meta.keepAlive = false; // 让A不缓存，重新请求数据
+    next(); // 跳转到A页面
   }
 }
 </script>

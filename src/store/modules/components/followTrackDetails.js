@@ -1,12 +1,11 @@
 
-
-
 const state = {
-  dealCustomerList: []
+  followTrackDetails: []
 }
 
 const mutations = {
-  setDealCustomerList: (state, arr) => state.dealCustomerList = arr
+  setFollowTrackDetails: (state, arr) => state.followTrackDetails = arr
+  // setCustomerAjaxParams: (state, obj) => state.customerAjaxParams = obj
 }
 
 const actions = {

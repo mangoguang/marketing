@@ -2,36 +2,40 @@
   <div class="followDetails">
     <h1>跟进情况</h1>
     <div class="follow-situtation">
-      准备要购买了，客户在比价
+      {{ followTrackDetails.followSituation }}
     </div>
     <ul>
-      <li v-for="(item,index) in followDetails" :key="index">
-        <div v-for="(value,key) in item" :key="key">
-          <span>{{key}}</span>
-          <p>{{value}}</p>
-        </div> 
+      <li>
+        <span>成交率</span>
+        <p>{{ followTrackDetails.probability }}</p>
+      </li>
+      <li>
+        <span>下次跟进日期</span>
+        <p>{{ followTrackDetails.followTime }}</p>
       </li>
     </ul>
     <h1>跟进计划</h1>
     <div class="follow-plan">
-      多了解下她喜欢的风格
+      {{ followTrackDetails.followPlan }}
     </div>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import VueRouter from 'vue-router'
 
 export default {
+  props:['followTrackDetail'],
+  computed: {
+    ...mapState({
+      followTrackDetails: state => state.followTrackDetails.followTrackDetails  
+    })
+  },
   data() {
     return{
-      followDetails:[
-        {'紧急程度':'高'},
-        {'重要程度':'中'},
-        {'成交概率':'85%'},
-        {'下次跟进日期':'2018年10月30日'}
-      ]
+    
     }
   }
 }
@@ -60,14 +64,12 @@ export default {
   }
   ul{
     li{
-      div{
-        display: flex;
-        justify-content: space-between;
-        line-height: 12vw;
-        p{
-          color: #999;
-        }
-      }
+      display: flex;
+      justify-content: space-between;
+      line-height: 12vw;
+      p{
+        color: #999;
+      } 
     }
   }
 }

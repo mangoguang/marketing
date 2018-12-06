@@ -17,7 +17,7 @@
         @click.stop="changeCity($event)"
         :title="city.level"
         :class="{on: statusList[index]}"
-        >{{city.name}}</li>
+        >{{'城市1'}}</li>
     </ul>
   </li>
 </template>

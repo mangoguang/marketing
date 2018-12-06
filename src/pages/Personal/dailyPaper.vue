@@ -121,6 +121,7 @@ export default {
 .dailyPaper{
   min-height: 100vh;
   background: #f9f9f9;
+  padding-bottom: 10vw;
   .date{
     margin-top: 16vw;
   }

@@ -5,26 +5,26 @@
         <div class="product-photo">产品图</div>
         <div class="product-details">
           <div class="details">
-            <span>{{ this.orderInfoDetails.goodsName }}</span>
-            <p>{{ this.orderInfoDetails.goodsSpec }}</p>
+            <span>{{ orderInfoDetails.goodsName }}</span>
+            <p>{{ orderInfoDetails.goodsSpec }}</p>
           </div>
           <div class="price">
-            <p>￥{{ Math.round(this.orderInfoDetails.price) }}</p>
-            <span>x{{ Math.round(this.orderInfoDetails.quantity) }}</span>
+            <p>￥{{ Math.round(orderInfoDetails.price) }}</p>
+            <span>x{{ Math.round(orderInfoDetails.quantity) }}</span>
           </div>
         </div>
       </div>
       <div class="total-amount">
         <span>订单总额</span>
-        <span>￥{{Math.round(this.orderInfoDetails.salesAmount)}}</span>
+        <span>￥{{Math.round(orderInfoDetails.salesAmount)}}</span>
       </div>
       <div class="discount">
         <span>折扣金额</span>
-        <span>￥{{ Math.round(this.orderInfoDetails.salesAmount) - Math.round(this.orderInfoDetails.salesAmount) }}</span>
+        <span>￥{{ Math.round(orderInfoDetails.salesAmount) - Math.round(orderInfoDetails.salesAmount) }}</span>
       </div>
       <div class="payment">
         <p>实付款</p>
-        <span>￥{{Math.round(this.orderInfoDetails.salesAmount)}}</span>
+        <span>￥{{Math.round(orderInfoDetails.salesAmount)}}</span>
       </div>
     </div>
     <div class="orderInfo">
@@ -42,43 +42,43 @@
         <li>
           <div>
             <span>客户姓名:</span>
-            <p>{{ this.orderInfoDetails.username }}</p>
+            <p>{{ orderInfoDetails.username }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>客户电话:</span>
-            <p>{{ this.orderInfoDetails.phone }}</p>
+            <p>{{ orderInfoDetails.phone }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单号:</span>
-            <p>{{ this.orderInfoDetails.orderNo }}</p>
+            <p>{{ orderInfoDetails.orderNo }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单创建日期:</span>
-            <p>{{ this.orderInfoDetails.recordTime }}</p>
+            <p>{{ orderInfoDetails.recordTime }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单下单日期:</span>
-            <p>{{ this.orderInfoDetails.recordTime }}</p>
+            <p>{{ orderInfoDetails.recordTime }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单需求日期:</span>
-            <p>{{ this.orderInfoDetails.demandTime }}</p>
+            <p>{{ orderInfoDetails.demandTime }}</p>
           </div>
         </li>
         <li> 
           <div>
             <span>送货地址:</span>
-            <p>{{ this.orderInfoDetails.address }}</p>
+            <p>{{ orderInfoDetails.address }}</p>
           </div>
         </li>
       </ul>
@@ -94,15 +94,6 @@ import Vuex, { mapMutations, mapState } from 'vuex'
 export default {
   data(){
     return{
-      orderInfo:[
-        {'客户姓名:':'张三'},
-        {'客户电话:':'1599999999'},
-        {'订单号:':'2049430230242424'},
-        {'订单创建日期:':'10月06日'},
-        {'订单下单日期:':'10月18日'},
-        {'订单需求日期:':'10月28日'},
-        {'送货地址:':'广东省 东莞市 厚街镇 明丰路38号星月家居'}
-      ]
     
   }
 },
@@ -111,11 +102,6 @@ export default {
       // citySelect: state => state.select.citySelect,
       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
     })
-  },
- watch:{
-    orderInfoDetails() {
-      console.log(333,this.orderInfoDetails)
-    }
   }
 }
 </script>

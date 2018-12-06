@@ -1,7 +1,7 @@
 <template>
   <div class="orderInfo">
     <ul>
-      <li v-for="(item,index) in this.dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
+      <li v-for="(item,index) in dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
         <hr v-show="index !== 0">
         <div class="orderList">
           <span>{{index + 1}}</span>
@@ -28,11 +28,6 @@ export default {
   components:{OrderInfoDetails},
   data(){
     return{
-      orderInfo:[
-        {num:'订单号2049213434242424',status:'关闭'},
-        {num:'订单号2049213434242424',status:'已安装'},
-        {num:'订单号2049213434242424',status:'提交至总部'}
-      ],
       rotate:-1,
       status:false,
       i:-1
@@ -40,19 +35,14 @@ export default {
   },
   computed: {
     ...mapState({
-      // citySelect: state => state.select.citySelect,
       dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
     })
-  },
-  watch:{
-    dealOrderInfoDetails() {
-      console.log(123,this.dealOrderInfoDetails.orderList[0].username)
-    }
   },
   methods:{
     ...mapMutations([
       'setOrderInfoDetails'
     ]),
+    //下拉状态改变，获取数据
     pullDown(index){
       this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
       if(this.status){
@@ -69,8 +59,6 @@ export default {
         this.rotate = index
          this.i = index
       }
-    
-
     }
   }
 }
@@ -123,7 +111,7 @@ export default {
     }
     hr{
       background: #e1e1e1;
-      height:1px;
+      height:0.8px;
       border: none;
       margin: 0;
       margin-left: 4.26vw;

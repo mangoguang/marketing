@@ -14,9 +14,9 @@
         <div class="phoneNumber">
           <span>1599999999</span>
           <div class="phone-icon">
-            <a href="tel:1599999999">
+            <!-- <a href="tel:1599999999"> -->
               <img src="../../../assets/imgs/call.png" alt="电话">
-            </a> 
+            <!-- </a>  -->
           </div>
         </div>
       </div>

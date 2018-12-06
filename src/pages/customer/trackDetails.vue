@@ -1,18 +1,40 @@
 <template>
   <div class="trackDetalis">
     <mybanner :title="title"/>
-    <h1>DR-1103床垫</h1>
+    <h1>{{ product }}</h1>
     <div class="customer-demand">
       <div class="tilte">
         <p></p>
         <h2>客户需求</h2>
       </div>
       <ul>
-        <li v-for="(item,index) in demand" :key="index">
-          <div v-for="(value,key) in item" :key="key" class="demand">
-            <p>{{key}}</p>
-            <span>{{value}}</span>
-          </div>
+        <li>
+          <p>意向产品</p>
+          <span>{{demandList.intention }}</span>
+        </li>
+        <li>
+          <p>颜色偏好</p>
+          <span>{{demandList.colorPref }}</span>
+        </li>
+        <li>
+          <p>风格偏好</p>
+          <span>{{demandList.stylePref }}</span>
+        </li>
+        <li>
+          <p>购买原因</p>
+          <span>{{demandList.buyReason }}</span>
+        </li>
+        <li>
+          <p>装修进度</p>
+          <span>{{ demandList.progress }}</span>
+        </li>
+        <li>
+          <p>房间数量</p>
+          <span>{{ demandList.roomNum }}</span>
+        </li>
+        <li>
+          <p>客户备注</p>
+          <span>{{ demandList.remark }}</span>
         </li>
       </ul>
     </div>
@@ -22,17 +44,17 @@
         <h2>跟进历史</h2>
       </div>
       <ul>
-        <li v-for="(item,index) in trackHistory" :key="index" @click="pullDown(index)">
+        <li v-for="(item,index) in demandList.trList" :key="index" @click="pullDown(index)">
           <div class="detail-wrapper">
-            <span class="time">{{item.time}}</span>
-            <span class="people">{{item.person}}</span>
-            <p>{{item.howMuch}}</p>
+            <span class="time">{{item.followTime}}</span>
+            <span class="people">{{demandList.intention}}</span>
+            <p>{{item.probability}}</p>
             <div class="icon" >
               <img src="../../assets/imgs/rightside.png" alt="" 
               :class="{'pullDown':`${pulldown}` == index}">
             </div>
           </div>
-          <followDetails v-show="i == index"/>
+          <followDetails v-show="i == index" />
         </li>
       </ul> 
     </div>
@@ -44,33 +66,57 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mybanner from '../../components/banner';
 import followDetails from '../../components/customer/dealCustomer/followDetails'
+import Vuex, { mapMutations, mapState } from 'vuex'
+import mango from '../../js'
 
 export default {  
   components:{mybanner,followDetails},
+  computed: {
+    ...mapState({
+      followTrackDetails: state => state.followTrackDetails.followTrackDetails  
+    })
+  },
   data() {
     return{
       title:'跟踪详情',
-      demand:[
-        {'意向产品':'DR-1103床垫'},
-        {'颜色偏好':'深海蓝 灰'},
-        {'风格偏好':'简约'},
-        {'购买原因':'新房购置'},
-        {'装修进度':'装修中'},
-        {'房间数量':'2'},
-        {'客户备注':'挑选了几个心仪的款式'}
-      ],
-      trackHistory:[
-        {time:'2018-10-18',person:'导购A',howMuch:'80%'},
-        {time:'2018-10-18',person:'导购A',howMuch:'70%'},
-        {time:'2018-10-18',person:'导购B',howMuch:'60%'}
-      ],
       pulldown:-1,
       i:-1,
-      status:false
+      status:false,
+      demandId:'',
+      demandList:[],
+      product:'',
+      trList:[]
     }
   },
+  created(){
+    //获取本地缓存信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+    //获取参数
+    this.demandId = this.$route.query.demandId 
+    this.product = this.$route.query.product 
+    this.getTrackDetails()
+  },
   methods:{
+    ...mapMutations([
+      'setFollowTrackDetails'
+    ]),
+    //获取数据
+    getTrackDetails(){
+      mango.getAjax(this, 'demand',{
+        demandId:this.demandId
+      }, 'v2')
+      .then((res) => {
+        if (res) {
+          this.demandList = res.data
+          console.log(1111,this.demandList)
+        }
+      }) 
+    },
     pullDown(index) {
+      // this.trList = this.demandList.trList[index]
+      this.setFollowTrackDetails(this.demandList.trList[index])
+      // console.log(this.trList)
       if(this.status){
         if(this.pulldown == index){
           this.i = -1
@@ -86,6 +132,11 @@ export default {
          this.i = index
       }
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    // 设置下一个路由meta
+    to.meta.keepAlive = true; // 让A缓存，不请求数据
+    next(); // 跳转到A页面
   }
 }
 </script>
@@ -94,6 +145,7 @@ export default {
 .trackDetalis{
   color: #363636;
   background: #f8f8f8;
+  min-height: 100vh;
   h1{
     padding-top: 16vw;
     font-size: 5.64vw;
@@ -125,15 +177,14 @@ export default {
       li{
         font-size: 4vw;
         line-height: 2em;
-        .demand{
-          display: flex;
+        display: flex;
           p{
             flex: 0.3;
           }
           span{
             flex: 0.7
           }
-        }
+        
       }
     }
   }

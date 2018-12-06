@@ -1,11 +1,10 @@
 <template>
   <div class="dealCustomer">
-    <!-- <h1>全部客户<span>({{this.dealCustomerList.total == null? '0' :this.dealCustomerList.total}})</span></h1> -->
     <ul  
       v-infinite-scroll="loadMore"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="0.1">
-      <li  v-for="(item, index) in this.dealCustomerList.records"
+      <li  v-for="(item, index) in dealCustomerList.records"
         :key="`customerList${index}`" @click="getDetails(index)">
         <span>{{index + 1}}</span>
         <span>{{item.username}}</span>
@@ -35,15 +34,6 @@ export default {
   props: ['changeResultTit'],
   data(){
     return{
-      dealCustomerList1:[
-        {name:'张三',sex:'男',phone:15999999999,level:'高'},
-        {name:'李四',sex:'男',phone:15999999999,level:'低'},
-        {name:'张三',sex:'男',phone:15999999999,level:'高'},
-        {name:'李四',sex:'男',phone:15999999999,level:'低'},
-        {name:'张三',sex:'男',phone:15999999999,level:'高'},
-        {name:'李四',sex:'男',phone:15999999999,level:'低'},
-        {name:'张三',sex:'男',phone:15999999999,level:'高'}
-      ],
       loading:'',
       account:''
 
@@ -53,17 +43,25 @@ export default {
     ...mapState({
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
       headerStatus: state => state.customerHeader.headerStatus
+     
     })
   },
   watch:{
+    //根据头部状态获取数据
     headerStatus() {
       if(this.headerStatus[2].status) {
         this.getData()
       }
     }
   },
-  mounted() {
-    this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
+  created(){
+    //获取本地缓存信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+    let account = localStorage.getItem('accountMsg')
+    this.account = JSON.parse(account).name.trim()
+    //后退的时候重新请求数据
+    this.getData()
   },
   methods:{
     ...mapMutations([
@@ -73,14 +71,14 @@ export default {
     getData() {
       mango.getAjax(this, 'order', {
         account:this.account,
-        page: 1,  //页数
-        limit: '10',  //每页条数
-        key: ""     //搜索关键字，电话或名字
+        page: 1, 
+        limit: '20',  
+        key: ""    
       }, 'v2')
       .then((res) => {
         if (res) {
-          console.log('成交客户数据',res.data)
           this.setDealCustomerList(res.data)
+          this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
         }
       })   
     },
@@ -120,25 +118,17 @@ export default {
     },
     //详细订单信息
     getDetails(index) {
-        mango.getAjax(this, 'customerinfo', {
+      mango.getAjax(this, 'customerinfo', {
         // customerId: '1062588207926919170',
         customerId:this.dealCustomerList.records[index].customerId 
       }, 'v2')
       .then((res) => {
         if (res) {
-        //  console.log(11111111111,res)
         this.setDealOrderInfoDetails(res.data)        
         }
       })
       this.$router.push({path:'/dealDetails'})
     }
-  },
-  created(){
-    //获取本地缓存信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
-    let account = localStorage.getItem('accountMsg')
-    this.account = JSON.parse(account).name.trim()
   }
 }
 </script>
