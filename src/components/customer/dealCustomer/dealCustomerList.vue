@@ -40,7 +40,8 @@ export default {
       addPullData: [],
       page: 2,
       limit: 10,
-      allPage: ''
+      allPage: '',
+      key:true
     }
   },
   computed: {
@@ -73,22 +74,24 @@ export default {
     ]),
     //上啦刷新
     'loadBottom'(){
-      setTimeout(() => {
-        if(this.page < this.allPage) {
-          this.page ++
-          this.getData(this.page,this.limit)
-          if (this.$refs.vuuPull.closeLoadBottom) {
-            this.$refs.vuuPull.closeLoadBottom()
-          }
-        }else {
-          if (this.$refs.vuuPull.closeLoadBottom) {
-            this.$refs.vuuPull.closeLoadBottom()
-          }
-        }
-       
-      }, 1500)
+      if(this.key){ 
+        setTimeout(() => {
+            if(this.page < this.allPage) {
+              this.page ++
+              this.getData(this.page,this.limit)
+              if (this.$refs.vuuPull.closeLoadBottom) {
+                this.$refs.vuuPull.closeLoadBottom()
+              }
+            }else {
+              if(this.$refs.vuuPull.closeLoadBottom) {
+                this.$refs.vuuPull.closeLoadBottom()
+              }
+            } 
+        }, 1500)
+      }
     },
     getData(page,limit) {
+      this.key = false
       mango.getAjax(this, 'order', {
         account:this.account,
         page: page, 
@@ -99,10 +102,12 @@ export default {
         //初始进来
         this.allPage = Math.ceil(res.data.total/10)
         if (page <= 2) {
+          this.key = true
           this.setDealCustomerList(res.data)
           this.dealCusList = this.dealCustomerList
           this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
         }else{ //上啦刷新加载数据
+          this.key = true
           this.addPullData = res.data
           this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records)
           this.setDealCustomerList(this.dealCusList)
