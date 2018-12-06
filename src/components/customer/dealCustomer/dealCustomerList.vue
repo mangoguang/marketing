@@ -1,21 +1,20 @@
 <template>
   <div class="dealCustomer">
-    <ul  
-      v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="loading"
-      infinite-scroll-distance="0.1">
-      <li  v-for="(item, index) in dealCustomerList.records"
-        :key="`customerList${index}`" @click="getDetails(index)">
-        <span>{{index + 1}}</span>
-        <span>{{item.username}}</span>
-        <span>{{item.sex == 0 ? '女' : '男'}}</span>
-        <span>{{item.phone}}</span>
-        <span>{{getLevel(item.level)}}</span>
-      </li>
+    <ul >
+      <vuu-pull ref="vuuPull"  
+        :options="pullOptions" 
+        v-on:loadBottom="loadBottom" 
+        class="a">
+        <li v-for="(item, index) in dealCusList.records"
+          :key="`customerList${index}`" @click="getDetails(index)">
+          <span>{{index + 1}}</span>
+          <span>{{item.username}}</span>
+          <span>{{item.sex == 0 ? '女' : '男'}}</span>
+          <span>{{item.phone}}</span>
+          <span>{{getLevel(item.level)}}</span>
+        </li>
+      </vuu-pull>
     </ul>
-    <!-- <div>
-      <mt-spinner type="fading-circle"></mt-spinner><span>加载中...</span>
-    </div> -->
   </div>
 </template>
 
@@ -24,33 +23,37 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../../js'
-import { InfiniteScroll,Spinner } from 'mint-ui';
-
-Vue.component(Spinner.name, Spinner);
-Vue.use(InfiniteScroll);
+import vuuPull from 'vuu-pull'
+Vue.use(vuuPull)
 
 export default {
   name:'dealCustomerList',
   props: ['changeResultTit'],
   data(){
     return{
-      loading:'',
-      account:''
-
+      account: '',
+      pullOptions: {
+        isBottomRefresh: true,
+        isTopRefresh: false
+      },
+      dealCusList: [],
+      addPullData: [],
+      page: 2,
+      limit: 10,
+      allPage: ''
     }
   },
   computed: {
     ...mapState({
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
       headerStatus: state => state.customerHeader.headerStatus
-     
     })
   },
   watch:{
     //根据头部状态获取数据
     headerStatus() {
       if(this.headerStatus[2].status) {
-        this.getData()
+        this.getData(1,20)
       }
     }
   },
@@ -61,48 +64,50 @@ export default {
     let account = localStorage.getItem('accountMsg')
     this.account = JSON.parse(account).name.trim()
     //后退的时候重新请求数据
-    this.getData()
+    this.getData(1,20)
   },
   methods:{
     ...mapMutations([
       'setDealCustomerList',
       'setDealOrderInfoDetails'
     ]),
-    getData() {
+    //上啦刷新
+    'loadBottom'(){
+      setTimeout(() => {
+        if(this.page < this.allPage) {
+          this.page ++
+          this.getData(this.page,this.limit)
+          if (this.$refs.vuuPull.closeLoadBottom) {
+            this.$refs.vuuPull.closeLoadBottom()
+          }
+        }else {
+          if (this.$refs.vuuPull.closeLoadBottom) {
+            this.$refs.vuuPull.closeLoadBottom()
+          }
+        }
+       
+      }, 1500)
+    },
+    getData(page,limit) {
       mango.getAjax(this, 'order', {
         account:this.account,
-        page: 1, 
-        limit: '20',  
+        page: page, 
+        limit: limit,  
         key: ""    
       }, 'v2')
       .then((res) => {
-        if (res) {
+        //初始进来
+        this.allPage = Math.ceil(res.data.total/10)
+        if (page <= 2) {
           this.setDealCustomerList(res.data)
+          this.dealCusList = this.dealCustomerList
           this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
+        }else{ //上啦刷新加载数据
+          this.addPullData = res.data
+          this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records)
+          this.setDealCustomerList(this.dealCusList)
         }
       })   
-    },
-    loadMore() {
-      this.loading = true;
-      setTimeout(() => {
-      //   mango.getAjax(this, 'order', {
-      //   account:this.account,
-      //   page: 1,  //页数
-      //   limit: '20',  //每页条数
-      //   key: ""     //搜索关键字，电话或名字
-      // }, 'v2')
-      // .then((res) => {
-      //   if (res) {
-      //    console.log('成交客户数据',res.data)
-      //     this.setDealCustomerList(res.data)
-      //   }
-      // })
-      // let last = this.list[this.list.length - 1];
-      // for (let i = 1; i <= 10; i++) {
-      //   this.list.push(last + i);
-      // }
-      this.loading = false;
-      }, 3500);
     },
     //获得个人评价等级
     getLevel(level) { 
@@ -140,12 +145,12 @@ export default {
   background: #f8f8f8;
   ul{
     border-top:1px solid #e1e1e1;
-    border-bottom: 1px solid #e1e1e1;
+    // border-bottom: 1px solid #e1e1e1;
     padding-left: 4.266vw;
     color:  #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
-    margin-bottom: 20vw;
+    padding-bottom: 19vw;
     li{
       display: flex;
       justify-content: space-between;
@@ -166,13 +171,18 @@ export default {
         flex:0.5
       }
       span:nth-child(1){
-        flex:0.1
+        flex:0.15
       }
     }
     li:nth-child(1){
       border-top: none;
     }
+    li:last-child{
+      border-bottom: 1px solid #e1e1e1;
+      // margin-bottom: 3vw;
+    }
   }
 }
+
 </style>
 

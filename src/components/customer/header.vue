@@ -169,6 +169,7 @@ export default {
         if (res) {
           this.setDealCustomerList(res.data)
           this.key = null
+          //后期要改  数目只能大于1
           if(res.data.total > 10) {
             this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
           }

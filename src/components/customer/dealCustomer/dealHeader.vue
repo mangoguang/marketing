@@ -45,11 +45,6 @@ export default {
   //     dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
   //   })
   // },
-  // watch:{
-  //   dealOrderInfoDetails() {
-  //     console.log(444,this.dealOrderInfoDetails.orderList[0].username)
-  //   }
-  // },
   methods:{
     goBack(){
       this.$router.back(-1)

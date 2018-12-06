@@ -138,6 +138,7 @@ export default {
     to.meta.keepAlive = true; // 让A缓存，不请求数据
     next(); // 跳转到A页面
   }
+ 
 }
 </script>
 

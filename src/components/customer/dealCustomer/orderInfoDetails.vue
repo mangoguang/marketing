@@ -66,7 +66,7 @@
         <li>
           <div>
             <span>订单下单日期:</span>
-            <p>{{ orderInfoDetails.recordTime }}</p>
+            <p>{{ orderInfoDetails.orderTime }}</p>
           </div>
         </li>
         <li>
