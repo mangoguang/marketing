@@ -1,12 +1,11 @@
 <template>
   <div class="customer">
     <!-- 头部 -->
-    <Header  @changeResultTit="changeResultTit">{{resultTit}}</Header>
+    <Header @changeResultTit="changeResultTit">{{resultTit}}</Header>
     <!-- 客户列表 -->
     <CustomerList v-show="headerStatus[0].status"/>
-    <dealCustomerList
-    @changeResultTit="changeResultTit"
-     v-show=" headerStatus[2].status"/>
+    <EnquiryOrder @changeResultTit="changeResultTit" v-show=" headerStatus[1].status"/>
+    <DealCustomerList @changeResultTit="changeResultTit" v-show=" headerStatus[2].status"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
 
@@ -16,66 +15,66 @@
 
 
 <script>
-import axios from 'axios'
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Vuex, { mapMutations, mapState } from 'vuex'
+import axios from "axios";
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Vuex, { mapMutations, mapState } from "vuex";
 
 // 组件
-import Footer from '../../components/Footer'
-import Header from '../../components/customer/header'
-import CustomerList from '../../components/customer/customerList'
-import dealCustomerList from '../../components/customer/dealCustomer/dealCustomerList'
+import Footer from "../../components/Footer";
+import Header from "../../components/customer/header";
+import CustomerList from "../../components/customer/customerList";
+import DealCustomerList from "../../components/customer/dealCustomer/dealCustomerList";
+import EnquiryOrder from "../../components/customer/enquiryOrder/enquiryOrder";
 
-import RightContainer from '../../components/customer/rightContainer'
-import mango from '../../js'
+import RightContainer from "../../components/customer/rightContainer";
+import mango from "../../js";
 
 export default {
-  components:{
+  components: {
     Footer,
     Header,
     CustomerList,
     RightContainer,
-    dealCustomerList
+    DealCustomerList,
+    EnquiryOrder
   },
-  data(){
-    return{
-      resultTit: ''
-    }
+  data() {
+    return {
+      resultTit: ""
+    };
   },
   computed: {
     ...mapState({
       headerStatus: state => state.customerHeader.headerStatus
     })
   },
-  created(){
-    this.checkLogin()
+  created() {
+    this.checkLogin();
   },
-  mounted() {
-
-  },
-  methods:{
+  mounted() {},
+  methods: {
     checkLogin() {
-      let ajaxData = localStorage.getItem('ajaxData')
+      let ajaxData = localStorage.getItem("ajaxData");
       // console.log(Date.parse(new Date()) - timeLong)
       if (!ajaxData) {
-        this.$router.push({path: './Login'})
-        return
+        this.$router.push({ path: "./Login" });
+        return;
       } else {
-        let timeLong = JSON.parse(ajaxData).timestamp
-        timeLong = Date.parse(new Date()) - JSON.parse(ajaxData).timestamp
-        timeLong = timeLong/(60 * 60 * 24 * 1000)
+        let timeLong = JSON.parse(ajaxData).timestamp;
+        timeLong = Date.parse(new Date()) - JSON.parse(ajaxData).timestamp;
+        timeLong = timeLong / (60 * 60 * 24 * 1000);
         if (timeLong > 10) {
-          this.$router.push({path: './Login'})
-          return
+          this.$router.push({ path: "./Login" });
+          return;
         }
       }
     },
     searchCustomer(key) {
-      console.log('搜索关键字；', key)
+      console.log("搜索关键字；", key);
     },
     changeResultTit(str) {
-      this.resultTit = str
+      this.resultTit = str;
     }
   },
   //跳转缓存刷新
@@ -84,11 +83,11 @@ export default {
     to.meta.keepAlive = false; // 让A不缓存，重新请求数据
     next(); // 跳转到A页面
   }
-}
+};
 </script>
 
 <style lang="scss">
-.customer{
+.customer {
   position: relative;
   min-height: 100vh;
   width: 100vw;
