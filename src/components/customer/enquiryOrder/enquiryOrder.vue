@@ -31,11 +31,12 @@ export default {
     }
   },
   methods: {
-    getOrderList() { 
+    getOrderList() {  
       mango.getAjax(this,"customerinfo",{customerId: this.dealCustomerList.records[index].customerId},"v2")
         .then(res => {
           if (res) {
             this.setDealOrderInfoDetails(res.data);
+            console.log(1)
           }
         });
       this.$router.push({ path: "/dealDetails" });
