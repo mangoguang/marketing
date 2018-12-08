@@ -195,6 +195,10 @@ export default {
         paramsObj.key = this.searchKey
         paramsObj.tenantId = this.ajaxData.tenantId
         this.setCustomerAjaxParams(paramsObj)
+      }else if(this.headerStatus[1].status) {
+        var key = this.searchKey
+        this.getDealCustomerList(key)
+        this.$emit('changeResultTit', `查询结果`)
       }
     },
     isIPhoneX : function(fn){

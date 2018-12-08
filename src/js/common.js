@@ -191,4 +191,16 @@ export default class Common {
       element.status = i === index
     })
   }
+  //数组对象去重
+  getUniqueData(arr){
+    let result = [];
+    let obj = {};
+    for (var i = 0; i < arr.length; i++) {
+      if (!obj[arr[i].id]) {
+        result.push(this.mydata[i]);
+        obj[arr[i].id] = true;
+      }
+    }
+    console.log(22,result)
+  }
 }

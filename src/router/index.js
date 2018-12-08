@@ -77,6 +77,11 @@ export var router = new VueRouter({
     name: '/trackDetails',
     component: resolve => require(['../pages/customer/trackDetails'],resolve)
   },
+  {
+    path: '/enquiryInfo',
+    name: '/enquiryInfo',
+    component: resolve => require(['../pages/customer/enquiryInfo'],resolve)
+  },
   /****个人模块****/
   {
     path: '/personalMsg',
