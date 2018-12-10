@@ -101,14 +101,6 @@ export var router = new VueRouter({
     path: '/ResetPwd',
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
-  }],
-  scrollBehavior (to, from, savedPosition) {
-    // 保存到 meta 中，备用
-    to.meta.savedPosition = savedPosition;
-    if (savedPosition) {
-      return { x: 0, y: 0 };
-    }
-    return {};
-  }
+  }]
 })
 

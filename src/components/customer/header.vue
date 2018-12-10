@@ -13,7 +13,7 @@
         </li>
       </ul>
       <div :style="{display: navShow ? 'none' : 'flex'}">
-        <button @click="showNav">导航</button>
+        <button @click="showNav(headerStatus)">导航</button>
         <div>
           <input v-model="searchKey" type="text" placeholder="请输入姓名或电话">
           <button @click="searchCustomer">搜索</button>
@@ -60,7 +60,9 @@ export default {
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
       selectBtnText: '全部',
       searchKey: '',
-      account:''
+      account:'',
+      dealCustomerListTotal:'',
+      orderListTotal:''
     }
   },
   computed: {
@@ -68,14 +70,18 @@ export default {
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
       ajaxData: state => state.common.ajaxData,
-      dealCustomerList: state => state.dealCustomerList.dealCustomerList
+      dealCustomerList: state => state.dealCustomerList.dealCustomerList,
+      orderList: state => state.orderList.orderList
     })
   },
   watch: {
     'customerAjaxParams': function(val) {
       this.getCustomerList()
+    },
+    headerStatus(){
+      this.orderListTotal = this.orderListTotal
+      this.dealCustomerListTotal = this.dealCustomerList.length
     }
-  
   },
   created() {
     console.log('ajaxData:', this.ajaxData, this.ajaxData.tenantId)
@@ -98,7 +104,8 @@ export default {
       'setCustomerAjaxParams',
       'setDealCustomerList',
       'setHeaderStatus',
-      'setSearchKey'
+      'setSearchKey',
+      'setOrderList'
     ]),
     // 显示右侧边栏
     showRightContainer() {
@@ -114,10 +121,18 @@ export default {
       }
     },
     // 显示导航
-    showNav() {
+    showNav(status) {
       this.navShow = !this.navShow
-      this.setCustomerAjaxParams(mango.customerAjaxParams(this.ajaxData.tenantId))
-      this.getDealCustomerList()
+      if (this.navShow) {
+        if(status[0].status) {
+          this.setCustomerAjaxParams(mango.customerAjaxParams(this.ajaxData.tenantId))
+        }else if(status[1].status){
+          this.getDealCustomerList(1)
+        }else if(status[2].status){
+          this.getDealCustomerList(2)
+        }
+      }
+      
     },
     // 选择客户类型
     customerClassifySelect(i) {
@@ -159,20 +174,36 @@ export default {
       this.setHeaderStatus(mango.btnList(['我的客户', '订单查询', '成交客户'], i))
     },
     //获取成交客户列表
-    getDealCustomerList(key) {
+    getDealCustomerList(headStatus,key) {
+      let limit;
+      if (headStatus == 1){
+        this.limit = 20
+      } else if (headStatus == 2){
+        this.limit = 466
+      }
       mango.getAjax(this, 'order',{
         account: this.account,
         page: 1,  
-        limit: '20',  
+        limit: this.limit,  
         key: key //搜索关键字，电话或名字
       },'v2').then((res) => {
         if (res) {
-          this.setDealCustomerList(res.data)
-          this.key = null
-          //后期要改  数目只能大于1
-          if(res.data.total > 10) {
-            this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
+          if (headStatus == 1) {
+            this.setOrderList(res.data)
+            if(res.data.records.length == 20) {
+              this.searchKey = null
+              this.$emit('changeResultTit', `全部客户 (${res.data.total == null ? '0' :res.data.total})`)
+            }
+          }else if (headStatus == 2) {
+            let result  = mango.getUniqueData(res.data.records)
+            this.setDealCustomerList(result);
+            let len = result.length
+            if(len == this.dealCustomerListTotal) {
+              this.searchKey = null
+              this.$emit('changeResultTit', `全部客户 (${result.length == null ? '0' :result.length})`)
+            }
           }
+        
         }
       }) 
     },
@@ -188,7 +219,7 @@ export default {
     searchCustomer() {
       if (this.headerStatus[2].status) {
         var key = this.searchKey
-        this.getDealCustomerList(key)
+        this.getDealCustomerList(2,key)
         this.$emit('changeResultTit', `查询结果`)
       }else if(this.headerStatus[0].status) {
         let paramsObj = mango.customerAjaxParams(this.ajaxData.tenantId)
@@ -197,7 +228,7 @@ export default {
         this.setCustomerAjaxParams(paramsObj)
       }else if(this.headerStatus[1].status) {
         var key = this.searchKey
-        this.getDealCustomerList(key)
+        this.getDealCustomerList(1,key)
         this.$emit('changeResultTit', `查询结果`)
       }
     },

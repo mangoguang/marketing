@@ -2,15 +2,15 @@
   <div class="dealDetails">
     <deal-header/>
     <ul>
-      <li v-for="(item,index) in header" :key="index" 
+      <li v-for="(item,index) in tabStatus" :key="index" 
         @click="clickTab(index)"
-        :class="{'active':`${currentTab}` == index}">
-        {{item}}
+        :class="{'active' : tabStatus[index].status}">
+        {{item.name}}
       </li>
     </ul> 
-      <order-info v-if="order"/>
-      <trackRecord v-if="trackRecord"/>
-      <personalLevel v-if="level"/>
+      <order-info v-show="tabStatus[0].status"/>
+      <trackRecord v-show="tabStatus[1].status"/>
+      <personalLevel v-show="tabStatus[2].status"/>
   </div>
 </template>
 
@@ -22,34 +22,31 @@ import dealHeader from '../../components/customer/dealCustomer/dealHeader'
 import OrderInfo from '../../components/customer/dealCustomer/orderInfo'
 import trackRecord from '../../components/customer/dealCustomer/trackRecord'
 import personalLevel from '../../components/customer/dealCustomer/personalLevel'
+import Vuex, { mapMutations, mapState } from "vuex";
+import mango from '../../js'
+
 
 export default {
   name:'keep',
   components:{dealHeader,OrderInfo,trackRecord,personalLevel},
   data(){
     return{
-      includedComponents:'keep',
-      header:['订单信息','跟踪记录','个人评级'],
-      currentTab:0,
-      order:true,
-      trackRecord:false,
-      level:false
+     
     }
+  },
+  computed: {
+    ...mapState({
+      tabStatus: state => state.tabStatus.tabStatus
+    })
   },
   methods:{
+    ...mapMutations([
+      'setTabStatus'
+    ]),
     clickTab(index){
-      this.currentTab = index
-      index === 0? this.order = true : this.order = false
-      index === 1? this.trackRecord = true : this.trackRecord = false
-      index === 2? this.level = true : this.level = false
+     this.setTabStatus(mango.btnList(['订单信息', '跟踪记录', '个人评级'], index))
     }
-  },
-  beforeRouteLeave(to, from, next) {
-    // 设置下一个路由meta
-    to.meta.keepAlive = true; // 让A缓存，不请求数据
-    next(); // 跳转到A页面
   }
- 
 }
 </script>
 

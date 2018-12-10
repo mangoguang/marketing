@@ -8,11 +8,13 @@
         <span>订单详情</span>
       </div>
       <div class="content">
-        <p>提交至总部</p>
+        <p>{{ orderInfoDetails.orderStatus}}</p>
         <div class="photo"></div>
       </div>
     </div>
     <EnquiryOrderInfo/>
+    <div class="line"></div>
+    <orderInfoDetails/>
   </div> 
 </template>
 
@@ -22,14 +24,20 @@ import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../js'
 import EnquiryOrderInfo from "../../components/customer/enquiryOrder/enquiryOrderInfo";
+import orderInfoDetails from "../../components/customer/dealCustomer/orderInfoDetails";
 
 export default {
-  components: {EnquiryOrderInfo},
+  components: {EnquiryOrderInfo,orderInfoDetails},
   data() {
     return {
       height:'',
       marginTop:''
     }
+  },
+  computed:{
+    ...mapState({
+      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
+    })
   },
   created(){
     this.isIPhoneX()
@@ -96,6 +104,9 @@ export default {
         border: 1px solid #e1e1e1
       }
     }
+  }
+  .line{
+    margin-bottom: 2vw;
   }
 }
 </style>

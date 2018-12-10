@@ -76,12 +76,6 @@ export default {
     changeResultTit(str) {
       this.resultTit = str;
     }
-  },
-  //跳转缓存刷新
-  beforeRouteLeave(to, from, next) {
-    // 设置下一个路由meta
-    to.meta.keepAlive = false; // 让A不缓存，重新请求数据
-    next(); // 跳转到A页面
   }
 };
 </script>

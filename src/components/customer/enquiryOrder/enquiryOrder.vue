@@ -1,15 +1,17 @@
 <template>
   <div class="enquiryOrder">
     <ul>
-      <li
-        v-for="(item, index) in list"
-        :key="`list${index}`"
-        @click="orderInfoIn(index)">
-        <span>{{index + 1}}</span>
-        <span>{{item.username}}</span>
-        <span>需求{{item.demandTime}}</span>
-        <span>{{item.orderStatus}}</span>
-      </li>
+      <vuu-pull ref="vuuPull" :options="pullOptions" v-on:loadBottom="loadBottom">
+        <li
+          v-for="(item, index) in orderList.records"
+          :key="`list${index}`"
+          @click="orderInfoIn(index)">
+          <span>{{index + 1}}</span>
+          <span>{{item.username}}</span>
+          <span>需求{{item.demandTime}}</span>
+          <span>{{item.orderStatus}}</span>
+        </li>
+      </vuu-pull>
     </ul>
   </div>
 </template>
@@ -19,30 +21,40 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../../js";
+import vuuPull from "vuu-pull";
+import dealOrderInfoDetails from '../../../store/modules/components/dealOrderInfoDetails';
+Vue.use(vuuPull);
 
 export default {
+  props: ['changeResultTit'],
   data() {
     return {
-      list:[
-        {username:'章三',demandTime:'2018-10-10',orderStatus:'提交至经销商'},
-        {username:'李四',demandTime:'2019-10-01',orderStatus:'已取消'},
-        {username:'王五',demandTime:'2018-11-11',orderStatus:'已交易'}
-      ],
       account:'',
-      ajaxData:[]
+      ajaxData:[],
+      pullOptions: {
+        isBottomRefresh: true,
+        isTopRefresh: false
+      },
+      dealCusList: [],
+      addPullData: [],
+      page: 2,
+      limit: 10,
+      allPage: "",
+      key: true
     };
   },
   computed: {
     ...mapState({
-      dealCustomerList: state => state.dealCustomerList.dealCustomerList,
-      headerStatus: state => state.customerHeader.headerStatus
+      orderList: state => state.orderList.orderList,
+      headerStatus: state => state.customerHeader.headerStatus,
+      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
     })
   },
   watch: {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[1].status) {
-        console.log(1, "true");
+        this.getOrderList(1,20)
       }
     }
   },
@@ -52,24 +64,62 @@ export default {
     this.ajaxData = JSON.parse(ajaxData);
     let account = localStorage.getItem("accountMsg");
     this.account = JSON.parse(account).name.trim();
+    if (this.headerStatus[1].status) {
+      this.getOrderList(1,20)
+    }
   },
   methods: {
-    getOrderList() {  
+    ...mapMutations(["setOrderList","setOrderInfoDetails"]),
+    loadBottom() {
+      if (this.key) {
+        setTimeout(() => {
+          if (this.page < this.allPage) {
+            this.page ++;
+            this.getOrderList(this.page, this.limit);
+            if (this.$refs.vuuPull.closeLoadBottom) {
+              this.$refs.vuuPull.closeLoadBottom();
+            }
+          } else {
+            if (this.$refs.vuuPull.closeLoadBottom) {
+              this.$refs.vuuPull.closeLoadBottom();
+            }
+          }
+        }, 1500);
+      }
+    },
+    getOrderList(page, limit) {  
+      this.key = false
       mango.getAjax(this,"order",{
         account: this.account,
-        page: 1,
-        limit: 10,
+        page: page,
+        limit: limit,
         key: ""
       },"v2")
         .then(res => {
-          if (res) {
-            // this.setDealOrderInfoDetails(res.data);
-            console.log(1)
+          this.allPage = Math.ceil(res.data.total / 10);
+          if (page <= 2) {
+            this.key = true;
+            this.setOrderList(res.data);
+            this.dealCusList = this.orderList;
+            this.$emit("changeResultTit",`全部客户 (${this.orderList.total == null? "0": this.orderList.total})`);
+          } else {
+            //上啦刷新加载数据
+            this.key = true;
+            this.addPullData = res.data;
+            this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
+            this.setOrderList(this.dealCusList);
+            console.log(11,this.orderList)
           }
         });
-    
     },
+    //点击进入详情页面
     orderInfoIn(index) {
+      mango.getAjax(this,"orderById",{orderId: this.orderList.records[index].orderId},"v2")
+        .then(res => {
+          if (res) {
+            this.setOrderInfoDetails(res.data);
+          }
+        });
       this.$router.push({ path: "/enquiryInfo" });
     }
   }

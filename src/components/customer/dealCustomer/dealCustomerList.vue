@@ -1,9 +1,9 @@
 <template>
   <div class="dealCustomer">
     <ul>
-      <vuu-pull ref="vuuPull" :options="pullOptions" v-on:loadBottom="loadBottom" class="a">
+      <!-- <vuu-pull ref="vuuPull" :options="pullOptions" v-on:loadBottom="loadBottom"> -->
         <li
-          v-for="(item, index) in dealCusList.records"
+          v-for="(item, index) in dealCustomerList"
           :key="`customerList${index}`"
           @click="getDetails(index)"
         >
@@ -13,7 +13,7 @@
           <span>{{item.phone}}</span>
           <span>{{getLevel(item.level)}}</span>
         </li>
-      </vuu-pull>
+      <!-- </vuu-pull> -->
     </ul>
   </div>
 </template>
@@ -65,50 +65,53 @@ export default {
     let account = localStorage.getItem("accountMsg");
     this.account = JSON.parse(account).name.trim();
     //后退的时候重新请求数据
-    this.getData(1, 20);
+    if (this.headerStatus[2].status) {
+      this.getData(1, 20);
+    }
   },
   methods: {
-    ...mapMutations(["setDealCustomerList", "setDealOrderInfoDetails"]),
+    ...mapMutations(["setDealCustomerList", "setDealOrderInfoDetails","setTabStatus"]),
     //上啦刷新
     loadBottom() {
-      if (this.key) {
-        setTimeout(() => {
-          if (this.page < this.allPage) {
-            this.page++;
-            this.getData(this.page, this.limit);
-            if (this.$refs.vuuPull.closeLoadBottom) {
-              this.$refs.vuuPull.closeLoadBottom();
-            }
-          } else {
-            if (this.$refs.vuuPull.closeLoadBottom) {
-              this.$refs.vuuPull.closeLoadBottom();
-            }
-          }
-        }, 1500);
-      }
+      // if (this.key) {
+      //   setTimeout(() => {
+      //     if (this.page < this.allPage) {
+      //       this.page ++;
+      //       this.getData(this.page, this.limit);
+      //       if (this.$refs.vuuPull.closeLoadBottom) {
+      //         this.$refs.vuuPull.closeLoadBottom();
+      //       }
+      //     } else {
+      //       if (this.$refs.vuuPull.closeLoadBottom) {
+      //         this.$refs.vuuPull.closeLoadBottom();
+      //       }
+      //     }
+      //   }, 1500);
+      // }
     },
     getData(page, limit) {
       this.key = false;
       mango.getAjax(this,"order",{
             account: this.account,
-            page: page,
-            limit: limit,
+            page: 1,
+            limit: 466,
             key: ""},"v2")
         .then(res => {
           //初始进来
           this.allPage = Math.ceil(res.data.total / 10);
-          if (page <= 2) {
+          // if (page <= 2) {
             this.key = true;
-            this.setDealCustomerList(res.data);
+            let result  = mango.getUniqueData(res.data.records)
+            this.setDealCustomerList(result);
             this.dealCusList = this.dealCustomerList;
-            this.$emit("changeResultTit",`全部客户 (${this.dealCustomerList.total == null? "0": this.dealCustomerList.total})`);
-          } else {
-            //上啦刷新加载数据
-            this.key = true;
-            this.addPullData = res.data;
-            this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
-            this.setDealCustomerList(this.dealCusList);
-          }
+            this.$emit("changeResultTit",`全部客户 (${result.length == null? "0": result.length})`);
+          // } else {
+          //   //上啦刷新加载数据
+          //   this.key = true;
+          //   this.addPullData = res.data;
+          //   this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
+          //   this.setDealCustomerList(this.dealCusList);
+          // }
         });
     },
     //获得个人评价等级
@@ -125,7 +128,8 @@ export default {
     },
     //详细订单信息
     getDetails(index) {
-      mango.getAjax(this,"customerinfo",{customerId: this.dealCustomerList.records[index].customerId},"v2")
+      this.setTabStatus(mango.btnList(['订单信息', '跟踪记录', '个人评级'], 0))
+      mango.getAjax(this,"customerinfo",{customerId: this.dealCusList[index].customerId},"v2")
         .then(res => {
           if (res) {
             this.setDealOrderInfoDetails(res.data);

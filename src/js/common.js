@@ -191,16 +191,19 @@ export default class Common {
       element.status = i === index
     })
   }
-  //数组对象去重
+  //数组对象去重a
   getUniqueData(arr){
+    if(!arr){
+       return
+    }
     let result = [];
     let obj = {};
     for (var i = 0; i < arr.length; i++) {
-      if (!obj[arr[i].id]) {
-        result.push(this.mydata[i]);
-        obj[arr[i].id] = true;
+      if (!obj[arr[i].customerId]) {
+        result.push(arr[i]);
+        obj[arr[i].customerId] = true;
       }
     }
-    console.log(22,result)
+    return result
   }
 }
