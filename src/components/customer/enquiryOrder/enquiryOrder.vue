@@ -1,6 +1,6 @@
 <template>
   <div class="enquiryOrder">
-    <ul>
+    <ul >
       <vuu-pull ref="vuuPull" :options="pullOptions" v-on:loadBottom="loadBottom">
         <li
           v-for="(item, index) in orderList.records"
@@ -49,6 +49,7 @@ export default {
       headerStatus: state => state.customerHeader.headerStatus,
       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
     })
+
   },
   watch: {
     //根据头部状态获取数据

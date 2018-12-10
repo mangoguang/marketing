@@ -135,7 +135,12 @@ export default {
             this.setDealOrderInfoDetails(res.data);
           }
         });
-      this.$router.push({ path: "/dealDetails" });
+      this.$router.push({ path: "/dealDetails" ,
+       query: {
+        username: this.dealCustomerList[index].username,
+        sex:this.dealCustomerList[index].sex,
+        phone:this.dealCustomerList[index].phone
+      }});
     }
   }
 };

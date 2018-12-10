@@ -7,12 +7,12 @@
       <div class="via"></div>
       <div class="content">
         <div class="name">
-          <span>Tina Lau</span>
+          <span>{{ username }}</span>
           <span>|</span>
-          <span>女</span>
+          <span>{{ sex == 0?'女':'男'}}</span>
         </div>
         <div class="phoneNumber">
-          <span>1599999999</span>
+          <span>{{ phone }}</span>
           <div class="phone-icon">
             <!-- <a href="tel:1599999999"> -->
               <img src="../../../assets/imgs/call.png" alt="电话">
@@ -26,25 +26,24 @@
 
 <script>
 import Vue from 'vue'
-import Vuex, { mapMutations, mapState } from 'vuex'
 import VueRouter from 'vue-router'
 
 export default {
   data(){
     return{
       height:'',
-      marginTop:''
+      marginTop:'',
+      username:'',
+      sex:'',
+      phone:''
     }
   },
   created(){
     this.isIPhoneX()
+    this.username = this.$route.query.username 
+    this.sex = this.$route.query.sex
+    this.phone = this.$route.query.phone
   },
-  // computed: {
-  //   ...mapState({
-  //     // citySelect: state => state.select.citySelect,
-  //     dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
-  //   })
-  // },
   methods:{
     goBack(){
       this.$router.back(-1)

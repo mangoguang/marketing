@@ -95,7 +95,9 @@ export default {
   },
   mounted() {
     this.isIPhoneX()
-    this.getCustomerList()
+    if(this.headerStatus[0].status){
+      this.getCustomerList()
+    }
   },
   methods:{
     ...mapMutations([
@@ -175,22 +177,18 @@ export default {
     },
     //获取成交客户列表
     getDealCustomerList(headStatus,key) {
-      let limit;
-      if (headStatus == 1){
-        this.limit = 20
-      } else if (headStatus == 2){
-        this.limit = 466
-      }
+      let limit = 466
       mango.getAjax(this, 'order',{
         account: this.account,
         page: 1,  
-        limit: this.limit,  
+        limit: 466,  
         key: key //搜索关键字，电话或名字
       },'v2').then((res) => {
         if (res) {
           if (headStatus == 1) {
             this.setOrderList(res.data)
-            if(res.data.records.length == 20) {
+            console.log('sousuo',res.data.pages,res.data)
+            if(res.data.records.length == 466) {
               this.searchKey = null
               this.$emit('changeResultTit', `全部客户 (${res.data.total == null ? '0' :res.data.total})`)
             }
@@ -217,20 +215,27 @@ export default {
     },
     // 根据手机或名字搜索客户
     searchCustomer() {
-      if (this.headerStatus[2].status) {
-        var key = this.searchKey
-        this.getDealCustomerList(2,key)
-        this.$emit('changeResultTit', `查询结果`)
-      }else if(this.headerStatus[0].status) {
-        let paramsObj = mango.customerAjaxParams(this.ajaxData.tenantId)
-        paramsObj.key = this.searchKey
-        paramsObj.tenantId = this.ajaxData.tenantId
-        this.setCustomerAjaxParams(paramsObj)
-      }else if(this.headerStatus[1].status) {
-        var key = this.searchKey
-        this.getDealCustomerList(1,key)
-        this.$emit('changeResultTit', `查询结果`)
-      }
+      this.$router.push({
+        path:'/searchResult',
+        query:{
+          status:this.headerStatus,
+          key:this.searchKey
+        }
+      })
+      // if (this.headerStatus[2].status) {
+      //   var key = this.searchKey
+      //   this.getDealCustomerList(2,key)
+      //   this.$emit('changeResultTit', `查询结果`)
+      // }else if(this.headerStatus[0].status) {
+      //   let paramsObj = mango.customerAjaxParams(this.ajaxData.tenantId)
+      //   paramsObj.key = this.searchKey
+      //   paramsObj.tenantId = this.ajaxData.tenantId
+      //   this.setCustomerAjaxParams(paramsObj)
+      // }else if(this.headerStatus[1].status) {
+      //   var key = this.searchKey
+      //   this.getDealCustomerList(1,key)
+      //   this.$emit('changeResultTit', `查询结果`)
+      // }
     },
     isIPhoneX : function(fn){
       var u = navigator.userAgent;
@@ -239,7 +244,6 @@ export default {
           if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
             this.fix = 'fix'
             this.top = '6'
-            console.log(this.top, 333)
           }
       }
     }

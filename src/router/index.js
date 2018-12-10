@@ -82,6 +82,11 @@ export var router = new VueRouter({
     name: '/enquiryInfo',
     component: resolve => require(['../pages/customer/enquiryInfo'],resolve)
   },
+  {
+    path: '/searchResult',
+    name: '/searchResult',
+    component: resolve => require(['../pages/customer/searchResult'],resolve)
+  },
   /****个人模块****/
   {
     path: '/personalMsg',
