@@ -12,7 +12,7 @@
     <div class="forms">
       <div class="title">报表模块</div>
       <ul>
-        <li v-for="(item,index) in forms" :key="index" @touchend="linkTo(index)" :class="`${index}`">
+        <li v-for="(item,index) in forms" :key="index" @click="linkTo(index)" :class="`${index}`">
           <div class="icon" :style="{background:item.color}">
             <div class="icon-forms" :style="{'background-position':`${item.iconPosition}`}" >
               <!-- <img :src ="`./static/images/char${index+1}.png`" alt=""> -->
@@ -56,6 +56,14 @@ export default {
         },{
           color:'#f93580',text:'客户来源',iconPosition:'22vw -2vw'
         }
+      ],
+      slots: [
+        {
+          flex: 1,
+          values: ['2015年-01月', '2015年-02月', '2015年-03月', '2015年-04月', '2015年-05月', '2015年-06月'],
+          className: 'slot1',
+          textAlign: 'center'
+        }
       ]
     }
   },
@@ -71,6 +79,9 @@ export default {
   },
   props:['myStyle'],
   methods:{
+    cancle() {
+
+    },
     checkLogin() {
       let ajaxData = localStorage.getItem('ajaxData')
       // console.log(Date.parse(new Date()) - timeLong)

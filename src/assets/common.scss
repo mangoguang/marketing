@@ -1,7 +1,7 @@
-@import './mixin.scss';
-// 设置主题颜色
-@for $i from 1 to 2{
-  .color#{$i}{
-    color:nth($colors,$i)
-  }
-}
+$btnCol: #007aff;
+$btnSubCol: #b2d7ff;
+$fontCol: #363636;
+$fontSubCol: #999;
+$fontSize: 14px;
+$btnHeight: 9vw;
+$bgCol: #f8f8f8;

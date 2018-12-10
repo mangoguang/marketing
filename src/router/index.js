@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+
+
 export var router = new VueRouter({
   routes: [{
     path: '/',
@@ -13,38 +15,85 @@ export var router = new VueRouter({
     name: 'Login',
     component: resolve => require(['../pages/login'], resolve)
   }, {
+    /***报表模块***/
     path: '/brand',
     name: 'Brand',
-    component: resolve => require(['../pages/Brand/brand'], resolve)
+    component: resolve => require(['../pages/charts/Brand/brand'], resolve)
   }, {  // 销售
     path: '/sales',
     name: 'Sales',
-    component: resolve => require(['../pages/Sales/sales'], resolve)
+    component: resolve => require(['../pages/charts/Sales/sales'], resolve)
   },{
     path: '/areaStoreSales',
     name: '/AreaStoreSales',
-    component: resolve => require(['../pages/Sales/areaStoreSales'],resolve)
+    component: resolve => require(['../pages/charts/Sales/areaStoreSales'],resolve)
   },{
     path: '/storeSales',
     name: 'StoreSales',
-    component: resolve => require(['../pages/Sales/storeSales'], resolve)
+    component: resolve => require(['../pages/charts/Sales/storeSales'], resolve)
   },{
     path: '/personalSales',
     name: '/PersonalSales',
-    component: resolve => require(['../pages/Sales/personalSales'],resolve)
+    component: resolve => require(['../pages/charts/Sales/personalSales'],resolve)
   },{  // 铁三角
     path: '/audioTechnica',
     name: '/AudioTechnica',
-    component: resolve => require(['../pages/AudioTechnica/audioTechnica'],resolve)
+    component: resolve => require(['../pages/charts/AudioTechnica/audioTechnica'],resolve)
   },{
     path: '/personal',
     name: '/Personal',
-    component: resolve => require(['../pages/AudioTechnica/personal'],resolve)
+    component: resolve => require(['../pages/charts/AudioTechnica/personal'],resolve)
   },{
-    path: '/ReportForms',
-    name: 'ReportForms',
-    component: resolve => require(['../pages/ReportForms'], resolve)
+    path: '/areaEffectiveness',
+    name: '/AreaEffectiveness',
+    component: resolve => require(['../pages/charts/AreaEffectiveness/areaEffectiveness'],resolve)
   },{
+    path: '/peopleWork',
+    name: '/PeopleWork',
+    component: resolve => require(['../pages/charts/PerCapita/PeopleWork'],resolve)
+  },{
+    path: '/customerSource',
+    name: '/CustomerSource',
+    component: resolve => require(['../pages/charts/Customer/customerSource'],resolve)
+  },
+  /**** 客户模块 ****/
+  {
+    path: '/customer',
+    name: '/Customer',
+    component: resolve => require(['../pages/customer'],resolve)
+  },
+  {
+    path: '/customerInfo/:id',
+    name: '/CustomerInfo',
+    component: resolve => require(['../pages/customer/customerInfo'],resolve)
+  },
+  // {
+  //   path: '/ReportForms',
+  //   name: 'ReportForms',
+  //   component: resolve => require(['../pages/ReportForms'], resolve)
+  // },
+  {
+    path: '/dealDetails',
+    name: '/dealDetails',
+    component: resolve => require(['../pages/customer/dealDetails'],resolve)
+  },
+  {
+    path: '/trackDetails',
+    name: '/trackDetails',
+    component: resolve => require(['../pages/customer/trackDetails'],resolve)
+  },
+  /****个人模块****/
+  {
+    path: '/personalMsg',
+    name: '/Personal',
+    component: resolve => require(['../pages/Personal/personalMsg'],resolve)
+  },
+  {
+    path: '/dailyPaper',
+    name: '/dailyPaper',
+    component: resolve => require(['../pages/Personal/dailyPaper'],resolve)
+  },
+  {
     path: '/ForgetPwd',
     name: '/ForgetPwd',
     component: resolve => require(['../pages/ForgetPwd'],resolve)
@@ -52,17 +101,14 @@ export var router = new VueRouter({
     path: '/ResetPwd',
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
-  },{
-    path: '/areaEffectiveness',
-    name: '/AreaEffectiveness',
-    component: resolve => require(['../pages/AreaEffectiveness/areaEffectiveness'],resolve)
-  },{
-    path: '/peopleWork',
-    name: '/PeopleWork',
-    component: resolve => require(['../pages/PerCapita/PeopleWork'],resolve)
-  },{
-    path: '/customerSource',
-    name: '/CustomerSource',
-    component: resolve => require(['../pages/Customer/customerSource'],resolve)
-  }]
+  }],
+  scrollBehavior (to, from, savedPosition) {
+    // 保存到 meta 中，备用
+    to.meta.savedPosition = savedPosition;
+    if (savedPosition) {
+      return { x: 0, y: 0 };
+    }
+    return {};
+  }
 })
+

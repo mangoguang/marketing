@@ -4,11 +4,23 @@ import { Indicator } from 'mint-ui'
 
 export default class Common {
   constructor() {
-    this.port = 'https://agency.derucci.com/'
+    // this.port = 'https://agency.derucci.com/'
     // this.port = 'http://172.16.11.123/'
-    // this.port = 'http://10.11.8.7:8086/'
+    // this.port = 'http://10.11.8.181/'
+    this.port = 'http://10.11.8.7:8086/'
     this.path = `${this.port}v1/app/report/`
+    this.v2path = `${this.port}v2/app/`
     this.version = 'web'
+  }
+  // 如果输出年份顺序不对，则重新排序
+  sortYears(res) {
+    if (res.series && res.series[0]) {
+      if (res.series[0].name < res.series[1].name) {
+        let temp = res.series[0]
+        res.series[0] = res.series[1]
+        res.series[1] = temp
+      }
+    }
   }
   //根据对象属性，进行数组对象的排序
   compare(property) {
@@ -35,20 +47,18 @@ export default class Common {
     }
     for (let i = 0; i < newSeries[0].length; i++) {
       for (let j = 0; j < newSeries[0].length - i; j++) {
-        if (newSeries[0][j] > newSeries[0][j + 1]) {
+        if (parseInt(newSeries[0][j]) > parseInt(newSeries[0][j + 1])) {
           let [tempSeries, tempYAxisData] = [[], yAxisData[j]]
-          // let [tempSeries1, tempSeries2, tempYAxisData] = [series1[j], series1[j], yAxisData[j]]
-          // series1[j] = series1[j + 1]
-          // series2[j] = series2[j + 1]
+          // 对series参数的两个数组进行排序
           for (let k = 0; k < series.length; k++) {
             tempSeries[k] = newSeries[k][j]
             newSeries[k][j] = newSeries[k][j + 1]
             newSeries[k][j + 1] = tempSeries[k]
           }
+          // 对yAxisData参数进行排序
           yAxisData[j] = yAxisData[j + 1]
-          // series1[j + 1] = tempSeries1
-          // series2[j + 1] = tempSeries2
           yAxisData[j + 1] = tempYAxisData
+          // 如果存在店铺id数据，则对店铺id数据进行排序。
           if (idsData) {
             let tempIdsData = idsData[j]
             idsData[j] = idsData[j + 1]
@@ -57,18 +67,6 @@ export default class Common {
         }
       }
     }
-    // obj = {
-    //   series: [
-    //     {
-    //       data: series1,
-    //       name: obj.series[0].name
-    //     },
-    //     {
-    //       data: series2,
-    //       name: obj.series[1].name
-    //     }
-    //   ]
-    // }
   }
   // 参数加密
   getSign(obj, token) {
@@ -87,15 +85,18 @@ export default class Common {
     obj = sortObj(obj)
     let str = ''
     for (let key in obj) {
-      str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
+      if (obj[key] || (obj[key] === 0 || obj[key] === '0')) {
+        str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
+      }
     }
     // console.log('生成的sign字符串', str)
     return sha1.hex(str + token)
   }
-  getAjax(_vue, port, params) {
+  getAjax(_vue, port, params, pathVersion,type) {
     let _this = this
     return new Promise((resolve, reject) => {
-      const url = `${this.path}${port}`
+      let thatType = type === 'post' ? 'post' : 'get'
+      const url = `${pathVersion === 'v2' ? this.v2path : this.path}${port}`
       let sign = this.getSign(params, _vue.ajaxData.token)
       // console.log('header参数', _vue, sign)
       this.loading('open')
@@ -104,7 +105,7 @@ export default class Common {
         clearTimeout(loadingTimeOut)
       }, 10000)
       axios({
-        method: 'get',
+        method: thatType,
         url: url,
         // timeout: 3000,
         headers: {
@@ -139,7 +140,8 @@ export default class Common {
     }
   }
   // 转换时间戳，以2018-08-30的格式返回
-  indexTime(date) {
+  // type=day时，返回到日期，否则返回到月份。
+  indexTime(date, type) {
     if (!date) {
       date = new Date()
     }
@@ -152,7 +154,7 @@ export default class Common {
       tempArr[1] = temp
       tempArr.reverse()
     }
-    tempArr = tempArr.slice(0, 2)
+    tempArr = type === 'day' ? tempArr.slice(0, 3) : tempArr.slice(0, 2)
     if (tempArr[1] < 10) {
       tempArr[1] = `0${tempArr[1]}`
     }
@@ -166,5 +168,27 @@ export default class Common {
     } else {
       return this.indexTime()
     } 
+  }
+  //获取时间
+  indexTimeB(date){
+    if(date){
+      date = date.toLocaleDateString().split('/')
+      let b  = date.join('-')
+      let a = date[0] + '年' + date[1] + '月' + date[2] + '日'
+      return [a,b]
+    }
+  }
+  btnList(names, i) {
+    return names.map((item, index) => {
+      return {
+        name: item,
+        status: index === i
+      }
+    })
+  }
+  changeBtnStatus(arr, i) {
+    arr.forEach((element, index) => {
+      element.status = i === index
+    })
   }
 }

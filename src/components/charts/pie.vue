@@ -46,7 +46,7 @@ export default {
         },
         grid: {
           left: '3%',
-          top: '25%',
+          top: 'center',
           containLabel: true
         },
         tooltip: {
@@ -54,8 +54,8 @@ export default {
           formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
-          type: 'scroll',//卷页
-          orient: 'horizontal',//水平方向显示
+          // type: 'scroll',
+          orient: 'horizontal',
           left: '3%',
           right: '3%',
           top: '10%',
@@ -85,11 +85,12 @@ export default {
       let [arr, yAxisData, seriesData, maxNum] = [[], this.yAxisData, this.seriesData, Math.max(...this.seriesData)]
       for (let i = 0; i < yAxisData.length; i++) {
         arr.push({
-          name: yAxisData[i],
-          value: seriesData[i],
+          name: `${yAxisData[i]}(10.00%)`,
+          value: seriesData[i] != 0 ? seriesData[i] : '',
           selected: seriesData[i] === maxNum
         })
       }
+      console.log('pieData', arr)
       return arr
     }
   }

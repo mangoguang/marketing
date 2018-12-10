@@ -16,7 +16,7 @@
               is='myinput'
               :type='type1'
               :labelContent='account'
-              v-model="inputValue1"
+              v-model.trim="inputValue1"
               autocomplete="off"
               :Msg='nameMsg'>
             </li>
@@ -24,7 +24,7 @@
               is='myinput'
               :type='type2'
               :labelContent='pwd'
-              v-model="inputValue2"
+              v-model.trim="inputValue2"
               :Msg='pwdMsg'>
             </li>
             <li class="tips clearfix">
@@ -38,7 +38,7 @@
             </li>
             <li>
               <btn
-              @touchend.native="submitForm('ruleForm')"
+              @click.native="submitForm('ruleForm')"
               :text='text'>
               </btn>
             </li>
@@ -128,7 +128,7 @@ export default {
       //登陆接口
       function getApi() {
         mango.loading('open')
-        var Name = _this.inputValue1 
+        var Name = _this.inputValue1
         var Pwd = _this.inputValue2 
         const url = `${mango.port}app/login.api`
       // return new Promise((resolve, reject) => {
@@ -138,7 +138,7 @@ export default {
         headers: {
           'UUID': 'e10adc3949ba59abbe56e057f20f883e'
         },
-        timeout: 3000,
+        timeout: 10000,
         params: {
           // account: '18080028',
           account:Name,
@@ -193,8 +193,10 @@ export default {
       let oldaccountMsg = JSON.parse(accountMsg)
       if(oldaccountMsg){
         // 去除空格
-        let trimName = this.trimStr(oldaccountMsg['name'])
-        let trimPwd = this.trimStr(oldaccountMsg['pwd'])
+        var trimName = oldaccountMsg['name'].trim()
+        var trimPwd = oldaccountMsg['pwd'].trim()
+        // let trimName = this.trimStr(oldaccountMsg['name'])
+        // let trimPwd = this.trimStr(oldaccountMsg['pwd'])
         this.nameMsg = trimName
         this.pwdMsg = trimPwd
         this.inputValue2 = trimPwd

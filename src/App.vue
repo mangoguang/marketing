@@ -6,7 +6,11 @@
   v-on:swipeleft="onSwipeLeft"
   :style="{'min-height': `${height}px`}">
     <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
-    <router-view :myStyle = 'myStyle'> </router-view>
+    <!-- <router-view :myStyle = 'myStyle'> </router-view> -->
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive" :myStyle = 'myStyle'></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive" :myStyle = 'myStyle'></router-view>
   </v-touch>
   </div>
 </template>
@@ -15,10 +19,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import store from './store'
-//左滑
-
-import 'mint-ui/lib/style.min.css'
-// import mybanner from '../src/components/banner'
 
 
 export default{
@@ -30,7 +30,13 @@ export default{
     return{
       height: window.innerHeight,
       padding:'',
-      myStyle:[{'fgPwdTop':''},{'loginFix':''},{'formOverFlow':''}]
+      myStyle:[{
+        fgPwdTop:''
+        },{
+        loginFix:''
+        },{
+        formOverFlow:''
+        }]
     }
   },
   mounted(){
@@ -57,7 +63,6 @@ export default{
           this.myStyle.formOverFlow = ''
         }else{
           this.padding = ''
-          console.log(111,this.padding)
           this.myStyle.formOverFlow = 'hidden'
         } 
     }else{
@@ -171,7 +176,29 @@ a:hover{text-decoration:none;}
   // margin-top: 16vw
 }
 .paddingTop{
-  padding-top: 16.5vw;
+  padding-top: 38vw;
 }
+.paddingTop2{
+   padding-top: 16vw;
+}
+ul.infoNav{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4.26vw;
+    margin-top: -8vw;
+    li{
+      width: 29.3vw;
+      line-height: 8vw;
+      text-align: center;
+      background: #b2d7ff;
+      border-radius: 1.6vw 1.6vw 0 0;
+      color: #007aff;
+      font-size: 3.73vw;
+    }
+    .active, .on{
+      background: #007aff;
+      color: #fff
+    }
+  }
 
 </style>

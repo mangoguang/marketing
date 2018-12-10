@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <ul class="selectComponent">
+  <ul class="selectComponent" :style="{'top':`${top}vw`}">
     <li is="citySelect"></li>
     <!-- <li><input @click="openStartPicker" type="input" v-model="startTime"></li> -->
     <li @click="openEndPicker" class="timeBtn">
@@ -14,7 +14,7 @@
       <!-- <button @click="openEndPicker" type="button">{{endTime}}</button> -->
     </li>
     <mt-datetime-picker
-      ref="picker"
+      ref="datePicker"
       type="date"
       v-model="pickerValue"
       year-format="{value} 年"
@@ -37,27 +37,33 @@ Vue.component(DatetimePicker.name, DatetimePicker)
 
 export default {
   name: 'selectComponent',
-  components: {citySelect, DatetimePicker},
+  components: { citySelect, DatetimePicker },
   data () {
     return {
       startTime: '',
       endTime: '2018-08',
       pickerValue: new Date(),
       timeType: 'start',
-      rotate:'rotate(270deg)'
+      rotate:'rotate(270deg)' ,
+      top:''  
     }
   },
   created() {
     this.getLocalStorageTime()
+    this.isIPhoneX()
   },
   mounted() {
-
+   
   },
   methods: {
     ...mapMutations([
       'setStartTimeSelect',
       'setEndTimeSelect'
     ]),
+    getMouth(){
+      var myDate = document.getElementsByClassName('picker-slot-center')[2]
+      myDate.style.display = "none"
+    },
     cancle(){
       this.rotate = 'rotate(270deg)'
     },
@@ -79,8 +85,9 @@ export default {
       this.$refs.picker.open()
     },
     openEndPicker() {
+      this.getMouth()
       this.timeType = 'end'
-      this.$refs.picker.open()
+      this.$refs.datePicker.open()
       this.rotate = 'rotate(90deg)'
     },
     getLocalStorageTime() {
@@ -95,6 +102,19 @@ export default {
       } else {
         this.endTime = '结束时间'
       }
+    },
+    isIPhoneX : function(fn){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.top = '22.3'
+        }else{
+          this.top = '16.5'
+        } 
+      }else{
+        this.top = '16.5'
+      }
     }
   }
 }
@@ -103,23 +123,16 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
   .selectComponent{
-    // display: flex;
-    // justify-content: flex-end;
-    // align-items: center;
-    // height: 8vw;
-    // margin-right: 2%;
-    // padding: 3vw;
-      // margin-top: 16vw;
-      // margin-bottom: -16vw;
-    .picker-items{
-      background: red
-    }
+    position: fixed;
+    width: 100%;
+    // top: 16.5vw;
+    // top: 22.5vw;
+    background: #fff;
+    z-index: 1000;
     .timeBtn{
      font-family: PINGPANG;
       height: 10.6vw;
-      // background: #f8f8f8;
       border-bottom: 1px solid #ccc;
-      // box-shadow: 0px 1px 0px 0px 	#cccccc, inset 0px 1px 0px 0px 	#cccccc;
     }
     h5{
       position: relative;
@@ -161,10 +174,6 @@ export default {
         top: 0;
         left: 0;
         z-index: 1000;
-        // li{
-        //   border-radius: 0;
-        //   border-top: none;
-        // }
         li:first-child{
           border-top: 1px solid #e1e1e1;
         }

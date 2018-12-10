@@ -17,7 +17,7 @@
         @click.stop="changeCity($event)"
         :title="city.level"
         :class="{on: statusList[index]}"
-        >{{city.name}}</li>
+        >{{'城市1'}}</li>
     </ul>
   </li>
 </template>
@@ -123,6 +123,13 @@ export default {
             }`)
           }
           _this.cityList = res.map((item) => {
+            if (!localStorage.getItem('cityMsg')) {
+              // 将选择信息存储到本地
+              localStorage.setItem('cityMsg', `{
+                "cityName": "${_this.cityMsg.cityName}",
+                "cityLevel": "${_this.cityMsg.cityLevel}"
+              }`)
+            }
             return {name: item.empowerCity, level: item.cityLevel}
           })
         }
