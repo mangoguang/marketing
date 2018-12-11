@@ -65,9 +65,6 @@ export default {
       console.log('获取的客户列表：', this.customerList)
     }
   },
-  mounted(){
-
-  },
   methods:{
     loadMore() {
       // mango.loading('open')

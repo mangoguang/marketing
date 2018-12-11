@@ -85,7 +85,11 @@ export var router = new VueRouter({
   {
     path: '/enquiryInfo',
     name: '/enquiryInfo',
-    component: resolve => require(['../pages/customer/enquiryInfo'],resolve)
+    component: resolve => require(['../pages/customer/enquiryInfo'],resolve),
+    meta: {        
+      // isUseCache: false,  // 这个字段的意思稍后再说      
+      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
+    }
   },
   {
     path: '/searchResult',
@@ -115,6 +119,17 @@ export var router = new VueRouter({
     path: '/ResetPwd',
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
-  }]
+  }],
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {  
+      console.log(324242,savedPosition)      
+      return savedPosition    
+    } else {      
+      if (from.meta.keepAlive) {        
+          from.meta.savedPosition = document.body.scrollTop;      
+      }        
+      return { x: 0, y: to.meta.savedPosition || 0 }    
+    }  
+  }
 })
 

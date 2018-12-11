@@ -277,7 +277,6 @@ a:hover {
 .paddingTop2 {
   padding-top: 16vw;
 }
-Z
 ul.infoNav{
     display: flex;
     justify-content: space-between;
