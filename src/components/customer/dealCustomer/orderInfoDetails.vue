@@ -66,7 +66,7 @@
         <li>
           <div>
             <span>订单下单日期:</span>
-            <p>{{ orderInfoDetails.recordTime }}</p>
+            <p>{{ orderInfoDetails.orderTime }}</p>
           </div>
         </li>
         <li>
@@ -95,11 +95,10 @@ export default {
   data(){
     return{
     
-  }
-},
+    } 
+  },
  computed: {
     ...mapState({
-      // citySelect: state => state.select.citySelect,
       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
     })
   }
@@ -109,8 +108,8 @@ export default {
 <style lang="scss">
 .orderInfoDetails {
   background: #f8f8f8;
-  border-top: 2px solid #007aff;
-  border-bottom: 2px solid #007aff;
+  // border-top: 2px solid #007aff;
+  // border-bottom: 2px solid #007aff;
   color: #999;
   line-height: 6.4vw;
   font-size: 3.73vw;

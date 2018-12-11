@@ -1,176 +1,193 @@
 <template>
   <div class="dealCustomer">
-    <ul  
-      v-infinite-scroll="loadMore"
-      infinite-scroll-disabled="loading"
-      infinite-scroll-distance="0.1">
-      <li  v-for="(item, index) in dealCustomerList.records"
-        :key="`customerList${index}`" @click="getDetails(index)">
-        <span>{{index + 1}}</span>
-        <span>{{item.username}}</span>
-        <span>{{item.sex == 0 ? '女' : '男'}}</span>
-        <span>{{item.phone}}</span>
-        <span>{{getLevel(item.level)}}</span>
-      </li>
+    <ul>
+      <!-- <vuu-pull ref="vuuPull" :options="pullOptions" v-on:loadBottom="loadBottom"> -->
+        <li
+          v-for="(item, index) in dealCustomerList"
+          :key="`customerList${index}`"
+          @click="getDetails(index)"
+        >
+          <span>{{index + 1}}</span>
+          <span>{{item.username}}</span>
+          <span>{{item.sex == 0 ? '女' : '男'}}</span>
+          <span>{{item.phone}}</span>
+          <span>{{getLevel(item.level)}}</span>
+        </li>
+      <!-- </vuu-pull> -->
     </ul>
-    <!-- <div>
-      <mt-spinner type="fading-circle"></mt-spinner><span>加载中...</span>
-    </div> -->
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Vuex, { mapMutations, mapState } from 'vuex'
-import mango from '../../../js'
-import { InfiniteScroll,Spinner } from 'mint-ui';
-
-Vue.component(Spinner.name, Spinner);
-Vue.use(InfiniteScroll);
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Vuex, { mapMutations, mapState } from "vuex";
+import mango from "../../../js";
+import vuuPull from "vuu-pull";
+Vue.use(vuuPull);
 
 export default {
-  name:'dealCustomerList',
-  props: ['changeResultTit'],
-  data(){
-    return{
-      loading:'',
-      account:''
-
-    }
+  name: "dealCustomerList",
+  props: ["changeResultTit"],
+  data() {
+    return {
+      account: "",
+      pullOptions: {
+        isBottomRefresh: true,
+        isTopRefresh: false
+      },
+      dealCusList: [],
+      addPullData: [],
+      page: 2,
+      limit: 10,
+      allPage: "",
+      key: true
+    };
   },
   computed: {
     ...mapState({
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
       headerStatus: state => state.customerHeader.headerStatus
-     
     })
   },
-  watch:{
+  watch: {
     //根据头部状态获取数据
     headerStatus() {
-      if(this.headerStatus[2].status) {
-        this.getData()
+      if (this.headerStatus[2].status) {
+        this.getData(1, 20);
       }
     }
   },
-  created(){
+  created() {
     //获取本地缓存信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
-    let account = localStorage.getItem('accountMsg')
-    this.account = JSON.parse(account).name.trim()
+    let ajaxData = localStorage.getItem("ajaxData");
+    this.ajaxData = JSON.parse(ajaxData);
+    let account = localStorage.getItem("accountMsg");
+    this.account = JSON.parse(account).name.trim();
     //后退的时候重新请求数据
-    this.getData()
+    if (this.headerStatus[2].status) {
+      this.getData(1, 20);
+    }
   },
-  methods:{
-    ...mapMutations([
-      'setDealCustomerList',
-      'setDealOrderInfoDetails'
-    ]),
-    getData() {
-      mango.getAjax(this, 'order', {
-        account:this.account,
-        page: 1, 
-        limit: '20',  
-        key: ""    
-      }, 'v2')
-      .then((res) => {
-        if (res) {
-          this.setDealCustomerList(res.data)
-          this.$emit('changeResultTit', `全部客户 (${this.dealCustomerList.total == null ? '0' :this.dealCustomerList.total})`)
-        }
-      })   
-    },
-    loadMore() {
-      this.loading = true;
-      setTimeout(() => {
-      //   mango.getAjax(this, 'order', {
-      //   account:this.account,
-      //   page: 1,  //页数
-      //   limit: '20',  //每页条数
-      //   key: ""     //搜索关键字，电话或名字
-      // }, 'v2')
-      // .then((res) => {
-      //   if (res) {
-      //    console.log('成交客户数据',res.data)
-      //     this.setDealCustomerList(res.data)
-      //   }
-      // })
-      // let last = this.list[this.list.length - 1];
-      // for (let i = 1; i <= 10; i++) {
-      //   this.list.push(last + i);
+  methods: {
+    ...mapMutations(["setDealCustomerList", "setDealOrderInfoDetails","setTabStatus"]),
+    //上啦刷新
+    loadBottom() {
+      // if (this.key) {
+      //   setTimeout(() => {
+      //     if (this.page < this.allPage) {
+      //       this.page ++;
+      //       this.getData(this.page, this.limit);
+      //       if (this.$refs.vuuPull.closeLoadBottom) {
+      //         this.$refs.vuuPull.closeLoadBottom();
+      //       }
+      //     } else {
+      //       if (this.$refs.vuuPull.closeLoadBottom) {
+      //         this.$refs.vuuPull.closeLoadBottom();
+      //       }
+      //     }
+      //   }, 1500);
       // }
-      this.loading = false;
-      }, 3500);
+    },
+    getData(page, limit) {
+      this.key = false;
+      mango.getAjax(this,"order",{
+            account: this.account,
+            page: 1,
+            limit: 466,
+            key: ""},"v2")
+        .then(res => {
+          //初始进来
+          this.allPage = Math.ceil(res.data.total / 10);
+          // if (page <= 2) {
+            this.key = true;
+            let result  = mango.getUniqueData(res.data.records)
+            this.setDealCustomerList(result);
+            this.dealCusList = this.dealCustomerList;
+            this.$emit("changeResultTit",`全部客户 (${result.length == null? "0": result.length})`);
+          // } else {
+          //   //上啦刷新加载数据
+          //   this.key = true;
+          //   this.addPullData = res.data;
+          //   this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
+          //   this.setDealCustomerList(this.dealCusList);
+          // }
+        });
     },
     //获得个人评价等级
-    getLevel(level) { 
-      if(level == 1) {
-        return '高'
-      }else if (level == 2) {
-        return '中'
-      }else if (level == 3) {
-        return '低'
-      }else {
-        return null
+    getLevel(level) {
+      if (level == 1) {
+        return "高";
+      } else if (level == 2) {
+        return "中";
+      } else if (level == 3) {
+        return "低";
+      } else {
+        return null;
       }
     },
     //详细订单信息
     getDetails(index) {
-      mango.getAjax(this, 'customerinfo', {
-        // customerId: '1062588207926919170',
-        customerId:this.dealCustomerList.records[index].customerId 
-      }, 'v2')
-      .then((res) => {
-        if (res) {
-        this.setDealOrderInfoDetails(res.data)        
-        }
-      })
-      this.$router.push({path:'/dealDetails'})
+      this.setTabStatus(mango.btnList(['订单信息', '跟踪记录', '个人评级'], 0))
+      mango.getAjax(this,"customerinfo",{customerId: this.dealCusList[index].customerId},"v2")
+        .then(res => {
+          if (res) {
+            this.setDealOrderInfoDetails(res.data);
+          }
+        });
+      this.$router.push({ path: "/dealDetails" ,
+       query: {
+        username: this.dealCustomerList[index].username,
+        sex:this.dealCustomerList[index].sex,
+        phone:this.dealCustomerList[index].phone
+      }});
     }
   }
-}
+};
 </script>
 
 
 <style lang="scss" scoped>
-.dealCustomer{
+.dealCustomer {
   padding-top: 23vw;
   background: #f8f8f8;
-  ul{
-    border-top:1px solid #e1e1e1;
-    border-bottom: 1px solid #e1e1e1;
+  ul {
+    border-top: 1px solid #e1e1e1;
+    // border-bottom: 1px solid #e1e1e1;
     padding-left: 4.266vw;
-    color:  #999;
+    color: #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
-    margin-bottom: 20vw;
-    li{
+    padding-bottom: 19vw;
+    li {
       display: flex;
       justify-content: space-between;
       padding-right: 3.86vw;
       border-top: 1px solid #e1e1e1;
-      span:nth-child(2){
+      span:nth-child(2) {
         color: #363636;
         flex: 0.3;
       }
-      span:nth-child(5){
+      span:nth-child(5) {
         color: #363636;
-        flex: 0.05
+        flex: 0.05;
       }
-      span:nth-child(3){
-        flex:0.2
+      span:nth-child(3) {
+        flex: 0.2;
       }
-      span:nth-child(4){
-        flex:0.5
+      span:nth-child(4) {
+        flex: 0.5;
       }
-      span:nth-child(1){
-        flex:0.1
+      span:nth-child(1) {
+        flex: 0.15;
       }
     }
-    li:nth-child(1){
+    li:nth-child(1) {
       border-top: none;
+    }
+    li:last-child {
+      border-bottom: 1px solid #e1e1e1;
+      // margin-bottom: 3vw;
     }
   }
 }
