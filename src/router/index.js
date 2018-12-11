@@ -62,6 +62,11 @@ export var router = new VueRouter({
     name: '/Customer',
     component: resolve => require(['../pages/customer'],resolve)
   },
+  {
+    path: '/customerInfo/:id',
+    name: '/CustomerInfo',
+    component: resolve => require(['../pages/customer/customerInfo'],resolve)
+  },
   // {
   //   path: '/ReportForms',
   //   name: 'ReportForms',

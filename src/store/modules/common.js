@@ -1,9 +1,9 @@
 const state = {
-  ajaxData: {}
+  // ajaxData: {}
 }
 
 const mutations = {
-  setAjaxData: (state, obj) => state.ajaxData = obj
+  // setAjaxData: (state, obj) => state.ajaxData = obj
 }
 
 const actions = {
