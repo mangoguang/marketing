@@ -59,6 +59,7 @@ export default {
     }
   },
   created() {
+    console.log('成交客户页面','created')
     //获取本地缓存信息
     let ajaxData = localStorage.getItem("ajaxData");
     this.ajaxData = JSON.parse(ajaxData);

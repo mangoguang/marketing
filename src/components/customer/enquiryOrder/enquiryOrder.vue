@@ -60,6 +60,7 @@ export default {
     }
   },
   created() {
+    console.log('订单查询页面','created')
     //获取本地缓存信息
     let ajaxData = localStorage.getItem("ajaxData");
     this.ajaxData = JSON.parse(ajaxData);

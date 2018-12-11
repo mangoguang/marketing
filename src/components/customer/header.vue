@@ -49,6 +49,7 @@ import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../js'
 Vue.use(Vuex)
+
 export default {
   name: 'customerHeader',
   props: ['changeResultTit'],
@@ -72,6 +73,11 @@ export default {
   watch: {
     'customerAjaxParams': function(val) {
       this.getCustomerList()
+    },
+    headerStatus(){
+      if(this.headerStatus[0].status){
+        this.getCustomerList()
+      }
     }
   },
   created() {
@@ -81,12 +87,12 @@ export default {
     // this.ajaxData = JSON.parse(ajaxData)
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
-  },
-  mounted() {
-    this.isIPhoneX()
     if(this.headerStatus[0].status){
       this.getCustomerList()
     }
+  },
+  mounted() {
+    this.isIPhoneX()
   },
   methods:{
     ...mapMutations([
