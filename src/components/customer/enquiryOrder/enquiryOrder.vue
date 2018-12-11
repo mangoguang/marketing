@@ -26,6 +26,7 @@ import dealOrderInfoDetails from '../../../store/modules/components/dealOrderInf
 Vue.use(vuuPull);
 
 export default {
+  name:'enquiryOrder',
   props: ['changeResultTit'],
   data() {
     return {
@@ -37,10 +38,11 @@ export default {
       },
       dealCusList: [],
       addPullData: [],
-      page: 2,
+      page: 3,
       limit: 10,
       allPage: "",
-      key: true
+      key: true,
+      baceLimit:30
     };
   },
   computed: {
@@ -55,20 +57,27 @@ export default {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[1].status) {
-        this.getOrderList(1,20)
+        console.log('statuschange')
+        this.getLimit()
+        let tempage = (this.baceLimit - 30)/10
+        this.page = 3 + tempage
+        this.getOrderList(1,this.baceLimit)
       }
     }
   },
   created() {
-    console.log('订单查询页面','created')
     //获取本地缓存信息
     let ajaxData = localStorage.getItem("ajaxData");
     this.ajaxData = JSON.parse(ajaxData);
     let account = localStorage.getItem("accountMsg");
     this.account = JSON.parse(account).name.trim();
-    if (this.headerStatus[1].status) {
-      this.getOrderList(1,20)
-    }
+    console.log('created')
+    this.getOrderList(1,30)
+    // this.setLimit(this.baceLimit)
+    this.getLimit()
+    let tempage = (this.baceLimit - 30)/10
+    this.page = 3 + tempage
+    this.getOrderList(1,this.baceLimit)
   },
   methods: {
     ...mapMutations(["setOrderList","setOrderInfoDetails"]),
@@ -78,6 +87,7 @@ export default {
           if (this.page < this.allPage) {
             this.page ++;
             this.getOrderList(this.page, this.limit);
+
             if (this.$refs.vuuPull.closeLoadBottom) {
               this.$refs.vuuPull.closeLoadBottom();
             }
@@ -99,12 +109,15 @@ export default {
       },"v2")
         .then(res => {
           this.allPage = Math.ceil(res.data.total / 10);
-          if (page <= 2) {
+          if (page <= 3) {
             this.key = true;
             this.setOrderList(res.data);
             this.dealCusList = this.orderList;
             this.$emit("changeResultTit",`全部客户 (${this.orderList.total == null? "0": this.orderList.total})`);
           } else {
+             this.setLimit(this.baceLimit + 10)
+            this.getLimit()
+            console.log(12222,this.baceLimit)
             //上啦刷新加载数据
             this.key = true;
             this.addPullData = res.data;
@@ -113,6 +126,15 @@ export default {
             console.log(11,this.orderList)
           }
         });
+    },
+    setLimit(limit) {
+      let string = `{"limit":" ${limit}"}`;
+      localStorage.setItem("limit", string);
+    },
+    //获取本地数据
+    getLimit() {
+      let temp = localStorage.getItem("limit");
+      this.baceLimit = parseInt(JSON.parse(temp).limit);
     },
     //点击进入详情页面
     orderInfoIn(index) {
@@ -125,6 +147,18 @@ export default {
       this.$router.push({ path: "/enquiryInfo" });
     }
   }
+  //  activated() {
+  //   // isUseCache为false时才重新刷新获取数据
+  //   if(!this.$route.meta.isUseCache){   
+  //     console.log('isUseCashe = false',123,this)  
+  //       this.getLimit()
+  //       let a = (this.baceLimit - 30)/10
+  //       this.page = 3 + a
+  //       this.getOrderList(1,this.baceLimit)   
+      
+  //     // this.$route.meta.isUseCache = false;  
+  //   } 
+  // },
 };
 </script>
 

@@ -49,12 +49,9 @@ export default {
     };
   },
   created() {
-    console.log('credted')
     //获取本地数据
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    // this.customerAjaxParams.tenantId = this.ajaxData.tenantId
-    // this.setCustomerAjaxParams(this.customerAjaxParams)
     let account = localStorage.getItem('accountMsg')
     this.account = JSON.parse(account).name.trim()
   },
