@@ -46,8 +46,6 @@ export default {
       ajaxData:[],
       orderList:[],
       dealList:[]
-  
-
     };
   },
   created() {
@@ -61,7 +59,6 @@ export default {
   },
   computed: {
     ...mapState({
-      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
       headerStatus: state => state.customerHeader.headerStatus,
       dealCustomerList: state => state.dealCustomerList.dealCustomerList
     })
@@ -201,13 +198,12 @@ export default {
     }
   }
    .dealList{
-    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
     // border-bottom: 1px solid #e1e1e1;
     padding-left: 4.266vw;
     color: #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
-    padding-bottom: 19vw;
     li {
       display: flex;
       justify-content: space-between;
@@ -235,8 +231,7 @@ export default {
       border-top: none;
     }
     li:last-child {
-      border-bottom: 1px solid #e1e1e1;
-      // margin-bottom: 3vw;
+      border-bottom: none
     }
   }
 }

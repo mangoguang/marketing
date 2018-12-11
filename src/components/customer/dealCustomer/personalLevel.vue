@@ -42,18 +42,17 @@ export default {
     })
   },
   watch:{
-   
+    //监听变化，当传入的值变化的时候，改变active的值。
+   dealOrderInfoDetails(){
+     this.active = this.dealOrderInfoDetails.level
+   }
   },
   created(){
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    this.active = this.dealOrderInfoDetails.level
   },
   methods:{
-    ...mapMutations([
-      'setDealCustomerList'
-    ]),
     selectLevel(index) {
       this.active = index + 1
       mango.getAjax(this, 'level/update', {
@@ -63,7 +62,6 @@ export default {
       .then((res) => {
         if (res) {
          console.log('更新评级',res.status)   
-          
         }
       })
     }
