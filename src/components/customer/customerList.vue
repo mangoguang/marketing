@@ -60,8 +60,8 @@ export default {
     })
   },
   watch: {
-    'customerList': function(val) {
-      console.log('获取的客户列表：', val)
+    'customerList'(val) {
+      console.log('获取的客户列表：', this.customerList)
     }
   },
   mounted(){

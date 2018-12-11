@@ -59,39 +59,28 @@ export default {
       navShow: true,
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
       selectBtnText: '全部',
-      searchKey: '',
-      account:'',
-      dealCustomerListTotal:'',
-      orderListTotal:''
+      searchKey: ''
     }
   },
   computed: {
     ...mapState({
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
-      ajaxData: state => state.common.ajaxData,
-      dealCustomerList: state => state.dealCustomerList.dealCustomerList,
-      orderList: state => state.orderList.orderList
+      ajaxData: state => state.common.ajaxData
     })
   },
   watch: {
     'customerAjaxParams': function(val) {
       this.getCustomerList()
-    },
-    headerStatus(){
-      this.orderListTotal = this.orderListTotal
-      this.dealCustomerListTotal = this.dealCustomerList.length
     }
   },
   created() {
-    console.log('ajaxData:', this.ajaxData, this.ajaxData.tenantId)
+    // console.log('ajaxData:', this.ajaxData, this.ajaxData.tenantId)
     // 获取本地存储信息
     // let ajaxData = localStorage.getItem('ajaxData')
     // this.ajaxData = JSON.parse(ajaxData)
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
-    let account = localStorage.getItem('accountMsg')
-    this.account = JSON.parse(account).name.trim()
   },
   mounted() {
     this.isIPhoneX()
@@ -104,10 +93,7 @@ export default {
       'setRightContainerStatus',
       'setCustomerList',
       'setCustomerAjaxParams',
-      'setDealCustomerList',
-      'setHeaderStatus',
-      'setSearchKey',
-      'setOrderList'
+      'setHeaderStatus'
     ]),
     // 显示右侧边栏
     showRightContainer() {
@@ -125,16 +111,6 @@ export default {
     // 显示导航
     showNav(status) {
       this.navShow = !this.navShow
-      if (this.navShow) {
-        if(status[0].status) {
-          this.setCustomerAjaxParams(mango.customerAjaxParams(this.ajaxData.tenantId))
-        }else if(status[1].status){
-          this.getDealCustomerList(1)
-        }else if(status[2].status){
-          this.getDealCustomerList(2)
-        }
-      }
-      
     },
     // 选择客户类型
     customerClassifySelect(i) {
@@ -175,36 +151,6 @@ export default {
     moduleSelect(i) {
       this.setHeaderStatus(mango.btnList(['我的客户', '订单查询', '成交客户'], i))
     },
-    //获取成交客户列表
-    getDealCustomerList(headStatus,key) {
-      let limit = 466
-      mango.getAjax(this, 'order',{
-        account: this.account,
-        page: 1,  
-        limit: 466,  
-        key: key //搜索关键字，电话或名字
-      },'v2').then((res) => {
-        if (res) {
-          if (headStatus == 1) {
-            this.setOrderList(res.data)
-            console.log('sousuo',res.data.pages,res.data)
-            if(res.data.records.length == 466) {
-              this.searchKey = null
-              this.$emit('changeResultTit', `全部客户 (${res.data.total == null ? '0' :res.data.total})`)
-            }
-          }else if (headStatus == 2) {
-            let result  = mango.getUniqueData(res.data.records)
-            this.setDealCustomerList(result);
-            let len = result.length
-            if(len == this.dealCustomerListTotal) {
-              this.searchKey = null
-              this.$emit('changeResultTit', `全部客户 (${result.length == null ? '0' :result.length})`)
-            }
-          }
-        
-        }
-      }) 
-    },
     // ajax请求客户列表
     getCustomerList() {
       mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
@@ -222,20 +168,6 @@ export default {
           key:this.searchKey
         }
       })
-      // if (this.headerStatus[2].status) {
-      //   var key = this.searchKey
-      //   this.getDealCustomerList(2,key)
-      //   this.$emit('changeResultTit', `查询结果`)
-      // }else if(this.headerStatus[0].status) {
-      //   let paramsObj = mango.customerAjaxParams(this.ajaxData.tenantId)
-      //   paramsObj.key = this.searchKey
-      //   paramsObj.tenantId = this.ajaxData.tenantId
-      //   this.setCustomerAjaxParams(paramsObj)
-      // }else if(this.headerStatus[1].status) {
-      //   var key = this.searchKey
-      //   this.getDealCustomerList(1,key)
-      //   this.$emit('changeResultTit', `查询结果`)
-      // }
     },
     isIPhoneX : function(fn){
       var u = navigator.userAgent;

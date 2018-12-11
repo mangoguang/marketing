@@ -49,6 +49,7 @@ export default {
     };
   },
   created() {
+    console.log('credted')
     //获取本地数据
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
@@ -155,7 +156,7 @@ export default {
     } 
   },
   beforeRouteLeave (to, from, next) { 
-    console.log('keepAlive = true')         
+    console.log('isUseCashe = true')         
     if (to.name == 'searchResult') {
       to.meta.isUseCache = true; 
     }        
