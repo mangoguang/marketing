@@ -2,7 +2,7 @@
   <div class="orderInfo">
     <ul>
       <li v-for="(item,index) in dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
-        <hr>
+        <hr v-if="index !== 0"> 
         <div class="orderList">
           <span>{{index + 1}}</span>
           <span>订单号{{item.orderNo}}</span>
@@ -113,7 +113,7 @@ export default {
     }
     hr{
       background: #e1e1e1;
-      height:0.8px;
+      height:0.3vw;
       border: none;
       margin: 0;
       margin-left: 4.26vw;

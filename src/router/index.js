@@ -85,7 +85,11 @@ export var router = new VueRouter({
   {
     path: '/searchResult',
     name: '/searchResult',
-    component: resolve => require(['../pages/customer/searchResult'],resolve)
+    component: resolve => require(['../pages/customer/searchResult'],resolve),
+    meta: {        
+      isUseCache: false,  // 这个字段的意思稍后再说      
+      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
+    }
   },
   /****个人模块****/
   {

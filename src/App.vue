@@ -10,7 +10,11 @@
       :style="{'min-height': `${height}px`}"
     >
       <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
-      <router-view :myStyle="myStyle"></router-view>
+      <!-- <router-view :myStyle="myStyle"></router-view> -->
+    <keep-alive>
+      <router-view v-if="$route.meta.keepAlive"  :myStyle="myStyle"></router-view>
+    </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"  :myStyle="myStyle"></router-view>
     </v-touch>
   </div>
 </template>
