@@ -58,6 +58,7 @@ export default {
       top: '',
       ifShow: 'hide',
       navShow: true,
+      ajaxData: {},
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
       selectBtnText: '全部',
       searchKey: '',
@@ -68,7 +69,6 @@ export default {
     ...mapState({
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
-      // ajaxData: state => state.common.ajaxData,
       dealCustomerList: state => state.dealCustomerList.dealCustomerList
     })
   },
