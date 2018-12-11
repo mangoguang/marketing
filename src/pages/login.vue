@@ -157,6 +157,7 @@ export default {
               //账号密码正确，跳转页面。
               res = res.data.data
               let ajaxData = `{
+                "account": "${res.account}",
                 "tenantId": "${res.tenantId}",
                 "token": "${res.token}",
                 "uuid": "${res.uuid}",
