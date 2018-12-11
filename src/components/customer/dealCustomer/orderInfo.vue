@@ -2,7 +2,7 @@
   <div class="orderInfo">
     <ul>
       <li v-for="(item,index) in dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
-        <hr v-show="index !== 0">
+        <hr v-if="index !== 0"> 
         <div class="orderList">
           <span>{{index + 1}}</span>
           <span>订单号{{item.orderNo}}</span>
@@ -11,7 +11,9 @@
             <img src="../../../assets/imgs/rightside.png" alt="" :class="{'pullDown':`${rotate}` == index}">
           </span>
         </div>
-        <OrderInfoDetails v-show="i == index"/>
+        <div class="setLine" v-show="i == index"> 
+          <OrderInfoDetails />
+        </div>
       </li>
     </ul>                    
   </div>
@@ -57,7 +59,7 @@ export default {
       }else{
         this.status = true
         this.rotate = index
-         this.i = index
+        this.i = index
       }
     }
   }
@@ -111,10 +113,14 @@ export default {
     }
     hr{
       background: #e1e1e1;
-      height:0.8px;
+      height:0.3vw;
       border: none;
       margin: 0;
       margin-left: 4.26vw;
+    }
+    .setLine{
+      border-top: 2px solid #007aff;
+      border-bottom: 2px solid #007aff;
     }
   }
 }

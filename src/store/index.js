@@ -10,7 +10,9 @@ import dealOrderInfoDetails from './modules/components/dealOrderInfoDetails'
 import orderInfoDetails from './modules/components/orderInfoDetails'
 import followTrackDetails from './modules/components/followTrackDetails'
 import customerHeader from './modules/customer/header'
-
+import serachResult from './modules/customer/serachResult'
+import tabStatus from './modules/components/detailsHeaderStatus'
+import orderList from './modules/components/orderList'
 
 export default new Vuex.Store({
   modules: {
@@ -22,6 +24,9 @@ export default new Vuex.Store({
     dealOrderInfoDetails,
     orderInfoDetails,
     customerHeader,
-    followTrackDetails
+    followTrackDetails,
+    tabStatus,
+    orderList,
+    serachResult
   }
 })
