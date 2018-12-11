@@ -62,6 +62,11 @@ export var router = new VueRouter({
     name: '/Customer',
     component: resolve => require(['../pages/customer'],resolve)
   },
+  {
+    path: '/customerInfo/:id',
+    name: '/CustomerInfo',
+    component: resolve => require(['../pages/customer/customerInfo'],resolve)
+  },
   // {
   //   path: '/ReportForms',
   //   name: 'ReportForms',
@@ -80,7 +85,11 @@ export var router = new VueRouter({
   {
     path: '/enquiryInfo',
     name: '/enquiryInfo',
-    component: resolve => require(['../pages/customer/enquiryInfo'],resolve)
+    component: resolve => require(['../pages/customer/enquiryInfo'],resolve),
+    meta: {        
+      // isUseCache: false,  // 这个字段的意思稍后再说      
+      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
+    }
   },
   {
     path: '/searchResult',

@@ -10,6 +10,7 @@ export default class Common {
     this.port = 'http://10.11.8.7:8086/'
     this.path = `${this.port}v1/app/report/`
     this.v2path = `${this.port}v2/app/`
+    this.apipath = `${this.port}v1/api/public/`
     this.version = 'web'
   }
   // 如果输出年份顺序不对，则重新排序
@@ -95,8 +96,16 @@ export default class Common {
   getAjax(_vue, port, params, pathVersion,type) {
     let _this = this
     return new Promise((resolve, reject) => {
-      let thatType = type === 'post' ? 'post' : 'get'
-      const url = `${pathVersion === 'v2' ? this.v2path : this.path}${port}`
+      let thatType = type == 'post' ? 'post' : 'get'
+      let url = ''
+      if (pathVersion === 'v2') {
+        url = `${this.v2path}${port}`
+      } else if (pathVersion === 'v3') {
+        url = `${this.apipath}${port}`
+      } else {
+        url = `${this.path}${port}`
+      }
+      // const url = `${pathVersion === 'v2' ? this.v2path : this.path}${port}`
       let sign = this.getSign(params, _vue.ajaxData.token)
       // console.log('header参数', _vue, sign)
       this.loading('open')

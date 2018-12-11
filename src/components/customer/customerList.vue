@@ -8,7 +8,8 @@
     <li
     class="customerContent"
     v-for="(item, index) in customerList.records"
-    :key="`customerList${index}`">
+    :key="`customerList${index}`"
+    @click="toCustomerInfo(item.id)">
       {{item.name}}
       <ul>
         <li>
@@ -74,6 +75,9 @@ export default {
       //   // }
       //   // mango.loading('close')
       // }, 2500)
+    },
+    toCustomerInfo(id) {
+      this.$router.push(`/customerInfo/${id}`)
     }
   }
 }

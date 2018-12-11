@@ -130,37 +130,37 @@ export default {
       }
       //登陆接口
       function getApi() {
-        mango.loading("open");
-        var Name = _this.inputValue1;
-        var Pwd = _this.inputValue2;
-        const url = `${mango.port}app/login.api`;
-        // return new Promise((resolve, reject) => {
-        axios({
-          method: "post",
-          url: url,
-          headers: {
-            UUID: "e10adc3949ba59abbe56e057f20f883e"
-          },
-          timeout: 10000,
-          params: {
-            // account: '18080028',
-            account: Name,
-            password: md5(Pwd)
-          }
-        })
-          .then(res => {
-            mango.loading("close");
-            let status = res.data.status;
-            if (res.status == 200) {
-              //状态200，请求成功
-              if (status == 0) {
-                //如果为0，账号或密码错误，出现弹框。
-                _this.display = "block";
-                _this.key = true;
-              } else {
-                //账号密码正确，跳转页面。
-                res = res.data.data;
-                let ajaxData = `{
+        mango.loading('open')
+        var Name = _this.inputValue1
+        var Pwd = _this.inputValue2 
+        const url = `${mango.port}app/login.api`
+      // return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: url,
+        headers: {
+          'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+        },
+        timeout: 10000,
+        params: {
+          // account: '18080028',
+          account:Name,
+          password: md5(Pwd)
+        }
+      })
+        .then((res) => {
+          mango.loading('close')
+          let status = res.data.status  
+          if(res.status == 200){    //状态200，请求成功
+            if(status == 0){           //如果为0，账号或密码错误，出现弹框。
+            _this.display = 'block' 
+            _this.key = true
+            
+            }else{  
+              //账号密码正确，跳转页面。
+              res = res.data.data
+              let ajaxData = `{
+                "account": "${res.account}",
                 "tenantId": "${res.tenantId}",
                 "token": "${res.token}",
                 "uuid": "${res.uuid}",
