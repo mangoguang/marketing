@@ -118,7 +118,7 @@ export var router = new VueRouter({
   }],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {  
-      console.log(324242,savedPosition)      
+      // console.log(324242,savedPosition)      
       return savedPosition    
     } else {      
       if (from.meta.keepAlive) {        

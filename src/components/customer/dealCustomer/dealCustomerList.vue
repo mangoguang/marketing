@@ -1,19 +1,17 @@
 <template>
-  <div class="dealCustomer">
+  <div class="dealCustomer" >
     <ul>
-      <!-- <vuu-pull ref="vuuPull" :options="pullOptions" v-on:loadBottom="loadBottom"> -->
-        <li
-          v-for="(item, index) in dealCustomerList"
-          :key="`customerList${index}`"
-          @click="getDetails(index)"
-        >
-          <span>{{index + 1}}</span>
-          <span>{{item.username}}</span>
-          <span>{{item.sex == 0 ? '女' : '男'}}</span>
-          <span>{{item.phone}}</span>
-          <span>{{getLevel(item.level)}}</span>
-        </li>
-      <!-- </vuu-pull> -->
+      <li
+        v-for="(item, index) in dealCustomerList"
+        :key="`customerList${index}`"
+        @click="getDetails(index)"
+      >
+        <span>{{index + 1}}</span>
+        <span>{{item.username}}</span>
+        <span>{{item.sex == 0 ? '女' : '男'}}</span>
+        <span>{{item.phone}}</span>
+        <span>{{getLevel(item.level)}}</span>
+      </li>
     </ul>
   </div>
 </template>
@@ -69,26 +67,11 @@ export default {
       this.getData(1, 20);
     }
   },
+  mounted(){
+   
+  },
   methods: {
     ...mapMutations(["setDealCustomerList", "setDealOrderInfoDetails","setTabStatus"]),
-    //上啦刷新
-    loadBottom() {
-      // if (this.key) {
-      //   setTimeout(() => {
-      //     if (this.page < this.allPage) {
-      //       this.page ++;
-      //       this.getData(this.page, this.limit);
-      //       if (this.$refs.vuuPull.closeLoadBottom) {
-      //         this.$refs.vuuPull.closeLoadBottom();
-      //       }
-      //     } else {
-      //       if (this.$refs.vuuPull.closeLoadBottom) {
-      //         this.$refs.vuuPull.closeLoadBottom();
-      //       }
-      //     }
-      //   }, 1500);
-      // }
-    },
     getData(page, limit) {
       this.key = false;
       mango.getAjax(this,"order",{
@@ -99,19 +82,11 @@ export default {
         .then(res => {
           //初始进来
           this.allPage = Math.ceil(res.data.total / 10);
-          // if (page <= 2) {
             this.key = true;
             let result  = mango.getUniqueData(res.data.records)
             this.setDealCustomerList(result);
             this.dealCusList = this.dealCustomerList;
             this.$emit("changeResultTit",`全部客户 (${result.length == null? "0": result.length})`);
-          // } else {
-          //   //上啦刷新加载数据
-          //   this.key = true;
-          //   this.addPullData = res.data;
-          //   this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
-          //   this.setDealCustomerList(this.dealCusList);
-          // }
         });
     },
     //获得个人评价等级
@@ -141,6 +116,11 @@ export default {
         sex:this.dealCustomerList[index].sex,
         phone:this.dealCustomerList[index].phone
       }});
+    },
+    recordScrollPosition(e) {
+       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      console.log(scrollTop)
+      // this.$store.dispatch("setHomeListTop",e.target.scrollTop);    //实时存入到vuex中
     }
   }
 };
@@ -151,6 +131,7 @@ export default {
 .dealCustomer {
   padding-top: 23vw;
   background: #f8f8f8;
+  box-sizing: border-box;
   ul {
     border-top: 1px solid #e1e1e1;
     // border-bottom: 1px solid #e1e1e1;

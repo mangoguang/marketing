@@ -137,7 +137,7 @@ export default {
   activated() {
     // isUseCache为false时才重新刷新获取数据
     if(!this.$route.meta.isUseCache){   
-      console.log('isUseCashe = false')  
+      // console.log('isUseCashe = false')  
       this.searchData = this.$route.query
       if(this.searchData){
         let key = this.trim(this.searchData.key)
@@ -153,7 +153,7 @@ export default {
     } 
   },
   beforeRouteLeave (to, from, next) { 
-    console.log('isUseCashe = true')         
+    // console.log('isUseCashe = true')         
     if (to.name == 'searchResult') {
       to.meta.isUseCache = true; 
     }        

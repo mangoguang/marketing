@@ -57,12 +57,16 @@ export default {
   computed: {
     ...mapState({
       // citySelect: state => state.select.citySelect,
-      customerList: state => state.customer.customerList
+      customerList: state => state.customer.customerList,
+      headerStatus: state => state.customerHeader.headerStatus
     })
   },
   watch: {
-    'customerList'(val) {
-      console.log('获取的客户列表：', this.customerList)
+    // 'customerList'(val) {
+    //   console.log('获取的客户列表：', this.customerList)
+    // }
+    headerStatus(){
+    
     }
   },
   methods:{

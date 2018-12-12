@@ -80,6 +80,7 @@ export default {
       if(this.headerStatus[0].status){
         this.getCustomerList()
       }
+      
     }
   },
   created() {

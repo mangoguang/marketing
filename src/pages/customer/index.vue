@@ -49,12 +49,24 @@ export default {
       headerStatus: state => state.customerHeader.headerStatus
     })
   },
+  watch(){
+      console.log(this.headerStatus[0].status)
+      // if(this.headerStatus[0].status){
+      //   window.addEventListener('scroll', this.recordScrollPosition)
+      // }else{
+      //   console.log(12313213123,'remove')
+      //   window.removeEventListener('scroll', this.recordScrollPosition)
+      // }
+  },
   created() {
     this.checkLogin();
-    // localStorage.setItem('limit','30');
   },
-  mounted() {},
   methods: {
+      recordScrollPosition(e) {
+       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      console.log(scrollTop)
+      // this.$store.dispatch("setHomeListTop",e.target.scrollTop);    //实时存入到vuex中
+    },
     checkLogin() {
       let ajaxData = localStorage.getItem("ajaxData");
       // console.log(Date.parse(new Date()) - timeLong)

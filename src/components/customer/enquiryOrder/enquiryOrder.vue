@@ -57,7 +57,6 @@ export default {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[1].status) {
-        console.log('statuschange')
         this.getLimit()
         let tempage = (this.baceLimit - 30)/10
         this.page = 3 + tempage
@@ -71,9 +70,6 @@ export default {
     this.ajaxData = JSON.parse(ajaxData);
     let account = localStorage.getItem("accountMsg");
     this.account = JSON.parse(account).name.trim();
-    console.log('created')
-    this.getOrderList(1,30)
-    // this.setLimit(this.baceLimit)
     this.getLimit()
     let tempage = (this.baceLimit - 30)/10
     this.page = 3 + tempage
@@ -87,7 +83,6 @@ export default {
           if (this.page < this.allPage) {
             this.page ++;
             this.getOrderList(this.page, this.limit);
-
             if (this.$refs.vuuPull.closeLoadBottom) {
               this.$refs.vuuPull.closeLoadBottom();
             }
@@ -134,7 +129,12 @@ export default {
     //获取本地数据
     getLimit() {
       let temp = localStorage.getItem("limit");
-      this.baceLimit = parseInt(JSON.parse(temp).limit);
+      if(temp) {
+        this.baceLimit = parseInt(JSON.parse(temp).limit);
+      }else {
+        this.setLimit(this.baceLimit)
+        this.getOrderList(1,this.baceLimit)
+      }
     },
     //点击进入详情页面
     orderInfoIn(index) {
@@ -146,20 +146,14 @@ export default {
         });
       this.$router.push({ path: "/enquiryInfo" });
     }
+  },
+   beforeRouteLeave(to, from, next) {
+      console.log(22222222)
+
+    next(vm => {
+    })
   }
-  //  activated() {
-  //   // isUseCache为false时才重新刷新获取数据
-  //   if(!this.$route.meta.isUseCache){   
-  //     console.log('isUseCashe = false',123,this)  
-  //       this.getLimit()
-  //       let a = (this.baceLimit - 30)/10
-  //       this.page = 3 + a
-  //       this.getOrderList(1,this.baceLimit)   
-      
-  //     // this.$route.meta.isUseCache = false;  
-  //   } 
-  // },
-};
+  }
 </script>
 
 <style lang="scss" scoped>
