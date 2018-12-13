@@ -8,7 +8,6 @@
     <DealCustomerList @changeResultTit="changeResultTit" v-show=" headerStatus[2].status"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
-
     <Footer/>
   </div>
 </template>

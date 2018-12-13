@@ -7,12 +7,12 @@
       <div class="via"></div>
       <div class="content">
         <div class="name">
-          <span>{{ username }}</span>
+          <span>{{ propsName || username }}</span>
           <span>|</span>
-          <span>{{ sex == 0?'女':'男'}}</span>
+          <span>{{ (propsSex == 0 || sex == 0) ?'女':'男'}}</span>
         </div>
         <div class="phoneNumber">
-          <span>{{ phone }}</span>
+          <span>{{ propsPhone || phone }}</span>
           <div class="phone-icon">
             <!-- <a href="tel:1599999999"> -->
               <img src="../../../assets/imgs/call.png" alt="电话">
@@ -29,6 +29,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 export default {
+  props: ['propsName', 'propsPhone', 'propsSex'],
   data(){
     return{
       height:'',

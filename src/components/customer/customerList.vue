@@ -22,6 +22,7 @@
         <li>{{item.probability}}</li>
       </ul>
     </li>
+    <li><button @click="newCustomer" class="new"></button></li>
   </ul>
   <!-- <ul class="customerList">
     <li class="customerContent" v-for="(customer, index) in customerMsg" :key="`customer${index}`">
@@ -93,6 +94,9 @@ export default {
     },
     toCustomerInfo(id) {
       this.$router.push(`/customerInfo/${id}`)
+    },
+    newCustomer() {
+      this.$router.push({path: './newCustomer'})
     }
   }
 }
@@ -107,7 +111,16 @@ export default {
   height: 100vh;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
-
+  .new{
+    display: block;
+    position: fixed;
+    width: 10vw;
+    height: 10vw;
+    background: url(../../assets/imgs/add.png) no-repeat;
+    background-size: 100% 100%;
+    bottom: 30vw;
+    right: 5vw;
+  }
 }
 .customerContent{
   padding: 0 4.266vw;
