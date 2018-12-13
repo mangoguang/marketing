@@ -1,5 +1,5 @@
 <template>
-  <div class="enquiryOrder" >
+  <div class="enquiryOrder" ref="order">
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
       <ul>
         <li
@@ -39,14 +39,16 @@ export default {
       allPage: "",
       key: true,
       baceLimit:30,
-      allLoaded:false
+      allLoaded:false,
+      id:''
     };
   },
   computed: {
     ...mapState({
       orderList: state => state.orderList.orderList,
       headerStatus: state => state.customerHeader.headerStatus,
-      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
+      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
+      orderScroll: state => state.customerScroll.orderScroll
     })
   },
   watch: {
@@ -57,8 +59,14 @@ export default {
         let tempage = (this.baceLimit - 30)/10
         this.page = 3 + tempage
         this.getOrderList(1,this.baceLimit)
+        this.$refs.order.addEventListener('scroll', this.handleScroll,true)
+        this.$refs.order.scrollTo(0, this.orderScroll)
       }
     }
+  },
+  mounted() {
+    this.$refs.order.addEventListener('scroll', this.handleScroll,true)
+    this.$refs.order.scrollTo(0, this.orderScroll)
   },
   created() {
     //获取本地缓存信息
@@ -72,7 +80,11 @@ export default {
     this.getOrderList(1,this.baceLimit)
   },
   methods: {
-    ...mapMutations(["setOrderList","setOrderInfoDetails"]),
+    handleScroll(e) {
+      let top = e.target.scrollTop
+      this.setOrderScroll(top)
+    },
+    ...mapMutations(["setOrderList","setOrderInfoDetails",'setOrderScroll']),
     loadBottom() {
       if (!this.allLoaded) {
         // this.$refs.loadmore.onBottomLoaded();

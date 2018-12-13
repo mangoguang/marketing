@@ -1,6 +1,6 @@
 <template>
-  <div class="dealCustomer" >
-    <ul  >
+  <div class="dealCustomer" ref="deal">
+    <ul>
       <li
         v-for="(item, index) in dealCustomerList"
         :key="`customerList${index}`"
@@ -41,7 +41,8 @@ export default {
   computed: {
     ...mapState({
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
-      headerStatus: state => state.customerHeader.headerStatus
+      headerStatus: state => state.customerHeader.headerStatus,
+      dealScroll: state => state.customerScroll.dealScroll
     })
   },
   watch: {
@@ -49,8 +50,14 @@ export default {
     headerStatus() {
       if (this.headerStatus[2].status) {
         this.getData();
+        this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
+        this.$refs.deal.scrollTo(0, this.dealScroll)
       }
     }
+  },
+  mounted() {
+    this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
+    this.$refs.deal.scrollTo(0, this.dealScroll)
   },
   created() {
     //获取本地缓存信息
@@ -64,7 +71,17 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setDealCustomerList", "setDealOrderInfoDetails","setTabStatus"]),
+    ...mapMutations([
+      "setDealCustomerList",
+       "setDealOrderInfoDetails",
+       "setTabStatus",
+       'setDealScroll'
+       ]),
+    //获取滚动条高度
+    handleScroll(e) {
+      let top = e.target.scrollTop
+      this.setDealScroll(top)
+    },
     getData() {
       this.key = false;
       mango.getAjax(this,"order",{
