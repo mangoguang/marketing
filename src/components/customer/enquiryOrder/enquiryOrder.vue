@@ -1,7 +1,7 @@
 <template>
-  <div class="enquiryOrder">
-    <ul >
-      <vuu-pull ref="vuuPull" :options="pullOptions" v-on:loadBottom="loadBottom">
+  <div class="enquiryOrder" >
+    <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
+      <ul>
         <li
           v-for="(item, index) in orderList.records"
           :key="`list${index}`"
@@ -11,8 +11,8 @@
           <span>需求{{item.demandTime}}</span>
           <span>{{item.orderStatus}}</span>
         </li>
-      </vuu-pull>
-    </ul>
+      </ul>
+    </mt-loadmore>
   </div>
 </template>
 
@@ -21,9 +21,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../../js";
-import vuuPull from "vuu-pull";
 import dealOrderInfoDetails from '../../../store/modules/components/dealOrderInfoDetails';
-Vue.use(vuuPull);
+import { Loadmore } from 'mint-ui';
+Vue.component(Loadmore.name, Loadmore);
 
 export default {
   name:'enquiryOrder',
@@ -32,17 +32,14 @@ export default {
     return {
       account:'',
       ajaxData:[],
-      pullOptions: {
-        isBottomRefresh: true,
-        isTopRefresh: false
-      },
       dealCusList: [],
       addPullData: [],
       page: 3,
       limit: 10,
       allPage: "",
       key: true,
-      baceLimit:30
+      baceLimit:30,
+      allLoaded:false
     };
   },
   computed: {
@@ -51,7 +48,6 @@ export default {
       headerStatus: state => state.customerHeader.headerStatus,
       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
     })
-
   },
   watch: {
     //根据头部状态获取数据
@@ -78,24 +74,20 @@ export default {
   methods: {
     ...mapMutations(["setOrderList","setOrderInfoDetails"]),
     loadBottom() {
-      if (this.key) {
-        setTimeout(() => {
-          if (this.page < this.allPage) {
+      if (!this.allLoaded) {
+        // this.$refs.loadmore.onBottomLoaded();
+        // setTimeout(() => {
+            if (this.page < this.allPage) {
             this.page ++;
             this.getOrderList(this.page, this.limit);
-            if (this.$refs.vuuPull.closeLoadBottom) {
-              this.$refs.vuuPull.closeLoadBottom();
-            }
-          } else {
-            if (this.$refs.vuuPull.closeLoadBottom) {
-              this.$refs.vuuPull.closeLoadBottom();
-            }
           }
-        }, 1500);
+        // } ,2500)
+        //  this.allLoaded = true;
       }
+      this.$refs.loadmore.onBottomLoaded();
     },
     getOrderList(page, limit) {  
-      this.key = false
+      // this.key = false
       mango.getAjax(this,"order",{
         account: this.account,
         page: page,
@@ -105,7 +97,7 @@ export default {
         .then(res => {
           this.allPage = Math.ceil(res.data.total / 10);
           if (page <= 3) {
-            this.key = true;
+            // this.key = true;
             this.setOrderList(res.data);
             this.dealCusList = this.orderList;
             this.$emit("changeResultTit",`全部客户 (${this.orderList.total == null? "0": this.orderList.total})`);
@@ -114,7 +106,7 @@ export default {
             this.getLimit()
             console.log(12222,this.baceLimit)
             //上啦刷新加载数据
-            this.key = true;
+            // this.key = true;
             this.addPullData = res.data;
             this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
             this.setOrderList(this.dealCusList);
@@ -145,21 +137,20 @@ export default {
           }
         });
       this.$router.push({ path: "/enquiryInfo" });
+      }
     }
-  },
-   beforeRouteLeave(to, from, next) {
-      console.log(22222222)
-
-    next(vm => {
-    })
-  }
   }
 </script>
 
 <style lang="scss" scoped>
 .enquiryOrder{
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
   padding-top: 23vw;
   background: #f8f8f8;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
   ul {
     border-top: 1px solid #e1e1e1;
     padding-left: 4.266vw;

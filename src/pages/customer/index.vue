@@ -1,5 +1,5 @@
 <template>
-  <div class="customer">
+  <div class="customer" ref="scroll">
     <!-- 头部 -->
     <Header @changeResultTit="changeResultTit">{{resultTit}}</Header>
     <!-- 客户列表 -->
@@ -49,24 +49,10 @@ export default {
       headerStatus: state => state.customerHeader.headerStatus
     })
   },
-  watch(){
-      console.log(this.headerStatus[0].status)
-      // if(this.headerStatus[0].status){
-      //   window.addEventListener('scroll', this.recordScrollPosition)
-      // }else{
-      //   console.log(12313213123,'remove')
-      //   window.removeEventListener('scroll', this.recordScrollPosition)
-      // }
-  },
   created() {
     this.checkLogin();
   },
   methods: {
-      recordScrollPosition(e) {
-       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      console.log(scrollTop)
-      // this.$store.dispatch("setHomeListTop",e.target.scrollTop);    //实时存入到vuex中
-    },
     checkLogin() {
       let ajaxData = localStorage.getItem("ajaxData");
       // console.log(Date.parse(new Date()) - timeLong)
@@ -96,10 +82,10 @@ export default {
 <style lang="scss">
 .customer {
   position: relative;
-  min-height: 100vh;
+  // height: 100vh;
   width: 100vw;
   box-sizing: border-box;
-  overflow: hidden;
+  // overflow: scroll;
   background-color: #f8f8f8;
 }
 </style>

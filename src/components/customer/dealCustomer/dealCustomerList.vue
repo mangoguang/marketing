@@ -1,6 +1,6 @@
 <template>
   <div class="dealCustomer" >
-    <ul>
+    <ul  >
       <li
         v-for="(item, index) in dealCustomerList"
         :key="`customerList${index}`"
@@ -21,8 +21,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../../js";
-import vuuPull from "vuu-pull";
-Vue.use(vuuPull);
 
 export default {
   name: "dealCustomerList",
@@ -36,8 +34,6 @@ export default {
       },
       dealCusList: [],
       addPullData: [],
-      page: 2,
-      limit: 10,
       allPage: "",
       key: true
     };
@@ -52,7 +48,7 @@ export default {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[2].status) {
-        this.getData(1, 20);
+        this.getData();
       }
     }
   },
@@ -64,15 +60,12 @@ export default {
     this.account = JSON.parse(account).name.trim();
     //后退的时候重新请求数据
     if (this.headerStatus[2].status) {
-      this.getData(1, 20);
+      this.getData();
     }
-  },
-  mounted(){
-   
   },
   methods: {
     ...mapMutations(["setDealCustomerList", "setDealOrderInfoDetails","setTabStatus"]),
-    getData(page, limit) {
+    getData() {
       this.key = false;
       mango.getAjax(this,"order",{
             account: this.account,
@@ -82,11 +75,11 @@ export default {
         .then(res => {
           //初始进来
           this.allPage = Math.ceil(res.data.total / 10);
-            this.key = true;
-            let result  = mango.getUniqueData(res.data.records)
-            this.setDealCustomerList(result);
-            this.dealCusList = this.dealCustomerList;
-            this.$emit("changeResultTit",`全部客户 (${result.length == null? "0": result.length})`);
+          this.key = true;
+          let result  = mango.getUniqueData(res.data.records)
+          this.setDealCustomerList(result);
+          this.dealCusList = this.dealCustomerList;
+          this.$emit("changeResultTit",`全部客户 (${result.length == null? "0": result.length})`);
         });
     },
     //获得个人评价等级
@@ -112,15 +105,10 @@ export default {
         });
       this.$router.push({ path: "/dealDetails" ,
        query: {
-        username: this.dealCustomerList[index].username,
-        sex:this.dealCustomerList[index].sex,
-        phone:this.dealCustomerList[index].phone
+          username: this.dealCustomerList[index].username,
+          sex:this.dealCustomerList[index].sex,
+          phone:this.dealCustomerList[index].phone
       }});
-    },
-    recordScrollPosition(e) {
-       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
-      console.log(scrollTop)
-      // this.$store.dispatch("setHomeListTop",e.target.scrollTop);    //实时存入到vuex中
     }
   }
 };
@@ -129,9 +117,15 @@ export default {
 
 <style lang="scss" scoped>
 .dealCustomer {
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll; 
+  box-sizing: border-box;
   padding-top: 23vw;
   background: #f8f8f8;
   box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+
   ul {
     border-top: 1px solid #e1e1e1;
     // border-bottom: 1px solid #e1e1e1;

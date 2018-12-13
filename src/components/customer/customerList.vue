@@ -65,9 +65,6 @@ export default {
     // 'customerList'(val) {
     //   console.log('获取的客户列表：', this.customerList)
     // }
-    headerStatus(){
-    
-    }
   },
   methods:{
     loadMore() {
@@ -91,10 +88,12 @@ export default {
 <style lang="scss" scoped>
 .customerList{
   width: 100vw;
-  height: 100vh;
   padding: 24.6vw 0 18vw 0;
   box-sizing: border-box;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+
 }
 .customerContent{
   padding: 0 4.266vw;
