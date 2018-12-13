@@ -9,7 +9,7 @@
         <div class="name">
           <span>{{ propsName || username }}</span>
           <span>|</span>
-          <span>{{ (propsSex == 0 || sex == 0) ?'女':'男'}}</span>
+          <span>{{ (propsSex == 0 || sex == 0) ?'未知':(propsSex == 1 || sex == 1)? '男' : '女'}}</span>
         </div>
         <div class="phoneNumber">
           <span>{{ propsPhone || phone }}</span>
