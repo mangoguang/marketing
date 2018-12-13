@@ -1,18 +1,23 @@
 <template>
   <div class="records">
-    跟踪记录：
+    <track-record></track-record>
   </div>
 </template>
 
 <script>
-// import dealHeader from '../../components/customer/dealCustomer/dealHeader'
-// import mango from '../../js'
+import Vue from 'vue'
+import trackRecord from '../dealCustomer/trackRecord'
 export default {
   name:'records',
   data(){
     return{
 
     }
+  },
+  computed: {
+    // ...mapState({
+    //   dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+    // })
   },
   mounted() {
     // console.log(this.$route.params.id)

@@ -4,6 +4,7 @@ import Common from './common'
 class Mango extends Common {
   constructor() {
     super()
+    this.key = true
     this.customerAjaxParams = (tenantId) => {
       return {
         page: 1,   //页数

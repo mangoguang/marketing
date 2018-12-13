@@ -15,9 +15,9 @@ export default {
 @import "../../assets/common.scss";
   .bigBtn{
     width: 80vw;
-    height: 9vw;
+    height: 13.6vw;
     background: #040404;
-    font-size: 14px;
+    font-size: 18px;
     color: #fff;
     margin: 5vw auto;
   }

@@ -67,11 +67,16 @@ export var router = new VueRouter({
     name: '/CustomerInfo',
     component: resolve => require(['../pages/customer/customerInfo'],resolve)
   },
-  // {
-  //   path: '/ReportForms',
-  //   name: 'ReportForms',
-  //   component: resolve => require(['../pages/ReportForms'], resolve)
-  // },
+  {
+    path: '/newCustomerInfo',
+    name: '/NewCustomerInfo',
+    component: resolve => require(['../pages/customer/newCustomerInfo'],resolve)
+  },
+  {
+    path: '/newCustomer',
+    name: 'NewCustomer',
+    component: resolve => require(['../pages/customer/newCustomer'], resolve)
+  },
   {
     path: '/dealDetails',
     name: '/dealDetails',

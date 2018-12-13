@@ -74,13 +74,14 @@
 
 <script>
 import Vue from 'vue'
+import Vuex, { mapMutations } from "vuex";
 import { DatetimePicker, Picker, Popup } from 'mint-ui'
 
 Vue.component(DatetimePicker.name, DatetimePicker)
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
-import customerLi from '../../../components/customer/customerLi'
-import bigBtn from '../../../components/customer/bigBtn'
+import customerLi from '../customerLi'
+import bigBtn from '../bigBtn'
 import mango from '../../../js'
 export default {
   name:'customerDescript',
@@ -108,33 +109,34 @@ export default {
       popupVisible: false,
       proto: '',
       today: new Date(),
-      province: {},
+      province: [],
       provinceName: '',
-      city: {},
+      city: [],
       cityName: '',
-      county: {},
+      county: [],
       countyName: ''
     }
   },
   watch: {
     'provinceName': function() {
-      this.getCity(this.searchCode(this.province, this.provinceName))
-      console.log('省份改变了：', this.provinceName)
+      // this.getCity(this.searchCode(this.province, this.provinceName))
+      // console.log('省份改变了：', this.provinceName)
     },
     'cityName': function() {
-      this.getCity(this.searchCode(this.city, this.cityName))
-      this.customerInfo[this.proto] = `${this.provinceName} ${this.cityName} ${this.areaName}`
-      console.log('城市改变了：', this.cityName)
+      // this.getCity(this.searchCode(this.city, this.cityName))
+      // this.customerInfo[this.proto] = `${this.provinceName} ${this.cityName} ${this.areaName}`
+      // console.log('城市改变了：', this.cityName)
     },
     'countyName': function() {
       // this.customerInfo[this.proto] = 
-      console.log('地区改变了：', this.countyName)
+      // console.log('地区改变了：', this.countyName)
     }
   },
   computed: {
     'provinceNames': function() {
       let arr = this.province.map(item => {
-        return item.name
+        let str = item.name
+        return str.slice(0, 4)
       })
       return arr
     },
@@ -148,7 +150,6 @@ export default {
       let arr = this.county.map(item => {
         return item.name
       })
-      console.log(arr)
       return arr
     }
   },
@@ -163,6 +164,7 @@ export default {
     // this.returnDate('1992年04月27日')
   },
   methods: {
+    ...mapMutations(["setDealOrderInfoDetails"]),
     getCustomerInfo() {
       let id = this.$route.params.id
       mango.getAjax(this, 'customerById',{
@@ -170,15 +172,27 @@ export default {
       },'v2').then((res) => {
         res = res.data
         if (res) {
-          this.provinceName = res.province
-          this.cityName = res.city
-          this.countyName = res.area
-          this.$refs.Picker.setSlotValue(0, res.province)
-          this.$refs.Picker.setSlotValue(1, res.city)
-          this.$refs.Picker.setSlotValue(2, res.area)
+          this.setDealOrderInfoDetails(res)
+          this.provinceName = res.provinceName
+          this.cityName = res.cityName
+          this.countyName = res.areaName
           this.customerInfo = res
           this.checkBtnStatus(res)
+          // 获取行政区域数据
           this.getProvince()
+          // .then((response) => {
+          //   // this.getCity(res.provinceCode).then((response) => {
+          //   //   this.getCounty(res.cityCode).then((response) => {
+          //   //     this.setAreaData(this.provinceNames, this.cityNames, this.countyNames)
+          //   //   })
+          //   // })
+          // })
+          // 设置dealHeader组建的用户信息
+          this.$emit('setInfo', {
+            name: res.username,
+            phone: res.phone,
+            sex: res.sex
+          })
         }
       })
     },
@@ -219,6 +233,10 @@ export default {
     selectArea() {
       this.slots = this.areaList
       this.proto = 'area'
+      // 设置地区选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.provinceName)
+      this.$refs.Picker.setSlotValue(1, this.cityName)
+      this.$refs.Picker.setSlotValue(2, this.countyName)
       this.popupVisible = true
     },
     selectTime() {
@@ -232,11 +250,31 @@ export default {
       this.customerInfo.birthday = mango.indexTimeB(value)[0]
     },
     onValuesChange(picker, values) {
+      // 选择地区
       if (this.proto === 'area') {
-        this.provinceName = values[0]
-        this.cityName = values[1]
-        this.countyName = values[2]
-        this.customerInfo[this.proto] = `${values[0]} ${values[1]} ${values[2]}`
+      //   if (values) {
+      //     console.log(values)
+      //     // 选择省级行政单位
+      //     if (this.provinceName !== values[0]) {
+      //       this.provinceName = values[0]
+      //       console.log('省份改变了1::', values[0])
+      //       // this.city = []
+      //       console.log('省代码：', this.searchCode(this.province, values[0]))
+      //       this.getCity(this.searchCode(this.province, values[0]))
+      //       // this.customerInfo[this.proto]
+      //     // 选择市级行政单位
+      //     } else if (this.cityName !== values[1]) {
+      //       this.cityName = values[1]
+      //       console.log('城市改变了1::', values[1])
+      //       // this.county = []
+      //       this.getCounty(this.searchCode(this.city, values[1]))
+      //     // 选择县级行政单位
+      //     } else if (this.countyName !== values[2]) {
+      //       this.countyName = values[2]
+      //       console.log('地区改变了1::', values[2])
+      //     }
+      //   }
+        // this.customerInfo[this.proto] = `${values[0]} ${values[1]} ${values[2]}`
       } else {
         this.customerInfo[this.proto] = values[0]
       }
@@ -271,7 +309,7 @@ export default {
         'demand.trList[0].followTime': '2018-11-20',
         'demand.trList[0].followPlan': '跟进计划'
       }
-      
+      console.log(params)
       // _vue, port, params, pathVersion,type
       // mango.getAjax(this, 'customer/update', params,'v2', 'post').then((res) => {
       //   console.log('保存数据成功', res)
@@ -299,47 +337,66 @@ export default {
       }
     },
     getProvince() {
-      mango.getAjax(this, 'province', {},'v3').then((res) => {
-        res = res.data
-        if (res) {
-          this.province = res
-          this.getCity(res[0].code)
-        }
-      })
+      // return new Promise((resolve, reject) => {
+        mango.getAjax(this, 'province', {},'v3').then((res) => {
+          res = res.data
+          if (res) {
+            this.province = res
+            this.areaList = [{
+              values: this.provinceNames,
+              className: 'slot1'
+            }]
+          }
+          // resolve(res)
+        })
+      // })
     },
     getCity(province) {
-      mango.getAjax(this, 'city', {
-        province: province
-      },'v3').then((res) => {
-        res = res.data
-        if (res) {
-          this.city = res
-          if (this.city[0]) {
-            this.getArea(this.city[0].code)
-          }
-        }
-      })
+      if (mango.key) {
+        mango.key = false
+        // return new Promise((resolve, reject) => {
+          mango.getAjax(this, 'city', {
+            province: province
+          },'v3').then((res) => {
+            mango.key = true
+            res = res.data
+            if (res) {
+              this.city = res
+              this.slots = [{
+                values: this.provinceNames,
+                className: 'slot1'
+              }, {
+                values: this.cityNames,
+                className: 'slot2'
+              }]
+            }
+            // resolve(res)
+          })
+        // })
+      }
     },
-    getArea(city) {
-      mango.getAjax(this, 'area', {
-        city: city
-      },'v3').then((res) => {
-        res = res.data
-        if (res) {
-          let [provinceNames, cityNames, areaNames] = [
-            this.province.map((item, index) => {
-              return item.name
-            }),
-            this.city.map((item, index) => {
-              return item.name
-            }),
-            res.map((item, index) => {
-              return item.name
-            })
-          ]
-          this.setAreaData(provinceNames, cityNames, areaNames)
-          // this.customerInfo[this.proto] = `${this.provinceName} ${this.cityName} ${this.areaName}`
-        }
+    getCounty(city) {
+      console.log(mango.key)
+      return new Promise((resolve, reject) => {
+        mango.getAjax(this, 'area', {
+          city: city
+        },'v3').then((res) => {
+          res = res.data
+          if (res) {
+            this.county = res
+            this.slots = [{
+              values: this.provinceNames,
+              className: 'slot1'
+            }, {
+              values: this.cityNames,
+              className: 'slot2'
+            }, {
+              values: this.countyNames,
+              className: 'slot3'
+            }]
+          }
+          resolve(res)
+        })
       })
     },
     setAreaData(province, city, county) {
@@ -359,7 +416,7 @@ export default {
     // 根据省名/城市名/地区名匹配对应的行政代码。
     searchCode(arr, name) {
       for (let i = 0; i < arr.length; i ++) {
-        if (arr[i].name === name) {
+        if (arr[i].name.indexOf(name) !== -1) {
           return arr[i].code
         }
       }
