@@ -1,5 +1,5 @@
 <template>
-  <div class="customer">
+  <div class="customer" ref="scroll">
     <!-- 头部 -->
     <Header @changeResultTit="changeResultTit">{{resultTit}}</Header>
     <!-- 客户列表 -->
@@ -51,7 +51,6 @@ export default {
   created() {
     this.checkLogin();
   },
-  mounted() {},
   methods: {
     checkLogin() {
       let ajaxData = localStorage.getItem("ajaxData");
@@ -82,10 +81,10 @@ export default {
 <style lang="scss">
 .customer {
   position: relative;
-  min-height: 100vh;
+  // height: 100vh;
   width: 100vw;
   box-sizing: border-box;
-  overflow: hidden;
+  // overflow: scroll;
   background-color: #f8f8f8;
 }
 </style>

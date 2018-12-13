@@ -12,6 +12,7 @@
           <button class="search" @click="showNav"></button>
         </li>
       </ul>
+      <!-- 搜索组件 -->
       <div :style="{display: navShow ? 'none' : 'flex'}">
         <button @click="showNav(headerStatus)">导航</button>
         <div>
@@ -49,6 +50,7 @@ import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../js'
 Vue.use(Vuex)
+
 export default {
   name: 'customerHeader',
   props: ['changeResultTit'],
@@ -60,7 +62,8 @@ export default {
       ajaxData: {},
       customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
       selectBtnText: '全部',
-      searchKey: ''
+      searchKey: '',
+      ajaxData:[]
     }
   },
   computed: {
@@ -73,6 +76,12 @@ export default {
   watch: {
     'customerAjaxParams': function(val) {
       this.getCustomerList()
+    },
+    headerStatus(){
+      if(this.headerStatus[0].status){
+        this.getCustomerList()
+      }
+      
     }
   },
   created() {
@@ -81,12 +90,12 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
-  },
-  mounted() {
-    this.isIPhoneX()
     if(this.headerStatus[0].status){
       this.getCustomerList()
     }
+  },
+  mounted() {
+    this.isIPhoneX()
   },
   methods:{
     ...mapMutations([
