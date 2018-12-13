@@ -103,7 +103,8 @@ export default {
     position: fixed;
     width: 10vw;
     height: 10vw;
-    background: red;
+    background: url(../../assets/imgs/add.png) no-repeat;
+    background-size: 100% 100%;
     bottom: 30vw;
     right: 5vw;
   }
