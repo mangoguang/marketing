@@ -1,19 +1,17 @@
 <template>
-  <div class="dealCustomer">
+  <div class="dealCustomer" ref="deal">
     <ul>
-      <!-- <vuu-pull ref="vuuPull" :options="pullOptions" v-on:loadBottom="loadBottom"> -->
-        <li
-          v-for="(item, index) in dealCustomerList"
-          :key="`customerList${index}`"
-          @click="getDetails(index)"
-        >
-          <span>{{index + 1}}</span>
-          <span>{{item.username}}</span>
-          <span>{{item.sex == 0 ? '女' : '男'}}</span>
-          <span>{{item.phone}}</span>
-          <span>{{getLevel(item.level)}}</span>
-        </li>
-      <!-- </vuu-pull> -->
+      <li
+        v-for="(item, index) in dealCustomerList"
+        :key="`customerList${index}`"
+        @click="getDetails(index)"
+      >
+        <span>{{index + 1}}</span>
+        <span>{{item.username}}</span>
+        <span>{{item.sex == 0 ? '女' : '男'}}</span>
+        <span>{{item.phone}}</span>
+        <span>{{getLevel(item.level)}}</span>
+      </li>
     </ul>
   </div>
 </template>
@@ -23,8 +21,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../../js";
-import vuuPull from "vuu-pull";
-Vue.use(vuuPull);
 
 export default {
   name: "dealCustomerList",
@@ -38,8 +34,6 @@ export default {
       },
       dealCusList: [],
       addPullData: [],
-      page: 2,
-      limit: 10,
       allPage: "",
       key: true
     };
@@ -47,19 +41,25 @@ export default {
   computed: {
     ...mapState({
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
-      headerStatus: state => state.customerHeader.headerStatus
+      headerStatus: state => state.customerHeader.headerStatus,
+      dealScroll: state => state.customerScroll.dealScroll
     })
   },
   watch: {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[2].status) {
-        this.getData(1, 20);
+        this.getData();
+        this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
+        this.$refs.deal.scrollTo(0, this.dealScroll)
       }
     }
   },
+  mounted() {
+    this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
+    this.$refs.deal.scrollTo(0, this.dealScroll)
+  },
   created() {
-    console.log('成交客户页面','created')
     //获取本地缓存信息
     let ajaxData = localStorage.getItem("ajaxData");
     this.ajaxData = JSON.parse(ajaxData);
@@ -67,30 +67,22 @@ export default {
     this.account = JSON.parse(account).name.trim();
     //后退的时候重新请求数据
     if (this.headerStatus[2].status) {
-      this.getData(1, 20);
+      this.getData();
     }
   },
   methods: {
-    ...mapMutations(["setDealCustomerList", "setDealOrderInfoDetails","setTabStatus"]),
-    //上啦刷新
-    loadBottom() {
-      // if (this.key) {
-      //   setTimeout(() => {
-      //     if (this.page < this.allPage) {
-      //       this.page ++;
-      //       this.getData(this.page, this.limit);
-      //       if (this.$refs.vuuPull.closeLoadBottom) {
-      //         this.$refs.vuuPull.closeLoadBottom();
-      //       }
-      //     } else {
-      //       if (this.$refs.vuuPull.closeLoadBottom) {
-      //         this.$refs.vuuPull.closeLoadBottom();
-      //       }
-      //     }
-      //   }, 1500);
-      // }
+    ...mapMutations([
+      "setDealCustomerList",
+       "setDealOrderInfoDetails",
+       "setTabStatus",
+       'setDealScroll'
+       ]),
+    //获取滚动条高度
+    handleScroll(e) {
+      let top = e.target.scrollTop
+      this.setDealScroll(top)
     },
-    getData(page, limit) {
+    getData() {
       this.key = false;
       mango.getAjax(this,"order",{
             account: this.account,
@@ -100,19 +92,11 @@ export default {
         .then(res => {
           //初始进来
           this.allPage = Math.ceil(res.data.total / 10);
-          // if (page <= 2) {
-            this.key = true;
-            let result  = mango.getUniqueData(res.data.records)
-            this.setDealCustomerList(result);
-            this.dealCusList = this.dealCustomerList;
-            this.$emit("changeResultTit",`全部客户 (${result.length == null? "0": result.length})`);
-          // } else {
-          //   //上啦刷新加载数据
-          //   this.key = true;
-          //   this.addPullData = res.data;
-          //   this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
-          //   this.setDealCustomerList(this.dealCusList);
-          // }
+          this.key = true;
+          let result  = mango.getUniqueData(res.data.records)
+          this.setDealCustomerList(result);
+          this.dealCusList = this.dealCustomerList;
+          this.$emit("changeResultTit",`全部客户 (${result.length == null? "0": result.length})`);
         });
     },
     //获得个人评价等级
@@ -138,9 +122,9 @@ export default {
         });
       this.$router.push({ path: "/dealDetails" ,
        query: {
-        username: this.dealCustomerList[index].username,
-        sex:this.dealCustomerList[index].sex,
-        phone:this.dealCustomerList[index].phone
+          username: this.dealCustomerList[index].username,
+          sex:this.dealCustomerList[index].sex,
+          phone:this.dealCustomerList[index].phone
       }});
     }
   }
@@ -150,8 +134,15 @@ export default {
 
 <style lang="scss" scoped>
 .dealCustomer {
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll; 
+  box-sizing: border-box;
   padding-top: 23vw;
   background: #f8f8f8;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+
   ul {
     border-top: 1px solid #e1e1e1;
     // border-bottom: 1px solid #e1e1e1;

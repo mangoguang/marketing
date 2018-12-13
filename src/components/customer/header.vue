@@ -12,6 +12,7 @@
           <button class="search" @click="showNav"></button>
         </li>
       </ul>
+      <!-- 搜索组件 -->
       <div :style="{display: navShow ? 'none' : 'flex'}">
         <button @click="showNav(headerStatus)">导航</button>
         <div>
@@ -80,6 +81,7 @@ export default {
       if(this.headerStatus[0].status){
         this.getCustomerList()
       }
+      
     }
   },
   created() {

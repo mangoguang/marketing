@@ -70,7 +70,7 @@ export default {
   created(){
     this.checkLogin()
   //  console.log(this.forms[0].text)
-    
+    localStorage.removeItem('limit');    
   },
   mounted() {
     if (mango.version === 'app') {

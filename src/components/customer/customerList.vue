@@ -1,6 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <ul
+    ref="customer"
     class="customerList"
     v-infinite-scroll="loadMore"
     infinite-scroll-disabled="loading"
@@ -42,7 +43,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { InfiniteScroll } from 'mint-ui'
-import Vuex, { mapState } from 'vuex'
+import Vuex, { mapMutations, mapState } from "vuex";
 Vue.use(InfiniteScroll)
 Vue.use(Vuex)
 import mango from '../../js'
@@ -57,15 +58,29 @@ export default {
   computed: {
     ...mapState({
       // citySelect: state => state.select.citySelect,
-      customerList: state => state.customer.customerList
+      customerList: state => state.customer.customerList,
+      headerStatus: state => state.customerHeader.headerStatus,
+      customerScroll: state => state.customerScroll.customerScroll
     })
   },
   watch: {
-    'customerList'(val) {
-      console.log('获取的客户列表：', this.customerList)
+    headerStatus() {
+      if (this.headerStatus[0].status) {
+        this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
+        this.$refs.customer.scrollTo(0, this.customerScroll)
+      }
     }
   },
+  mounted() {
+    this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
+    this.$refs.customer.scrollTo(0, this.customerScroll)
+  },
   methods:{
+    ...mapMutations(["setCustomerScroll"]),
+    handleScroll(e) {
+      let top = e.target.scrollTop
+      this.setCustomerScroll(top)
+    },
     loadMore() {
       // mango.loading('open')
       // setTimeout(() => {
@@ -87,10 +102,12 @@ export default {
 <style lang="scss" scoped>
 .customerList{
   width: 100vw;
-  height: 100vh;
   padding: 24.6vw 0 18vw 0;
   box-sizing: border-box;
-  overflow-x: hidden;
+  height: 100vh;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+
 }
 .customerContent{
   padding: 0 4.266vw;

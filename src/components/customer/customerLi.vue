@@ -18,8 +18,7 @@ export default {
 
     }
   },
-  mounted() {
-    console.log(this.$route.params.id)
+  created(){
   },
   methods: {
     getCustomerInfo() {

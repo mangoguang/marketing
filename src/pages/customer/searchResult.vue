@@ -49,12 +49,9 @@ export default {
     };
   },
   created() {
-    console.log('credted')
     //获取本地数据
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    // this.customerAjaxParams.tenantId = this.ajaxData.tenantId
-    // this.setCustomerAjaxParams(this.customerAjaxParams)
     let account = localStorage.getItem('accountMsg')
     this.account = JSON.parse(account).name.trim()
   },
@@ -140,7 +137,7 @@ export default {
   activated() {
     // isUseCache为false时才重新刷新获取数据
     if(!this.$route.meta.isUseCache){   
-      console.log('isUseCashe = false')  
+      // console.log('isUseCashe = false')  
       this.searchData = this.$route.query
       if(this.searchData){
         let key = this.trim(this.searchData.key)
@@ -156,7 +153,7 @@ export default {
     } 
   },
   beforeRouteLeave (to, from, next) { 
-    console.log('isUseCashe = true')         
+    // console.log('isUseCashe = true')         
     if (to.name == 'searchResult') {
       to.meta.isUseCache = true; 
     }        
