@@ -69,20 +69,18 @@ export default {
       if (this.headerStatus[0].status) {
         this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
         this.$refs.customer.scrollTo(0, this.customerScroll)
-        console.log('customer',this.customerScroll)
-
       }
     }
   },
   mounted() {
     this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
     this.$refs.customer.scrollTo(0, this.customerScroll)
+    //////数据请求要放在这里后面
   },
   methods:{
     ...mapMutations(["setCustomerScroll"]),
     handleScroll(e) {
       let top = e.target.scrollTop
-      console.log('customer',top)
       this.setCustomerScroll(top)
     },
     loadMore() {
