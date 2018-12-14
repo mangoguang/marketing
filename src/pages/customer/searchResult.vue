@@ -1,6 +1,24 @@
 <template>
   <div class="searchResult">
     <mybanner :title='text'/>
+    <ul class="customerList" v-if="headerStatus[0].status" >
+      <li
+      class="customerContent"
+      v-for="(item, index) in myCustomerList.records"
+      :key="`customerList${index}`"
+      @click="toCustomerInfo(item.id)">
+        {{item.name}}
+        <ul>
+          <li>
+            <div :class="`urgence${item.urgency}`"></div>
+            <strong>{{item.username}}<i :class="`important${item.important}`"></i></strong>
+            <span>{{item.followTime}}</span>
+          </li>
+          <li>{{item.intention}}</li>
+          <li>{{item.probability}}</li>
+        </ul>
+      </li>
+    </ul>
     <ul v-if="headerStatus[1].status" class="orderList">
       <li
           v-for="(item, index) in orderList.records"
@@ -45,7 +63,8 @@ export default {
       account:'',
       ajaxData:[],
       orderList:[],
-      dealList:[]
+      dealList:[],
+      myCustomerList:[]
     };
   },
   created() {
@@ -58,11 +77,18 @@ export default {
   computed: {
     ...mapState({
       headerStatus: state => state.customerHeader.headerStatus,
-      dealCustomerList: state => state.dealCustomerList.dealCustomerList
+      customerAjaxParams: state => state.customer.customerAjaxParams,
+      customerList: state => state.customer.customerList
     })
   },
   methods:{
-    ...mapMutations(['setDealCustomerList',"setOrderInfoDetails","setDealOrderInfoDetails","setTabStatus"]),
+    ...mapMutations([
+      "setOrderInfoDetails",
+      "setDealOrderInfoDetails",
+      "setTabStatus",
+      'setCustomerAjaxParams'
+      ]),
+    //订单查询和成交客户搜索
     getCustomerList(key) {
       mango.getAjax(this, 'order',{
         account: this.account,
@@ -75,11 +101,28 @@ export default {
             this.orderList = res.data
           }else if (this.headerStatus[2].status) {
             let result  = mango.getUniqueData(res.data.records)
-            this.setDealCustomerList(result);
             this.dealList = result
           }
         }
       }) 
+    },
+    //我的客户搜索
+    getMyCustomerList(myKey) {
+       let [temp, tempObj] = [this.customerAjaxParams, {}]
+      // 对象深拷贝
+      for (let key in temp) {
+        tempObj[key] = temp[key]
+      }
+      console.log(myKey, typeof(myKey))
+      // tempObj.key = myKey
+      tempObj.account = this.account
+      this.setCustomerAjaxParams(tempObj)
+      console.log(123,this.customerAjaxParams)
+      mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
+        if (res) {
+          this.myCustomerList = res.data
+        }
+      })
     },
     getLevel(level) {
       if (level == 1) {
@@ -91,6 +134,10 @@ export default {
       } else {
         return null;
       }
+    },
+    //我的客户搜索
+    toCustomerInfo(id) {
+      this.$router.push(`/customerInfo/${id}`)
     },
     //订单查询搜索
     orderInfoIn(index) {
@@ -113,9 +160,9 @@ export default {
         });
       this.$router.push({ path: "/dealDetails" ,
         query: {
-          username: this.dealCustomerList[index].username,
-          sex:this.dealCustomerList[index].sex,
-          phone:this.dealCustomerList[index].phone
+          username: this.dealList[index].username,
+          sex:this.dealList[index].sex,
+          phone:this.dealList[index].phone
         }
       });
     },
@@ -143,10 +190,12 @@ export default {
         let key = this.trim(this.searchData.key)
         this.setSearchData(key) //缓存数据
         this.getSearchData()
+        this.myCustomerList = []
         this.dealList = []
         this.orderList = [] // 清空原有数据
         if(key) {
           this.getCustomerList(key); // 这是我们获取数据的函数
+          this.getMyCustomerList(key)
         }
       }      
       this.$route.meta.isUseCache = false;  
@@ -163,74 +212,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '../../main.scss';
 .searchResult{
   padding-top: 16vw;
   background: #f8f8f8;
-  min-height: 100vh;
-  .orderList{
-    padding-left: 4.266vw;
-    color: #999;
-    font-size: 4.26vw;
-    line-height: 11.73vw;
-    border-bottom: 1px solid #e1e1e1;
-    li {
-      display: flex;
-      justify-content: space-between;
-      padding-right: 3.86vw;
-      border-top: 1px solid #e1e1e1;
-      span:nth-child(1) {
-        flex: 0.1;
-      }
-      span:nth-child(2) {
-        color: #363636;
-        flex: 0.2;
-      }
-      span:nth-child(3) {
-        flex: 0.4;
-      }
-      span:nth-child(4) {
-        flex: 0.4;
-        color: #363636;
-        text-align: right;
-      }
-    }
-  }
-   .dealList{
-    border-bottom: 1px solid #e1e1e1;
-    // border-bottom: 1px solid #e1e1e1;
-    padding-left: 4.266vw;
-    color: #999;
-    font-size: 4.26vw;
-    line-height: 11.73vw;
-    li {
-      display: flex;
-      justify-content: space-between;
-      padding-right: 3.86vw;
-      border-top: 1px solid #e1e1e1;
-      span:nth-child(2) {
-        color: #363636;
-        flex: 0.3;
-      }
-      span:nth-child(5) {
-        color: #363636;
-        flex: 0.05;
-      }
-      span:nth-child(3) {
-        flex: 0.2;
-      }
-      span:nth-child(4) {
-        flex: 0.5;
-      }
-      span:nth-child(1) {
-        flex: 0.15;
-      }
-    }
-    li:nth-child(1) {
-      border-top: none;
-    }
-    li:last-child {
-      border-bottom: none
-    }
-  }
+  min-height: 100vh; 
 }
+
 </style>

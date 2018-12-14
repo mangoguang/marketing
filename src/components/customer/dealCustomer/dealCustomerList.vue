@@ -60,15 +60,15 @@ export default {
     }
   },
   mounted() {
-    if (this.headerStatus[2].status) {
-      if(!this.dealCustomerList) {
-        this.getData();
-      }else {
-        this.setHeader(this.dealLength)
-      }
+  this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
+  this.$refs.deal.scrollTo(0, this.dealScroll)
+  if (this.headerStatus[2].status) {
+    if(!this.dealCustomerList) {
+      this.getData();
+    }else {
+      this.setHeader(this.dealLength)
     }
-    this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
-    this.$refs.deal.scrollTo(0, this.dealScroll)
+  }
   },
   created() {
     //获取本地缓存信息
