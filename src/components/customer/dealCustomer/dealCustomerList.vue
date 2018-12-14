@@ -150,7 +150,7 @@ export default {
     color: #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
-    padding-bottom: 19vw;
+    padding-bottom: 21vw;
     li {
       display: flex;
       justify-content: space-between;
