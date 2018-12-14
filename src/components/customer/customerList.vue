@@ -69,6 +69,8 @@ export default {
       if (this.headerStatus[0].status) {
         this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
         this.$refs.customer.scrollTo(0, this.customerScroll)
+        console.log('customer',this.customerScroll)
+
       }
     }
   },
@@ -80,6 +82,7 @@ export default {
     ...mapMutations(["setCustomerScroll"]),
     handleScroll(e) {
       let top = e.target.scrollTop
+      console.log('customer',top)
       this.setCustomerScroll(top)
     },
     loadMore() {

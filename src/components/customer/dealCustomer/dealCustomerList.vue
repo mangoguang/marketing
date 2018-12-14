@@ -42,20 +42,31 @@ export default {
     ...mapState({
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
       headerStatus: state => state.customerHeader.headerStatus,
-      dealScroll: state => state.customerScroll.dealScroll
+      dealScroll: state => state.customerScroll.dealScroll,
+      dealLength: state => state.dealCustomerList.dealLength
     })
   },
   watch: {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[2].status) {
-        this.getData();
+        this.setHeader(this.dealLength)
         this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
         this.$refs.deal.scrollTo(0, this.dealScroll)
+        if(this.dealScroll === 0) {
+          this.getData();
+        }
       }
     }
   },
   mounted() {
+    if (this.headerStatus[2].status) {
+      if(!this.dealCustomerList) {
+        this.getData();
+      }else {
+        this.setHeader(this.dealLength)
+      }
+    }
     this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
     this.$refs.deal.scrollTo(0, this.dealScroll)
   },
@@ -65,17 +76,14 @@ export default {
     this.ajaxData = JSON.parse(ajaxData);
     let account = localStorage.getItem("accountMsg");
     this.account = JSON.parse(account).name.trim();
-    //后退的时候重新请求数据
-    if (this.headerStatus[2].status) {
-      this.getData();
-    }
   },
   methods: {
     ...mapMutations([
       "setDealCustomerList",
        "setDealOrderInfoDetails",
        "setTabStatus",
-       'setDealScroll'
+       'setDealScroll',
+       'setDealLength'
        ]),
     //获取滚动条高度
     handleScroll(e) {
@@ -96,8 +104,12 @@ export default {
           let result  = mango.getUniqueData(res.data.records)
           this.setDealCustomerList(result);
           this.dealCusList = this.dealCustomerList;
-          this.$emit("changeResultTit",`全部客户 (${result.length == null? "0": result.length})`);
+          this.setDealLength(result.length)
+          this.setHeader(this.dealLength)
         });
+    },
+    setHeader(length) {
+      this.$emit("changeResultTit",`全部客户 (${length == 0? "0": length})`);
     },
     //获得个人评价等级
     getLevel(level) {
@@ -113,19 +125,21 @@ export default {
     },
     //详细订单信息
     getDetails(index) {
+      let id = this.dealCustomerList[index].customerId
       this.setTabStatus(mango.btnList(['订单信息', '跟踪记录', '个人评级'], 0))
-      mango.getAjax(this,"customerinfo",{customerId: this.dealCusList[index].customerId},"v2")
+      mango.getAjax(this,"customerinfo",{customerId: id},"v2")
         .then(res => {
           if (res) {
             this.setDealOrderInfoDetails(res.data);
           }
         });
       this.$router.push({ path: "/dealDetails" ,
-       query: {
+        query: {
           username: this.dealCustomerList[index].username,
           sex:this.dealCustomerList[index].sex,
           phone:this.dealCustomerList[index].phone
-      }});
+        }
+      });
     }
   }
 };

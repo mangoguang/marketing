@@ -53,7 +53,6 @@ Vue.use(Vuex)
 
 export default {
   name: 'customerHeader',
-  props: ['changeResultTit'],
   data () {
     return {
       top: '',

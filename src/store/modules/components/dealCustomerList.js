@@ -2,11 +2,13 @@
 
 
 const state = {
-  dealCustomerList: []
+  dealCustomerList: [],
+  dealLength:0
 }
 
 const mutations = {
-  setDealCustomerList: (state, arr) => state.dealCustomerList = arr
+  setDealCustomerList: (state, arr) => state.dealCustomerList = arr,
+  setDealLength: (state, arr) => state.dealLength = arr
 }
 
 const actions = {

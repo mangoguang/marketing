@@ -55,16 +55,30 @@ export default {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[1].status) {
-        this.getLimit()
-        let tempage = (this.baceLimit - 30)/10
-        this.page = 3 + tempage
-        this.getOrderList(1,this.baceLimit)
+        if(this.orderScroll == 0) {
+          this.getLimit()
+          let tempage = (this.baceLimit - 30)/10
+          this.page = 3 + tempage
+          this.getOrderList(1,this.baceLimit)
+        }
         this.$refs.order.addEventListener('scroll', this.handleScroll,true)
         this.$refs.order.scrollTo(0, this.orderScroll)
+        console.log('order',this.orderScroll)
       }
     }
   },
   mounted() {
+    if(!this.orderList) {
+      this.getLimit()
+      let tempage = (this.baceLimit - 30)/10
+      this.page = 3 + tempage
+      this.getOrderList(1,this.baceLimit)
+    }else {
+      this.getLimit()
+      let tempage = (this.baceLimit - 30)/10
+      this.page = 3 + tempage
+      this.getOrderList(1,this.baceLimit)
+    }
     this.$refs.order.addEventListener('scroll', this.handleScroll,true)
     this.$refs.order.scrollTo(0, this.orderScroll)
   },
@@ -74,14 +88,11 @@ export default {
     this.ajaxData = JSON.parse(ajaxData);
     let account = localStorage.getItem("accountMsg");
     this.account = JSON.parse(account).name.trim();
-    this.getLimit()
-    let tempage = (this.baceLimit - 30)/10
-    this.page = 3 + tempage
-    this.getOrderList(1,this.baceLimit)
   },
   methods: {
     handleScroll(e) {
       let top = e.target.scrollTop
+      console.log('order',top)
       this.setOrderScroll(top)
     },
     ...mapMutations(["setOrderList","setOrderInfoDetails",'setOrderScroll']),
@@ -169,7 +180,7 @@ export default {
     color: #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
-    padding-bottom: 21vw;
+    padding-bottom: 22vw;
     li {
       display: flex;
       justify-content: space-between;
