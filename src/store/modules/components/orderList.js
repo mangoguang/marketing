@@ -1,6 +1,6 @@
 
 const state = {
-  orderList: []
+  orderList: ''
 }
 
 const mutations = {

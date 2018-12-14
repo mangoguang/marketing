@@ -1,11 +1,14 @@
 <template>
   <div class="customer" ref="scroll">
     <!-- 头部 -->
-    <Header @changeResultTit="changeResultTit">{{resultTit}}</Header>
+    <Header>
+      <span v-show="headerStatus[1].status">{{orderResultTit}}</span>
+      <span v-show="headerStatus[2].status">{{dealResultTit}}</span>
+    </Header>
     <!-- 客户列表 -->
     <CustomerList v-show="headerStatus[0].status"/>
-    <EnquiryOrder @changeResultTit="changeResultTit" v-show=" headerStatus[1].status"/>
-    <DealCustomerList @changeResultTit="changeResultTit" v-show=" headerStatus[2].status"/>
+    <EnquiryOrder @changeResultTit="changeOrderResultTit" v-show=" headerStatus[1].status"/>
+    <DealCustomerList @changeResultTit="changeDealResultTit" v-show=" headerStatus[2].status"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
     <Footer/>
@@ -40,7 +43,8 @@ export default {
   },
   data() {
     return {
-      resultTit: ""
+      orderResultTit: "",
+      dealResultTit:''
     };
   },
   computed: {
@@ -71,8 +75,11 @@ export default {
     searchCustomer(key) {
       console.log("搜索关键字；", key);
     },
-    changeResultTit(str) {
-      this.resultTit = str;
+    changeOrderResultTit(str) {
+      this.orderResultTit = str;
+    },
+    changeDealResultTit(str) {
+      this.dealResultTit = str;
     }
   }
 };

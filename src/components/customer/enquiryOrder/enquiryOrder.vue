@@ -1,7 +1,7 @@
 <template>
   <div class="enquiryOrder" ref="order">
-    <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
-      <ul>
+    <ul>
+      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
         <li
           v-for="(item, index) in orderList.records"
           :key="`list${index}`"
@@ -11,8 +11,8 @@
           <span>需求{{item.demandTime}}</span>
           <span>{{item.orderStatus}}</span>
         </li>
-      </ul>
-    </mt-loadmore>
+      </mt-loadmore>
+    </ul>
   </div>
 </template>
 
@@ -55,10 +55,12 @@ export default {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[1].status) {
-        this.getLimit()
-        let tempage = (this.baceLimit - 30)/10
-        this.page = 3 + tempage
-        this.getOrderList(1,this.baceLimit)
+        if(this.orderScroll == 0) {
+          this.getLimit()
+          let tempage = (this.baceLimit - 30)/10
+          this.page = 3 + tempage
+          this.getOrderList(1,this.baceLimit)
+        }
         this.$refs.order.addEventListener('scroll', this.handleScroll,true)
         this.$refs.order.scrollTo(0, this.orderScroll)
       }
@@ -67,6 +69,10 @@ export default {
   mounted() {
     this.$refs.order.addEventListener('scroll', this.handleScroll,true)
     this.$refs.order.scrollTo(0, this.orderScroll)
+    this.getLimit()
+    let tempage = (this.baceLimit - 30)/10
+    this.page = 3 + tempage
+    this.getOrderList(1,this.baceLimit)
   },
   created() {
     //获取本地缓存信息
@@ -74,10 +80,6 @@ export default {
     this.ajaxData = JSON.parse(ajaxData);
     let account = localStorage.getItem("accountMsg");
     this.account = JSON.parse(account).name.trim();
-    this.getLimit()
-    let tempage = (this.baceLimit - 30)/10
-    this.page = 3 + tempage
-    this.getOrderList(1,this.baceLimit)
   },
   methods: {
     handleScroll(e) {
@@ -87,19 +89,14 @@ export default {
     ...mapMutations(["setOrderList","setOrderInfoDetails",'setOrderScroll']),
     loadBottom() {
       if (!this.allLoaded) {
-        // this.$refs.loadmore.onBottomLoaded();
-        // setTimeout(() => {
-            if (this.page < this.allPage) {
-            this.page ++;
-            this.getOrderList(this.page, this.limit);
-          }
-        // } ,2500)
-        //  this.allLoaded = true;
+        if (this.page < this.allPage) {
+          this.page ++;
+          this.getOrderList(this.page, this.limit);
+        }
       }
       this.$refs.loadmore.onBottomLoaded();
     },
     getOrderList(page, limit) {  
-      // this.key = false
       mango.getAjax(this,"order",{
         account: this.account,
         page: page,
@@ -107,18 +104,18 @@ export default {
         key: ""
       },"v2")
         .then(res => {
+          this.key = false
           this.allPage = Math.ceil(res.data.total / 10);
           if (page <= 3) {
-            // this.key = true;
             this.setOrderList(res.data);
             this.dealCusList = this.orderList;
             this.$emit("changeResultTit",`全部客户 (${this.orderList.total == null? "0": this.orderList.total})`);
           } else {
-             this.setLimit(this.baceLimit + 10)
+            
+            this.setLimit(this.baceLimit + 10)
             this.getLimit()
             console.log(12222,this.baceLimit)
             //上啦刷新加载数据
-            // this.key = true;
             this.addPullData = res.data;
             this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
             this.setOrderList(this.dealCusList);
@@ -169,7 +166,7 @@ export default {
     color: #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
-    padding-bottom: 19vw;
+    padding-bottom: 22vw;
     li {
       display: flex;
       justify-content: space-between;
@@ -194,7 +191,7 @@ export default {
     li:nth-child(1) {
       border-top: none;
     }
-    li:last-child {
+    li:nth-last-child(2){
       border-bottom: 1px solid #e1e1e1;
     }
   }

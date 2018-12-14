@@ -51,6 +51,7 @@ export default {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    console.log('creat,tenanid',this.ajaxData.tenantId)
   },
   mounted(){
     this.getStoreSalesData()

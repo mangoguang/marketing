@@ -11,7 +11,8 @@ const state = {
     startTime: '',
     endTime: '',
     tut: 0,   //只看今天更新数据 ,优先级最高
-    tenantId: ''
+    tenantId: '',
+    account: ''
   }
 }
 

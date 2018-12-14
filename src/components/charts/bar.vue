@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div :style="{height: `${height}vw`}" class="main" id="main" ref="main"></div>
+  <div :style="{height: `${height}vw`,width:'100vw'}" class="main" id="main" ref="main"></div>
 </template>
 <!-- </keep-alive> -->
 
@@ -30,6 +30,9 @@ export default {
   beforeMount() {
     // console.log('组件挂载前', this.data)
   },
+  created() {
+    // console.log('echartinit')
+  },
   mounted() {
     // this.$nextTick(function () {
     //     setTimeout(() => {
@@ -48,6 +51,7 @@ export default {
   watch: {
     data(val){
       this.barData = val
+      console.log('echarts init')
       echarts.init(this.$refs.main).setOption(this.option())
     }
   },
@@ -129,8 +133,9 @@ export default {
       }
     },
     select() {
+      console.log('select')
       let _this = this
-      echarts.init(this.$refs.main).on('click', function (params) {
+      echarts.init(_this.$refs.main).on('click', function (params) {
         _this.$emit('chartsClick', [params, _this.data.idsData])
       })
     },
