@@ -73,6 +73,7 @@ export default {
     }
   },
   mounted() {
+    consoel.log(112233, this.customerList)
     this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
     this.$refs.customer.scrollTo(0, this.customerScroll)
   },

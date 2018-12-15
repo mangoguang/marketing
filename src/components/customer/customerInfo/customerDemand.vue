@@ -2,22 +2,22 @@
   <div class="customerDemand">
     <ul>
       <li is="customerLi" :leftText="'意向产品'">
-        <input placeholder="请填写意向产品" type="text">
+        <input v-model="customerDemand.intention" placeholder="请填写意向产品" type="text">
       </li>
       <li is="customerLi" :leftText="'颜色偏好'">
-        <input placeholder="请填写颜色偏好" type="text">
+        <input v-model="customerDemand.colorPref" placeholder="请填写颜色偏好" type="text">
       </li>
       <li is="customerLi" :leftText="'风格偏好'">
-        <input placeholder="请填写风格偏好" type="text">
+        <input v-model="customerDemand.stylePref" placeholder="请填写风格偏好" type="text">
       </li>
       <li is="customerLi" :leftText="'购买原因'">
-        <input placeholder="请填写购买原因" type="text">
+        <input v-model="customerDemand.buyReason" placeholder="请填写购买原因" type="text">
       </li>
       <li is="customerLi" :leftText="'装修进度'" :icon="true">
-        <span>请填写装修进度</span>
+        <span>请选择装修进度</span>
       </li>
       <li is="customerLi" :leftText="'房间数量'">
-        <input placeholder="请填写房间数量" type="text">
+        <input v-model="customerDemand.roomNum" placeholder="请填写房间数量" type="number">
       </li>
       <li class="textarea">
         <h3>备注：</h3>
@@ -31,9 +31,11 @@
 </template>
 
 <script>
+import Vuex, { mapMutations, mapState } from 'vuex'
 import customerLi from '../../../components/customer/customerLi'
 import bigBtn from '../../../components/customer/bigBtn'
 import mango from '../../../js'
+import {turnParams} from '../../../utils/customer'
 export default {
   name:'customerDemand',
   components: {
@@ -42,15 +44,69 @@ export default {
   },
   data(){
     return{
-
+      customerDemand: {}
     }
   },
+  computed: {
+    ...mapState({
+      customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+    })
+  },
+  watch: {
+    'customerInfo': function(){
+      console.log(888, this)
+      this.customerDemand = {
+        intention: '',
+        colorPref: this.customerInfo.colorPref,
+        stylePref: this.customerInfo.stylePref,
+        buyReason: this.customerInfo.buyReason,
+        progress: this.customerInfo.progress,
+        roomNum: this.customerInfo.roomNum,
+        remark: this.customerInfo.remark
+      }
+      console.log(999, this.customerDemand)
+      let arr = this.customerInfo.demandList
+      if (arr) {
+        arr = arr.map(item => {
+          return item.intention
+        })
+        this.customerDemand.intention = arr.join('、')
+      }
+    }
+  },
+  created() {
+    //获取本地缓存信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+  },
   mounted() {
-    console.log(this.$route.params.id)
+    console.log('客户信息：：', this.customerInfo)
+    // this.getDemand()
   },
   methods: {
     getCustomerInfo() {
 
+    },
+    getDemand() {
+      mango.getAjax(this, 'demand', {
+        account: this.ajaxData.account,   //登录账户
+        tenantId: this.ajaxData.tenantId,
+        id: this.$route.params.id,
+        ...turnParams(this.customerDemand, 'demand')
+      },'v2', 'post').then((res) => {
+        console.log('保存数据成功', res)
+      })
+    },
+    saveCustomerInfo() {
+      mango.getAjax(this, 'customer/update', {
+        account: this.ajaxData.account,   //登录账户
+        tenantId: this.ajaxData.tenantId,
+        id: this.$route.params.id,
+        ...turnParams(this.customerDemand, 'demand')
+      },'v2', 'post').then((res) => {
+        console.log('保存数据成功', res)
+      })
+      // console.log('客户信息：：', this.customerDemand)      
     }
   }
 }

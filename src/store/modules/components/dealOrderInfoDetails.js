@@ -1,6 +1,8 @@
 
 const state = {
-  dealOrderInfoDetails: []
+  dealOrderInfoDetails: {
+    demandList: []
+  }
 }
 
 const mutations = {
@@ -13,9 +15,14 @@ const actions = {
 }
 
 const getters = {
-  // customerListFilter: state => state.customerList.records.map(function(item, index, arr) {
-  //   return item + '0'
-  // })
+  // demandList: state => {
+  //   // console.log(444, state, state.dealOrderInfoDetails.demandList)
+  //   if (state.dealOrderInfoDetails.demandList) {
+  //     state.dealOrderInfoDetails.demandList.map(item => {
+  //       return item.intention
+  //     })
+  //   }
+  // }
 }
 
 export default {
