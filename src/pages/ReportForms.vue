@@ -33,6 +33,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Footer from '../components/Footer'
 import mango from '../js'
+import Vuex, { mapMutations, mapState } from "vuex";
 
 export default {
   components:{
@@ -70,7 +71,12 @@ export default {
   created(){
     this.checkLogin()
   //  console.log(this.forms[0].text)
-    localStorage.removeItem('limit');    
+
+  //到时候放在初始页面
+    localStorage.removeItem('limit');  
+    this.setCustomerScroll(0);
+    this.setOrderScroll(0);
+    this.setDealScroll(0)
   },
   mounted() {
     if (mango.version === 'app') {
@@ -79,6 +85,11 @@ export default {
   },
   props:['myStyle'],
   methods:{
+     ...mapMutations([
+      "setCustomerScroll",
+      "setOrderScroll",
+      'setDealScroll'
+       ]),
     cancle() {
 
     },

@@ -1,5 +1,5 @@
 const state = {
-  citySelect: {},
+  citySelect: '',
   startTimeSelect: null,
   endTimeSelect: null
 }

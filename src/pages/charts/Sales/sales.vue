@@ -62,6 +62,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
+    console.log('mounted')
     this.getSalesData(this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
     this.getAreaSalesData(this.endTime)
   },
@@ -90,6 +91,7 @@ export default {
     },
     // 整体销售额对比
     salesData() {
+      console.log('init')
       const chartsName = 'sales'
       if (this[`${chartsName}Data`]) {
         if (this[`${chartsName}Data`].series) {
