@@ -114,7 +114,7 @@ export default {
         tempObj[key] = temp[key]
       }
       console.log(myKey, typeof(myKey))
-      // tempObj.key = myKey
+      tempObj.key = myKey
       tempObj.account = this.account
       this.setCustomerAjaxParams(tempObj)
       console.log(123,this.customerAjaxParams)
@@ -217,6 +217,9 @@ export default {
   padding-top: 16vw;
   background: #f8f8f8;
   min-height: 100vh; 
+  .customerList{
+    padding-top: 1.6vw;
+  }
 }
 
 </style>
