@@ -59,7 +59,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -85,7 +85,17 @@ export default {
       perOrderFormData: {},
       title:'铁三角报表',
       endTime: mango.getLocalTime('end'),
-      cityMsg: ''
+      cityMsg: '',
+      key:false,
+      key1:false,
+      key2:false,
+      key3:false,
+      auchanrtDom1:'',
+      auchanrtDom2:'',
+      auchanrtDom3:'',
+      auchanrtDom4:'',
+      auchanrtDom5:'',
+      auchanrtDom6:''
     }
   },
   created() {
@@ -93,9 +103,10 @@ export default {
     let [ajaxData, cityMsg] = [localStorage.getItem('ajaxData'), localStorage.getItem('cityMsg')]
     this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {}
     this.ajaxData = JSON.parse(ajaxData)
+    // console.log(this.cityMsg.cityName, this.cityMsg.cityLevel)
+    this.asyncAjax(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
   },
   mounted() {
-    this.asyncAjax(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
   },
   computed: {
     ...mapState({
@@ -118,55 +129,103 @@ export default {
     // 整体进店数对比
     storeGetInTotalData() {
       const chartsName = 'storeGetInTotal'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical')
+      if(this.key) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'vertical')
+          this.auchanrtDom1 = chanrtDom
+        }
       }
     },
     perStoreGetInData() {
       // 参数说明：查看销售模块样例
       const chartsName = 'perStoreGetIn'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal')
+      if(this.key) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal')
+          this.auchanrtDom2 = chanrtDom
+        }
       }
     },
     achieveRatioTotalData() {
       const chartsName = 'achieveRatioTotal'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical')
+      if(this.key) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'vertical')
+          this.auchanrtDom3 = chanrtDom
+        }
       }
     },
     perAchieveRatioData() {
       const chartsName = 'perAchieveRatio'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal')
+      if(this.key) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal')
+          this.auchanrtDom4 = chanrtDom
+        }
       }
     },
     orderFormTotalData() {
       const chartsName = 'orderFormTotal'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical')
+      if(this.key) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'vertical')
+          this.auchanrtDom5 = chanrtDom
+        }
       }
     },
     perOrderFormData() {
       const chartsName = 'perOrderForm'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal')
+      if(this.key) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal')
+          this.auchanrtDom6 = chanrtDom
+        }
       }
+    }
+  },
+  beforeDestroy(){
+     //销毁实例
+    if(this.auchanrtDom1) {
+      this.auchanrtDom1.dispose()
+    }
+    if(this.auchanrtDom2) {
+      this.auchanrtDom2.dispose()
+    }
+    if(this.auchanrtDom3) {
+      this.auchanrtDom3.dispose()
+    }
+    if(this.auchanrtDom4) {
+      this.auchanrtDom4.dispose()
+    }
+    if(this.auchanrtDom5) {
+      this.auchanrtDom5.dispose()
+    }
+    if(this.auchanrtDom6) {
+      this.auchanrtDom6.dispose()
     }
   },
   methods:{
     // ajax请求
     // 异步函数
-    async asyncAjax(date, city, level) {
-      // 进店率
-      await this.getStoreGetInTotalData(date, city, level) // 获取总体进店数数据
-      await this.getPerStoreGetInData(date, city, level) // 获取各门店进店数数据
-      // 成交率
-      await this.getAchieveRatioTotalData(date, city, level) // 获取总体成交率数据
-      await this.getPerAchieveRatioData(date, city, level) // 获取各门店成交率数据
-      // 客单值
-      await this.getOrderFormTotalData(date, city, level) // 获取总体客单值数据
-      await this.getPerOrderFormData(date, city, level) // 获取各门店客单值数据
+     asyncAjax(date, city, level) {
+       var a1 =  this.getPerStoreGetInData(date, city, level)
+       var a2 =  this.getPerAchieveRatioData(date, city, level)
+       var a3 =  this.getPerOrderFormData(date, city, level)
+       var a4 =  this.getStoreGetInTotalData(date, city, level)
+       var a5 =  this.getAchieveRatioTotalData(date, city, level)
+       var a6 =  this.getOrderFormTotalData(date, city, level)
+      Promise.all([a1,a2,a3,a4,a5,a6]).then((results) => {
+        this.key = true
+      })
+      //  this.getPerStoreGetInData(date, city, level)  // 获取各门店进店数数据
+      //  this.getPerAchieveRatioData(date, city, level) // 获取各门店成交率数据
+      //  this.getPerOrderFormData(date, city, level) // 获取各门店客单值数据
+      // // 进店率
+      //  this.getStoreGetInTotalData(date, city, level) // 获取总体进店数数据
+      // // 成交率
+      //  this.getAchieveRatioTotalData(date, city, level) // 获取总体成交率数据
+      // // 客单值
+      //  this.getOrderFormTotalData(date, city, level) // 获取总体客单值数据
     },
     // 整体进店数
     getStoreGetInTotalData(date, city, level) {
@@ -198,6 +257,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key1 = true
           res = res.data
           _this.perStoreGetInData = res
         }
@@ -236,6 +296,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key2 = true
           res = res.data
           _this.perAchieveRatioData = res
         }
@@ -274,6 +335,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key3 = true
           res = res.data
           _this.perOrderFormData = res
         }

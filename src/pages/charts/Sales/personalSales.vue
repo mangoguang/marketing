@@ -22,7 +22,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -43,17 +43,19 @@ export default {
       personalSalesData: {},
       shopName: this.$route.query.name,
       title:'销售额报表',
-      endTime: mango.getLocalTime('end')
+      endTime: mango.getLocalTime('end'),
+      key:false,
+      peoSalchanrtDom1:''
     }
   },
   created() {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    this.getPersonalSalesData(this.endTime)
   },
   mounted(){
     // console.log('路由参数', this.$route)
-    this.getPersonalSalesData(this.endTime)
   },
   computed: {
 
@@ -65,7 +67,15 @@ export default {
       // vertical设置柱状图的横向排布和纵向排布
       // height设置图标容器main的高度
       // salesVal标记是否为销售额，主要用于改变数据单位
-      chartsInit(this, 'personalSales', 'horizontal', true)
+      if(this.key) {
+        chartsInit(this, 'personalSales', 'horizontal', true)
+        this.peoSalchanrtDom1 = chanrtDom
+      }
+    }
+  },
+  beforeDestroy(){
+    if(this.peoSalchanrtDom1) {
+      this.peoSalchanrtDom1.dispose()
     }
   },
   methods:{
@@ -77,6 +87,7 @@ export default {
         shopId: this.$route.query.shopId
       }).then((res) => {
         if (res) {
+          this.key = true
           res = res.data
           // res.average = res.shopAvg
           // console.log('店内员工销售额：', res)

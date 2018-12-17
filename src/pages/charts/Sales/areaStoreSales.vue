@@ -28,7 +28,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -48,7 +48,9 @@ export default {
     return {
       ajaxData: {},
       areaStoreSalesData: [],
-      title:'销售额报表'
+      title:'销售额报表',
+      key:false,
+      areaSalchanrtDom1:[]
     }
   },
   created() {
@@ -63,11 +65,19 @@ export default {
   computed: {
 
   },
+  beforeDestroy(){
+    for(let i = 0; i < this.areaSalchanrtDom1.length; i ++){
+      if(this.areaSalchanrtDom1[i]) {
+        this.areaSalchanrtDom1[i].dispose()
+      }
+    }
+  },
   watch: {
     // 各门店销售额对比
     areaStoreSalesData() {
       for (let i = 0; i < this.areaStoreSalesData.length; i++) {
         chartsInit(this, 'areaStoreSales', 'horizontal', true, null, null, i)
+        this.areaSalchanrtDom1.push(chanrtDom)
       }
       // const chartsName = 'areaStoreSales'
       // if (this[`${chartsName}Data`].series) {
@@ -83,6 +93,7 @@ export default {
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         if (res) {
+          this.key = true
           res = res.data
           // 柱状图需要检测到数据改变时才渲染，故开始时数据需要有初始状态。
           let arr = []

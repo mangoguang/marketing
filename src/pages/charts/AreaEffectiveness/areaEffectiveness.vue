@@ -26,7 +26,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -44,14 +44,19 @@ export default {
     RouterLink,
     mybanner,
     SelectComponent
-  },data(){
+  },
+  data(){
     return{
       ajaxData: {},
       areaEffectivenessData: {}, 
       areaEffectivenessShopData: {},
       title:'坪效报表',
       endTime: mango.getLocalTime('end'),
-      cityMsg: ''
+      cityMsg: '',
+      areaEffchanrtDom1:'',
+      areaEffchanrtDom2:'',
+      key1:false,
+      key2:false
     }
   },
   created() {
@@ -89,15 +94,30 @@ export default {
     },
     areaEffectivenessData() {
       const chartsName = 'areaEffectiveness'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical')
+      if(this.key1) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'vertical')
+          this.areaEffchanrtDom1 = chanrtDom
+        }
       }
     },
     areaEffectivenessShopData() {
       const chartsName = 'areaEffectivenessShop'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal')
+      if(this.key2) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal')
+          this.areaEffchanrtDom2 = chanrtDom
+        }
       }
+    }
+  },
+  beforeDestroy(){
+     //销毁实例
+    if(this.areaEffchanrtDom1) {
+      this.areaEffchanrtDom1.dispose()
+    }
+    if(this.areaEffchanrtDom2) {
+      this.areaEffchanrtDom2.dispose()
     }
   },
   methods:{
@@ -114,6 +134,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key1 = true
           res = res.data
           mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
@@ -133,6 +154,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key2 = true
           res = res.data
           // _this.height = 200
           _this.areaEffectivenessShopData = res

@@ -21,7 +21,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
@@ -44,7 +44,9 @@ export default {
       ajaxData: {},
       storeSalesData: {},
       endTime: mango.getLocalTime('end'),
-      title:'销售额报表'
+      title:'销售额报表',
+      key:false,
+      storeSalchanrtDom1:''
     }
   },
   created() {
@@ -66,10 +68,18 @@ export default {
       // vertical设置柱状图的横向排布和纵向排布
       // height设置图标容器main的高度
       // salesVal标记是否为销售额，主要用于改变数据单位
-      let routeTo = (data, _this) => {
-        _this.$router.push({path: `/personalSales?shopId=${this.storeSalesData.idsData[data.dataIndex]}&name=${data.name}`})
+      if(this.key) {
+        let routeTo = (data, _this) => {
+          _this.$router.push({path: `/personalSales?shopId=${this.storeSalesData.idsData[data.dataIndex]}&name=${data.name}`})
+        }
+        chartsInit(this, 'storeSales', 'horizontal', true, '', routeTo)
+        this.storeSalchanrtDom1 = chanrtDom
       }
-      chartsInit(this, 'storeSales', 'horizontal', true, '', routeTo)
+    }
+  },
+  beforeDestroy(){
+    if(this.storeSalchanrtDom1) {
+      this.storeSalchanrtDom1.dispose()
     }
   },
   methods:{
@@ -89,6 +99,7 @@ export default {
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         if (res) {
+          this.key = true
           res = res.data
           // let tempArr = res.yAxisData.map((item) => {
           //   return '3d'

@@ -1,13 +1,13 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="sales paddingTop">
+  <div class="sales paddingTop" >
     <mybanner :title='title' />
     <SelectComponent></SelectComponent>
     <div class="barBox">
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <div :style="{height: `100vw`}" ref="salesContainer" ></div>
+      <div :style="{height: `100vw`}" ref="salesContainer"></div>
       <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
@@ -22,11 +22,14 @@
 <!-- </keep-alive> -->
 
 <script>
+import echarts from 'echarts'
 import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+
+
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -51,7 +54,11 @@ export default {
       salesData: {}, 
       areaSalesData: {},
       title:'销售额报表',
-      cityMsg: ''
+      cityMsg: '',
+      key1:false,
+      key2:false,
+      salchanrtDom1:'',
+      salchanrtDom2:''
     }
   },
   created() {
@@ -62,7 +69,6 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    console.log('mounted')
     this.getSalesData(this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
     this.getAreaSalesData(this.endTime)
   },
@@ -91,22 +97,35 @@ export default {
     },
     // 整体销售额对比
     salesData() {
-      console.log('init')
       const chartsName = 'sales'
-      if (this[`${chartsName}Data`]) {
-        if (this[`${chartsName}Data`].series) {
-          chartsInit(this, chartsName, 'vertical', true)
+      if(this.key1) {
+        if (this[`${chartsName}Data`]) {
+          if (this[`${chartsName}Data`].series) {
+            chartsInit(this, chartsName, 'vertical', true)
+            this.salchanrtDom1 = chanrtDom
+          }
         }
       }
     },
     // 区域销售额对比
     areaSalesData() {
       const chartsName = 'areaSales'
-      if (this[`${chartsName}Data`]) {
-        if (this[`${chartsName}Data`].series) {
-          chartsInit(this, chartsName, 'vertical', true)
+      if(this.key2) {
+        if (this[`${chartsName}Data`]) {
+          if (this[`${chartsName}Data`].series) {
+            chartsInit(this, chartsName, 'vertical', true)
+            this.salchanrtDom2 = chanrtDom
+          }
         }
       }
+    }
+  },
+  beforeDestroy(){
+    if(this.salchanrtDom1) {
+      this.salchanrtDom1.dispose()
+    }
+    if(this.salchanrtDom2) {
+      this.salchanrtDom2.dispose()
     }
   },
   methods:{
@@ -130,6 +149,7 @@ export default {
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         if (res) {
+          this.key1 = true
           res = res.data
           mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
@@ -147,6 +167,7 @@ export default {
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         if (res) {
+          this.key2 = true
           res = res.data
           _this.areaSalesData = res
         }

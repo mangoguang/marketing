@@ -11,7 +11,12 @@ const mutations = {
 }
 
 const actions = {
-
+  // asynsSelect(ctx) {		
+  //   ctx.commit('setCitySelect')
+  //   ctx.commit('setStartTimeSelect')
+  //   ctx.commit('setEndTimeSelect')
+  //   console.log(7878,ctx.state)
+  // }
 }
 
 const getters = {
