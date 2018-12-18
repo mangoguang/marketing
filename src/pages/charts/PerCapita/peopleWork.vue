@@ -62,7 +62,8 @@ export default {
       key1:false,
       key2:false,
       peoWorkchanrtDom1:'',
-      peoWorkchanrtDom2:''
+      peoWorkchanrtDom2:'',
+      i:0
     }
   }, created() {
     // 获取本地存储信息
@@ -112,6 +113,9 @@ export default {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'horizontal', true)
           this.peoWorkchanrtDom2 = chanrtDom
+          if(this.i > 1){
+            this.peoWorkchanrtDom2.resize()
+          }
         }
       }
     }
@@ -156,6 +160,7 @@ export default {
       })
     },
     getareaPeopleWorkData(date, city, level) {  //接口没有
+      this.i += 1
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'people/work/shop', {
@@ -167,6 +172,11 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          this.$set(res.data,'idsData',newData[3])
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data,'yAxisData',newData[0])
           this.key2 = true
           res = res.data
           // _this.height = 200

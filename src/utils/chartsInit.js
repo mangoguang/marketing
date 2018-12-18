@@ -21,7 +21,7 @@ chartsInit = (_this, chartName, vertical, salesVal, title, routeTo, chartsIndex)
   if (dom) {
     if (series) {
       dom.style.width = `100vw`      
-      dom.style.height = `${vertical === 'horizontal' ? (series[0].data.length * (window.innerWidth/100) * 3) + 80/(window.innerWidth/100) : 100}vw`      
+      dom.style.height = `${vertical === 'horizontal' ? (series[0].data.length * (window.innerWidth/100) * 3) + 100/(window.innerWidth/100) : 100}vw`      
     } else {
       dom.style.height = `100vw`
       dom.style.width = `100vw`      

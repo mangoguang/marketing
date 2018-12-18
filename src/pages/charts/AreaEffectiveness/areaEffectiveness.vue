@@ -56,7 +56,8 @@ export default {
       areaEffchanrtDom1:'',
       areaEffchanrtDom2:'',
       key1:false,
-      key2:false
+      key2:false,
+      i:0
     }
   },
   created() {
@@ -107,6 +108,9 @@ export default {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'horizontal')
           this.areaEffchanrtDom2 = chanrtDom
+          if(this.i > 1){
+            this.areaEffchanrtDom2.resize()
+          }
         }
       }
     }
@@ -143,6 +147,7 @@ export default {
       })
     },
     getareaEffectivenessShopData(date, city, level) {
+      this.i += 1
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'area/effectiveness/shop', {
@@ -154,6 +159,11 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          this.$set(res.data,'idsData',newData[3])
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data,'yAxisData',newData[0])
           this.key2 = true
           res = res.data
           // _this.height = 200

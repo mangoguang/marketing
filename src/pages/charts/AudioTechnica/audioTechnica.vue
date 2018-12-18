@@ -88,7 +88,8 @@ export default {
       auchanrtDom3:'',
       auchanrtDom4:'',
       auchanrtDom5:'',
-      auchanrtDom6:''
+      auchanrtDom6:'',
+      i:0
     }
   },
   created() {
@@ -134,7 +135,9 @@ export default {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'horizontal')
           this.auchanrtDom2 = chanrtDom
-          this.auchanrtDom2.resize()
+          if(this.i > 1){
+            this.auchanrtDom2.resize()
+          }
         }
       }
     },
@@ -154,6 +157,9 @@ export default {
           if (this[`${chartsName}Data`].series) {
             chartsInit(this, chartsName, 'horizontal')
             this.auchanrtDom4 = chanrtDom
+            if(this.i > 1){
+              this.auchanrtDom4.resize()
+            }
           }
         }
       },1000)
@@ -174,6 +180,9 @@ export default {
           if (this[`${chartsName}Data`].series) {
             chartsInit(this, chartsName, 'horizontal')
             this.auchanrtDom6 = chanrtDom
+            if(this.i > 1){
+              this.auchanrtDom6.resize()
+            }
           }
         }
       },1000)
@@ -236,6 +245,8 @@ export default {
     },
     // 各门店进店数
     getPerStoreGetInData(date, city, level) {
+      this.i += 1
+      console.log(this.i)
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'store/number', {
@@ -290,7 +301,11 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
-          console.log('store/ratio',res.data)
+          let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          this.$set(res.data,'idsData',newData[3])
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data,'yAxisData',newData[0])
           this.key4 = true
           res = res.data
           _this.perAchieveRatioData = res
@@ -331,7 +346,11 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
-          console.log('store/order',res.data)
+          let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          this.$set(res.data,'idsData',newData[3])
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data,'yAxisData',newData[0])
           this.key6 = true
           res = res.data
           _this.perOrderFormData = res

@@ -89,6 +89,11 @@ export default {
         shopId: this.$route.query.shopId
       }).then((res) => {
         if (res) {
+          let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          this.$set(res.data,'idsData',newData[3])
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data,'yAxisData',newData[0])
           this.key = true
           res = res.data
           // res.average = res.shopAvg
