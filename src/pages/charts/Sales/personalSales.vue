@@ -67,10 +67,12 @@ export default {
       // vertical设置柱状图的横向排布和纵向排布
       // height设置图标容器main的高度
       // salesVal标记是否为销售额，主要用于改变数据单位
-      if(this.key) {
+      setTimeout(() => {
+         if(this.key) {
         chartsInit(this, 'personalSales', 'horizontal', true)
         this.peoSalchanrtDom1 = chanrtDom
       }
+      }, 200);
     }
   },
   beforeDestroy(){

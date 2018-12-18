@@ -10,43 +10,33 @@
       </chartsTit>
       <div :style="{height: `100vw`}" ref="storeGetInTotalContainer" ></div>
     </li>
-
     <!-- 各门店进店数 -->
     <li class="barBox">
       <chartsTit :text="'进店数-各门店'">
-        <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div ref="perStoreGetInContainer" ></div>
     </li>
-    
     <!-- 整体成交率 -->
-    <li class="barBox">
+    <li class="barBox" >
       <chartsTit :text="'成交率-整体'">
-        <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div :style="{height: `100vw`}" ref="achieveRatioTotalContainer" ></div>
     </li>
-
     <!-- 各门店成交率 -->
     <li class="barBox">
       <chartsTit :text="'成交率-各门店'">
-        <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div ref="perAchieveRatioContainer" ></div>
     </li>
-
     <!-- 整体客单值 -->
     <li class="barBox">
       <chartsTit :text="'客单值-整体'">
-        <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div :style="{height: `100vw`}" ref="orderFormTotalContainer" ></div>
     </li>
-
     <!-- 各门店客单值 -->
     <li class="barBox">
       <chartsTit :text="'客单值-各门店'">
-        <!-- <h6>单位：万</h6> -->
       </chartsTit>
       <div ref="perOrderFormContainer" ></div>
     </li>
@@ -90,6 +80,9 @@ export default {
       key1:false,
       key2:false,
       key3:false,
+      key4:false,
+      key5:false,
+      key6:false,
       auchanrtDom1:'',
       auchanrtDom2:'',
       auchanrtDom3:'',
@@ -129,7 +122,7 @@ export default {
     // 整体进店数对比
     storeGetInTotalData() {
       const chartsName = 'storeGetInTotal'
-      if(this.key) {
+      if(this.key1) {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'vertical')
           this.auchanrtDom1 = chanrtDom
@@ -139,7 +132,7 @@ export default {
     perStoreGetInData() {
       // 参数说明：查看销售模块样例
       const chartsName = 'perStoreGetIn'
-      if(this.key) {
+      if(this.key2) {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'horizontal')
           this.auchanrtDom2 = chanrtDom
@@ -148,7 +141,7 @@ export default {
     },
     achieveRatioTotalData() {
       const chartsName = 'achieveRatioTotal'
-      if(this.key) {
+      if(this.key3) {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'vertical')
           this.auchanrtDom3 = chanrtDom
@@ -156,17 +149,19 @@ export default {
       }
     },
     perAchieveRatioData() {
-      const chartsName = 'perAchieveRatio'
-      if(this.key) {
-        if (this[`${chartsName}Data`].series) {
-          chartsInit(this, chartsName, 'horizontal')
-          this.auchanrtDom4 = chanrtDom
+      setTimeout(() => {
+        const chartsName = 'perAchieveRatio'
+        if(this.key4) {
+          if (this[`${chartsName}Data`].series) {
+            chartsInit(this, chartsName, 'horizontal')
+            this.auchanrtDom4 = chanrtDom
+          }
         }
-      }
+      },1000)
     },
     orderFormTotalData() {
       const chartsName = 'orderFormTotal'
-      if(this.key) {
+      if(this.key5) {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'vertical')
           this.auchanrtDom5 = chanrtDom
@@ -174,13 +169,15 @@ export default {
       }
     },
     perOrderFormData() {
-      const chartsName = 'perOrderForm'
-      if(this.key) {
-        if (this[`${chartsName}Data`].series) {
-          chartsInit(this, chartsName, 'horizontal')
-          this.auchanrtDom6 = chanrtDom
+      setTimeout(() => {
+        const chartsName = 'perOrderForm'
+        if(this.key6) {
+          if (this[`${chartsName}Data`].series) {
+            chartsInit(this, chartsName, 'horizontal')
+            this.auchanrtDom6 = chanrtDom
+          }
         }
-      }
+      },1000)
     }
   },
   beforeDestroy(){
@@ -206,26 +203,16 @@ export default {
   },
   methods:{
     // ajax请求
-    // 异步函数
      asyncAjax(date, city, level) {
-       var a1 =  this.getPerStoreGetInData(date, city, level)
-       var a2 =  this.getPerAchieveRatioData(date, city, level)
-       var a3 =  this.getPerOrderFormData(date, city, level)
-       var a4 =  this.getStoreGetInTotalData(date, city, level)
-       var a5 =  this.getAchieveRatioTotalData(date, city, level)
-       var a6 =  this.getOrderFormTotalData(date, city, level)
-      Promise.all([a1,a2,a3,a4,a5,a6]).then((results) => {
-        this.key = true
-      })
-      //  this.getPerStoreGetInData(date, city, level)  // 获取各门店进店数数据
-      //  this.getPerAchieveRatioData(date, city, level) // 获取各门店成交率数据
-      //  this.getPerOrderFormData(date, city, level) // 获取各门店客单值数据
-      // // 进店率
-      //  this.getStoreGetInTotalData(date, city, level) // 获取总体进店数数据
-      // // 成交率
-      //  this.getAchieveRatioTotalData(date, city, level) // 获取总体成交率数据
-      // // 客单值
-      //  this.getOrderFormTotalData(date, city, level) // 获取总体客单值数据
+       this.getPerStoreGetInData(date, city, level)  // 获取各门店进店数数据
+       this.getPerAchieveRatioData(date, city, level) // 获取各门店成交率数据
+       this.getPerOrderFormData(date, city, level) // 获取各门店客单值数据
+      // 进店率
+       this.getStoreGetInTotalData(date, city, level) // 获取总体进店数数据
+      // 成交率
+       this.getAchieveRatioTotalData(date, city, level) // 获取总体成交率数据
+      // 客单值
+       this.getOrderFormTotalData(date, city, level) // 获取总体客单值数据
     },
     // 整体进店数
     getStoreGetInTotalData(date, city, level) {
@@ -240,6 +227,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key1 = true
           res = res.data
           mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
@@ -257,7 +245,8 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
-          this.key1 = true
+          console.log('store/number',res.data)
+          this.key2 = true
           res = res.data
           _this.perStoreGetInData = res
         }
@@ -276,6 +265,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key3 = true
           res = res.data
           mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
@@ -296,7 +286,8 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
-          this.key2 = true
+          console.log('store/ratio',res.data)
+          this.key4 = true
           res = res.data
           _this.perAchieveRatioData = res
         }
@@ -315,6 +306,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key5 = true
           res = res.data
           mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
@@ -335,7 +327,8 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
-          this.key3 = true
+          console.log('store/order',res.data)
+          this.key6 = true
           res = res.data
           _this.perOrderFormData = res
         }
