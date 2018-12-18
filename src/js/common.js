@@ -215,5 +215,24 @@ export default class Common {
     }
     return result
   }
+  //过滤器
+  getNewArr(a,b,c,d){     //c=y,a=series[0],b=series[1],d=ids
+    var len = c.length
+    var arr = []
+    var arr1 = []
+    var arr2 = []
+    var arr3 = []
+    for(var i = 0; i < len; i ++) {
+      if(a[i] == 0 && b[i] == 0) {
+        
+      }else {
+        arr.push(c[i])
+        arr1.push(a[i])
+        arr2.push(b[i])
+        arr3.push(d[i])
+      }
+    }
+    return [arr,arr1,arr2,arr3]
+  }
 
 }

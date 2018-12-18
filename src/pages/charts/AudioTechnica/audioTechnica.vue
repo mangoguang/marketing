@@ -99,8 +99,6 @@ export default {
     // console.log(this.cityMsg.cityName, this.cityMsg.cityLevel)
     this.asyncAjax(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
   },
-  mounted() {
-  },
   computed: {
     ...mapState({
       citySelect: state => state.select.citySelect,
@@ -136,6 +134,7 @@ export default {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'horizontal')
           this.auchanrtDom2 = chanrtDom
+          this.auchanrtDom2.resize()
         }
       }
     },
@@ -245,10 +244,15 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
-          console.log('store/number',res.data)
-          this.key2 = true
+          let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          this.$set(res.data,'idsData',newData[3])
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data,'yAxisData',newData[0])
           res = res.data
           _this.perStoreGetInData = res
+          this.key2 = true
+          // console.log(111,_this.perStoreGetInData)
         }
       })
     },
