@@ -50,7 +50,6 @@ export default {
         let date = mango.indexTimeB(this.pickerVisible)[1]
         this.getData(date)
       }
-      
     },
     //获取数据
     getData(date){
