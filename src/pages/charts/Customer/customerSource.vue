@@ -29,7 +29,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -54,7 +54,11 @@ export default {
       areaCustomerSourceData: {},
       title:'客户来源报表',
       endTime: mango.getLocalTime('end'),
-      cityMsg: ''
+      cityMsg: '',
+      key1:false,
+      key2:false,
+      cusSourcechanrtDom1:'',
+      cusSourcechanrtDom2:''
     }
   },  
   created() {
@@ -64,9 +68,10 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    console.log('数据：', this.citySelect)
+    // console.log('数据：', this.citySelect)
     this.getcustomerSourceData(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
     this.getareaCustomerSourceData(this.endTime)
+    
   },
   computed: {
     test() {
@@ -80,14 +85,12 @@ export default {
   },
   watch: {
     citySelect() {
-      console.log('111')
       if (this.endTimeSelect && this.endTimeSelect != '') {
         this.getcustomerSourceData(this.endTime, this.citySelect.cityName, this.citySelect.cityLevel)
         // this.getpeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
       }
     },
     endTimeSelect() {
-      console.log('222')
       if (this.endTimeSelect && this.endTimeSelect != '') {
         this.getcustomerSourceData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
         this.getareaCustomerSourceData(this.endTimeSelect)
@@ -97,16 +100,31 @@ export default {
     },
     customerSourceData() {
       const chartsName = 'customerSource'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal')
+      if(this.key1) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal')
+          this.cusSourcechanrtDom1 = chanrtDom
+        }
       }
     },
     areaCustomerSourceData() {
       const chartsName = 'areaCustomerSource'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal')
+      if(this.key2) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal')
+          this.cusSourcechanrtDom2 = chanrtDom
+        }
       }
     }
+  },
+  beforeDestroy(){
+     //销毁实例
+     if(this.cusSourcechanrtDom1) {
+      this.cusSourcechanrtDom1.dispose()
+     }
+     if(this.cusSourcechanrtDom2) {
+      this.cusSourcechanrtDom2.dispose()
+     }
   },
   methods:{
     ...mapMutations([
@@ -130,6 +148,7 @@ export default {
       }).then((res) => {
          mango.loading('close')
         if (res) {
+          this.key1= true
           // res = res.data
           // mango.sortYears(res)
           // res.yAxisData = [mango.chartsBotTit(res)]
@@ -167,6 +186,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key2 = true
           res = res.data
           // console.log(res)
           // _this.height = 200

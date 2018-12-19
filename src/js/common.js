@@ -69,6 +69,28 @@ export default class Common {
         }
       }
     }
+    for (let i = 0; i < newSeries[1].length; i++) {
+      for (let j = 0; j < newSeries[1].length - i; j++) {
+        if (parseInt(newSeries[1][j]) > parseInt(newSeries[1][j + 1])) {
+          let [tempSeries, tempYAxisData] = [[], yAxisData[j]]
+          // 对series参数的两个数组进行排序
+          for (let k = 0; k < series.length; k++) {
+            tempSeries[k] = newSeries[k][j]
+            newSeries[k][j] = newSeries[k][j + 1]
+            newSeries[k][j + 1] = tempSeries[k]
+          }
+          // 对yAxisData参数进行排序
+          yAxisData[j] = yAxisData[j + 1]
+          yAxisData[j + 1] = tempYAxisData
+          // 如果存在店铺id数据，则对店铺id数据进行排序。
+          if (idsData) {
+            let tempIdsData = idsData[j]
+            idsData[j] = idsData[j + 1]
+            idsData[j + 1] = tempIdsData
+          }
+        }
+      }
+    }
   }
   // 参数加密
   getSign(obj, token) {
@@ -215,6 +237,27 @@ export default class Common {
       }
     }
     return result
+  }
+  //过滤器
+  getNewArr(a,b,c,d){     //c=y,a=series[0],b=series[1],d=ids
+    var len = c.length
+    var arr = []
+    var arr1 = []
+    var arr2 = []
+    var arr3 = []
+    for(var i = 0; i < len; i ++) {
+      if(a[i] == 0 && b[i] == 0) {
+        
+      }else {
+        if(d){
+          arr3.push(d[i])
+        }
+        arr.push(c[i])
+        arr1.push(a[i])
+        arr2.push(b[i])
+      }
+    }
+    return [arr,arr1,arr2,arr3]
   }
 
 }

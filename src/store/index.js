@@ -11,7 +11,7 @@ import orderInfoDetails from './modules/components/orderInfoDetails'
 import followTrackDetails from './modules/components/followTrackDetails'
 import customerHeader from './modules/customer/header'
 import serachResult from './modules/customer/serachResult'
-import tabStatus from './modules/components/detailsHeaderStatus'
+import tabStatus from './modules/components/tabStatus'
 import orderList from './modules/components/orderList'
 import customerScroll from './modules/customer/scroll'
 

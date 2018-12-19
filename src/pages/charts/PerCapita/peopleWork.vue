@@ -32,7 +32,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -58,7 +58,12 @@ export default {
       height: 100,
       title:'人效报表',
       endTime: mango.getLocalTime('end'),
-      cityMsg: ''
+      cityMsg: '',
+      key1:false,
+      key2:false,
+      peoWorkchanrtDom1:'',
+      peoWorkchanrtDom2:'',
+      i:0
     }
   }, created() {
     // 获取本地存储信息
@@ -67,7 +72,6 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
-    console.log(123456, this.cityMsg)
     this.getpeopleWorkData(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
     this.getareaPeopleWorkData(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
   },
@@ -83,7 +87,6 @@ export default {
   },
   watch: {
     citySelect() {
-      console.log(123, this.citySelect)
       if (this.endTimeSelect && this.endTimeSelect != '') {
         this.getpeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
         this.getareaPeopleWorkData(this.endTimeSelect, this.citySelect.cityName, this.citySelect.cityLevel)
@@ -97,15 +100,32 @@ export default {
     },
     peopleWorkData() {
       const chartsName = 'peopleWork'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'vertical', true)
+      if(this.key1) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'vertical', true)
+          this.peoWorkchanrtDom1 = chanrtDom
+        }
       }
     },
     areaPeopleWorkData() {
       const chartsName = 'areaPeopleWork'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal', true)
+      if(this.key2) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal', true)
+          this.peoWorkchanrtDom2 = chanrtDom
+          if(this.i > 1){
+            this.peoWorkchanrtDom2.resize()
+          }
+        }
       }
+    }
+  },
+  beforeDestroy(){
+    if(this.peoWorkchanrtDom1) {
+      this.peoWorkchanrtDom1.dispose()
+    }
+    if(this.peoWorkchanrtDom2) {
+      this.peoWorkchanrtDom2.dispose()
     }
   },
   methods:{
@@ -130,6 +150,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key1 = true
           res = res.data
           mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
@@ -139,6 +160,7 @@ export default {
       })
     },
     getareaPeopleWorkData(date, city, level) {  //接口没有
+      this.i += 1
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'people/work/shop', {
@@ -150,6 +172,12 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          this.$set(res.data,'idsData',newData[3])
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data,'yAxisData',newData[0])
+          this.key2 = true
           res = res.data
           // _this.height = 200
           _this.areaPeopleWorkData = res

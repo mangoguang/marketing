@@ -6,15 +6,15 @@
     :propsPhone="phone" />
     <ul class="infoNav customerInfoBtns">
       <li
-        v-for="(item, index) in btns"
+        v-for="(item, index) in customerTabStatus"
         :key="`customerInfoBtn${index}`"
-        :class="{on: item.status}"
+        :class="{on: customerTabStatus[index].status}"
         @click="infoSelect(index)"
       >{{item.name}}</li>
     </ul>
-    <customer-descript v-show="this.btns[0].status" @setInfo="setInfo" />
-    <customer-demand v-show="this.btns[1].status"/>
-    <trackRecord v-show="this.btns[2].status"/>
+    <customer-descript v-show="customerTabStatus[0].status" @setInfo="setInfo" />
+    <customer-demand v-show="customerTabStatus[1].status"/>
+    <trackRecord v-show="customerTabStatus[2].status"/>
     <!-- <records v-show="this.btns[2].status"/> -->
   </div>
 </template>
@@ -40,7 +40,8 @@ export default {
   },
   computed: {
     ...mapState({
-      customerInfoBtns: state => state.customer.customerInfoBtns
+      customerInfoBtns: state => state.customer.customerInfoBtns,
+      customerTabStatus: state => state.tabStatus.customerTabStatus
     })
   },
   mounted() {
@@ -54,9 +55,7 @@ export default {
   methods: {
     ...mapMutations(["setCustomerInfoBtns"]),
     infoSelect(index) {
-      this.btns.forEach((element, i) => {
-        element.status = i === index
-      })
+      this.setCustomerTabStatus(mango.btnList(['客户描述', '客户需求', '跟踪记录'], index))
     },
     setInfo(obj) {
       this.name = obj.name

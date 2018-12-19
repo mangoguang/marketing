@@ -1,6 +1,8 @@
 import echarts from 'echarts'
 import option from './option'
 
+let chartsInit;
+let chanrtDom;
 // 参数说明：
 // data：图标数据
 // vertical设置柱状图的横向排布和纵向排布
@@ -8,7 +10,7 @@ import option from './option'
 // salesVal标记是否为销售额，主要用于改变数据单位
 // routeTo图表点击事件，可不传
 // chartsIndex如果是循环渲染图表，则传图表下标
-export default (_this, chartName, vertical, salesVal, title, routeTo, chartsIndex) => {
+chartsInit = (_this, chartName, vertical, salesVal, title, routeTo, chartsIndex) => {
   let [dom, chartsData] = [_this.$refs[`${chartName}Container`], _this[`${chartName}Data`]]
   // console.log('传入charts插件的数据：', chartsData)
   if (typeof(chartsIndex) === 'number') {
@@ -18,23 +20,29 @@ export default (_this, chartName, vertical, salesVal, title, routeTo, chartsInde
   let series = chartsData.series
   if (dom) {
     if (series) {
-      dom.style.height = `${vertical === 'horizontal' ? (series[0].data.length * (window.innerWidth/100) * 5) + 80/(window.innerWidth/100) : 100}vw`      
+      dom.style.width = `100vw`      
+      dom.style.height = `${vertical === 'horizontal' ? (series[0].data.length * (window.innerWidth/100) * 3) + 100/(window.innerWidth/100) : 100}vw`      
     } else {
       dom.style.height = `100vw`
+      dom.style.width = `100vw`      
     }
   }
-
-  if (series) {
-    // console.log('开始初始化图表：')
-    echarts.init(dom).setOption(option(chartsData, vertical, salesVal, title))
-    if (routeTo) {
-      // 如果需要添加点击事件，则添加点击事件。
-      echarts.init(dom).on('click', function (data) {
-        // console.log('点击的元素：', data)
-        if (data.componentType === 'series') {
-          routeTo(data, _this)
-        }
-      })
-    }
-  }
+  if(dom){
+    if (series) {
+      echarts.init(dom).setOption(option(chartsData, vertical, salesVal, title))
+      chanrtDom =  echarts.init(dom)
+      if (routeTo) {
+        // 如果需要添加点击事件，则添加点击事件。
+        echarts.init(dom).on('click', function (data) {
+          // console.log('点击的元素：', data)
+          if (data.componentType === 'series') {
+            routeTo(data, _this)
+          }
+        })
+      }
+    } 
+  } 
 }
+
+export default chartsInit;
+export {chanrtDom}

@@ -61,7 +61,7 @@ Vue.use(VueRouter)
 Vue.use(Vuex)
 import Bar from '../../../components/charts/bar'
 import Pie from '../../../components/charts/pie'
-import chartsTit from '../../../components/charts/title'
+import chartsTit,{chanrtDom} from '../../../components/charts/title'
 import RouterLink from '../../../components/charts/routerLink'
 import mybanner from '../../../components/banner'
 export default {
