@@ -136,7 +136,11 @@ export default {
           chartsInit(this, chartsName, 'horizontal')
           this.auchanrtDom2 = chanrtDom
           if(this.i > 1){
-            this.auchanrtDom2.resize()
+            try {
+              this.auchanrtDom2.resize()
+            } catch (error) {
+              console.log(error)
+            }
           }
         }
       }
@@ -158,7 +162,11 @@ export default {
             chartsInit(this, chartsName, 'horizontal')
             this.auchanrtDom4 = chanrtDom
             if(this.i > 1){
-              this.auchanrtDom4.resize()
+              try {
+                this.auchanrtDom4.resize()
+              } catch (error) {
+                console.log(error)
+              }
             }
           }
         }
@@ -181,7 +189,11 @@ export default {
             chartsInit(this, chartsName, 'horizontal')
             this.auchanrtDom6 = chanrtDom
             if(this.i > 1){
-              this.auchanrtDom6.resize()
+              try {
+                this.auchanrtDom6.resize()
+              } catch (error) {
+                console.log(error)
+              }
             }
           }
         }
