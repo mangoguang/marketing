@@ -35,12 +35,19 @@ export default {
   methods:{
     //进入跟踪详情页面，传入demandId
     getTrackDetails(index) {
-      this.$router.push({
-      path:'/trackDetails', 
-      query: {
+      let [id, query] = [this.$route.params.id, {
         demandId: this.dealOrderInfoDetails.demandList[index].demandId,
         product:this.dealOrderInfoDetails.demandList[index].intention
-      }})
+      }]
+      // 如果路由中的params存在参数id，则表明由“我的客户”模块进入，需要传入recordForm参数，
+      // 以供识别是否显示recordForm组件
+      if (id) {
+        query.recordForm = true
+      }
+      this.$router.push({
+        path:'/trackDetails', 
+        query: query
+      })
     }
   }
 }

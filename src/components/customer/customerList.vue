@@ -73,7 +73,6 @@ export default {
     }
   },
   mounted() {
-    consoel.log(112233, this.customerList)
     this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
     this.$refs.customer.scrollTo(0, this.customerScroll)
     //////数据请求要放在这里后

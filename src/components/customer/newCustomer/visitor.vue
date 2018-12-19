@@ -81,7 +81,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
-    
+    console.log(123123, encodeURI('['))
   },
   methods: {
     saveCustomerInfo() {
@@ -93,7 +93,7 @@ export default {
         'details.leaveStore': this.info.leaveStore,
         'demand.intention': this.info.intention,
         'demand.remark': this.info.remark,
-        'demand.trList[0].probability': `${this.info.percent}%`
+        'record.probability': `${this.info.percent}`
       }, {}]
       for (let key in params) {
         if (params[key]) {
@@ -103,6 +103,9 @@ export default {
       mango.getAjax(this, 'customer/update', tempObj,'v2', 'post').then((res) => {
         console.log('保存数据成功', res)
       })
+      // mango.getAjax(this, 'customer/update', tempObj,'v2', 'post').then((res) => {
+      //   console.log('保存数据成功', res)
+      // })
     },
     selectSex() {
       this.proto = 'sex'

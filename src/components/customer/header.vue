@@ -87,6 +87,7 @@ export default {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    this.customerAjaxParams.account = this.ajaxData.account
     this.customerAjaxParams.tenantId = this.ajaxData.tenantId
     this.setCustomerAjaxParams(this.customerAjaxParams)
     if(this.headerStatus[0].status){

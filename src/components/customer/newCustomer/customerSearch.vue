@@ -34,7 +34,7 @@ export default {
         res = res.data
         if (res) {
           console.log(res.customerId)
-          this.$router.push({path: `/newCustomerInfo/${res.customerId}`})
+          this.$router.push({path: `/customerInfo/${res.customerId}`})
           console.log('获取的数据:', res)
         } else {
           this.$router.push({path: `/newCustomerInfo/0?phone=${this.phone}`})

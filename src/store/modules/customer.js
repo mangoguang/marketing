@@ -13,12 +13,18 @@ const state = {
     tut: 0,   //只看今天更新数据 ,优先级最高
     tenantId: '',
     account: ''
-  }
+  },
+  newCustomerInfo: {},
+  customerDemand: {},
+  customerInfoBtns: []
 }
 
 const mutations = {
   setCustomerList: (state, arr) => state.customerList = arr,
-  setCustomerAjaxParams: (state, obj) => state.customerAjaxParams = obj
+  setCustomerAjaxParams: (state, obj) => state.customerAjaxParams = obj,
+  setNewCustomerInfo: (state, obj) => state.newCustomerInfo = obj,
+  setCustomerDemand: (state, obj) => state.customerDemand = obj,
+  setCustomerInfoBtns: (state, arr) => state.customerInfoBtns = arr
 }
 
 const actions = {

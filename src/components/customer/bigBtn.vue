@@ -19,6 +19,6 @@ export default {
     background: #040404;
     font-size: 18px;
     color: #fff;
-    margin: 5vw auto;
+    margin: 5vw 10vw;
   }
 </style>

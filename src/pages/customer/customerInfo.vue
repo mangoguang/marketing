@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapMutations, mapState } from "vuex"
 import dealHeader from '../../components/customer/dealCustomer/dealHeader'
 import customerDemand from '../../components/customer/customerInfo/customerDemand'
 import customerDescript from '../../components/customer/customerInfo/customerDescript'
@@ -31,16 +32,27 @@ export default {
   components:{dealHeader, customerDemand, customerDescript, trackRecord},
   data(){
     return{
-      btns: mango.btnList(['客户描述', '客户需求', '跟踪记录'], 0),
+      btns: mango.btnList(['客户描述', '新建需求', '跟踪记录'], 0),
       name: '',
       phone: '',
       sex: ''
     }
   },
+  computed: {
+    ...mapState({
+      customerInfoBtns: state => state.customer.customerInfoBtns
+    })
+  },
   mounted() {
-    console.log('客户描述：', this.btns)
+    if (this.customerInfoBtns[0]) {
+      this.btns = this.customerInfoBtns
+    }
+  },
+  destroyed() {
+    this.setCustomerInfoBtns(this.btns)
   },
   methods: {
+    ...mapMutations(["setCustomerInfoBtns"]),
     infoSelect(index) {
       this.btns.forEach((element, i) => {
         element.status = i === index
