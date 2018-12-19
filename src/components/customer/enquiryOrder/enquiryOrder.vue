@@ -62,13 +62,15 @@ export default {
           this.getOrderList(1,this.baceLimit)
         }
         this.$refs.order.addEventListener('scroll', this.handleScroll,true)
-        this.$refs.order.scrollTo(0, this.orderScroll)
+        this.$refs.order.scrollTop = this.orderScroll
+      
       }
     }
   },
   mounted() {
     this.$refs.order.addEventListener('scroll', this.handleScroll,true)
-    this.$refs.order.scrollTo(0, this.orderScroll)
+    this.$refs.order.scrollTop = this.orderScroll
+  
     this.getLimit()
     let tempage = (this.baceLimit - 30)/10
     this.page = 3 + tempage

@@ -52,7 +52,7 @@ export default {
       if (this.headerStatus[2].status) {
         this.setHeader(this.dealLength)
         this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
-        this.$refs.deal.scrollTo(0, this.dealScroll)
+        this.$refs.deal.scrollTop = this.dealScroll
         if(this.dealScroll === 0) {
           this.getData();
         }
@@ -61,7 +61,7 @@ export default {
   },
   mounted() {
   this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
-  this.$refs.deal.scrollTo(0, this.dealScroll)
+  this.$refs.deal.scrollTop = this.dealScroll
   if (this.headerStatus[2].status) {
     if(!this.dealCustomerList) {
       this.getData();

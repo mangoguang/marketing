@@ -68,13 +68,13 @@ export default {
     headerStatus() {
       if (this.headerStatus[0].status) {
         this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
-        this.$refs.customer.scrollTo(0, this.customerScroll)
+        this.$refs.customer.scrollTop = this.customerScroll
       }
     }
   },
   mounted() {
     this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
-    this.$refs.customer.scrollTo(0, this.customerScroll)
+    this.$refs.customer.scrollTop = this.customerScroll
     //////数据请求要放在这里后
   },
   methods:{
