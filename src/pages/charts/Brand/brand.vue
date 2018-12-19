@@ -64,7 +64,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -88,7 +88,11 @@ export default {
       typeName: this.$route.query.type === 'brand' ? '品牌' : '品类',
       port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion',
       title:'',
-      endTime: mango.getLocalTime('end')
+      endTime: mango.getLocalTime('end'),
+      key1:false,
+      key2:false,
+      brandchanrtDom1:'',
+      brandchanrtDom2:''
     }
   },
   created() {
@@ -123,16 +127,31 @@ export default {
     brandData() {
       // 参数说明：查看销售模块样例
       const chartsName = 'brand'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal', true)
+      if(this.key2) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal', true)
+          this.brandchanrtDom1 = chanrtDom
+        }
       }
     },
     categoryData() {
       // 参数说明：查看销售模块样例
       const chartsName = 'category'
-      if (this[`${chartsName}Data`].series) {
-        chartsInit(this, chartsName, 'horizontal')
+      if(this.key2) {
+        if (this[`${chartsName}Data`].series) {
+          chartsInit(this, chartsName, 'horizontal')
+          this.brandchanrtDom2 = chanrtDom
+        }
       }
+    }
+  },
+  beforeDestroy(){
+     //销毁实例
+    if(this.brandchanrtDom1) {
+      this.brandchanrtDom1.dispose()
+    }
+    if(this.brandchanrtDom2) {
+      this.brandchanrtDom2.dispose()
     }
   },
   methods:{
@@ -150,6 +169,7 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          this.key1 = true
           res = res.data
           // 过滤数组
           // let tempArr = res.yAxisData.map((item) => {
@@ -172,6 +192,7 @@ export default {
       }).then((res) => {
          mango.loading('close')
         if (res) {
+          this.key2 = true
           res = res.data
           // console.log('品类',)
           _this.categoryData = res

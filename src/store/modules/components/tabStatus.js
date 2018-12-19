@@ -1,11 +1,13 @@
 import mango from '../../../js'
 
 const state = {
-  tabStatus:mango.btnList(['订单信息', '跟踪记录', '个人评级'], 0)
+  tabStatus:mango.btnList(['订单信息', '跟踪记录', '个人评级'], 0),
+  customerTabStatus:mango.btnList(['客户描述', '客户需求', '跟踪记录'], 0)
 }
 
 const mutations = {
-  setTabStatus: (state, str) => state.tabStatus= str
+  setTabStatus: (state, str) => state.tabStatus= str,
+  setCustomerTabStatus: (state, str) => state.customerTabStatus= str
 }
 
 const actions = {

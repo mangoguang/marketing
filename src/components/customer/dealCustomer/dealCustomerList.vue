@@ -76,6 +76,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData);
     let account = localStorage.getItem("accountMsg");
     this.account = JSON.parse(account).name.trim();
+    // this.account = this.ajaxData.account
   },
   methods: {
     ...mapMutations([

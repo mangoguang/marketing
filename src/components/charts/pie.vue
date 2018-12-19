@@ -17,11 +17,13 @@ export default {
   props: ['yAxisData', 'seriesData', 'title', 'category'],
   data () {
     return {
-
+      initDom:'',
+      yinitDom:''
     }
   },
   mounted() {
     echarts.init(this.$refs.main).setOption(this.option())
+    this.initDom = echarts.init(this.$refs.main)
     // console.log(99887766, this.title)
   },
   updated() {
@@ -33,6 +35,16 @@ export default {
   watch: {
     yAxisData: function(val) {
       echarts.init(this.$refs.main).setOption(this.option())
+      this.yinitDom =  echarts.init(this.$refs.main)
+    }
+  },
+  beforeDestroy(){
+     //销毁实例
+    if(this.initDom) {
+      this.initDom.dispose()
+    }
+     if(this.yinitDom) {
+      this.yinitDom.dispose()
     }
   },
   methods: {
@@ -90,7 +102,7 @@ export default {
           selected: seriesData[i] === maxNum
         })
       }
-      console.log('pieData', arr)
+      // console.log('pieData', arr)
       return arr
     }
   }

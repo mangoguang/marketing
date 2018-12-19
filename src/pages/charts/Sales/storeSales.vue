@@ -21,7 +21,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
-import chartsInit from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
@@ -44,17 +44,19 @@ export default {
       ajaxData: {},
       storeSalesData: {},
       endTime: mango.getLocalTime('end'),
-      title:'销售额报表'
+      title:'销售额报表',
+      key:false,
+      storeSalchanrtDom1:''
     }
   },
   created() {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    console.log('creat,tenanid',this.ajaxData.tenantId)
+    this.getStoreSalesData()
+    // console.log('creat,tenanid',this.ajaxData.tenantId)
   },
   mounted(){
-    this.getStoreSalesData()
   },
   computed: {
 
@@ -66,10 +68,20 @@ export default {
       // vertical设置柱状图的横向排布和纵向排布
       // height设置图标容器main的高度
       // salesVal标记是否为销售额，主要用于改变数据单位
-      let routeTo = (data, _this) => {
-        _this.$router.push({path: `/personalSales?shopId=${this.storeSalesData.idsData[data.dataIndex]}&name=${data.name}`})
+      setTimeout(() => {
+        if(this.key) {
+        let routeTo = (data, _this) => {
+          _this.$router.push({path: `/personalSales?shopId=${this.storeSalesData.idsData[data.dataIndex]}&name=${data.name}`})
+        }
+        chartsInit(this, 'storeSales', 'horizontal', true, '', routeTo)
+        this.storeSalchanrtDom1 = chanrtDom
       }
-      chartsInit(this, 'storeSales', 'horizontal', true, '', routeTo)
+      }, 200);
+    }
+  },
+  beforeDestroy(){
+    if(this.storeSalchanrtDom1) {
+      this.storeSalchanrtDom1.dispose()
     }
   },
   methods:{
@@ -89,6 +101,12 @@ export default {
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
         if (res) {
+          let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          this.$set(res.data,'idsData',newData[3])
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data,'yAxisData',newData[0])
+          this.key = true
           res = res.data
           // let tempArr = res.yAxisData.map((item) => {
           //   return '3d'

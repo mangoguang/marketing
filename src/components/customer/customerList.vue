@@ -78,7 +78,7 @@ export default {
     //////数据请求要放在这里后
   },
   methods:{
-    ...mapMutations(["setCustomerScroll"]),
+    ...mapMutations(["setCustomerScroll","setCustomerTabStatus"]),
     handleScroll(e) {
       let top = e.target.scrollTop
       this.setCustomerScroll(top)
@@ -95,6 +95,7 @@ export default {
     },
     toCustomerInfo(id) {
       this.$router.push(`/customerInfo/${id}`)
+      this.setCustomerTabStatus(mango.btnList(['客户描述', '客户需求', '跟踪记录'], 0))
     },
     newCustomer() {
       this.$router.push({path: './newCustomer'})

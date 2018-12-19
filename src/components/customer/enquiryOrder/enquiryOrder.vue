@@ -78,8 +78,7 @@ export default {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem("ajaxData");
     this.ajaxData = JSON.parse(ajaxData);
-    let account = localStorage.getItem("accountMsg");
-    this.account = JSON.parse(account).name.trim();
+    this.account = this.ajaxData.account
   },
   methods: {
     handleScroll(e) {

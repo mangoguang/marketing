@@ -24,7 +24,10 @@ export default {
     return {
       seriesPosition: 'right',
       width: window.innerWidth,
-      barData: {}
+      barData: {},
+      initDom1:'',
+      initDom2:'',
+      ker:false
     }
   },
   beforeMount() {
@@ -34,12 +37,13 @@ export default {
     // console.log('echartinit')
   },
   mounted() {
+    this.key = true
     // this.$nextTick(function () {
     //     setTimeout(() => {
     //       echarts.init(this.$refs.main).setOption(this.option())
     //     }, 10)
     //   })
-    this.select()
+    // this.select()
     // console.log('组件加载', this.data)
   },
   updated() {
@@ -50,15 +54,26 @@ export default {
   },
   watch: {
     data(val){
-      this.barData = val
-      console.log('echarts init')
-      echarts.init(this.$refs.main).setOption(this.option())
+      if(this.key) {
+        this.barData = val
+        echarts.init(this.$refs.main).setOption(this.option())
+        this.initDom1 = echarts.init(this.$refs.main)
+      }
     }
   },
   computed: {
     // barData: function() {
     //   return this.data
     // }
+  },
+  beforeDestroy(){
+     //销毁实例
+    if(this.initDom1) {
+      this.initDom1.dispose()
+    }
+     if(this.initDom2) {
+      this.initDom2.dispose()
+    }
   },
   methods: {
     option() {
@@ -133,11 +148,11 @@ export default {
       }
     },
     select() {
-      console.log('select')
       let _this = this
       echarts.init(_this.$refs.main).on('click', function (params) {
         _this.$emit('chartsClick', [params, _this.data.idsData])
       })
+      this.initDom2 = echarts.init(_this.$refs.main)
     },
     /*
     参数说明：
