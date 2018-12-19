@@ -1,11 +1,14 @@
 <template>
   <div class="trackDetalis">
-    <mybanner :title="title"/>
+    <mybanner :title="title">
+      <!-- <button v-show="showRecordForm">保存</button> -->
+    </mybanner>
     <h1>{{ product }}</h1>
     <div class="customer-demand">
       <div class="tilte">
         <p></p>
         <h2>客户需求</h2>
+        <button @click="toChangeDemand" v-show="showRecordForm">更改</button>
       </div>
       <ul>
         <li>
@@ -38,6 +41,11 @@
         </li>
       </ul>
     </div>
+    <!-- 跟进客户 -->
+    <div class="recordFormBox" v-show="showRecordForm">
+      <record-form @getRecordForm="getRecordForm" />
+      <div class="btnBox"><big-btn @click.native="saveRecord" :text="'保存'" /></div>
+    </div>
     <div class="follow-up-history">
       <div class="tilte">
         <p></p>
@@ -63,14 +71,17 @@
 
 <script>
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import mybanner from '../../components/banner';
-import followDetails from '../../components/customer/dealCustomer/followDetails'
 import Vuex, { mapMutations, mapState } from 'vuex'
+import VueRouter from 'vue-router'
+import mybanner from '../../components/banner'
+import followDetails from '../../components/customer/dealCustomer/followDetails'
+import recordForm from '../../components/customer/recordForm'
+import bigBtn from '../../components/customer/bigBtn'
 import mango from '../../js'
+import {returnDate} from '../../utils/customer'
 
 export default {  
-  components:{mybanner,followDetails},
+  components:{mybanner, followDetails, recordForm, bigBtn},
   computed: {
     ...mapState({
       followTrackDetails: state => state.followTrackDetails.followTrackDetails  
@@ -85,7 +96,9 @@ export default {
       demandId:'',
       demandList:[],
       product:'',
-      trList:[]
+      trList:[],
+      showRecordForm: this.$route.query.recordForm,
+      recordFormData: {}
     }
   },
   created(){
@@ -99,8 +112,12 @@ export default {
   },
   methods:{
     ...mapMutations([
-      'setFollowTrackDetails'
+      'setFollowTrackDetails',
+      'setCustomerDemand'
     ]),
+    getRecordForm(obj) {
+      this.recordFormData = obj
+    },
     //获取数据
     getTrackDetails(){
       mango.getAjax(this, 'demand',{
@@ -112,6 +129,37 @@ export default {
           console.log(1111,this.demandList)
         }
       }) 
+    },
+    toChangeDemand() {
+      this.setCustomerDemand({
+        buyReason: this.demandList.buyReason,
+        colorPref: this.demandList.colorPref,
+        id: this.demandList.id,
+        intention: this.demandList.intention,
+        progress: this.demandList.progress,
+        remark: this.demandList.remark,
+        roomNum: this.demandList.roomNum,
+        stylePref: this.demandList.stylePref
+      })
+      this.$router.push({
+        path:'/changeDemand'
+      })
+    },
+    saveRecord() {
+      let obj = this.recordFormData
+      mango.getAjax(this, 'saveTrackRecord', {
+        account: this.ajaxData.account,   //登录账户
+        demandId: this.$route.query.demandId, 
+        probability: `${obj.percent}%`,
+        nextFollowTime: returnDate(obj.followTime),
+        followPlan: obj.followPlan || '',
+        followSituation: obj.followSituation || ''
+      },'v2', 'post').then((res) => {
+        if (res) {
+          this.$router.go(0)
+        }
+      })
+      console.log('传到父组建的recordForm参数', this.recordFormData)
     },
     pullDown(index) {
       // this.trList = this.demandList.trList[index]
@@ -150,6 +198,7 @@ export default {
   .tilte{
     display: flex;
     align-items: center;
+    position: relative;
     h2{
       font-size: 4vw;
       margin-left: 2vw;
@@ -159,6 +208,11 @@ export default {
       width: 0.53vw;
       height: 4vw;
       margin-left: 4.6vw;
+    }
+    button{
+      position: absolute;
+      right: 5vw;
+      line-height: 2em;
     }
   }
   .customer-demand{

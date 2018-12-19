@@ -35,7 +35,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/common.scss";
 .myRange{
-  padding: 0 5vw;
+  padding: 5vw;
   h3{
     font-size: $fontSize;
   }

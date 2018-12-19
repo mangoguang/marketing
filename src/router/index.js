@@ -68,7 +68,7 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/customer/customerInfo'],resolve)
   },
   {
-    path: '/newCustomerInfo',
+    path: '/newCustomerInfo/:id',
     name: '/NewCustomerInfo',
     component: resolve => require(['../pages/customer/newCustomerInfo'],resolve)
   },
@@ -86,6 +86,11 @@ export var router = new VueRouter({
     path: '/trackDetails',
     name: '/trackDetails',
     component: resolve => require(['../pages/customer/trackDetails'],resolve)
+  },
+  {
+    path: '/changeDemand',
+    name: '/changeDemand',
+    component: resolve => require(['../pages/customer/changeDemand'],resolve)
   },
   {
     path: '/enquiryInfo',

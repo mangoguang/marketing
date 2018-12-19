@@ -1,7 +1,7 @@
 <template>
   <div class="customerSearch">
     <div>
-      <input type="text" placeholder="请输入姓名或电话">
+      <input v-model="phone" type="text" placeholder="请输入姓名或电话">
       <button @click="toCustomerInfo" type="button">前往</button>
     </div>
   </div>
@@ -9,20 +9,37 @@
 
 <script>
 // import dealHeader from '../../components/customer/dealCustomer/dealHeader'
-// import mango from '../../js'
+import mango from '../../../js'
 export default {
   name:'customerSearch',
   data(){
     return{
-
+      phone: ''
     }
+  },
+  created() {
+    // 获取本地存储信息
+    let [ajaxData, cityMsg] = [localStorage.getItem('ajaxData'), localStorage.getItem('cityMsg')]
+    this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
     
   },
   methods: {
     toCustomerInfo() {
-      this.$router.push({path: '/newCustomerInfo'})
+      mango.getAjax(this, 'customer/phone', {
+        phone: this.phone,
+        tenantId: this.ajaxData.tenantId
+      }, 'v2').then((res) => {
+        res = res.data
+        if (res) {
+          console.log(res.customerId)
+          this.$router.push({path: `/customerInfo/${res.customerId}`})
+          console.log('获取的数据:', res)
+        } else {
+          this.$router.push({path: `/newCustomerInfo/0?phone=${this.phone}`})
+        }
+      })
     }
   }
 }

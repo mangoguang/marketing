@@ -40,6 +40,7 @@ export default {
     line-height: 2.6em;
   }
   textarea{
+    display: block;
     width: 100vw;
     height: 35vw;
     background: #fff;
@@ -47,6 +48,7 @@ export default {
     box-sizing: border-box;
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
+    font-size: $fontSize;
   }
 }
 </style>

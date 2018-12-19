@@ -1,0 +1,125 @@
+<template>
+  <div class="demandForm">
+    <ul>
+      <li is="customerLi" :leftText="'意向产品'">
+        <input @change="emitEvent" v-model="demand.intention" placeholder="请填写意向产品" type="text">
+      </li>
+      <li is="customerLi" :leftText="'颜色偏好'">
+        <input @change="emitEvent" v-model="demand.colorPref" placeholder="请填写颜色偏好" type="text">
+      </li>
+      <li is="customerLi" :leftText="'风格偏好'">
+        <input @change="emitEvent" v-model="demand.stylePref" placeholder="请填写风格偏好" type="text">
+      </li>
+      <li is="customerLi" :leftText="'购买原因'">
+        <input @change="emitEvent" v-model="demand.buyReason" placeholder="请填写购买原因" type="text">
+      </li>
+      <li is="customerLi" :leftText="'装修进度'" :icon="true" @click.native="selectProgress">
+        <span>{{demand.progress || '请选择装修进度'}}</span>
+      </li>
+      <li is="customerLi" :leftText="'房间数量'">
+        <input @change="emitEvent" v-model="demand.roomNum" placeholder="请填写房间数量" type="number">
+      </li>
+      <li class="textarea">
+        <h3>备注：</h3>
+        <textarea @change="emitEvent" v-model="demand.remark" name="" id="" cols="30" rows="10" placeholder="描述一下情况吧"></textarea>
+      </li>
+    </ul>
+    <div class="mintComponent">
+      <!-- 性别选择插件 -->
+      <mt-popup 
+      position="bottom"
+      v-model="popupVisible">
+        <mt-picker
+        :slots="slots"
+        @change="onValuesChange"
+        ref="Picker"></mt-picker>
+      </mt-popup>
+    </div>
+  </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import { mapState } from 'vuex'
+import { Picker, Popup } from 'mint-ui'
+
+Vue.component(Picker.name, Picker)
+Vue.component(Popup.name, Popup)
+import customerLi from '../../components/customer/customerLi'
+import bigBtn from '../../components/customer/bigBtn'
+import mango from '../../js'
+import {turnParams} from '../../utils/customer'
+export default {
+  name:'demandForm',
+  components: {
+    customerLi,
+    bigBtn
+  },
+  props: ['defaultVal'],
+  data(){
+    return{
+      demand: {},
+      popupVisible: false,
+      slots: [{values: ['毛坯阶段', '水电木工', '油漆吊顶', '橱柜安装', '地板安装', '木门安装', '洁具安装', '灯饰安装', '装修中', '装修完成']}]
+    }
+  },
+  computed: {
+    ...mapState({
+      customerDemand: state => state.customer.customerDemand
+    })
+  },
+  created() {
+    //获取本地缓存信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+  },
+  mounted() {
+    if (this.defaultVal) {
+      this.demand = this.customerDemand
+    }
+  },
+  methods: {
+    selectProgress() {
+      this.popupVisible = true
+    },
+    onValuesChange(picker, values) {
+      console.log('选择的装修进度', values)
+      this.demand.progress = values[0]
+    },
+    emitEvent() {
+      this.$emit('changeDemand', this.demand)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+@import "../../assets/common.scss";
+.demandForm{
+  background: #f8f8f8;
+  li{
+    display: flex;
+    h3{
+      color: $fontCol;
+      font-size: $fontSize;
+      padding: 0 5vw;
+      line-height: 3em;
+      border-bottom: 1px solid #ccc;
+    }
+    textarea{
+      background: #fff;
+      width: 100vw;
+      height: 40vw;
+      padding: 3vw 5vw;
+      box-sizing: border-box;
+      font-size: $fontSize;
+    }
+  }
+  li.textarea{
+    display: block;
+  }
+  .picker{
+    width: 100vw;
+  }
+}
+</style>

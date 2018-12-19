@@ -6,6 +6,7 @@
       <div class="icon"></div>
     </div>
     <span>{{title}}</span>
+    <slot></slot>
   </div>
 </template>
 <!-- </keep-alive> -->
@@ -90,6 +91,16 @@ export default {
     font-size: 5.06vw;
     letter-spacing: -1px;
     color: #363636;
+  }
+  button{
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+    line-height: 11vw;
+    width: 25vw;
+    padding: 0 5vw;
+    text-align: right;
+    color: #007aff;
   }
 }
 </style>
