@@ -53,7 +53,7 @@ export default {
     this.setCustomerInfoBtns(this.btns)
   },
   methods: {
-    ...mapMutations(["setCustomerInfoBtns"]),
+    ...mapMutations(["setCustomerInfoBtns", "setCustomerTabStatus"]),
     infoSelect(index) {
       this.setCustomerTabStatus(mango.btnList(['客户描述', '客户需求', '跟踪记录'], index))
     },
