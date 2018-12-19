@@ -58,7 +58,8 @@ export default {
       key1:false,
       key2:false,
       cusSourcechanrtDom1:'',
-      cusSourcechanrtDom2:''
+      cusSourcechanrtDom2:'',
+      i:0
     }
   },  
   created() {
@@ -113,6 +114,13 @@ export default {
         if (this[`${chartsName}Data`].series) {
           chartsInit(this, chartsName, 'horizontal')
           this.cusSourcechanrtDom2 = chanrtDom
+          if(this.i > 1){
+            try {
+              this.cusSourcechanrtDom2.resize()
+            } catch (error) {
+              console.log(error)
+            }
+          }
         }
       }
     }
@@ -178,6 +186,7 @@ export default {
       })
     },
     getareaCustomerSourceData(date) {
+      this.i += 1
       mango.loading('open')
       let _this = this
       mango.getAjax(this, 'customer/source/shop', {
@@ -186,6 +195,12 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          let newData = mango.getCustomerNewArr(res.data.series[0].data,res.data.series[1].data,res.data.series[2].data,res.data.series[3].data,res.data.yAxisData)
+          this.$set(res.data.series[0],'data',newData[1])
+          this.$set(res.data.series[1],'data',newData[2])
+          this.$set(res.data.series[2],'data',newData[3])
+          this.$set(res.data.series[3],'data',newData[4])
+          this.$set(res.data,'yAxisData',newData[0])
           this.key2 = true
           res = res.data
           // console.log(res)

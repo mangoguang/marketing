@@ -258,5 +258,24 @@ export default class Common {
     }
     return [arr,arr1,arr2,arr3]
   }
-
+  getCustomerNewArr(a,b,c,d,e){     //c=series[2],a=series[0],b=series[1],d=series[3],e=y
+    var len = e.length	            //arr=y,arr1=series[0],arr2=series[1],arr3=series[2],arr4=series[3]
+    var arr = []
+    var arr1 = []
+    var arr2 = []
+    var arr3 = []
+    var arr4 = []
+    for(var i = 0; i < len; i ++) {
+      if(a[i] == 0 && b[i] == 0 && c[i] == 0 && d[i] == 0) {
+        
+      }else {
+        arr4.push(d[i])
+        arr.push(e[i])
+        arr1.push(a[i])
+        arr2.push(b[i])
+        arr3.push(c[i])
+      }
+    }
+    return [arr,arr1,arr2,arr3,arr4]
+  }
 }

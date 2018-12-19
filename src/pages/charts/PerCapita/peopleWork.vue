@@ -114,7 +114,11 @@ export default {
           chartsInit(this, chartsName, 'horizontal', true)
           this.peoWorkchanrtDom2 = chanrtDom
           if(this.i > 1){
-            this.peoWorkchanrtDom2.resize()
+            try {
+              this.peoWorkchanrtDom2.resize()
+            } catch (error) {
+              console.log(error)
+            }
           }
         }
       }
