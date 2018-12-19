@@ -109,7 +109,11 @@ export default {
           chartsInit(this, chartsName, 'horizontal')
           this.areaEffchanrtDom2 = chanrtDom
           if(this.i > 1){
-            this.areaEffchanrtDom2.resize()
+            try {
+              this.areaEffchanrtDom2.resize()
+            } catch (error) {
+              console.log(error)
+            }
           }
         }
       }
