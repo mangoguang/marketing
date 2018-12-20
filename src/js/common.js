@@ -201,12 +201,28 @@ export default class Common {
       return this.indexTime()
     } 
   }
-  //获取时间
+  //获取时间   安卓和ios的时间格式不同	年月日/月日年
   indexTimeB(date){
     if(date){
       date = date.toLocaleDateString().split('/')
-      let b  = date.join('-')
-      let a = date[0] + '年' + date[1] + '月' + date[2] + '日'
+      var year,mouth,day,a,b
+      var c = []
+      date.forEach((item,index) => {
+        if(item > 1000){
+          year = date[index]
+          if(index == 0){
+            mouth = date[index + 1]
+            day = date[index + 2]
+            c.push(year,mouth,day)
+          }else {
+            mouth = date[index - 2]
+            day = date[index - 1]
+            c.push(year,mouth,day)
+          }
+        }
+      })
+      a = year + '年' + mouth + '月' + day + '日'
+      b = c.join('-')
       return [a,b]
     }
   }
@@ -259,6 +275,7 @@ export default class Common {
     }
     return [arr,arr1,arr2,arr3]
   }
+  //客户来源过滤
   getCustomerNewArr(a,b,c,d,e){     //c=series[2],a=series[0],b=series[1],d=series[3],e=y
     var len = e.length	            //arr=y,arr1=series[0],arr2=series[1],arr3=series[2],arr4=series[3]
     var arr = []

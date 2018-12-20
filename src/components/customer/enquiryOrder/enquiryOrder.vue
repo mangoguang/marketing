@@ -62,13 +62,14 @@ export default {
           this.getOrderList(1,this.baceLimit)
         }
         this.$refs.order.addEventListener('scroll', this.handleScroll,true)
-        this.$refs.order.scrollTo(0, this.orderScroll)
+        this.$refs.order.scrollTop = this.orderScroll
+      
       }
     }
   },
   mounted() {
     this.$refs.order.addEventListener('scroll', this.handleScroll,true)
-    this.$refs.order.scrollTo(0, this.orderScroll)
+    this.$refs.order.scrollTop = this.orderScroll
     this.getLimit()
     let tempage = (this.baceLimit - 30)/10
     this.page = 3 + tempage
@@ -110,7 +111,6 @@ export default {
             this.dealCusList = this.orderList;
             this.$emit("changeResultTit",`全部客户 (${this.orderList.total == null? "0": this.orderList.total})`);
           } else {
-            
             this.setLimit(this.baceLimit + 10)
             this.getLimit()
             console.log(12222,this.baceLimit)
