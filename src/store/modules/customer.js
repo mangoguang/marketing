@@ -2,7 +2,7 @@ const state = {
   customerList: [],
   customerAjaxParams: {
     page: 1,   //页数
-    limit: 30,    //每页条数
+    limit: 9,    //每页条数
     u: '',   //1:紧急排序，0：非
     i: '',   //1关键排序
     uo: 0,   // 1:紧急排序，0：非
@@ -16,7 +16,8 @@ const state = {
   },
   newCustomerInfo: {},
   customerDemand: {},
-  customerInfoBtns: []
+  customerInfoBtns: [],
+  allLoaded: false
 }
 
 const mutations = {
@@ -24,7 +25,8 @@ const mutations = {
   setCustomerAjaxParams: (state, obj) => state.customerAjaxParams = obj,
   setNewCustomerInfo: (state, obj) => state.newCustomerInfo = obj,
   setCustomerDemand: (state, obj) => state.customerDemand = obj,
-  setCustomerInfoBtns: (state, arr) => state.customerInfoBtns = arr
+  setCustomerInfoBtns: (state, arr) => state.customerInfoBtns = arr,
+  setAllLoaded: (state, boolean) => state.allLoaded = boolean
 }
 
 const actions = {

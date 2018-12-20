@@ -74,7 +74,10 @@ export default {
   },
   watch: {
     'customerAjaxParams': function(val) {
-      this.getCustomerList()
+      console.log('变化后的customerAjaxParams参数：', val)
+      if (val.page === 1) {
+        this.getCustomerList()
+      }
     },
     headerStatus(){
       if(this.headerStatus[0].status){
@@ -104,7 +107,8 @@ export default {
       'setRightContainerStatus',
       'setCustomerList',
       'setCustomerAjaxParams',
-      'setHeaderStatus'
+      'setHeaderStatus',
+      'setAllLoaded'
     ]),
     // 显示右侧边栏
     showRightContainer() {
@@ -138,18 +142,24 @@ export default {
           case 0:
             tempObj.uo = 0
             tempObj.io = 0
+            tempObj.page = 1
+            this.setAllLoaded(false)
             this.setCustomerAjaxParams(tempObj)
             console.log('全部', this.customerAjaxParams)
             break
           case 1:
             tempObj.uo = 1
             tempObj.io = 0
+            tempObj.page = 1
+            this.setAllLoaded(false)
             this.setCustomerAjaxParams(tempObj)
             console.log('紧急降序', this.customerAjaxParams)
             break
           case 2:
             tempObj.uo = 0
             tempObj.io = 1
+            tempObj.page = 1
+            this.setAllLoaded(false)
             this.setCustomerAjaxParams(tempObj)
             console.log('关键降序', this.customerAjaxParams)
             break
@@ -164,6 +174,10 @@ export default {
     },
     // ajax请求客户列表
     getCustomerList() {
+      // 保证页面挂载是，请求的是第一页的数据。
+      this.customerAjaxParams.page = 1
+      this.setAllLoaded(false)
+      this.setCustomerAjaxParams(this.customerAjaxParams)
       mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
         if (res) {
           this.setCustomerList(res.data)

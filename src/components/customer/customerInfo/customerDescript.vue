@@ -63,6 +63,7 @@
       ref="datePicker"
       type="date"
       v-model="today"
+      :startDate="new Date('1930-01-01')"
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
@@ -168,6 +169,8 @@ export default {
   },
   mounted() {
     this.customerDemand.phone = this.$route.query.phone
+    console.log('successssss', this.startDate)
+
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
   },
@@ -211,7 +214,7 @@ export default {
         // account: this.ajaxData.account,   //登录账户
         // tenantId: this.ajaxData.tenantId,
         username: obj.username,
-        sex: obj.sex === '男' == 1 ? 1 : 2,  //性别(1:男,2:女,0:未知)，
+        sex: obj.sex,  //性别(1:男,2:女,0:未知)，
         birthday: this.returnDate(obj.birthday),
         phone: obj.phone || this.$route.query.phone,
         source: obj.source,

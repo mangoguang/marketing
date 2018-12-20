@@ -105,7 +105,9 @@ export default {
         tenantId: this.ajaxData.tenantId,
         ...this.updateParams(this.newCustomerInfo)
       },'v2', 'post').then((res) => {
-        console.log('保存数据成功', res)
+        if (res.status) {
+          this.$router.back(-1)
+        }
       })
     },
     updateParams(obj) {
