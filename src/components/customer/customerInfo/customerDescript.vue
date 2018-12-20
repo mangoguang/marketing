@@ -63,6 +63,7 @@
       ref="datePicker"
       type="date"
       v-model="today"
+      :startDate="new Date('1930-01-01')"
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
@@ -168,6 +169,8 @@ export default {
   },
   mounted() {
     this.customerDemand.phone = this.$route.query.phone
+    console.log('successssss', this.startDate)
+
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
   },
@@ -179,13 +182,11 @@ export default {
         id: id
       },'v2').then((res) => {
         res = res.data
-        console.log('我的信息', res)
         if (res) {
           this.setDealOrderInfoDetails(res)
           this.provinceName = res.provinceName
           this.cityName = res.cityName
           this.countyName = res.areaName
-          console.log('获取客户信息成功。')
           // this.customerInfo = res
           // 初始化保存接口参数
           this.checkBtnStatus(res)
@@ -209,12 +210,11 @@ export default {
       })
     },
     setCustomerDemand(obj = {}) {
-      console.log(11111, this)
       this.customerDemand = {
         // account: this.ajaxData.account,   //登录账户
         // tenantId: this.ajaxData.tenantId,
         username: obj.username,
-        sex: obj.sex === '男' == 1 ? 1 : 2,  //性别(1:男,2:女,0:未知)，
+        sex: obj.sex,  //性别(1:男,2:女,0:未知)，
         birthday: this.returnDate(obj.birthday),
         phone: obj.phone || this.$route.query.phone,
         source: obj.source,
@@ -226,7 +226,6 @@ export default {
         urgency: obj.urgency,   //紧急，1/2/3级，一级最高
         important: obj.important  //重要，1/2/3级，一级最高
       }
-      console.log(1111, this.customerDemand)
     },
     checkBtnStatus(obj) {
       for (let i = 0; i < this.urgencyBtns.length; i++) {
@@ -248,7 +247,6 @@ export default {
       this.customerDemand.urgency = index + 1
     },
     selectSex() {
-      console.log('性别的初始值：', this.customerDemand.sex)
       this.slots = this.sexList
       this.proto = 'sex'
       // 设置性别选择插件的初始值
@@ -326,40 +324,6 @@ export default {
     },
     saveCustomerInfo() {
       let [obj, id] = [this.customerDemand, this.$route.params.id]
-      console.log(998877, turnParams(this.customerDemand))
-      // let params = {
-      //   account: this.ajaxData.account,   //登录账户
-      //   tenantId: this.ajaxData.tenantId,
-      //   'details.username': obj.username,
-      //   'details.sex': obj.sex === '男' ? 1 : 2,  //性别(1:男,2:女,0:未知)，
-      //   'details.birthday': this.returnDate(obj.birthday),
-      //   'details.phone': obj.phone,
-      //   'details.source': obj.source,
-      //   'details.province': '440000',
-      //   'details.city': '441900',
-      //   'details.area': '441911',
-      //   'details.address': obj.area,
-      //   'details.leaveStore': obj.leaveStore,    //留店时间，
-      //   'details.urgency': obj.urgency,   //紧急，1/2/3级，一级最高
-      //   'details.important': obj.important,  //重要，1/2/3级，一级最高
-      //   'demand.intention': '床垫',   //意向产品，
-      //   'demand.colorPref': '白色、蓝色',
-      //   'demand.stylePref': '简约，大气',
-      //   'demand.buyReason': '新房购置',
-      //   'demand.progress': '装修中',
-      //   'demand.roomNum': 3,
-      //   'demand.remark': '客户备注',
-      //   'demand.trList[0].followSituation': '跟进情况',
-      //   'demand.trList[0].probability': '80%',
-      //   'demand.trList[0].followTime': '2018-11-20',
-      //   'demand.trList[0].followPlan': '跟进计划'
-      // }
-      // _vue, port, params, pathVersion,typex
-      if (this.$route.params.id) {
-        console.log('success')
-      } else {
-        console.log('error')
-      }
       mango.getAjax(this, 'customer/update', {
         account: this.ajaxData.account,   //登录账户
         tenantId: this.ajaxData.tenantId,
@@ -430,7 +394,6 @@ export default {
       }
     },
     getCounty(city) {
-      console.log(mango.key)
       return new Promise((resolve, reject) => {
         mango.getAjax(this, 'area', {
           city: city

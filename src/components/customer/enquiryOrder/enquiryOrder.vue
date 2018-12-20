@@ -17,13 +17,13 @@
 </template>
 
 <script>
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Vuex, { mapMutations, mapState } from "vuex";
-import mango from "../../../js";
+import Vue from "vue"
+import VueRouter from "vue-router"
+import Vuex, { mapMutations, mapState } from "vuex"
+import mango from "../../../js"
 import dealOrderInfoDetails from '../../../store/modules/components/dealOrderInfoDetails';
-import { Loadmore } from 'mint-ui';
-Vue.component(Loadmore.name, Loadmore);
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
 
 export default {
   name:'enquiryOrder',

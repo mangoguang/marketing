@@ -1,29 +1,28 @@
 <!-- <keep-alive> -->
 <template>
-  <ul
-    ref="customer"
-    class="customerList"
-    v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="loading"
-    infinite-scroll-distance="10">
-    <li
-    class="customerContent"
-    v-for="(item, index) in customerList.records"
-    :key="`customerList${index}`"
-    @click="toCustomerInfo(item.id)">
-      {{item.name}}
-      <ul>
-        <li>
-          <div :class="`urgence${item.urgency}`"></div>
-          <strong>{{item.username}}<i :class="`important${item.important}`"></i></strong>
-          <span>{{item.followTime}}</span>
-        </li>
-        <li>{{item.intention}}</li>
-        <li>{{item.probability}}</li>
-      </ul>
-    </li>
-    <li><button @click="newCustomer" class="new"></button></li>
-  </ul>
+    <ul
+      ref="customer"
+      class="customerList">
+  <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false" >
+      <li
+      class="customerContent"
+      v-for="(item, index) in customerList.records"
+      :key="`customerList${index}`"
+      @click="toCustomerInfo(item.id)">
+        {{item.name}}
+        <ul>
+          <li>
+            <div :class="`urgence${item.urgency}`"></div>
+            <strong>{{item.username}}<i :class="`important${item.important}`"></i></strong>
+            <span>{{item.followTime}}</span>
+          </li>
+          <li>{{item.intention}}</li>
+          <li>{{item.probability}}</li>
+        </ul>
+      </li>
+      <li><button @click="newCustomer" class="new"></button></li>
+  </mt-loadmore>
+    </ul>
   <!-- <ul class="customerList">
     <li class="customerContent" v-for="(customer, index) in customerMsg" :key="`customer${index}`">
       <ul>
@@ -43,9 +42,10 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { InfiniteScroll } from 'mint-ui'
-import Vuex, { mapMutations, mapState } from "vuex";
-Vue.use(InfiniteScroll)
+import { Loadmore } from 'mint-ui'
+
+Vue.component(Loadmore.name, Loadmore)
+import Vuex, { mapMutations, mapState } from "vuex"
 Vue.use(Vuex)
 import mango from '../../js'
 export default {
@@ -53,15 +53,17 @@ export default {
   props:[],
   data () {
     return {
-      
+
     }
   },
   computed: {
     ...mapState({
       // citySelect: state => state.select.citySelect,
+      customerAjaxParams: state => state.customer.customerAjaxParams,
       customerList: state => state.customer.customerList,
       headerStatus: state => state.customerHeader.headerStatus,
-      customerScroll: state => state.customerScroll.customerScroll
+      customerScroll: state => state.customerScroll.customerScroll,
+      allLoaded: state => state.customer.allLoaded
     })
   },
   watch: {
@@ -72,18 +74,46 @@ export default {
       }
     }
   },
+  created() {
+    // 获取本地存储信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+  },
   mounted() {
     this.$refs.customer.addEventListener('scroll', this.handleScroll,true)
     this.$refs.customer.scrollTop = this.customerScroll
     //////数据请求要放在这里后
   },
   methods:{
-    ...mapMutations(["setCustomerScroll","setCustomerTabStatus"]),
+    ...mapMutations([
+      'setCustomerAjaxParams', 
+      "setCustomerScroll", 
+      "setCustomerTabStatus",
+      "setCustomerList",
+      "setAllLoaded"
+    ]),
     handleScroll(e) {
       let top = e.target.scrollTop
       this.setCustomerScroll(top)
     },
-    loadMore() {
+    loadBottom() {
+      console.log('接口参数：', this.customerAjaxParams, this.customerList)
+      this.customerAjaxParams.page++
+      mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
+        this.$refs.loadmore.onBottomLoaded()
+        res = res.data
+        if (res) {
+          if (res.records) {
+            if (res.records.length < 9) {
+              this.setAllLoaded(true)
+            }
+            this.customerList.records = this.customerList.records.concat(res.records)
+            this.setCustomerList(this.customerList)
+          } else {
+              this.setAllLoaded(true)
+          }
+        }
+      })
       // mango.loading('open')
       // setTimeout(() => {
       //   // let last = this.customerList[this.customerList.length - 1]

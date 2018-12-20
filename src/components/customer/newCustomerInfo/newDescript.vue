@@ -65,6 +65,7 @@
         ref="datePicker1"
         type="date"
         v-model="today"
+        :startDate="new Date('1930-01-01')"
         year-format="{value} 年"
         month-format="{value} 月"
         date-format="{value} 日"

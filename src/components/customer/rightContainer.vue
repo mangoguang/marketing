@@ -123,7 +123,8 @@ export default {
   methods:{
     ...mapMutations([
       'setRightContainerStatus',
-      'setCustomerAjaxParams'
+      'setCustomerAjaxParams',
+      'setAllLoaded'
     ]),
     test() {
       console.log('success')
@@ -147,6 +148,8 @@ export default {
       this.paramsObj.endTime = this.endDateVal
       console.log(112233, this.paramsObj)
       this.setCustomerAjaxParams(mango.customerAjaxParams)
+      this.paramsObj.page = 1
+      this.setAllLoaded(false)
       this.setCustomerAjaxParams(this.paramsObj)
     },
     // 紧急程度选择
