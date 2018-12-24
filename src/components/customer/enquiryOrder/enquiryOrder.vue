@@ -88,13 +88,12 @@ export default {
     },
     ...mapMutations(["setOrderList","setOrderInfoDetails",'setOrderScroll']),
     loadBottom() {
-      if (!this.allLoaded) {
-        if (this.page < this.allPage) {
-          this.page ++;
-          this.getOrderList(this.page, this.limit);
-        }
-      }
       this.$refs.loadmore.onBottomLoaded();
+      if (this.page < this.allPage) {
+        this.allLoaded = true
+        this.page ++;
+        this.getOrderList(this.page, this.limit);
+      }
     },
     getOrderList(page, limit) {  
       mango.getAjax(this,"order",{
@@ -104,6 +103,7 @@ export default {
         key: ""
       },"v2")
         .then(res => {
+          this.allLoaded = false
           this.key = false
           this.allPage = Math.ceil(res.data.total / 10);
           if (page <= 3) {
