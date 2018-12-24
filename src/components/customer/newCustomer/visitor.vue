@@ -48,7 +48,7 @@
 
 <script>
 import Vue from "vue"
-import { Picker, Popup } from 'mint-ui'
+import { Picker, Popup, MessageBox } from 'mint-ui'
 
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
@@ -101,7 +101,11 @@ export default {
         }
       }
       mango.getAjax(this, 'customer/update', tempObj,'v2', 'post').then((res) => {
-        console.log('保存数据成功', res)
+        if (res) {
+          MessageBox.alert('保存成功！').then(action => {
+            this.$router.go(0)
+          })
+        }
       })
       // mango.getAjax(this, 'customer/update', tempObj,'v2', 'post').then((res) => {
       //   console.log('保存数据成功', res)
