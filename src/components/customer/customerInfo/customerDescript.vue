@@ -246,7 +246,7 @@ export default {
       this.importantBtns.forEach((element, i) => {
         element.status = index === i
       })
-      this.customerDemand.urgency = index + 1
+      this.customerDemand.important = index + 1
     },
     selectSex() {
       this.slots = this.sexList
