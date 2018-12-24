@@ -13,7 +13,7 @@
         <my-range :title="'成交概率'" @changeVal="changeMyRangeVal" />
       </li>
       <li class="timeLi" is="customerLi" :leftText="'下次跟进时间'" :icon="true" @click.native="selectTime">
-        <span>{{recordForm.followTime}}</span>
+        <span>{{recordForm.followTime || '请选择下次跟进时间'}}</span>
       </li>
       <li class="noPadding">
         <remark :title="'跟进计划'">
@@ -28,6 +28,7 @@
       ref="followDatePicker"
       type="date"
       v-model="today"
+      :startDate="new Date()"
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
@@ -72,8 +73,8 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     // 获取当天日期
-    let temp = new Date()
-    this.recordForm.followTime = mango.indexTimeB(temp)[0]
+    // let temp = new Date()
+    // this.recordForm.followTime = mango.indexTimeB(temp)[0]
   },
   mounted() {
     this.recordForm.percent = 50
@@ -98,6 +99,7 @@ export default {
       this.emitParentEvent()
     },
     emitParentEvent() {
+      console.log(this.recordForm)
       this.$emit('getRecordForm', this.recordForm)
     }
   }

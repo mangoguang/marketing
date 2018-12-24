@@ -54,7 +54,7 @@ export default {
     //获取数据
     getData(date){
       mango.getAjax(this, 'daily', {
-        account: this.account.name,
+        account: this.ajaxData.account,
         date:date,
         tenantId: this.ajaxData.tenantId
       }, 'v2','get')

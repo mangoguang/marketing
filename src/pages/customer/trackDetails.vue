@@ -41,11 +41,6 @@
         </li>
       </ul>
     </div>
-    <!-- 跟进客户 -->
-    <div class="recordFormBox" v-show="showRecordForm">
-      <record-form @getRecordForm="getRecordForm" />
-      <div class="btnBox"><big-btn @click.native="saveRecord" :text="'保存'" /></div>
-    </div>
     <div class="follow-up-history">
       <div class="tilte">
         <p></p>
@@ -66,6 +61,7 @@
         </li>
       </ul> 
     </div>
+    <div><button @click="toNewTrack" class="new"></button></div>
   </div>
 </template>
 
@@ -75,13 +71,10 @@ import Vuex, { mapMutations, mapState } from 'vuex'
 import VueRouter from 'vue-router'
 import mybanner from '../../components/banner'
 import followDetails from '../../components/customer/dealCustomer/followDetails'
-import recordForm from '../../components/customer/recordForm'
-import bigBtn from '../../components/customer/bigBtn'
 import mango from '../../js'
-import {returnDate} from '../../utils/customer'
 
 export default {  
-  components:{mybanner, followDetails, recordForm, bigBtn},
+  components:{mybanner, followDetails},
   computed: {
     ...mapState({
       followTrackDetails: state => state.followTrackDetails.followTrackDetails  
@@ -115,8 +108,13 @@ export default {
       'setFollowTrackDetails',
       'setCustomerDemand'
     ]),
-    getRecordForm(obj) {
-      this.recordFormData = obj
+    toNewTrack() {
+      this.$router.push({
+        path: '/newTrack',
+        query: {
+          demandId: this.demandId
+        }
+      })
     },
     //获取数据
     getTrackDetails(){
@@ -144,22 +142,6 @@ export default {
       this.$router.push({
         path:'/changeDemand'
       })
-    },
-    saveRecord() {
-      let obj = this.recordFormData
-      mango.getAjax(this, 'saveTrackRecord', {
-        account: this.ajaxData.account,   //登录账户
-        demandId: this.$route.query.demandId, 
-        probability: `${obj.percent}%`,
-        nextFollowTime: returnDate(obj.followTime),
-        followPlan: obj.followPlan || '',
-        followSituation: obj.followSituation || ''
-      },'v2', 'post').then((res) => {
-        if (res) {
-          this.$router.go(0)
-        }
-      })
-      console.log('传到父组建的recordForm参数', this.recordFormData)
     },
     pullDown(index) {
       // this.trList = this.demandList.trList[index]

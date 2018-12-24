@@ -30,6 +30,7 @@
       ref="followDatePicker"
       type="date"
       v-model="today"
+      :startDate="new Date()"
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
@@ -41,7 +42,7 @@
 <script>
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from "vuex"
-import { DatetimePicker } from 'mint-ui'
+import { DatetimePicker, MessageBox } from 'mint-ui'
 
 Vue.component(DatetimePicker.name, DatetimePicker)
 import remark from '../remark'
@@ -99,6 +100,7 @@ export default {
       this.$emit('changeBtnsStatus', this.btns)  
     },
     saveTalksRecord() {
+      this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
       console.log(this.updateParams(this.newCustomerInfo))
       mango.getAjax(this, 'customer/update', {
         account: this.ajaxData.account,   //登录账户
@@ -106,7 +108,9 @@ export default {
         ...this.updateParams(this.newCustomerInfo)
       },'v2', 'post').then((res) => {
         if (res.status) {
-          this.$router.back(-1)
+          MessageBox.alert('保存成功！').then(action => {
+            this.$router.go(-1)
+          })
         }
       })
     },

@@ -13,6 +13,7 @@ import demandForm from '../../components/customer/demandForm'
 import customerDemand from '../../components/customer/customerInfo/customerDemand'
 import mango from '../../js'
 import mybanner from '../../components/banner'
+import { MessageBox } from 'mint-ui'
 import {filterObj} from '../../utils/customer'
 export default {
   name:'changeDemand',
@@ -42,9 +43,14 @@ export default {
         account: this.ajaxData.account,   //登录账户
         ...filterObj(this.customerDemand)
       },'v2', 'post').then((res) => {
-        console.log('保存数据成功', res)
+        if (res.status) {
+          MessageBox.alert('保存成功！').then(action => {
+            this.$router.go(-1)
+          })
+        } else {
+          mango.tip('保存失败。')
+        }
       })
-      console.log('保存', this.customerDemand)
     },
     changeDemand(obj) {
       this.setCustomerDemand(obj)

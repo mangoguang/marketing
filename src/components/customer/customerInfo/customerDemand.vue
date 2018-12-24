@@ -121,15 +121,22 @@ export default {
     saveCustomerDemand() {
       console.log('newDemand:', this.customerInfo)
       let id = this.$route.params.id
-      mango.getAjax(this, 'customer/update', {
-        customerId: id,
-        account: this.ajaxData.account,   //登录账户
-        tenantId: this.ajaxData.tenantId,
-        'details.phone': this.customerInfo.phone,
-        ...turnParams(this.customerDemand, 'demand')
-      },'v2', 'post').then((res) => {
-        console.log('保存数据成功', res)
-      })
+      if (this.customerDemand.intention && this.customerDemand.intention != '') {
+        mango.getAjax(this, 'customer/update', {
+          customerId: id,
+          account: this.ajaxData.account,   //登录账户
+          tenantId: this.ajaxData.tenantId,
+          'details.phone': this.customerInfo.phone,
+          ...turnParams(this.customerDemand, 'demand')
+        },'v2', 'post').then((res) => {
+          if (res) {
+            this.$router.go(0)
+            mango.tip('保存成功！')
+          }
+        })
+      } else {
+        mango.tip('请填写意向产品！')
+      }
       // console.log('客户信息：：', this.customerDemand)      
     }
   }

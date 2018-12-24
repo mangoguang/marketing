@@ -55,7 +55,7 @@ export default {
   methods: {
     ...mapMutations(["setCustomerInfoBtns", "setCustomerTabStatus"]),
     infoSelect(index) {
-      this.setCustomerTabStatus(mango.btnList(['客户描述', '客户需求', '跟踪记录'], index))
+      this.setCustomerTabStatus(mango.btnList(['客户描述', '新增需求', '跟踪记录'], index))
     },
     setInfo(obj) {
       this.name = obj.name

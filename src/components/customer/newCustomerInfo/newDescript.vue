@@ -161,6 +161,7 @@ export default {
     this.parentBtns = this.btns
   },
   mounted() {
+    this.setNewCustomerInfo({})
     this.newCustomerInfo.phone = this.$route.query.phone
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
