@@ -55,7 +55,7 @@ export default {
       this.$router.go(-1);
     },
     onSwipeLeft() {
-      this.$router.go(+1);
+      // this.$router.go(+1);
     },
     //判断是否iphoneX
     isIPhoneX: function(fn) {
@@ -278,22 +278,32 @@ a:hover {
   padding-top: 16vw;
 }
 ul.infoNav{
-    display: flex;
-    justify-content: space-between;
-    padding: 0 4.26vw;
-    margin-top: -8vw;
-    li{
-      width: 29.3vw;
-      line-height: 8vw;
-      text-align: center;
-      background: #b2d7ff;
-      border-radius: 1.6vw 1.6vw 0 0;
-      color: #007aff;
-      font-size: 3.73vw;
-    }
-    .active, .on{
-      background: #007aff;
-      color: #fff
-    }
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4.26vw;
+  margin-top: -8vw;
+  li{
+    width: 29.3vw;
+    line-height: 8vw;
+    text-align: center;
+    background: #b2d7ff;
+    border-radius: 1.6vw 1.6vw 0 0;
+    color: #007aff;
+    font-size: 3.73vw;
   }
+  .active, .on{
+    background: #007aff;
+    color: #fff
+  }
+}
+button.new{
+  display: block;
+  position: fixed;
+  width: 10vw;
+  height: 10vw;
+  background: url(./assets/imgs/add.png) no-repeat;
+  background-size: 100% 100%;
+  bottom: 30vw;
+  right: 5vw;
+}
 </style>

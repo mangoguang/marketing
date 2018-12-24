@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div :class="`rightContainer ${rightContainerStatus}`" @click.prevent="test">
-    <div class="content">
+    <div class="content" @click="hideRightBar">
       <div>
         <ul>
           <li class="time">
@@ -151,6 +151,9 @@ export default {
       this.paramsObj.page = 1
       this.setAllLoaded(false)
       this.setCustomerAjaxParams(this.paramsObj)
+    },
+    hideRightBar() {
+      this.setRightContainerStatus('hideRightContainer')
     },
     // 紧急程度选择
     urgencySelect(i) {

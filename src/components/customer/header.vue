@@ -135,14 +135,16 @@ export default {
       for (let key in temp) {
         tempObj[key] = temp[key]
       }
-      if (this.selectBtnText != this.customerClassifyList[i].name) {
+      if (this.selectBtnText === '全部' || this.selectBtnText != this.customerClassifyList[i].name) {
         this.selectBtnText = this.customerClassifyList[i].name
         mango.changeBtnStatus(this.customerClassifyList, i)
         switch(i) {
           case 0:
-            tempObj.uo = 0
-            tempObj.io = 0
+            tempObj.uo = 1
+            tempObj.io = 1
             tempObj.page = 1
+            tempObj.startTime = ''
+            tempObj.endTime = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(tempObj)
             console.log('全部', this.customerAjaxParams)
@@ -151,6 +153,8 @@ export default {
             tempObj.uo = 1
             tempObj.io = 0
             tempObj.page = 1
+            tempObj.startTime = ''
+            tempObj.endTime = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(tempObj)
             console.log('紧急降序', this.customerAjaxParams)
@@ -159,6 +163,8 @@ export default {
             tempObj.uo = 0
             tempObj.io = 1
             tempObj.page = 1
+            tempObj.startTime = ''
+            tempObj.endTime = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(tempObj)
             console.log('关键降序', this.customerAjaxParams)

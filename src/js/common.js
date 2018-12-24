@@ -1,13 +1,13 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
-import { Indicator } from 'mint-ui'
+import { Indicator, Toast } from 'mint-ui'
 
 export default class Common {
   constructor() {
-    // this.port = 'https://agency.derucci.com/'
+    this.port = 'https://agency.derucci.com/'
     // this.port = 'http://172.16.11.123/'
     // this.port = 'http://10.11.8.181/'
-    this.port = 'http://10.11.8.7:8086/'
+    // this.port = 'http://10.11.8.7:8086/'
     // this.port = 'http://172.16.9.212/'
     this.path = `${this.port}v1/app/report/`
     this.v2path = `${this.port}v2/app/`
@@ -170,6 +170,13 @@ export default class Common {
     } else {
       Indicator.close()
     }
+  }
+  tip(str) {
+    Toast({
+      message: str,
+      position: 'center',
+      duration: 2000
+    })
   }
   // 转换时间戳，以2018-08-30的格式返回
   // type=day时，返回到日期，否则返回到月份。

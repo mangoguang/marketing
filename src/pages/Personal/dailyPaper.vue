@@ -81,8 +81,6 @@ export default {
      // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    let account = localStorage.getItem('accountMsg')
-    this.account = JSON.parse(account).name
     let date = new Date()
     this.thatDay = mango.indexTimeB(date)[1]
   },
@@ -93,7 +91,7 @@ export default {
         summarize: this.textSumVal,
         date:this.thatDay,
         plan: this.textPlanVal,
-        account:this.account
+        account: this.ajaxData.account
       }, 'v2','post')
       .then((res) => {
         if (res) {

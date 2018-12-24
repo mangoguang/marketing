@@ -4,6 +4,7 @@
       <li is="customerLi" :leftText="'客户姓名'">
         <input v-model="customerDemand.username" type="text" placeholder="请填写客户姓名">
       </li>
+      <!-- <li is="sexSelect"></li> -->
       <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
         <span>{{customerDemand.sex == 1 ? '男' : '女'}}</span>
       </li>
@@ -83,14 +84,17 @@ Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
+import sexSelect from '../../select/sexSelect'
 import mango from '../../../js'
 import {turnParams} from '../../../utils/customer'
 import { setTimeout } from 'timers';
+// import { MessageBox } from 'mint-ui'
 export default {
   name:'customerDescript',
   components: {
     customerLi,
-    bigBtn
+    bigBtn,
+    sexSelect
   },
   data(){
     return{
@@ -169,8 +173,6 @@ export default {
   },
   mounted() {
     this.customerDemand.phone = this.$route.query.phone
-    console.log('successssss', this.startDate)
-
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
   },
@@ -238,7 +240,7 @@ export default {
       this.urgencyBtns.forEach((element, i) => {
         element.status = index === i
       })
-      this.customerDemand.important = index + 1
+      this.customerDemand.urgency = index + 1
     },
     changeImportant(index) {
       this.importantBtns.forEach((element, i) => {
@@ -330,7 +332,9 @@ export default {
         customerId: this.$route.params.id == 0 ? '' : this.$route.params.id ,
         ...turnParams(this.customerDemand)
       },'v2', 'post').then((res) => {
-        console.log('保存数据成功', res)
+        if (res) {
+          mango.tip('保存成功！')
+        }
       })
     },
     // 将日期格式2018-01-01改成2018年01月01日
