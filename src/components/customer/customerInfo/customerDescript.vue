@@ -4,30 +4,30 @@
       <li is="customerLi" :leftText="'客户姓名'">
         <input v-model="customerDemand.username" type="text" placeholder="请填写客户姓名">
       </li>
-      <li is="sexSelect" :sexVal="customerDemand.sex" @sexChange="sexChange"></li>
-      <!-- <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
+      <!-- <li is="sexSelect" :sexVal="customerDemand.sex" @sexChange="sexChange"></li> -->
+       <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
         <span>{{customerDemand.sex == 1 ? '男' : '女'}}</span>
-      </li> -->
+      </li> 
       <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectBirthday">
         <span>{{turnDate(customerDemand.birthday) || '请选择客户生日日期'}}</span>
       </li>
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="customerDemand.phone" type="text" placeholder="请填写客户电话">
       </li>
-      <li is="sourceSelect" :sourceVal="customerDemand.source" @sourceChange="sourceChange"></li>
-      <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
+      <!-- <li is="sourceSelect" :sourceVal="customerDemand.source" @sourceChange="sourceChange"></li> -->
+      <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
         <span>{{customerDemand.source || '请选择客户来源'}}</span>
-      </li> -->
+      </li>
       <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
         <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
       </li> -->
       <li is="customerLi" :leftText="'客户地址'">
         <input v-model="customerDemand.address" type="text" placeholder="请填写客户地址">
       </li>
-      <li is="leaveStoreSelect" :leaveStoreVal="customerDemand.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
-      <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
+      <!-- <li is="leaveStoreSelect" :leaveStoreVal="customerDemand.leaveStore" @leaveStoreChange="leaveStoreChange"></li> -->
+      <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
         <span>{{customerDemand.leaveStore || '请选择客户留店时间'}}</span>
-      </li> -->
+      </li>
       <li class="urgency">
         紧急程度
         <div>
@@ -150,6 +150,7 @@ export default {
   computed: {
     ...mapState({
       customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+      // customerDemand: state => state.customer.customerDemand
     }),
     provinceNames() {
       let arr = this.province.map(item => {
@@ -180,6 +181,7 @@ export default {
     }
   },
   mounted() {
+    console.log(2222,this.customerInfo)
     this.customerDemand.phone = this.$route.query.phone
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
@@ -223,6 +225,7 @@ export default {
           })
         }
         this.setCustomerDemand(res)
+        console.log(123,this.customerDemand)
       })
     },
     setCustomerDemand(obj = {}) {
@@ -299,16 +302,16 @@ export default {
       this.customerDemand.birthday = mango.indexTimeB(value)[0]
     },
     sexChange(val) {
-      console.log('sex改变了：', val)
-      this.customerDemand.sex = val === '男' ? 1 : 2
+      // console.log('sex改变了：', val)
+      // this.customerDemand.sex = (val === '男' ? 1 : 2)
       // this.setNewCustomerInfo(this.newCustomerInfo)
     },
     sourceChange(val) {
-      console.log('sex改变了：', val)
+      // console.log('sex改变了：', val)
       this.customerDemand.source = val
     },
     leaveStoreChange(val) {
-      console.log('sex改变了：', val)
+      // console.log('sex改变了：', val)
       this.customerDemand.leaveStore = val
     },
     onValuesChange(picker, values) {
@@ -338,7 +341,7 @@ export default {
       //   }
         // this.customerDemand[this.proto] = `${values[0]} ${values[1]} ${values[2]}`
       } else if (this.proto === 'sex') {
-        this.customerDemand[this.proto] = values[0] === '男' ? 1 : 2
+        this.customerDemand[this.proto] = values[0] === '男' ? '1' : '2'
       } else {
         this.customerDemand[this.proto] = values[0]
       }

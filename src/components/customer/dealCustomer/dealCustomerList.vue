@@ -63,11 +63,8 @@ export default {
   this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
   this.$refs.deal.scrollTop = this.dealScroll
   if (this.headerStatus[2].status) {
-    if(!this.dealCustomerList) {
-      this.getData();
-    }else {
-      this.setHeader(this.dealLength)
-    }
+    this.getData();
+    this.setHeader(this.dealLength)
   }
   },
   created() {
