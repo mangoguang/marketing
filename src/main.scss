@@ -28,20 +28,20 @@
         top: 2vw;
         left: 0;
       }
-      div.urgence1{
-        background: url(../../assets/imgs/jinji3.png) no-repeat;
-        background-size: 4vw auto;
-        background-position: 0 center;
-      }
-      div.urgence2{
-        background: url(../../assets/imgs/jinji2.png) no-repeat;
-        background-size: 4vw auto;
-        background-position: 0 center;
-      }
-      div.urgence3{
+      div.important1{
         background: url(../../assets/imgs/jinji1.png) no-repeat;
-        background-size: 4vw auto;
-        background-position: 0 center;
+        background-size: 6vw auto;
+        background-position: center;
+      }
+      div.important2{
+        background: url(../../assets/imgs/jinji1.png) no-repeat;
+        background-size: 6vw auto;
+        background-position: center;
+      }
+      div.important3{
+        background: url(../../assets/imgs/jinji1.png) no-repeat;
+        background-size: 6vw auto;
+        background-position: center;
       }
     }
     strong{
@@ -54,18 +54,18 @@
         height: 2.8vw;
         margin-left: 1vw;
       }
-      i.important1{
+      i.urgency1{
         background: url(../../assets/imgs/star3.png) no-repeat;
         background-size: auto 100%;
         background-position: center;
       }
-      i.important2{
-        background: url(../../assets/imgs/star3.png) no-repeat;
+      i.urgency2{
+        background: url(../../assets/imgs/star2.png) no-repeat;
         background-size: auto 100%;
         background-position: center;
       }
-      i.important3{
-        background: url(../../assets/imgs/star3.png) no-repeat;
+      i.urgency3{
+        background: url(../../assets/imgs/star1.png) no-repeat;
         background-size: auto 100%;
         background-position: center;
       }

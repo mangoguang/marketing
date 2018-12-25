@@ -32,7 +32,7 @@ export default {
   data(){
     return{
       text:'退出账号',
-      ListItem:[
+      ListItem: [
         '关于我','组织架构','功勋榜','日报'
       ]
     }

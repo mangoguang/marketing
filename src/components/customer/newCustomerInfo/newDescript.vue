@@ -4,27 +4,30 @@
       <li is="customerLi" :leftText="'客户姓名'">
         <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户姓名">
       </li>
-      <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
+      <!-- <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
         <span>{{newCustomerInfo.sex == 1 ? '男' : '女'}}</span>
-      </li>
+      </li> -->
+      <li is="sexSelect" :sexVal="newCustomerInfo.sex" @sexChange="sexChange"></li>
       <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectBirthday">
         <span>{{newCustomerInfo.birthday || '请选择客户生日日期'}}</span>
       </li>
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话">
       </li>
-      <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
+      <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
         <span>{{newCustomerInfo.source || '请选择客户来源'}}</span>
-      </li>
+      </li> -->
+      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
       <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
         <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
       </li> -->
       <li is="customerLi" :leftText="'客户地址'">
         <input v-model="newCustomerInfo.address" type="text" placeholder="请填写客户地址">
       </li>
-      <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
+      <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
         <span>{{newCustomerInfo.leaveStore || '请选择客户留店时间'}}</span>
-      </li>
+      </li> -->
+      <li is="leaveStoreSelect" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
       <li class="urgency">
         紧急程度
         <div>
@@ -37,13 +40,14 @@
       </li>
       <li class="important">
         关键程度
-        <div>
+        <!-- <div>
           <button 
           v-for="(item, index) in importantBtns" 
           :key="`importantBtns${index}`"
           @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
-        </div>
+        </div> -->
+        <div class="switchBox"><mt-switch v-model="newCustomerInfo.important"></mt-switch></div>
       </li>
     </ul>
     <div class="btnBox">
@@ -52,14 +56,14 @@
     <!-- mint-ui组件 -->
     <div class="mintComponent">
       <!-- 性别选择插件 -->
-      <mt-popup 
+      <!-- <mt-popup 
       position="bottom"
       v-model="popupVisible">
         <mt-picker
         :slots="slots"
         @change="onValuesChange"
         ref="Picker"></mt-picker>
-      </mt-popup>
+      </mt-popup> -->
       <!-- 日期选择插件 -->
       <mt-datetime-picker
         ref="datePicker1"
@@ -78,13 +82,17 @@
 <script>
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from "vuex"
-import { DatetimePicker, Picker, Popup } from 'mint-ui'
+import { DatetimePicker, Picker, Popup, Switch } from 'mint-ui'
 
 Vue.component(DatetimePicker.name, DatetimePicker)
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
+Vue.component(Switch.name, Switch)
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
+import sexSelect from '../../select/sexSelect'
+import sourceSelect from '../../select/sourceSelect'
+import leaveStoreSelect from '../../select/leaveStoreSelect'
 import mango from '../../../js'
 import {turnParams} from '../../../utils/customer'
 export default {
@@ -92,19 +100,22 @@ export default {
   props: ['btns'],
   components: {
     customerLi,
-    bigBtn
+    bigBtn,
+    sexSelect,
+    sourceSelect,
+    leaveStoreSelect
   },
   data(){
     return{
       urgencyBtns: mango.btnList(['高', '中', '低'], 0),
-      importantBtns: mango.btnList(['高', '中', '低'], 0),
-      slots: [],
-      sexList: [{values: ['男', '女']}],
-      sourceList: [{values: ['异业联盟', '设计师介绍', '自然进店', '老客带单']}],
-      leaveStoreList: [{values: ['15分钟', '30分钟']}],
+      // importantBtns: mango.btnList(['高', '中', '低'], 0),
+      // slots: [],
+      // sexList: [{values: ['男', '女']}],
+      // sourceList: [{values: ['异业联盟', '设计师介绍', '自然进店', '老客带单']}],
+      // leaveStoreList: [{values: ['15分钟', '30分钟']}],
       areaList: [],
-      popupVisible: false,
-      proto: '',
+      // popupVisible: false,
+      // proto: '',
       today: new Date(),
       province: [],
       provinceName: '',
@@ -163,6 +174,7 @@ export default {
   mounted() {
     this.setNewCustomerInfo({})
     this.newCustomerInfo.phone = this.$route.query.phone
+    console.log('000111', this.newCustomerInfo)
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
   },
@@ -171,7 +183,7 @@ export default {
     checkBtnStatus(obj) {
       for (let i = 0; i < this.urgencyBtns.length; i++) {
         this.urgencyBtns[i].status = (obj.urgency - 1) === i
-        this.importantBtns[i].status = (obj.important - 1) === i
+        // this.importantBtns[i].status = (obj.important - 1) === i
       }
       // obj.sex = obj.sex == 1 ? '男' : '女'
     },
@@ -179,62 +191,77 @@ export default {
       this.urgencyBtns.forEach((element, i) => {
         element.status = index === i
       })
-      this.newCustomerInfo.important = index + 1
-    },
-    changeImportant(index) {
-      this.importantBtns.forEach((element, i) => {
-        element.status = index === i
-      })
       this.newCustomerInfo.urgency = index + 1
     },
-    selectSex() {
-      this.slots = this.sexList
-      this.proto = 'sex'
-      // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.sex)
-      this.popupVisible = true
-    },
+    // changeImportant(index) {
+    //   this.importantBtns.forEach((element, i) => {
+    //     element.status = index === i
+    //   })
+    //   this.newCustomerInfo.urgency = index + 1
+    // },
+    // selectSex() {
+    //   this.slots = this.sexList
+    //   this.proto = 'sex'
+    //   // 设置性别选择插件的初始值
+    //   this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.sex)
+    //   this.popupVisible = true
+    // },
     selectBirthday() {
       this.$refs.datePicker1.open()
     },
-    selectSource() {
-      this.slots = this.sourceList
-      this.proto = 'source'
-      // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.source)
-      this.popupVisible = true
-    },
-    selectArea() {
-      this.slots = this.areaList
-      this.proto = 'area'
-      // 设置地区选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.provinceName)
-      this.$refs.Picker.setSlotValue(1, this.cityName)
-      this.$refs.Picker.setSlotValue(2, this.countyName)
-      this.popupVisible = true
-    },
-    selectTime() {
-      this.slots = this.leaveStoreList
-      this.proto = 'leaveStore'
-      // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.source)
-      this.popupVisible = true
-    },
+    // selectSource() {
+    //   this.slots = this.sourceList
+    //   this.proto = 'source'
+    //   // 设置性别选择插件的初始值
+    //   this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.source)
+    //   this.popupVisible = true
+    // },
+    // selectArea() {
+    //   this.slots = this.areaList
+    //   this.proto = 'area'
+    //   // 设置地区选择插件的初始值
+    //   this.$refs.Picker.setSlotValue(0, this.provinceName)
+    //   this.$refs.Picker.setSlotValue(1, this.cityName)
+    //   this.$refs.Picker.setSlotValue(2, this.countyName)
+    //   this.popupVisible = true
+    // },
+    // selectTime() {
+    //   this.slots = this.leaveStoreList
+    //   this.proto = 'leaveStore'
+    //   // 设置性别选择插件的初始值
+    //   this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.source)
+    //   this.popupVisible = true
+    // },
     setBirthday(value) {
       this.newCustomerInfo.birthday = mango.indexTimeB(value)[0]
       console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.birthday)
     },
-    onValuesChange(picker, values) {
-      // 选择地区
-      if (this.proto === 'area') {
-
-      } else if (this.proto === 'sex') {
-        this.newCustomerInfo[this.proto] = values[0] === '男' ? 1 : 2
-      } else {
-        this.newCustomerInfo[this.proto] = values[0]
-      }
-      // this.popupVisible = false
+    sexChange(val) {
+      console.log('sex改变了：', val)
+      this.newCustomerInfo.sex = val === '男' ? 1 : 2
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
+    sourceChange(val) {
+      console.log('sex改变了：', val)
+      this.newCustomerInfo.source = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    leaveStoreChange(val) {
+      console.log('sex改变了：', val)
+      this.newCustomerInfo.leaveStore = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    // onValuesChange(picker, values) {
+    //   // 选择地区
+    //   if (this.proto === 'area') {
+
+    //   } else if (this.proto === 'sex') {
+    //     this.newCustomerInfo[this.proto] = values[0] === '男' ? 1 : 2
+    //   } else {
+    //     this.newCustomerInfo[this.proto] = values[0]
+    //   }
+    //   // this.popupVisible = false
+    // },
     checkForm() {
       if (this.username) {
         
@@ -243,11 +270,12 @@ export default {
       }
     },
     saveCustomerInfo() {
-      let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
-      this.setNewCustomerInfo(obj)
-      this.parentBtns[0].status = false
-      this.parentBtns[1].status = true
-      this.$emit('changeBtnsStatus', this.parentBtns)
+      console.log(123123123, this.newCustomerInfo)
+      // let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
+      // this.setNewCustomerInfo(obj)
+      // this.parentBtns[0].status = false
+      // this.parentBtns[1].status = true
+      // this.$emit('changeBtnsStatus', this.parentBtns)
     },
     // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {
@@ -363,11 +391,13 @@ export default {
 @import "../../../assets/common.scss";
 .customerDescript{
   background: $bgCol;
+  &>li{
+    padding: 0 5vw;
+  }
   li{
     display: flex;
     direction: row;
     color: $fontCol;
-    padding: 0 5vw;
     line-height: 3em;
     div{
       display: flex;
@@ -395,18 +425,13 @@ export default {
     margin-top: 5vw;
     border-top: 1px solid #ccc;
   }
-  .picker{
-    // width: 100%;
-    width: 100vw;
-    // height: 100vh;
-    // position: absolute;
-    // top: 0;
-    // background: rgba(0, 0, 0, .5);
-  }
   .btnBox{
     width: 100vw;
     display: flex;
     justify-content: center;
+  }
+  .urgency,.important{
+    padding: 2vw 5vw 0 5vw;
   }
 }
 </style>

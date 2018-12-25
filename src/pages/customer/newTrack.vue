@@ -1,6 +1,7 @@
 <template>
   <!-- 跟进客户 -->
   <div class="recordFormBox">
+    <my-banner :title="'新建洽谈记录'" />
     <record-form @getRecordForm="getRecordForm" />
     <div class="btnBox"><big-btn @click.native="saveRecord" :text="'保存'" /></div>
   </div>
@@ -8,14 +9,15 @@
 
 <script>
 import Vue from "vue"
-import mango from '../../js'
-import {returnDate} from '../../utils/customer'
 import bigBtn from '../../components/customer/bigBtn'
 import recordForm from '../../components/customer/recordForm'
+import myBanner from '../../components/banner'
+import mango from '../../js'
+import {returnDate} from '../../utils/customer'
 import { MessageBox } from 'mint-ui'
 export default {
   name:'myRange',
-  components: {bigBtn, recordForm},
+  components: {bigBtn, recordForm, myBanner},
   props: ['title'],
   data(){
     return{
@@ -76,8 +78,11 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../assets/common.scss";
+.recordFormBox{
+  padding-top: 16vw;
+}
 .myRange{
-  padding: 5vw;
+  padding:16vw 5vw 5vw 5vw;
   h3{
     font-size: $fontSize;
   }

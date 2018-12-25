@@ -163,7 +163,10 @@ export default {
                 "tenantId": "${res.tenantId}",
                 "token": "${res.token}",
                 "uuid": "${res.uuid}",
-                "timestamp": "${Date.parse(new Date())}"
+                "timestamp": "${Date.parse(new Date())}",
+                "name": "${res.username}",
+                "phone": "${res.mobile}",
+                "sex": "${res.sex}"
               }`
                 localStorage.setItem("ajaxData", ajaxData);
                 if (_this.checked) {

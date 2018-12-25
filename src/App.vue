@@ -306,4 +306,7 @@ button.new{
   bottom: 30vw;
   right: 5vw;
 }
+.mint-popup{
+  width: 100vw;
+}
 </style>

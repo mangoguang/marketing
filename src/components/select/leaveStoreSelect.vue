@@ -1,7 +1,7 @@
 <template>
-  <li class="sexSelect">
+  <li class="leaveStoreSelect">
     <ul>
-      <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
+      <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectLeaveStore">
         <span>{{val}}</span>
       </li>
       <!-- 性别选择插件 -->
@@ -12,7 +12,7 @@
         <mt-picker
         :slots="slots"
         @change="onValuesChange"
-        ref="sexPicker"></mt-picker>
+        ref="leaveStorePicker"></mt-picker>
       </mt-popup>
       </li>
     </ul>
@@ -32,29 +32,34 @@ Vue.component(Popup.name, Popup)
 import customerLi from '../customer/customerLi'
 
 export default {
-  name: 'sexSelect',
+  name: 'leaveStoreSelect',
   components:{customerLi},
-  props: ['sexVal'],
+  props: ['leaveStoreVal'],
   data() {
     return {
-      slots: [{values: ['男', '女']}],
+      slots: [{values: ['15分钟', '30分钟']}],
       popupVisible: false,
-      val: this.sexVal == 1 ? '男' : '女'
+      val: this.leaveStoreVal || '请选择客户留店时间',
+      key: false
     }
   },
   computed:{
 
   },
   mounted() {
-    this.$refs.sexPicker.setSlotValue(0, this.val == 1 ? '男' : '女')
+    console.log(2233, this.val)
+    // this.$refs.leaveStorePicker.setSlotValue(0, this.val)
   },
   methods:{
-    selectSex() {
+    selectLeaveStore() {
+      this.key = true
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
-      this.val = values[0]
-      this.$emit('sexChange', values[0])
+      if (this.key) {
+        this.val = values[0]
+      }
+      this.$emit('leaveStoreChange', values[0])
     }
   }
   }
@@ -62,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .sexSelect{
+  .leaveStoreSelect{
     ul{
       width: 100%;
     }

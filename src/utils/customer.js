@@ -28,7 +28,7 @@ export {returnDate}
 let turnParams = (obj, type) => {
   let temp = {}
   for (let key in obj) {
-    if (obj[key]) {
+    if (obj[key] || obj[key] === 0) {
       // 如果是生日参数，则进行格式转换
       temp[`${type || 'details'}.${key}`] = key === 'birthday' ? returnDate(obj[key]) : obj[key]
     }

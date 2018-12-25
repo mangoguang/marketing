@@ -4,28 +4,30 @@
       <li is="customerLi" :leftText="'客户姓名'">
         <input v-model="customerDemand.username" type="text" placeholder="请填写客户姓名">
       </li>
-      <!-- <li is="sexSelect"></li> -->
-      <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
+      <li is="sexSelect" :sexVal="customerDemand.sex" @sexChange="sexChange"></li>
+      <!-- <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
         <span>{{customerDemand.sex == 1 ? '男' : '女'}}</span>
-      </li>
+      </li> -->
       <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectBirthday">
         <span>{{turnDate(customerDemand.birthday) || '请选择客户生日日期'}}</span>
       </li>
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="customerDemand.phone" type="text" placeholder="请填写客户电话">
       </li>
-      <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
+      <li is="sourceSelect" :sourceVal="customerDemand.source" @sourceChange="sourceChange"></li>
+      <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
         <span>{{customerDemand.source || '请选择客户来源'}}</span>
-      </li>
+      </li> -->
       <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
         <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
       </li> -->
       <li is="customerLi" :leftText="'客户地址'">
         <input v-model="customerDemand.address" type="text" placeholder="请填写客户地址">
       </li>
-      <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
+      <li is="leaveStoreSelect" :leaveStoreVal="customerDemand.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
+      <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
         <span>{{customerDemand.leaveStore || '请选择客户留店时间'}}</span>
-      </li>
+      </li> -->
       <li class="urgency">
         紧急程度
         <div>
@@ -37,14 +39,15 @@
         </div>
       </li>
       <li class="important">
-        关键程度
-        <div>
+        是否关键
+        <!-- <div>
           <button 
           v-for="(item, index) in importantBtns" 
           :key="`importantBtns${index}`"
           @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
-        </div>
+        </div> -->
+        <div class="switchBox"><mt-switch v-model="customerDemand.important"></mt-switch></div>
       </li>
       <li><big-btn :text="'保存'" @click.native="saveCustomerInfo"></big-btn></li>
     </ul>
@@ -77,30 +80,35 @@
 <script>
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from "vuex"
-import { DatetimePicker, Picker, Popup } from 'mint-ui'
+import { DatetimePicker, Picker, Popup, Switch } from 'mint-ui'
 
 Vue.component(DatetimePicker.name, DatetimePicker)
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
+Vue.component(Switch.name, Switch)
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
 import sexSelect from '../../select/sexSelect'
+import sourceSelect from '../../select/sourceSelect'
+import leaveStoreSelect from '../../select/leaveStoreSelect'
 import mango from '../../../js'
 import {turnParams} from '../../../utils/customer'
-import { setTimeout } from 'timers';
+import { setTimeout } from 'timers'
 // import { MessageBox } from 'mint-ui'
 export default {
   name:'customerDescript',
   components: {
     customerLi,
     bigBtn,
-    sexSelect
+    sexSelect,
+    sourceSelect,
+    leaveStoreSelect
   },
   data(){
     return{
       customerDemand: {},
       urgencyBtns: mango.btnList(['高', '中', '低'], 0),
-      importantBtns: mango.btnList(['高', '中', '低'], 0),
+      // importantBtns: mango.btnList(['高', '中', '低'], 0),
       slots: [],
       sexList: [{values: ['男', '女']}],
       sourceList: [{values: ['异业联盟', '设计师介绍', '自然进店', '老客带单']}],
@@ -189,6 +197,12 @@ export default {
           this.provinceName = res.provinceName
           this.cityName = res.cityName
           this.countyName = res.areaName
+          console.log(88776655, res.important)
+          if (res.important == 1 || 2 || 3) {
+            res.important = true
+          } else {
+            res.important = false
+          }
           // this.customerInfo = res
           // 初始化保存接口参数
           this.checkBtnStatus(res)
@@ -226,13 +240,13 @@ export default {
         address: obj.area || obj.address,
         leaveStore: obj.leaveStore,    //留店时间，
         urgency: obj.urgency,   //紧急，1/2/3级，一级最高
-        important: obj.important  //重要，1/2/3级，一级最高
+        important: obj.important !== 0 //重要，1/2/3级，一级最高
       }
     },
     checkBtnStatus(obj) {
       for (let i = 0; i < this.urgencyBtns.length; i++) {
         this.urgencyBtns[i].status = (obj.urgency - 1) === i
-        this.importantBtns[i].status = (obj.important - 1) === i
+        // this.importantBtns[i].status = (obj.important - 1) === i
       }
       // obj.sex = obj.sex == 1 ? '男' : '女'
     },
@@ -242,12 +256,12 @@ export default {
       })
       this.customerDemand.urgency = index + 1
     },
-    changeImportant(index) {
-      this.importantBtns.forEach((element, i) => {
-        element.status = index === i
-      })
-      this.customerDemand.important = index + 1
-    },
+    // changeImportant(index) {
+    //   this.importantBtns.forEach((element, i) => {
+    //     element.status = index === i
+    //   })
+    //   this.customerDemand.important = index + 1
+    // },
     selectSex() {
       this.slots = this.sexList
       this.proto = 'sex'
@@ -283,6 +297,19 @@ export default {
     },
     setBirthday(value) {
       this.customerDemand.birthday = mango.indexTimeB(value)[0]
+    },
+    sexChange(val) {
+      console.log('sex改变了：', val)
+      this.customerDemand.sex = val === '男' ? 1 : 2
+      // this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    sourceChange(val) {
+      console.log('sex改变了：', val)
+      this.customerDemand.source = val
+    },
+    leaveStoreChange(val) {
+      console.log('sex改变了：', val)
+      this.customerDemand.leaveStore = val
     },
     onValuesChange(picker, values) {
       // 选择地区
@@ -326,10 +353,15 @@ export default {
     },
     saveCustomerInfo() {
       let [obj, id] = [this.customerDemand, this.$route.params.id]
+      if (this.customerDemand.important) {
+        this.customerDemand.important = 1
+      } else {
+        this.customerDemand.important = 0
+      }
       mango.getAjax(this, 'customer/update', {
         account: this.ajaxData.account,   //登录账户
         tenantId: this.ajaxData.tenantId,
-        customerId: this.$route.params.id == 0 ? '' : this.$route.params.id ,
+        customerId: this.$route.params.id == 0 ? '' : this.$route.params.id,
         ...turnParams(this.customerDemand)
       },'v2', 'post').then((res) => {
         if (res) {
@@ -450,11 +482,13 @@ export default {
 @import "../../../assets/common.scss";
 .customerDescript{
   background: $bgCol;
+  &>li{
+    padding: 0 5vw;
+  }
   li{
     display: flex;
     direction: row;
     color: $fontCol;
-    padding: 0 5vw;
     line-height: 3em;
     div{
       display: flex;
@@ -489,6 +523,9 @@ export default {
     // position: absolute;
     // top: 0;
     // background: rgba(0, 0, 0, .5);
+  }
+  .urgency,.important{
+    padding: 2vw 5vw 0 5vw;
   }
 }
 </style>
