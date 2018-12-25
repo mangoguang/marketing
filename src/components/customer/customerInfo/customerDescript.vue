@@ -198,7 +198,7 @@ export default {
           this.cityName = res.cityName
           this.countyName = res.areaName
           console.log(88776655, res.important)
-          if (res.important == 1 || 2 || 3) {
+          if (res.important == 1 || res.important == 2 || res.important == 3) {
             res.important = true
           } else {
             res.important = false
@@ -223,6 +223,7 @@ export default {
           })
         }
         this.setCustomerDemand(res)
+        console.log(1231231231231231, this.customerInfo)
       })
     },
     setCustomerDemand(obj = {}) {
@@ -240,7 +241,7 @@ export default {
         address: obj.area || obj.address,
         leaveStore: obj.leaveStore,    //留店时间，
         urgency: obj.urgency,   //紧急，1/2/3级，一级最高
-        important: obj.important !== 0 //重要，1/2/3级，一级最高
+        important: obj.important //重要，1/2/3级，一级最高
       }
     },
     checkBtnStatus(obj) {
