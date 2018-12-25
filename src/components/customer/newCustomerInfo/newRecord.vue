@@ -101,7 +101,11 @@ export default {
     },
     saveTalksRecord() {
       this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-      console.log(this.updateParams(this.newCustomerInfo))
+      if (this.newCustomerInfo.important) {
+        this.newCustomerInfo.important = 1
+      } else {
+        this.newCustomerInfo.important = 0
+      }
       mango.getAjax(this, 'customer/update', {
         account: this.ajaxData.account,   //登录账户
         tenantId: this.ajaxData.tenantId,
@@ -144,7 +148,7 @@ export default {
         'record.followPlan': obj.followPlan
       }
       for (let key in temp) {
-        if (temp[key]) {
+        if (temp[key] || temp[key] === 0) {
           tempObj[key] = temp[key]
         }
       }

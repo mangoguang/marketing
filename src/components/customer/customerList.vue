@@ -12,8 +12,8 @@
         {{item.name}}
         <ul>
           <li>
-            <div :class="`urgence${item.urgency}`"></div>
-            <strong>{{item.username}}<i :class="`important${item.important}`"></i></strong>
+            <div :class="`important${item.important}`"></div>
+            <strong>{{item.username}}<i :class="`urgency${item.urgency}`"></i></strong>
             <span>{{item.followTime}}</span>
           </li>
           <li>{{item.intention}}</li>
@@ -104,7 +104,7 @@ export default {
         res = res.data
         if (res) {
           if (res.records) {
-            if (res.records.length < 9) {
+            if (res.records.length < 50) {
               this.setAllLoaded(true)
             }
             this.customerList.records = this.customerList.records.concat(res.records)

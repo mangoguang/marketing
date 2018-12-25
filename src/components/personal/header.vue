@@ -5,12 +5,12 @@
       <div class="via"></div>
       <div class="content">
         <div class="name">
-          <span>Tina Lau</span>
+          <span>{{ajaxData.name}}</span>
           <span>|</span>
-          <span>女</span>
+          <span>{{ajaxData.sex == 1 ? '男' : '女'}}</span>
         </div>
         <div class="phoneNumber">
-          <span>1599999999</span>
+          <span>{{ajaxData.phone}}</span>
           <div class="phone-icon">
             <a href="tel:1599999999">
               <img src="../../assets/imgs/call.png" alt="电话">
@@ -30,8 +30,14 @@ export default {
   data(){
     return{
       height:'',
-      marginTop:''
+      marginTop:'',
+      ajaxData: {}
     }
+  },
+  created() {
+    //获取本地缓存信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
   },
   mounted(){
     this.isIPhoneX()
