@@ -94,6 +94,7 @@ import sexSelect from '../../select/sexSelect'
 import sourceSelect from '../../select/sourceSelect'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 import mango from '../../../js'
+import variable from '../../../js/variable'
 import {turnParams} from '../../../utils/customer'
 export default {
   name:'customerDescript',
@@ -271,12 +272,16 @@ export default {
       }
     },
     saveCustomerInfo() {
-      console.log(123123123, this.newCustomerInfo)
-      let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
-      this.setNewCustomerInfo(obj)
-      this.parentBtns[0].status = false
-      this.parentBtns[1].status = true
-      this.$emit('changeBtnsStatus', this.parentBtns)
+      let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
+      if(testPhoneNum) {
+        let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
+        this.setNewCustomerInfo(obj)
+        this.parentBtns[0].status = false
+        this.parentBtns[1].status = true
+        this.$emit('changeBtnsStatus', this.parentBtns)
+      }else {
+        mango.tip('请填写正确的手机号码')
+      }
     },
     // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {

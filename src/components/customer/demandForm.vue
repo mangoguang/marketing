@@ -10,8 +10,11 @@
       <li is="customerLi" :leftText="'风格偏好'">
         <input @change="emitEvent" v-model="demand.stylePref" placeholder="请填写风格偏好" type="text">
       </li>
-      <li is="customerLi" :leftText="'购买原因'">
+      <!-- <li is="customerLi" :leftText="'购买原因'">
         <input @change="emitEvent" v-model="demand.buyReason" placeholder="请填写购买原因" type="text">
+      </li> -->
+       <li is="customerLi" :leftText="'购买原因'" :icon="true" @click.native="selectBuyReason">
+        <span>{{demand.buyReason || '请选择购买原因'}}</span>
       </li>
       <li is="customerLi" :leftText="'装修进度'" :icon="true" @click.native="selectProgress">
         <span>{{demand.progress || '请选择装修进度'}}</span>
@@ -60,7 +63,14 @@ export default {
     return{
       demand: {},
       popupVisible: false,
-      slots: [{values: ['毛坯阶段', '水电木工', '油漆吊顶', '橱柜安装', '地板安装', '木门安装', '洁具安装', '灯饰安装', '装修中', '装修完成']}]
+      slots: [],
+      progressList: [{values: ['毛坯阶段', '水电木工', '油漆吊顶', '橱柜安装', '地板安装', '木门安装', '洁具安装', '灯饰安装', '装修中', '装修完成']}],
+      buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
+      pickerShow: {
+        progress: false,
+        buyReason: false
+      },
+      proto: ''
     }
   },
   computed: {
@@ -80,11 +90,27 @@ export default {
   },
   methods: {
     selectProgress() {
+      this.slots = this.progressList
+      this.proto = 'progress'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.demand.progress)
+      this.popupVisible = true
+    },
+    selectBuyReason() {
+      this.slots = this.buyReasonList
+      this.proto = 'buyReason'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.demand.buyReason)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)
-      this.demand.progress = values[0]
+      // this.demand.progress = values[0]
+      if(this.proto == 'progress') {
+        this.demand.progress = values[0]
+      }else if(this.proto == 'buyReason') {
+        this.demand.buyReason = values[0]
+      }
     },
     emitEvent() {
       this.$emit('changeDemand', this.demand)

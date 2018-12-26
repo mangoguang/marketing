@@ -92,6 +92,7 @@ import sexSelect from '../../select/sexSelect'
 import sourceSelect from '../../select/sourceSelect'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 import mango from '../../../js'
+import variable from '../../../js/variable'
 import {turnParams} from '../../../utils/customer'
 import { setTimeout } from 'timers'
 // import { MessageBox } from 'mint-ui'
@@ -355,22 +356,28 @@ export default {
       }
     },
     saveCustomerInfo() {
-      let [obj, id] = [this.customerDemand, this.$route.params.id]
-      if (this.customerDemand.urgency) {
-        this.customerDemand.urgency = 1
-      } else { 
-        this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
-      }
-      mango.getAjax(this, 'customer/update', {
-        account: this.ajaxData.account,   //登录账户
-        tenantId: this.ajaxData.tenantId,
-        customerId: this.$route.params.id == 0 ? '' : this.$route.params.id,
-        ...turnParams(this.customerDemand)
-      },'v2', 'post').then((res) => {
-        if (res) {
-          mango.tip('保存成功！')
+      let isPhoneNum = variable.testPhone(this.customerDemand.phone)
+      if(isPhoneNum) {
+        let [obj, id] = [this.customerDemand, this.$route.params.id]
+        if (this.customerDemand.urgency) {
+          this.customerDemand.urgency = 1
+        } else { 
+          this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
         }
-      })
+        mango.getAjax(this, 'customer/update', {
+          account: this.ajaxData.account,   //登录账户
+          tenantId: this.ajaxData.tenantId,
+          customerId: this.$route.params.id == 0 ? '' : this.$route.params.id,
+          ...turnParams(this.customerDemand)
+        },'v2', 'post').then((res) => {
+          if (res) {
+            mango.tip('保存成功！')
+          }
+        })
+      } else {
+        mango.tip('请填写正确的手机号码')
+      }
+    
     },
     // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {
