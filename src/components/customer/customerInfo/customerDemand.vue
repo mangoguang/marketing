@@ -119,7 +119,6 @@ export default {
       this.customerDemand.progress = values[0]
     },
     saveCustomerDemand() {
-      console.log('newDemand:', this.customerInfo)
       let id = this.$route.params.id
       if (this.customerDemand.intention && this.customerDemand.intention != '') {
         mango.getAjax(this, 'customer/update', {
@@ -130,7 +129,7 @@ export default {
           ...turnParams(this.customerDemand, 'demand')
         },'v2', 'post').then((res) => {
           if (res) {
-            this.$router.go(0)
+            // this.$router.go(0)
             mango.tip('保存成功！')
           }
         })

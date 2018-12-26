@@ -153,7 +153,7 @@ export default {
       this.setCustomerAjaxParams(this.paramsObj)
     },
     hideRightBar() {
-      this.setRightContainerStatus('hideRightContainer')
+      // this.setRightContainerStatus('hideRightContainer')
     },
     // 紧急程度选择
     urgencySelect(i) {

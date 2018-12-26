@@ -38,7 +38,8 @@ export default {
     this.demandId = this.$route.query.demandId 
     // 获取当天日期
     let temp = new Date()
-    this.recordFormData.followTime = mango.indexTimeB(temp)[0]
+    // this.recordFormData.followTime = mango.indexTimeB(temp)[0]
+    this.$set(this.recordFormData,'followTime', mango.indexTimeB(temp)[0])
   },
   methods: {
     getRecordForm(obj) {
@@ -54,7 +55,7 @@ export default {
             account: this.ajaxData.account,   //登录账户
             demandId: this.$route.query.demandId, 
             probability: `${obj.percent}%`,
-            nextFollowTime: returnDate(obj.followTime),
+            nextFollowTime: returnDate(obj.followTime) || mango.indexTimeB(new Date())[1],//初始值默认今天
             followPlan: obj.followPlan || '',
             followSituation: obj.followSituation || ''
           },'v2', 'post').then((res) => {

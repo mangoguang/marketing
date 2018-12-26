@@ -73,7 +73,7 @@
         year-format="{value} 年"
         month-format="{value} 月"
         date-format="{value} 日"
-        @confirm="setBirthday">
+        @confirm="setBirthday1">
       </mt-datetime-picker>
     </div>
   </div>
@@ -232,8 +232,9 @@ export default {
     //   this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.source)
     //   this.popupVisible = true
     // },
-    setBirthday(value) {
-      this.newCustomerInfo.birthday = mango.indexTimeB(value)[0]
+    setBirthday1(value) {
+      // this.newCustomerInfo.birthday = mango.indexTimeB(value)[0]
+      this.$set(this.newCustomerInfo,'birthday',mango.indexTimeB(value)[0])
       console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.birthday)
     },
     sexChange(val) {

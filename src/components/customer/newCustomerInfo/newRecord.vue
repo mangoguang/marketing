@@ -75,8 +75,8 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     // 获取当天日期
-    let temp = new Date()
-    this.newCustomerInfo.followTime = mango.indexTimeB(temp)[0]
+    // let temp = new Date()
+    // this.newCustomerInfo.followTime = mango.indexTimeB(temp)[0]
   },
   mounted() {
     this.newCustomerInfo.percent = 50
@@ -92,7 +92,8 @@ export default {
       this.$refs.followDatePicker.open()
     },
     setTime(value) {
-      this.newCustomerInfo.followTime = mango.indexTimeB(value)[0]
+      this.$set(this.newCustomerInfo, 'followTime', mango.indexTimeB(value)[0])
+      // this.newCustomerInfo.followTime = mango.indexTimeB(value)[0]
     },
     preModule() {
       this.btns[1].status = true
@@ -144,7 +145,7 @@ export default {
         'demand.remark': obj.remark,
         'record.followSituation': obj.followSituation,
         'record.probability': obj.percent,
-        'record.followTime': returnDate(obj.followTime),
+        'record.followTime': returnDate(obj.followTime) || mango.indexTimeB(new Date())[1],   //默认为今天
         'record.followPlan': obj.followPlan
       }
       for (let key in temp) {

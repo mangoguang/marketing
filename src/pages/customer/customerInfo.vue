@@ -35,7 +35,8 @@ export default {
       btns: mango.btnList(['客户描述', '新建需求', '跟踪记录'], 0),
       name: '',
       phone: '',
-      sex: ''
+      sex: '',
+      ajaxData: {}
     }
   },
   computed: {
@@ -43,6 +44,10 @@ export default {
       customerInfoBtns: state => state.customer.customerInfoBtns,
       customerTabStatus: state => state.tabStatus.customerTabStatus
     })
+  },
+  created() {
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
     if (this.customerInfoBtns[0]) {
@@ -53,9 +58,20 @@ export default {
     this.setCustomerInfoBtns(this.btns)
   },
   methods: {
-    ...mapMutations(["setCustomerInfoBtns", "setCustomerTabStatus"]),
+    ...mapMutations(["setCustomerInfoBtns", "setCustomerTabStatus",'setDealOrderInfoDetails']),
     infoSelect(index) {
       this.setCustomerTabStatus(mango.btnList(['客户描述', '新增需求', '跟踪记录'], index))
+      if(index === 2) {
+        let id = this.$route.params.id
+        mango.getAjax(this, 'customerById',{
+          id: id
+        },'v2').then((res) => {
+          res = res.data
+          if (res) {
+            this.setDealOrderInfoDetails(res)
+          }
+        })
+      }
     },
     setInfo(obj) {
       this.name = obj.name
