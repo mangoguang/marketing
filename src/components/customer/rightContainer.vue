@@ -55,7 +55,7 @@
           </li>
         </ul>
         <div class="botBtns">
-          <button>重置</button>
+          <button @click="resizeCustomerList">重置</button>
           <button class="on" @click="hideRightContainer">完成</button>
         </div>
       </div>
@@ -82,8 +82,9 @@ export default {
       startDateVal: '',
       endDateVal: mango.indexTime(new Date(), 'day'),
       dateType: '',
-      urgencyBtns: mango.btnList(['高', '中', '低']),
-      keyBtns: mango.btnList(['高', '中', '低'])
+      urgencyBtns: mango.btnList(['是', '否']),
+      keyBtns: mango.btnList(['高', '中', '低']),
+      ajaxData:[]
     }
   },
   computed: {
@@ -103,17 +104,19 @@ export default {
       return Math.ceil((end - start)/86400000)
     }
   },
-  watch:{
-    rightContainerStatus() {
-      console.log(123,this.rightContainerStatus)
-    }
-  },
+  // watch:{
+  //   rightContainerStatus() {
+  //     console.log(123,this.rightContainerStatus)
+  //   }
+  // },
   created() {
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
     this.initStartDateVal()
   },
   mounted(){
     let str = new Date()
-    console.log(333, str.getTime())
+    // console.log(333, str.getTime())
     // 对象深拷贝
     let temp = this.customerAjaxParams
     for (let key in temp) {
@@ -124,7 +127,8 @@ export default {
     ...mapMutations([
       'setRightContainerStatus',
       'setCustomerAjaxParams',
-      'setAllLoaded'
+      'setAllLoaded',
+      'setCustomerList'  
     ]),
     test() {
       console.log('success')
@@ -141,16 +145,33 @@ export default {
       this.dateType = type
       this.$refs.datePicker.open()
     },
+    //重置
+    resizeCustomerList() {
+      console.log(111,this.customerAjaxParams)
+      // this.setRightContainerStatus('hideRightContainer')
+    },
     // 隐藏右侧边栏
     hideRightContainer() {
-      this.setRightContainerStatus('hideRightContainer')
-      this.paramsObj.startTime = this.startDateVal
-      this.paramsObj.endTime = this.endDateVal
+      // this.paramsObj.startTime = this.startDateVal
+      // this.$set(this.paramsObj, 'startTime', this.startDateVal)
+      // this.$set(this.paramsObj, 'endTime', this.endDateVal)
+      // this.paramsObj.endTime = this.endDateVal
+      console.log(222,this.paramsObj)
+
+
+      if(this.paramsObj.u == 2) {     //非紧急写死了为9
+        this.paramsObj.u = 9
+      }
+    
+
+
       console.log(112233, this.paramsObj)
-      this.setCustomerAjaxParams(mango.customerAjaxParams)
-      this.paramsObj.page = 1
-      this.setAllLoaded(false)
+      // this.setCustomerAjaxParams(mango.customerAjaxParams)
+      // this.paramsObj.page = 1
+      // this.setAllLoaded(false)
       this.setCustomerAjaxParams(this.paramsObj)
+      console.log(11111,this.customerAjaxParams)
+      this.setRightContainerStatus('hideRightContainer')
     },
     hideRightBar() {
       // this.setRightContainerStatus('hideRightContainer')

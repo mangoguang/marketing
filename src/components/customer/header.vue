@@ -67,6 +67,7 @@ export default {
   },
   computed: {
     ...mapState({
+      rightContainerStatus: state => state.rightContainer.rightContainerStatus,
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
       dealCustomerList: state => state.dealCustomerList.dealCustomerList
@@ -83,7 +84,10 @@ export default {
       if(this.headerStatus[0].status){
         this.getCustomerList()
       }
-      
+    },
+    rightContainerStatus(val) {
+      console.log(123,this.rightContainerStatus)
+      this.getCustomerList()
     }
   },
   created() {

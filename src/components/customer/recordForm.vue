@@ -95,7 +95,8 @@ export default {
       this.$refs.followDatePicker.open()
     },
     setTime(value) {
-      this.recordForm.followTime = mango.indexTimeB(value)[0]
+      this.$set(this.recordForm, 'followTime',mango.indexTimeB(value)[0])
+      // this.recordForm.followTime = mango.indexTimeB(value)[0]
       this.emitParentEvent()
     },
     emitParentEvent() {
