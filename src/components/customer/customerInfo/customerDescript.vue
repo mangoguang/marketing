@@ -181,7 +181,6 @@ export default {
     }
   },
   mounted() {
-    console.log(2222,this.customerInfo)
     this.customerDemand.phone = this.$route.query.phone
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
@@ -300,6 +299,7 @@ export default {
     },
     setBirthday(value) {
       this.customerDemand.birthday = mango.indexTimeB(value)[0]
+      console.log('birthday', this.customerDemand.birthday)
     },
     sexChange(val) {
       // console.log('sex改变了：', val)
@@ -358,7 +358,7 @@ export default {
       let [obj, id] = [this.customerDemand, this.$route.params.id]
       if (this.customerDemand.important) {
         this.customerDemand.important = 1
-      } else {
+      } else { 
         this.customerDemand.important = 0
       }
       mango.getAjax(this, 'customer/update', {

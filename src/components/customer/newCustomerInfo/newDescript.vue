@@ -271,11 +271,11 @@ export default {
     },
     saveCustomerInfo() {
       console.log(123123123, this.newCustomerInfo)
-      // let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
-      // this.setNewCustomerInfo(obj)
-      // this.parentBtns[0].status = false
-      // this.parentBtns[1].status = true
-      // this.$emit('changeBtnsStatus', this.parentBtns)
+      let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
+      this.setNewCustomerInfo(obj)
+      this.parentBtns[0].status = false
+      this.parentBtns[1].status = true
+      this.$emit('changeBtnsStatus', this.parentBtns)
     },
     // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {
