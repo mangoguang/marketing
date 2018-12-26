@@ -28,18 +28,18 @@
       <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
         <span>{{customerDemand.leaveStore || '请选择客户留店时间'}}</span>
       </li>
-      <li class="urgency">
-        紧急程度
+      <li class="important">
+        关键程度
         <div>
           <button 
-          v-for="(item, index) in urgencyBtns" 
-          :key="`urgencyBtns${index}`"
-          @click="changeUrgency(index)"
+          v-for="(item, index) in importantBtns" 
+          :key="`importantBtns${index}`"
+          @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
         </div>
       </li>
-      <li class="important">
-        是否关键
+      <li class="urgency">
+        是否紧急
         <!-- <div>
           <button 
           v-for="(item, index) in importantBtns" 
@@ -47,7 +47,7 @@
           @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
         </div> -->
-        <div class="switchBox"><mt-switch v-model="customerDemand.important"></mt-switch></div>
+        <div class="switchBox"><mt-switch v-model="customerDemand.urgency"></mt-switch></div>
       </li>
       <li><big-btn :text="'保存'" @click.native="saveCustomerInfo"></big-btn></li>
     </ul>
@@ -107,7 +107,7 @@ export default {
   data(){
     return{
       customerDemand: {},
-      urgencyBtns: mango.btnList(['高', '中', '低'], 0),
+      importantBtns: mango.btnList(['高', '中', '低'], 0),
       // importantBtns: mango.btnList(['高', '中', '低'], 0),
       slots: [],
       sexList: [{values: ['男', '女']}],
@@ -181,7 +181,8 @@ export default {
     }
   },
   mounted() {
-    this.customerDemand.phone = this.$route.query.phone
+    this.$set(this.customerDemand, 'phone', this.$route.query.phone)
+    // this.customerDemand.phone = this.$route.query.phone
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
   },
@@ -199,16 +200,16 @@ export default {
           this.cityName = res.cityName
           this.countyName = res.areaName
           console.log(88776655, res.important)
-          if (res.important == 1 || 2 || 3) {
-            res.important = true
+          if (res.urgency == 1) {
+            res.urgency = true
           } else {
-            res.important = false
+            res.urgency = false
           }
           // this.customerInfo = res
           // 初始化保存接口参数
           this.checkBtnStatus(res)
           // 获取行政区域数据
-          this.getProvince()
+          // this.getProvince()
           // .then((response) => {
           //   // this.getCity(res.provinceCode).then((response) => {
           //   //   this.getCounty(res.cityCode).then((response) => {
@@ -224,7 +225,6 @@ export default {
           })
         }
         this.setCustomerDemand(res)
-        console.log(123,this.customerDemand)
       })
     },
     setCustomerDemand(obj = {}) {
@@ -242,21 +242,21 @@ export default {
         address: obj.area || obj.address,
         leaveStore: obj.leaveStore,    //留店时间，
         urgency: obj.urgency,   //紧急，1/2/3级，一级最高
-        important: obj.important !== 0 //重要，1/2/3级，一级最高
+        important: obj.important 
       }
     },
     checkBtnStatus(obj) {
-      for (let i = 0; i < this.urgencyBtns.length; i++) {
-        this.urgencyBtns[i].status = (obj.urgency - 1) === i
+      for (let i = 0; i < this.importantBtns.length; i++) {
+        this.importantBtns[i].status = (obj.important - 1) === i
         // this.importantBtns[i].status = (obj.important - 1) === i
       }
       // obj.sex = obj.sex == 1 ? '男' : '女'
     },
-    changeUrgency(index) {
-      this.urgencyBtns.forEach((element, i) => {
+    changeImportant(index) {
+      this.importantBtns.forEach((element, i) => {
         element.status = index === i
       })
-      this.customerDemand.urgency = index + 1
+      this.customerDemand.important = index + 1
     },
     // changeImportant(index) {
     //   this.importantBtns.forEach((element, i) => {
@@ -356,10 +356,10 @@ export default {
     },
     saveCustomerInfo() {
       let [obj, id] = [this.customerDemand, this.$route.params.id]
-      if (this.customerDemand.important) {
-        this.customerDemand.important = 1
+      if (this.customerDemand.urgency) {
+        this.customerDemand.urgency = 1
       } else { 
-        this.customerDemand.important = 0
+        this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
       }
       mango.getAjax(this, 'customer/update', {
         account: this.ajaxData.account,   //登录账户
