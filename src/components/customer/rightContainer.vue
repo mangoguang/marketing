@@ -153,18 +153,13 @@ export default {
     // 隐藏右侧边栏
     hideRightContainer() {
       // this.paramsObj.startTime = this.startDateVal
-      // this.$set(this.paramsObj, 'startTime', this.startDateVal)
-      // this.$set(this.paramsObj, 'endTime', this.endDateVal)
+      this.$set(this.paramsObj, 'startTime', this.startDateVal)
+      this.$set(this.paramsObj, 'endTime', this.endDateVal)
       // this.paramsObj.endTime = this.endDateVal
       console.log(222,this.paramsObj)
-
-
       if(this.paramsObj.u == 2) {     //非紧急写死了为9
         this.paramsObj.u = 9
       }
-    
-
-
       console.log(112233, this.paramsObj)
       // this.setCustomerAjaxParams(mango.customerAjaxParams)
       // this.paramsObj.page = 1

@@ -14,12 +14,23 @@
   ul{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    li:nth-child(1){
+      flex: 0.6
+    }
+    li:nth-child(2){
+      flex: 0.7;
+      // overflow: auto;
+    }
+    li:nth-child(3){
+      flex: 0.2
+    }
     li{
       position: relative;
       display: flex;
       flex-direction: column;
       height: 14vw;
-      line-height: 14vw;
+      // line-height: 14vw;
       padding: 1vw 0;
       div{
         position: absolute;
