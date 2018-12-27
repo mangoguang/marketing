@@ -47,7 +47,7 @@
           @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
         </div> -->
-        <div class="switchBox"><mt-switch v-model="customerDemand.urgency"></mt-switch></div>
+        <div class="switchBox"><mt-switch v-model="urgency"></mt-switch></div>
       </li>
       <li><big-btn :text="'保存'" @click.native="saveCustomerInfo"></big-btn></li>
     </ul>
@@ -109,6 +109,7 @@ export default {
     return{
       customerDemand: {},
       importantBtns: mango.btnList(['高', '中', '低'], 0),
+      urgency:'',
       // importantBtns: mango.btnList(['高', '中', '低'], 0),
       slots: [],
       sexList: [{values: ['男', '女']}],
@@ -203,8 +204,10 @@ export default {
           console.log(88776655, res.important)
           if (res.urgency == 1) {
             res.urgency = true
+            this.urgency = true
           } else {
             res.urgency = false
+            this.urgency = false
           }
           // this.customerInfo = res
           // 初始化保存接口参数
@@ -359,7 +362,7 @@ export default {
       let isPhoneNum = variable.testPhone(this.customerDemand.phone)
       if(isPhoneNum) {
         let [obj, id] = [this.customerDemand, this.$route.params.id]
-        if (this.customerDemand.urgency) {
+        if (this.urgency) {
           this.customerDemand.urgency = 1
         } else { 
           this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
