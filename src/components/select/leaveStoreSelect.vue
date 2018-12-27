@@ -37,7 +37,7 @@ export default {
   props: ['leaveStoreVal'],
   data() {
     return {
-      slots: [{values: ['15分钟', '30分钟']}],
+      slots: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
       popupVisible: false,
       val: this.leaveStoreVal || '请选择客户留店时间',
       key: false

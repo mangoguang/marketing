@@ -126,7 +126,7 @@ export default {
         tenantId: this.ajaxData.tenantId,
         'details.username': obj.username,
         'details.sex': obj.sex === '男' ? 1 : 2,  //性别(1:男,2:女,0:未知)，
-        'details.birthday': returnDate(obj.birthday),
+        'details.storeDate': returnDate(obj.storeDate),
         'details.phone': obj.phone,
         'details.source': obj.source,
         'details.province': '440000',

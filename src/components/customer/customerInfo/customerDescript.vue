@@ -8,22 +8,24 @@
        <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
         <span>{{customerDemand.sex == 1 ? '男' : '女'}}</span>
       </li> 
-      <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectBirthday">
-        <span>{{turnDate(customerDemand.birthday) || '请选择客户生日日期'}}</span>
-      </li>
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="customerDemand.phone" type="text" placeholder="请填写客户电话">
       </li>
-      <!-- <li is="sourceSelect" :sourceVal="customerDemand.source" @sourceChange="sourceChange"></li> -->
-      <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
-        <span>{{customerDemand.source || '请选择客户来源'}}</span>
-      </li>
-      <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
-        <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
-      </li> -->
       <li is="customerLi" :leftText="'客户地址'">
         <input v-model="customerDemand.address" type="text" placeholder="请填写客户地址">
       </li>
+      <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
+        <span>{{customerDemand.source || '请选择客户来源'}}</span>
+      </li>
+      <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
+        <span>{{turnDate(customerDemand.storeDate) || '请选择客户进店日期'}}</span>
+      </li>
+      <!-- <li is="sourceSelect" :sourceVal="customerDemand.source" @sourceChange="sourceChange"></li> -->
+     
+      <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
+        <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
+      </li> -->
+    
       <!-- <li is="leaveStoreSelect" :leaveStoreVal="customerDemand.leaveStore" @leaveStoreChange="leaveStoreChange"></li> -->
       <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
         <span>{{customerDemand.leaveStore || '请选择客户留店时间'}}</span>
@@ -71,7 +73,7 @@
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
-      @confirm="setBirthday">
+      @confirm="setStoreDate">
     </mt-datetime-picker>
   </div>
   </div>
@@ -114,11 +116,11 @@ export default {
       slots: [],
       sexList: [{values: ['男', '女']}],
       sourceList: [{values: ['异业联盟', '设计师介绍', '自然进店', '老客带单']}],
-      leaveStoreList: [{values: ['15分钟', '30分钟']}],
+      leaveStoreList: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
       areaList: [],
       pickerShow: {
         sex: false,
-        birthday: false,
+        storeDate: false,
         source: false,
         area: false,
         time: false
@@ -237,7 +239,7 @@ export default {
         // tenantId: this.ajaxData.tenantId,
         username: obj.username,
         sex: obj.sex,  //性别(1:男,2:女,0:未知)，
-        birthday: this.returnDate(obj.birthday),
+        storeDate: this.returnDate(obj.storeDate) || mango.indexTimeB(new Date())[0],//默认选择今天
         phone: obj.phone || this.$route.query.phone,
         source: obj.source,
         // province: '440000',
@@ -275,7 +277,7 @@ export default {
       this.$refs.Picker.setSlotValue(0, this.customerDemand.sex === 1 ? '男' : '女')
       this.popupVisible = true
     },
-    selectBirthday() {
+    selectStoreDate() {
       this.$refs.datePicker.open()
     },
     selectSource() {
@@ -301,9 +303,9 @@ export default {
       this.$refs.Picker.setSlotValue(0, this.customerDemand.source)
       this.popupVisible = true
     },
-    setBirthday(value) {
-      this.customerDemand.birthday = mango.indexTimeB(value)[0]
-      console.log('birthday', this.customerDemand.birthday)
+    setStoreDate(value) {
+      this.customerDemand.storeDate = mango.indexTimeB(value)[0]
+      console.log('storeDate', this.customerDemand.storeDate)
     },
     sexChange(val) {
       // console.log('sex改变了：', val)

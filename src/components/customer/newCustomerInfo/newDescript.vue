@@ -8,38 +8,39 @@
         <span>{{newCustomerInfo.sex == 1 ? '男' : '女'}}</span>
       </li> -->
       <li is="sexSelect" :sexVal="newCustomerInfo.sex" @sexChange="sexChange"></li>
-      <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectBirthday">
-        <span>{{newCustomerInfo.birthday || '请选择客户生日日期'}}</span>
-      </li>
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话">
+      </li>
+       <li is="customerLi" :leftText="'客户地址'">
+        <input v-model="newCustomerInfo.address" type="text" placeholder="请填写客户地址">
+      </li>
+      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
+      <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
+        <span>{{newCustomerInfo.storeDate || '请选择客户进店日期'}}</span>
       </li>
       <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
         <span>{{newCustomerInfo.source || '请选择客户来源'}}</span>
       </li> -->
-      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
       <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
         <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
       </li> -->
-      <li is="customerLi" :leftText="'客户地址'">
-        <input v-model="newCustomerInfo.address" type="text" placeholder="请填写客户地址">
-      </li>
+     
       <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
         <span>{{newCustomerInfo.leaveStore || '请选择客户留店时间'}}</span>
       </li> -->
       <li is="leaveStoreSelect" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
-      <li class="urgency">
-        紧急程度
+      <li class="important">
+        关键程度
         <div>
           <button 
-          v-for="(item, index) in urgencyBtns" 
-          :key="`urgencyBtns${index}`"
-          @click="changeUrgency(index)"
+          v-for="(item, index) in importantBtns" 
+          :key="`importantBtns${index}`"
+          @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
         </div>
       </li>
-      <li class="important">
-        关键程度
+      <li class="urgency">
+        是否紧急
         <!-- <div>
           <button 
           v-for="(item, index) in importantBtns" 
@@ -47,7 +48,7 @@
           @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
         </div> -->
-        <div class="switchBox"><mt-switch v-model="newCustomerInfo.important"></mt-switch></div>
+        <div class="switchBox"><mt-switch v-model="urgency"></mt-switch></div>
       </li>
     </ul>
     <div class="btnBox">
@@ -73,7 +74,7 @@
         year-format="{value} 年"
         month-format="{value} 月"
         date-format="{value} 日"
-        @confirm="setBirthday1">
+        @confirm="setStoreDate1">
       </mt-datetime-picker>
     </div>
   </div>
@@ -108,7 +109,7 @@ export default {
   },
   data(){
     return{
-      urgencyBtns: mango.btnList(['高', '中', '低'], 0),
+      importantBtns: mango.btnList(['高', '中', '低'], 0),
       // importantBtns: mango.btnList(['高', '中', '低'], 0),
       // slots: [],
       // sexList: [{values: ['男', '女']}],
@@ -124,7 +125,8 @@ export default {
       cityName: '',
       county: [],
       countyName: '',
-      parentBtns: []
+      parentBtns: [],
+      urgency:false
     }
   },
   watch: {
@@ -182,17 +184,17 @@ export default {
   methods: {
     ...mapMutations(["setNewCustomerInfo"]),
     checkBtnStatus(obj) {
-      for (let i = 0; i < this.urgencyBtns.length; i++) {
-        this.urgencyBtns[i].status = (obj.urgency - 1) === i
+      for (let i = 0; i < this.importantBtns.length; i++) {
+        this.importantBtns[i].status = (obj.important - 1) === i
         // this.importantBtns[i].status = (obj.important - 1) === i
       }
       // obj.sex = obj.sex == 1 ? '男' : '女'
     },
-    changeUrgency(index) {
-      this.urgencyBtns.forEach((element, i) => {
+    changeImportant(index) {
+      this.importantBtns.forEach((element, i) => {
         element.status = index === i
       })
-      this.newCustomerInfo.urgency = index + 1
+      this.newCustomerInfo.important = index + 1
     },
     // changeImportant(index) {
     //   this.importantBtns.forEach((element, i) => {
@@ -207,7 +209,7 @@ export default {
     //   this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.sex)
     //   this.popupVisible = true
     // },
-    selectBirthday() {
+    selectStoreDate() {
       this.$refs.datePicker1.open()
     },
     // selectSource() {
@@ -233,10 +235,10 @@ export default {
     //   this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.source)
     //   this.popupVisible = true
     // },
-    setBirthday1(value) {
-      // this.newCustomerInfo.birthday = mango.indexTimeB(value)[0]
-      this.$set(this.newCustomerInfo,'birthday',mango.indexTimeB(value)[0])
-      console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.birthday)
+    setStoreDate1(value) {
+      // this.newCustomerInfo.storeDate = mango.indexTimeB(value)[0]
+      this.$set(this.newCustomerInfo,'storeDate',mango.indexTimeB(value)[0])
+      console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.storeDate)
     },
     sexChange(val) {
       console.log('sex改变了：', val)
@@ -275,6 +277,14 @@ export default {
       let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
       if(testPhoneNum) {
         let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
+        if(this.urgency){
+          this.newCustomerInfo.urgency = 1
+        }else{
+          this.newCustomerInfo.urgency = 9
+        }
+        if(!this.newCustomerInfo.storeDate) {
+          this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[0])
+        } //如果没有选进店时间。默认选择今天
         this.setNewCustomerInfo(obj)
         this.parentBtns[0].status = false
         this.parentBtns[1].status = true

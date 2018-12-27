@@ -124,7 +124,7 @@ export default {
     //详细订单信息
     getDetails(index) {
       let id = this.dealCustomerList[index].customerId
-      this.setTabStatus(mango.btnList(['订单信息', '跟踪记录', '个人评级'], 0))
+      this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], 0))
       mango.getAjax(this,"customerinfo",{customerId: id},"v2")
         .then(res => {
           if (res) {

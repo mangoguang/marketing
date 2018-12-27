@@ -44,7 +44,7 @@ export default {
       'setTabStatus'
     ]),
     clickTab(index){
-     this.setTabStatus(mango.btnList(['订单信息', '跟踪记录', '个人评级'], index))
+     this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], index))
     }
   }
 }

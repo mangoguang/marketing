@@ -33,7 +33,7 @@
         </li>
         <li>
           <p>房间数量</p>
-          <span>{{ demandList.roomNum }}</span>
+          <span>{{ roomNum }}</span>
         </li>
         <li>
           <p>客户备注</p>
@@ -82,7 +82,7 @@ export default {
   },
   data() {
     return{
-      title:'跟踪详情',
+      title:'需求详情',
       pulldown:-1,
       i:-1,
       status:false,
@@ -91,7 +91,8 @@ export default {
       product:'',
       trList:[],
       showRecordForm: this.$route.query.recordForm,
-      recordFormData: {}
+      recordFormData: {},
+      roomNum:''
     }
   },
   created(){
@@ -125,6 +126,11 @@ export default {
         if (res) {
           this.demandList = res.data
           console.log(1111,this.demandList)
+          if(this.demandList.roomNum === 5) {
+            this.roomNum = '5及以上'
+          }else {
+            this.roomNum = this.demandList.roomNum
+          }
         }
       }) 
     },

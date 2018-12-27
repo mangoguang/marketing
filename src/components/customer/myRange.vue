@@ -5,7 +5,7 @@
       v-model="rangeValue"
       :min="0"
       :max="100"
-      :step="5"
+      :step="10"
       :bar-height="2">
       <div slot="end">{{`${rangeValue}%`}}</div>
     </mt-range>

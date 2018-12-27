@@ -2,7 +2,7 @@
   <div class="visitor">
     <ul>
       <li is="customerLi" :leftText="'客户姓名'">
-        <input v-model="info.username" type="text">
+        <input v-model="info.username" type="text" placeholder="无名氏">
       </li>
       <li is="customerLi" :leftText="'客户性别'">
         <span @click="selectSex">{{info.sex || '男'}}</span>
@@ -118,11 +118,11 @@ export default {
     },
     selectTime() {
       this.proto = 'time'
-      this.slots = [{values: ['15分钟', '30分钟']}]
+      this.slots = [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}]
       this.popupVisible = true
     },
     setTime(value) {
-      this.customerDemand.birthday = mango.indexTimeB(value)[0]
+      this.customerDemand.storeDate = mango.indexTimeB(value)[0]
     },
     changeMyRangeVal(val) {
       console.log('mtrange:', val)

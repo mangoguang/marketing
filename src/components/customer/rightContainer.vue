@@ -5,7 +5,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>时间</h3>
+            <h3>更新时间</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>
@@ -147,8 +147,11 @@ export default {
     },
     //重置
     resizeCustomerList() {
-      console.log(111,this.customerAjaxParams)
-      // this.setRightContainerStatus('hideRightContainer')
+      this.$set(this.customerAjaxParams,'i','')
+      this.$set(this.customerAjaxParams,'u','')
+      this.$set(this.customerAjaxParams, 'startTime', '')
+      this.$set(this.customerAjaxParams, 'endTime', '')
+      this.setRightContainerStatus('hideRightContainer')
     },
     // 隐藏右侧边栏
     hideRightContainer() {
@@ -156,11 +159,13 @@ export default {
       this.$set(this.paramsObj, 'startTime', this.startDateVal)
       this.$set(this.paramsObj, 'endTime', this.endDateVal)
       // this.paramsObj.endTime = this.endDateVal
-      console.log(222,this.paramsObj)
+
       if(this.paramsObj.u == 2) {     //非紧急写死了为9
         this.paramsObj.u = 9
       }
-      console.log(112233, this.paramsObj)
+      // if(this.paramsObj.i !== 1 && this.paramsObj.i !== 2 && this.paramsObj.i !== 3) {
+      //   this.paramsObj.i = 9      //当关键程度不为1/2/3的时候，为9
+      // }
       // this.setCustomerAjaxParams(mango.customerAjaxParams)
       // this.paramsObj.page = 1
       // this.setAllLoaded(false)

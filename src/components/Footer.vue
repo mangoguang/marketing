@@ -114,7 +114,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
-        background-position: -49.7vw -20.8vw;
+        background-position: -63.7vw -20.8vw;
       }
       .iconPerson{
         width: 6.6vw;
@@ -122,7 +122,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
-        background-position: -63.2vw -20.8vw;
+        background-position: -49.7vw -20.8vw;
       }
       p{
         color: #8e8e93;
@@ -165,7 +165,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon1.png) ;
         background-size: 2100%;
-        background-position: -42.6vw -20.8vw;
+        background-position: -56.2vw -20.8vw;
       }
       .router-link-exact-active .iconPerson{
         width: 6.6vw;
@@ -173,7 +173,7 @@ export default {
         margin-bottom: 1.33vw;
         background: url(../assets/imgs/icon1.png);
         background-size: 2100%;
-        background-position: -56.2vw -20.8vw;
+        background-position: -42.6vw -20.8vw;
       }
     }
   }

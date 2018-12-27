@@ -1,7 +1,7 @@
 <template>
   <div class="customerSearch">
     <div>
-      <input v-model="phone" type="text" placeholder="请输入姓名或电话">
+      <input v-model="phone" type="number" placeholder="请输入手机号码">
       <button @click="toCustomerInfo" type="button">前往</button>
     </div>
   </div>

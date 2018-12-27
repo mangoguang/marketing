@@ -20,8 +20,11 @@
       <li is="customerLi" :leftText="'装修进度'" :icon="true" @click.native="selectProgress">
         <span>{{customerDemand.progress || '请选择装修进度'}}</span>
       </li>
-      <li is="customerLi" :leftText="'房间数量'">
+      <!-- <li is="customerLi" :leftText="'房间数量'">
         <input v-model="customerDemand.roomNum" placeholder="请填写房间数量" type="number">
+      </li> -->
+      <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
+        <span>{{roomNum || '请填写房间数量'}}</span>
       </li>
       <li class="textarea">
         <h3>备注：</h3>
@@ -69,11 +72,14 @@ export default {
       slots: [],
       progressList: [{values: ['毛坯阶段', '水电木工', '油漆吊顶', '橱柜安装', '地板安装', '木门安装', '洁具安装', '灯饰安装', '装修中', '装修完成']}],
       buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
+      roomNumList:[{values: [1, 2, 3, 4, '5及以上']}],
       pickerShow: {
         progress: false,
-        buyReason: false
+        buyReason: false,
+        roomNum: false
       },
-      proto: ''
+      proto: '',
+      roomNum: ''
     }
   },
   computed: {
@@ -136,12 +142,26 @@ export default {
       this.$refs.Picker.setSlotValue(0, this.customerDemand.buyReason)
       this.popupVisible = true
     },
+    selectRoomNum() {
+      this.slots = this.roomNumList
+      this.proto = 'roomNum'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.roomNum)
+      this.popupVisible = true
+    },
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)
       if(this.proto == 'progress') {
         this.customerDemand.progress = values[0]
       }else if(this.proto == 'buyReason') {
         this.customerDemand.buyReason = values[0]
+      }else if(this.proto == 'roomNum') {
+        this.roomNum = values[0]
+        if(this.roomNum === '5及以上') {
+          this.customerDemand.roomNum = 5
+        }else {
+          this.customerDemand.roomNum = this.roomNum
+        }
       }
     },
     saveCustomerDemand() {
