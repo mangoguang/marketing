@@ -4,15 +4,12 @@
       <li is="customerLi" :leftText="'意向产品'">
         <input v-model="customerDemand.intention" placeholder="请填写意向产品" type="text">
       </li>
-      <li is="customerLi" :leftText="'颜色偏好'">
-        <input v-model="customerDemand.colorPref" placeholder="请填写颜色偏好" type="text">
+      <li is="customerLi" :leftText="'颜色偏好'" :icon="true" @click.native="selectColorPref">
+        <span >{{customerDemand.colorPref || '请填写颜色偏好'}}</span>
       </li>
-      <li is="customerLi" :leftText="'风格偏好'">
-        <input v-model="customerDemand.stylePref" placeholder="请填写风格偏好" type="text">
+      <li is="customerLi" :leftText="'风格偏好'" :icon="true" @click.native="selectStylePref">
+        <span >{{customerDemand.stylePref || '请填写风格偏好'}}</span>
       </li>
-      <!-- <li is="customerLi" :leftText="'购买原因'">
-        <input v-model="customerDemand.buyReason" placeholder="请填写购买原因" type="text">
-      </li> -->
       <li is="customerLi" :leftText="'购买原因'" :icon="true" @click.native="selectBuyReason">
         <span>{{customerDemand.buyReason || '请选择购买原因'}}</span>
       </li>
@@ -70,13 +67,17 @@ export default {
       customerDemand: {},
       popupVisible: false,
       slots: [],
-      progressList: [{values: ['毛坯阶段', '水电木工', '油漆吊顶', '橱柜安装', '地板安装', '木门安装', '洁具安装', '灯饰安装', '装修中', '装修完成']}],
+      progressList: [{values: ['装修中', '装修完成', '毛坯阶段', '水电木工', '油漆吊顶', '橱柜安装', '地板安装', '木门安装', '洁具安装', '灯饰安装']}],
       buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
       roomNumList:[{values: [1, 2, 3, 4, '5及以上']}],
+      colorPrefList: [{values :['暖色', '冷色']}],
+      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
       pickerShow: {
         progress: false,
         buyReason: false,
-        roomNum: false
+        roomNum: false,
+        colorPref: false,
+        stylePref: false
       },
       proto: '',
       roomNum: ''
@@ -149,6 +150,20 @@ export default {
       this.$refs.Picker.setSlotValue(0, this.roomNum)
       this.popupVisible = true
     },
+    selectColorPref() {
+      this.slots = this.colorPrefList
+      this.proto = 'colorPref'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.customerDemand.colorPref)
+      this.popupVisible = true
+    },
+    selectStylePref() {
+      this.slots = this.stylePrefList
+      this.proto = 'stylePref'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.customerDemand.stylePref)
+      this.popupVisible = true
+    },
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)
       if(this.proto == 'progress') {
@@ -162,6 +177,10 @@ export default {
         }else {
           this.customerDemand.roomNum = this.roomNum
         }
+      }else if(this.proto == 'colorPref') {
+        this.customerDemand.colorPref = values[0]
+      }else if(this.proto == 'stylePref') {
+        this.customerDemand.stylePref = values[0]
       }
     },
     saveCustomerDemand() {

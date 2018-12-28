@@ -16,7 +16,7 @@
       </li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
-        <span>{{newCustomerInfo.storeDate || '请选择客户进店日期'}}</span>
+        <span>{{turnDate(newCustomerInfo.storeDate)|| '请选择客户进店日期'}}</span>
       </li>
       <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
         <span>{{newCustomerInfo.source || '请选择客户来源'}}</span>
@@ -109,7 +109,7 @@ export default {
   },
   data(){
     return{
-      importantBtns: mango.btnList(['高', '中', '低'], 0),
+      importantBtns: mango.btnList(['高', '中', '低'],0),
       // importantBtns: mango.btnList(['高', '中', '低'], 0),
       // slots: [],
       // sexList: [{values: ['男', '女']}],
@@ -237,7 +237,7 @@ export default {
     // },
     setStoreDate1(value) {
       // this.newCustomerInfo.storeDate = mango.indexTimeB(value)[0]
-      this.$set(this.newCustomerInfo,'storeDate',mango.indexTimeB(value)[0])
+      this.$set(this.newCustomerInfo,'storeDate',mango.indexTimeB(value)[1])
       console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.storeDate)
     },
     sexChange(val) {
@@ -282,8 +282,14 @@ export default {
         }else{
           this.newCustomerInfo.urgency = 9
         }
+        if(!this.newCustomerInfo.source) {
+          this.newCustomerInfo.source = '自然进店'
+        }
+        if(!this.newCustomerInfo.important) {
+          this.$set(this.newCustomerInfo, 'important', 1)
+        }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
         if(!this.newCustomerInfo.storeDate) {
-          this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[0])
+          this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
         } //如果没有选进店时间。默认选择今天
         this.setNewCustomerInfo(obj)
         this.parentBtns[0].status = false

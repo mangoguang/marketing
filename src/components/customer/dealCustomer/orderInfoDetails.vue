@@ -2,7 +2,7 @@
   <div class="orderInfoDetails">
     <div class="product-wrapper">
       <div class="product">
-        <div class="product-photo">产品图</div>
+        <!-- <div class="product-photo">产品图</div> -->
         <div class="product-details">
           <div class="details">
             <span>{{ orderInfoDetails.goodsName }}</span>
@@ -118,19 +118,20 @@ export default {
     background: #fff;
     .product {
       display: flex;
-      .product-photo {
-        background: #ccc;
-        width: 24vw;
-        height: 24vw;
-        border-radius: 1.6vw;
-        text-align: center;
-        color: #363636;
-        line-height: 24vw;
-        margin-right: 5.3vw;
-        flex: 0.3;
-      }
+      // .product-photo {
+      //   background: #ccc;
+      //   width: 24vw;
+      //   height: 24vw;
+      //   border-radius: 1.6vw;
+      //   text-align: center;
+      //   color: #363636;
+      //   line-height: 24vw;
+      //   margin-right: 5.3vw;
+      //   flex: 0.3;
+      // }
       .product-details {
-        flex: 0.7;
+        // flex: 0.7;
+        flex: 1;
         display: flex;
         flex-direction: column;
         justify-content: space-between;

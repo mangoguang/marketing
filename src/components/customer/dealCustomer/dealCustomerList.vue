@@ -8,7 +8,7 @@
       >
         <span>{{index + 1}}</span>
         <span>{{item.username}}</span>
-        <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span>
+        <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
         <span>{{item.phone}}</span>
         <span>{{getLevel(item.level)}}</span>
       </li>
@@ -170,18 +170,18 @@ export default {
       border-top: 1px solid #e1e1e1;
       span:nth-child(2) {
         color: #363636;
-        flex: 0.3;
-      }
-      span:nth-child(5) {
-        color: #363636;
-        flex: 0.05;
-      }
-      span:nth-child(3) {
-        flex: 0.2;
+        flex: 0.4;
       }
       span:nth-child(4) {
+        color: #363636;
+        flex: 0.1;
+      }
+      span:nth-child(3) {
         flex: 0.5;
       }
+      // span:nth-child(4) {
+      //   flex: 0.5;
+      // }
       span:nth-child(1) {
         flex: 0.15;
       }

@@ -6,7 +6,7 @@
       </li>
       <!-- 性别选择插件 -->
       <li>
-        <mt-popup 
+      <mt-popup 
       position="bottom"
       v-model="popupVisible">
         <mt-picker
@@ -37,10 +37,9 @@ export default {
   props: ['sourceVal'],
   data() {
     return {
-      slots: [{values: ['异业联盟', '设计师介绍', '自然进店', '老客带单']}],
+      slots: [{values: ['自然进店', '企点引流', '老客复购', '老客介绍', '异业带单', '异业联盟活动', '其他活动', '小区团购', '电话销售', '设计师介绍', '辅助查询'],defaultIndex: 0}],
       popupVisible: false,
-      val: this.sourceVal || '请选择客户来源',
-      key: false
+      val: this.sourceVal || '请选择客户来源'
     }
   },
   computed:{
@@ -52,13 +51,10 @@ export default {
   },
   methods:{
     selectSource() {
-      this.key = true
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
-      if (this.key) {
-        this.val = values[0]
-      }
+      this.val = values[0]
       this.$emit('sourceChange', values[0])
     }
   }

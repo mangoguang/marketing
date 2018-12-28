@@ -115,7 +115,7 @@ export default {
       // importantBtns: mango.btnList(['高', '中', '低'], 0),
       slots: [],
       sexList: [{values: ['男', '女']}],
-      sourceList: [{values: ['异业联盟', '设计师介绍', '自然进店', '老客带单']}],
+      sourceList: [{values: ['自然进店', '企点引流', '老客复购', '老客介绍', '异业带单', '异业联盟活动', '其他活动', '小区团购', '电话销售', '设计师介绍', '辅助查询']}],
       leaveStoreList: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
       areaList: [],
       pickerShow: {
@@ -199,6 +199,7 @@ export default {
       },'v2').then((res) => {
         res = res.data
         if (res) {
+          console.log(1232131,res)
           this.setDealOrderInfoDetails(res)
           this.provinceName = res.provinceName
           this.cityName = res.cityName
@@ -230,7 +231,11 @@ export default {
             sex: res.sex
           })
         }
+      
         this.setCustomerDemand(res)
+      })
+      .catch(error => {
+        console.log(error)
       })
     },
     setCustomerDemand(obj = {}) {
@@ -304,7 +309,7 @@ export default {
       this.popupVisible = true
     },
     setStoreDate(value) {
-      this.customerDemand.storeDate = mango.indexTimeB(value)[0]
+      this.customerDemand.storeDate = mango.indexTimeB(value)[1]
       console.log('storeDate', this.customerDemand.storeDate)
     },
     sexChange(val) {

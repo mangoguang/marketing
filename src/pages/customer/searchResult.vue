@@ -38,7 +38,7 @@
       >
         <span>{{index + 1}}</span>
         <span>{{item.username}}</span>
-        <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span>
+        <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
         <span>{{item.phone}}</span>
         <span>{{getLevel(item.level)}}</span>
       </li>

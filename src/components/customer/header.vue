@@ -14,7 +14,7 @@
       </ul>
       <!-- 搜索组件 -->
       <div :style="{display: navShow ? 'none' : 'flex'}">
-        <button @click="showNav(headerStatus)">导航</button>
+        <button @click="showNav(headerStatus)">返回</button>
         <div>
           <input v-model="searchKey" type="text" placeholder="请输入姓名或电话">
           <button @click="searchCustomer">搜索</button>
