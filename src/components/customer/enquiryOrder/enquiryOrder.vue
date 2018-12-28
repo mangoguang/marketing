@@ -3,13 +3,14 @@
     <ul>
       <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
         <li
+          :class='{active : compareTime[index]}'
           v-for="(item, index) in orderList.records"
           :key="`list${index}`"
           @click="orderInfoIn(index)">
-          <span>{{index + 1}}</span>
-          <span>{{item.username}}</span>
+          <span >{{index + 1}}</span>
+          <span :class='{active : compareTime[index]}'>{{item.username}}</span>
           <span>需求{{item.demandTime}}</span>
-          <span>{{item.orderStatus}}</span>
+          <span :class='{active : compareTime[index]}'>{{item.orderStatus}}</span>
         </li>
       </mt-loadmore>
     </ul>
@@ -40,7 +41,9 @@ export default {
       key: true,
       baceLimit:30,
       allLoaded:false,
-      id:''
+      id:'',
+      compareTime :[],
+      activecolor:[]
     };
   },
   computed: {
@@ -60,11 +63,15 @@ export default {
           let tempage = (this.baceLimit - 30)/10
           this.page = 3 + tempage
           this.getOrderList(1,this.baceLimit)
+          this.isExpire(this.baceLimit)
         }
         this.$refs.order.addEventListener('scroll', this.handleScroll,true)
         this.$refs.order.scrollTop = this.orderScroll
-      
       }
+    },
+    baceLimit() {
+      console.log('change', this.baceLimit)
+      this.isExpire(this.baceLimit)
     }
   },
   mounted() {
@@ -74,6 +81,7 @@ export default {
     let tempage = (this.baceLimit - 30)/10
     this.page = 3 + tempage
     this.getOrderList(1,this.baceLimit)
+    this.isExpire(this.baceLimit)
   },
   created() {
     //获取本地缓存信息
@@ -82,9 +90,21 @@ export default {
     this.account = this.ajaxData.account
   },
   methods: {
+    //获取滚动条
     handleScroll(e) {
       let top = e.target.scrollTop
       this.setOrderScroll(top)
+    },
+    //需求日期是否到期
+    isExpire(len) {
+      if(this.orderList.records) {
+        let temp = this.orderList.records
+        let today = new Date()
+        for(var i = 0; i < len; i++) {
+          let isActive = mango.compareTimeStamp(temp[i].demandTime,today)  //t1<t2,true/actived
+          this.$set(this.compareTime,i,isActive)
+        }
+      }
     },
     ...mapMutations(["setOrderList","setOrderInfoDetails",'setOrderScroll']),
     loadBottom() {
@@ -159,6 +179,9 @@ export default {
   background: #f8f8f8;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
+  .active{
+    color:#e10505!important
+  }
   ul {
     border-top: 1px solid #e1e1e1;
     padding-left: 4.266vw;

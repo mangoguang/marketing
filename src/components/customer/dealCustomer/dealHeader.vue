@@ -9,7 +9,8 @@
         <div class="name">
           <span>{{ propsName || username }}</span>
           <span>|</span>
-          <span>{{ (propsSex == 0 || sex == 0) ?'未知':(propsSex == 1 || sex == 1)? '男' : '女'}}</span>
+          <span v-show="key">{{ (propsSex == 0) ?'未知':(propsSex == 1)? '男' : '女'}}</span>
+          <span v-show='key1'>{{address}}</span>
         </div>
         <div class="phoneNumber">
           <span>{{ propsPhone || phone }}</span>
@@ -27,6 +28,7 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from 'vuex'
 
 export default {
   props: ['propsName', 'propsPhone', 'propsSex'],
@@ -35,14 +37,30 @@ export default {
       height:'',
       marginTop:'',
       username:'',
-      sex:'',
-      phone:''
+      // sex:'',
+      phone:'',
+      address: '',
+      key: false,
+      key1: false
     }
   },
+  computed: {
+    ...mapState({
+      dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+    })
+  },
   created(){
+    // console.log(111111231231,this.propsSex)
+    if(this.propsSex === '') {
+      this.key = true
+      this.key1 =false
+    }else {
+      this.key = false
+      this.key1 =true
+    }
     this.isIPhoneX()
     this.username = this.$route.query.username 
-    this.sex = this.$route.query.sex
+    this.address = this.$route.query.address
     this.phone = this.$route.query.phone
   },
   methods:{

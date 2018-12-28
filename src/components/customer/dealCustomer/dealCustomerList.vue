@@ -35,7 +35,8 @@ export default {
       dealCusList: [],
       addPullData: [],
       allPage: "",
-      key: true
+      key: true,
+      address: ''
     };
   },
   computed: {
@@ -124,20 +125,24 @@ export default {
     //详细订单信息
     getDetails(index) {
       let id = this.dealCustomerList[index].customerId
-      this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], 0))
+      // this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], 0))
+      this.setTabStatus(mango.btnList(['订单信息', '需求信息'], 0))
       mango.getAjax(this,"customerinfo",{customerId: id},"v2")
         .then(res => {
           if (res) {
             this.setDealOrderInfoDetails(res.data);
+            // console.log(res.data.orderList[0].address)
+            this.address = res.data.orderList[0].address
+            this.$router.push({ path: "/dealDetails" ,
+            query: {
+              username: this.dealCustomerList[index].username,
+              address:this.address,
+              phone:this.dealCustomerList[index].phone
+            }
+          });
           }
         });
-      this.$router.push({ path: "/dealDetails" ,
-        query: {
-          username: this.dealCustomerList[index].username,
-          sex:this.dealCustomerList[index].sex,
-          phone:this.dealCustomerList[index].phone
-        }
-      });
+     
     }
   }
 };

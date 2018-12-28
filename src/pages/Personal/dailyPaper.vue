@@ -6,7 +6,7 @@
     <ul>
       <li>
         <span class="circle"></span>
-        <span>您的进店客户数</span>
+        <span>您的进店客户数<strong class="tips">?</strong></span>
         <p>{{dailyData.storeNum}}</p>
       </li>
       <li>
@@ -184,6 +184,15 @@ export default {
         margin-left: 2vw
       }
     }
+  }
+  .tips {
+    color: #ee0505;
+    font-size: 3vw;
+    border: 2px solid #ee0505;
+    border-radius: 50%;
+    padding:0 1.42vw;
+    margin-left: 1vw;
+    line-height: 3vw;
   }
 }
 </style>

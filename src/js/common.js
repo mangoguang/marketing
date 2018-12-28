@@ -303,4 +303,14 @@ export default class Common {
     }
     return [arr,arr1,arr2,arr3,arr4]
   }
+  //时间戳比较
+  compareTimeStamp(t1,t2) {
+    const time1 = new Date(t1).getTime()
+    const time2 = new Date(t2).getTime()
+    if(time1 < time2) {
+      return true
+    }else {
+      return false
+    }
+  }
 }

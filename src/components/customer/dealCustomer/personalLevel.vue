@@ -10,7 +10,7 @@
         <p class="strong">{{ dealOrderInfoDetails.orderCount }}</p>
       </div>
     </div>
-    <div class="assessLevel">
+    <!-- <div class="assessLevel">
       <span class="text">评定级别</span>
       <div class="level" 
         v-for="(item,index) in level" :key="index"
@@ -18,7 +18,7 @@
         @click="selectLevel(index)">
         <span>{{item}}</span>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -43,9 +43,9 @@ export default {
   },
   watch:{
     //监听变化，当传入的值变化的时候，改变active的值。
-   dealOrderInfoDetails(){
-     this.active = this.dealOrderInfoDetails.level
-   }
+  //  dealOrderInfoDetails(){
+  //    this.active = this.dealOrderInfoDetails.level
+  //  }
   },
   created(){
     //获取本地缓存信息
@@ -53,18 +53,18 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   methods:{
-    selectLevel(index) {
-      this.active = index + 1
-      mango.getAjax(this, 'level/update', {
-        customerId:this.dealOrderInfoDetails.customerId,
-        level:this.active
-      }, 'v2','post')
-      .then((res) => {
-        if (res) {
-         console.log('更新评级',res.status)   
-        }
-      })
-    }
+    // selectLevel(index) {
+    //   this.active = index + 1
+    //   mango.getAjax(this, 'level/update', {
+    //     customerId:this.dealOrderInfoDetails.customerId,
+    //     level:this.active
+    //   }, 'v2','post')
+    //   .then((res) => {
+    //     if (res) {
+    //      console.log('更新评级',res.status)   
+    //     }
+    //   })
+    // }
   }
 }
 </script>
@@ -81,7 +81,7 @@ export default {
   .content{
     height: 26.53vw;
     margin: 2.66vw;
-    border-bottom: 1px solid #e1e1e1;
+    // border-bottom: 1px solid #e1e1e1;
     display: flex;
     .strong{
       color: #363636;

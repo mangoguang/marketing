@@ -1,5 +1,6 @@
 <template>
   <div class="orderInfo">
+    <personalLevel />
     <ul>
       <li v-for="(item,index) in dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
         <hr v-if="index !== 0"> 
@@ -12,7 +13,7 @@
           </span>
         </div>
         <div class="setLine" v-show="i == index"> 
-          <OrderInfoDetails />
+        <OrderInfoDetails />
         </div>
       </li>
     </ul>                    
@@ -24,10 +25,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import OrderInfoDetails from './orderInfoDetails'
+import personalLevel from './personalLevel'
 
 export default {
   name:'dealOrderInfoDetails',
-  components:{OrderInfoDetails},
+  components:{OrderInfoDetails,personalLevel},
   data(){
     return{
       rotate:-1,
