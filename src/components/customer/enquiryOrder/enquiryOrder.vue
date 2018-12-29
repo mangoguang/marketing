@@ -91,7 +91,6 @@ export default {
   mounted() {
     this.$refs.order.addEventListener('scroll', this.handleScroll,true)
     this.$refs.order.scrollTop = this.orderScroll
-   
   },
   created() {
     //获取本地缓存信息
@@ -160,24 +159,15 @@ export default {
           this.allPage = Math.ceil(res.data.total / 10);
           if (page <= 3) {
             this.setOrderList(res.data);
-            // console.log(2222,this.orderList)
             this.dealCusList = this.orderList;
             this.$emit("changeResultTit",`全部客户 (${this.orderList.total == null? "0": this.orderList.total})`);
           } else {
             //筛选和非筛选时候缓存的limit
-            if(!this.isSelectStatus) {
-              this.setLimit(this.baceLimit + 10)
-              this.getLimit()
-            } else {
-              this.setSelectLimit(this.baceLimit + 10)
-              this.getSelectLimit()
-            }
-            // console.log(12222,this.baceLimit)
+            this.getDiffLimit()
             //上啦刷新加载数据
             this.addPullData = res.data;
             this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
             this.setOrderList(this.dealCusList);
-            //  console.log(222222333,this.orderList)
           }
           this.isExpire(this.baceLimit)
         });
@@ -206,6 +196,16 @@ export default {
         this.getOrderList(this.page, this.limit, startTime, endTime);
       }else {
         mango.tip('没有更多数据了')
+      }
+    },
+    //判断是否订单筛选时间来获取不同的缓存limit
+    getDiffLimit() {
+      if(!this.isSelectStatus) {
+        this.setLimit(this.baceLimit + 10)
+        this.getLimit()
+      } else {
+        this.setSelectLimit(this.baceLimit + 10)
+        this.getSelectLimit()
       }
     },
     setLimit(limit) {
