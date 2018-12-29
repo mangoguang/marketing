@@ -233,6 +233,7 @@ export default {
         }
       
         this.setCustomerDemand(res)
+        console.log(1231231231231231, this.customerInfo)
       })
       .catch(error => {
         console.log(error)
