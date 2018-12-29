@@ -6,7 +6,11 @@ const state = {
     stratTime: '',
     endTime: ''
   },
-  isSelectStatus:false
+  isSelectStatus:false,
+  dealTime:{
+    stratTime: '',
+    endTime: ''
+  }
 }
 
 const mutations = {
@@ -14,8 +18,8 @@ const mutations = {
   setRightTimeSelect: (state, str) => state.rightTimeSelect = str,
   setRightHeadTitle: (state, str) => state.rightHeadTitle = str,
   setCustomerTime: (state, str) => state.customerTime = str,
-  setIsSelectStatus: (state, str) => state.isSelectStatus = str
-  
+  setIsSelectStatus: (state, str) => state.isSelectStatus = str,
+  setDealTime: (state, str) => state.dealTime = str
 }
 
 const actions = {

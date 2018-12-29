@@ -84,7 +84,6 @@ export default {
       this.loadSelectData(this.customerTime)
       if(this.customerTime.startTime === '') {
         this.setIsSelectStatus(false)
-        console.log(1111)
         this.loadData()
       }
     }
@@ -121,7 +120,6 @@ export default {
     },
     //需求日期是否到期
     isExpire(len) {
-      // setTimeout(() => {
         if(this.orderList.records) {
           let temp = this.orderList.records
           let today = new Date()
@@ -135,7 +133,6 @@ export default {
             }
           }
         }
-      // },800)
     },
     ...mapMutations(["setOrderList","setOrderInfoDetails",'setOrderScroll', 'setIsSelectStatus']),
     //下拉刷新
@@ -163,7 +160,7 @@ export default {
           this.allPage = Math.ceil(res.data.total / 10);
           if (page <= 3) {
             this.setOrderList(res.data);
-            console.log(2222,this.orderList)
+            // console.log(2222,this.orderList)
             this.dealCusList = this.orderList;
             this.$emit("changeResultTit",`全部客户 (${this.orderList.total == null? "0": this.orderList.total})`);
           } else {
@@ -175,12 +172,12 @@ export default {
               this.setSelectLimit(this.baceLimit + 10)
               this.getSelectLimit()
             }
-            console.log(12222,this.baceLimit)
+            // console.log(12222,this.baceLimit)
             //上啦刷新加载数据
             this.addPullData = res.data;
             this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
             this.setOrderList(this.dealCusList);
-             console.log(222222333,this.orderList)
+            //  console.log(222222333,this.orderList)
           }
           this.isExpire(this.baceLimit)
         });

@@ -71,7 +71,8 @@ export default {
     ...mapState({
       rightTimeSelect: state => state.rightContainer.rightTimeSelect,
       rightHeadTitle: state => state.rightContainer.rightHeadTitle,
-      customerTime: state => state.rightContainer.customerTime
+      customerTime: state => state.rightContainer.customerTime,
+      dealTime: state => state.rightContainer.dealTime
     })
   },
   created() {
@@ -83,7 +84,7 @@ export default {
   mounted() {
   },
   methods: {
-    ...mapMutations(['setRightTimeSelect', 'setCustomerTime']),
+    ...mapMutations(['setRightTimeSelect', 'setCustomerTime', 'setDealTime']),
     openDatePicker(type) {
       this.dateType = type
       this.$refs.datePicker.open()
@@ -117,13 +118,21 @@ export default {
     },
     resizeCustomerList() {
       let time = {startTime: '', endTime: ''}
-      this.setCustomerTime(time)
+      if(this.rightHeadTitle === '订单交单日期') {
+        this.setCustomerTime(time)
+      }else {
+        this.setDealTime(time)
+      }
       this.setRightTimeSelect(false)
     },
     hideRightContainer() {
-      this.setRightTimeSelect(false)
       let time = {startTime: this.startDateVal, endTime: this.endDateVal}
-      this.setCustomerTime(time)
+      if(this.rightHeadTitle === '订单交单日期') {
+        this.setCustomerTime(time)
+      }else {
+        this.setDealTime(time)
+      }
+      this.setRightTimeSelect(false)
     }
   }
 }

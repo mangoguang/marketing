@@ -27,11 +27,8 @@ export default {
   props: ["changeResultTit"],
   data() {
     return {
+      ajaxData: [],
       account: "",
-      pullOptions: {
-        isBottomRefresh: true,
-        isTopRefresh: false
-      },
       dealCusList: [],
       addPullData: [],
       allPage: "",
@@ -44,7 +41,8 @@ export default {
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
       headerStatus: state => state.customerHeader.headerStatus,
       dealScroll: state => state.customerScroll.dealScroll,
-      dealLength: state => state.dealCustomerList.dealLength
+      dealLength: state => state.dealCustomerList.dealLength,
+      dealTime: state => state.rightContainer.dealTime
     })
   },
   watch: {
@@ -52,29 +50,29 @@ export default {
     headerStatus() {
       if (this.headerStatus[2].status) {
         this.setHeader(this.dealLength)
-        this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
-        this.$refs.deal.scrollTop = this.dealScroll
+        this.listenScrollTop()
         if(this.dealScroll === 0) {
-          this.getData();
+          this.getSelectTimeData()
         }
       }
+    },
+    dealTime() {
+      this.initScrollTop()
+      this.getSelectTimeData()
     }
   },
   mounted() {
-  this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
-  this.$refs.deal.scrollTop = this.dealScroll
-  if (this.headerStatus[2].status) {
-    this.getData();
-    this.setHeader(this.dealLength)
-  }
+    this.listenScrollTop()
+    if (this.headerStatus[2].status) {
+      this.getSelectTimeData()
+      this.setHeader(this.dealLength)
+    }
   },
   created() {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem("ajaxData");
     this.ajaxData = JSON.parse(ajaxData);
-    let account = localStorage.getItem("accountMsg");
-    this.account = JSON.parse(account).name.trim();
-    // this.account = this.ajaxData.account
+    this.account = this.ajaxData.account.trim();
   },
   methods: {
     ...mapMutations([
@@ -84,18 +82,35 @@ export default {
        'setDealScroll',
        'setDealLength'
        ]),
+    //初始化高度
+    initScrollTop() {
+      this.setDealScroll(0)
+      this.$refs.deal.scrollTop = this.dealScroll 
+    },
+    //监听滚动条高度
+    listenScrollTop() {
+      this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
+      this.$refs.deal.scrollTop = this.dealScroll
+    },
+    //获取时间来获得数据
+    getSelectTimeData() {
+      let temp = this.dealTime
+      this.getData(temp.startTime, temp.endTime);
+    },
     //获取滚动条高度
     handleScroll(e) {
       let top = e.target.scrollTop
       this.setDealScroll(top)
     },
-    getData() {
+    getData(startTime, endTime) {
       this.key = false;
       mango.getAjax(this,"order",{
             account: this.account,
             page: 1,
             limit: 466,
             type:1,
+            startTime,
+            endTime,
             key: ""},"v2")
         .then(res => {
           //初始进来
@@ -111,18 +126,18 @@ export default {
     setHeader(length) {
       this.$emit("changeResultTit",`全部客户 (${length == 0? "0": length})`);
     },
-    //获得个人评价等级
-    getLevel(level) {
-      if (level == 1) {
-        return "高";
-      } else if (level == 2) {
-        return "中";
-      } else if (level == 3) {
-        return "低";
-      } else {
-        return null;
-      }
-    },
+    // //获得个人评价等级
+    // getLevel(level) {
+    //   if (level == 1) {
+    //     return "高";
+    //   } else if (level == 2) {
+    //     return "中";
+    //   } else if (level == 3) {
+    //     return "低";
+    //   } else {
+    //     return null;
+    //   }
+    // },
     //详细订单信息
     getDetails(index) {
       let id = this.dealCustomerList[index].customerId
@@ -143,7 +158,6 @@ export default {
           });
           }
         });
-     
     }
   }
 };
