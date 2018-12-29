@@ -10,7 +10,7 @@
         <span>{{item.username}}</span>
         <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
         <span>{{item.phone}}</span>
-        <span>{{getLevel(item.level)}}</span>
+        <span>{{item.createDate}}</span>
       </li>
     </ul>
   </div>
@@ -95,6 +95,7 @@ export default {
             account: this.account,
             page: 1,
             limit: 466,
+            type:1,
             key: ""},"v2")
         .then(res => {
           //初始进来
@@ -175,11 +176,11 @@ export default {
       border-top: 1px solid #e1e1e1;
       span:nth-child(2) {
         color: #363636;
-        flex: 0.4;
+        flex: 0.3;
       }
       span:nth-child(4) {
         color: #363636;
-        flex: 0.1;
+        flex: 0.4;
       }
       span:nth-child(3) {
         flex: 0.5;

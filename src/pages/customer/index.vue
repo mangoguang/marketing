@@ -1,5 +1,5 @@
 <template>
-  <div class="customer" ref="scroll">
+  <div class="customer">
     <!-- 头部 -->
     <Header>
       <span v-show="headerStatus[1].status">{{orderResultTit}}</span>
@@ -11,6 +11,7 @@
     <DealCustomerList @changeResultTit="changeDealResultTit" v-show=" headerStatus[2].status"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
+    <RightTimeSelect v-show='rightTimeSelect'/>
     <Footer/>
   </div>
 </template>
@@ -30,6 +31,7 @@ import DealCustomerList from "../../components/customer/dealCustomer/dealCustome
 import EnquiryOrder from "../../components/customer/enquiryOrder/enquiryOrder";
 
 import RightContainer from "../../components/customer/rightContainer";
+import RightTimeSelect from "../../components/customer/rightTimeSelect";
 import mango from "../../js";
 
 export default {
@@ -39,7 +41,8 @@ export default {
     CustomerList,
     RightContainer,
     DealCustomerList,
-    EnquiryOrder
+    EnquiryOrder,
+    RightTimeSelect
   },
   data() {
     return {
@@ -49,7 +52,8 @@ export default {
   },
   computed: {
     ...mapState({
-      headerStatus: state => state.customerHeader.headerStatus
+      headerStatus: state => state.customerHeader.headerStatus,
+      rightTimeSelect: state => state.rightContainer.rightTimeSelect
     })
   },
   created() {

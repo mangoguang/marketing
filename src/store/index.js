@@ -14,7 +14,7 @@ import serachResult from './modules/customer/serachResult'
 import tabStatus from './modules/components/tabStatus'
 import orderList from './modules/components/orderList'
 import customerScroll from './modules/customer/scroll'
-
+import personMsg from './modules/login/index'
 
 export default new Vuex.Store({
   modules: {
@@ -30,6 +30,7 @@ export default new Vuex.Store({
     tabStatus,
     orderList,
     serachResult,
-    customerScroll
+    customerScroll,
+    personMsg
   }
 })

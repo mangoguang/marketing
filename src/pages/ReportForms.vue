@@ -74,9 +74,12 @@ export default {
 
   //到时候放在初始页面
     localStorage.removeItem('limit');  
+    localStorage.removeItem('selectLimit');  
     this.setCustomerScroll(0);
     this.setOrderScroll(0);
     this.setDealScroll(0)
+    // this.setIsSelectStatus(false)
+    this.$store.commit('setIsSelectStatus', false)
   },
   mounted() {
     if (mango.version === 'app') {
@@ -88,7 +91,8 @@ export default {
      ...mapMutations([
       "setCustomerScroll",
       "setOrderScroll",
-      'setDealScroll'
+      'setDealScroll',
+      'setIsSelectStatus'
        ]),
     cancle() {
 

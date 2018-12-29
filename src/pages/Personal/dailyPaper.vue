@@ -6,8 +6,14 @@
     <ul>
       <li>
         <span class="circle"></span>
-        <span>您的进店客户数<strong class="tips">?</strong></span>
-        <p>{{dailyData.storeNum}}</p>
+        <span>您的进店客户数<strong class="tips" @click="showTips">?</strong></span>
+        <!-- <p>{{dailyData.storeNum}}</p> -->
+        <p class="storeNum">
+          <input type="text" v-model="dailyData.storeNum">
+        </p>
+        <div class="storeType" v-show="isTips">
+          <p>意向客户 + 游客</p>
+        </div>
       </li>
       <li>
         <span class="circle"></span>
@@ -74,7 +80,8 @@ export default {
       textPlanVal:'',
       account:'',
       thatDay:'',
-      ajaxData:{}
+      ajaxData:{},
+      isTips: false
     }
   },
   created() {
@@ -85,6 +92,12 @@ export default {
     this.thatDay = mango.indexTimeB(date)[1]
   },
   methods:{
+    showTips() {
+      this.isTips = true
+      setTimeout(() => {
+        this.isTips = false
+      }, 3000);
+    },
     //更新保存计划
     keepPlan() {
       mango.getAjax(this, 'daily/update', {
@@ -134,6 +147,20 @@ export default {
     padding: 0 2.93vw;
     box-sizing: border-box;
     position: relative;
+    .storeType {
+      border: 1px solid #e1e1e1;
+      background: rgba(255, 255, 255, 0.8);
+      position: absolute;
+      top: -5%;
+      left: 39%;
+      border-radius: 2px;
+      padding: 0 2vw;
+      p{
+        font-size: 3vw;
+        text-align: left;
+        font-weight: normal;
+      }
+    }
     .line1{
       height: 28.3vw;
       width: 0.266vw;
@@ -193,6 +220,14 @@ export default {
     padding:0 1.42vw;
     margin-left: 1vw;
     line-height: 3vw;
+  }
+  .storeNum{
+    input{
+      font-size: 13.3vw;
+      width: 50%;
+      color: #363636;
+      margin-left: 15vw;
+    }
   }
 }
 </style>

@@ -94,7 +94,8 @@ export default {
         account: this.account,
         page: 1,  
         limit: 20,  
-        key: key //搜索关键字，电话或名字
+        key: key, //搜索关键字，电话或名字
+        type: 2
       },'v2').then((res) => {
         if (res) {
           if(this.headerStatus[1].status){

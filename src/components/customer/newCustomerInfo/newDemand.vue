@@ -94,6 +94,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
+    console.log(1222,this.$store.state.personMsg)
     // this.customerDemand = this.newCustomerInfo
     // console.log(this.customerDemand)
     // console.log('客户信息：：', this.customerInfo)
