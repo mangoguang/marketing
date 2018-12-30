@@ -99,10 +99,12 @@ export default {
       align-items: center;
       justify-content: space-around;
       .photo{
-        width: 26.53vw;
-        height: 19.46vw;
-        background: #fff;
-        border: 1px solid #e1e1e1
+        background: url('../../assets/imgs/order-icon.png');
+        background-size: 100% 100%;
+        width: 33.2vw;
+        height: 21.3vw;
+        // background: #fff;
+        // border: 1px solid #e1e1e1
       }
     }
   }

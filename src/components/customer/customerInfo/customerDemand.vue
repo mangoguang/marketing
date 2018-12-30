@@ -23,6 +23,9 @@
       <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
         <span>{{roomNum || '请填写房间数量'}}</span>
       </li>
+      <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
+        <span>{{shopName || '请选择门店'}}</span>
+      </li>
       <li class="textarea">
         <h3>备注：</h3>
         <textarea name="" id="" cols="30" rows="10" placeholder="描述一下情况吧"></textarea>
@@ -72,20 +75,25 @@ export default {
       roomNumList:[{values: [1, 2, 3, 4, '5及以上']}],
       colorPrefList: [{values :['暖色', '冷色']}],
       stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
+      shopNameList: [{values: []}],
       pickerShow: {
         progress: false,
         buyReason: false,
         roomNum: false,
         colorPref: false,
         stylePref: false
+        // shopId:false
       },
       proto: '',
-      roomNum: ''
+      roomNum: '',
+      shopName: '',
+      shopId: ''
     }
   },
   computed: {
     ...mapState({
-      customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+      customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetailsm,
+      personMsg: state => state.personMsg.personMsg
     })
   },
   watch: {
@@ -115,10 +123,30 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
+    this.getShopName()
+    // console.log(15646,this.personMsg)
     // console.log('客户信息：：', this.customerInfo)
     // this.getDemand()
   },
   methods: {
+    //获取门店信息
+    getShopName() {
+      let shopName = []
+      if(this.personMsg.shops) {
+        this.personMsg.shops.forEach((item, index) => {
+        shopName.push(item.name)
+        this.shopNameList[0].values = shopName
+      });
+      }
+    },
+    getShopID(name) {
+      if(this.personMsg.shops) {
+        this.personMsg.shops.forEach((item, index) => {
+          item.name === name? this.shopId = item.id : ''
+          console.log(this.shopId)
+      });
+      }
+    },
     getDemand() {
       mango.getAjax(this, 'demand', {
         account: this.ajaxData.account,   //登录账户
@@ -128,6 +156,13 @@ export default {
       },'v2', 'post').then((res) => {
         console.log('保存数据成功', res)
       })
+    },
+    selectShopId() {
+      this.slots = this.shopNameList
+      this.proto = 'shopId'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.popupVisible = true
     },
     selectProgress() {
       this.slots = this.progressList
@@ -166,21 +201,20 @@ export default {
     },
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)
-      if(this.proto == 'progress') {
-        this.customerDemand.progress = values[0]
-      }else if(this.proto == 'buyReason') {
-        this.customerDemand.buyReason = values[0]
-      }else if(this.proto == 'roomNum') {
+     if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {
           this.customerDemand.roomNum = 5
         }else {
           this.customerDemand.roomNum = this.roomNum
         }
-      }else if(this.proto == 'colorPref') {
-        this.customerDemand.colorPref = values[0]
-      }else if(this.proto == 'stylePref') {
-        this.customerDemand.stylePref = values[0]
+      }else if(this.proto == 'shopId') {
+        this.shopName = values[0]
+        this.getShopID(values[0])
+        this.customerDemand[this.proto] = this.shopId
+      }
+      else{
+        this.customerDemand[this.proto] = values[0]
       }
     },
     saveCustomerDemand() {

@@ -27,8 +27,8 @@
       </li> -->
     
       <!-- <li is="leaveStoreSelect" :leaveStoreVal="customerDemand.leaveStore" @leaveStoreChange="leaveStoreChange"></li> -->
-      <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
-        <span>{{customerDemand.leaveStore || '请选择客户留店时间'}}</span>
+      <li is="customerLi" :leftText="'留店时长'" :icon="true" @click.native="selectTime">
+        <span>{{customerDemand.leaveStore || '请选择客户留店时长'}}</span>
       </li>
       <li class="important">
         关键程度

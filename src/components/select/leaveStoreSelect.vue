@@ -1,7 +1,7 @@
 <template>
   <li class="leaveStoreSelect">
     <ul>
-      <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectLeaveStore">
+      <li is="customerLi" :leftText="'留店时长'" :icon="true" @click.native="selectLeaveStore">
         <span>{{val}}</span>
       </li>
       <!-- 性别选择插件 -->
@@ -39,7 +39,7 @@ export default {
     return {
       slots: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
       popupVisible: false,
-      val: this.leaveStoreVal || '请选择客户留店时间',
+      val: this.leaveStoreVal || '请选择客户留店时长',
       key: false
     }
   },

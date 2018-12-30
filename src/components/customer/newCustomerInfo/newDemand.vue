@@ -19,6 +19,9 @@
       <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
         <span >{{roomNum || '请填写房间数量'}}</span>
       </li>
+      <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
+        <span>{{shopName || '请选择门店'}}</span>
+      </li>
       <!-- <li is="customerLi" :leftText="'房间数量'">
         <input v-model="newCustomerInfo.roomNum" placeholder="请填写房间数量" type="number">
       </li> -->
@@ -72,20 +75,25 @@ export default {
       roomNumList: [{values: [1, 2, 3, 4, '5及以上']}],
       colorPrefList: [{values :['暖色', '冷色']}],
       stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
+      shopNameList: [{values: []}],
       pickerShow: {
         progress: false,
         buyReason: false,
         roomNum: false,
         colorPref: false,
         stylePref: false
+        // shopId: false
       },
       proto: '',
-      roomNum: ''
+      roomNum: '',
+      shopName: '',
+      shopId: ''
    }
   },
   computed: {
     ...mapState({
-      newCustomerInfo: state => state.customer.newCustomerInfo
+      newCustomerInfo: state => state.customer.newCustomerInfo,
+      personMsg: state => state.personMsg.personMsg
     })
   },
   created() {
@@ -94,6 +102,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
+    // this.getShopName()
     console.log(1222,this.$store.state.personMsg)
     // this.customerDemand = this.newCustomerInfo
     // console.log(this.customerDemand)
@@ -102,8 +111,31 @@ export default {
   },
   methods: {
     ...mapMutations(["setNewCustomerInfo"]),
+    getShopName() {
+      let shopName = []
+      if(this.personMsg.shops) {
+        this.personMsg.shops.forEach((item, index) => {
+        shopName.push(item.name)
+        this.shopNameList[0].values = shopName
+      });
+      }
+    },
+    getShopID(name) {
+      if(this.personMsg.shops) {
+        this.personMsg.shops.forEach((item, index) => {
+          item.name === name? this.shopId = item.id : ''
+      });
+      }
+    },
     setDemand() {
       this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    selectShopId() {
+      this.slots = this.shopNameList
+      this.proto = 'shopId'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.popupVisible = true
     },
     selectProgress() {
       this.slots = this.progressList
@@ -143,10 +175,10 @@ export default {
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)
       // this.newCustomerInfo.progress = values[0]
-      if(this.proto == 'progress') {
-        this.newCustomerInfo.progress = values[0]
-      }else if(this.proto == 'buyReason') {
-        this.newCustomerInfo.buyReason = values[0]
+     if(this.proto == 'shopId') {
+        this.shopName = values[0]
+        this.getShopID(values[0])
+        this.newCustomerInfo[this.proto] = this.shopId
       }else if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {
@@ -154,10 +186,8 @@ export default {
         }else {
           this.newCustomerInfo.roomNum = this.roomNum
         }
-      }else if(this.proto == 'colorPref') {
-        this.newCustomerInfo.colorPref = values[0]
-      }else if(this.proto == 'stylePref') {
-        this.newCustomerInfo.stylePref = values[0]
+      }else{
+        this.newCustomerInfo[this.proto] = values[0]
       }
     },
     preModule() {

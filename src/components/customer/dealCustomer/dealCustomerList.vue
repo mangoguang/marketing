@@ -1,5 +1,6 @@
 <template>
   <div class="dealCustomer" ref="deal">
+    <TopBar :topBarTitle='topbar'/>
     <ul>
       <li
         v-for="(item, index) in dealCustomerList"
@@ -21,10 +22,12 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../../js";
+import TopBar from '../topBar'
 
 export default {
   name: "dealCustomerList",
   props: ["changeResultTit"],
+  components:{TopBar},
   data() {
     return {
       ajaxData: [],
@@ -33,7 +36,12 @@ export default {
       addPullData: [],
       allPage: "",
       key: true,
-      address: ''
+      address: '',
+      topbar:{
+        leftTitle: '姓名',
+        centerTitle: '电话',
+        rightTitle: '最新下单日期'
+      }
     };
   },
   computed: {
@@ -170,7 +178,7 @@ export default {
   height: 100vh;
   overflow: scroll; 
   box-sizing: border-box;
-  padding-top: 23vw;
+  padding-top: 33.88vw;
   background: #f8f8f8;
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;

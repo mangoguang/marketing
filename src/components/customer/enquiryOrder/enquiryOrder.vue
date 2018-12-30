@@ -1,5 +1,6 @@
 <template>
   <div class="enquiryOrder" ref="order">
+    <TopBar :topBarTitle='topbar'/>
     <ul>
       <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
         <li
@@ -21,6 +22,7 @@
 import Vue from "vue"
 import VueRouter from "vue-router"
 import Vuex, { mapMutations, mapState } from "vuex"
+import TopBar from '../topBar'
 import mango from "../../../js"
 import dealOrderInfoDetails from '../../../store/modules/components/dealOrderInfoDetails';
 import { Loadmore } from 'mint-ui'
@@ -28,6 +30,7 @@ Vue.component(Loadmore.name, Loadmore)
 
 export default {
   name:'enquiryOrder',
+  components:{TopBar},
   props: ['changeResultTit'],
   data() {
     return {
@@ -42,7 +45,12 @@ export default {
       allLoaded:false,
       id:'',
       compareTime :[],
-      activecolor:[]
+      activecolor:[],
+      topbar:{
+        leftTitle: '客户信息',
+        centerTitle: '订单交期',
+        rightTitle: '订单状态'
+      }
     };
   },
   computed: {
@@ -251,7 +259,7 @@ export default {
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  padding-top: 23vw;
+  padding-top: 33.92vw;
   background: #f8f8f8;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;

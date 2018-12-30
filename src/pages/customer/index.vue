@@ -29,7 +29,6 @@ import Header from "../../components/customer/header";
 import CustomerList from "../../components/customer/customerList";
 import DealCustomerList from "../../components/customer/dealCustomer/dealCustomerList";
 import EnquiryOrder from "../../components/customer/enquiryOrder/enquiryOrder";
-
 import RightContainer from "../../components/customer/rightContainer";
 import RightTimeSelect from "../../components/customer/rightTimeSelect";
 import mango from "../../js";
