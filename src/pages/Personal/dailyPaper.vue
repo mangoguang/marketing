@@ -81,7 +81,8 @@ export default {
       account:'',
       thatDay:'',
       ajaxData:{},
-      isTips: false
+      isTips: false,
+      changeDay:''
     }
   },
   created() {
@@ -108,12 +109,28 @@ export default {
       }, 'v2','post')
       .then((res) => {
         if (res) {
-          alert(res.msg)
+          mango.tip('更新数据成功')
+        }
+      })
+      this.changeStoreNum()
+    },
+    //更改进店数
+    changeStoreNum() {
+       mango.getAjax(this, 'storenum/update', {
+        storeNum: this.dailyData.storeNum,
+        date: this.changeDay,
+        account: this.ajaxData.account,
+        tenantId:this.ajaxData.tenantId
+      }, 'v2','post')
+      .then((res) => {
+        if (res) {
+          // alert(res.msg)
         }
       })
     },
     //从子组件获取数据
     getdailyData(data) {
+      this.changeDay = data[1]
       if(data) {
         this.dailyData.storeNum = data[0].storeNum
         this.dailyData.intentionNum = data[0].intentionNum
