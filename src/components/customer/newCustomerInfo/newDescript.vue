@@ -18,13 +18,14 @@
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
         <span>{{turnDate(newCustomerInfo.storeDate)|| '请选择客户进店日期'}}</span>
       </li>
+      <!-- <li is="addressSelect" :addressVal="newCustomerInfo.address" @addressChange="addressChange"></li> -->
       <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
         <span>{{newCustomerInfo.source || '请选择客户来源'}}</span>
       </li> -->
       <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
         <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
       </li> -->
-     
+      <!-- <addressSelect></addressSelect> -->
       <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
         <span>{{newCustomerInfo.leaveStore || '请选择客户留店时间'}}</span>
       </li> -->
@@ -94,6 +95,7 @@ import bigBtn from '../bigBtn'
 import sexSelect from '../../select/sexSelect'
 import sourceSelect from '../../select/sourceSelect'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
+import addressSelect from '../../select/addressSelect'
 import mango from '../../../js'
 import variable from '../../../js/variable'
 import {turnParams} from '../../../utils/customer'
@@ -105,7 +107,8 @@ export default {
     bigBtn,
     sexSelect,
     sourceSelect,
-    leaveStoreSelect
+    leaveStoreSelect,
+    addressSelect
   },
   data(){
     return{
@@ -254,6 +257,10 @@ export default {
       console.log('sex改变了：', val)
       this.newCustomerInfo.leaveStore = val
       this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    addressChange(val) {
+      console.log('addresschange')
+      // this.newCustomerInfo.leaveStore = val
     },
     // onValuesChange(picker, values) {
     //   // 选择地区

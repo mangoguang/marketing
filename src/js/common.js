@@ -219,11 +219,23 @@ export default class Common {
           year = date[index]
           if(index == 0){
             mouth = date[index + 1]
+            if(mouth < 10) {
+              mouth = `0${mouth}`
+            }
             day = date[index + 2]
+            if(day < 10) {
+              day = `0${day}`
+            }
             c.push(year,mouth,day)
           }else {
             mouth = date[index - 2]
             day = date[index - 1]
+            if(day < 10) {
+              day = `0${day}`
+            }
+            if(mouth < 10) {
+              mouth = `0${mouth}`
+            }
             c.push(year,mouth,day)
           }
         }

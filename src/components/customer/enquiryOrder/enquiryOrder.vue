@@ -58,19 +58,17 @@ export default {
   watch: {
     //根据头部状态获取数据
     headerStatus() {
-      // if(!this.isRightKey) {
-        if (this.headerStatus[1].status) {
-          if(this.orderScroll == 0) {
-            if(this.isSelectStatus) {
-              this.loadSelectData(this.customerTime)
-            } else {
-              this.loadData()
-            }
+      if (this.headerStatus[1].status) {
+        if(this.orderScroll == 0) {
+          if(this.isSelectStatus) {
+            this.loadSelectData(this.customerTime)
+          } else {
+            this.loadData()
           }
-          this.$refs.order.addEventListener('scroll', this.handleScroll,true)
-          this.$refs.order.scrollTop = this.orderScroll
         }
-      // }
+        this.$refs.order.addEventListener('scroll', this.handleScroll,true)
+        this.$refs.order.scrollTop = this.orderScroll
+      }
     },
     //根据加载的limit改变颜色
     baceLimit() {
@@ -119,19 +117,19 @@ export default {
     },
     //需求日期是否到期
     isExpire(len) {
-        if(this.orderList.records) {
-          let temp = this.orderList.records
-          let today = new Date()
-          for(var i = 0; i < len; i++) {
-            if(temp[i]){
-              let isActive = mango.compareTimeStamp(temp[i].demandTime,today)  //t1<t2,true/actived
-              if(temp[i].orderStatus === '已关闭'){
-              }else {
-                this.$set(this.compareTime,i,isActive)
-              }
+      if(this.orderList.records) {
+        let temp = this.orderList.records
+        let today = new Date()
+        for(var i = 0; i < len; i++) {
+          if(temp[i]){
+            let isActive = mango.compareTimeStamp(temp[i].demandTime,today)  //t1<t2,true/actived
+            if(temp[i].orderStatus === '已关闭'){
+            }else {
+              this.$set(this.compareTime,i,isActive)
             }
           }
         }
+      }
     },
     ...mapMutations(["setOrderList","setOrderInfoDetails",'setOrderScroll', 'setIsSelectStatus']),
     //下拉刷新
@@ -160,7 +158,7 @@ export default {
           if (page <= 3) {
             this.setOrderList(res.data);
             this.dealCusList = this.orderList;
-            this.$emit("changeResultTit",`全部客户 (${this.orderList.total == null? "0": this.orderList.total})`);
+            this.$emit("changeResultTit",`全部订单 (${this.orderList.total == null? "0": this.orderList.total})`);
           } else {
             //筛选和非筛选时候缓存的limit
             this.getDiffLimit()

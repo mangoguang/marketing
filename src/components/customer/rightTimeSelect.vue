@@ -1,6 +1,6 @@
 <template>
   <div class="timeSelect">
-    <div class="content">
+    <div class="content" @click.self="hideRightBar">
       <div>
         <ul>
           <li class="time">
@@ -116,6 +116,7 @@ export default {
       dateVal = mango.indexTime(date, 'day')
       this[`${this.dateType}DateVal`] = dateVal
     },
+    //重置
     resizeCustomerList() {
       let time = {startTime: '', endTime: ''}
       if(this.rightHeadTitle === '订单交单日期') {
@@ -125,6 +126,7 @@ export default {
       }
       this.setRightTimeSelect(false)
     },
+    //确认的时候传递时间
     hideRightContainer() {
       let time = {startTime: this.startDateVal, endTime: this.endDateVal}
       if(this.rightHeadTitle === '订单交单日期') {
@@ -132,6 +134,10 @@ export default {
       }else {
         this.setDealTime(time)
       }
+      this.setRightTimeSelect(false)
+    },
+    //点击隐藏
+    hideRightBar() {
       this.setRightTimeSelect(false)
     }
   }
