@@ -112,6 +112,7 @@ export default {
     this.getAccountMsg();
   },
   methods: {
+    ...mapMutations(['setPersonMsg']),
     //去除input输入框的左边空格
     trimStr: function(str) {
       return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -158,6 +159,7 @@ export default {
             }else{  
               //账号密码正确，跳转页面。
               res = res.data.data
+              _this.$store.commit('setPersonMsg',res)
               let ajaxData = `{
                 "account": "${res.account}",
                 "tenantId": "${res.tenantId}",

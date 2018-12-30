@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
-  <div :class="`rightContainer ${rightContainerStatus}`" @click.prevent="test">
-    <div class="content" @click="hideRightBar">
+  <div :class="`rightContainer ${rightContainerStatus}`">
+    <div class="content" @click.self="hideRightBar">
       <div>
         <ul>
           <li class="time">
@@ -174,7 +174,7 @@ export default {
       this.setRightContainerStatus('hideRightContainer')
     },
     hideRightBar() {
-      // this.setRightContainerStatus('hideRightContainer')
+      this.setRightContainerStatus('hideRightContainer')
     },
     // 紧急程度选择
     urgencySelect(i) {

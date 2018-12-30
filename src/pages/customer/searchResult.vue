@@ -21,13 +21,14 @@
     </ul>
     <ul v-if="headerStatus[1].status" class="orderList">
       <li
-          v-for="(item, index) in orderList.records"
-          :key="`list${index}`"
-          @click="orderInfoIn(index)">
-          <span>{{index + 1}}</span>
-          <span>{{item.username}}</span>
-          <span>需求{{item.demandTime}}</span>
-          <span>{{item.orderStatus}}</span>
+        :class='{active : compareTime[index]}'
+        v-for="(item, index) in orderList.records"
+        :key="`list${index}`"
+        @click="orderInfoIn(index)">
+        <span>{{index + 1}}</span>
+        <span :class='{active : compareTime[index]}'>{{item.username}}</span>
+        <span>{{item.demandTime}}</span>
+        <span :class='{active : compareTime[index]}'>{{item.orderStatus}}</span>
         </li>
     </ul>
     <ul v-if="headerStatus[2].status" class="dealList">
@@ -40,7 +41,7 @@
         <span>{{item.username}}</span>
         <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
         <span>{{item.phone}}</span>
-        <span>{{getLevel(item.level)}}</span>
+        <span>{{item.createDate}}</span>
       </li>
     </ul>
   </div>
@@ -64,7 +65,9 @@ export default {
       ajaxData:[],
       orderList:[],
       dealList:[],
-      myCustomerList:[]
+      myCustomerList:[],
+      type:'',
+      compareTime: []
     };
   },
   created() {
@@ -87,24 +90,52 @@ export default {
       "setDealOrderInfoDetails",
       "setTabStatus",
       'setCustomerAjaxParams'
-      ]),
+    ]),
+    //需求日期是否到期
+    isExpire(len) {
+      if(this.orderList.records) {
+        let temp = this.orderList.records
+        let today = new Date()
+        for(var i = 0; i < len; i++) {
+          if(temp[i]){
+            let isActive = mango.compareTimeStamp(temp[i].demandTime,today)  //t1<t2,true/actived
+            if(temp[i].orderStatus === '已关闭'){
+            }else {
+              this.$set(this.compareTime,i,isActive)
+            }
+          }
+        }
+      }
+    },
     //订单查询和成交客户搜索
     getCustomerList(key) {
+      this.judgeType()
       mango.getAjax(this, 'order',{
         account: this.account,
         page: 1,  
-        limit: 20,  
-        key: key //搜索关键字，电话或名字
+        limit: 50,  
+        key: key, //搜索关键字，电话或名字
+        type: this.type
       },'v2').then((res) => {
         if (res) {
           if(this.headerStatus[1].status){
             this.orderList = res.data
+            let len = this.orderList.records.length
+            this.isExpire(len)
           }else if (this.headerStatus[2].status) {
             let result  = mango.getUniqueData(res.data.records)
             this.dealList = result
           }
         }
       }) 
+    },
+    //判断type
+    judgeType() {
+      if(this.headerStatus[1].status) {
+        this.type = 2
+      }else {
+        this.type = 1
+      }
     },
     //我的客户搜索
     getMyCustomerList(myKey) {
@@ -124,17 +155,6 @@ export default {
         }
       })
     },
-    getLevel(level) {
-      if (level == 1) {
-        return "高";
-      } else if (level == 2) {
-        return "中";
-      } else if (level == 3) {
-        return "低";
-      } else {
-        return null;
-      }
-    },
     //我的客户搜索
     toCustomerInfo(id) {
       this.$router.push(`/customerInfo/${id}`)
@@ -151,7 +171,7 @@ export default {
     },
     //成交客户搜索
     getDetails(index) {
-      this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], 0))
+      this.setTabStatus(mango.btnList(['订单信息', '需求信息'], 0))
       mango.getAjax(this,"customerinfo",{customerId: this.dealList[index].customerId},"v2")
         .then(res => {
           if (res) {
@@ -217,6 +237,9 @@ export default {
   padding-top: 16vw;
   background: #f8f8f8;
   min-height: 100vh; 
+  .active{
+    color:#ee0505!important
+  }
   .customerList{
     padding-top: 1.6vw;
   }

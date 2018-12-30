@@ -23,7 +23,7 @@
     </div>
     <div class="bot-select" v-show="headerStatus[0].status">
       <button @click="showCustomerClassify">{{selectBtnText}}</button>
-      <button @click="showRightContainer">筛选</button>
+      <button @click="showRightContainer" >筛选</button>
       <!-- 客户类型选择 -->
       <ul :class="`customerClassify ${ifShow}`">
         <li
@@ -39,7 +39,9 @@
     </div> -->
     <div class="bot-total" v-show="headerStatus[1].status || headerStatus[2].status">
       <p><slot></slot></p>
+      <button @click="showRightTimeSelect">筛选</button>
     </div>
+ 
   </header>
 </template>
 <!-- </keep-alive> -->
@@ -67,6 +69,8 @@ export default {
   },
   computed: {
     ...mapState({
+      rightHeadTitle: state => state.rightContainer.rightHeadTitle,
+      rightTimeSelect: state => state.rightContainer.rightTimeSelect,
       rightContainerStatus: state => state.rightContainer.rightContainerStatus,
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
@@ -112,8 +116,19 @@ export default {
       'setCustomerList',
       'setCustomerAjaxParams',
       'setHeaderStatus',
-      'setAllLoaded'
+      'setAllLoaded',
+      'setRightTimeSelect',
+      'setRightHeadTitle'
     ]),
+    //订单查询成交客户的侧标栏
+    showRightTimeSelect() {
+      this.setRightTimeSelect(true)
+      if(this.headerStatus[1].status) {
+        this.setRightHeadTitle('订单交单日期')
+      }else{
+        this.setRightHeadTitle('最新下单日期')
+      }
+    },
     // 显示右侧边栏
     showRightContainer() {
       console.log('显示侧边栏。')
@@ -308,13 +323,15 @@ header{
     }
   }
   .bot-select, .bot-result, .bot-total{
+    display: flex;
+    justify-content: space-between;
     line-height: 9vw;
     button, p{
       color: $fontCol;
       font-size: $fontSize;
     }
   }
-  .bot-select{
+  .bot-select {
     display: flex;
     position: relative;
     justify-content: space-between;
@@ -366,5 +383,6 @@ header{
   .hide{
     display: hide;
   }
+
 }
 </style>
