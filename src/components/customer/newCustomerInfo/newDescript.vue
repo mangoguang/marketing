@@ -280,24 +280,28 @@ export default {
         console.log('客户姓名未填写')
       }
     },
+    //设置默认值
+    setInitData() {
+      if(this.urgency){
+        this.newCustomerInfo.urgency = 1
+      }else{
+        this.newCustomerInfo.urgency = 9
+      }
+      if(!this.newCustomerInfo.source) {
+        this.newCustomerInfo.source = '自然进店'
+      }
+      if(!this.newCustomerInfo.important) {
+        this.$set(this.newCustomerInfo, 'important', 1)
+      }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
+      if(!this.newCustomerInfo.storeDate) {
+        this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
+      } //如果没有选进店时间。默认选择今天
+    },
     saveCustomerInfo() {
       let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
       if(testPhoneNum) {
         let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
-        if(this.urgency){
-          this.newCustomerInfo.urgency = 1
-        }else{
-          this.newCustomerInfo.urgency = 9
-        }
-        if(!this.newCustomerInfo.source) {
-          this.newCustomerInfo.source = '自然进店'
-        }
-        if(!this.newCustomerInfo.important) {
-          this.$set(this.newCustomerInfo, 'important', 1)
-        }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
-        if(!this.newCustomerInfo.storeDate) {
-          this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
-        } //如果没有选进店时间。默认选择今天
+        this.setInitData()
         this.setNewCustomerInfo(obj)
         this.parentBtns[0].status = false
         this.parentBtns[1].status = true

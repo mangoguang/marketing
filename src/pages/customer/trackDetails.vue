@@ -36,6 +36,10 @@
           <span>{{ roomNum }}</span>
         </li>
         <li>
+          <p>所属门店</p>
+          <span>{{ shopName }}</span>
+        </li>
+        <li>
           <p>客户备注</p>
           <span>{{ demandList.remark }}</span>
         </li>
@@ -77,7 +81,8 @@ export default {
   components:{mybanner, followDetails},
   computed: {
     ...mapState({
-      followTrackDetails: state => state.followTrackDetails.followTrackDetails  
+      followTrackDetails: state => state.followTrackDetails.followTrackDetails,
+      personMsg: state => state.personMsg.personMsg  
     })
   },
   data() {
@@ -92,7 +97,8 @@ export default {
       trList:[],
       showRecordForm: this.$route.query.recordForm,
       recordFormData: {},
-      roomNum:''
+      roomNum:'',
+      shopName:''
     }
   },
   created(){
@@ -125,14 +131,32 @@ export default {
       .then((res) => {
         if (res) {
           this.demandList = res.data
-          console.log(1111,this.demandList)
-          if(this.demandList.roomNum === 5) {
-            this.roomNum = '5及以上'
-          }else {
-            this.roomNum = this.demandList.roomNum
-          }
+          // console.log(1111,this.demandList)
+          this.roomNumJudge()
+          let tempId = this.demandList.shopId
+          this._changeShopName(tempId)
         }
       }) 
+    },
+    //shopId转换为名字
+    _changeShopName(id) {
+      if(this.personMsg.shops) {
+        if(id) {
+          this.personMsg.shops.forEach((item, index) => {
+          if(item.id === id) {
+            this.shopName = item.name
+          }
+        });
+        }
+      } 
+    },
+    //判断房间数是否大于5
+    roomNumJudge() {
+      if(this.demandList.roomNum === 5) {
+        this.roomNum = '5及以上'
+      }else {
+        this.roomNum = this.demandList.roomNum
+      }
     },
     toChangeDemand() {
       this.setCustomerDemand({
@@ -143,7 +167,8 @@ export default {
         progress: this.demandList.progress,
         remark: this.demandList.remark,
         roomNum: this.demandList.roomNum,
-        stylePref: this.demandList.stylePref
+        stylePref: this.demandList.stylePref,
+        shopId: this.demandList.shopId
       })
       this.$router.push({
         path:'/changeDemand'

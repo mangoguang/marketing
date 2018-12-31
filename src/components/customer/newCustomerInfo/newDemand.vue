@@ -82,7 +82,6 @@ export default {
         roomNum: false,
         colorPref: false,
         stylePref: false
-        // shopId: false
       },
       proto: '',
       roomNum: '',
@@ -102,8 +101,8 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
-    // this.getShopName()
-    console.log(1222,this.$store.state.personMsg)
+    this.getShopName()
+    // console.log(1222,this.$store.state.personMsg)
     // this.customerDemand = this.newCustomerInfo
     // console.log(this.customerDemand)
     // console.log('客户信息：：', this.customerInfo)
@@ -123,11 +122,19 @@ export default {
     getShopID(name) {
       if(this.personMsg.shops) {
         this.personMsg.shops.forEach((item, index) => {
-          item.name === name? this.shopId = item.id : ''
+          if(item.name === name) {
+            this.shopId = item.id
+          }
       });
       }
     },
     setDemand() {
+      if(this.shopName) {
+        this.getShopID(this.shopName)
+        this.newCustomerInfo.shopId = this.shopId
+      }else {
+        this.newCustomerInfo.shopId = ''
+      }
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     selectShopId() {
@@ -177,8 +184,7 @@ export default {
       // this.newCustomerInfo.progress = values[0]
      if(this.proto == 'shopId') {
         this.shopName = values[0]
-        this.getShopID(values[0])
-        this.newCustomerInfo[this.proto] = this.shopId
+       
       }else if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {

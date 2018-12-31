@@ -102,10 +102,8 @@ export default {
     },
     saveTalksRecord() {
       this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-      if (this.newCustomerInfo.important) {
+      if (!this.newCustomerInfo.important) {
         this.newCustomerInfo.important = 1
-      } else {
-        this.newCustomerInfo.important = 0
       }
       mango.getAjax(this, 'customer/update', {
         account: this.ajaxData.account,   //登录账户
@@ -143,6 +141,7 @@ export default {
         'demand.progress': obj.progress,
         'demand.roomNum': obj.roomNum,
         'demand.remark': obj.remark,
+        'demand.shopId': obj.shopId,
         'record.followSituation': obj.followSituation,
         'record.probability': obj.percent,
         'record.followTime': returnDate(obj.followTime) || mango.indexTimeB(new Date())[1],   //默认为今天

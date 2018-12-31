@@ -82,7 +82,6 @@ export default {
         roomNum: false,
         colorPref: false,
         stylePref: false
-        // shopId:false
       },
       proto: '',
       roomNum: '',
@@ -92,7 +91,7 @@ export default {
   },
   computed: {
     ...mapState({
-      customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetailsm,
+      customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetails,
       personMsg: state => state.personMsg.personMsg
     })
   },
@@ -210,21 +209,29 @@ export default {
         }
       }else if(this.proto == 'shopId') {
         this.shopName = values[0]
-        this.getShopID(values[0])
-        this.customerDemand[this.proto] = this.shopId
       }
       else{
         this.customerDemand[this.proto] = values[0]
       }
     },
+    hasShopId() {
+      if(this.shopName) {
+        this.getShopID(this.shopName)
+        this.$set(this.customerDemand, 'shopId', this.shopId)
+      }else {
+        this.$set(this.customerDemand, 'shopId', '')
+      }
+    },
     saveCustomerDemand() {
       let id = this.$route.params.id
+      this.hasShopId()
       if (this.customerDemand.intention && this.customerDemand.intention != '') {
         mango.getAjax(this, 'customer/update', {
           customerId: id,
           account: this.ajaxData.account,   //登录账户
           tenantId: this.ajaxData.tenantId,
           'details.phone': this.customerInfo.phone,
+          shopId: this.customerDemand.shopId,
           ...turnParams(this.customerDemand, 'demand')
         },'v2', 'post').then((res) => {
           if (res) {
@@ -235,7 +242,7 @@ export default {
       } else {
         mango.tip('请填写意向产品！')
       }
-      // console.log('客户信息：：', this.customerDemand)      
+      console.log('客户信息：：', this.customerDemand)      
     }
   }
 }
