@@ -22,10 +22,10 @@
         </remark>
       </li>
     </ul>
-    <div class="btnsBox">
+    <!-- <div class="btnsBox">
       <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
       <big-btn :text="'保存'" @click.native="saveTalksRecord"></big-btn>
-    </div>
+    </div> -->
     <mt-datetime-picker
       ref="followDatePicker"
       type="date"

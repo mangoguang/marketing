@@ -39,7 +39,7 @@ export default {
     return {
       slots: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
       popupVisible: false,
-      val: this.leaveStoreVal || '请选择客户留店时长',
+      val: '请选择客户留店时长',
       key: false
     }
   },
@@ -47,19 +47,20 @@ export default {
 
   },
   mounted() {
-    console.log(2233, this.val)
+    // console.log(2233, this.val)
     // this.$refs.leaveStorePicker.setSlotValue(0, this.val)
   },
   methods:{
     selectLeaveStore() {
-      this.key = true
       this.popupVisible = true
+      this.key = true
+      // this.val = '请选择客户留店时长'
     },
     onValuesChange(picker, values) {
-      if (this.key) {
+      if(this.key) {
         this.val = values[0]
+        this.$emit('leaveStoreChange', values[0])
       }
-      this.$emit('leaveStoreChange', values[0])
     }
   }
   }

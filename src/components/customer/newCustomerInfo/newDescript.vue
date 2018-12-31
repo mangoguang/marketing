@@ -26,7 +26,7 @@
         <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
       </li> -->
       <!-- <addressSelect></addressSelect> -->
-      <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
+      <!-- <li is="customerLi" :leftText="'留店时长'" :icon="true" @click.native="selectTime">
         <span>{{newCustomerInfo.leaveStore || '请选择客户留店时间'}}</span>
       </li> -->
       <li is="leaveStoreSelect" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
@@ -52,9 +52,9 @@
         <div class="switchBox"><mt-switch v-model="urgency"></mt-switch></div>
       </li>
     </ul>
-    <div class="btnBox">
+    <!-- <div class="btnBox">
       <big-btn :text="'下一步'" @click.native="saveCustomerInfo"></big-btn>
-    </div>
+    </div> -->
     <!-- mint-ui组件 -->
     <div class="mintComponent">
       <!-- 性别选择插件 -->
@@ -118,6 +118,7 @@ export default {
       // sexList: [{values: ['男', '女']}],
       // sourceList: [{values: ['异业联盟', '设计师介绍', '自然进店', '老客带单']}],
       // leaveStoreList: [{values: ['15分钟', '30分钟']}],
+      // leaveStoreList: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
       areaList: [],
       // popupVisible: false,
       // proto: '',
@@ -464,7 +465,10 @@ export default {
     justify-content: center;
   }
   .urgency,.important{
-    padding: 2vw 5vw 0 5vw;
+    padding: 4vw 5vw 0 5vw;
+  }
+  .urgency{
+    margin-bottom: 4vw;
   }
 }
 </style>

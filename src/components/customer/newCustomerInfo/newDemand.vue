@@ -29,10 +29,10 @@
         <h3>备注：</h3>
         <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧"></textarea>
       </li>
-      <li>
+      <!-- <li>
         <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
         <big-btn :text="'下一步'" @click.native="nextModule"></big-btn>
-      </li>
+      </li> -->
     </ul>
     <div class="mintComponent">
       <!-- 性别选择插件 -->
@@ -129,12 +129,7 @@ export default {
       }
     },
     setDemand() {
-      if(this.shopName) {
-        this.getShopID(this.shopName)
-        this.newCustomerInfo.shopId = this.shopId
-      }else {
-        this.newCustomerInfo.shopId = ''
-      }
+     
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     selectShopId() {
@@ -184,7 +179,12 @@ export default {
       // this.newCustomerInfo.progress = values[0]
      if(this.proto == 'shopId') {
         this.shopName = values[0]
-       
+        if(this.shopName) {
+          this.getShopID(this.shopName)
+          this.newCustomerInfo.shopId = this.shopId
+        }else {
+          this.newCustomerInfo.shopId = ''
+        }
       }else if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {
