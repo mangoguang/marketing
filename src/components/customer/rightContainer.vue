@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div :class="`rightContainer ${rightContainerStatus}`">
-    <div class="content" @click.self="hideRightBar">
+    <div class="content" @click.self="hideRightBar" :style="{'marginTop': `${marginTop}vw`}">
       <div>
         <ul>
           <li class="time">
@@ -84,7 +84,8 @@ export default {
       dateType: '',
       urgencyBtns: mango.btnList(['是', '否']),
       keyBtns: mango.btnList(['高', '中', '低']),
-      ajaxData:[]
+      ajaxData:[],
+      marginTop:''
     }
   },
   computed: {
@@ -115,6 +116,7 @@ export default {
     this.initStartDateVal()
   },
   mounted(){
+    this.isIPhoneX()
     let str = new Date()
     // console.log(333, str.getTime())
     // 对象深拷贝
@@ -219,6 +221,21 @@ export default {
       }
       dateVal = mango.indexTime(date, 'day')
       this[`${this.dateType}DateVal`] = dateVal
+    },
+    isIPhoneX: function(fn) {
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {
+        if (
+          (screen.height == 812 && screen.width == 375) ||
+          (screen.height == 896 && screen.width == 414)
+        ) {
+          this.marginTop = "-5.86";
+          
+        } else {
+          this.marginTop = "";
+        }
+      }
     }
   }
 }
@@ -229,6 +246,7 @@ export default {
 @import "../../assets/common.scss";
 .rightContainer{
   div.content{
+    box-sizing: border-box;
     display: flex;
     justify-content: flex-end;
     position: absolute;

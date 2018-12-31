@@ -299,8 +299,8 @@ ul.infoNav{
 button.new{
   display: block;
   position: fixed;
-  width: 10vw;
-  height: 10vw;
+  width: 12.8vw;
+  height: 12.8vw;
   background: url(./assets/imgs/add.png) no-repeat;
   background-size: 100% 100%;
   bottom: 30vw;
