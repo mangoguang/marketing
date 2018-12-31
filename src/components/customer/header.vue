@@ -10,6 +10,9 @@
           class="topBarTitle"
           :class="{on: item.status}"
           @click="moduleSelect(index)">
+          <!-- <div class="">
+
+          </div> -->
           <!-- <img src="../../assets/imgs/customer-icon.png" class="topBarimg"> -->
           {{item.name}}
           </button>

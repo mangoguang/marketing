@@ -133,7 +133,8 @@ export default {
       city: [],
       cityName: '',
       county: [],
-      countyName: ''
+      countyName: '',
+      timeKey: false
     }
   },
   watch: {
@@ -306,7 +307,10 @@ export default {
       this.slots = this.leaveStoreList
       this.proto = 'leaveStore'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.source)
+      // if(this.customerDemand.leaveStore === '') {
+        this.customerDemand.leaveStore = this.leaveStoreList[0].values[0]
+      // }
+      // this.$refs.Picker.setSlotValue(0, this.customerDemand.source)
       this.popupVisible = true
     },
     setStoreDate(value) {

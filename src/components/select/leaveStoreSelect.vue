@@ -53,14 +53,22 @@ export default {
   methods:{
     selectLeaveStore() {
       this.popupVisible = true
-      this.key = true
-      // this.val = '请选择客户留店时长'
+      if(this.key && this.val === '请选择客户留店时长') {
+        this.val = this.slots[0].values[0]
+        this.$emit('leaveStoreChange', this.val)
+      }
     },
     onValuesChange(picker, values) {
       if(this.key) {
         this.val = values[0]
         this.$emit('leaveStoreChange', values[0])
+      }else {
+        this.key = true
       }
+      // if(this.key) {
+      //   this.val = values[0]
+      //   this.$emit('leaveStoreChange', values[0])
+      // }
     }
   }
   }
