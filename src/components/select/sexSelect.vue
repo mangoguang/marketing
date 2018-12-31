@@ -2,7 +2,7 @@
   <li class="sexSelect">
     <ul>
       <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
-        <span>{{val}}</span>
+        <span>{{sexVal}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -23,6 +23,7 @@
 
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from "vuex"
 import { DatetimePicker, Picker, Popup } from 'mint-ui'
 // import { DatetimePicker } from 'mint-ui'
 // import mango from '../../js'
@@ -34,22 +35,25 @@ import customerLi from '../customer/customerLi'
 export default {
   name: 'sexSelect',
   components:{customerLi},
-  props: ['sexVal'],
   data() {
     return {
       slots: [{values: ['男', '女']}],
-      popupVisible: false,
-      val: this.sexVal == 1 ? '男' : '女'
+      popupVisible: false
+      // val: this.sexVal == 1 || '男' ? '男' : '女'
     }
   },
   computed:{
-
+    ...mapState({
+      sexVal: state => state.select.sexVal
+    })
   },
   mounted() {
-    this.$refs.sexPicker.setSlotValue(0, this.val == 1 ? '男' : '女')
+
   },
   methods:{
+    ...mapMutations(["setSexVal"]),
     selectSex() {
+      this.$refs.sexPicker.setSlotValue(0, this.sexVal)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
