@@ -10,6 +10,7 @@
 <script>
 // import dealHeader from '../../components/customer/dealCustomer/dealHeader'
 import mango from '../../../js'
+import variable from '../../../js/variable'
 export default {
   name:'customerSearch',
   data(){
@@ -27,19 +28,25 @@ export default {
   },
   methods: {
     toCustomerInfo() {
-      mango.getAjax(this, 'customer/phone', {
-        phone: this.phone,
-        tenantId: this.ajaxData.tenantId
-      }, 'v2').then((res) => {
-        res = res.data
-        if (res) {
-          console.log(res.customerId)
-          this.$router.push({path: `/customerInfo/${res.customerId}`})
-          console.log('获取的数据:', res)
-        } else {
-          this.$router.push({path: `/newCustomerInfo/0?phone=${this.phone}`})
-        }
-      })
+      let testPhoneNum = variable.testPhone(this.phone)
+      if(testPhoneNum) {
+          mango.getAjax(this, 'customer/phone', {
+          phone: this.phone,
+          tenantId: this.ajaxData.tenantId
+        }, 'v2').then((res) => {
+          res = res.data
+          if (res) {
+            console.log(res.customerId)
+            this.$router.push({path: `/customerInfo/${res.customerId}`})
+            console.log('获取的数据:', res)
+          } else {
+            this.$router.push({path: `/newCustomerInfo/0?phone=${this.phone}`})
+          }
+        })
+      }else {
+        mango.tip('请填写正确的手机号码')
+      }
+      
     }
   }
 }

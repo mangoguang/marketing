@@ -2,6 +2,10 @@
   <div class="orderInfo">
     <personalLevel />
     <ul>
+      <div class="topBar">
+        <span>订单号</span>
+        <span>订单状态</span>
+      </div>
       <li v-for="(item,index) in dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
         <hr v-if="index !== 0"> 
         <div class="orderList">
@@ -73,8 +77,20 @@ export default {
   background: #fff;
   width: 100vw;
   ul{
+    .topBar{
+      height: 10.81vw;
+      background: #efeff4;
+      display: flex;
+      justify-content: space-between;
+      color: #363636;
+      font-size: 3.73vw;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0 4.27vw;
+      align-items: center;
+    }
     border-top:1px solid #e1e1e1;
-    margin-top: 2.66vw;
+    margin-top: 13.46vw;
     font-size: 3.73vw;
     border-bottom: 1px solid #e1e1e1;
     .orderList:nth-child(1){

@@ -48,7 +48,7 @@ export default {
             this.$router.go(-1)
           })
         } else {
-          mango.tip('保存失败。')
+          mango.tip(res.msg)
         }
       })
     },
