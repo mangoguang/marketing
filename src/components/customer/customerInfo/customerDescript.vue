@@ -339,6 +339,7 @@ export default {
     },
     leaveStoreChange(val) {
       // console.log('sex改变了：', val)
+      this.setLeaveStoreVal(val)
       this.customerDemand.leaveStore = val
     },
     onValuesChange(picker, values) {

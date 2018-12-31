@@ -4,11 +4,11 @@
     <div class="address">
       <ul>
         <li>
-          {{ orderInfoDetails.username }}
+          收货人：{{ orderInfoDetails.username }}
           <span>{{ orderInfoDetails.phone }}</span>
           <div class="phone"></div>
         </li>
-        <li>{{ orderInfoDetails.address }}</li>
+        <li>收获地址：{{ orderInfoDetails.address }}</li>
         <li>需求日期：{{ orderInfoDetails.demandTime }}</li>
       </ul>
     </div>

@@ -19,6 +19,9 @@
       <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
         <span>{{roomNum || '请填写房间数量'}}</span>
       </li>
+      <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
+        <span>{{shopName || '请选择门店'}}</span>
+      </li>
       <!-- <li is="customerLi" :leftText="'房间数量'">
         <input @change="emitEvent" v-model="demand.roomNum" placeholder="请填写房间数量" type="number">
       </li> -->
@@ -43,7 +46,7 @@
 
 <script>
 import Vue from 'vue'
-import { mapState } from 'vuex'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import { Picker, Popup } from 'mint-ui'
 
 Vue.component(Picker.name, Picker)
@@ -69,6 +72,7 @@ export default {
       roomNumList: [{values: [1, 2, 3, 4, '5及以上']}],
       colorPrefList: [{values :['暖色', '冷色']}],
       stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
+      shopNameList: [{values: []}],
       pickerShow: {
         progress: false,
         buyReason: false,
@@ -77,12 +81,15 @@ export default {
         stylePref: false
       },
       proto: '',
-      roomNum:''
+      roomNum:'',
+      shopName: '',
+      shopId: ''
     }
   },
   computed: {
     ...mapState({
-      customerDemand: state => state.customer.customerDemand
+      customerDemand: state => state.customer.customerDemand,
+      personMsg: state => state.personMsg.personMsg
     })
   },
   created() {
@@ -91,16 +98,64 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
+    // console.log(this.personMsg.shops)
+    this.getShopName()
     if (this.defaultVal) {
       this.demand = this.customerDemand
+      this._isRoomNum()
+      let tempId = this.customerDemand.shopId
+      this._isShopId(tempId)
+    }
+  },
+  methods: {
+    //判断房间数量是否大于5
+    _isRoomNum() {
       if(this.customerDemand.roomNum === 5) {
         this.roomNum = '5及以上'
       }else {
         this.roomNum = this.customerDemand.roomNum
       }
-    }
-  },
-  methods: {
+    },
+    //判断有没有shopId
+    _isShopId(id) {
+      if(id) {
+        this._changeShopName(id)
+      }
+    },
+    getShopName(id) {
+      let shopName = []
+      if(this.personMsg.shops) {
+        this.personMsg.shops.forEach((item, index) => {
+        shopName.push(item.name)
+        this.shopNameList[0].values = shopName
+      });
+      }
+    },
+    _changeShopName(id) {
+      let shops = this.personMsg.shops
+      if(id) {
+        shops.forEach((item, index) => {
+          if(item.id === id) {
+            this.shopName = item.name
+          }
+      });
+      } 
+    },
+    getShopID(name) {
+      if(this.personMsg.shops) {
+        this.personMsg.shops.forEach((item, index) => {
+          item.name === name? this.shopId = item.id : ''
+          console.log(555,item.id)
+      });
+      }
+    },
+    selectShopId() {
+      this.slots = this.shopNameList
+      this.proto = 'shopId'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.popupVisible = true
+    },
     selectProgress() {
       this.slots = this.progressList
       this.proto = 'progress'
@@ -139,10 +194,15 @@ export default {
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)
       // this.demand.progress = values[0]
-      if(this.proto == 'progress') {
-        this.demand.progress = values[0]
-      }else if(this.proto == 'buyReason') {
-        this.demand.buyReason = values[0]
+      if(this.proto == 'shopId') {
+        let name = this.shopName
+        this.shopName = values[0]
+        if(!this.shopName) {
+          this.demand.shopId = '' 
+        } else {
+          this.getShopID(this.shopName)
+          this.demand.shopId= this.shopId
+        }
       }else if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {
@@ -150,10 +210,8 @@ export default {
         }else {
           this.demand.roomNum = this.roomNum
         }
-      }else if(this.proto == 'colorPref') {
-        this.demand.colorPref = values[0]
-      }else if(this.proto == 'stylePref') {
-        this.demand.stylePref = values[0]
+      }else {
+        this.demand[this.proto] = values[0]
       }
     },
     emitEvent() {

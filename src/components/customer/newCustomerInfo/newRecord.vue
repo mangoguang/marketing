@@ -22,10 +22,10 @@
         </remark>
       </li>
     </ul>
-    <div class="btnsBox">
+    <!-- <div class="btnsBox">
       <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
       <big-btn :text="'保存'" @click.native="saveTalksRecord"></big-btn>
-    </div>
+    </div> -->
     <mt-datetime-picker
       ref="followDatePicker"
       type="date"
@@ -102,10 +102,8 @@ export default {
     },
     saveTalksRecord() {
       this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-      if (this.newCustomerInfo.important) {
+      if (!this.newCustomerInfo.important) {
         this.newCustomerInfo.important = 1
-      } else {
-        this.newCustomerInfo.important = 0
       }
       mango.getAjax(this, 'customer/update', {
         account: this.ajaxData.account,   //登录账户
@@ -143,6 +141,7 @@ export default {
         'demand.progress': obj.progress,
         'demand.roomNum': obj.roomNum,
         'demand.remark': obj.remark,
+        'demand.shopId': obj.shopId,
         'record.followSituation': obj.followSituation,
         'record.probability': obj.percent,
         'record.followTime': returnDate(obj.followTime) || mango.indexTimeB(new Date())[1],   //默认为今天

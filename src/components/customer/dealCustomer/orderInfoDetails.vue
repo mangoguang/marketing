@@ -142,6 +142,7 @@ export default {
           }
         }
         .price {
+          margin-top: 3.73vw;
           display: flex;
           justify-content: space-between;
           p {
@@ -153,7 +154,7 @@ export default {
     .total-amount {
       display: flex;
       justify-content: space-between;
-      margin-top: 6.6vw;
+      margin-top: 3.73vw;
     }
     .discount {
       display: flex;

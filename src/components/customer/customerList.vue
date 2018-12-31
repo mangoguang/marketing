@@ -3,25 +3,32 @@
     <ul
       ref="customer"
       class="customerList">
-  <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false" >
-      <li
-      class="customerContent"
-      v-for="(item, index) in customerList.records"
-      :key="`customerList${index}`"
-      @click="toCustomerInfo(item.id)">
-        {{item.name}}
-        <ul>
-          <li>
-            <div :class="`urgency${item.urgency}`"></div>
-            <strong>{{item.username}}<i :class="`important${item.important}`"></i></strong>
-            <span>{{item.followTime}}</span>
+      <TopBar :topBarTitle='topbar'/>
+      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false" >
+        <li
+          class="customerContent"
+          v-for="(item, index) in customerList.records"
+          :key="`customerList${index}`"
+          @click="toCustomerInfo(item.id)">
+            {{item.name}}
+            <ul>
+              <li class="iconTips">
+                <!-- <div>1</div>
+                <div>2</div>
+                <div>2</div> -->
+                <strong>{{item.username}}</strong>
+                <i :class="`important${item.important}`"></i>
+                <div :class="`urgency${item.urgency}`"></div>
+              </li>
+              <li>
+                {{item.intention}}
+                <span>{{item.followTime}}</span>
+              </li>
+              <li>{{item.probability}}</li>
+            </ul>
           </li>
-          <li>{{item.intention}}</li>
-          <li>{{item.probability}}</li>
-        </ul>
-      </li>
-      <li><button @click="newCustomer" class="new"></button></li>
-  </mt-loadmore>
+          <li><button @click="newCustomer" class="new"></button></li>
+      </mt-loadmore>
     </ul>
   <!-- <ul class="customerList">
     <li class="customerContent" v-for="(customer, index) in customerMsg" :key="`customer${index}`">
@@ -43,17 +50,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { Loadmore } from 'mint-ui'
+import TopBar from './topBar'
 
 Vue.component(Loadmore.name, Loadmore)
 import Vuex, { mapMutations, mapState } from "vuex"
 Vue.use(Vuex)
 import mango from '../../js'
 export default {
+  components:{TopBar},
   name: 'customerList',
   props:[],
   data () {
     return {
-
+      topbar:{
+        leftTitle: '客户信息',
+        centerTitle: '需求信息',
+        rightTitle: '成交概率'
+      }
     }
   },
   computed: {

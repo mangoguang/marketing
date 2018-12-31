@@ -7,8 +7,12 @@
         <li v-for="(item, index) in headerStatus"
         :key="`this.headerStatus${index}`">
           <button 
+          class="topBarTitle"
           :class="{on: item.status}"
-          @click="moduleSelect(index)">{{item.name}}</button>
+          @click="moduleSelect(index)">
+          <!-- <img src="../../assets/imgs/customer-icon.png" class="topBarimg"> -->
+          {{item.name}}
+          </button>
           <button class="search" @click="showNav"></button>
         </li>
       </ul>
@@ -23,7 +27,11 @@
     </div>
     <div class="bot-select" v-show="headerStatus[0].status">
       <button @click="showCustomerClassify">{{selectBtnText}}</button>
-      <button @click="showRightContainer" >筛选</button>
+      <button @click="showRightContainer" class="filter">
+        <span class="line"></span>
+        筛选 
+        <img src="../../assets/imgs/filter.png" alt="" class="filterImg">
+      </button>
       <!-- 客户类型选择 -->
       <ul :class="`customerClassify ${ifShow}`">
         <li
@@ -39,7 +47,11 @@
     </div> -->
     <div class="bot-total" v-show="headerStatus[1].status || headerStatus[2].status">
       <p><slot></slot></p>
-      <button @click="showRightTimeSelect">筛选</button>
+      <button @click="showRightTimeSelect">
+        <span class="line"></span>
+        筛选
+        <img src="../../assets/imgs/filter.png" alt="" class="filterImg">
+      </button>
     </div>
  
   </header>
@@ -238,23 +250,29 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/common.scss";
 header{
+  background-image: linear-gradient(32deg, 
+		#007aff 0%, 
+		#5ac8fa 100%);
+	box-shadow: 0px 1px 2px 0px 
+		rgba(0, 0, 0, 0.3);
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   box-sizing: border-box;
   padding: 0 4.266vw;
-  background: #fff;
-  z-index: 999;
+  // background: #fff;
+  z-index: 100;
   box-sizing: border-box;
   &>div{
     height: 9vw;
     button{
       font-size: 14px;
-      color: #666;
+      color: #fff;
     }
     button:first-child{
       padding-left: 0;
+      color: #fff;
     }
   }
   .top{
@@ -280,24 +298,25 @@ header{
           height: 9vw;
         }
         input{
+          color: #fff;
           width: 45vw;
-          background: url(../../assets/imgs/search.png) no-repeat center, #f0f0f0;
+          background: url('../../assets/imgs/search.png') no-repeat center;
           background-size: 3vw 3vw;
           background-position: $btnHeight/2 center;
           padding-left: $btnHeight;
           border-top-left-radius: $btnHeight/2;
           border-bottom-left-radius: $btnHeight/2;
-          color: $fontSubCol;
           font-size: 14px;
+          background-color: rgba(255, 255, 255, .2);
         }
         input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-          color: $fontSubCol;
+          color: #fff;
         } input:-moz-placeholder, textarea:-moz-placeholder {
-          color: $fontSubCol;
+          color: #fff;
         } input::-moz-placeholder, textarea::-moz-placeholder {
-          color: $fontSubCol;
+          color: #fff;
         } input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-          color: $fontSubCol;
+          color: #fff;
         }
         button{
           background: $btnCol;
@@ -319,15 +338,23 @@ header{
     }
     button.on{
       font-size: 20px;
-      color: #363636;
+      color: #fff;
+      // border-bottom:2px solid #fff;
+      // border-radius: 2px;
+      opacity: 1;
+      .topBarimg{
+        width: 3vw;
+        // height: 3.6vw;
+      }
     }
   }
   .bot-select, .bot-result, .bot-total{
     display: flex;
     justify-content: space-between;
     line-height: 9vw;
+    color: #fff;
     button, p{
-      color: $fontCol;
+      // color: $fontCol;
       font-size: $fontSize;
     }
   }
@@ -383,6 +410,25 @@ header{
   .hide{
     display: hide;
   }
-
+  .topBarTitle{
+    opacity: 0.5;
+  }
+  .filter{
+    color: #fff!important;
+    // border-left: 1px solid #fff;
+  }
+  .topBarimg{
+    width: 2.4vw;
+    // height: 2.8vw;
+  }
+  .filterImg{
+    width: 2.4vw;
+    height: 2.6vw;
+  }
+  .line{
+    line-height: 3vw;
+    margin-right: 2vw;
+    border-left: 1px solid #fff;
+  }
 }
 </style>

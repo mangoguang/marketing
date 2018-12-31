@@ -1,6 +1,6 @@
 <template>
   <div class="timeSelect">
-    <div class="content" @click.self="hideRightBar">
+    <div class="content" @click.self="hideRightBar" :style="{'marginTop': `${marginTop}vw`}">
       <div>
         <ul>
           <li class="time">
@@ -59,7 +59,8 @@ export default {
       dateType: '',
       headTitle: '',
       ajaxData: [],
-      account: ''
+      account: '',
+      marginTop:''
     }
   },
   computed: {
@@ -76,6 +77,7 @@ export default {
     })
   },
   created() {
+    this.isIPhoneX()
     this.initStartDateVal()
     let ajaxData = localStorage.getItem("ajaxData");
     this.ajaxData = JSON.parse(ajaxData);
@@ -139,6 +141,21 @@ export default {
     //点击隐藏
     hideRightBar() {
       this.setRightTimeSelect(false)
+    },
+    isIPhoneX: function(fn) {
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {
+        if (
+          (screen.height == 812 && screen.width == 375) ||
+          (screen.height == 896 && screen.width == 414)
+        ) {
+          this.marginTop = "-5.86";
+          
+        } else {
+          this.marginTop = "";
+        }
+      }
     }
   }
 }
