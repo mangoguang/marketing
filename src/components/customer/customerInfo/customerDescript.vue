@@ -4,12 +4,15 @@
       <li is="customerLi" :leftText="'客户姓名'">
         <input v-model="customerDemand.username" type="text" placeholder="请填写客户姓名">
       </li>
-      <!-- <li is="sexSelect" :sexVal="customerDemand.sex" @sexChange="sexChange"></li> -->
-       <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
+      <li is="sexSelect" @sexChange="sexChange"></li>
+      <!-- <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
         <span>{{customerDemand.sex == 1 ? '男' : '女'}}</span>
-      </li> 
+      </li>  -->
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="customerDemand.phone" type="text" placeholder="请填写客户电话">
+      </li>
+      <li is="areaSelect" @selectArea="selectArea">
+        <span>{{'请选择客户地区'}}</span>
       </li>
       <li is="customerLi" :leftText="'客户地址'">
         <input v-model="customerDemand.address" type="text" placeholder="请填写客户地址">
@@ -20,16 +23,16 @@
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
         <span>{{turnDate(customerDemand.storeDate) || '请选择客户进店日期'}}</span>
       </li>
-      <li is="sourceSelect" :sourceVal="customerDemand.source" @sourceChange="sourceChange"></li>
+      <li is="sourceSelect" @sourceChange="sourceChange"></li>
      
       <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
         <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
       </li> -->
     
-      <!-- <li is="leaveStoreSelect" :leaveStoreVal="customerDemand.leaveStore" @leaveStoreChange="leaveStoreChange"></li> -->
-      <li is="customerLi" :leftText="'留店时长'" :icon="true" @click.native="selectTime">
-        <span>{{customerDemand.leaveStore || '请选择客户留店时长'}}</span>
-      </li>
+      <li is="leaveStoreSelect" @leaveStoreChange="leaveStoreChange"></li>
+      <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
+        <span>{{customerDemand.leaveStore || '请选择客户留店时间'}}</span>
+      </li> -->
       <li class="important">
         关键程度
         <div>
@@ -93,6 +96,7 @@ import bigBtn from '../bigBtn'
 import sexSelect from '../../select/sexSelect'
 import sourceSelect from '../../select/sourceSelect'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
+import areaSelect from '../../select/areaSelect'
 import mango from '../../../js'
 import variable from '../../../js/variable'
 import {turnParams} from '../../../utils/customer'
@@ -105,7 +109,8 @@ export default {
     bigBtn,
     sexSelect,
     sourceSelect,
-    leaveStoreSelect
+    leaveStoreSelect,
+    areaSelect
   },
   data(){
     return{
@@ -154,8 +159,12 @@ export default {
   },
   computed: {
     ...mapState({
-      customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetails
-      // customerDemand: state => state.customer.customerDemand
+      customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetails,
+      sexVal: state => state.select.sexVal,
+      areaVal: state => state.select.areaVal,
+      enterStoreVal: state => state.select.enterStoreVal,
+      sourceVal: state => state.select.sourceVal,
+      leaveStoreVal: state => state.select.leaveStoreVal
     }),
     provinceNames() {
       let arr = this.province.map(item => {
@@ -191,8 +200,25 @@ export default {
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
   },
+  destroyed(){
+      this.setSexVal('')
+      this.setAreaVal('')
+      this.setEnterStoreVal('')
+      this.setSourceVal('')
+      this.setLeaveStoreVal('')
+  },
   methods: {
-    ...mapMutations(["setDealOrderInfoDetails"]),
+    ...mapMutations([
+      'setDealOrderInfoDetails', 
+      'setSexVal',
+      'setAreaVal',
+      'setEnterStoreVal',
+      'setSourceVal',
+      'setLeaveStoreVal'
+    ]),
+    selectArea(str) {
+      console.log('选择的地区：', str)
+    },
     getCustomerInfo() {
       let id = this.$route.params.id
       mango.getAjax(this, 'customerById',{
@@ -200,12 +226,11 @@ export default {
       },'v2').then((res) => {
         res = res.data
         if (res) {
-          console.log(1232131,res)
           this.setDealOrderInfoDetails(res)
+          this.setSelectVal(res)
           this.provinceName = res.provinceName
           this.cityName = res.cityName
           this.countyName = res.areaName
-          console.log(88776655, res.important)
           if (res.urgency == 1) {
             res.urgency = true
             this.urgency = true
@@ -213,18 +238,8 @@ export default {
             res.urgency = false
             this.urgency = false
           }
-          // this.customerInfo = res
           // 初始化保存接口参数
           this.checkBtnStatus(res)
-          // 获取行政区域数据
-          // this.getProvince()
-          // .then((response) => {
-          //   // this.getCity(res.provinceCode).then((response) => {
-          //   //   this.getCounty(res.cityCode).then((response) => {
-          //   //     this.setAreaData(this.provinceNames, this.cityNames, this.countyNames)
-          //   //   })
-          //   // })
-          // })
           // 设置dealHeader组建的用户信息
           this.$emit('setInfo', {
             name: res.username,
@@ -234,11 +249,17 @@ export default {
         }
       
         this.setCustomerDemand(res)
-        console.log(1231231231231231, this.customerInfo)
       })
       .catch(error => {
         console.log(error)
       })
+    },
+    setSelectVal(res) {
+      this.setSexVal(res.sex == 1 ? '男' : '女')
+      this.setAreaVal(res.area)
+      this.setEnterStoreVal(res.enterStore)
+      this.setSourceVal(res.source)
+      this.setLeaveStoreVal(res.leaveStore)
     },
     setCustomerDemand(obj = {}) {
       this.customerDemand = {
@@ -294,15 +315,15 @@ export default {
     //   this.$refs.Picker.setSlotValue(0, this.customerDemand.source)
     //   this.popupVisible = true
     // },
-    selectArea() {
-      this.slots = this.areaList
-      this.proto = 'area'
-      // 设置地区选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.provinceName)
-      this.$refs.Picker.setSlotValue(1, this.cityName)
-      this.$refs.Picker.setSlotValue(2, this.countyName)
-      this.popupVisible = true
-    },
+    // selectArea() {
+    //   this.slots = this.areaList
+    //   this.proto = 'area'
+    //   // 设置地区选择插件的初始值
+    //   this.$refs.Picker.setSlotValue(0, this.provinceName)
+    //   this.$refs.Picker.setSlotValue(1, this.cityName)
+    //   this.$refs.Picker.setSlotValue(2, this.countyName)
+    //   this.popupVisible = true
+    // },
     selectTime() {
       this.slots = this.leaveStoreList
       this.proto = 'leaveStore'
@@ -315,22 +336,25 @@ export default {
     },
     setStoreDate(value) {
       this.customerDemand.storeDate = mango.indexTimeB(value)[1]
-      console.log('storeDate', this.customerDemand.storeDate)
     },
     sexChange(val) {
-      // console.log('sex改变了：', val)
-      // this.customerDemand.sex = (val === '男' ? 1 : 2)
+      this.customerDemand.sex = (val === '男' ? 1 : 2)
+      this.setSexVal(val)
       // this.setNewCustomerInfo(this.newCustomerInfo)
     },
     sourceChange(val) {
+      // this.setSourceVal(val)
       // console.log('sex改变了：', val)
       this.customerDemand.source = val
+      this.setSourceVal(val)
     },
     leaveStoreChange(val) {
       // console.log('sex改变了：', val)
+      this.setLeaveStoreVal(val)
       this.customerDemand.leaveStore = val
     },
     onValuesChange(picker, values) {
+      console.log(values)
       // 选择地区
       if (this.proto === 'area') {
       //   if (values) {
@@ -367,10 +391,11 @@ export default {
       if (this.username) {
         
       } else {
-        console.log('客户姓名未填写')
+        // console.log('客户姓名未填写')
       }
     },
     saveCustomerInfo() {
+      console.log(this.customerDemand)
       let isPhoneNum = variable.testPhone(this.customerDemand.phone)
       if(isPhoneNum) {
         let [obj, id] = [this.customerDemand, this.$route.params.id]
@@ -379,6 +404,7 @@ export default {
         } else { 
           this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
         }
+        console.log(123, this.customerDemand)
         mango.getAjax(this, 'customer/update', {
           account: this.ajaxData.account,   //登录账户
           tenantId: this.ajaxData.tenantId,

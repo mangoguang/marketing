@@ -150,7 +150,11 @@ export default {
   },
   computed: {
     ...mapState({
-      newCustomerInfo: state => state.customer.newCustomerInfo
+      newCustomerInfo: state => state.customer.newCustomerInfo,
+      sexVal: state => state.select.sexVal,
+      areaVal: state => state.select.areaVal,
+      sourceVal: state => state.select.sourceVal,
+      leaveStoreVal: state => state.select.leaveStoreVal
     }),
     'provinceNames': function() {
       let arr = this.province.map(item => {
@@ -186,7 +190,13 @@ export default {
     // this.returnDate('1992年04月27日')
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo"]),
+    ...mapMutations([
+      "setNewCustomerInfo",
+      'setSexVal',
+      'setAreaVal',
+      'setSourceVal',
+      'setLeaveStoreVal'
+    ]),
     checkBtnStatus(obj) {
       for (let i = 0; i < this.importantBtns.length; i++) {
         this.importantBtns[i].status = (obj.important - 1) === i
@@ -246,16 +256,19 @@ export default {
     },
     sexChange(val) {
       console.log('sex改变了：', val)
+      this.setSexVal(val)
       this.newCustomerInfo.sex = val === '男' ? 1 : 2
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     sourceChange(val) {
-      console.log('sex改变了：', val)
+      console.log('sex123改变了：', val)
+      this.setSourceVal(val)
       this.newCustomerInfo.source = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     leaveStoreChange(val) {
       console.log('sex改变了：', val)
+      this.setLeaveStoreVal(val)
       this.newCustomerInfo.leaveStore = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },

@@ -1,13 +1,23 @@
 const state = {
   citySelect: '',
   startTimeSelect: null,
-  endTimeSelect: null
+  endTimeSelect: null,
+  sexVal: '',
+  areaVal: '',
+  enterStoreVal: '',
+  sourceVal: '',
+  leaveStoreVal: ''
 }
 
 const mutations = {
   setCitySelect: (state, obj) => state.citySelect = obj,
   setStartTimeSelect: (state, str) => state.startTimeSelect = str,
-  setEndTimeSelect: (state, str) => state.endTimeSelect = str
+  setEndTimeSelect: (state, str) => state.endTimeSelect = str,
+  setSexVal: (state, str) => state.sexVal = str,
+  setAreaVal: (state, str) => state.areaVal = str,
+  setEnterStoreVal: (state, str) => state.enterStoreVal = str,
+  setSourceVal: (state, str) => state.sourceVal = str,
+  setLeaveStoreVal: (state, str) => state.leaveStoreVal = str
 }
 
 const actions = {

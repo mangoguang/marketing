@@ -31,6 +31,7 @@ export default new Vuex.Store({
     orderList,
     serachResult,
     customerScroll,
-    personMsg
+    personMsg,
+    select
   }
 })
