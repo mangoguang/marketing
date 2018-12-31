@@ -40,7 +40,10 @@ export default {
       slots: [],
       popupVisible: false,
       val: '请选择客户地区',
-      provinces: []
+      provinces: [],
+      provinceName: '广东省',
+      cityName: '惠州市',
+      county: '惠东县'
     }
   },
   created() {
@@ -58,12 +61,27 @@ export default {
       mango.key = false
     },
     onValuesChange(picker, values) {
-      if (values[0] > values[1]) {
-        console.log(1111)
-        // picker.setSlotValue(1, values[0])
-      } else {
-        console.log(2222)
-      }
+        // if (values) {
+        //   // 选择省级行政单位
+        //   if (this.provinceName !== values[0]) {
+        //     this.provinceName = values[0]
+        //     console.log('省份改变了1::', values[0])
+        //     // this.city = []
+        //     console.log('省代码：', this.searchCode(this.province, values[0]))
+        //     this.getCity(this.searchCode(this.province, values[0]))
+        //     // this.customerDemand[this.proto]
+        //   // 选择市级行政单位
+        //   } else if (this.cityName !== values[1]) {
+        //     this.cityName = values[1]
+        //     console.log('城市改变了1::', values[1])
+        //     // this.county = []
+        //     this.getCounty(this.searchCode(this.city, values[1]))
+        //   // 选择县级行政单位
+        //   } else if (this.countyName !== values[2]) {
+        //     this.countyName = values[2]
+        //     console.log('地区改变了1::', values[2])
+        //   }
+        // }
       // if (!mango.key) {
       //   console.log('zhi改变了')
       //   this.getCity(this.getAreaCode(values[0], this.provinces))
