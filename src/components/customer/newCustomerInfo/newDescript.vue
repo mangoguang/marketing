@@ -256,8 +256,13 @@ export default {
     },
     sexChange(val) {
       console.log('sex改变了：', val)
+      if(val === '') {
+        val = 0
+        this.newCustomerInfo.sex = val
+      } else {
+        this.newCustomerInfo.sex = val === '男' ? 1 : 2
+      }
       this.setSexVal(val)
-      this.newCustomerInfo.sex = val === '男' ? 1 : 2
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     sourceChange(val) {
@@ -301,9 +306,9 @@ export default {
       }else{
         this.newCustomerInfo.urgency = 9
       }
-      if(!this.newCustomerInfo.source) {
-        this.newCustomerInfo.source = '自然进店'
-      }
+      // if(!this.newCustomerInfo.source) {
+      //   this.newCustomerInfo.source = '自然进店'
+      // }
       if(!this.newCustomerInfo.important) {
         this.$set(this.newCustomerInfo, 'important', 1)
       }         //关键程度默认选择1，但是没有点击的时候不会保存数据。

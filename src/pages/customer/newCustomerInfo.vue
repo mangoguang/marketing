@@ -78,7 +78,21 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
   },
+  destroyed(){
+    this.setSexVal('')
+    this.setAreaVal('')
+    this.setEnterStoreVal('')
+    this.setSourceVal('')
+    this.setLeaveStoreVal('')
+  },
   methods: {
+    ...mapMutations([
+      "setNewCustomerInfo",
+      'setSexVal',
+      'setAreaVal',
+      'setSourceVal',
+      'setLeaveStoreVal'
+    ]),
     //控制下面两个模块的显示隐藏
     controlDemand() {
       this.isShowDemand = !this.isShowDemand
@@ -114,9 +128,9 @@ export default {
       }else{
         this.newCustomerInfo.urgency = 9
       }
-      if(!this.newCustomerInfo.source) {
-        this.newCustomerInfo.source = '自然进店'
-      }
+      // if(!this.newCustomerInfo.source) {
+      //   this.newCustomerInfo.source = '自然进店'
+      // }
       if(!this.newCustomerInfo.important) {
         this.$set(this.newCustomerInfo, 'important', 1)
       }         //关键程度默认选择1，但是没有点击的时候不会保存数据。

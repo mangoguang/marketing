@@ -11,9 +11,9 @@
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="customerDemand.phone" type="text" placeholder="请填写客户电话">
       </li>
-      <li is="areaSelect" @selectArea="selectArea">
+      <!-- <li is="areaSelect" @selectArea="selectArea">
         <span>{{'请选择客户地区'}}</span>
-      </li>
+      </li> -->
       <li is="customerLi" :leftText="'客户地址'">
         <input v-model="customerDemand.address" type="text" placeholder="请填写客户地址">
       </li>
