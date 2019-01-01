@@ -56,8 +56,9 @@ export default {
     selectSex() {
       if(this.sexVal === '') {
         this.setSexVal(this.slots[0].values[0])
+      }else {
+        this.$refs.sexPicker.setSlotValue(0, this.sexVal)
       }
-      // this.$refs.sexPicker.setSlotValue(0, this.sexVal)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {

@@ -55,8 +55,9 @@ export default {
     selectLeaveStore() {
       if(this.leaveStoreVal === '') {
         this.setLeaveStoreVal(this.slots[0].values[0])
+      }else {
+        this.$refs.leaveStorePicker.setSlotValue(0, this.leaveStoreVal)
       }
-      // this.$refs.leaveStorePicker.setSlotValue(0, this.leaveStoreVal)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
