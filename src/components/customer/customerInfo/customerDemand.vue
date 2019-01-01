@@ -159,6 +159,13 @@ export default {
         console.log('保存数据成功', res)
       })
     },
+    setOptions(data, dataList) {
+      if(!this.customerDemand[`${data}`]) {
+        this.customerDemand[`${data}`] = dataList[0].values[0]
+      }else {
+        this.$refs.Picker.setSlotValue(0, this.customerDemand[`${data}`])
+      }
+    },
     selectShopId() {
       this.slots = this.shopNameList
       this.proto = 'shopId'
@@ -170,35 +177,39 @@ export default {
       this.slots = this.progressList
       this.proto = 'progress'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.progress)
+      this.setOptions('progress', this.progressList)
       this.popupVisible = true
     },
     selectBuyReason() {
       this.slots = this.buyReasonList
       this.proto = 'buyReason'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.buyReason)
+      this.setOptions('buyReason', this.buyReasonList)
       this.popupVisible = true
     },
     selectRoomNum() {
       this.slots = this.roomNumList
       this.proto = 'roomNum'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.roomNum)
+      if(this.roomNum === '') {
+        this.roomNum = this.roomNumList[0].values[0]
+      }else {
+        this.$refs.Picker.setSlotValue(0, this.roomNum)
+      }
       this.popupVisible = true
     },
     selectColorPref() {
       this.slots = this.colorPrefList
       this.proto = 'colorPref'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.colorPref)
+      this.setOptions('colorPref', this.colorPrefList)
       this.popupVisible = true
     },
     selectStylePref() {
       this.slots = this.stylePrefList
       this.proto = 'stylePref'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.stylePref)
+       this.setOptions('stylePref', this.stylePrefList)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
