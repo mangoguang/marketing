@@ -116,7 +116,7 @@ export default {
     return{
       customerDemand: {},
       importantBtns: mango.btnList(['高', '中', '低'], 0),
-      urgency:'',
+      urgency:false,
       // importantBtns: mango.btnList(['高', '中', '低'], 0),
       slots: [],
       sexList: [{values: ['男', '女']}],
@@ -201,11 +201,11 @@ export default {
     // this.returnDate('1992年04月27日')
   },
   destroyed(){
-      this.setSexVal('')
-      this.setAreaVal('')
-      this.setEnterStoreVal('')
-      this.setSourceVal('')
-      this.setLeaveStoreVal('')
+    this.setSexVal('')
+    this.setAreaVal('')
+    this.setEnterStoreVal('')
+    this.setSourceVal('')
+    this.setLeaveStoreVal('')
   },
   methods: {
     ...mapMutations([
@@ -232,12 +232,13 @@ export default {
           this.cityName = res.cityName
           this.countyName = res.areaName
           if (res.urgency == 1) {
-            res.urgency = true
             this.urgency = true
           } else {
-            res.urgency = false
             this.urgency = false
           }
+          // if(!res.important || res.important === 9) {
+          //   this.importantBtns[0].status = true
+          // }
           // 初始化保存接口参数
           this.checkBtnStatus(res)
           // 设置dealHeader组建的用户信息
@@ -247,7 +248,6 @@ export default {
             sex: res.sex
           })
         }
-      
         this.setCustomerDemand(res)
       })
       .catch(error => {
@@ -255,10 +255,12 @@ export default {
       })
     },
     setSelectVal(res) {
-      this.setSexVal(res.sex == 1 ? '男' : '女')
+      this.setSexVal(res.sex == 1 ? '男' : (res.sex ==0? '未知' : '女'))
       this.setAreaVal(res.area)
       this.setEnterStoreVal(res.enterStore)
-      this.setSourceVal(res.source)
+      if(res.source) {
+        this.setSourceVal(res.source)
+      }
       this.setLeaveStoreVal(res.leaveStore)
     },
     setCustomerDemand(obj = {}) {
@@ -267,7 +269,7 @@ export default {
         // tenantId: this.ajaxData.tenantId,
         username: obj.username,
         sex: obj.sex,  //性别(1:男,2:女,0:未知)，
-        storeDate: this.returnDate(obj.storeDate) || mango.indexTimeB(new Date())[0],//默认选择今天
+        storeDate: this.returnDate(obj.storeDate) || mango.indexTimeB(new Date())[1],//默认选择今天
         phone: obj.phone || this.$route.query.phone,
         source: obj.source,
         // province: '440000',
@@ -345,8 +347,9 @@ export default {
     sourceChange(val) {
       // this.setSourceVal(val)
       // console.log('sex改变了：', val)
-      this.customerDemand.source = val
       this.setSourceVal(val)
+      this.customerDemand.source = val
+      
     },
     leaveStoreChange(val) {
       // console.log('sex改变了：', val)
@@ -404,6 +407,7 @@ export default {
         } else { 
           this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
         }
+       
         console.log(123, this.customerDemand)
         mango.getAjax(this, 'customer/update', {
           account: this.ajaxData.account,   //登录账户

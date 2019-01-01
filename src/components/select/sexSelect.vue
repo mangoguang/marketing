@@ -54,7 +54,10 @@ export default {
   methods:{
     ...mapMutations(["setSexVal"]),
     selectSex() {
-      this.$refs.sexPicker.setSlotValue(0, this.sexVal)
+      if(this.sexVal === '') {
+        this.setSexVal(this.slots[0].values[0])
+      }
+      // this.$refs.sexPicker.setSlotValue(0, this.sexVal)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {

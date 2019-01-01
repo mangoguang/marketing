@@ -9,7 +9,7 @@
         <span>您的进店客户数<strong class="tips" @click="showTips">?</strong></span>
         <!-- <p>{{dailyData.storeNum}}</p> -->
         <p class="storeNum">
-          <input type="text" v-model="dailyData.storeNum">
+          <input type="number" v-model="storeNum">
         </p>
         <div class="storeType" v-show="isTips">
           <p>意向客户 + 游客</p>
@@ -42,7 +42,7 @@
       style="margin-bottom:21.2vw" 
       v-model="textPlanVal"  
       :value='textPlanVal'/>  
-    <Btn :text="text" @click.native="keepPlan"/>
+    <Btn :text="text" @click.native="keepData"/>
   </div>
 </template>
 
@@ -82,7 +82,8 @@ export default {
       thatDay:'',
       ajaxData:{},
       isTips: false,
-      changeDay:''
+      changeDay:'',
+      storeNum:''
     }
   },
   created() {
@@ -112,11 +113,20 @@ export default {
           mango.tip('更新数据成功')
         }
       })
-      this.changeStoreNum()
     },
-    //更改进店数
-    changeStoreNum() {
-       mango.getAjax(this, 'storenum/update', {
+    //保存数据
+    keepData() {
+      if(this.storeNum < this.dailyData.storeNum) {
+        mango.tip('更改进店数只能大于当前进店数')
+      }else {
+        this.dailyData.storeNum = this.storeNum
+        this.setStoreNum()
+        this.keepPlan()
+      }
+    },
+    //ajax 
+    setStoreNum() {
+      mango.getAjax(this, 'storenum/update', {
         storeNum: this.dailyData.storeNum,
         date: this.changeDay,
         account: this.ajaxData.account,
@@ -133,6 +143,7 @@ export default {
       this.changeDay = data[1]
       if(data) {
         this.dailyData.storeNum = data[0].storeNum
+        this.storeNum = this.dailyData.storeNum
         this.dailyData.intentionNum = data[0].intentionNum
         this.dailyData.trackRecordNum = data[0].trackRecordNum
         this.dailyData.placeOrderNum = data[0].placeOrderNum

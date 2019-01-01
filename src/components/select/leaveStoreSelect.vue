@@ -53,7 +53,10 @@ export default {
   methods:{
     ...mapMutations(["setLeaveStoreVal"]),
     selectLeaveStore() {
-      this.$refs.leaveStorePicker.setSlotValue(0, this.leaveStoreVal)
+      if(this.leaveStoreVal === '') {
+        this.setLeaveStoreVal(this.slots[0].values[0])
+      }
+      // this.$refs.leaveStorePicker.setSlotValue(0, this.leaveStoreVal)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {

@@ -16,7 +16,7 @@
       </li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
-        <span>{{turnDate(newCustomerInfo.storeDate)|| '请选择客户进店日期'}}</span>
+        <span>{{turnDate(newCustomerInfo.storeDate)}}</span>
       </li>
       <!-- <li is="addressSelect" :addressVal="newCustomerInfo.address" @addressChange="addressChange"></li> -->
       <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
@@ -146,6 +146,13 @@ export default {
     'countyName': function() {
       // this.customerInfo[this.proto] = 
       // console.log('地区改变了：', this.countyName)
+    },
+    urgency() {
+      if(this.urgency){
+        this.newCustomerInfo.urgency = 1
+      }else{
+        this.newCustomerInfo.urgency = 9
+      }
     }
   },
   computed: {
@@ -185,6 +192,7 @@ export default {
   mounted() {
     this.setNewCustomerInfo({})
     this.newCustomerInfo.phone = this.$route.query.phone
+    this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(this.today)[1])
     console.log('000111', this.newCustomerInfo)
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')

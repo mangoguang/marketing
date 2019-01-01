@@ -4,14 +4,19 @@
       <li is="customerLi" :leftText="'客户姓名'">
         <input v-model="info.username" type="text" placeholder="无名氏">
       </li>
-      <li is="customerLi" :leftText="'客户性别'">
+      <!-- <li is="customerLi" :leftText="'客户性别'">
         <span @click="selectSex">{{info.sex || '男'}}</span>
-      </li>
+      </li> -->
+      <li is="sexSelect" :sexVal="info.sex" @sexChange="sexChange"></li>
       <li is="customerLi" :leftText="'意向产品'">
         <input v-model="info.demand" placeholder="填写客户意向产品" type="text">
       </li>
-      <li is="customerLi" :leftText="'留店时间'" :icon="true">
+      <li is="leaveStoreSelect" :leaveStoreVal="info.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
+      <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true">
         <span @click="selectTime">{{info.leaveStore || '选择客户留店时间'}}</span>
+      </li> -->
+      <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
+        <span>{{shopName}}</span>
       </li>
       <li class="textarea">
         <remark :title="'备注'">
@@ -49,7 +54,9 @@
 <script>
 import Vue from "vue"
 import { Picker, Popup, MessageBox } from 'mint-ui'
-
+import Vuex, { mapMutations, mapState } from 'vuex'
+import leaveStoreSelect from '../../select/leaveStoreSelect'
+import sexSelect from '../../select/sexSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
 import customerLi from '../customerLi'
@@ -63,7 +70,9 @@ export default {
     customerLi,
     bigBtn,
     myRange,
-    remark
+    remark,
+    leaveStoreSelect,
+    sexSelect
   },
   data(){
     return{
@@ -72,7 +81,10 @@ export default {
       },
       slots: [],
       proto: '',
-      popupVisible: false
+      popupVisible: false,
+      shopNameList: [{values: []}],
+      shopName: '',
+      shopId: ''
     }
   },
   created() {
@@ -81,19 +93,71 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
-    console.log(123123, encodeURI('['))
+    this.getShopName()
+    // console.log(123123, encodeURI('['))
+  },
+  computed: {
+     ...mapState({
+      personMsg: state => state.personMsg.personMsg,
+      sexVal: state => state.select.sexVal,
+      leaveStoreVal: state => state.select.leaveStoreVal
+    })
+  },
+  destroyed(){
+    this.setSexVal('')
+    this.setLeaveStoreVal('')
   },
   methods: {
+    ...mapMutations([
+      'setSexVal',
+      'setLeaveStoreVal'
+    ]),
+    getShopName() {
+      let shopName = []
+      if(this.personMsg.shops) {
+        this.personMsg.shops.forEach((item, index) => {
+        shopName.push(item.name)
+        this.shopNameList[0].values = shopName
+      });
+      }
+      this.shopName = this.shopNameList[0].values[0]
+      this.getShopID(this.shopName)
+      this.$set(this.info, 'shopId', this.shopId)
+    },
+    getShopID(name) {
+      if(this.personMsg.shops) {
+        this.personMsg.shops.forEach((item, index) => {
+          if(item.name === name) {
+            this.shopId = item.id
+          }
+      });
+      }
+    },
+    sexChange(val) {
+      if(val === '') {
+        val = 0
+        this.info.sex = val
+      } else {
+        this.info.sex = val === '男' ? 1 : 2
+      }
+      this.setSexVal(val)
+    },
+    leaveStoreChange(val) {
+      console.log('sex改变了：', val)
+      this.setLeaveStoreVal(val)
+      this.info.leaveStore = val
+    },
     saveCustomerInfo() {
       let [params, tempObj] = [{
         account: this.ajaxData.account,   //登录账户
         tenantId: this.ajaxData.tenantId,
         'details.username': this.info.username,
-        'details.sex': this.info.sex === '男' ? 1 : 2,
+        'details.sex': this.info.sex? this.info.sex : 0,
         'details.leaveStore': this.info.leaveStore,
         'demand.intention': this.info.intention,
         'demand.remark': this.info.remark,
-        'record.probability': `${this.info.percent}`
+        'record.probability': `${this.info.percent}%`,
+         'demand.shopId': this.info.shopId
       }, {}]
       for (let key in params) {
         if (params[key]) {
@@ -110,6 +174,13 @@ export default {
       // mango.getAjax(this, 'customer/update', tempObj,'v2', 'post').then((res) => {
       //   console.log('保存数据成功', res)
       // })
+    },
+    selectShopId() {
+      this.slots = this.shopNameList
+      this.proto = 'shopId'
+      // 设置性别选择插件的初始值
+      this.$refs.Picker.setSlotValue(0, this.shopName)
+      this.popupVisible = true
     },
     selectSex() {
       this.proto = 'sex'

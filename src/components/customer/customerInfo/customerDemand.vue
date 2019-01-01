@@ -137,6 +137,9 @@ export default {
         this.shopNameList[0].values = shopName
       });
       }
+      this.shopName = this.shopNameList[0].values[0]
+      // this.getShopID(this.shopName)
+      // this.$set(this.newCustomerInfo, 'shopId', this.shopId)
     },
     getShopID(name) {
       if(this.personMsg.shops) {
@@ -160,7 +163,7 @@ export default {
       this.slots = this.shopNameList
       this.proto = 'shopId'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.$refs.Picker.setSlotValue(0, this.shopName)
       this.popupVisible = true
     },
     selectProgress() {
@@ -218,8 +221,6 @@ export default {
       if(this.shopName) {
         this.getShopID(this.shopName)
         this.$set(this.customerDemand, 'shopId', this.shopId)
-      }else {
-        this.$set(this.customerDemand, 'shopId', '')
       }
     },
     saveCustomerDemand() {

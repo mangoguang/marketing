@@ -104,7 +104,8 @@ export default {
       this.demand = this.customerDemand
       this._isRoomNum()
       let tempId = this.customerDemand.shopId
-      this._isShopId(tempId)
+      this._changeShopName(tempId)
+      // this._isShopId(tempId)
     }
   },
   methods: {
@@ -153,7 +154,7 @@ export default {
       this.slots = this.shopNameList
       this.proto = 'shopId'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.$refs.Picker.setSlotValue(0, this.shopName)
       this.popupVisible = true
     },
     selectProgress() {
@@ -195,14 +196,10 @@ export default {
       console.log('选择的装修进度', values)
       // this.demand.progress = values[0]
       if(this.proto == 'shopId') {
-        let name = this.shopName
         this.shopName = values[0]
-        if(!this.shopName) {
-          this.demand.shopId = '' 
-        } else {
-          this.getShopID(this.shopName)
-          this.demand.shopId= this.shopId
-        }
+        this.getShopID(this.shopName)
+        this.demand.shopId= this.shopId
+        
       }else if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {

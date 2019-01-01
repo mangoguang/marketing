@@ -2,7 +2,7 @@
   <li class="sourceSelect">
     <ul>
       <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
-        <span>{{sourceVal || '请选择客户来源'}}</span>
+        <span>{{sourceVal}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -48,12 +48,12 @@ export default {
     })
   },
   mounted() {
+    this.setSourceVal(this.slots[0].values[0])
     // this.$refs.sourcePicker.setSlotValue(0, this.val)
   },
   methods:{
     ...mapMutations(["setSourceVal"]),
     selectSource() {
-
       this.$refs.sourcePicker.setSlotValue(0, this.sourceVal)
       this.popupVisible = true
     },

@@ -20,7 +20,7 @@
         <span >{{roomNum || '请填写房间数量'}}</span>
       </li>
       <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
-        <span>{{shopName || '请选择门店'}}</span>
+        <span>{{shopName}}</span>
       </li>
       <!-- <li is="customerLi" :leftText="'房间数量'">
         <input v-model="newCustomerInfo.roomNum" placeholder="请填写房间数量" type="number">
@@ -118,6 +118,9 @@ export default {
         this.shopNameList[0].values = shopName
       });
       }
+      this.shopName = this.shopNameList[0].values[0]
+      this.getShopID(this.shopName)
+      this.$set(this.newCustomerInfo, 'shopId', this.shopId)
     },
     getShopID(name) {
       if(this.personMsg.shops) {
@@ -136,7 +139,7 @@ export default {
       this.slots = this.shopNameList
       this.proto = 'shopId'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.$refs.Picker.setSlotValue(0, this.shopName)
       this.popupVisible = true
     },
     selectProgress() {
@@ -182,9 +185,10 @@ export default {
         if(this.shopName) {
           this.getShopID(this.shopName)
           this.newCustomerInfo.shopId = this.shopId
-        }else {
-          this.newCustomerInfo.shopId = ''
         }
+        // else {
+        //   this.newCustomerInfo.shopId = ''
+        // }
       }else if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {
