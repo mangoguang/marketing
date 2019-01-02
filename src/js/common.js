@@ -197,6 +197,9 @@ export default class Common {
     if (tempArr[1] < 10) {
       tempArr[1] = `0${tempArr[1]}`
     }
+    if (tempArr[2] < 10) {
+      tempArr[2] = `0${tempArr[2]}`
+    }
     return tempArr.join('-')
   }
   // 获取本地存储时间

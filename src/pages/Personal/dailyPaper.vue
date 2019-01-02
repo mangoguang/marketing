@@ -110,21 +110,27 @@ export default {
       }, 'v2','post')
       .then((res) => {
         if (res) {
-          mango.tip('更新数据成功')
+          mango.tip('更新总结和计划成功')
         }
       })
     },
     //保存数据
     keepData() {
-      if(this.storeNum < this.dailyData.storeNum) {
-        mango.tip('更改进店数只能大于当前进店数')
+      if(this.thatDay !== this.changeDay) {
+        mango.tip('只能更新当天的总结和计划')
       }else {
-        this.dailyData.storeNum = this.storeNum
-        this.setStoreNum()
         this.keepPlan()
       }
+      setTimeout(() => {
+        if(this.storeNum <= this.dailyData.storeNum) {
+          mango.tip('更改进店数只能大于当前进店数')
+        }else {
+          this.dailyData.storeNum = this.storeNum
+          this.setStoreNum()
+        }  
+      }, 1000);
     },
-    //ajax 
+    //ajax 设置进店数
     setStoreNum() {
       mango.getAjax(this, 'storenum/update', {
         storeNum: this.dailyData.storeNum,
@@ -134,6 +140,7 @@ export default {
       }, 'v2','post')
       .then((res) => {
         if (res) {
+          mango.tip('进店客户数已更新')
           // alert(res.msg)
         }
       })

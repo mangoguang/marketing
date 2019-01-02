@@ -73,13 +73,6 @@ export default {
       colorPrefList: [{values :['暖色', '冷色']}],
       stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
       shopNameList: [{values: []}],
-      pickerShow: {
-        progress: false,
-        buyReason: false,
-        roomNum: false,
-        colorPref: false,
-        stylePref: false
-      },
       proto: '',
       roomNum:'',
       shopName: '',
@@ -181,12 +174,14 @@ export default {
     selectRoomNum() {
       this.slots = this.roomNumList
       this.proto = 'roomNum'
-      // 设置性别选择插件的初始值
-      if(this.roomNum === '') {
-        this.roomNum = this.roomNumList[0].values[0]
-      }else {
-        this.$refs.Picker.setSlotValue(0, this.roomNum)
-      }
+      //设置性别选择插件的初始值
+      setTimeout(() => {
+        if(!this.demand.roomNum) {
+          this.roomNum = this.roomNumList[0].values[0]
+        }else {
+          this.$refs.Picker.setSlotValue(0, this.roomNum)
+        }
+      }, 100);
       this.popupVisible = true
     },
     selectColorPref() {

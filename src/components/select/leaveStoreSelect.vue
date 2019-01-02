@@ -1,8 +1,8 @@
 <template>
   <li class="leaveStoreSelect">
     <ul>
-      <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectLeaveStore">
-        <span>{{leaveStoreVal || '请选择客户留店时间'}}</span>
+      <li is="customerLi" :leftText="'留店时长'" :icon="true" @click.native="selectLeaveStore">
+        <span>{{leaveStoreVal || '请选择客户留店时长'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>

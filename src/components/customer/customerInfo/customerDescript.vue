@@ -5,21 +5,12 @@
         <input v-model="customerDemand.username" type="text" placeholder="请填写客户姓名">
       </li>
       <li is="sexSelect" @sexChange="sexChange"></li>
-      <!-- <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
-        <span>{{customerDemand.sex == 1 ? '男' : '女'}}</span>
-      </li>  -->
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="customerDemand.phone" type="text" placeholder="请填写客户电话">
       </li>
-      <!-- <li is="areaSelect" @selectArea="selectArea">
-        <span>{{'请选择客户地区'}}</span>
-      </li> -->
       <li is="customerLi" :leftText="'客户地址'">
         <input v-model="customerDemand.address" type="text" placeholder="请填写客户地址">
       </li>
-      <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
-        <span>{{customerDemand.source || '请选择客户来源'}}</span>
-      </li> -->
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
         <span>{{turnDate(customerDemand.storeDate) || '请选择客户进店日期'}}</span>
       </li>
@@ -30,9 +21,6 @@
       </li> -->
     
       <li is="leaveStoreSelect" @leaveStoreChange="leaveStoreChange"></li>
-      <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectTime">
-        <span>{{customerDemand.leaveStore || '请选择客户留店时间'}}</span>
-      </li> -->
       <li class="important">
         关键程度
         <div>
@@ -117,19 +105,8 @@ export default {
       customerDemand: {},
       importantBtns: mango.btnList(['高', '中', '低'], 0),
       urgency:false,
-      // importantBtns: mango.btnList(['高', '中', '低'], 0),
       slots: [],
-      sexList: [{values: ['男', '女']}],
-      // sourceList: [{values: ['自然进店', '企点引流', '老客复购', '老客介绍', '异业带单', '异业联盟活动', '其他活动', '小区团购', '电话销售', '设计师介绍', '辅助查询'], defaultIndex: 0}],
-      leaveStoreList: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
       areaList: [],
-      pickerShow: {
-        sex: false,
-        storeDate: false,
-        source: false,
-        area: false,
-        time: false
-      },
       popupVisible: false,
       proto: '',
       today: new Date(),
@@ -138,8 +115,7 @@ export default {
       city: [],
       cityName: '',
       county: [],
-      countyName: '',
-      timeKey: false
+      countyName: ''
     }
   },
   watch: {
@@ -284,9 +260,7 @@ export default {
     checkBtnStatus(obj) {
       for (let i = 0; i < this.importantBtns.length; i++) {
         this.importantBtns[i].status = (obj.important - 1) === i
-        // this.importantBtns[i].status = (obj.important - 1) === i
       }
-      // obj.sex = obj.sex == 1 ? '男' : '女'
     },
     changeImportant(index) {
       this.importantBtns.forEach((element, i) => {
@@ -300,23 +274,9 @@ export default {
     //   })
     //   this.customerDemand.important = index + 1
     // },
-    selectSex() {
-      this.slots = this.sexList
-      this.proto = 'sex'
-      // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.sex === 1 ? '男' : '女')
-      this.popupVisible = true
-    },
     selectStoreDate() {
       this.$refs.datePicker.open()
     },
-    // selectSource() {
-    //   this.slots = this.sourceList
-    //   this.proto = 'source'
-    //   // 设置性别选择插件的初始值
-    //   this.$refs.Picker.setSlotValue(0, this.customerDemand.source)
-    //   this.popupVisible = true
-    // },
     // selectArea() {
     //   this.slots = this.areaList
     //   this.proto = 'area'
@@ -342,17 +302,13 @@ export default {
     sexChange(val) {
       this.customerDemand.sex = (val === '男' ? 1 : 2)
       this.setSexVal(val)
-      // this.setNewCustomerInfo(this.newCustomerInfo)
     },
     sourceChange(val) {
-      // this.setSourceVal(val)
-      // console.log('sex改变了：', val)
       this.setSourceVal(val)
       this.customerDemand.source = val
       
     },
     leaveStoreChange(val) {
-      // console.log('sex改变了：', val)
       this.setLeaveStoreVal(val)
       this.customerDemand.leaveStore = val
     },
@@ -390,13 +346,6 @@ export default {
       }
       // this.popupVisible = false
     },
-    checkForm() {
-      if (this.username) {
-        
-      } else {
-        // console.log('客户姓名未填写')
-      }
-    },
     saveCustomerInfo() {
       console.log(this.customerDemand)
       let isPhoneNum = variable.testPhone(this.customerDemand.phone)
@@ -407,7 +356,6 @@ export default {
         } else { 
           this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
         }
-       
         console.log(123, this.customerDemand)
         mango.getAjax(this, 'customer/update', {
           account: this.ajaxData.account,   //登录账户

@@ -40,7 +40,6 @@ export default {
       slots: [{values: ['男', '女']}],
       popupVisible: false,
       key: false
-      // val: this.sexVal == 1 || '男' ? '男' : '女'
     }
   },
   computed:{
@@ -54,7 +53,7 @@ export default {
   methods:{
     ...mapMutations(["setSexVal"]),
     selectSex() {
-      if(this.sexVal === '') {
+      if(this.sexVal === '' || this.sexVal ==='未知') {
         this.setSexVal(this.slots[0].values[0])
       }else {
         this.$refs.sexPicker.setSlotValue(0, this.sexVal)
