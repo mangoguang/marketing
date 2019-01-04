@@ -101,7 +101,7 @@ export default {
     // },
     countTime() {
       let [start, end] = [(new Date(this.startDateVal)).getTime(), (new Date(this.endDateVal)).getTime()]
-      console.log('time:', start/86400000, end/86400000)
+      // console.log('time:', start/86400000, end/86400000)
       return Math.ceil((end - start)/86400000)
     }
   },
@@ -207,8 +207,10 @@ export default {
       let [start, end, dateVal] = [null, null, null]
       if (this.dateType === 'start') {
         start = new Date(date).getTime()
-        console.log(mango.indexTime(date, 'day'), this.startDateVal)
+        // console.log(mango.indexTime(date, 'day'), this.startDateVal)
+        console.log('start', date)
         if ((start - new Date(this.endDateVal).getTime()) > 0) {
+
           alert('起始日不能大于结束日')
           return
         }

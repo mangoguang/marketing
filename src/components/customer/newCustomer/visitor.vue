@@ -148,6 +148,9 @@ export default {
       this.info.leaveStore = val
     },
     saveCustomerInfo() {
+      if(!this.info.username || this.info.username === '') {
+        this.info.username = '无名氏'
+      }
       let [params, tempObj] = [{
         account: this.ajaxData.account,   //登录账户
         tenantId: this.ajaxData.tenantId,
@@ -157,7 +160,7 @@ export default {
         'demand.intention': this.info.intention,
         'demand.remark': this.info.remark,
         'record.probability': `${this.info.percent}%`,
-         'demand.shopId': this.info.shopId
+        'demand.shopId': this.info.shopId
       }, {}]
       for (let key in params) {
         if (params[key]) {

@@ -82,7 +82,7 @@ export default {
   computed: {
     ...mapState({
       followTrackDetails: state => state.followTrackDetails.followTrackDetails,
-      personMsg: state => state.personMsg.personMsg  
+      personMsg: state => state.personMsg.personMsg
     })
   },
   data() {
@@ -207,6 +207,8 @@ export default {
     font-size: 5.64vw;
     line-height: 2em;
     padding-left: 4.6vw;
+    margin-top: 2vw;
+
   } 
   .tilte{
     display: flex;

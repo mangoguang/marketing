@@ -129,14 +129,11 @@ export default {
     //初始化数据
     setInitData() {
       this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-      if(!this.newCustomerInfo.sex) {
-        this.$set(this.newCustomerInfo, 'sex', 0)
+      this.newCustomerInfo.sex = this.sexVal === ''? 0 : this.sexVal ==='男'? 1:2
+      this.newCustomerInfo.leaveStore = this.leaveStoreVal
+      if(!this.newCustomerInfo.username || this.newCustomerInfo.username === '') {
+        this.newCustomerInfo.username = '无名氏'
       }
-      // if(this.newCustomerInfo.urgency){
-      //   this.newCustomerInfo.urgency = 1
-      // }else{
-      //   this.newCustomerInfo.urgency = 9
-      // }
       if(!this.newCustomerInfo.source) {
         this.newCustomerInfo.source = '自然进店'
       }

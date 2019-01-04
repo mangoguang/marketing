@@ -346,17 +346,23 @@ export default {
       }
       // this.popupVisible = false
     },
+    initData() {
+      if (this.urgency) {
+        this.customerDemand.urgency = 1
+      } else { 
+        this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
+      }
+      if(this.customerDemand.username === '' || !this.customerDemand.username) {
+        this.customerDemand.username = '无名氏'
+      }
+      this.customerDemand.sex = this.sexVal === '男'? 1 : (this.sexVal ==='未知'? 0:2)
+      this.customerDemand.leaveStore = this.leaveStoreVal
+    },
     saveCustomerInfo() {
-      console.log(this.customerDemand)
       let isPhoneNum = variable.testPhone(this.customerDemand.phone)
       if(isPhoneNum) {
         let [obj, id] = [this.customerDemand, this.$route.params.id]
-        if (this.urgency) {
-          this.customerDemand.urgency = 1
-        } else { 
-          this.customerDemand.urgency = 9 //1为紧急，大于1为非紧急
-        }
-        console.log(123, this.customerDemand)
+        this.initData()
         mango.getAjax(this, 'customer/update', {
           account: this.ajaxData.account,   //登录账户
           tenantId: this.ajaxData.tenantId,

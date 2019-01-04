@@ -36,12 +36,14 @@
     <myText 
       :pTitle="pTitle1" :pla="pla1" 
       v-model="textSumVal" 
-      :value='textSumVal'/>
+      :value='textSumVal'
+      :changeDay="changeDay"/>
     <myText 
       :pTitle="pTitle2" :pla="pla2" 
       style="margin-bottom:21.2vw" 
       v-model="textPlanVal"  
-      :value='textPlanVal'/>  
+      :value='textPlanVal'
+      :changeDay="changeDay"/>  
     <Btn :text="text" @click.native="keepData"/>
   </div>
 </template>
@@ -110,25 +112,19 @@ export default {
       }, 'v2','post')
       .then((res) => {
         if (res) {
-          mango.tip('更新总结和计划成功')
+          mango.tip('更新成功')
         }
       })
     },
     //保存数据
     keepData() {
-      if(this.thatDay !== this.changeDay) {
-        mango.tip('只能更新当天的总结和计划')
+      if(this.storeNum <= this.dailyData.storeNum) {
+        mango.tip('更改进店数只能大于当前进店数')
       }else {
+        this.dailyData.storeNum = this.storeNum
+        this.setStoreNum()
         this.keepPlan()
-      }
-      setTimeout(() => {
-        if(this.storeNum <= this.dailyData.storeNum) {
-          mango.tip('更改进店数只能大于当前进店数')
-        }else {
-          this.dailyData.storeNum = this.storeNum
-          this.setStoreNum()
-        }  
-      }, 1000);
+      }  
     },
     //ajax 设置进店数
     setStoreNum() {
@@ -140,7 +136,6 @@ export default {
       }, 'v2','post')
       .then((res) => {
         if (res) {
-          mango.tip('进店客户数已更新')
           // alert(res.msg)
         }
       })
