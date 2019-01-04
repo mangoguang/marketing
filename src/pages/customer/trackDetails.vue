@@ -3,7 +3,7 @@
     <mybanner :title="title">
       <!-- <button v-show="showRecordForm">保存</button> -->
     </mybanner>
-    <h1>{{ product }}</h1>
+    <h1></h1>
     <div class="customer-demand">
       <div class="tilte">
         <p></p>

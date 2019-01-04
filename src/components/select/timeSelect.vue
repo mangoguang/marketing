@@ -5,6 +5,7 @@
       <mt-datetime-picker
         ref="datePicker"
         type="date"
+        :endDate="new Date()"
         v-model="pickerVisible"
         year-format="{value} 年"
         month-format="{value} 月"

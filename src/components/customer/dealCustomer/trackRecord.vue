@@ -5,7 +5,7 @@
         :key="index" @click="getTrackDetails(index)">
         <p>{{ index + 1}}</p>
         <div class="product">
-          <p>{{item.intention}}</p>
+          <p>{{item.intention || '暂无需求产品'}}</p>
           <span>{{item.updateTime}}</span>
         </div>
         <span class="details">详情</span>

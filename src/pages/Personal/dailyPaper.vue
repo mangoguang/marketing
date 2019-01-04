@@ -9,7 +9,7 @@
         <span>您的进店客户数<strong class="tips" @click="showTips">?</strong></span>
         <!-- <p>{{dailyData.storeNum}}</p> -->
         <p class="storeNum">
-          <input type="number" v-model="storeNum">
+          <input type="number" v-model="storeNum" :disabled="inputSatatus">
         </p>
         <div class="storeType" v-show="isTips">
           <p>意向客户 + 游客</p>
@@ -86,6 +86,12 @@ export default {
       isTips: false,
       changeDay:'',
       storeNum:''
+    }
+  },
+  computed:{
+    inputSatatus() {
+      let date = new Date()
+      return mango.indexTimeB(date)[1] != this.changeDay
     }
   },
   created() {

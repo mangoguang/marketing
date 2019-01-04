@@ -37,7 +37,7 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['自然进店', '企点引流', '老客复购', '老客介绍', '异业带单', '异业联盟活动', '其他活动', '小区团购', '电话销售', '设计师介绍', '辅助查询']}],
+      slots: [{values: ['自然进店', '企点引流', '老客复购', '老客介绍', '异业带单', '异业联盟活动', '其他活动', '小区团购', '电话销售', '设计师介绍']}],
       popupVisible: false,
       key: false
     }

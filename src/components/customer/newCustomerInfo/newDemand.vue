@@ -74,7 +74,7 @@ export default {
       buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
       roomNumList: [{values: [1, 2, 3, 4, '5及以上']}],
       colorPrefList: [{values :['暖色', '冷色']}],
-      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
+      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式']}],
       shopNameList: [{values: []}],
       pickerShow: {
         progress: false,

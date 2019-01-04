@@ -110,6 +110,7 @@ export default {
     creatNewCustomer() {
       this.setInitData()
       let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
+      //  this.updateParams(this.newCustomerInfo)
       if(testPhoneNum) {
         mango.getAjax(this, 'customer/update', {
           account: this.ajaxData.account,   //登录账户
@@ -128,7 +129,6 @@ export default {
     },
     //初始化数据
     setInitData() {
-      this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
       this.newCustomerInfo.sex = this.sexVal === ''? 0 : this.sexVal ==='男'? 1:2
       this.newCustomerInfo.leaveStore = this.leaveStoreVal
       if(!this.newCustomerInfo.username || this.newCustomerInfo.username === '') {
@@ -140,9 +140,12 @@ export default {
       if(!this.newCustomerInfo.important) {
         this.$set(this.newCustomerInfo, 'important', 1)
       }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
-      // if(!this.newCustomerInfo.storeDate) {
-      //   this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
-      // } //如果没有选进店时间。默认选择今天
+      if(!this.newCustomerInfo.followPlan && !this.newCustomerInfo.followSituation && !this.newCustomerInfo.followTime && this.newCustomerInfo.percent === 50) {
+        this.newCustomerInfo.percent = ''
+      }else{
+        this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
+        this.newCustomerInfo.followTime = this.newCustomerInfo.followTime || mango.indexTimeB(new Date())[1]
+      }
     },
     //获取参数
      updateParams(obj) {
@@ -172,7 +175,7 @@ export default {
         'demand.shopId': obj.shopId,
         'record.followSituation': obj.followSituation,
         'record.probability': obj.percent,
-        'record.followTime': returnDate(obj.followTime) || mango.indexTimeB(new Date())[1],   //默认为今天
+        'record.followTime': obj.followTime,   //默认为今天
         'record.followPlan': obj.followPlan
       }
       for (let key in temp) {
