@@ -53,7 +53,7 @@
       <ul>
         <li v-for="(item,index) in demandList.trList" :key="index" @click="pullDown(index)">
           <div class="detail-wrapper">
-            <span class="time">{{item.followTime}}</span>
+            <span class="time">{{item.createTime || '2019-01-01'}}</span>
             <span class="people">{{demandList.intention}}</span>
             <p>{{item.probability}}</p>
             <div class="icon" >
