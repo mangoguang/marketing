@@ -44,7 +44,7 @@
       v-model="textPlanVal"  
       :value='textPlanVal'
       :changeDay="changeDay"/>  
-    <Btn :text="text" @click.native="keepData"/>
+    <Btn :text="text" @click.native="keepData" v-show="timeStatus"/>
   </div>
 </template>
 
@@ -85,13 +85,23 @@ export default {
       ajaxData:{},
       isTips: false,
       changeDay:'',
-      storeNum:''
+      storeNum:'',
+      timeStatus: true
     }
   },
   computed:{
     inputSatatus() {
       let date = new Date()
       return mango.indexTimeB(date)[1] != this.changeDay
+    }
+  },
+  watch:{
+    changeDay() {
+      if(this.changeDay === mango.indexTimeB(new Date())[1]) {
+        this.timeStatus = true
+      }else {
+        this.timeStatus = false
+      }
     }
   },
   created() {
@@ -118,17 +128,22 @@ export default {
       }, 'v2','post')
       .then((res) => {
         if (res) {
-          mango.tip('更新成功')
+          mango.tip(res.msg)
+          if(res.status == 1) {
+            this.setStoreNum()
+          }
         }
       })
     },
     //保存数据
     keepData() {
-      if(this.storeNum <= this.dailyData.storeNum) {
+      if(this.storeNum < this.dailyData.storeNum) {
         mango.tip('更改进店数只能大于当前进店数')
-      }else {
+      }if(this.storeNum === this.dailyData.storeNum) {
+        this.keepPlan()
+      }
+      else {
         this.dailyData.storeNum = this.storeNum
-        this.setStoreNum()
         this.keepPlan()
       }  
     },

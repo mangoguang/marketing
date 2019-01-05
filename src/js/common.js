@@ -4,8 +4,8 @@ import { Indicator, Toast } from 'mint-ui'
 
 export default class Common {
   constructor() {
-    // this.port = 'https://agency.derucci.com/'
-    this.port="http://172.16.9.212/"
+    this.port = 'https://agency.derucci.com/'
+    // this.port="http://172.16.9.212/"
     // this.port = 'http://172.16.11.123/'
     // this.port = 'http://10.11.8.181/'
     // this.port = 'http://10.11.8.7:8086/'
