@@ -168,7 +168,8 @@ export default {
                 "timestamp": "${Date.parse(new Date())}",
                 "name": "${res.username}",
                 "phone": "${res.mobile}",
-                "sex": "${res.sex}"
+                "sex": "${res.sex}",
+                "type":"${res.type}"
               }`
                 localStorage.setItem("ajaxData", ajaxData);
                 if (_this.checked) {

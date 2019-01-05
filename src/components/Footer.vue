@@ -7,11 +7,11 @@
       <p class="iconCharP">首页</p>
       <!-- </router-link> -->
     </li>
-    <li id="2">  
-      <router-link to="/" >
+    <li id="2" @click="isDeal">  
+      <!-- <router-link to="/ReportForms" > -->
       <div class="iconChar"></div>
       <p class="iconCharP">报表</p>  
-      </router-link>
+      <!-- </router-link> -->
     </li>
     <li id="3">
       <router-link to="/Customer" >
@@ -26,7 +26,7 @@
       <!-- </router-link> -->
     </li>
     <li id="5">
-      <router-link to="/personalMsg" >
+      <router-link to="/" >
        <div class="iconPerson" ></div>
       <p class="iconCharP">个人</p>
       </router-link>
@@ -39,14 +39,26 @@
 export default {
   data(){
     return{
-      padding:''
-      
+      padding: '',
+      ajaxData: []
     }
   },
   mounted(){
     this.isIPhoneX() 
   },
+  created() {
+    //获取本地缓存信息
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+  },
   methods:{
+    isDeal() {
+      if(this.ajaxData.type === 'dealer') {
+        this.$router.push({path: "/ReportForms"})
+      }else {
+        alert('暂无权限')
+      }
+    },
     touchend:function(e){
       // console.log(e.path[1].id)
       // if(e.path[1].id){

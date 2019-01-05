@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
-    path: '/',
+    path: '/ReportForms',
     name: 'ReportForms',
     component: resolve => require(['../pages/ReportForms'], resolve)
   },{
@@ -113,7 +113,7 @@ export var router = new VueRouter({
   },
   /****个人模块****/
   {
-    path: '/personalMsg',
+    path: '/',
     name: '/Personal',
     component: resolve => require(['../pages/Personal/personalMsg'],resolve)
   },
