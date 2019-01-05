@@ -15,7 +15,7 @@
                 <p>结束日</p>
                 <strong>{{endDateVal}}</strong>
               </li>
-              <li><span>共{{countTime}}日</span></li>
+              <li><span>共{{countTime + 1}}日</span></li>
             </ul>
           </li>
           <li>

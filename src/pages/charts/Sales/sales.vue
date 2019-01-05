@@ -15,7 +15,7 @@
         <h6>单位：万元</h6>
       </chartsTit>
       <div :style="{height: `100vw`}" ref="areaSalesContainer" ></div>
-      <RouterLink @click.native="toAreaStoreSales" :text="'各门店销售额对比'"></RouterLink>
+      <RouterLink @click.native="toAreaStoreSales" :text="'各区域销售额对比'"></RouterLink>
     </div>
   </div>
 </template>
