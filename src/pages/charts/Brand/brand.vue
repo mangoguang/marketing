@@ -8,10 +8,13 @@
         <div class="barBox">
           <!-- <chartsTit :text="index === 0 ? `整体${typeName}占比` : ''"></chartsTit> -->
           <Pie
+          v-show="!brandShow"
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"
           :title="`各${typeName}金额占比-${item.name}`"
-          :category="`整体${typeName}占比`"></Pie>
+          :category="`整体${typeName}占比`"
+          :height="120"></Pie>
+          <!-- <noData v-show="brandShow"></noData> -->
         </div>
       </li>
       <li>
@@ -22,12 +25,14 @@
           </chartsTit>
           <!-- <div ref="brandContainer" ></div> -->
           <Bar
+          v-show="!brandShow"
           @chartsClick="chartsEvent"
           :data="brandData"
           :vertical="'horizontal'"
           :title="`各${typeName}金额对比`"
           :height="120"
           :salesVal="true"></Bar>
+          <noData v-show="brandShow"></noData>
         </div>
       </li>
     </ul>
@@ -36,10 +41,13 @@
         <div class="barBox">
           <!-- <chartsTit :text="'整体品类对比'"></chartsTit> -->
           <Pie
+          v-show="!categoryShow"
           :yAxisData="categoryData.yAxisData"
           :seriesData="item.data"
           :title="`各${typeName}数量占比-${item.name}`"
-          :category="`各${typeName}数量占比`"></Pie>
+          :category="`各${typeName}数量占比`"
+          :height="120"></Pie>
+          <!-- <noData v-show="categoryShow"></noData> -->
         </div>
       </li>
       <li>
@@ -48,10 +56,12 @@
           <chartsTit :text="`各${typeName}数量对比`"></chartsTit>
           <!-- <div ref="categoryContainer" ></div> -->
           <Bar
+          v-show="!categoryShow"
           :data="categoryData"
           :vertical="'horizontal'"
           :title="`各${typeName}数量对比`"
           :height="120"></Bar>
+          <noData v-show="categoryShow"></noData>
         </div>
       </li>
     </ul>
@@ -64,7 +74,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -74,10 +84,11 @@ import Pie from '../../../components/charts/pie'
 import chartsTit from '../../../components/charts/title'
 import RouterLink from '../../../components/charts/routerLink'
 import mybanner from '../../../components/banner'
+import noData from '../../../components/charts/noData'
 export default {
   name: 'brand',
   components: {
-    Bar, Pie, chartsTit, RouterLink, mybanner, SelectComponent
+    Bar, Pie, chartsTit, RouterLink, mybanner, SelectComponent, noData
   },
   data () {
     return {
@@ -92,7 +103,10 @@ export default {
       key1:false,
       key2:false,
       brandchanrtDom1:'',
-      brandchanrtDom2:''
+      brandchanrtDom2:'',
+      brandShow: false,
+      categoryShow: false,
+      i: 0
     }
   },
   created() {
@@ -129,8 +143,18 @@ export default {
       const chartsName = 'brand'
       if(this.key2) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal', true)
           this.brandchanrtDom1 = chanrtDom
+
+          // if(this.i > 1){
+            try {
+              this.brandchanrtDom1.resize()
+            } catch (error) {
+              console.log(error)
+            }
+          // }
         }
       }
     },
@@ -139,8 +163,18 @@ export default {
       const chartsName = 'category'
       if(this.key2) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal')
           this.brandchanrtDom2 = chanrtDom
+          // if(this.i > 1) {
+            try {
+              this.brandchanrtDom2.resize()
+            } catch (error) {
+              console.log(error)
+            }
+          // }
+          
         }
       }
     }
@@ -160,6 +194,7 @@ export default {
     },
     // ajax请求
     getBrandData(date) {
+       this.i += 1
       mango.loading('open')
       let _this = this
       mango.getAjax(this, this.port, {
@@ -179,6 +214,8 @@ export default {
           // res.yAxisData = tempArr
           // console.log('数据:', res)
           _this.brandData = res
+          // 检测数据是否为空
+          this.brandShow = emptyData(res.series)
         }
       })
     },
@@ -196,6 +233,8 @@ export default {
           res = res.data
           // console.log('品类',)
           _this.categoryData = res
+          // 检测数据是否为空
+          this.categoryShow = emptyData(res.series)
         }
       })
     },

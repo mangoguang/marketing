@@ -9,12 +9,18 @@
     </li>
     <li id="2" @click="isDeal">  
       <!-- <router-link to="/ReportForms" > -->
-      <div class="iconChar"></div>
-      <p class="iconCharP">报表</p>  
+      <div v-show='chartActive'>
+        <div class="iconChar"></div>
+        <p class="iconCharP">报表</p>  
+      </div>
+      <div v-show='!chartActive'>
+        <div class="charActive"></div>
+        <p class="charPActive">报表</p> 
+      </div>
       <!-- </router-link> -->
     </li>
     <li id="3">
-      <router-link to="/Customer" >
+      <router-link to="/Customer" @click.native="changeActive">
        <div class="iconSalary" ></div>
       <p class="iconCharP">客户</p>
       </router-link>
@@ -26,7 +32,7 @@
       <!-- </router-link> -->
     </li>
     <li id="5">
-      <router-link to="/" >
+      <router-link to="/"  @click.native="changeActive">
        <div class="iconPerson" ></div>
       <p class="iconCharP">个人</p>
       </router-link>
@@ -36,12 +42,20 @@
 </template>
 
 <script>
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Vuex, { mapState,mapMutations } from "vuex";
 export default {
   data(){
     return{
       padding: '',
       ajaxData: []
     }
+  },
+  computed: {
+    ...mapState({
+      chartActive: state => state.personMsg.chartActive
+    })
   },
   mounted(){
     this.isIPhoneX() 
@@ -52,22 +66,30 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   methods:{
+    ...mapMutations([
+      "setChartActive"
+    ]),
+    changeActive() {
+      this.setChartActive(true)
+    },
     isDeal() {
       if(this.ajaxData.type === 'dealer') {
+        this.setChartActive(false)
         this.$router.push({path: "/ReportForms"})
+
       }else {
-        this.$router.push({path: "/ReportForms"})
-        // alert('暂无权限')
+        alert('暂无权限')
+        this.setChartActive(true)
       }
     },
-    touchend:function(e){
+    touchend(e){
       // console.log(e.path[1].id)
       // if(e.path[1].id){
       //   alert('该模块尚未开发')
       // }
       alert('该模块尚未开发')
     },
-    isIPhoneX : function(){
+    isIPhoneX(){
       var u = navigator.userAgent;
       var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
       if (isIOS) {        
@@ -82,6 +104,7 @@ export default {
     }
   }
 }
+
 </script>
 
 <style lang="scss" scoped>
@@ -91,6 +114,19 @@ export default {
   position: fixed;
   background: #f8f8f8;
   bottom: 0;
+  .charActive{
+    width: 6.6vw;
+    height: 6.6vw; 
+    margin-bottom: 1.33vw;
+    background: url(../assets/imgs/icon1.png);
+    background-size: 2100%;
+    background-position: -14.2vw -20.8vw;
+  }
+  .charPActive{
+    color: #007aff;
+    font-size: 2.4vw;
+    text-align: center;
+  }
   ul{
     display: flex;
     justify-content: space-around;

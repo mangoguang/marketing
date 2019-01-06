@@ -1,9 +1,11 @@
 const state = {
-  personMsg:{}
+  personMsg:{},
+  chartActive: true
 }
 
 const mutations = {
-  setPersonMsg: (state, obj) => state.personMsg = obj
+  setPersonMsg: (state, obj) => state.personMsg = obj,
+  setChartActive: (state, obj) => state.chartActive = obj
 }
 
 const actions = {

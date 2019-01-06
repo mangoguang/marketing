@@ -171,6 +171,14 @@ export default {
                 "sex": "${res.sex}",
                 "type":"${res.type}"
               }`
+              // 将账号所属店铺存储到本地存储
+              // let shopsArr = res.shops
+              // let shopsStr = ''
+              // shopsArr.forEach(element => {
+              //   shopsStr += `"{'id': '${element.id}', 'name': '${element.name}'}",`
+              // })
+              // shopsStr = `[${shopsStr}]`
+              // localStorage.setItem("shops", shopsStr);
                 localStorage.setItem("ajaxData", ajaxData);
                 if (_this.checked) {
                   _this.setAccountMsg(_this.inputValue1, _this.inputValue2);

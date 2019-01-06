@@ -3,6 +3,17 @@ import option from './option'
 
 let chartsInit;
 let chanrtDom;
+
+function emptyData(data) {
+  return data.every((item, index) => {
+    return item.data.every((item, index) => {
+      return item <= 0
+    })
+  })
+}
+
+export {emptyData}
+
 // 参数说明：
 // data：图标数据
 // vertical设置柱状图的横向排布和纵向排布

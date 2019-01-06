@@ -89,6 +89,7 @@ export default function(data, vertical, salesVal, title) {
         }
       }
     })]
+    console.log('series数据：', series)
     // console.log('变量定义完成：')
     // console.log('shuju:', series)
     if (vertical === 'horizontal') {
