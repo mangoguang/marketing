@@ -7,14 +7,16 @@
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <div :style="{height: `100vw`}" ref="salesContainer"></div>
+      <div v-show="!salesShow" :style="{height: `100vw`}" ref="salesContainer"></div>
+      <noData v-show="salesShow"></noData>
       <RouterLink @click.native="toStoreSales" :text="'各门店销售额对比'"></RouterLink>
     </div>
     <div class="barBox">
       <chartsTit :text="'区域销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <div :style="{height: `100vw`}" ref="areaSalesContainer" ></div>
+      <div v-show="!areaSalesShow" :style="{height: `100vw`}" ref="areaSalesContainer" ></div>
+      <noData v-show="areaSalesShow"></noData>
       <RouterLink @click.native="toAreaStoreSales" :text="'各区域销售额对比'"></RouterLink>
     </div>
   </div>
@@ -27,7 +29,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
 
 
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
@@ -38,6 +40,7 @@ import chartsTit from '../../../components/charts/title'
 import RouterLink from '../../../components/charts/routerLink'
 import SelectComponent from '../../../components/select/selectComponent'
 import mybanner from '../../../components/banner'
+import noData from '../../../components/charts/noData'
 export default {
   name: 'sales',
   components: {
@@ -45,7 +48,8 @@ export default {
     chartsTit,
     RouterLink,
     SelectComponent,
-    mybanner
+    mybanner,
+    noData
   },
   data () {
     return {
@@ -58,7 +62,10 @@ export default {
       key1:false,
       key2:false,
       salchanrtDom1:'',
-      salchanrtDom2:''
+      salchanrtDom2:'',
+      // 用于标记各个echart图表是否显示/隐藏
+      salesShow: true,
+      areaSalesShow: true
     }
   },
   created() {
@@ -101,6 +108,9 @@ export default {
       if(this.key1) {
         if (this[`${chartsName}Data`]) {
           if (this[`${chartsName}Data`].series) {
+            // 检测数据是否为空
+            this.salesShow = emptyData(this[`${chartsName}Data`].series)
+            console.log('是否显示echarts', this.salesShow)
             chartsInit(this, chartsName, 'vertical', true)
             this.salchanrtDom1 = chanrtDom
           }
@@ -113,6 +123,8 @@ export default {
       if(this.key2) {
         if (this[`${chartsName}Data`]) {
           if (this[`${chartsName}Data`].series) {
+            // 检测数据是否为空
+            this.areaSalesShow = emptyData(this[`${chartsName}Data`].series)
             chartsInit(this, chartsName, 'vertical', true)
             this.salchanrtDom2 = chanrtDom
           }
@@ -184,8 +196,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.sales{
-  // background:#f8f8f8;
-}
+
 </style>
  

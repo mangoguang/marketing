@@ -6,7 +6,8 @@
       <chartsTit :text="'各门店销售额对比'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <div ref="storeSalesContainer" ></div>
+      <div v-show="!storeSalesShow" ref="storeSalesContainer" ></div>
+      <noData v-show="storeSalesShow"></noData>
       <!-- <Bar
       @chartsClick="chartsEvent"
       :data="storeSalesData"
@@ -21,7 +22,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
-import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
@@ -31,13 +32,15 @@ import Bar from '../../../components/charts/bar'
 import chartsTit from '../../../components/charts/title'
 import RouterLink from '../../../components/charts/routerLink'
 import mybanner from '../../../components/banner'
+import noData from '../../../components/charts/noData'
 export default {
   name: 'storeSales',
   components: {
     Bar,
     chartsTit,
     RouterLink,
-    mybanner
+    mybanner,
+    noData
   },
   data () {
     return {
@@ -46,7 +49,8 @@ export default {
       endTime: mango.getLocalTime('end'),
       title:'销售额报表',
       key:false,
-      storeSalchanrtDom1:''
+      storeSalchanrtDom1:'',
+      storeSalesShow: false
     }
   },
   created() {
@@ -73,6 +77,8 @@ export default {
         let routeTo = (data, _this) => {
           _this.$router.push({path: `/personalSales?shopId=${this.storeSalesData.idsData[data.dataIndex]}&name=${data.name}`})
         }
+        // 检测数据是否为空
+        this.storeSalesShow = emptyData(this.storeSalesData.series)
         chartsInit(this, 'storeSales', 'horizontal', true, '', routeTo)
         this.storeSalchanrtDom1 = chanrtDom
       }

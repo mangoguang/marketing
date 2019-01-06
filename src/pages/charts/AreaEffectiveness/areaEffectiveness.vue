@@ -4,7 +4,8 @@
     <SelectComponent></SelectComponent>
     <div class="barBox">
       <chartsTit :text="'坪效-整体'"></chartsTit>
-      <div :style="{height: `100vw`}" ref="areaEffectivenessContainer" ></div>
+      <div v-show="!areaEffectivenessShow" :style="{height: `100vw`}" ref="areaEffectivenessContainer" ></div>
+      <noData v-show="areaEffectivenessShow"></noData>
       <!-- <Bar
       :data="areaEffectivenessData"
       :vertical="'vertical'"
@@ -12,7 +13,8 @@
     </div>
     <div class="barBox">
       <chartsTit :text="'坪效-各店'"></chartsTit>
-      <div ref="areaEffectivenessShopContainer" ></div>
+      <div v-show="!areaEffectivenessShopShow" ref="areaEffectivenessShopContainer" ></div>
+      <noData v-show="areaEffectivenessShopShow"></noData>
       <!-- <Bar
       :data="areaEffectivenessShopData"
       :vertical="'horizontal'"
@@ -26,7 +28,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -35,6 +37,7 @@ import Bar from '../../../components/charts/bar'
 import chartsTit from '../../../components/charts/title'
 import RouterLink from '../../../components/charts/routerLink'
 import mybanner from '../../../components/banner'
+import noData from '../../../components/charts/noData'
 
 export default {
   name:'areaEffectiveness',
@@ -43,7 +46,8 @@ export default {
     chartsTit,
     RouterLink,
     mybanner,
-    SelectComponent
+    SelectComponent,
+    noData
   },
   data(){
     return{
@@ -57,7 +61,9 @@ export default {
       areaEffchanrtDom2:'',
       key1:false,
       key2:false,
-      i:0
+      i:0,
+      areaEffectivenessShow: false,
+      areaEffectivenessShopShow: false
     }
   },
   created() {
@@ -97,6 +103,8 @@ export default {
       const chartsName = 'areaEffectiveness'
       if(this.key1) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'vertical')
           this.areaEffchanrtDom1 = chanrtDom
         }
@@ -106,6 +114,8 @@ export default {
       const chartsName = 'areaEffectivenessShop'
       if(this.key2) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal')
           this.areaEffchanrtDom2 = chanrtDom
           if(this.i > 1){

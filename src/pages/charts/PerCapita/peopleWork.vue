@@ -6,7 +6,8 @@
       <chartsTit :text="'人效-整体'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <div :style="{height: `100vw`}" ref="peopleWorkContainer" ></div>
+      <div v-show="!peopleWorkShow" :style="{height: `100vw`}" ref="peopleWorkContainer" ></div>
+      <noData v-show="peopleWorkShow"></noData>
       <!-- <Bar
       :data="peopleWorkData"
       :vertical="'vertical'"
@@ -17,7 +18,8 @@
       <chartsTit :text="'人效-各店'">
         <h6>单位：万元</h6>
       </chartsTit>
-      <div ref="areaPeopleWorkContainer" ></div>
+      <div v-show="!areaPeopleWorkShow" ref="areaPeopleWorkContainer" ></div>
+      <noData v-show="areaPeopleWorkShow"></noData>
       <!-- <Bar
       :data="areaPeopleWorkData"
       :vertical="'horizontal'"
@@ -32,7 +34,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -41,6 +43,7 @@ import Bar from '../../../components/charts/bar'
 import chartsTit from '../../../components/charts/title'
 import RouterLink from '../../../components/charts/routerLink'
 import mybanner from '../../../components/banner'
+import noData from '../../../components/charts/noData'
 
 export default {
   name:'peopleWork',
@@ -49,7 +52,8 @@ export default {
     chartsTit,
     RouterLink,
     mybanner,
-    SelectComponent
+    SelectComponent,
+    noData
   },data(){
     return{
       ajaxData: {},
@@ -63,7 +67,9 @@ export default {
       key2:false,
       peoWorkchanrtDom1:'',
       peoWorkchanrtDom2:'',
-      i:0
+      i:0,
+      peopleWorkShow: false,
+      areaPeopleWorkShow: false
     }
   }, created() {
     // 获取本地存储信息
@@ -102,6 +108,8 @@ export default {
       const chartsName = 'peopleWork'
       if(this.key1) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'vertical', true)
           this.peoWorkchanrtDom1 = chanrtDom
         }
@@ -111,6 +119,8 @@ export default {
       const chartsName = 'areaPeopleWork'
       if(this.key2) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal', true)
           this.peoWorkchanrtDom2 = chanrtDom
           if(this.i > 1){

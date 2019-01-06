@@ -8,37 +8,43 @@
       <chartsTit :text="'进店数-整体'">
         <!-- <h6>单位：万</h6> -->
       </chartsTit>
-      <div :style="{height: `100vw`}" ref="storeGetInTotalContainer" ></div>
+      <div v-show="!storeGetInTotalShow" :style="{height: `100vw`}" ref="storeGetInTotalContainer" ></div>
+      <noData v-show="storeGetInTotalShow"></noData>
     </li>
     <!-- 各门店进店数 -->
     <li class="barBox">
       <chartsTit :text="'进店数-各门店'">
       </chartsTit>
-      <div ref="perStoreGetInContainer" ></div>
+      <div v-show="!perStoreGetInShow" ref="perStoreGetInContainer" ></div>
+      <noData v-show="perStoreGetInShow"></noData>
     </li>
     <!-- 整体成交率 -->
     <li class="barBox" >
       <chartsTit :text="'成交率-整体'">
       </chartsTit>
-      <div :style="{height: `100vw`}" ref="achieveRatioTotalContainer" ></div>
+      <div v-show="!achieveRatioTotalShow" :style="{height: `100vw`}" ref="achieveRatioTotalContainer" ></div>
+      <noData v-show="achieveRatioTotalShow"></noData>
     </li>
     <!-- 各门店成交率 -->
     <li class="barBox">
       <chartsTit :text="'成交率-各门店'">
       </chartsTit>
-      <div ref="perAchieveRatioContainer" ></div>
+      <div v-show="!perAchieveRatioShow" ref="perAchieveRatioContainer" ></div>
+      <noData v-show="perAchieveRatioShow"></noData>
     </li>
     <!-- 整体客单值 -->
     <li class="barBox">
       <chartsTit :text="'客单值-整体'">
       </chartsTit>
-      <div :style="{height: `100vw`}" ref="orderFormTotalContainer" ></div>
+      <div v-show="!orderFormTotalShow" :style="{height: `100vw`}" ref="orderFormTotalContainer" ></div>
+      <noData v-show="orderFormTotalShow"></noData>
     </li>
     <!-- 各门店客单值 -->
     <li class="barBox">
       <chartsTit :text="'客单值-各门店'">
       </chartsTit>
-      <div ref="perOrderFormContainer" ></div>
+      <div v-show="!perOrderFormShow" ref="perOrderFormContainer" ></div>
+      <noData v-show="perOrderFormShow"></noData>
     </li>
   </ul>
 </template>
@@ -49,7 +55,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -59,10 +65,11 @@ import Pie from '../../../components/charts/pie'
 import chartsTit from '../../../components/charts/title'
 import RouterLink from '../../../components/charts/routerLink'
 import mybanner from '../../../components/banner'
+import noData from '../../../components/charts/noData'
 export default {
   name: 'audioTechnica',
   components: {
-    Bar, Pie, chartsTit, RouterLink, mybanner, SelectComponent
+    Bar, Pie, chartsTit, RouterLink, mybanner, SelectComponent, noData
   },
   data () {
     return {
@@ -89,7 +96,13 @@ export default {
       auchanrtDom4:'',
       auchanrtDom5:'',
       auchanrtDom6:'',
-      i:0
+      i:0,
+      storeGetInTotalShow: false,
+      perStoreGetInShow: false,
+      achieveRatioTotalShow: false,
+      perAchieveRatioShow: false,
+      orderFormTotalShow: false,
+      perOrderFormShow: false
     }
   },
   created() {
@@ -123,6 +136,8 @@ export default {
       const chartsName = 'storeGetInTotal'
       if(this.key1) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'vertical')
           this.auchanrtDom1 = chanrtDom
         }
@@ -133,6 +148,8 @@ export default {
       const chartsName = 'perStoreGetIn'
       if(this.key2) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal')
           this.auchanrtDom2 = chanrtDom
           if(this.i > 1){
@@ -149,6 +166,8 @@ export default {
       const chartsName = 'achieveRatioTotal'
       if(this.key3) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'vertical')
           this.auchanrtDom3 = chanrtDom
         }
@@ -159,7 +178,9 @@ export default {
         const chartsName = 'perAchieveRatio'
         if(this.key4) {
           if (this[`${chartsName}Data`].series) {
-            chartsInit(this, chartsName, 'horizontal')
+            // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
+          chartsInit(this, chartsName, 'horizontal')
             this.auchanrtDom4 = chanrtDom
             if(this.i > 1){
               try {
@@ -176,6 +197,8 @@ export default {
       const chartsName = 'orderFormTotal'
       if(this.key5) {
         if (this[`${chartsName}Data`].series) {
+          // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'vertical')
           this.auchanrtDom5 = chanrtDom
         }
@@ -186,7 +209,9 @@ export default {
         const chartsName = 'perOrderForm'
         if(this.key6) {
           if (this[`${chartsName}Data`].series) {
-            chartsInit(this, chartsName, 'horizontal')
+            // 检测数据是否为空
+          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
+          chartsInit(this, chartsName, 'horizontal')
             this.auchanrtDom6 = chanrtDom
             if(this.i > 1){
               try {
