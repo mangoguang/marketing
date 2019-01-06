@@ -74,6 +74,8 @@ export default {
     this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {}
     // let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    // let shops = localStorage.getItem('shops')
+    // console.log('本地存储的shops:', JSON.parse(shops))
   },
   mounted(){
     this.getSalesData(this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)

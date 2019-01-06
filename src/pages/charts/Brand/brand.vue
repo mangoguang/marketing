@@ -13,7 +13,7 @@
           :seriesData="item.data"
           :title="`各${typeName}金额占比-${item.name}`"
           :category="`整体${typeName}占比`"></Pie>
-          <noData v-show="brandShow"></noData>
+          <!-- <noData v-show="brandShow"></noData> -->
         </div>
       </li>
       <li>
@@ -45,7 +45,7 @@
           :seriesData="item.data"
           :title="`各${typeName}数量占比-${item.name}`"
           :category="`各${typeName}数量占比`"></Pie>
-          <noData v-show="categoryShow"></noData>
+          <!-- <noData v-show="categoryShow"></noData> -->
         </div>
       </li>
       <li>

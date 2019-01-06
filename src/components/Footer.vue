@@ -53,11 +53,11 @@ export default {
   },
   methods:{
     isDeal() {
-      if(this.ajaxData.type === 'dealer') {
+      // if(this.ajaxData.type === 'dealer') {
         this.$router.push({path: "/ReportForms"})
-      }else {
-        alert('暂无权限')
-      }
+      // }else {
+      //   alert('暂无权限')
+      // }
     },
     touchend:function(e){
       // console.log(e.path[1].id)
