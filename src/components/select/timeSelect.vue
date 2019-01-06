@@ -5,6 +5,7 @@
       <mt-datetime-picker
         ref="datePicker"
         type="date"
+        :endDate="new Date()"
         v-model="pickerVisible"
         year-format="{value} 年"
         month-format="{value} 月"
@@ -22,16 +23,14 @@ import { DatetimePicker } from 'mint-ui'
 import mango from '../../js'
 Vue.component(DatetimePicker.name, DatetimePicker)
 
-
 export default {
   components:{DatetimePicker},
   data() {
     return {
       date: new Date(),
-      pickerVisible :'',
+      pickerVisible: new Date(),
       ajaxData: {},
-      account:{},
-      dailyData:{}
+      dailyData: {}
     };
   },
   computed:{
@@ -41,7 +40,6 @@ export default {
     //打开日历
     openPicker(){
       this.$refs.datePicker.open()
-      
     },
     //确认选择日期
     sendDate(){
@@ -55,7 +53,7 @@ export default {
     getData(date){
       mango.getAjax(this, 'daily', {
         account: this.ajaxData.account,
-        date:date,
+        date,
         tenantId: this.ajaxData.tenantId
       }, 'v2','get')
       .then((res) => {
@@ -72,8 +70,6 @@ export default {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    let account = localStorage.getItem('accountMsg')
-    this.account = JSON.parse(account)
     //获取数据
     let date = mango.indexTimeB(temp)[1]
     this.getData(date)

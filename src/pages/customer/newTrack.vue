@@ -9,6 +9,7 @@
 
 <script>
 import Vue from "vue"
+import Vuex, { mapMutations, mapState } from 'vuex'
 import bigBtn from '../../components/customer/bigBtn'
 import recordForm from '../../components/customer/recordForm'
 import myBanner from '../../components/banner'

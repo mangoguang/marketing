@@ -16,7 +16,7 @@
       </li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
-        <span>{{turnDate(newCustomerInfo.storeDate)|| '请选择客户进店日期'}}</span>
+        <span>{{turnDate(newCustomerInfo.storeDate)}}</span>
       </li>
       <!-- <li is="addressSelect" :addressVal="newCustomerInfo.address" @addressChange="addressChange"></li> -->
       <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
@@ -146,11 +146,22 @@ export default {
     'countyName': function() {
       // this.customerInfo[this.proto] = 
       // console.log('地区改变了：', this.countyName)
+    },
+    urgency() {
+      if(this.urgency){
+        this.newCustomerInfo.urgency = 1
+      }else{
+        this.newCustomerInfo.urgency = 9
+      }
     }
   },
   computed: {
     ...mapState({
-      newCustomerInfo: state => state.customer.newCustomerInfo
+      newCustomerInfo: state => state.customer.newCustomerInfo,
+      sexVal: state => state.select.sexVal,
+      areaVal: state => state.select.areaVal,
+      sourceVal: state => state.select.sourceVal,
+      leaveStoreVal: state => state.select.leaveStoreVal
     }),
     'provinceNames': function() {
       let arr = this.province.map(item => {
@@ -181,12 +192,19 @@ export default {
   mounted() {
     this.setNewCustomerInfo({})
     this.newCustomerInfo.phone = this.$route.query.phone
+    this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(this.today)[1])
     console.log('000111', this.newCustomerInfo)
     // this.turnDate('2018-01-01')
     // this.returnDate('1992年04月27日')
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo"]),
+    ...mapMutations([
+      "setNewCustomerInfo",
+      'setSexVal',
+      'setAreaVal',
+      'setSourceVal',
+      'setLeaveStoreVal'
+    ]),
     checkBtnStatus(obj) {
       for (let i = 0; i < this.importantBtns.length; i++) {
         this.importantBtns[i].status = (obj.important - 1) === i
@@ -246,16 +264,24 @@ export default {
     },
     sexChange(val) {
       console.log('sex改变了：', val)
-      this.newCustomerInfo.sex = val === '男' ? 1 : 2
+      if(val === '') {
+        val = 0
+        this.newCustomerInfo.sex = val
+      } else {
+        this.newCustomerInfo.sex = val === '男' ? 1 : 2
+      }
+      this.setSexVal(val)
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     sourceChange(val) {
-      console.log('sex改变了：', val)
+      console.log('sex123改变了：', val)
+      this.setSourceVal(val)
       this.newCustomerInfo.source = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     leaveStoreChange(val) {
       console.log('sex改变了：', val)
+      this.setLeaveStoreVal(val)
       this.newCustomerInfo.leaveStore = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
@@ -288,9 +314,9 @@ export default {
       }else{
         this.newCustomerInfo.urgency = 9
       }
-      if(!this.newCustomerInfo.source) {
-        this.newCustomerInfo.source = '自然进店'
-      }
+      // if(!this.newCustomerInfo.source) {
+      //   this.newCustomerInfo.source = '自然进店'
+      // }
       if(!this.newCustomerInfo.important) {
         this.$set(this.newCustomerInfo, 'important', 1)
       }         //关键程度默认选择1，但是没有点击的时候不会保存数据。

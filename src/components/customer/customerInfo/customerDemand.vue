@@ -74,7 +74,7 @@ export default {
       buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
       roomNumList:[{values: [1, 2, 3, 4, '5及以上']}],
       colorPrefList: [{values :['暖色', '冷色']}],
-      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
+      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式']}],
       shopNameList: [{values: []}],
       pickerShow: {
         progress: false,
@@ -137,6 +137,9 @@ export default {
         this.shopNameList[0].values = shopName
       });
       }
+      this.shopName = this.shopNameList[0].values[0]
+      // this.getShopID(this.shopName)
+      // this.$set(this.newCustomerInfo, 'shopId', this.shopId)
     },
     getShopID(name) {
       if(this.personMsg.shops) {
@@ -156,46 +159,57 @@ export default {
         console.log('保存数据成功', res)
       })
     },
+    setOptions(data, dataList) {
+      if(!this.customerDemand[`${data}`]) {
+        this.customerDemand[`${data}`] = dataList[0].values[0]
+      }else {
+        this.$refs.Picker.setSlotValue(0, this.customerDemand[`${data}`])
+      }
+    },
     selectShopId() {
       this.slots = this.shopNameList
       this.proto = 'shopId'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.$refs.Picker.setSlotValue(0, this.shopName)
       this.popupVisible = true
     },
     selectProgress() {
       this.slots = this.progressList
       this.proto = 'progress'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.progress)
+      this.setOptions('progress', this.progressList)
       this.popupVisible = true
     },
     selectBuyReason() {
       this.slots = this.buyReasonList
       this.proto = 'buyReason'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.buyReason)
+      this.setOptions('buyReason', this.buyReasonList)
       this.popupVisible = true
     },
     selectRoomNum() {
       this.slots = this.roomNumList
       this.proto = 'roomNum'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.roomNum)
+      if(this.roomNum === '') {
+        this.roomNum = this.roomNumList[0].values[0]
+      }else {
+        this.$refs.Picker.setSlotValue(0, this.roomNum)
+      }
       this.popupVisible = true
     },
     selectColorPref() {
       this.slots = this.colorPrefList
       this.proto = 'colorPref'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.colorPref)
+      this.setOptions('colorPref', this.colorPrefList)
       this.popupVisible = true
     },
     selectStylePref() {
       this.slots = this.stylePrefList
       this.proto = 'stylePref'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.customerDemand.stylePref)
+       this.setOptions('stylePref', this.stylePrefList)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
@@ -218,14 +232,12 @@ export default {
       if(this.shopName) {
         this.getShopID(this.shopName)
         this.$set(this.customerDemand, 'shopId', this.shopId)
-      }else {
-        this.$set(this.customerDemand, 'shopId', '')
       }
     },
     saveCustomerDemand() {
       let id = this.$route.params.id
       this.hasShopId()
-      if (this.customerDemand.intention && this.customerDemand.intention != '') {
+      // if (this.customerDemand.intention && this.customerDemand.intention != '') {
         mango.getAjax(this, 'customer/update', {
           customerId: id,
           account: this.ajaxData.account,   //登录账户
@@ -239,9 +251,9 @@ export default {
             mango.tip('保存成功！')
           }
         })
-      } else {
-        mango.tip('请填写意向产品！')
-      }
+      // } else {
+        // mango.tip('请填写意向产品！')
+      // }
       console.log('客户信息：：', this.customerDemand)      
     }
   }

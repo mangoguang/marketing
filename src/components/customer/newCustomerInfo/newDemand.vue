@@ -20,7 +20,7 @@
         <span >{{roomNum || '请填写房间数量'}}</span>
       </li>
       <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
-        <span>{{shopName || '请选择门店'}}</span>
+        <span>{{shopName}}</span>
       </li>
       <!-- <li is="customerLi" :leftText="'房间数量'">
         <input v-model="newCustomerInfo.roomNum" placeholder="请填写房间数量" type="number">
@@ -74,7 +74,7 @@ export default {
       buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
       roomNumList: [{values: [1, 2, 3, 4, '5及以上']}],
       colorPrefList: [{values :['暖色', '冷色']}],
-      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
+      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式']}],
       shopNameList: [{values: []}],
       pickerShow: {
         progress: false,
@@ -118,6 +118,9 @@ export default {
         this.shopNameList[0].values = shopName
       });
       }
+      this.shopName = this.shopNameList[0].values[0]
+      this.getShopID(this.shopName)
+      this.$set(this.newCustomerInfo, 'shopId', this.shopId)
     },
     getShopID(name) {
       if(this.personMsg.shops) {
@@ -129,49 +132,59 @@ export default {
       }
     },
     setDemand() {
-     
       this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    setOptions(data, dataList) {
+      if(!this.newCustomerInfo[`${data}`]) {
+        this.newCustomerInfo[`${data}`] = dataList[0].values[0]
+      }else {
+        this.$refs.Picker.setSlotValue(0, this.newCustomerInfo[`${data}`])
+      }
     },
     selectShopId() {
       this.slots = this.shopNameList
       this.proto = 'shopId'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.$refs.Picker.setSlotValue(0, this.shopName)
       this.popupVisible = true
     },
     selectProgress() {
       this.slots = this.progressList
       this.proto = 'progress'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.progress)
+      this.setOptions('progress', this.progressList)
       this.popupVisible = true
     },
     selectBuyReason() {
       this.slots = this.buyReasonList
       this.proto = 'buyReason'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.buyReason)
+      this.setOptions('buyReason', this.buyReasonList)
       this.popupVisible = true
     },
     selectRoomNum() {
       this.slots = this.roomNumList
       this.proto = 'roomNum'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.roomNum)
+      if(this.roomNum === '') {
+        this.roomNum = this.roomNumList[0].values[0]
+      }else {
+        this.$refs.Picker.setSlotValue(0, this.roomNum)
+      }
       this.popupVisible = true
     },
     selectColorPref() {
       this.slots = this.colorPrefList
       this.proto = 'colorPref'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.colorPref)
+      this.setOptions('colorPref', this.colorPrefList)
       this.popupVisible = true
     },
     selectStylePref() {
       this.slots = this.stylePrefList
       this.proto = 'stylePref'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.newCustomerInfo.stylePref)
+      this.setOptions('stylePref', this.stylePrefList)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
@@ -182,9 +195,10 @@ export default {
         if(this.shopName) {
           this.getShopID(this.shopName)
           this.newCustomerInfo.shopId = this.shopId
-        }else {
-          this.newCustomerInfo.shopId = ''
         }
+        // else {
+        //   this.newCustomerInfo.shopId = ''
+        // }
       }else if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {

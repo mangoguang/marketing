@@ -4,7 +4,7 @@
       <div class="line"></div>
       <p>{{pTitle}}</p>
     </div>
-    <textarea :placeholder="`${pla}`" 
+    <textarea :disabled="textareaStatus" :placeholder="`${pla}`" 
       v-on:input="$emit('input',$event.target.value)"
       :value='value'>
       </textarea>
@@ -13,12 +13,22 @@
 
 <script>
 import Vue from 'vue'
+import mango from '../../js'
 export default {
-  props:['pTitle','pla','value'],
+  props:['pTitle','pla','value','changeDay'],
   data(){
     return{
-      
+
     }
+  },
+  computed: {
+    textareaStatus() {
+      let date = new Date()
+      return mango.indexTimeB(date)[1] != this.changeDay
+    }
+  },
+  mounted() {
+
   }
 }
 </script>

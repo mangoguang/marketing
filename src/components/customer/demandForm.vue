@@ -71,15 +71,8 @@ export default {
       buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
       roomNumList: [{values: [1, 2, 3, 4, '5及以上']}],
       colorPrefList: [{values :['暖色', '冷色']}],
-      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式', '辅助查询']}],
+      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式']}],
       shopNameList: [{values: []}],
-      pickerShow: {
-        progress: false,
-        buyReason: false,
-        roomNum: false,
-        colorPref: false,
-        stylePref: false
-      },
       proto: '',
       roomNum:'',
       shopName: '',
@@ -104,7 +97,8 @@ export default {
       this.demand = this.customerDemand
       this._isRoomNum()
       let tempId = this.customerDemand.shopId
-      this._isShopId(tempId)
+      this._changeShopName(tempId)
+      // this._isShopId(tempId)
     }
   },
   methods: {
@@ -153,56 +147,65 @@ export default {
       this.slots = this.shopNameList
       this.proto = 'shopId'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopNamea)
+      this.$refs.Picker.setSlotValue(0, this.shopName)
       this.popupVisible = true
+    },
+    setOptions(data, dataList) {
+      if(!this.demand[`${data}`]) {
+        this.demand[`${data}`] = dataList[0].values[0]
+      }else {
+        this.$refs.Picker.setSlotValue(0, this.demand[`${data}`])
+      }
     },
     selectProgress() {
       this.slots = this.progressList
       this.proto = 'progress'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.demand.progress)
+      this.setOptions('progress', this.progressList)
       this.popupVisible = true
     },
     selectBuyReason() {
       this.slots = this.buyReasonList
       this.proto = 'buyReason'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.demand.buyReason)
+      this.setOptions('buyReason', this.buyReasonList)
       this.popupVisible = true
     },
     selectRoomNum() {
       this.slots = this.roomNumList
       this.proto = 'roomNum'
-      // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.roomNum)
+      //设置性别选择插件的初始值
+      setTimeout(() => {
+        if(!this.demand.roomNum) {
+          this.roomNum = this.roomNumList[0].values[0]
+        }else {
+          this.$refs.Picker.setSlotValue(0, this.roomNum)
+        }
+      }, 100);
       this.popupVisible = true
     },
     selectColorPref() {
       this.slots = this.colorPrefList
       this.proto = 'colorPref'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.demand.colorPref)
+      this.setOptions('colorPref', this.colorPrefList)
       this.popupVisible = true
     },
     selectStylePref() {
       this.slots = this.stylePrefList
       this.proto = 'stylePref'
       // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.demand.stylePref)
+      this.setOptions('stylePref', this.stylePrefList)
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)
       // this.demand.progress = values[0]
       if(this.proto == 'shopId') {
-        let name = this.shopName
         this.shopName = values[0]
-        if(!this.shopName) {
-          this.demand.shopId = '' 
-        } else {
-          this.getShopID(this.shopName)
-          this.demand.shopId= this.shopId
-        }
+        this.getShopID(this.shopName)
+        this.demand.shopId= this.shopId
+        
       }else if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {

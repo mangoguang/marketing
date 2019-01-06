@@ -15,7 +15,7 @@
                 <p>结束日</p>
                 <strong>{{endDateVal}}</strong>
               </li>
-              <li><span>共{{countTime}}日</span></li>
+              <li><span>共{{countTime + 1}}日</span></li>
             </ul>
           </li>
           <li>
@@ -103,16 +103,21 @@ export default {
       let [start, end, dateVal] = [null, null, null]
       if (this.dateType === 'start') {
         start = new Date(date).getTime()
-        console.log(mango.indexTime(date, 'day'), this.startDateVal)
-        if ((start - new Date(this.endDateVal).getTime()) > 0) {
-          alert('起始日不能大于结束日')
-          return
+        if(mango.indexTimeB(date)[1] === mango.indexTimeB(new Date(this.endDateVal))[1]) {
+        }else{
+          if ((start - new Date(this.endDateVal).getTime()) > 0) {
+            alert('起始日不能大于结束日')
+            return
+          }
         }
       } else {
         end = new Date(date).getTime()
-        if ((new Date(this.startDateVal).getTime() - end) > 0) {
-          alert('结束日不能小于起始日')
-          return
+        if(mango.indexTimeB(date)[1] === mango.indexTimeB(new Date(this.startDateVal))[1]) {
+        }else{
+          if ((new Date(this.startDateVal).getTime() - end) > 0) {
+            alert('结束日不能小于起始日')
+            return
+          }
         }
       }
       dateVal = mango.indexTime(date, 'day')

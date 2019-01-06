@@ -2,7 +2,7 @@
   <li class="sexSelect">
     <ul>
       <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
-        <span>{{sexVal}}</span>
+        <span>{{sexVal || '请选择客户性别'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       slots: [{values: ['男', '女']}],
-      popupVisible: false
-      // val: this.sexVal == 1 || '男' ? '男' : '女'
+      popupVisible: false,
+      key: false
     }
   },
   computed:{
@@ -53,12 +53,20 @@ export default {
   methods:{
     ...mapMutations(["setSexVal"]),
     selectSex() {
-      this.$refs.sexPicker.setSlotValue(0, this.sexVal)
+      if(this.sexVal === '' || this.sexVal ==='未知') {
+        this.setSexVal(this.slots[0].values[0])
+      }else {
+        this.$refs.sexPicker.setSlotValue(0, this.sexVal)
+      }
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
-      this.val = values[0]
-      this.$emit('sexChange', values[0])
+      // this.val = values[0]
+      if(this.key) {
+        this.$emit('sexChange', values[0])
+      }else {
+        this.key = true
+      }
     }
   }
   }

@@ -3,7 +3,7 @@
     <mybanner :title="title">
       <!-- <button v-show="showRecordForm">保存</button> -->
     </mybanner>
-    <h1>{{ product }}</h1>
+    <h1></h1>
     <div class="customer-demand">
       <div class="tilte">
         <p></p>
@@ -53,7 +53,7 @@
       <ul>
         <li v-for="(item,index) in demandList.trList" :key="index" @click="pullDown(index)">
           <div class="detail-wrapper">
-            <span class="time">{{item.followTime}}</span>
+            <span class="time">{{item.createTime || '2019-01-01'}}</span>
             <span class="people">{{demandList.intention}}</span>
             <p>{{item.probability}}</p>
             <div class="icon" >
@@ -82,7 +82,7 @@ export default {
   computed: {
     ...mapState({
       followTrackDetails: state => state.followTrackDetails.followTrackDetails,
-      personMsg: state => state.personMsg.personMsg  
+      personMsg: state => state.personMsg.personMsg
     })
   },
   data() {
@@ -207,6 +207,8 @@ export default {
     font-size: 5.64vw;
     line-height: 2em;
     padding-left: 4.6vw;
+    margin-top: 2vw;
+
   } 
   .tilte{
     display: flex;

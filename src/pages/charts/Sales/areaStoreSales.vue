@@ -1,9 +1,11 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="areaStoreSales">
+  <div class="areaStoreSales paddingTop2">
     <mybanner :title='title'/>
     <div class="barBox">
-      <chartsTit :text="'各门店销售额对比'"></chartsTit>
+      <chartsTit :text="'各区域销售额对比'">
+        <h6>单位：万元</h6>
+      </chartsTit>
       <ul class="areaStoreBox">
         <li v-for="(item, index) in areaStoreSalesData" :key="`${index}areaStore`">
           

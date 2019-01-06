@@ -71,14 +71,34 @@ export default {
   },
   computed: {
     ...mapState({
-      newCustomerInfo: state => state.customer.newCustomerInfo
+      newCustomerInfo: state => state.customer.newCustomerInfo,
+      sexVal: state => state.select.sexVal,
+      areaVal: state => state.select.areaVal,
+      enterStoreVal: state => state.select.enterStoreVal,
+      sourceVal: state => state.select.sourceVal,
+      leaveStoreVal: state => state.select.leaveStoreVal
     })
   },
   mounted() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
   },
+  destroyed(){
+    this.setSexVal('')
+    this.setAreaVal('')
+    this.setEnterStoreVal('')
+    this.setSourceVal('')
+    this.setLeaveStoreVal('')
+  },
   methods: {
+    ...mapMutations([
+      "setNewCustomerInfo",
+      'setSexVal',
+      'setAreaVal',
+      'setSourceVal',
+      'setLeaveStoreVal',
+      'setEnterStoreVal'
+    ]),
     //控制下面两个模块的显示隐藏
     controlDemand() {
       this.isShowDemand = !this.isShowDemand
@@ -90,6 +110,7 @@ export default {
     creatNewCustomer() {
       this.setInitData()
       let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
+      //  this.updateParams(this.newCustomerInfo)
       if(testPhoneNum) {
         mango.getAjax(this, 'customer/update', {
           account: this.ajaxData.account,   //登录账户
@@ -108,11 +129,10 @@ export default {
     },
     //初始化数据
     setInitData() {
-      this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-      if(this.newCustomerInfo.urgency){
-        this.newCustomerInfo.urgency = 1
-      }else{
-        this.newCustomerInfo.urgency = 9
+      this.newCustomerInfo.sex = this.sexVal === ''? 0 : this.sexVal ==='男'? 1:2
+      this.newCustomerInfo.leaveStore = this.leaveStoreVal
+      if(!this.newCustomerInfo.username || this.newCustomerInfo.username === '') {
+        this.newCustomerInfo.username = '无名氏'
       }
       if(!this.newCustomerInfo.source) {
         this.newCustomerInfo.source = '自然进店'
@@ -120,9 +140,12 @@ export default {
       if(!this.newCustomerInfo.important) {
         this.$set(this.newCustomerInfo, 'important', 1)
       }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
-      if(!this.newCustomerInfo.storeDate) {
-        this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
-      } //如果没有选进店时间。默认选择今天
+      if(!this.newCustomerInfo.followPlan && !this.newCustomerInfo.followSituation && !this.newCustomerInfo.followTime && this.newCustomerInfo.percent === 50) {
+        this.newCustomerInfo.percent = ''
+      }else{
+        this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
+        this.newCustomerInfo.followTime = this.newCustomerInfo.followTime || mango.indexTimeB(new Date())[1]
+      }
     },
     //获取参数
      updateParams(obj) {
@@ -131,7 +154,7 @@ export default {
         account: this.ajaxData.account,   //登录账户
         tenantId: this.ajaxData.tenantId,
         'details.username': obj.username,
-        'details.sex': obj.sex === '男' ? 1 : 2,  //性别(1:男,2:女,0:未知)，
+        'details.sex': obj.sex,  //性别(1:男,2:女,0:未知)，
         'details.storeDate': returnDate(obj.storeDate),
         'details.phone': obj.phone,
         'details.source': obj.source,
@@ -152,7 +175,7 @@ export default {
         'demand.shopId': obj.shopId,
         'record.followSituation': obj.followSituation,
         'record.probability': obj.percent,
-        'record.followTime': returnDate(obj.followTime) || mango.indexTimeB(new Date())[1],   //默认为今天
+        'record.followTime': obj.followTime,   //默认为今天
         'record.followPlan': obj.followPlan
       }
       for (let key in temp) {

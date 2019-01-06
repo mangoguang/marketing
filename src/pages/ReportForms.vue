@@ -33,7 +33,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Footer from '../components/Footer'
 import mango from '../js'
-import Vuex, { mapMutations, mapState } from "vuex";
+// import Vuex, { mapMutations, mapState } from "vuex";
 
 export default {
   components:{
@@ -68,19 +68,19 @@ export default {
       ]
     }
   },
-  created(){
-    this.checkLogin()
-  //  console.log(this.forms[0].text)
+  // created(){
+  //   this.checkLogin()
+  // //  console.log(this.forms[0].text)
 
-  //到时候放在初始页面
-    localStorage.removeItem('limit');  
-    localStorage.removeItem('selectLimit');  
-    this.setCustomerScroll(0);
-    this.setOrderScroll(0);
-    this.setDealScroll(0)
-    // this.setIsSelectStatus(false)
-    this.$store.commit('setIsSelectStatus', false)
-  },
+  // //到时候放在初始页面
+  //   localStorage.removeItem('limit');  
+  //   localStorage.removeItem('selectLimit');  
+  //   this.setCustomerScroll(0);
+  //   this.setOrderScroll(0);
+  //   this.setDealScroll(0)
+  //   // this.setIsSelectStatus(false)
+  //   this.$store.commit('setIsSelectStatus', false)
+  // },
   mounted() {
     if (mango.version === 'app') {
       console.log(api.deviceId)
@@ -88,30 +88,30 @@ export default {
   },
   props:['myStyle'],
   methods:{
-     ...mapMutations([
-      "setCustomerScroll",
-      "setOrderScroll",
-      'setDealScroll',
-      'setIsSelectStatus'
-       ]),
+    //  ...mapMutations([
+    //   "setCustomerScroll",
+    //   "setOrderScroll",
+    //   'setDealScroll',
+    //   'setIsSelectStatus'
+    //    ]),
     cancle() {
 
     },
     checkLogin() {
-      let ajaxData = localStorage.getItem('ajaxData')
-      // console.log(Date.parse(new Date()) - timeLong)
-      if (!ajaxData) {
-        this.$router.push({path: './Login'})
-        return
-      } else {
-        let timeLong = JSON.parse(ajaxData).timestamp
-        timeLong = Date.parse(new Date()) - JSON.parse(ajaxData).timestamp
-        timeLong = timeLong/(60 * 60 * 24 * 1000)
-        if (timeLong > 10) {
-          this.$router.push({path: './Login'})
-          return
-        }
-      }
+      // let ajaxData = localStorage.getItem('ajaxData')
+      // // console.log(Date.parse(new Date()) - timeLong)
+      // if (!ajaxData) {
+      //   this.$router.push({path: './Login'})
+      //   return
+      // } else {
+      //   let timeLong = JSON.parse(ajaxData).timestamp
+      //   timeLong = Date.parse(new Date()) - JSON.parse(ajaxData).timestamp
+      //   timeLong = timeLong/(60 * 60 * 24 * 1000)
+      //   if (timeLong > 10) {
+      //     this.$router.push({path: './Login'})
+      //     return
+      //   }
+      // }
     },
     linkTo:function(index){
       if(index == 0){

@@ -1,8 +1,8 @@
 <template>
   <li class="leaveStoreSelect">
     <ul>
-      <li is="customerLi" :leftText="'留店时间'" :icon="true" @click.native="selectLeaveStore">
-        <span>{{leaveStoreVal || '请选择客户留店时间'}}</span>
+      <li is="customerLi" :leftText="'留店时长'" :icon="true" @click.native="selectLeaveStore">
+        <span>{{leaveStoreVal || '请选择客户留店时长'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -38,7 +38,8 @@ export default {
   data() {
     return {
       slots: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
-      popupVisible: false
+      popupVisible: false,
+      key: false
     }
   },
   computed:{
@@ -52,12 +53,20 @@ export default {
   methods:{
     ...mapMutations(["setLeaveStoreVal"]),
     selectLeaveStore() {
-      this.$refs.leaveStorePicker.setSlotValue(0, this.leaveStoreVal)
+      if(this.leaveStoreVal === '') {
+        this.setLeaveStoreVal(this.slots[0].values[0])
+      }else {
+        this.$refs.leaveStorePicker.setSlotValue(0, this.leaveStoreVal)
+      }
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
-      this.$emit('leaveStoreChange', values[0])
-    }
+      if(this.key) {
+        this.$emit('leaveStoreChange', values[0])
+      }else {
+        this.key = true
+      }
+     }
   }
   }
 

@@ -92,68 +92,68 @@ export default {
       this.$refs.followDatePicker.open()
     },
     setTime(value) {
-      this.$set(this.newCustomerInfo, 'followTime', mango.indexTimeB(value)[0])
+      this.$set(this.newCustomerInfo, 'followTime', mango.indexTimeB(value)[1])
       // this.newCustomerInfo.followTime = mango.indexTimeB(value)[0]
-    },
-    preModule() {
-      this.btns[1].status = true
-      this.btns[2].status = false
-      this.$emit('changeBtnsStatus', this.btns)  
-    },
-    saveTalksRecord() {
-      this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-      if (!this.newCustomerInfo.important) {
-        this.newCustomerInfo.important = 1
-      }
-      mango.getAjax(this, 'customer/update', {
-        account: this.ajaxData.account,   //登录账户
-        tenantId: this.ajaxData.tenantId,
-        ...this.updateParams(this.newCustomerInfo)
-      },'v2', 'post').then((res) => {
-        if (res.status) {
-          MessageBox.alert('保存成功！').then(action => {
-            this.$router.go(-1)
-          })
-        }
-      })
-    },
-    updateParams(obj) {
-      let tempObj = {}
-      let temp = {
-        account: this.ajaxData.account,   //登录账户
-        tenantId: this.ajaxData.tenantId,
-        'details.username': obj.username,
-        'details.sex': obj.sex === '男' ? 1 : 2,  //性别(1:男,2:女,0:未知)，
-        'details.storeDate': returnDate(obj.storeDate),
-        'details.phone': obj.phone,
-        'details.source': obj.source,
-        'details.province': '440000',
-        'details.city': '441900',
-        'details.area': '441911',
-        'details.address': obj.address,
-        'details.leaveStore': obj.leaveStore,    //留店时间，
-        'details.urgency': obj.urgency,   //紧急，1/2/3级，一级最高
-        'details.important': obj.important,  //重要，1/2/3级，一级最高
-        'demand.intention': obj.intention,   //意向产品，
-        'demand.colorPref': obj.colorPref,
-        'demand.stylePref': obj.stylePref,
-        'demand.buyReason': obj.buyReason,
-        'demand.progress': obj.progress,
-        'demand.roomNum': obj.roomNum,
-        'demand.remark': obj.remark,
-        'demand.shopId': obj.shopId,
-        'record.followSituation': obj.followSituation,
-        'record.probability': obj.percent,
-        'record.followTime': returnDate(obj.followTime) || mango.indexTimeB(new Date())[1],   //默认为今天
-        'record.followPlan': obj.followPlan
-      }
-      for (let key in temp) {
-        if (temp[key] || temp[key] === 0) {
-          tempObj[key] = temp[key]
-        }
-      }
-      return tempObj
     }
+    // preModule() {
+    //   this.btns[1].status = true
+    //   this.btns[2].status = false
+    //   this.$emit('changeBtnsStatus', this.btns)  
+    // },
+    // saveTalksRecord() {
+    //   this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
+    //   if (!this.newCustomerInfo.important) {
+    //     this.newCustomerInfo.important = 1
+    //   }
+    //   mango.getAjax(this, 'customer/update', {
+    //     account: this.ajaxData.account,   //登录账户
+    //     tenantId: this.ajaxData.tenantId,
+    //     ...this.updateParams(this.newCustomerInfo)
+    //   },'v2', 'post').then((res) => {
+    //     if (res.status) {
+    //       MessageBox.alert('保存成功！').then(action => {
+    //         this.$router.go(-1)
+    //       })
+    //     }
+    //   })
+    // },
+    // updateParams(obj) {
+    //   let tempObj = {}
+    //   let temp = {
+    //     account: this.ajaxData.account,   //登录账户
+    //     tenantId: this.ajaxData.tenantId,
+    //     'details.username': obj.username,
+    //     'details.sex': obj.sex === '男' ? 1 : 2,  //性别(1:男,2:女,0:未知)，
+    //     'details.storeDate': returnDate(obj.storeDate),
+    //     'details.phone': obj.phone,
+    //     'details.source': obj.source,
+    //     'details.province': '440000',
+    //     'details.city': '441900',
+    //     'details.area': '441911',
+    //     'details.address': obj.address,
+    //     'details.leaveStore': obj.leaveStore,    //留店时间，
+    //     'details.urgency': obj.urgency,   //紧急，1/2/3级，一级最高
+    //     'details.important': obj.important,  //重要，1/2/3级，一级最高
+    //     'demand.intention': obj.intention,   //意向产品，
+    //     'demand.colorPref': obj.colorPref,
+    //     'demand.stylePref': obj.stylePref,
+    //     'demand.buyReason': obj.buyReason,
+    //     'demand.progress': obj.progress,
+    //     'demand.roomNum': obj.roomNum,
+    //     'demand.remark': obj.remark,
+    //     'demand.shopId': obj.shopId,
+    //     'record.followSituation': obj.followSituation,
+    //     'record.probability': obj.percent,
+    //     'record.followTime': returnDate(obj.followTime) || mango.indexTimeB(new Date())[1],   //默认为今天
+    //     'record.followPlan': obj.followPlan
+    //   }
+    //   for (let key in temp) {
+    //     if (temp[key] || temp[key] === 0) {
+    //       tempObj[key] = temp[key]
+    //     }
+    //   }
+    //   return tempObj
+    // }
   }
 }
 </script>

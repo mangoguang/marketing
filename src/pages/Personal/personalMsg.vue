@@ -17,6 +17,7 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from "vuex";
 //组件
 import btn from '../../components/personal/Btn'
 import Footer from '../../components/Footer'
@@ -37,7 +38,42 @@ export default {
       ]
     }
   },
+  created(){
+    this.checkLogin()
+  //  console.log(this.forms[0].text)
+
+  //到时候放在初始页面
+    localStorage.removeItem('limit');  
+    localStorage.removeItem('selectLimit');  
+    this.setCustomerScroll(0);
+    this.setOrderScroll(0);
+    this.setDealScroll(0)
+    // this.setIsSelectStatus(false)
+    this.$store.commit('setIsSelectStatus', false)
+  },
   methods:{
+    ...mapMutations([
+      "setCustomerScroll",
+      "setOrderScroll",
+      'setDealScroll',
+      'setIsSelectStatus'
+    ]),
+    checkLogin() {
+      let ajaxData = localStorage.getItem('ajaxData')
+      // console.log(Date.parse(new Date()) - timeLong)
+      if (!ajaxData) {
+        this.$router.push({path: './Login'})
+        return
+      } else {
+        let timeLong = JSON.parse(ajaxData).timestamp
+        timeLong = Date.parse(new Date()) - JSON.parse(ajaxData).timestamp
+        timeLong = timeLong/(60 * 60 * 24 * 1000)
+        if (timeLong > 10) {
+          this.$router.push({path: './Login'})
+          return
+        }
+      }
+    },
     routeTo(index){
       switch (index)
       {
