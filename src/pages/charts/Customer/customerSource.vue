@@ -195,12 +195,13 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
-          let newData = mango.getCustomerNewArr(res.data.series[0].data,res.data.series[1].data,res.data.series[2].data,res.data.series[3].data,res.data.yAxisData)
-          this.$set(res.data.series[0],'data',newData[1])
-          this.$set(res.data.series[1],'data',newData[2])
-          this.$set(res.data.series[2],'data',newData[3])
-          this.$set(res.data.series[3],'data',newData[4])
-          this.$set(res.data,'yAxisData',newData[0])
+          console.log(111123,res)
+          // let newData = mango.getCustomerNewArr(res.data.series[0].data,res.data.series[1].data,res.data.series[2].data,res.data.series[3].data,res.data.yAxisData)
+          // this.$set(res.data.series[0],'data',newData[1])
+          // this.$set(res.data.series[1],'data',newData[2])
+          // this.$set(res.data.series[2],'data',newData[3])
+          // this.$set(res.data.series[3],'data',newData[4])
+          // this.$set(res.data,'yAxisData',newData[0])
           this.key2 = true
           res = res.data
           // console.log(res)

@@ -56,7 +56,8 @@ export default {
       if(this.ajaxData.type === 'dealer') {
         this.$router.push({path: "/ReportForms"})
       }else {
-        alert('暂无权限')
+        this.$router.push({path: "/ReportForms"})
+        // alert('暂无权限')
       }
     },
     touchend:function(e){
