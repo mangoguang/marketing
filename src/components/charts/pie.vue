@@ -1,6 +1,6 @@
 <!-- <keep-alive> -->
 <template>
-  <div class="main" ref="main"></div>
+  <div class="main" ref="main" :style="{height: `${height}vw`,width:'100vw'}"></div>
 </template>
 <!-- </keep-alive> -->
 
@@ -14,7 +14,7 @@ import echarts from 'echarts'
 // Vue.use(Vuex)
 export default {
   name: 'pie',
-  props: ['yAxisData', 'seriesData', 'title', 'category'],
+  props: ['yAxisData', 'seriesData', 'title', 'category', 'height'],
   data () {
     return {
       initDom:'',

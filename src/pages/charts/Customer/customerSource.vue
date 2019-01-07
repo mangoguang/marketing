@@ -213,7 +213,7 @@ export default {
           // this.$set(res.data.series[2],'data',newData[3])
           // this.$set(res.data.series[3],'data',newData[4])
           // this.$set(res.data,'yAxisData',newData[0])
-          // this.key2 = true
+          this.key2 = true
           res = res.data
           // console.log(res)
           // _this.height = 200

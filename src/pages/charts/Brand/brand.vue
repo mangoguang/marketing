@@ -12,7 +12,8 @@
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"
           :title="`各${typeName}金额占比-${item.name}`"
-          :category="`整体${typeName}占比`"></Pie>
+          :category="`整体${typeName}占比`"
+          :height="120"></Pie>
           <!-- <noData v-show="brandShow"></noData> -->
         </div>
       </li>
@@ -44,7 +45,8 @@
           :yAxisData="categoryData.yAxisData"
           :seriesData="item.data"
           :title="`各${typeName}数量占比-${item.name}`"
-          :category="`各${typeName}数量占比`"></Pie>
+          :category="`各${typeName}数量占比`"
+          :height="120"></Pie>
           <!-- <noData v-show="categoryShow"></noData> -->
         </div>
       </li>
@@ -103,7 +105,8 @@ export default {
       brandchanrtDom1:'',
       brandchanrtDom2:'',
       brandShow: false,
-      categoryShow: false
+      categoryShow: false,
+      i: 0
     }
   },
   created() {
@@ -144,6 +147,14 @@ export default {
           this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal', true)
           this.brandchanrtDom1 = chanrtDom
+
+          // if(this.i > 1){
+            try {
+              this.brandchanrtDom1.resize()
+            } catch (error) {
+              console.log(error)
+            }
+          // }
         }
       }
     },
@@ -156,6 +167,14 @@ export default {
           this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal')
           this.brandchanrtDom2 = chanrtDom
+          // if(this.i > 1) {
+            try {
+              this.brandchanrtDom2.resize()
+            } catch (error) {
+              console.log(error)
+            }
+          // }
+          
         }
       }
     }
@@ -175,6 +194,7 @@ export default {
     },
     // ajax请求
     getBrandData(date) {
+       this.i += 1
       mango.loading('open')
       let _this = this
       mango.getAjax(this, this.port, {
@@ -194,6 +214,8 @@ export default {
           // res.yAxisData = tempArr
           // console.log('数据:', res)
           _this.brandData = res
+          // 检测数据是否为空
+          this.brandShow = emptyData(res.series)
         }
       })
     },
@@ -211,6 +233,8 @@ export default {
           res = res.data
           // console.log('品类',)
           _this.categoryData = res
+          // 检测数据是否为空
+          this.categoryShow = emptyData(res.series)
         }
       })
     },

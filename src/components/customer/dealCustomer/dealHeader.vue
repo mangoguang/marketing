@@ -123,6 +123,12 @@ export default {
           } 
         }
       }
+      .name{
+        width: 65vw;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
   }
 }

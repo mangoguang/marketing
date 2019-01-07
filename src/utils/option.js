@@ -115,6 +115,15 @@ export default function(data, vertical, salesVal, title) {
         return item.name
       })
     },
+    noDataLoadingOption: {
+      text: '暂无数据',
+      effect: 'bubble',
+      effectOption: {
+        effect: {
+            n: 0
+        }
+      }
+    },
     grid: {
       left: '3%',
       top: title ? '80' : '40',
@@ -130,6 +139,7 @@ export default function(data, vertical, salesVal, title) {
     },
     xAxis: xAxis,
     yAxis: yAxis,
+    // series: []
     series: series
   }
 }

@@ -278,6 +278,12 @@ export default {
       width: 50%;
       color: #363636;
       margin-left: 15vw;
+      :disabled{
+        color: #363636;
+        opacity: 1;
+        -webkit-text-fill-color: #363636;
+        -webkit-opacity: 1;
+      }
     }
   }
 }
