@@ -5,16 +5,16 @@
     <SelectComponent></SelectComponent>
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}11`">
-        <div class="barBox">
+        <div v-show="!brandShow" class="barBox">
           <!-- <chartsTit :text="index === 0 ? `整体${typeName}占比` : ''"></chartsTit> -->
           <Pie
-          v-show="!brandShow"
+          v-show="!brandPieShow[index]"
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"
           :title="`各${typeName}金额占比-${item.name}`"
           :category="`整体${typeName}占比`"
           :height="120"></Pie>
-          <!-- <noData v-show="brandShow"></noData> -->
+          <noData v-show="brandPieShow[index]"></noData>
         </div>
       </li>
       <li>
@@ -38,16 +38,16 @@
     </ul>
     <ul>
       <li v-for="(item, index) in categoryData.series" :key="`${index}11`">
-        <div class="barBox">
+        <div v-show="!categoryShow" class="barBox">
           <!-- <chartsTit :text="'整体品类对比'"></chartsTit> -->
           <Pie
-          v-show="!categoryShow"
+          v-show="!categoryPieShow[index]"
           :yAxisData="categoryData.yAxisData"
           :seriesData="item.data"
           :title="`各${typeName}数量占比-${item.name}`"
           :category="`各${typeName}数量占比`"
           :height="120"></Pie>
-          <!-- <noData v-show="categoryShow"></noData> -->
+          <noData v-show="categoryPieShow[index]"></noData>
         </div>
       </li>
       <li>
@@ -74,7 +74,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
-import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
+import chartsInit,{chanrtDom, emptyData, emptyPieData} from '../../../utils/chartsInit'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -106,7 +106,9 @@ export default {
       brandchanrtDom2:'',
       brandShow: false,
       categoryShow: false,
-      i: 0
+      i: 0,
+      brandPieShow: [false, false],
+      categoryPieShow: [false, false]
     }
   },
   created() {
@@ -143,8 +145,8 @@ export default {
       const chartsName = 'brand'
       if(this.key2) {
         if (this[`${chartsName}Data`].series) {
-          // 检测数据是否为空
-          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
+          // // 检测数据是否为空
+          // this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal', true)
           this.brandchanrtDom1 = chanrtDom
 
@@ -163,8 +165,8 @@ export default {
       const chartsName = 'category'
       if(this.key2) {
         if (this[`${chartsName}Data`].series) {
-          // 检测数据是否为空
-          this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
+          // // 检测数据是否为空
+          // this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           chartsInit(this, chartsName, 'horizontal')
           this.brandchanrtDom2 = chanrtDom
           // if(this.i > 1) {
@@ -214,6 +216,14 @@ export default {
           // res.yAxisData = tempArr
           // console.log('数据:', res)
           _this.brandData = res
+          // 判断对应的饼图数据是否为空
+          let series = res.series
+          if (series) {
+            series.forEach((element, index) => {
+              console.log('seriesData', series[index])
+              this.brandPieShow[index] = emptyPieData(series[index].data)
+            })
+          }
           // 检测数据是否为空
           this.brandShow = emptyData(res.series)
         }
@@ -233,6 +243,13 @@ export default {
           res = res.data
           // console.log('品类',)
           _this.categoryData = res
+          // 判断对应的饼图数据是否为空
+          let series = res.series
+          if (series) {
+            series.forEach((element, index) => {
+              this.categoryPieShow[index] = emptyPieData(series[index].data)
+            });
+          }
           // 检测数据是否为空
           this.categoryShow = emptyData(res.series)
         }
