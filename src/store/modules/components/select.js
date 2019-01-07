@@ -6,7 +6,8 @@ const state = {
   areaVal: '',
   enterStoreVal: '',
   sourceVal: '',
-  leaveStoreVal: ''
+  leaveStoreVal: '',
+  shopVal: ''
 }
 
 const mutations = {
@@ -17,7 +18,8 @@ const mutations = {
   setAreaVal: (state, str) => state.areaVal = str,
   setEnterStoreVal: (state, str) => state.enterStoreVal = str,
   setSourceVal: (state, str) => state.sourceVal = str,
-  setLeaveStoreVal: (state, str) => state.leaveStoreVal = str
+  setLeaveStoreVal: (state, str) => state.leaveStoreVal = str,
+  setShopVal: (state, str) => state.shopVal = str
 }
 
 const actions = {
