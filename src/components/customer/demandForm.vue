@@ -19,9 +19,10 @@
       <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
         <span>{{roomNum || '请填写房间数量'}}</span>
       </li>
-      <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
+      <li is="shopSelect" @shopChange="shopChange"></li>
+      <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
         <span>{{shopName || '请选择门店'}}</span>
-      </li>
+      </li> -->
       <!-- <li is="customerLi" :leftText="'房间数量'">
         <input @change="emitEvent" v-model="demand.roomNum" placeholder="请填写房间数量" type="number">
       </li> -->
@@ -53,13 +54,15 @@ Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
 import customerLi from '../../components/customer/customerLi'
 import bigBtn from '../../components/customer/bigBtn'
+import shopSelect from '../select/shopSelect'
 import mango from '../../js'
 import {turnParams} from '../../utils/customer'
 export default {
   name:'demandForm',
   components: {
     customerLi,
-    bigBtn
+    bigBtn,
+    shopSelect
   },
   props: ['defaultVal'],
   data(){
@@ -76,32 +79,42 @@ export default {
       proto: '',
       roomNum:'',
       shopName: '',
-      shopId: ''
+      shopId: '',
+      shops: []
     }
   },
   computed: {
     ...mapState({
       customerDemand: state => state.customer.customerDemand,
-      personMsg: state => state.personMsg.personMsg
+      shopVal: state => state.select.shopVal
     })
+  },
+  destroyed(){
+    this.setShopVal('')
   },
   created() {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
   },
   mounted() {
     // console.log(this.personMsg.shops)
-    this.getShopName()
+    // this.getShopName()
     if (this.defaultVal) {
       this.demand = this.customerDemand
       this._isRoomNum()
       let tempId = this.customerDemand.shopId
       this._changeShopName(tempId)
-      // this._isShopId(tempId)
     }
   },
   methods: {
+    ...mapMutations(['setShopVal']),
+    shopChange(val) {
+      this.setShopVal(val)
+      this.getShopID(this.shopVal)
+    },
     //判断房间数量是否大于5
     _isRoomNum() {
       if(this.customerDemand.roomNum === 5) {
@@ -110,46 +123,39 @@ export default {
         this.roomNum = this.customerDemand.roomNum
       }
     },
-    //判断有没有shopId
-    _isShopId(id) {
-      if(id) {
-        this._changeShopName(id)
-      }
-    },
-    getShopName(id) {
-      let shopName = []
-      if(this.personMsg.shops) {
-        this.personMsg.shops.forEach((item, index) => {
-        shopName.push(item.name)
-        this.shopNameList[0].values = shopName
-      });
-      }
-    },
+    // getShopName(id) {
+    //   let shopName = []
+    //   if(this.shops) {
+    //     this.shops.forEach((item, index) => {
+    //     shopName.push(item.name)
+    //     this.shopNameList[0].values = shopName
+    //   });
+    //   }
+    // },
     _changeShopName(id) {
-      let shops = this.personMsg.shops
       if(id) {
-        shops.forEach((item, index) => {
+        this.shops.forEach((item, index) => {
           if(item.id === id) {
-            this.shopName = item.name
+            this.setShopVal(item.name) 
           }
       });
       } 
     },
     getShopID(name) {
-      if(this.personMsg.shops) {
-        this.personMsg.shops.forEach((item, index) => {
+      if(this.shops) {
+        this.shops.forEach((item, index) => {
           item.name === name? this.shopId = item.id : ''
-          console.log(555,item.id)
       });
+      this.$set(this.demand, 'shopId', this.shopId)
       }
     },
-    selectShopId() {
-      this.slots = this.shopNameList
-      this.proto = 'shopId'
-      // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopName)
-      this.popupVisible = true
-    },
+    // selectShopId() {
+    //   this.slots = this.shopNameList
+    //   this.proto = 'shopId'
+    //   // 设置性别选择插件的初始值
+    //   this.$refs.Picker.setSlotValue(0, this.shopName)
+    //   this.popupVisible = true
+    // },
     setOptions(data, dataList) {
       if(!this.demand[`${data}`]) {
         this.demand[`${data}`] = dataList[0].values[0]
@@ -201,12 +207,13 @@ export default {
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)
       // this.demand.progress = values[0]
-      if(this.proto == 'shopId') {
-        this.shopName = values[0]
-        this.getShopID(this.shopName)
-        this.demand.shopId= this.shopId
+      // if(this.proto == 'shopId') {
+      //   this.shopName = values[0]
+      //   this.getShopID(this.shopName)
+      //   this.demand.shopId= this.shopId
         
-      }else if(this.proto == 'roomNum') {
+      // }else 
+      if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {
           this.demand.roomNum = 5

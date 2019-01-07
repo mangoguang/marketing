@@ -23,9 +23,10 @@
       <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
         <span>{{roomNum || '请填写房间数量'}}</span>
       </li>
-      <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
+       <li is="shopSelect" @shopChange="shopChange"></li>
+      <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
         <span>{{shopName || '请选择门店'}}</span>
-      </li>
+      </li> -->
       <li class="textarea">
         <h3>备注：</h3>
         <textarea name="" id="" cols="30" rows="10" placeholder="描述一下情况吧"></textarea>
@@ -58,12 +59,14 @@ Vue.component(Popup.name, Popup)
 import customerLi from '../../../components/customer/customerLi'
 import bigBtn from '../../../components/customer/bigBtn'
 import mango from '../../../js'
+import shopSelect from '../../select/shopSelect'
 import {turnParams} from '../../../utils/customer'
 export default {
   name:'customerDemand',
   components: {
     customerLi,
-    bigBtn
+    bigBtn,
+    shopSelect
   },
   data(){
     return{
@@ -76,24 +79,21 @@ export default {
       colorPrefList: [{values :['暖色', '冷色']}],
       stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式']}],
       shopNameList: [{values: []}],
-      pickerShow: {
-        progress: false,
-        buyReason: false,
-        roomNum: false,
-        colorPref: false,
-        stylePref: false
-      },
       proto: '',
       roomNum: '',
       shopName: '',
-      shopId: ''
+      shopId: '',
+      shops: []
     }
   },
   computed: {
     ...mapState({
       customerInfo: state => state.dealOrderInfoDetails.dealOrderInfoDetails,
-      personMsg: state => state.personMsg.personMsg
+      shopVal: state => state.select.shopVal
     })
+  },
+  destroyed(){
+    this.setShopVal('')
   },
   watch: {
     // 'customerInfo': function(){
@@ -120,32 +120,29 @@ export default {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-  },
-  mounted() {
-    this.getShopName()
-    // console.log(15646,this.personMsg)
-    // console.log('客户信息：：', this.customerInfo)
-    // this.getDemand()
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
   },
   methods: {
-    //获取门店信息
-    getShopName() {
-      let shopName = []
-      if(this.personMsg.shops) {
-        this.personMsg.shops.forEach((item, index) => {
-        shopName.push(item.name)
-        this.shopNameList[0].values = shopName
-      });
-      }
-      this.shopName = this.shopNameList[0].values[0]
-      // this.getShopID(this.shopName)
-      // this.$set(this.newCustomerInfo, 'shopId', this.shopId)
+    ...mapMutations(['setShopVal']),
+    shopChange(val) {
+      this.setShopVal(val)
     },
+    //获取门店信息
+    // getShopName() {
+    //   let shopName = []
+    //   if(this.shops) {
+    //     this.shops.forEach((item, index) => {
+    //     shopName.push(item.name)
+    //     this.shopNameList[0].values = shopName
+    //   });
+    //   }
+    //   // this.shopName = this.shopNameList[0].values[0]
+    // },
     getShopID(name) {
-      if(this.personMsg.shops) {
-        this.personMsg.shops.forEach((item, index) => {
+      if(this.shopVal) {
+        this.shops.forEach((item, index) => {
           item.name === name? this.shopId = item.id : ''
-          console.log(this.shopId)
       });
       }
     },
@@ -166,13 +163,13 @@ export default {
         this.$refs.Picker.setSlotValue(0, this.customerDemand[`${data}`])
       }
     },
-    selectShopId() {
-      this.slots = this.shopNameList
-      this.proto = 'shopId'
-      // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopName)
-      this.popupVisible = true
-    },
+    // selectShopId() {
+    //   this.slots = this.shopNameList
+    //   this.proto = 'shopId'
+    //   // 设置性别选择插件的初始值
+    //   this.$refs.Picker.setSlotValue(0, this.shopName)
+    //   this.popupVisible = true
+    // },
     selectProgress() {
       this.slots = this.progressList
       this.proto = 'progress'
@@ -221,16 +218,13 @@ export default {
         }else {
           this.customerDemand.roomNum = this.roomNum
         }
-      }else if(this.proto == 'shopId') {
-        this.shopName = values[0]
-      }
-      else{
+      }else{
         this.customerDemand[this.proto] = values[0]
       }
     },
     hasShopId() {
-      if(this.shopName) {
-        this.getShopID(this.shopName)
+      if(this.shopVal) {
+        this.getShopID(this.shopVal)
         this.$set(this.customerDemand, 'shopId', this.shopId)
       }
     },
@@ -238,6 +232,7 @@ export default {
       let id = this.$route.params.id
       this.hasShopId()
       // if (this.customerDemand.intention && this.customerDemand.intention != '') {
+       if(this.customerDemand.shopId) {
         mango.getAjax(this, 'customer/update', {
           customerId: id,
           account: this.ajaxData.account,   //登录账户
@@ -251,10 +246,13 @@ export default {
             mango.tip('保存成功！')
           }
         })
+       }else{
+          mango.tip('请选择门店')
+       }
       // } else {
         // mango.tip('请填写意向产品！')
       // }
-      console.log('客户信息：：', this.customerDemand)      
+      // console.log('客户信息：：', this.customerDemand)      
     }
   }
 }

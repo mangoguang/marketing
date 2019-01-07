@@ -18,9 +18,10 @@
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
         <span>{{turnDate(info.storeDate) || '请选择客户进店日期'}}</span>
       </li>
-      <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
+      <li is="shopSelect"  @shopChange="shopChange"></li>
+      <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
         <span>{{shopName}}</span>
-      </li>
+      </li> -->
       <li class="textarea">
         <remark :title="'备注'">
           <textarea name="" id="" placeholder="描述一下情况吧"></textarea>
@@ -69,6 +70,7 @@ import Vue from "vue"
 import {Picker, Popup, MessageBox, DatetimePicker} from 'mint-ui'
 import Vuex, { mapMutations, mapState} from 'vuex'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
+import shopSelect from '../../select/shopSelect'
 import sexSelect from '../../select/sexSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
@@ -86,7 +88,8 @@ export default {
     myRange,
     remark,
     leaveStoreSelect,
-    sexSelect
+    sexSelect,
+    shopSelect
   },
   data(){
     return{
@@ -99,59 +102,64 @@ export default {
       shopNameList: [{values: []}],
       shopName: '',
       shopId: '',
-      today: new Date()
+      today: new Date(),
+      shops: []
     }
   },
   created() {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-  },
-  mounted() {
-    this.getShopName()
-    // console.log(123123, encodeURI('['))
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
   },
   computed: {
      ...mapState({
-      personMsg: state => state.personMsg.personMsg,
       sexVal: state => state.select.sexVal,
-      leaveStoreVal: state => state.select.leaveStoreVal
+      leaveStoreVal: state => state.select.leaveStoreVal,
+      shopVal: state => state.select.shopVal
     })
   },
   destroyed(){
     this.setSexVal('')
     this.setLeaveStoreVal('')
+    this.setShopVal('')
   },
   methods: {
     ...mapMutations([
       'setSexVal',
-      'setLeaveStoreVal'
+      'setLeaveStoreVal',
+      'setShopVal'
     ]),
+    shopChange(val) {
+      this.setShopVal(val)
+    },
     selectStoreDate() {
       this.$refs.datePicker.open()
     },
     setStoreDate(value) {
       this.$set(this.info, 'storeDate', mango.indexTimeB(value)[1])
     },
-    getShopName() {
-      let shopName = []
-      if(this.personMsg.shops) {
-        this.personMsg.shops.forEach((item, index) => {
-        shopName.push(item.name)
-        this.shopNameList[0].values = shopName
-      });
-      }
-      this.shopName = this.shopNameList[0].values[0]
-      this.getShopID(this.shopName)
-      this.$set(this.info, 'shopId', this.shopId)
-    },
+    // getShopName() {
+    //   let shopName = []
+    //   if(this.shops) {
+    //     this.shops.forEach((item, index) => {
+    //     shopName.push(item.name)
+    //     this.shopNameList[0].values = shopName
+    //   });
+    //   }
+    //   this.shopName = this.shopNameList[0].values[0]
+    //   this.getShopID(this.shopName)
+    //   this.$set(this.info, 'shopId', this.shopId)
+    // },
     getShopID(name) {
-      if(this.personMsg.shops) {
-        this.personMsg.shops.forEach((item, index) => {
+      if(this.shops) {
+        this.shops.forEach((item, index) => {
           if(item.name === name) {
             this.shopId = item.id
           }
       });
+      this.$set(this.info, 'shopId', this.shopId)
       }
     },
     sexChange(val) {
@@ -172,6 +180,7 @@ export default {
       if(!this.info.username || this.info.username === '') {
         this.info.username = '无名氏'
       }
+      this.getShopID(this.shopVal)
       let [params, tempObj] = [{
         account: this.ajaxData.account,   //登录账户
         tenantId: this.ajaxData.tenantId,
@@ -189,24 +198,31 @@ export default {
           tempObj[key] = params[key]
         }
       }
-      mango.getAjax(this, 'customer/update', tempObj,'v2', 'post').then((res) => {
+      if(this.info.shopId) {
+        mango.getAjax(this, 'customer/update', tempObj,'v2', 'post').then((res) => {
         if (res) {
           MessageBox.alert('保存成功！').then(action => {
             this.$router.go(0)
           })
         }
-      })
+        })
+      }else{
+        mango.tip('请选择门店')
+      }
+     
+
+
       // mango.getAjax(this, 'customer/update', tempObj,'v2', 'post').then((res) => {
       //   console.log('保存数据成功', res)
       // })
     },
-    selectShopId() {
-      this.slots = this.shopNameList
-      this.proto = 'shopId'
-      // 设置性别选择插件的初始值
-      this.$refs.Picker.setSlotValue(0, this.shopName)
-      this.popupVisible = true
-    },
+    // selectShopId() {
+    //   this.slots = this.shopNameList
+    //   this.proto = 'shopId'
+    //   // 设置性别选择插件的初始值
+    //   this.$refs.Picker.setSlotValue(0, this.shopName)
+    //   this.popupVisible = true
+    // },
     selectSex() {
       this.proto = 'sex'
       this.slots = [{values: ['男', '女']}]

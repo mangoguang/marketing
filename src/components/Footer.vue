@@ -49,7 +49,8 @@ export default {
   data(){
     return{
       padding: '',
-      ajaxData: []
+      ajaxData: [],
+      shops: []
     }
   },
   computed: {

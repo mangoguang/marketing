@@ -50,6 +50,11 @@
         <p></p>
         <h2>跟进历史</h2>
       </div>
+      <div class="followTitle">
+        <span>跟进时间</span>
+        <span>下次跟进时间</span>
+        <span>成交概率</span>
+      </div>
       <ul>
         <li v-for="(item,index) in demandList.trList" :key="index" @click="pullDown(index)">
           <div class="detail-wrapper">
@@ -81,8 +86,7 @@ export default {
   components:{mybanner, followDetails},
   computed: {
     ...mapState({
-      followTrackDetails: state => state.followTrackDetails.followTrackDetails,
-      personMsg: state => state.personMsg.personMsg
+      followTrackDetails: state => state.followTrackDetails.followTrackDetails
     })
   },
   data() {
@@ -98,13 +102,16 @@ export default {
       showRecordForm: this.$route.query.recordForm,
       recordFormData: {},
       roomNum:'',
-      shopName:''
+      shopName:'',
+      shops: []
     }
   },
   created(){
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
     //获取参数
     this.demandId = this.$route.query.demandId 
     this.product = this.$route.query.product 
@@ -144,9 +151,9 @@ export default {
     },
     //shopId转换为名字
     _changeShopName(id) {
-      if(this.personMsg.shops) {
+      if(this.shops) {
         if(id) {
-          this.personMsg.shops.forEach((item, index) => {
+          this.shops.forEach((item, index) => {
           if(item.id === id) {
             this.shopName = item.name
           }
@@ -257,12 +264,22 @@ export default {
     }
   }
   .follow-up-history{
+    .followTitle{
+      display: flex;
+      justify-content: space-between;
+      padding: 1vw 4vw;
+      background: #efeff4;
+      color: #363636;  
+      line-height: 9.06vw;
+      font-size: 4vw;
+      margin-top: 2vw;
+
+    }
     ul{
       border-top:1px solid  #b5b5b5;
       border-bottom: 1px solid #b5b5b5;
       background: #fff;
       margin-bottom: 4vw;
-      margin-top: 2vw;
       .detail-wrapper{
         font-size: 4vw;
         line-height: 2em;
