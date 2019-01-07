@@ -20,8 +20,8 @@
                 <i :class="`important${item.important}`"></i>
                 <div :class="`urgency${item.urgency}`"></div>
               </li>
-              <li>
-                {{item.intention}}
+              <li >
+                <span class="intention">{{item.intention}}</span>
                 <span>{{item.followTime}}</span>
               </li>
               <li>{{item.probability}}</li>

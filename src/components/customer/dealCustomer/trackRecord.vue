@@ -67,6 +67,10 @@ export default {
         color: #999;
         font-size: 4.53vw;
         flex: 0.1;
+        width: 60vw;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
       span{
         color: #909090;
