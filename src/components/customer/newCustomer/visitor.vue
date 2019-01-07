@@ -15,6 +15,9 @@
       <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true">
         <span @click="selectTime">{{info.leaveStore || '选择客户留店时间'}}</span>
       </li> -->
+      <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
+        <span>{{turnDate(info.storeDate) || '请选择客户进店日期'}}</span>
+      </li>
       <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
         <span>{{shopName}}</span>
       </li>
@@ -48,17 +51,28 @@
       @change="onValuesChange"
       ref="Picker"></mt-picker>
     </mt-popup>
+      <mt-datetime-picker
+      ref="datePicker"
+      type="date"
+      v-model="today"
+      :startDate="new Date('1930-01-01')"
+      year-format="{value} 年"
+      month-format="{value} 月"
+      date-format="{value} 日"
+      @confirm="setStoreDate">
+    </mt-datetime-picker>
   </div>
 </template>
 
 <script>
 import Vue from "vue"
-import { Picker, Popup, MessageBox } from 'mint-ui'
-import Vuex, { mapMutations, mapState } from 'vuex'
+import {Picker, Popup, MessageBox, DatetimePicker} from 'mint-ui'
+import Vuex, { mapMutations, mapState} from 'vuex'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 import sexSelect from '../../select/sexSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
+Vue.component(DatetimePicker.name, DatetimePicker)
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
 import myRange from '../myRange'
@@ -84,7 +98,8 @@ export default {
       popupVisible: false,
       shopNameList: [{values: []}],
       shopName: '',
-      shopId: ''
+      shopId: '',
+      today: new Date()
     }
   },
   created() {
@@ -112,6 +127,12 @@ export default {
       'setSexVal',
       'setLeaveStoreVal'
     ]),
+    selectStoreDate() {
+      this.$refs.datePicker.open()
+    },
+    setStoreDate(value) {
+      this.$set(this.info, 'storeDate', mango.indexTimeB(value)[1])
+    },
     getShopName() {
       let shopName = []
       if(this.personMsg.shops) {
@@ -160,7 +181,8 @@ export default {
         'demand.intention': this.info.intention,
         'demand.remark': this.info.remark,
         'record.probability': `${this.info.percent}%`,
-        'demand.shopId': this.info.shopId
+        'demand.shopId': this.info.shopId,
+        'details.storeDate':this.info.storeDate || mango.indexTimeB(new Date())[1]
       }, {}]
       for (let key in params) {
         if (params[key]) {
@@ -207,6 +229,16 @@ export default {
         this.info.sex = values[0]
       } else {
         this.info.leaveStore = values[0]
+      }
+    },
+    turnDate(date) {
+      if (date) {
+        let arr = date.split('-')
+        if (arr.length > 1) {
+          return `${arr[0]}年${arr[1]}月${arr[2]}日`
+        } else {
+          return date
+        }
       }
     }
   }
