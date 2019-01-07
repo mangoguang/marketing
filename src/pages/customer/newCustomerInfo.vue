@@ -66,7 +66,8 @@ export default {
       sex: '',
       topTitle: ['客户描述', '客户需求', '洽谈记录'],
       isShowDemand: false,
-      isShowDeal: false
+      isShowDeal: false,
+      shops: []
     }
   },
   computed: {
@@ -76,12 +77,15 @@ export default {
       areaVal: state => state.select.areaVal,
       enterStoreVal: state => state.select.enterStoreVal,
       sourceVal: state => state.select.sourceVal,
-      leaveStoreVal: state => state.select.leaveStoreVal
+      leaveStoreVal: state => state.select.leaveStoreVal,
+      shopVal: state => state.select.shopVal
     })
   },
   mounted() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
   },
   destroyed(){
     this.setSexVal('')
@@ -89,6 +93,7 @@ export default {
     this.setEnterStoreVal('')
     this.setSourceVal('')
     this.setLeaveStoreVal('')
+    this.setShopVal('')
   },
   methods: {
     ...mapMutations([
@@ -97,7 +102,8 @@ export default {
       'setAreaVal',
       'setSourceVal',
       'setLeaveStoreVal',
-      'setEnterStoreVal'
+      'setEnterStoreVal',
+      'setShopVal'
     ]),
     //控制下面两个模块的显示隐藏
     controlDemand() {
@@ -106,23 +112,39 @@ export default {
     controlDaal() {
       this.isShowDeal = !this.isShowDeal
     },
+    //获得shopId
+    getShopID(name) {
+      let shopId
+      if(this.shops) {
+        this.shops.forEach((item, index) => {
+          if(item.name === name) {
+            shopId = item.id
+          }
+      });
+      this.$set(this.newCustomerInfo, 'shopId', shopId)
+      }
+    },
     //保存客户信息，新建客户	
     creatNewCustomer() {
-      this.setInitData()
+      this.getShopID(this.shopVal)
       let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
-      //  this.updateParams(this.newCustomerInfo)
       if(testPhoneNum) {
-        mango.getAjax(this, 'customer/update', {
-          account: this.ajaxData.account,   //登录账户
-          tenantId: this.ajaxData.tenantId,
-          ...this.updateParams(this.newCustomerInfo)
-          },'v2', 'post').then((res) => {
-            if (res.status) {
-              MessageBox.alert('保存成功！').then(action => {
-                this.$router.go(-1)
-            })
-          }
-        })
+        if(this.newCustomerInfo.shopId) {
+          this.setInitData()
+          mango.getAjax(this, 'customer/update', {
+            account: this.ajaxData.account,   //登录账户
+            tenantId: this.ajaxData.tenantId,
+            ...this.updateParams(this.newCustomerInfo)
+            },'v2', 'post').then((res) => {
+              if (res.status) {
+                MessageBox.alert('保存成功！').then(action => {
+                  this.$router.go(-1)
+              })
+            }
+          })
+        }else {
+          mango.tip('请选择门店')
+        }
       } else {
         mango.tip('请填写正确的手机号码')
       }

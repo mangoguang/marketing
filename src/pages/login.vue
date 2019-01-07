@@ -159,7 +159,9 @@ export default {
             }else{  
               //账号密码正确，跳转页面。
               res = res.data.data
+              let shops = JSON.stringify(res.shops)
               _this.$store.commit('setPersonMsg',res)
+              let shopsArr = `${shops}`
               let ajaxData = `{
                 "account": "${res.account}",
                 "tenantId": "${res.tenantId}",
@@ -180,6 +182,7 @@ export default {
               // shopsStr = `[${shopsStr}]`
               // localStorage.setItem("shops", shopsStr);
                 localStorage.setItem("ajaxData", ajaxData);
+                localStorage.setItem("shops", shopsArr);
                 if (_this.checked) {
                   _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
                 } else {
