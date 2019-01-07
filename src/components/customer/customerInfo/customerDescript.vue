@@ -198,7 +198,8 @@ export default {
     getCustomerInfo() {
       let id = this.$route.params.id
       mango.getAjax(this, 'customerById',{
-        id: id
+        id: id,
+        account: this.ajaxData.account
       },'v2').then((res) => {
         res = res.data
         if (res) {
