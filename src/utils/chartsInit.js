@@ -11,8 +11,15 @@ function emptyData(data) {
     })
   })
 }
-
 export {emptyData}
+
+function emptyPieData(arr) {
+  console.log(9999999, arr)
+  return arr.every((item, index) => {
+    return item <= 0
+  })
+}
+export {emptyPieData}
 
 // 参数说明：
 // data：图标数据

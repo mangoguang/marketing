@@ -139,6 +139,7 @@ export default class Common {
       }, 10000)
       axios({
         method: thatType,
+        async: false,
         url: url,
         // timeout: 3000,
         headers: {

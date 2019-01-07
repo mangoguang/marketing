@@ -63,7 +63,8 @@ export default {
         },
         tooltip: {
           trigger: 'item',
-          formatter: "{a} <br/>{b} : {c} ({d}%)"
+          formatter: "{a} <br/>{b} : {c}"
+          // formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
           // type: 'scroll',
@@ -95,9 +96,14 @@ export default {
     },
     series() {
       let [arr, yAxisData, seriesData, maxNum] = [[], this.yAxisData, this.seriesData, Math.max(...this.seriesData)]
+      let total = 0
+      seriesData.forEach(element => {
+        total += parseFloat(element)
+      });
+      console.log('pieData:', total, seriesData)
       for (let i = 0; i < yAxisData.length; i++) {
         arr.push({
-          name: `${yAxisData[i]}(10.00%)`,
+          name: `${yAxisData[i]}(${(seriesData[i]*100/total).toFixed(2)}%)`,
           value: seriesData[i] != 0 ? seriesData[i] : '',
           selected: seriesData[i] === maxNum
         })
