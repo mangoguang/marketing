@@ -115,7 +115,7 @@ export default {
       mango.getAjax(this,"order",{
             account: this.account,
             page: 1,
-            limit: 466,
+            limit: 1000,
             type:1,
             startTime,
             endTime,

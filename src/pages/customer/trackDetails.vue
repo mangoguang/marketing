@@ -53,7 +53,7 @@
       <ul>
         <li v-for="(item,index) in demandList.trList" :key="index" @click="pullDown(index)">
           <div class="detail-wrapper">
-            <span class="time">{{item.createTime || '2019-01-01'}}</span>
+            <span class="time">{{getCreateTime(item.createTime)}}</span>
             <span class="people">{{demandList.intention}}</span>
             <p>{{item.probability}}</p>
             <div class="icon" >
@@ -122,6 +122,10 @@ export default {
           demandId: this.demandId
         }
       })
+    },
+    //获取创建时间的年月日
+    getCreateTime(date) {
+      return date.trim().split(/\s+/)[0]
     },
     //获取数据
     getTrackDetails(){
