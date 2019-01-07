@@ -32,6 +32,7 @@ export default {
       if(testPhoneNum) {
           mango.getAjax(this, 'customer/phone', {
           phone: this.phone,
+          account: this.ajaxData.account,
           tenantId: this.ajaxData.tenantId
         }, 'v2').then((res) => {
           res = res.data
