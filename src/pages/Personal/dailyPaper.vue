@@ -184,6 +184,9 @@ export default {
   min-height: 100vh;
   background: #f9f9f9;
   padding-bottom: 10vw;
+  input:disabled{
+    color: #363636
+  }
   .date{
     margin-top: 16vw;
   }
