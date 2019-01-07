@@ -37,9 +37,6 @@ export default {
 .myText{
   width: 100vw;
   padding-top: 5.46vw;
-  textarea:disabled{
-    color: #999
-  }
   .title{
     display: flex;
     margin-left: 4.26vw;
@@ -68,6 +65,12 @@ export default {
     font-size: 4vw;
     color: #999;
     background: #fff;
+    :disabled{
+      color: #999;
+      opacity: 1;
+      -webkit-text-fill-color: #999;
+      -webkit-opacity: 1;
+    }
   }
 }
 </style>

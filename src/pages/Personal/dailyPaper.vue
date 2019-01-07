@@ -184,9 +184,6 @@ export default {
   min-height: 100vh;
   background: #f9f9f9;
   padding-bottom: 10vw;
-  input:disabled{
-    color: #363636
-  }
   .date{
     margin-top: 16vw;
   }
@@ -281,6 +278,12 @@ export default {
       width: 50%;
       color: #363636;
       margin-left: 15vw;
+      :disabled{
+        color: #363636;
+        opacity: 1;
+        -webkit-text-fill-color: #363636;
+        -webkit-opacity: 1;
+      }
     }
   }
 }
