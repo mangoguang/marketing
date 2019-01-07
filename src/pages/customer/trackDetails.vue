@@ -59,7 +59,7 @@
         <li v-for="(item,index) in demandList.trList" :key="index" @click="pullDown(index)">
           <div class="detail-wrapper">
             <span class="time">{{getCreateTime(item.createTime)}}</span>
-            <span class="people">{{demandList.intention}}</span>
+            <span class="people">{{item.followTime}}</span>
             <p>{{item.probability}}</p>
             <div class="icon" >
               <img src="../../assets/imgs/rightside.png" alt="" 
@@ -286,10 +286,10 @@ export default {
         display: flex;
         padding: 1vw 4vw;
         .time{
-          flex: 0.35;
+          flex: 0.45;
         }
         .people{
-          flex: 0.65
+          flex: 0.55
         }
         p{
           color: #999;
