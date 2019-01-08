@@ -8,6 +8,10 @@
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="customerDemand.phone" type="text" placeholder="请填写客户电话">
       </li>
+      <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
+        <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
+      </li> -->
+      <li is="areaSelect" @areaChange="areaChange"></li>
       <li is="customerLi" :leftText="'客户地址'">
         <input v-model="customerDemand.address" type="text" placeholder="请填写客户地址">
       </li>
@@ -15,11 +19,6 @@
         <span>{{turnDate(customerDemand.storeDate) || '请选择客户进店日期'}}</span>
       </li>
       <li is="sourceSelect" @sourceChange="sourceChange"></li>
-     
-      <!-- <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
-        <span>{{provinceName ? `${provinceName} ${cityName} ${countyName}` : '请选择客户地区'}}</span>
-      </li> -->
-    
       <li is="leaveStoreSelect" @leaveStoreChange="leaveStoreChange"></li>
       <li class="important">
         关键程度
@@ -205,9 +204,9 @@ export default {
         if (res) {
           this.setDealOrderInfoDetails(res)
           this.setSelectVal(res)
-          this.provinceName = res.provinceName
-          this.cityName = res.cityName
-          this.countyName = res.areaName
+          // this.provinceName = res.provinceName
+          // this.cityName = res.cityName
+          // this.countyName = res.areaName
           if (res.urgency == 1) {
             this.urgency = true
           } else {
@@ -233,7 +232,14 @@ export default {
     },
     setSelectVal(res) {
       this.setSexVal(res.sex == 1 ? '男' : (res.sex ==0? '未知' : '女'))
-      this.setAreaVal(res.area)
+      this.setAreaVal({
+        provinceName: res.provinceName,
+        provinceCode: res.provinceCode,
+        cityName: res.cityName,
+        cityCode: res.cityCode,
+        countyName: res.areaName,
+        countyCode: res.areaCode
+      })
       this.setEnterStoreVal(res.enterStore)
       if(res.source) {
         this.setSourceVal(res.source)
@@ -249,13 +255,13 @@ export default {
         storeDate: this.returnDate(obj.storeDate) || mango.indexTimeB(new Date())[1],//默认选择今天
         phone: obj.phone || this.$route.query.phone,
         source: obj.source,
-        // province: '440000',
-        // city: '441900',
-        // area: '441911',
+        province: obj.provinceCode,
+        city: obj.cityCode,
+        area: obj.areaCode,
         address: obj.area || obj.address,
         leaveStore: obj.leaveStore,    //留店时间，
         urgency: obj.urgency,   //紧急，1/2/3级，一级最高
-        important: obj.important 
+        important: obj.important
       }
     },
     checkBtnStatus(obj) {
@@ -299,6 +305,12 @@ export default {
     },
     setStoreDate(value) {
       this.customerDemand.storeDate = mango.indexTimeB(value)[1]
+    },
+    areaChange(val) {
+      console.log('选择的地区：', val)
+      this.customerDemand.province = val.provinceCode
+      this.customerDemand.city = val.cityCode
+      this.customerDemand.area = val.countyCode
     },
     sexChange(val) {
       this.customerDemand.sex = (val === '男' ? 1 : 2)
