@@ -76,7 +76,7 @@ export default {
       }
     },
     searchCustomer(key) {
-      console.log("搜索关键字；", key);
+      // console.log("搜索关键字；", key);
     },
     changeOrderResultTit(str) {
       this.orderResultTit = str;

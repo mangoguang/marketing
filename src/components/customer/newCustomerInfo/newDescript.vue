@@ -11,6 +11,7 @@
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话">
       </li>
+      <li is="areaSelect" @areaChange="areaChange"></li>
        <li is="customerLi" :leftText="'客户地址'">
         <input v-model="newCustomerInfo.address" type="text" placeholder="请填写客户地址">
       </li>
@@ -96,6 +97,7 @@ import sexSelect from '../../select/sexSelect'
 import sourceSelect from '../../select/sourceSelect'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 import addressSelect from '../../select/addressSelect'
+import areaSelect from '../../select/areaSelect'
 import mango from '../../../js'
 import variable from '../../../js/variable'
 import {turnParams} from '../../../utils/customer'
@@ -108,7 +110,8 @@ export default {
     sexSelect,
     sourceSelect,
     leaveStoreSelect,
-    addressSelect
+    addressSelect,
+    areaSelect
   },
   data(){
     return{
@@ -261,6 +264,13 @@ export default {
       // this.newCustomerInfo.storeDate = mango.indexTimeB(value)[0]
       this.$set(this.newCustomerInfo,'storeDate',mango.indexTimeB(value)[1])
       console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.storeDate)
+    },
+    areaChange(val) {
+      console.log('选择的地区：', val)
+      this.newCustomerInfo.province = val.provinceCode
+      this.newCustomerInfo.city = val.cityCode
+      this.newCustomerInfo.area = val.countyCode
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
     sexChange(val) {
       console.log('sex改变了：', val)

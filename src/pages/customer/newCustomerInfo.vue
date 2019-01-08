@@ -180,9 +180,9 @@ export default {
         'details.storeDate': returnDate(obj.storeDate),
         'details.phone': obj.phone,
         'details.source': obj.source,
-        // 'details.province': '440000',
-        // 'details.city': '441900',
-        // 'details.area': '441911',
+        'details.province': obj.province,
+        'details.city': obj.city,
+        'details.area': obj.area,
         'details.address': obj.address,
         'details.leaveStore': obj.leaveStore,    //留店时间，
         'details.urgency': obj.urgency,   //紧急，1/2/3级，一级最高

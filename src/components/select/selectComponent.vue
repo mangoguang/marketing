@@ -101,6 +101,7 @@ export default {
         this.endTime = endTime
       } else {
         this.endTime = '结束时间'
+        // this.endTime = mango.indexTime(new Daet())
       }
     },
     isIPhoneX : function(fn){
