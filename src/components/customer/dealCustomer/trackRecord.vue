@@ -14,6 +14,7 @@
         </div>
       </li>
     </ul>
+    <button class="new" @click="addDemand"></button>
   </div>
 </template>
 
@@ -48,6 +49,9 @@ export default {
         path:'/trackDetails', 
         query: query
       })
+    },
+    addDemand() {
+      this.$router.push({path: `/newCustomerDemand/${this.$route.params.id}`})
     }
   }
 }

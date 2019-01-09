@@ -24,6 +24,7 @@
         <span>{{roomNum || '请填写房间数量'}}</span>
       </li>
        <li is="shopSelect" @shopChange="shopChange"></li>
+       <!-- <li is="mySelect" leftText="客户性别" :selectList="sexList" @valChange="sexChange"></li> -->
       <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
         <span>{{shopName || '请选择门店'}}</span>
       </li> -->
@@ -60,13 +61,15 @@ import customerLi from '../../../components/customer/customerLi'
 import bigBtn from '../../../components/customer/bigBtn'
 import mango from '../../../js'
 import shopSelect from '../../select/shopSelect'
+import mySelect from '../../select/mySelect'
 import {turnParams} from '../../../utils/customer'
 export default {
   name:'customerDemand',
   components: {
     customerLi,
     bigBtn,
-    shopSelect
+    shopSelect,
+    mySelect
   },
   data(){
     return{
@@ -83,7 +86,8 @@ export default {
       roomNum: '',
       shopName: '',
       shopId: '',
-      shops: []
+      shops: [],
+      sexList: ['男', '女']
     }
   },
   computed: {
@@ -208,6 +212,9 @@ export default {
       // 设置性别选择插件的初始值
        this.setOptions('stylePref', this.stylePrefList)
       this.popupVisible = true
+    },
+    sexChange(val) {
+      console.log('通用选择组件选择的值', val)
     },
     onValuesChange(picker, values) {
       console.log('选择的装修进度', values)

@@ -17,7 +17,7 @@
         @click.stop="changeCity($event)"
         :title="city.level"
         :class="{on: statusList[index]}"
-        >{{'城市1'}}</li>
+        >{{cityMsg.cityName}}</li>
     </ul>
   </li>
 </template>
@@ -47,6 +47,7 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {}
     this.ajaxData = JSON.parse(ajaxData)
+    console.log(cityMsg)
     // 获取城市等级数据
     this.getCityLevel()
   },
