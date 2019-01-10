@@ -32,6 +32,7 @@ export default {
   components:{dealHeader, customerDemand, customerDescript, trackRecord},
   data(){
     return{
+      // btns: mango.btnList(['客户描述', '需求信息'], 0),
       btns: mango.btnList(['客户描述', '新增需求', '需求信息'], 0),
       name: '',
       phone: '',
@@ -60,7 +61,8 @@ export default {
   methods: {
     ...mapMutations(["setCustomerInfoBtns", "setCustomerTabStatus",'setDealOrderInfoDetails']),
     infoSelect(index) {
-      this.setCustomerTabStatus(mango.btnList(['客户描述', '新增需求', '需求信息'], index))
+      this.setCustomerTabStatus(mango.btnList(['客户描述', '需求信息'], index))
+      // this.setCustomerTabStatus(mango.btnList(['客户描述', '新增需求', '需求信息'], index))
       if(index === 2) {
         let id = this.$route.params.id
         mango.getAjax(this, 'customerById',{
