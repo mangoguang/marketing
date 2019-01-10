@@ -133,7 +133,7 @@ export default {
         for(var i = 0; i < len; i++) {
           if(temp[i]){
             let isActive = mango.compareTimeStamp(temp[i].demandTime,today)  //t1<t2,true/actived
-            if(temp[i].orderStatus === '已关闭'){
+            if(temp[i].orderStatus === '关闭'){
             }else {
               this.$set(this.compareTime,i,isActive)
             }
@@ -165,7 +165,7 @@ export default {
         page: page,
         limit: limit,
         key: "",
-        type: 2,
+        // type: 2,
         startTime,
         endTime
       },"v2")
