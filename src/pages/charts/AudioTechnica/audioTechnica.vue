@@ -267,8 +267,8 @@ export default {
         tenantId: this.ajaxData.tenantId,
         date: date,
         cityLevel: level,
-        cityName: '苏州市'
-        // cityName: city
+        // cityName: '苏州市'
+        cityName: city
       }).then((res) => {
         mango.loading('close')
         if (res) {

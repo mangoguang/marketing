@@ -1,30 +1,31 @@
 <template>
   <div class="orderInfoDetails">
     <div class="product-wrapper">
-      <div class="product">
+      <div class="product" 
+        v-for="(item,index) in orderInfoDetails.orderItemList " :key="index">
         <!-- <div class="product-photo">产品图</div> -->
         <div class="product-details">
           <div class="details">
-            <span>{{ orderInfoDetails.goodsName }}</span>
-            <p>{{ orderInfoDetails.goodsSpec }}</p>
+            <span>{{ item.goodsName || 1}}</span>
+            <p>{{ item.goodsSpec }}</p>
           </div>
           <div class="price">
-            <p>￥{{ Math.round(orderInfoDetails.price) }}</p>
-            <span>x{{ Math.round(orderInfoDetails.quantity) }}</span>
+            <p>￥{{ Math.round(item.price) }}</p>
+            <span>x{{ Math.round(item.quantity) }}</span>
           </div>
         </div>
       </div>
       <div class="total-amount">
         <span>订单总额</span>
-        <span>￥{{Math.round(orderInfoDetails.salesAmount)}}</span>
+        <span>￥{{Math.round(0)}}</span>
       </div>
       <div class="discount">
         <span>折扣金额</span>
-        <span>￥{{ Math.round(orderInfoDetails.salesAmount) - Math.round(orderInfoDetails.salesAmount) }}</span>
+        <span>￥{{ Math.round(0)}}</span>
       </div>
       <div class="payment">
         <p>实付款</p>
-        <span>￥{{Math.round(orderInfoDetails.salesAmount)}}</span>
+        <span>￥{{Math.round(orderInfoDetails.totalAmount)}}</span>
       </div>
     </div>
     <div class="orderInfo">
@@ -94,13 +95,38 @@ import Vuex, { mapMutations, mapState } from 'vuex'
 export default {
   data(){
     return{
-    
+      orderTotalPrice: 0,
+      orderDiscountPrice: 0
     } 
   },
- computed: {
-    ...mapState({
-      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
-    })
+  destroyed() {
+    this.setTotalPrice(0)
+    this.setDiscountPrice(0)
+  },
+  computed: {
+      ...mapState({
+        orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
+        totalPrice: state => state.dealOrderInfoDetails.totalPrice,
+        discountPrice: state => state.dealOrderInfoDetails.discountPrice
+      })
+    },
+  created() {
+    // this.calcPrice()
+    console.log(124,this.orderInfoDetails.orderItemList)
+  },
+  methods: {
+    ...mapMutations(['setTotalPrice', 'setDiscountPrice']),
+    calcPrice() {
+      if(this.orderInfoDetails.orderItemList) {
+        let itemList = this.orderInfoDetails.orderItemList
+        let priceArr = []
+        itemList.forEach((item, index) => {
+          this.orderTotalPrice += item.price * item.quantity
+        });
+        this.orderDiscountPrice = this.orderTotalPrice - this.orderInfoDetails.totalAmount
+      }
+      
+    }
   }
 }
 </script>
@@ -118,6 +144,7 @@ export default {
     background: #fff;
     .product {
       display: flex;
+      margin-bottom: 4vw;
       // .product-photo {
       //   background: #ccc;
       //   width: 24vw;

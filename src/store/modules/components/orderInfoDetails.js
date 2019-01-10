@@ -1,10 +1,14 @@
 
 const state = {
-  orderInfoDetails: []
+  orderInfoDetails: [],
+  orderTotalPrice: '',
+  orderDiscountPrice: ''
 }
 
 const mutations = {
-  setOrderInfoDetails: (state, arr) => state.orderInfoDetails = arr
+  setOrderInfoDetails: (state, arr) => state.orderInfoDetails = arr,
+  setOrderTotalPrice: (state, arr) => state.orderTotalPrice = arr,
+  setOrderDiscountPrice: (state, arr) => state.orderDiscountPrice = arr
 }
 
 const actions = {

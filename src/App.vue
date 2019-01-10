@@ -283,7 +283,8 @@ ul.infoNav{
   padding: 0 4.26vw;
   margin-top: -8vw;
   li{
-    width: 29.3vw;
+    // width: 29.3vw;
+    width: 49%;
     line-height: 8vw;
     text-align: center;
     background: #b2d7ff;
