@@ -13,8 +13,8 @@
       >{{item.name}}</li>
     </ul>
     <customer-descript v-show="customerTabStatus[0].status" @setInfo="setInfo" />
-    <customer-demand v-show="customerTabStatus[1].status"/>
-    <trackRecord v-show="customerTabStatus[2].status"/>
+    <!-- <customer-demand v-show="customerTabStatus[1].status"/> -->
+    <trackRecord v-show="customerTabStatus[1].status"/>
     <!-- <records v-show="this.btns[2].status"/> -->
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
   data(){
     return{
       // btns: mango.btnList(['客户描述', '需求信息'], 0),
-      btns: mango.btnList(['客户描述', '新增需求', '需求信息'], 0),
+      btns: mango.btnList(['客户描述', '需求信息'], 0),
       name: '',
       phone: '',
       sex: '',

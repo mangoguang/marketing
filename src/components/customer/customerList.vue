@@ -138,7 +138,7 @@ export default {
     },
     toCustomerInfo(id) {
       this.$router.push(`/customerInfo/${id}`)
-      this.setCustomerTabStatus(mango.btnList(['客户描述', '新建需求', '需求信息'], 0))
+      this.setCustomerTabStatus(mango.btnList(['客户描述', '需求信息'], 0))
       // this.setCustomerTabStatus(mango.btnList(['客户描述', '新建需求', '需求信息'], 0))
     },
     newCustomer() {

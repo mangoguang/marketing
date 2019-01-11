@@ -60,7 +60,9 @@ export default {
       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
       orderScroll: state => state.customerScroll.orderScroll,
       customerTime: state => state.rightContainer.customerTime,
-      isSelectStatus: state => state.rightContainer.isSelectStatus
+      isSelectStatus: state => state.rightContainer.isSelectStatus,
+      orderTotalPrice: state => state.orderInfoDetails.orderTotalPrice,
+      orderDiscountPrice: state => state.orderInfoDetails.orderDiscountPrice
     })
   },
   watch: {
@@ -131,7 +133,7 @@ export default {
         for(var i = 0; i < len; i++) {
           if(temp[i]){
             let isActive = mango.compareTimeStamp(temp[i].demandTime,today)  //t1<t2,true/actived
-            if(temp[i].orderStatus === '已关闭'){
+            if(temp[i].orderStatus === '关闭'){
             }else {
               this.$set(this.compareTime,i,isActive)
             }
@@ -139,7 +141,14 @@ export default {
         }
       }
     },
-    ...mapMutations(["setOrderList","setOrderInfoDetails",'setOrderScroll', 'setIsSelectStatus']),
+    ...mapMutations([
+      "setOrderList",
+      "setOrderInfoDetails",
+      'setOrderScroll', 
+      'setIsSelectStatus',
+      'setOrderTotalPrice',
+      'setOrderDiscountPrice'
+      ]),
     //下拉刷新
     loadBottom() {
       this.$refs.loadmore.onBottomLoaded();
@@ -156,7 +165,7 @@ export default {
         page: page,
         limit: limit,
         key: "",
-        type: 2,
+        // type: 2,
         startTime,
         endTime
       },"v2")
@@ -240,12 +249,28 @@ export default {
         this.setSelectLimit(this.baceLimit)
       }
     },
+    // 计算总额和折扣金额
+    calcPrice(list) {
+      if(list.orderItemList) {
+        let itemList = list.orderItemList
+        let priceArr = []
+        let total = 0
+        let discount = 0
+        itemList.forEach((item, index) => {
+          total += item.price * item.quantity
+        });
+        discount = total - list.totalAmount
+        this.setOrderTotalPrice(total)
+        this.setOrderDiscountPrice(discount)
+      }
+    },
     //点击进入详情页面
     orderInfoIn(index) {
       mango.getAjax(this,"orderById",{orderId: this.orderList.records[index].orderId},"v2")
         .then(res => {
           if (res) {
             this.setOrderInfoDetails(res.data);
+            this.calcPrice(this.orderInfoDetails)
           }
         });
       this.$router.push({ path: "/enquiryInfo" });

@@ -2,11 +2,15 @@
 const state = {
   dealOrderInfoDetails: {
     demandList: []
-  }
+  },
+  totalPrice: 0,
+  discountPrice: 0
 }
 
 const mutations = {
-  setDealOrderInfoDetails: (state, arr) => state.dealOrderInfoDetails = arr
+  setDealOrderInfoDetails: (state, arr) => state.dealOrderInfoDetails = arr,
+  setTotalPrice: (state, arr) => state.totalPrice = arr,
+  setDiscountPrice: (state, arr) => state.discountPrice = arr
   // setCustomerAjaxParams: (state, obj) => state.customerAjaxParams = obj
 }
 

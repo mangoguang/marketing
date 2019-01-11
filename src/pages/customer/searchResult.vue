@@ -33,7 +33,7 @@
     </ul>
     <ul v-if="headerStatus[2].status" class="dealList">
       <li
-        v-for="(item, index) in dealList"
+        v-for="(item, index) in dealList.records"
         :key="`customerList${index}`"
         @click="getDetails(index)"
       >
@@ -41,7 +41,7 @@
         <span>{{item.username}}</span>
         <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
         <span>{{item.phone}}</span>
-        <span>{{item.createDate}}</span>
+        <span>{{item.recordTime}}</span>
       </li>
     </ul>
   </div>
@@ -81,7 +81,8 @@ export default {
     ...mapState({
       headerStatus: state => state.customerHeader.headerStatus,
       customerAjaxParams: state => state.customer.customerAjaxParams,
-      customerList: state => state.customer.customerList
+      customerList: state => state.customer.customerList,
+      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
     })
   },
   methods:{
@@ -89,7 +90,9 @@ export default {
       "setOrderInfoDetails",
       "setDealOrderInfoDetails",
       "setTabStatus",
-      'setCustomerAjaxParams'
+      'setCustomerAjaxParams',
+      'setOrderTotalPrice',
+      'setOrderDiscountPrice'
     ]),
     //需求日期是否到期
     isExpire(len) {
@@ -107,25 +110,31 @@ export default {
         }
       }
     },
-    //订单查询和成交客户搜索
+    //订单查询搜索
     getCustomerList(key) {
-      this.judgeType()
       mango.getAjax(this, 'order',{
         account: this.account,
         page: 1,  
         limit: 50,  
-        key: key, //搜索关键字，电话或名字
-        type: this.type
+        key: key //搜索关键字，电话或名字
       },'v2').then((res) => {
         if (res) {
-          if(this.headerStatus[1].status){
-            this.orderList = res.data
-            let len = this.orderList.records.length
-            this.isExpire(len)
-          }else if (this.headerStatus[2].status) {
-            let result  = mango.getUniqueData(res.data.records)
-            this.dealList = result
-          }
+          this.orderList = res.data
+          let len = this.orderList.records.length
+          this.isExpire(len)
+        }
+      }) 
+    },
+    //成交客户搜索
+    getDealCustomerList(key) {
+      mango.getAjax(this, 'makedeal',{
+        account: this.account,
+        page: 1,  
+        limit: 50,  
+        key: key //搜索关键字，电话或名字
+      },'v2').then((res) => {
+        if (res) {
+          this.dealList = res.data
         }
       }) 
     },
@@ -159,12 +168,28 @@ export default {
     toCustomerInfo(id) {
       this.$router.push(`/customerInfo/${id}`)
     },
+    // 计算总额和折扣金额
+    calcPrice(list) {
+      if(list.orderItemList) {
+        let itemList = list.orderItemList
+        let priceArr = []
+        let total = 0
+        let discount = 0
+        itemList.forEach((item, index) => {
+          total += item.price * item.quantity
+        });
+        discount = total - list.totalAmount
+        this.setOrderTotalPrice(total)
+        this.setOrderDiscountPrice(discount)
+      }
+    },
     //订单查询搜索
     orderInfoIn(index) {
       mango.getAjax(this,"orderById",{orderId: this.orderList.records[index].orderId},"v2")
         .then(res => {
           if (res) {
             this.setOrderInfoDetails(res.data);
+            this.calcPrice(this.orderInfoDetails)
           }
         });
       this.$router.push({ path: "/enquiryInfo" });
@@ -172,7 +197,10 @@ export default {
     //成交客户搜索
     getDetails(index) {
       this.setTabStatus(mango.btnList(['订单信息', '需求信息'], 0))
-      mango.getAjax(this,"customerinfo",{customerId: this.dealList[index].customerId},"v2")
+      mango.getAjax(this,"customerinfo",{
+        customerId: this.dealList.records[index].customerId,
+        account: this.account
+        },"v2")
         .then(res => {
           if (res) {
             this.setDealOrderInfoDetails(res.data);
@@ -180,9 +208,9 @@ export default {
         });
       this.$router.push({ path: "/dealDetails" ,
         query: {
-          username: this.dealList[index].username,
-          sex:this.dealList[index].sex,
-          phone:this.dealList[index].phone
+          username: this.dealList.records[index].username,
+          sex:this.dealList.records[index].sex,
+          phone:this.dealList.records[index].phone
         }
       });
     },
@@ -214,6 +242,7 @@ export default {
         this.dealList = []
         this.orderList = [] // 清空原有数据
         if(key) {
+          this.getDealCustomerList(key)
           this.getCustomerList(key); // 这是我们获取数据的函数
           this.getMyCustomerList(key)
         }

@@ -38,21 +38,41 @@ export default {
     return{
       rotate:-1,
       status:false,
-      i:-1
+      i:-1,
+      dealTotalPrice: 0,
+      dealDiscountPrice: 0
     }
   },
   computed: {
     ...mapState({
-      dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
+      dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails,
+      totalPrice: state => state.dealOrderInfoDetails.totalPrice,
+      discountPrice: state => state.dealOrderInfoDetails.discountPrice
     })
   },
   methods:{
     ...mapMutations([
-      'setOrderInfoDetails'
+      'setOrderInfoDetails',
+      'setTotalPrice',
+      'setDiscountPrice'
     ]),
+    calcPrice(list) {
+      this.dealTotalPrice = 0
+      this.dealDiscountPrice = 0
+      let itemList = list.orderItemList
+      let priceArr = []
+      itemList.forEach((item, index) => {
+        this.dealTotalPrice += item.price * item.quantity
+      });
+      this.dealDiscountPrice = this.dealTotalPrice - list.totalAmount
+      this.setTotalPrice(this.dealTotalPrice)
+      this.setDiscountPrice(this.dealDiscountPrice)
+    },
     //下拉状态改变，获取数据
     pullDown(index){
       this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
+      let orderList = this.dealOrderInfoDetails.orderList[index]
+      this.calcPrice(orderList)
       if(this.status){
         if(this.rotate == index){
           this.i = -1
