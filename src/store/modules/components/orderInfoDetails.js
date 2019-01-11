@@ -1,8 +1,8 @@
 
 const state = {
   orderInfoDetails: [],
-  orderTotalPrice: '',
-  orderDiscountPrice: ''
+  orderTotalPrice: 0,
+  orderDiscountPrice: 0
 }
 
 const mutations = {

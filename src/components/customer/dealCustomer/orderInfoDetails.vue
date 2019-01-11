@@ -17,11 +17,11 @@
       </div>
       <div class="total-amount">
         <span>订单总额</span>
-        <span>￥{{Math.round(0)}}</span>
+        <span>￥{{Math.round(total)}}</span>
       </div>
       <div class="discount">
         <span>折扣金额</span>
-        <span>￥{{ Math.round(0)}}</span>
+        <span>￥{{ Math.round(discount)}}</span>
       </div>
       <div class="payment">
         <p>实付款</p>
@@ -95,38 +95,50 @@ import Vuex, { mapMutations, mapState } from 'vuex'
 export default {
   data(){
     return{
-      orderTotalPrice: 0,
-      orderDiscountPrice: 0
+      total: '',
+      discount: ''
     } 
   },
   destroyed() {
     this.setTotalPrice(0)
     this.setDiscountPrice(0)
+    this.setOrderTotalPrice(0)
+    this.setOrderTotalPrice(0)
   },
   computed: {
       ...mapState({
         orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
         totalPrice: state => state.dealOrderInfoDetails.totalPrice,
-        discountPrice: state => state.dealOrderInfoDetails.discountPrice
+        discountPrice: state => state.dealOrderInfoDetails.discountPrice,
+        orderTotalPrice: state => state.orderInfoDetails.orderTotalPrice,
+        orderDiscountPrice: state => state.orderInfoDetails.orderDiscountPrice
       })
     },
+  watch: {
+    totalPrice() {
+      this.total = this.totalPrice
+    },
+    discountPrice() {
+      this.discount = this.discountPrice
+    },
+    orderTotalPrice() {
+      this.total = this.orderTotalPrice
+    },
+    orderDiscountPrice() {
+      this.discount = this.orderDiscountPrice
+    }
+  },
   created() {
     // this.calcPrice()
-    console.log(124,this.orderInfoDetails.orderItemList)
+    // console.log(144, this.orderTotalPrice, this.orderDiscountPrice)
   },
   methods: {
-    ...mapMutations(['setTotalPrice', 'setDiscountPrice']),
-    calcPrice() {
-      if(this.orderInfoDetails.orderItemList) {
-        let itemList = this.orderInfoDetails.orderItemList
-        let priceArr = []
-        itemList.forEach((item, index) => {
-          this.orderTotalPrice += item.price * item.quantity
-        });
-        this.orderDiscountPrice = this.orderTotalPrice - this.orderInfoDetails.totalAmount
-      }
-      
-    }
+    ...mapMutations([
+      'setTotalPrice', 
+      'setDiscountPrice',
+      'setOrderTotalPrice',
+      'setOrderDiscountPrice'
+    ])
   }
 }
 </script>

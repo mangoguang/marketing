@@ -249,24 +249,28 @@ export default {
         this.setSelectLimit(this.baceLimit)
       }
     },
-    //计算总额和折扣金额
-    // calcPrice(list) {
-    //   if(list.orderItemList) {
-    //     let itemList = list.orderItemList
-    //     let priceArr = []
-    //     itemList.forEach((item, index) => {
-    //       this.orderTotalPrice += item.price * item.quantity
-    //     });
-    //     this.orderDiscountPrice = this.orderTotalPrice - list.totalAmount
-    //   }
-    // },
+    // 计算总额和折扣金额
+    calcPrice(list) {
+      if(list.orderItemList) {
+        let itemList = list.orderItemList
+        let priceArr = []
+        let total = 0
+        let discount = 0
+        itemList.forEach((item, index) => {
+          total += item.price * item.quantity
+        });
+        discount = total - list.totalAmount
+        this.setOrderTotalPrice(total)
+        this.setOrderDiscountPrice(discount)
+      }
+    },
     //点击进入详情页面
     orderInfoIn(index) {
       mango.getAjax(this,"orderById",{orderId: this.orderList.records[index].orderId},"v2")
         .then(res => {
           if (res) {
             this.setOrderInfoDetails(res.data);
-            // this.calcPrice(this.orderInfoDetails)
+            this.calcPrice(this.orderInfoDetails)
           }
         });
       this.$router.push({ path: "/enquiryInfo" });
