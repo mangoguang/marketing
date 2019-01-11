@@ -2,17 +2,20 @@
   <div class="dealCustomer" ref="deal">
     <TopBar :topBarTitle='topbar'/>
     <ul>
-      <li
-        v-for="(item, index) in dealCustomerList"
-        :key="`customerList${index}`"
-        @click="getDetails(index)"
-      >
-        <span>{{index + 1}}</span>
-        <span>{{item.username}}</span>
-        <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
-        <span>{{item.phone}}</span>
-        <span>{{item.createDate}}</span>
-      </li>
+      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
+        <li
+          v-for="(item, index) in dealCustomerList.records"
+          :key="`customerList${index}`"
+          @click="getDetails(index)"
+        >
+          <span>{{index + 1}}</span>
+          <span>{{item.username}}</span>
+          <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
+          <span>{{item.phone}}</span>
+          <!-- <span>{{item.createDate}}</span> -->
+          <span>{{item.recordTime}}</span>
+        </li>
+      </mt-loadmore>
     </ul>
   </div>
 </template>
@@ -23,6 +26,8 @@ import VueRouter from "vue-router";
 import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../../js";
 import TopBar from '../topBar'
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
 
 export default {
   name: "dealCustomerList",
@@ -35,7 +40,11 @@ export default {
       dealCusList: [],
       addPullData: [],
       allPage: "",
+      page: 3,
+      limit: 10,
+      baceLimit:30,
       key: true,
+      allLoaded:false,
       address: '',
       topbar:{
         leftTitle: '姓名',
@@ -48,6 +57,7 @@ export default {
     ...mapState({
       dealCustomerList: state => state.dealCustomerList.dealCustomerList,
       headerStatus: state => state.customerHeader.headerStatus,
+      isSelectStatus: state => state.rightContainer.isSelectStatus,
       dealScroll: state => state.customerScroll.dealScroll,
       dealLength: state => state.dealCustomerList.dealLength,
       dealTime: state => state.rightContainer.dealTime
@@ -57,30 +67,48 @@ export default {
     //根据头部状态获取数据
     headerStatus() {
       if (this.headerStatus[2].status) {
-        this.setHeader(this.dealLength)
+        // this.setHeader(this.dealLength)
         this.listenScrollTop()
         if(this.dealScroll === 0) {
-          this.getSelectTimeData()
+          if(this.isSelectStatus) {
+            this.loadSelectData(this.dealTime)
+            // this.getSelectTimeData()
+          } else {
+            this.loadData()
+          }
         }
       }
     },
     dealTime() {
-      this.initScrollTop()
-      this.getSelectTimeData()
+      // this.initScrollTop()
+      // this.getSelectTimeData()
+      this.setIsSelectStatus(true)
+      //每次改变初始化
+      this.initData()
+      this.loadSelectData(this.dealTime)
+      if(this.dealTime.startTime === '') {
+        this.setIsSelectStatus(false)
+        this.loadData()
+      }
     }
   },
   mounted() {
     this.listenScrollTop()
-    if (this.headerStatus[2].status) {
-      this.getSelectTimeData()
-      this.setHeader(this.dealLength)
-    }
+    // if (this.headerStatus[2].status) {
+    //   this.getSelectTimeData()
+    //   this.setHeader(this.dealLength)
+    // }
   },
   created() {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem("ajaxData");
     this.ajaxData = JSON.parse(ajaxData);
     this.account = this.ajaxData.account.trim();
+    if(!this.isSelectStatus) {
+      this.loadData()
+    } else {
+      this.loadSelectData(this.dealTime)
+    }
   },
   methods: {
     ...mapMutations([
@@ -88,67 +116,153 @@ export default {
        "setDealOrderInfoDetails",
        "setTabStatus",
        'setDealScroll',
-       'setDealLength'
+       'setDealLength',
+       'setIsSelectStatus'
        ]),
     //初始化高度
-    initScrollTop() {
-      this.setDealScroll(0)
-      this.$refs.deal.scrollTop = this.dealScroll 
+    // initScrollTop() {
+    //   this.setDealScroll(0)
+    //   this.$refs.deal.scrollTop = this.dealScroll 
+    // },
+    //获取滚动条
+    handleScroll(e) {
+      let top = e.target.scrollTop
+      this.setDealScroll(top)
     },
     //监听滚动条高度
     listenScrollTop() {
       this.$refs.deal.addEventListener('scroll', this.handleScroll,true)
       this.$refs.deal.scrollTop = this.dealScroll
     },
+    //初始化数据
+    initData() {
+      this.baceLimit = 30
+      this.setDealScroll(0);
+      this.$refs.deal.scrollTop = this.dealScroll
+      localStorage.removeItem('selectDealLimit')
+      localStorage.removeItem('dealLimit');  
+      this.getSelectLimit()
+    },
+    //下拉刷新
+    loadBottom() {
+      this.$refs.loadmore.onBottomLoaded();
+      if(!this.isSelectStatus) {
+        this.pullDownData()
+      }else {
+        this.pullDownData(this.dealTime.startTime,this.dealTime.endTime)
+      }
+    },
+    //下拉加载数据
+    pullDownData(startTime, endTime) {
+      if (this.page < this.allPage) {
+        this.allLoaded = true
+        this.page ++;
+        this.getData(this.page, this.limit, startTime, endTime);
+      }else {
+        mango.tip('没有更多数据了')
+      }
+    },
+     //加载筛选数据
+    loadSelectData(time) {
+      if(time.startTime) {
+        this.getSelectLimit()
+        let tempage = (this.baceLimit - 30)/10
+        this.page = 3 + tempage
+        this.getData(1,this.baceLimit, time.startTime, time.endTime)
+      }
+    },
+    //加载数据
+    loadData() {
+      this.getLimit()
+      let tempage = (this.baceLimit - 30)/10
+      this.page = 3 + tempage
+      this.getData(1,this.baceLimit)
+    },
     //获取时间来获得数据
     getSelectTimeData() {
       let temp = this.dealTime
       this.getData(temp.startTime, temp.endTime);
     },
-    //获取滚动条高度
-    handleScroll(e) {
-      let top = e.target.scrollTop
-      this.setDealScroll(top)
+    //判断是否订单筛选时间来获取不同的缓存limit
+    getDiffLimit() {
+      if(!this.isSelectStatus) {
+        this.setLimit(this.baceLimit + 10)
+        this.getLimit()
+      } else {
+        this.setSelectLimit(this.baceLimit + 10)
+        this.getSelectLimit()
+      }
     },
-    getData(startTime, endTime) {
+    getData(page, limit, startTime, endTime) {
       this.key = false;
-      mango.getAjax(this,"order",{
+      mango.getAjax(this,"makedeal",{
             account: this.account,
-            page: 1,
-            limit: 5000,
-            type:1,
+            page: page,
+            limit: limit,
+            // type:1,
             startTime,
             endTime,
-            key: ""},"v2")
+            key: ""
+      },"v2")
         .then(res => {
-          //初始进来
+          this.allLoaded = false
           this.allPage = Math.ceil(res.data.total / 10);
-          this.key = true;
-          let result  = mango.getUniqueData(res.data.records)
-          this.setDealCustomerList(result);
-          this.dealCusList = this.dealCustomerList;
-          this.setDealLength(result.length)
-          this.setHeader(this.dealLength)
+          if (page <= 3) {
+            this.setDealCustomerList(res.data);
+            this.dealCusList = this.dealCustomerList;
+            this.$emit("changeResultTit",`全部客户 (${this.dealCustomerList.total == null? "0": this.dealCustomerList.total})`);
+          } else {
+            //筛选和非筛选时候缓存的limit
+            this.getDiffLimit()
+            //上啦刷新加载数据
+            this.addPullData = res.data;
+            this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
+            this.setDealCustomerList(this.dealCusList);
+          }
+          //初始进来
+          // this.allLoaded = false
+          // this.allPage = Math.ceil(res.data.total / 10);
+          // this.key = true;
+          // console.log(res.data)
+          // // let result  = mango.getUniqueData(res.data.records)
+          // this.setDealCustomerList(res.data.records);
+          // // this.dealCusList = this.dealCustomerList.records;
+          // // this.setDealLength(res.data.total)
+          // this.setHeader(res.data.total)
         });
     },
-    setHeader(length) {
-      this.$emit("changeResultTit",`全部客户 (${length == 0? "0": length})`);
-    },
-    // //获得个人评价等级
-    // getLevel(level) {
-    //   if (level == 1) {
-    //     return "高";
-    //   } else if (level == 2) {
-    //     return "中";
-    //   } else if (level == 3) {
-    //     return "低";
-    //   } else {
-    //     return null;
-    //   }
+    // setHeader(length) {
+    //   this.$emit("changeResultTit",`全部客户 (${length == 0? "0": length})`);
     // },
+    setLimit(limit) {
+      let string = `{"dealLimit":" ${limit}"}`;
+      localStorage.setItem("dealLimit", string);
+    },
+     //获取本地数据
+    getLimit() {
+      let temp = localStorage.getItem("dealLimit");
+      if(temp) {
+        this.baceLimit = parseInt(JSON.parse(temp).dealLimit);
+      }else {
+        this.setLimit(this.baceLimit)
+      }
+    },
+    setSelectLimit(selectLimit) {
+      let string = `{"selectDealLimit":" ${selectLimit}"}`;
+      localStorage.setItem("selectDealLimit", string);
+    },
+    //缓存筛选的limit
+    getSelectLimit() {
+      let temp = localStorage.getItem("selectDealLimit");
+      if(temp) {
+        this.baceLimit = parseInt(JSON.parse(temp).selectDealLimit);
+      }else {
+        this.setSelectLimit(this.baceLimit)
+      }
+    },
     //详细订单信息
     getDetails(index) {
-      let id = this.dealCustomerList[index].customerId
+      let id = this.dealCustomerList.records[index].customerId
       // this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], 0))
       this.setTabStatus(mango.btnList(['订单信息', '需求信息'], 0))
       mango.getAjax(this,"customerinfo",{
@@ -162,9 +276,9 @@ export default {
             this.address = res.data.orderList[0].address
             this.$router.push({ path: "/dealDetails" ,
             query: {
-              username: this.dealCustomerList[index].username,
+              username: this.dealCustomerList.records[index].username,
               address:this.address,
-              phone:this.dealCustomerList[index].phone
+              phone:this.dealCustomerList.records[index].phone
             }
           });
           }
