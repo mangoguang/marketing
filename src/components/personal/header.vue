@@ -7,7 +7,7 @@
         <div class="name">
           <span>{{ajaxData.name}}</span>
           <span>|</span>
-          <span>{{ajaxData.sex == 1 ? '男' : '女'}}</span>
+          <span>{{ajaxData.sex === 0 ? '未知' : (ajaxData.sex === 1?'男' : '女')}}</span>
         </div>
         <div class="phoneNumber">
           <span>{{ajaxData.phone}}</span>
