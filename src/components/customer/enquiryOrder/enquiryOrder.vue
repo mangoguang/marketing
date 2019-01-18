@@ -9,7 +9,7 @@
           :key="`list${index}`"
           @click="orderInfoIn(index)">
           <span >{{index + 1}}</span>
-          <span :class='{active : compareTime[index]}'>{{item.username}}</span>
+          <span :class='{active : compareTime[index]}'>{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span>
           <span>{{item.demandTime}}</span>
           <span :class='{active : compareTime[index]}'>{{item.orderStatus}}</span>
         </li>

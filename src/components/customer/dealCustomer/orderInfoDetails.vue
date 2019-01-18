@@ -43,13 +43,13 @@
         <li>
           <div>
             <span>客户姓名:</span>
-            <p>{{ orderInfoDetails.username }}</p>
+            <p>{{ `*${orderInfoDetails.username ? orderInfoDetails.username.slice(1, 5) : ''}` }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>客户电话:</span>
-            <p>{{ orderInfoDetails.phone }}</p>
+            <p>{{ `******${orderInfoDetails.phone ? orderInfoDetails.phone.slice(6, 11) : ''}` }}</p>
           </div>
         </li>
         <li>
@@ -79,7 +79,7 @@
         <li> 
           <div>
             <span>送货地址:</span>
-            <p>{{ orderInfoDetails.address }}</p>
+            <p>{{ `******${orderInfoDetails.address ? orderInfoDetails.address.slice(6, 50) : ''}` }}</p>
           </div>
         </li>
       </ul>

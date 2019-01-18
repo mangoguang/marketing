@@ -4,11 +4,11 @@
     <div class="address">
       <ul>
         <li>
-          收货人：{{ orderInfoDetails.username }}
-          <span>{{ orderInfoDetails.phone }}</span>
+          收货人：{{ `*${orderInfoDetails.username ? orderInfoDetails.username.slice(1, 10) : ''}` }}
+          <span>{{ `******${orderInfoDetails.phone ? orderInfoDetails.phone.slice(6, 11) : ''}` }}</span>
           <div class="phone"></div>
         </li>
-        <li>收获地址：{{ orderInfoDetails.address }}</li>
+        <li>收获地址：{{ `******${orderInfoDetails.address ? orderInfoDetails.address.slice(6, 50) : ''}` }}</li>
         <li>需求日期：{{ orderInfoDetails.demandTime }}</li>
       </ul>
     </div>

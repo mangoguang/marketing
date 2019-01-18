@@ -5,12 +5,12 @@
       <div class="via"></div>
       <div class="content">
         <div class="name">
-          <span>{{ajaxData.name}}</span>
+          <span>{{'导购员张三' || ajaxData.name}}</span>
           <span>|</span>
           <span>{{ajaxData.sex === 0 ? '未知' : (ajaxData.sex === 1?'男' : '女')}}</span>
         </div>
         <div class="phoneNumber">
-          <span>{{ajaxData.phone}}</span>
+          <span>{{`******${ajaxData.phone.slice(6, 11)}`}}</span>
           <div class="phone-icon">
             <a href="tel:1599999999">
               <img src="../../assets/imgs/call.png" alt="电话">

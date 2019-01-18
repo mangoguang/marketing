@@ -9,9 +9,9 @@
           @click="getDetails(index)"
         >
           <span>{{index + 1}}</span>
-          <span>{{item.username}}</span>
+          <span>{{`*${item.username.slice(1, 5)}`}}</span>
           <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
-          <span>{{item.phone}}</span>
+          <span>{{`******${item.phone.slice(6, 11)}`}}</span>
           <!-- <span>{{item.createDate}}</span> -->
           <span>{{item.recordTime}}</span>
         </li>
