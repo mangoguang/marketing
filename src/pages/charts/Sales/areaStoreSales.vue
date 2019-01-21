@@ -97,6 +97,12 @@ export default {
         if (res) {
           this.key = true
           res = res.data
+          res[0].name = `**省`
+          let temp  = res[0].yAxisData
+          console.log('区域销售额：', temp)
+          for (let i = 0; i < temp.length; i++) {
+            temp[i] = `区域${i + 1}`
+          }
           // 柱状图需要检测到数据改变时才渲染，故开始时数据需要有初始状态。
           let arr = []
           for (let i =0; i < res.length; i++) {
