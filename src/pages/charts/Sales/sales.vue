@@ -184,6 +184,10 @@ export default {
           this.key2 = true
           res = res.data
           _this.areaSalesData = res
+          let temp  = res.yAxisData
+          for (let i = 0; i < temp.length; i++) {
+            temp[i] = `**省`
+          }
         }
       })
     },
