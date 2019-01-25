@@ -1,7 +1,7 @@
 <template>
   <li class="areaSelect">
     <ul>
-      <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
+      <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea" @touchmove="handleTouchmove" >
         <span>{{areaVal && areaVal.provinceName != '' ? `${areaVal.provinceName} ${areaVal.cityName} ${areaVal.countyName}` : '请选择客户地区'}}</span>
       </li>
       <!-- 性别选择插件 -->
@@ -78,6 +78,9 @@ export default {
   },
   methods:{
     ...mapMutations(["setAreaVal"]),
+    handleTouchmove(e) {
+      e.preventDefault()
+    },
     selectArea() {
       this.popupVisible = true
       this.key = true
@@ -207,10 +210,23 @@ export default {
   }
   .pickerContainer{
     .mint-popup{
+      width: 100vw;
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: space-between;
       // align-items: flex-start;
     }
+  }
+  .provincePicker {
+    flex: 0.4
+  }
+  .cityPicker {
+    flex: 0.3
+  }
+  .countyPicker {
+    flex: 0.3
+  }
+  .picker-item{
+    font-size:3.38vw;
   }
 </style>
