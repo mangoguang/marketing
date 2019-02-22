@@ -7,7 +7,7 @@
 
 <script>
 import yanCircleList from "../../components/msManage/yanCircleList"
-import Footer from '../../components/footer'
+import Footer from '../../components/Footer'
 export default {
   components: {yanCircleList, Footer},
   data() {
