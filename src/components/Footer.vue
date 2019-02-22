@@ -25,11 +25,11 @@
       <p class="iconCharP">客户</p>
       </router-link>
     </li>
-    <li id="4" @touchend="touchend">
-      <!-- <router-link to="/" > -->
+    <li id="4" >
+      <router-link to="/msmanage" >
        <div class="iconMsg" ></div>
       <p class="iconCharP">消息</p>
-      <!-- </router-link> -->
+      </router-link>
     </li>
     <li id="5">
       <router-link to="/"  @click.native="changeActive">

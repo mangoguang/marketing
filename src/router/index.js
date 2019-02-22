@@ -135,7 +135,34 @@ export var router = new VueRouter({
     path: '/ResetPwd',
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
-  }],
+  },
+  //金管家模块
+  {
+    path: '/msManage',
+    name: '/msManage',
+    component: resolve => require(['../pages/msManage/msIndex'],resolve)
+  },
+  {
+    path: '/policy',
+    name: '/policy',
+    component: resolve => require(['../pages/msManage/policy'],resolve)
+  },
+  {
+    path: '/story',
+    name: '/story',
+    component: resolve => require(['../pages/msManage/story'],resolve)
+  },
+  {
+    path: '/service',
+    name: '/service',
+    component: resolve => require(['../pages/msManage/service'],resolve)
+  },
+  {
+    path: '/question',
+    name: '/question',
+    component: resolve => require(['../pages/msManage/question'],resolve)
+  }
+],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {  
       // console.log(324242,savedPosition)      
