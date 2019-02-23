@@ -16,7 +16,8 @@
       <span> <slot name="time"></slot></span>  
       </p>
     </div>
-    <img src="../../assets/imgs/example.png" alt="" class="img">
+    <!-- <img src="../../assets/imgs/example.png" alt="" class="img"> -->
+    <slot name="img" class='img'></slot>
   </div>
   </mt-cell-swipe>
 </template>

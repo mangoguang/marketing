@@ -9,6 +9,12 @@
             <template v-slot:time>
               {{items.time}}
             </template> 
+            <!-- <img :src="require(`${items.imgUrl}`)" alt=""  slot:img> -->
+             <template v-slot:img>
+             <!-- <img src="../../assets/imgs/example.png" alt="" > -->
+              <img :src="items.imgUrl" alt=""> 
+            </template> 
+            
         </yan-cell-swipe>
       </li>
     </ul>
@@ -47,6 +53,11 @@ ul{
   li{
   margin-bottom: .05rem;
   box-shadow:0 .01rem .03rem 0 rgba(136, 136, 136, 0.2);
+  img{
+    width:.8rem;
+    height:.8rem;
+    margin:.1rem 0;
+  }
 }
 }
 </style>

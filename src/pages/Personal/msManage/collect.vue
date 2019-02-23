@@ -83,7 +83,7 @@ export default {
       width:100%;
       height:0.8vw;
       background: transparent;
-      border-radius: 0.53vw;
+      border-radius: 0.4vw;
     }
   }
   .on{
