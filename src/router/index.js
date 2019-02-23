@@ -161,6 +161,18 @@ export var router = new VueRouter({
     path: '/question',
     name: '/question',
     component: resolve => require(['../pages/msManage/question'],resolve)
+  },
+  //首页搜索
+  {
+    path: '/search',
+    name: '/search',
+    component: resolve => require(['../pages/msManage/search'],resolve)
+  },
+  //文章详情
+  {
+    path: '/articleDetails',
+    name: '/articleDetails',
+    component: resolve => require(['../pages/msManage/articleDetails'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {

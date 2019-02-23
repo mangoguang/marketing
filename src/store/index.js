@@ -15,6 +15,7 @@ import tabStatus from './modules/components/tabStatus'
 import orderList from './modules/components/orderList'
 import customerScroll from './modules/customer/scroll'
 import personMsg from './modules/login/index'
+import searchBox from './modules/msManage/searchBox'
 
 export default new Vuex.Store({
   modules: {
@@ -32,6 +33,7 @@ export default new Vuex.Store({
     serachResult,
     customerScroll,
     personMsg,
-    select
+    select,
+    searchBox
   }
 })

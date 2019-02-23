@@ -26,7 +26,7 @@
       </router-link>
     </li>
     <li id="4" >
-      <router-link to="/msManage" @click.native="changeActive">
+      <router-link to="/msManage"  @click.native="changeActive">
        <div class="iconMsg" ></div>
       <p class="iconCharP">消息</p>
       </router-link>

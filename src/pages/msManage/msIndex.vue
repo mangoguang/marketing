@@ -1,5 +1,6 @@
 <template>
   <div class="index">
+    <Search :origin='origin'/>
     <yan-circle-list :link="link"/>
     <Footer />
   </div>
@@ -8,11 +9,11 @@
 <script>
 import yanCircleList from "../../components/msManage/yanCircleList"
 import Footer from '../../components/Footer'
+import Search from '../../components/msManage/search/eggSearchInp'
 export default {
-  components: {yanCircleList, Footer},
+  components: {yanCircleList, Footer, Search},
   data() {
     return {
-      title:'金管家首页',
       link:[
         {
           link:'/policy',//路由
@@ -38,7 +39,8 @@ export default {
           name:'常见问题',
           bgColor:'#007AFF'
         }
-      ]
+      ],
+      origin: true
     }
   }
 }
