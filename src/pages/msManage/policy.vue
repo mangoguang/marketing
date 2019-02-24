@@ -1,6 +1,7 @@
 <template>
   <div>
-    <treeList :list='list'/>
+    <!-- list为传入参数，getparmas为组件点击得到的选项-->
+    <treeList :list='list' :getParmas='getParmas'/>
   </div>
 </template>
 
@@ -11,7 +12,7 @@ export default {
   data() {
     return {
       list: [
-        {name:'分类一',father:1,child:[
+        {name:'分类一',child:[
           {name:'分类一'},
           {name:'分类一'},
           {name:'分类一'},
@@ -21,23 +22,36 @@ export default {
           {name:'分类一'},
           {name:'分类一'}
          ]},
-         {name:'分类二',father:1},
-         {name:'分类三',father:1,child:[
-          {name:'分类一'},
-          {name:'分类一'}
+         {name:'分类二'},
+         {name:'分类三',child:[
+          {name:'分类31'},
+          {name:'分类32'},
+          {name:'分类31'},
+          {name:'分类32'},
+          {name:'分类31'},
+          {name:'分类32'},
+          {name:'分类31'},
+          {name:'分类32'}
          ]},
-         {name: '分类四',father:1,child: [
-           {name: '分类一'}
+         {name: '分类四',child: [
+           {name: '分类4'}
          ]},
-         {name: '分类五',father:1,child: [
-           {name: '分类一'}
+         {name: '分类五',child: [
+           {name: '分类5'}
          ]},
-          {name: '分类六',father:1,child: [
-           {name: '分类一'}
-         ]}, {name: '分类七',father:1,child: [
-           {name: '分类一'}
+          {name: '分类六',child: [
+           {name: '分类6'}
+         ]}, {name: '分类七',child: [
+           {name: '分类7'}
          ]}
-      ]
+      ],
+      parmas: {}
+    }
+  },
+  methods: {
+    getParmas(val) {
+      this.parmas = val
+      console.log(this.parmas)
     }
   }
 }

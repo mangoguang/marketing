@@ -1,65 +1,101 @@
 <template>
-  <ul class="treeList" ref="ulul">
-    <div class="wrapper">
-      <li class="select" 
-      v-for="(item, index) in list" :key="index" >
-      <span @click="changeFlag(index)" 
-        :class="isactive == index? addClass : ''">
-        {{ item.name }}
-      </span>
-      <treeList v-show="scope[index]" :list='item.child' class="hasChildren"></treeList>
-    </li> 
-    </div>
-  </ul>
+  <div class="wrapper" v-show="list">
+    <ul class="treeList">
+      <li v-for="(item, index) in newList" :key="index" class="select">
+        <span  
+          @click="changeNewStatus(index)" 
+          :class="item.status? 'addClass' : ''">
+          {{ item.name }}
+        </span>
+        <div class="child_wrapper" >
+          <ul class="child_treeList " v-show="item.status">
+            <li v-for="(el, i) in list[index].child" :key='i' class="select">
+              <span 
+                @click="changChildStatus(i, index)"
+                :class="isactive == i? 'childrenAddClass' : ''">
+                {{ el.name }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
+import mango from '../../js' 
 export default {
   name: 'treeList',
-  props: ['list'],
+  props: ['list', 'getParmas'],
   data() {
     return {
-      scope: {},
       isactive: -1,
       addClass: '',
-      hasChildren: ''
+      newList: []
     }
   },
   created() {
-    this.getScope()
+    if(this.list) {
+      this.newList = this.getNewList(this.list)
+    }
   },
   methods: {
-    //点击切换css样式
-    changeFlag(index) {
-      this.getScope()
-      if(this.list[index].child && this.list[index].child.length) {
-        this.addClass = 'addclass'
-      }else {
-        this.addClass = 'childrenAddClass'
-        this.list[index].father? this.addClass = 'addclass' : ''
+    //获取父级循环列表
+    getNewList(list, index) {
+      if(!list) {
+        return
       }
-      this.isactive = index
-      this.$set(this.scope,index,!this.scope[index])
+      let arr = []
+      list.forEach(el => {
+        arr.push(el.name)
+      });
+      if(!index) {
+        index = 0
+      }
+      let listStatus = mango.btnList(arr, index)
+      return listStatus
     },
-    //获取状态
-    getScope() {
-      if(this.list) {
-        this.list.forEach((item,index) => {
-          if(item.child && item.child.length) {
-            this.$set(this.scope,index,false)
-            this.isactive = -1
-          }
-        })
+    //点击切换父级css样式并获取参数
+    changeNewStatus(index) {
+      if(this.newList[index].status) {
+        return
       }
+      this.isactive = -1
+      this.newList = this.getNewList(this.list, index)
+      let parmas = {name1: this.newList[index].name}
+      this.getParmas(parmas)
+    },
+    //点击切换子级css样式并获取参数
+    changChildStatus(i, index) {
+      if(this.isactive == i) {
+        return
+      }else {
+        this.isactive = i
+        if(this.list[index].child) {
+          let parmas = {
+            name1: this.newList[index].name,
+            name2: this.list[index].child[i].name
+            }
+          this.getParmas(parmas)
+        }
+      }
+      
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.treeList {
+.treeList::-webkit-scrollbar {
+  background-color:#fff;
+}
+.child_treeList::-webkit-scrollbar {
+  background-color:#fff;
+}
+.wrapper {
   overflow-x: hidden;
-  .wrapper {
+  .treeList{
     overflow-x: auto;
     display: flex;
     white-space: nowrap;
@@ -68,49 +104,46 @@ export default {
       color: #666;
       padding: 2vw 4vw;
       width: 12vw;
-      .addclass {
-        color: #363636;
-        font-size: 4.5vw;
-        border-bottom: 0.8vw solid #363636;
-        border-radius: 0.4vw;
+      .child_wrapper {
+        overflow-x: hidden;
+        display: flex;
+        white-space: nowrap;
+        background: #e1e1e1;
+        width: 100vw;
+        position: absolute;
+        top: 12vw;
+        left: 0;
+        .child_treeList {
+          overflow-x: auto;
+          display: flex;
+          white-space: nowrap;
+          width: 100vw;
+          span {
+            padding: 1.23vw 4.26vw;
+            background: #f8f8f8;
+            box-shadow:0px 0.26vw 0.8vw 0px rgba(136,136,136,0.2);
+            border-radius: 3.86vw;
+            text-align: center;
+            font-size: 3.46vw;
+            margin-right: 4vw;
+          }
+          .childrenAddClass {
+            color:#fff;
+            font-size: 3.46vw;
+            background: #007aff;
+            box-shadow:0px 2px 6px 0px rgba(136,136,136,0.2);
+            border-radius:3.86vw;
+            padding: 1.23vw 4.26vw;
+          }
+        }
       }
     } 
-    // .select:nth-child(1) {
-    //   color: #363636;
-    //   font-size: 4.5vw;
-    //   border-bottom: 0.8vw solid #363636;
-    //   border-radius: 0.4vw;
-    // }
   }
 }
-.wrapper::-webkit-scrollbar {
-  background-color:#fff;
-}
-.hasChildren {
-  background: #e1e1e1;
-  width: 100vw;
-  position: absolute;  
-  top: 12vw;
-  left: 0;
-  li {
-    margin-right: 2vw;
-  }
-  span {
-    padding: 1.23vw 4.26vw;
-    background: #f8f8f8;
-    box-shadow:0px 0.26vw 0.8vw 0px rgba(136,136,136,0.2);
-    border-radius: 3.86vw;
-    text-align: center;
-    font-size: 3.46vw;
-    margin-right: 4vw;
-  }
-   .childrenAddClass {
-      color:#fff;
-      font-size: 3.46vw;
-      background: #007aff;
-      box-shadow:0px 2px 6px 0px rgba(136,136,136,0.2);
-      border-radius:3.86vw;
-      padding: 1.23vw 4.26vw;
-    }
+.addClass {
+  color: #363636;
+  font-size: 4.5vw;
+  border-bottom: 0.8vw solid #363636;
+  border-radius: 0.4vw;
 }
 </style>
