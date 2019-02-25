@@ -26,7 +26,7 @@
 import Vuex, { mapMutations, mapState } from 'vuex'
 import Search from '../../components/msManage/search/eggSearchInp'
 import historySearch from '../../components/msManage/search/eggHistorySearch'
-import {fuzzyQuery, changeColor, getLocalStorage, skipNewPage} from '../../utils/msManage'
+import {fuzzyQuery, changeColor, setLocalStorage, getLocalStorage, skipNewPage} from '../../utils/msManage'
 import { setTimeout } from 'timers';
 export default {
   components: { Search, historySearch },
@@ -50,7 +50,7 @@ export default {
     searchVal() {
       //list请求得到的文章列表标题
       this.hasHistory = false
-      //格式在fuzzyQuery中转化
+      //格式在fuzzyQuery中转化 =======> axios
       let list = [
         {title:'幕思服务政策'},
         {title:'幕思服务'},
@@ -68,11 +68,35 @@ export default {
     }
   },
   created() {
+    this.compareTime()
     this.showHistory()
   },
   methods: {
+    //超出缓存5天的自动清除 （1000*60*60*24）
+    compareTime() {
+      if(getLocalStorage('title')) {
+        let arrIndex = []
+        let curTime = new Date().getTime()
+        let localStorageTime = getLocalStorage('title')['currentTime']
+        localStorageTime.forEach((item, index) => {
+          if((curTime - localStorageTime)/86400000 > 5) {
+            arrIndex = [...arrIndex, index]
+          }
+        });
+        let list = getLocalStorage('title')['list']
+        let obj = {
+          list: list.slice(0, arrIndex[0]),
+          currentTime: time.slice(0, arrIndex[0])
+        }
+        if(!obj.list.length) {
+          window.localStorage.removeItem('title')
+        }else {
+          setLocalStorage(obj,'title')
+        }
+      }
+    },
     ...mapMutations(['setTitle']),
-    //
+    //获取缓存，历史搜索显示
     showHistory() {
       let historyTitle = getLocalStorage('title')
       if(historyTitle) {
@@ -85,7 +109,7 @@ export default {
       if(title) {
         this.historyTxt = this.searchVal
         setTimeout(() => {
-          // skipNewPage(this.$router, '/articleDetails', {'title': title})
+          skipNewPage(this.$router, '/articleDetails', {'title': title})
           this.historyTxt = ''
         }, 100);
       }
