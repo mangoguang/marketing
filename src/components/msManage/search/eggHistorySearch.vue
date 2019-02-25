@@ -5,7 +5,7 @@
       <button @click="emptyHisList">清除</button>
     </div>
     <ul>
-      <li v-for="(item, index) in list" :key="index">
+      <li v-for="(item, index) in list" :key="index" @click='clickTitle(index)'>
         {{ item }}
       </li>
     </ul>
@@ -13,27 +13,69 @@
 </template>
 
 <script>
+import {setLocalStorage,getLocalStorage,skipNewPage} from '../../../utils/msManage'
 export default {
+  //historyTxt是搜索框内容，isEmpty是清空搜索框，clickHistoryTxt点击历史搜索中的内容
+  props: ['historyTxt', 'isEmpty', 'clickHistoryTxt'],
   data() {
     return {
-      list: [
-        '床架',
-        '床架床架',
-        '床架12',
-        '床架',
-        '床架',
-        '床架',
-        '床架',
-        '床架'
-      ]
+      list: []
     }
   },
+  watch: {
+    historyTxt() {
+      if(!this.historyTxt) {
+        return
+      }
+      this.addLocalStorage()
+    }
+  },
+  created() {
+    this.getHistoryList()
+  },
   methods: {
+    //添加localStorage
+    addLocalStorage() {
+      this.filterArr()
+      this.list = [this.historyTxt, ...this.list]
+      this.sliceArr()
+      setLocalStorage(this.list,'title')
+    },
+    //去重
+    filterArr() {
+      if(this.list.length) {
+        this.list.forEach((item, index) => {
+          if(item == this.historyTxt) {
+            let arrPre = this.list.slice(0,index)
+            let arrAft = this.list.slice(index + 1)
+            this.list = [...arrPre, ...arrAft]
+          }
+        })
+      }
+    },
+    //截取数据
+    sliceArr() {
+      if(this.list.length > 10) {
+        this.list = this.list.slice(0,10)
+      }
+    },
+    //获取历史搜索列表
+    getHistoryList() {
+      let list  = getLocalStorage('title')
+      if(list) {
+        this.list = list
+      }else {
+        this.list = []
+      }
+    },
+    //清空历史搜索
     emptyHisList() {
       this.list = []
+      window.localStorage.removeItem('title')
+      this.isEmpty(false)
     },
-    matchWord(word) {
-      
+    clickTitle(index) {
+      this.clickHistoryTxt(this.list[index])
     }
   }
 }
@@ -42,6 +84,8 @@ export default {
 <style lang="scss" scoped>
 .eggHistorySearch {
   padding: 4.4vw;
+  border-bottom: 1px solid #fff;
+  box-shadow:0px 2px 6px 0px rgba(136,136,136,0.2);
   .title {
     display: flex;
     justify-content: space-between;

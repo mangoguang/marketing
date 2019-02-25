@@ -3,7 +3,7 @@ const state = {
 }
 
 const mutations = {
-  setTitle: (state, obj) => state.title = obj
+  setTitle: (state, obj) => state.titleList = obj
 }
 
 const actions = {

@@ -7,7 +7,10 @@
       />
       <button class="cancle" @click="cancleBtn">取消</button>
     </div>
-    <historySearch v-show='hasHistory'/>
+    <historySearch v-show='hasHistory' 
+      :historyTxt='historyTxt'
+      :isEmpty='isEmpty'
+      :clickHistoryTxt='clickHistoryTxt'/>
     <ul class="matchTxt" v-show="matchTxt">
       <li v-for="(item, index) in list" :key="index"  
         v-html='item' @click="toArticle(index)"></li>
@@ -23,7 +26,8 @@
 import Vuex, { mapMutations, mapState } from 'vuex'
 import Search from '../../components/msManage/search/eggSearchInp'
 import historySearch from '../../components/msManage/search/eggHistorySearch'
-import {fuzzyQuery, changeColor} from '../../utils/msManage'
+import {fuzzyQuery, changeColor, getLocalStorage, skipNewPage} from '../../utils/msManage'
+import { setTimeout } from 'timers';
 export default {
   components: { Search, historySearch },
   data() {
@@ -32,7 +36,8 @@ export default {
       list: [],
       hasHistory: false,
       matchTxt: true,
-      unMatchTxt: false
+      unMatchTxt: false,
+      historyTxt: ''
     }
   },
   computed: {
@@ -43,23 +48,51 @@ export default {
   watch: {
     //匹配关键字且关键字高亮
     searchVal() {
-      let list = ['幕思服务政策','幕思服务','政策']
+      //list请求得到的文章列表标题
+      this.hasHistory = false
+      //格式在fuzzyQuery中转化
+      let list = [
+        {title:'幕思服务政策'},
+        {title:'幕思服务'},
+        {title:'政策'},
+        {title:'幕思的政策'},
+        {title:'幕思领导服务的政策'}]
       let matchList  = fuzzyQuery(list, this.searchVal)
-      //传递给下个页面？？？
+      //传递给标题下个页面
       this.setTitle(fuzzyQuery(list, this.searchVal))
       this.showMatchList(matchList)
       this.showErrorTips(matchList)
       this.list = changeColor(matchList, this.searchVal)
+      //出现历史搜索
+      this.emptySearchVal()
     }
+  },
+  created() {
+    this.showHistory()
   },
   methods: {
     ...mapMutations(['setTitle']),
+    //
+    showHistory() {
+      let historyTitle = getLocalStorage('title')
+      if(historyTitle) {
+        this.hasHistory = true
+      }
+    },
     //点击跳转
     toArticle(index) {
-      this.$router.push({
-        path: '/articleDetails',
-        query: {title: this.titleList}
-      })
+      let title = this.titleList[index]
+      if(title) {
+        this.historyTxt = title
+        setTimeout(() => {
+          // skipNewPage(this.$router, '/articleDetails', {'title': title})
+          this.historyTxt = ''
+        }, 100);
+      }
+    },
+    //点击历史搜索内容
+    clickHistoryTxt(val) {
+      this.searchVal = val
     },
     //返回首页
     cancleBtn() {
@@ -84,6 +117,20 @@ export default {
         this.unMatchTxt = true
       }else {
         this.unMatchTxt = false
+      }
+    },
+    //清空历史搜索
+    isEmpty(val) {
+      this.hasHistory = val
+    },
+    //输入框清空时出现历史搜索
+    emptySearchVal() {
+      let list = getLocalStorage('title')
+      if(!list) {
+        return
+      }
+      if(!this.searchVal.length && list.length) {
+        this.hasHistory = true
       }
     }
   }
