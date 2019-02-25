@@ -136,6 +136,11 @@ export var router = new VueRouter({
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
   },
+  {
+    path: '/collect',
+    name: '/collect',
+    component: resolve => require(['../pages/Personal/msManage/collect'],resolve)
+  },
   //金管家模块
   {
     path: '/msManage',

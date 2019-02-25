@@ -15,7 +15,19 @@ VueTouch.config.swipe = {
 import {
   router
 } from './router/index.js'
-
+// 添加rem计算
+(function (doc, win) {
+  var docEl = doc.documentElement
+  var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
+  var recalc = function () {
+    var clientWidth = docEl.clientWidth
+    if (!clientWidth) return
+    docEl.style.fontSize = 100 * (clientWidth / 375) + 'px'
+  }
+  if (!doc.addEventListener) return
+  win.addEventListener(resizeEvt, recalc, false)
+  doc.addEventListener('DOMContentLoaded', recalc, false)
+})(document, window)
 // console.log('api对象：', window.$api.appId)
 /* eslint-disable no-new */
 if (mango.version === 'app') {
