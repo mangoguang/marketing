@@ -36,11 +36,17 @@ export default {
     }
   },
   created() {
-    if(this.list) {
-      this.newList = this.getNewList(this.list)
-    }
+    this.init(this.list)
   },
   methods: {
+    //初始进来的时候默认传第一个值
+    init(list) {
+      if(list.length) {
+        this.newList = this.getNewList(list, 0)
+        let parmas = {name1: list[0].name}
+        this.getParmas(parmas)
+      }
+    },
     //获取父级循环列表
     getNewList(list, index) {
       if(!list) {
@@ -50,11 +56,8 @@ export default {
       list.forEach(el => {
         arr.push(el.name)
       });
-      if(!index) {
-        index = 0
-      }
-      let listStatus = mango.btnList(arr, index)
-      return listStatus
+      let listName = mango.btnList(arr, index)
+      return listName
     },
     //点击切换父级css样式并获取参数
     changeNewStatus(index) {
@@ -72,15 +75,18 @@ export default {
         return
       }else {
         this.isactive = i
-        if(this.list[index].child) {
-          let parmas = {
-            name1: this.newList[index].name,
-            name2: this.list[index].child[i].name
-            }
-          this.getParmas(parmas)
-        }
+        this.getChildParmas(i,index)
       }
-      
+    },
+    //子级获取参数
+    getChildParmas(i,index) {
+      if(this.list[index].child.length) {
+        let parmas = {
+          name1: this.newList[index].name,
+          name2: this.list[index].child[i].name
+          }
+        this.getParmas(parmas)
+      }
     }
   }
 }
