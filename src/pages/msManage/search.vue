@@ -83,7 +83,7 @@ export default {
     toArticle(index) {
       let title = this.titleList[index]
       if(title) {
-        this.historyTxt = title
+        this.historyTxt = this.searchVal
         setTimeout(() => {
           // skipNewPage(this.$router, '/articleDetails', {'title': title})
           this.historyTxt = ''
@@ -125,12 +125,11 @@ export default {
     },
     //输入框清空时出现历史搜索
     emptySearchVal() {
-      let list = getLocalStorage('title')
-      if(!list) {
-        return
-      }
-      if(!this.searchVal.length && list.length) {
-        this.hasHistory = true
+      if(getLocalStorage('title')) {
+        let list = getLocalStorage('title')['list']
+        if(!this.searchVal.length && list.length) {
+          this.hasHistory = true
+        }
       }
     }
   }

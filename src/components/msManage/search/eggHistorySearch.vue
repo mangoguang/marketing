@@ -19,7 +19,8 @@ export default {
   props: ['historyTxt', 'isEmpty', 'clickHistoryTxt'],
   data() {
     return {
-      list: []
+      list: [],
+      currentTime: []
     }
   },
   watch: {
@@ -36,10 +37,16 @@ export default {
   methods: {
     //添加localStorage
     addLocalStorage() {
+      let time = new Date().getTime()
       this.filterArr()
       this.list = [this.historyTxt, ...this.list]
+      this.currentTime = [time, ...this.currentTime]
       this.sliceArr()
-      setLocalStorage(this.list,'title')
+      let obj = {
+        list: this.list,
+        currentTime: this.currentTime
+      }
+      setLocalStorage(obj,'title')
     },
     //去重
     filterArr() {
@@ -48,29 +55,39 @@ export default {
           if(item == this.historyTxt) {
             let arrPre = this.list.slice(0,index)
             let arrAft = this.list.slice(index + 1)
+            let timePre = this.currentTime.slice(0,index)
+            let timeAft = this.currentTime.slice(index + 1)
             this.list = [...arrPre, ...arrAft]
+            this.currentTime = [...timePre, ...timeAft]
           }
         })
       }
     },
     //截取数据
     sliceArr() {
-      if(this.list.length > 10) {
-        this.list = this.list.slice(0,10)
+      if(this.list.length >= 10) {
+        this.list = this.list.slice(0, 10)
+        this.currentTime = this.currentTime.slice(0, 10)
       }
     },
     //获取历史搜索列表
     getHistoryList() {
-      let list  = getLocalStorage('title')
-      if(list) {
-        this.list = list
-      }else {
-        this.list = []
+      if(getLocalStorage('title')) {
+         let list  = getLocalStorage('title')['list']
+        let currentTime = getLocalStorage('title')['currentTime']
+        if(list) {
+          this.list = list
+          this.currentTime = currentTime
+        }else {
+          this.list = []
+          this.currentTime = []
+        }
       }
     },
     //清空历史搜索
     emptyHisList() {
       this.list = []
+      this.currentTime = []
       window.localStorage.removeItem('title')
       this.isEmpty(false)
     },
