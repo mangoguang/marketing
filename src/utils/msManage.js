@@ -54,3 +54,34 @@ function skipNewPage(route, url, parmas) {
 
 export {skipNewPage}
 
+//移除数组中指定的一项
+function removeItem(arr, item) {
+  let newArr = []
+  let index = 0
+  for(let i in arr) {
+    if(arr[i] != item) {
+      newArr.push(arr[i])
+      newArr[index ++] = arr[i]
+    }
+  }
+  return newArr
+}
+
+export {removeItem}
+
+function addItem(arr, item) {
+  let newArr = []
+  let index = 0
+  for(let i in arr) {
+    if(arr[i] != item) {
+      newArr.push(arr[i])
+      newArr[index ++] = arr[i]
+    }
+  }
+  if(newArr.length == arr.length) {
+    newArr = [...newArr, item]
+  }
+  return newArr
+}
+
+export {addItem}
