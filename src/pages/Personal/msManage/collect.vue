@@ -36,8 +36,7 @@ export default {
   },
   data(){
     return{
-      selected:'1',
-      title:'我的收藏',
+      /* title:'我的收藏',
       activeIndex:0,
       activeComponent:'collectArticle',
       tabList:[
@@ -49,11 +48,15 @@ export default {
           tabName:'常见问题',
           componentName:'collectFaq'
         }
-      ]
+      ]  */
     }
   },
   computed:{
     ...mapState({
+      title: state => state.collect.title,
+      activeIndex: state => state.collect.activeIndex,
+      activeComponent: state => state.collect.activeComponent,
+      tabList: state => state.collect.tabList,
       messageBox: state => state.collect.messageBox,
       articleId: state => state.collect.articleId
     })
@@ -66,8 +69,8 @@ export default {
   },
   methods:{
    changeTab(index){
-     this.activeIndex=index;
-     this.activeComponent=this.tabList[index].componentName;
+     this.$store.commit('collect/setActiveIndex',index);
+     this.$store.commit('collect/setActiveComponent',index);
    },
     remove(){
       this.$store.commit('collect/setMessageBox',{showMessageBox:false});
