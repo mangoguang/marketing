@@ -107,7 +107,7 @@ export default {
       if(title) {
         this.historyTxt = this.searchVal
         setTimeout(() => {
-          skipNewPage(this.$router, '/articleDetails', {'title': title})
+          skipNewPage(this.$router, '/articleDetails', {'articleId': title})
           this.historyTxt = ''
         }, 100);
       }

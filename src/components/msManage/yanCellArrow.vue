@@ -1,5 +1,5 @@
 <template>
-  <router-link to="">
+  <router-link :to="path">
     <div class="box">
         <span>
           <slot></slot>
@@ -12,6 +12,7 @@
 //在需要用到按钮的地方引入并注册，import yanCellArrow from "@/components/yanCellArrow"
 // 示例：<yan-cell-arrow v-for="(item,index) in list" :key="index">{{item}}</yan-cell-arrow>
 export default {
+  props:['path'],
   data () {
     return {
      

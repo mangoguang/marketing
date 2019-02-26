@@ -90,7 +90,7 @@ export default {
         this.$router.push({path: '/dailyPaper'});
         break;
         case 4 :
-        this.$router.push({path: '/collect'});
+        this.$router.push({path: '/collectList'});
         break;
         default:
         return

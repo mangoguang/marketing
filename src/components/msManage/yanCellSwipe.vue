@@ -26,10 +26,15 @@ import Vue from 'vue'
 import { CellSwipe } from 'mint-ui';
 Vue.component(CellSwipe.name, CellSwipe);
 export default {
-  prop:['id'],
+  props:['id'],
   data () {
     return {
-     
+    /*  obj:{
+      showMessageBox:false,
+      tip:'',
+      btnNum:2,
+      type:false 
+     } */
     }
   },
   created() {
@@ -38,7 +43,17 @@ export default {
   
   methods: {
     delete:function(){
-      alert("删除了")
+      if(this.$route.path=='/collectList'){
+          this.$store.commit('collect/setMessageBox',{
+          showMessageBox:true,
+          tip:'文章已不存在，是否从收藏夹中移除？',
+          btnNum:2,
+          type:false
+        }); 
+        console.log(this.id);
+        this.$store.commit('collect/setArticleId',this.id);
+      }
+     
     }
   }
 }

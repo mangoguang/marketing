@@ -18,6 +18,7 @@
         </yan-cell-swipe>
       </li>
     </ul>
+    
 </template>
 
 <script>
@@ -28,7 +29,7 @@ export default {
   props:['dataList'],
   data(){
     return {
-      
+     
     }
   },
   components:{
@@ -40,7 +41,8 @@ export default {
       alert("置顶"+index);
     },
     go:function(id){
-      alert(id);
+      /* this.$router.push({path:`/artcileDetails/${id}`}) */ 
+       this.$router.push({name:"/articleDetails",params:{articleId:id}});
     }
     
   }

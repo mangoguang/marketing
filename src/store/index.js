@@ -17,6 +17,7 @@ import customerScroll from './modules/customer/scroll'
 import personMsg from './modules/login/index'
 import searchBox from './modules/msManage/searchBox'
 import collectArt from './modules/msManage/collectArt'
+import collect from './modules/msManage/collect'
 
 export default new Vuex.Store({
   modules: {
@@ -36,6 +37,7 @@ export default new Vuex.Store({
     personMsg,
     select,
     searchBox,
-    collectArt
+    collectArt,
+    collect
   }
 })

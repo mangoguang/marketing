@@ -136,9 +136,10 @@ export var router = new VueRouter({
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
   },
+  //金管家模块-我的收藏
   {
-    path: '/collect',
-    name: '/collect',
+    path: '/collectList',
+    name: '/collectList',
     component: resolve => require(['../pages/Personal/msManage/collect'],resolve)
   },
   //金管家模块
@@ -175,10 +176,18 @@ export var router = new VueRouter({
   },
   //文章详情
   {
+    // path: '/articleDetails/:articleId',
     path: '/articleDetails',
     name: '/articleDetails',
     component: resolve => require(['../pages/msManage/articleDetails'],resolve)
+  },
+  //常见问题详情
+  {
+    path: '/questionDetail/:questionId',
+    name: '/questionDetail',
+    component: resolve => require(['../pages/msManage/questionDetail'],resolve)
   }
+
 ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {  
