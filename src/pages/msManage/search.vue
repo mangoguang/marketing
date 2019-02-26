@@ -76,23 +76,21 @@ export default {
     compareTime() {
       if(getLocalStorage('title')) {
         let arrIndex = []
-        let curTime = new Date().getTime()
         let localStorageTime = getLocalStorage('title')['currentTime']
+        let list = getLocalStorage('title')['list']
+        let curTime = new Date().getTime()
+        //判断缓存时间有没有过期
         localStorageTime.forEach((item, index) => {
           if((curTime - localStorageTime)/86400000 > 5) {
             arrIndex = [...arrIndex, index]
           }
         });
-        let list = getLocalStorage('title')['list']
+        //过期的清除
         let obj = {
           list: list.slice(0, arrIndex[0]),
-          currentTime: time.slice(0, arrIndex[0])
+          currentTime: localStorageTime.slice(0, arrIndex[0])
         }
-        if(!obj.list.length) {
-          window.localStorage.removeItem('title')
-        }else {
-          setLocalStorage(obj,'title')
-        }
+        this.judgeObj(obj)
       }
     },
     ...mapMutations(['setTitle']),
@@ -154,6 +152,14 @@ export default {
         if(!this.searchVal.length && list.length) {
           this.hasHistory = true
         }
+      }
+    },
+    //判断有没有obj
+    judgeObj(obj) {
+      if(!obj.list.length) {
+        window.localStorage.removeItem('title')
+      }else {
+        setLocalStorage(obj,'title')
       }
     }
   }
