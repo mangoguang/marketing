@@ -8,18 +8,31 @@
       </li>
     </ul>
     <component :is="activeComponent"></component>
+    <message-box :type="messageBox.type" :btnNum='messageBox.btnNum' v-if="messageBox.showMessageBox">
+      {{messageBox.tip}}
+      <template v-slot:btn-group>
+          <button type="button" @click="remove">移除</button>
+          <button type="button" @click="cancel">取消</button>
+      </template>
+      <template v-slot:btn>
+          <button type="button" @click="cancel">确定</button>
+      </template>
+    </message-box>
   </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from "vuex"
 import mybanner from '../../../components/banner'
 import collectArticle from './collectArticle'
 import collectFaq from './collectFaq'
+import messageBox from '../../../components/msManage/yanMessageBox'
 export default {
   components:{
     mybanner,
     collectArticle,
-    collectFaq
+    collectFaq,
+    messageBox
   },
   data(){
     return{
@@ -40,7 +53,10 @@ export default {
     }
   },
   computed:{
-   
+    ...mapState({
+      messageBox: state => state.collect.messageBox,
+      articleId: state => state.collect.articleId
+    })
   },
   watch:{
    
@@ -52,7 +68,14 @@ export default {
    changeTab(index){
      this.activeIndex=index;
      this.activeComponent=this.tabList[index].componentName;
-   }
+   },
+    remove(){
+      this.$store.commit('collect/setMessageBox',{showMessageBox:false});
+      console.log(this.articleId);
+    },
+    cancel(){
+      this.$store.commit('collect/setMessageBox',{showMessageBox:false});
+    }
   }
 }
 </script>

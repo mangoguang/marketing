@@ -16,6 +16,7 @@ import orderList from './modules/components/orderList'
 import customerScroll from './modules/customer/scroll'
 import personMsg from './modules/login/index'
 import searchBox from './modules/msManage/searchBox'
+import collect from './modules/msManage/collect'
 
 export default new Vuex.Store({
   modules: {
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     customerScroll,
     personMsg,
     select,
-    searchBox
+    searchBox,
+    collect
   }
 })
