@@ -1,6 +1,6 @@
 <template>
   <div>
-    <yan-cell-arrow v-for="(item,index) in list" :key="index">{{item.title}}</yan-cell-arrow>
+    <yan-cell-arrow v-for="(item,index) in list" :key="index" :path="{name:'/questionDetail',params:{questionId:item.questionId}}">{{item.title}}</yan-cell-arrow>
   </div>
     
 </template>
@@ -16,39 +16,39 @@ export default {
         list:[
           {
             title: '床垫除螨哪种工具最好？', // 问题标题
-            questionId: '20190220123' // 问题id
+            questionId: '1' // 问题id
           },
            {
             title: '客户投诉怎么处理？', // 问题标题
-            questionId: '20190220123'// 问题id
+            questionId: '2'// 问题id
           },
            {
             title: '按摩椅怎么安装？', // 问题标题
-            questionId: '20190220123' // 问题id
+            questionId: '3' // 问题id
           },
            {
             title: '床架怎么安装？', // 问题标题
-            questionId: '20190220123' // 问题id
+            questionId: '4' // 问题id
           },
            {
             title: '床垫除螨哪种工具最好？', // 问题标题
-            questionId: '20190220123'// 问题id
+            questionId: '5'// 问题id
           },
            {
             title: '客户投诉怎么处理？', // 问题标题
-            questionId: '20190220123' // 问题id
+            questionId: '6' // 问题id
           },
            {
             title: '客户投诉怎么处理？', // 问题标题
-            questionId: '20190220123' // 问题id
+            questionId: '7' // 问题id
           },
            {
             title: '按摩椅怎么安装？', // 问题标题
-            questionId: '20190220123' // 问题id
+            questionId: '8' // 问题id
           },
            {
             title: '床架怎么安装？', // 问题标题
-            questionId: '20190220123' // 问题id
+            questionId: '9' // 问题id
           }
         ]
     }

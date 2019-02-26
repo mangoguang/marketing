@@ -179,7 +179,14 @@ export var router = new VueRouter({
     path: '/articleDetails/:articleId',
     name: '/articleDetails',
     component: resolve => require(['../pages/msManage/articleDetails'],resolve)
+  },
+  //常见问题详情
+  {
+    path: '/questionDetail/:questionId',
+    name: '/questionDetail',
+    component: resolve => require(['../pages/msManage/questionDetail'],resolve)
   }
+
 ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {  
