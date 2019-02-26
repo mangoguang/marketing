@@ -19,6 +19,29 @@ const state = {
     type:false
   },
   articleId:'',
+  articleData:[
+    {
+      title:'慕思产品三包服务政策详解',
+      time:'2019-02-20',
+      imgUrl:require('assets/imgs/example.png'),
+      articleId:'1',
+      top:true
+    },
+    {
+      title:'慕思产品三包服务政策详解2',
+      time:'2019-02-21',
+      imgUrl:require('assets/imgs/example.png'),
+      articleId:'2',
+      top:false
+    },
+    {
+      title:'慕思产品三包服务政策详解3',
+      time:'2019-02-22',
+      imgUrl:require('assets/imgs/example.png'),
+      articleId:'3',
+      top:true
+    }
+  ],
   FaqList:[
     {
       title: '床垫除螨哪种工具最好？', // 问题标题
