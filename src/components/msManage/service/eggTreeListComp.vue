@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-show="list">
+  <div class="wrapper" v-if="list.length">
     <ul class="treeList">
       <li v-for="(item, index) in newList" :key="index" class="select">
         <span  
@@ -8,7 +8,7 @@
           {{ item.name }}
         </span>
         <div class="child_wrapper" >
-          <ul class="child_treeList " v-show="item.status">
+          <ul class="child_treeList " v-show="item.status" >
             <li v-for="(el, i) in list[index].child" :key='i' class="select">
               <span 
                 @click="changChildStatus(i, index)"
@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import mango from '../../js' 
+import mango from '../../../js' 
 export default {
   name: 'treeList',
-  props: ['list', 'getParmas'],
+  props: ['list', 'getParmas', 'getStatus'],
   data() {
     return {
       isactive: -1,
@@ -68,6 +68,8 @@ export default {
       this.newList = this.getNewList(this.list, index)
       let parmas = {name1: this.newList[index].name}
       this.getParmas(parmas)
+      //获取有没有子级
+      this.getStatus(this.list[index].child)
     },
     //点击切换子级css样式并获取参数
     changChildStatus(i, index) {
@@ -101,6 +103,8 @@ export default {
 }
 .wrapper {
   overflow-x: hidden;
+  position: relative;
+  height: 25vw;
   .treeList{
     overflow-x: auto;
     display: flex;
@@ -119,6 +123,7 @@ export default {
         position: absolute;
         top: 12vw;
         left: 0;
+        z-index: 99;
         .child_treeList {
           overflow-x: auto;
           display: flex;

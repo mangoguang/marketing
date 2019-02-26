@@ -1,7 +1,8 @@
 <template>
   <ul class="list">
     <li v-for="(item,index) in link" :key="index">
-      <router-link :to="item.link">
+      <!-- 新增query。传入下级的参数 -->
+      <router-link :to="{name:item.link,query:{category1id: item.category1id}}">
         <div class="circle" :style="{backgroundColor:item.bgColor}">
           <img :src="item.imgUrl" alt="">
         </div>
