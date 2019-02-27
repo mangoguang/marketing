@@ -50,7 +50,7 @@ export default {
     searchVal() {
       //list请求得到的文章列表标题
       this.hasHistory = false
-      //格式在fuzzyQuery中转化 =======> axios
+      //格式在fuzzyQuery中转化 =======> axios  考虑常见问题使用search的时候使用按钮搜索！！
       let list = [
         {title:'幕思服务政策'},
         {title:'幕思服务'},
