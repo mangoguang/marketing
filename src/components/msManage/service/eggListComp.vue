@@ -1,16 +1,16 @@
 <template>
   <div class="listComp">
     <ul>
-      <li v-for="(item, index) in list" :key="index">
+      <li v-for="(item, index) in list" :key="index" @click="toArticle(index)">
         <div class="list_left">
           <h1>{{item.title}}</h1>
-          <div>
-            <span v-if="item.top">置顶</span>
-            <span>{{item.time}}</span>
+          <div class="list_bottom">
+            <span v-if="item.top" class="top">置顶</span>
+            <span class="time">{{item.time}}</span>
           </div>
         </div>
         <div class="list_right">
-          <img src="" alt="">
+          <!-- <img :src="itemUrl" alt=""> -->
         </div>
       </li>
     </ul>
@@ -23,20 +23,52 @@ export default {
     return {
       list: [
         {
-          title: '慕思产品三包服务政策详解',  //  文章标题
+          title: '慕思产品三包服务政策详解1111111',  //  文章标题
           time: '2019-02-20',  //  文章上传时间
           imgUrl: '../img.jpg',  //  文章缩略图
           articleId: '201902201234',  //  文章id
-          top: true/false  //  是否置顶文章
+          top: true  //  是否置顶文章
         },
         {
           title: '慕思产品三包服务政策详解',  //  文章标题
           time: '2019-02-20',  //  文章上传时间
           imgUrl: '../img.jpg',  //  文章缩略图
-          articleId: '201902201234',  //  文章id
-          top: true/false  //  是否置顶文章
+          articleId: '201902201235',  //  文章id
+          top: true  //  是否置顶文章
+        },
+         {
+          title: '慕思产品三包服务政策详解',  //  文章标题
+          time: '2019-02-20',  //  文章上传时间
+          imgUrl: '../img.jpg',  //  文章缩略图
+          articleId: '201902201236',  //  文章id
+          top: false  //  是否置顶文章
+        },
+         {
+          title: '慕思产品三包服务政策详解',  //  文章标题
+          time: '2019-02-20',  //  文章上传时间
+          imgUrl: '../img.jpg',  //  文章缩略图
+          articleId: '201902201237',  //  文章id
+          top: false  //  是否置顶文章
+        },
+        {
+          title: '慕思产品三包服务政策详解',  //  文章标题
+          time: '2019-02-20',  //  文章上传时间
+          imgUrl: '../img.jpg',  //  文章缩略图
+          articleId: '201902201237',  //  文章id
+          top: false  //  是否置顶文章
         }
       ]
+    }
+  },
+  methods: {
+    getList() {
+      //获取treelist组件传过来的参数，通过axios获取list
+    },
+    //跳转到文章详情	
+    toArticle(index) {
+      this.$router.push({
+        path: '/articleDetails',
+        query: {articleId: this.list[index].articleId}})
     }
   }
 }
@@ -55,13 +87,31 @@ export default {
     justify-content: space-between;
     align-items: center;
     .list_left {
+      flex: 0.8;
+      height: 20.66vw;
+      display: flex;
+      flex-direction: column;
+      align-content: space-between;
       h1 {
         color: #363636;
         font-size: 5.4vw;
         font-weight: bold;
+        flex: 0.8;
+        line-height: 1.5em;
+      }
+      .list_bottom {
+        flex: 0.2;
+        font-size: 3.73vw;
+        .top {
+          color: #ff2d55;
+        }
+        .time {
+          color: #909090;
+        }
       }
     }
     .list_right {
+        flex: 0.25;
         width: 21.33vw;
         height: 21.33vw;
         border:1px solid rgba(225,225,225,1);

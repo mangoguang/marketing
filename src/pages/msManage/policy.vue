@@ -1,6 +1,6 @@
 <template>
   <div class="policy">
-    <banner :title="'服务政策'"/>
+    <banner :title="title"/>
     <!-- list为传入参数，getparmas为组件点击得到的选项-->
     <div class='treeList'>
       <treeList :list='list' :getParmas='getParmas' :getStatus='getStatus'/>
@@ -43,13 +43,19 @@ export default {
            {name: '分类7'}
          ]}
       ],
-      parmas: {}
+      parmas: {},
+      title: ''
     }
   },
   created() {
     this.initTop()
+    this.initTitile()
   },
   methods: {
+    //判断传进来的一级参数
+    initTitile() {
+      this.title = this.$route.query.name
+    },
     //获取每一级的参数name
     getParmas(val) {
       this.parmas = val

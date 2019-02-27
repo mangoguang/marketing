@@ -123,7 +123,7 @@ export default {
         position: absolute;
         top: 12vw;
         left: 0;
-        z-index: 99;
+        // z-index: 99;
         .child_treeList {
           overflow-x: auto;
           display: flex;

@@ -176,8 +176,7 @@ export var router = new VueRouter({
   },
   //文章详情
   {
-    // path: '/articleDetails/:articleId',
-    path: '/articleDetails',
+    path: '/articleDetails/:articleId?',
     name: '/articleDetails',
     component: resolve => require(['../pages/msManage/articleDetails'],resolve)
   },

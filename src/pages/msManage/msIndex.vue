@@ -30,7 +30,7 @@ export default {
           category1id: 'story'
         },
         {
-          link:'/service',
+          link:'/policy',
           imgUrl:('./static/images/ms-service.png'),//图片
           name:'金管家服务',
           bgColor:'#FFCC00',
