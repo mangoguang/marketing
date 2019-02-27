@@ -17,7 +17,7 @@
 
 <script>
 export default {
-  props: [ 'origin', 'value', 'deleteVal' ],
+  props: [ 'origin', 'value', 'deleteVal', 'type' ],
   data() {
     return {
       showDeleteIcon: false
@@ -42,7 +42,8 @@ export default {
     //如果是首页点击进入搜索页面
     toSearch() {
       if(this.origin) {
-        this.$router.push({path: '/search'})
+        this.$router.push(
+          {path: '/search',query: {type: this.type}}) //type判断是首页还是常见问题
       }
     }
   }

@@ -16,7 +16,7 @@
 import {setLocalStorage,getLocalStorage,skipNewPage} from '../../../utils/msManage'
 export default {
   //historyTxt是搜索框内容，isEmpty是清空搜索框，clickHistoryTxt点击历史搜索中的内容
-  props: ['historyTxt', 'isEmpty', 'clickHistoryTxt'],
+  props: ['historyTxt', 'isEmpty', 'clickHistoryTxt', 'searchType'],
   data() {
     return {
       list: [],
@@ -32,7 +32,7 @@ export default {
     }
   },
   created() {
-    this.getHistoryList()
+    this.getHistoryList(this.searchType)
   },
   methods: {
     //添加localStorage
@@ -46,7 +46,7 @@ export default {
         list: this.list,
         currentTime: this.currentTime
       }
-      setLocalStorage(obj,'title')
+      setLocalStorage(obj,this.searchType)
     },
     //去重
     filterArr() {
@@ -70,11 +70,11 @@ export default {
         this.currentTime = this.currentTime.slice(0, 10)
       }
     },
-    //获取历史搜索列表
-    getHistoryList() {
-      if(getLocalStorage('title')) {
-         let list  = getLocalStorage('title')['list']
-        let currentTime = getLocalStorage('title')['currentTime']
+    //判断不同的来源的缓存
+    getHistoryList(type) {
+      if(getLocalStorage(type)) {
+        let list  = getLocalStorage(type)['list']
+        let currentTime = getLocalStorage(type)['currentTime']
         if(list) {
           this.list = list
           this.currentTime = currentTime
@@ -88,7 +88,7 @@ export default {
     emptyHisList() {
       this.list = []
       this.currentTime = []
-      window.localStorage.removeItem('title')
+      window.localStorage.removeItem(this.searchType)
       this.isEmpty(false)
     },
     clickTitle(index) {

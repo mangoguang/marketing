@@ -6,7 +6,7 @@ function fuzzyQuery(list, keyWord) {
   }else {
     for (var i = 0; i < list.length; i++) {
       if (list[i].title.match(keyWord) != null) {
-        arr.push(list[i].title);
+        arr.push(list[i]);
       }
     }
   }
@@ -21,7 +21,7 @@ function changeColor(resultsList, keyword){
     if (keyword && keyword.length > 0) {
       let replaceReg = new RegExp(keyword, 'g')
       let replaceString ='<span style="color: #ff2d55">' + keyword + '</span>'
-      resultsList[index] = item.replace(replaceReg,replaceString)}
+      resultsList[index].title = item.title.replace(replaceReg,replaceString)}
     })
     let list = resultsList
     return list

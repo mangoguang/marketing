@@ -2,10 +2,8 @@
   <div class="question">
     <banner :title="title"/>
     <div class="search_box">
-      <EggSearch class="search"
-        v-model.trim="searchVal"
-        :deleteVal='deleteVal'/>
-      <button @click="searchBtn">搜索</button>
+      <EggSearch :origin='origin' :type='"question"'/>
+      <!-- <button>搜索</button> -->
     </div>
     <EggTreeList :list='list' :getParmas='getParmas' :getStatus='getStatus'/>
     <div :class="questionList">
@@ -24,9 +22,9 @@ export default {
   data() {
     return {
       title: '',
-      searchVal: '',
       questionList: 'questionList',
       questionData: [],
+      origin: true,
       list: [
         {
           name: '分类一',  //  分类名称
@@ -55,11 +53,6 @@ export default {
       ]
     }
   },
-  watch: {
-    searchVal() {
-
-    }
-  },
   created() {
     this.initTitle()
     // this.getList()
@@ -75,14 +68,6 @@ export default {
       let id = this.$route.query.category1id
       //axios
     },
-    //清空输入框
-    deleteVal(val) {
-      this.searchVal = val
-    },
-    //点击搜索
-    searchBtn() {
-      console.log(this.searchVal)
-    },
     //获取分类列表的值
     getParmas(val) {
       console.log(val)
@@ -97,8 +82,6 @@ export default {
         questionId: '20190220124'  //  问题id
         }
       ]
-
-
     },
     //判断有没有二级参数，设置问题列表高度
     getStatus(val) {
@@ -135,18 +118,15 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .search {
-      width: 74.13vw;
-    }
-    button {
-      font-size: 3.466vw;
-      color: #fff;
-      border: 1px solid #006de4;
-      width: 13.33vw;
-      border-radius: 4vw;
-      height: 8vw;
-      background: #007aff;
-    }
+    // button {
+    //   font-size: 3.466vw;
+    //   color: #fff;
+    //   border: 1px solid #006de4;
+    //   width: 13.33vw;
+    //   border-radius: 4vw;
+    //   height: 8vw;
+    //   background: #007aff;
+    // }
   }
   .questionList {
     position: absolute;

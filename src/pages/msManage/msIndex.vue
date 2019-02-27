@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <Search :origin='origin'/>
+    <Search :origin='origin' :type='"msIndex"'/>
     <yan-circle-list :link="link"/>
     <Footer />
   </div>

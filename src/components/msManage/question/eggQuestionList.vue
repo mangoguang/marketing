@@ -33,6 +33,7 @@ export default {
     padding-left: 4.26vw;
     background: #f7f7f7;
     border-top:1px solid #e1e1e1; 
+    border-bottom:1px solid #e1e1e1; 
     box-sizing: border-box;
     li {
       border-bottom: 1px solid #e1e1e1;
@@ -48,6 +49,9 @@ export default {
         width: 1.6vw;
         height: 2.6vw;
       }
+    }
+    li:last-child {
+      border: none
     }
   }
 </style>

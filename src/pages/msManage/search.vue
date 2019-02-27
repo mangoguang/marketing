@@ -7,14 +7,18 @@
       />
       <button class="cancle" @click="cancleBtn">取消</button>
     </div>
+    <!-- 历史记录 -->
     <historySearch v-show='hasHistory' 
       :historyTxt='historyTxt'
       :isEmpty='isEmpty'
-      :clickHistoryTxt='clickHistoryTxt'/>
+      :clickHistoryTxt='clickHistoryTxt'
+      :searchType='searchType'/>
+      <!-- 匹配到相关内容 -->
     <ul class="matchTxt" v-show="matchTxt">
       <li v-for="(item, index) in list" :key="index"  
-        v-html='item' @click="toArticle(index)"></li>
+        v-html='item.title' @click="toArticle(index)"></li>
     </ul>
+    <!-- 没有匹配到相关内容 -->
     <div class="search_nothing" v-show="unMatchTxt">
       <p>很抱歉，没有找到相关内容</p>
       <div class="search_bg"></div>
@@ -27,7 +31,6 @@ import Vuex, { mapMutations, mapState } from 'vuex'
 import Search from '../../components/msManage/search/eggSearchInp'
 import historySearch from '../../components/msManage/search/eggHistorySearch'
 import {fuzzyQuery, changeColor, setLocalStorage, getLocalStorage, skipNewPage} from '../../utils/msManage'
-import { setTimeout } from 'timers';
 export default {
   components: { Search, historySearch },
   data() {
@@ -37,7 +40,8 @@ export default {
       hasHistory: false,
       matchTxt: true,
       unMatchTxt: false,
-      historyTxt: ''
+      historyTxt: '',
+      searchType: ''
     }
   },
   computed: {
@@ -48,40 +52,64 @@ export default {
   watch: {
     //匹配关键字且关键字高亮
     searchVal() {
-      //list请求得到的文章列表标题
       this.hasHistory = false
-      //格式在fuzzyQuery中转化 =======> axios  考虑常见问题使用search的时候使用按钮搜索！！
+      if(this.searchType == 'question') {
+        console.log(111)
+      }else if(this.searchType == 'msIndex') {
+        console.log(222)
+      }
+      //list请求得到的文章列表标题
+      //格式在fuzzyQuery中转化 =======> axios  
+      //根据搜索内容获取list///axios
       let list = [
-        {title:'幕思服务政策'},
-        {title:'幕思服务'},
-        {title:'政策'},
-        {title:'幕思的政策'},
-        {title:'幕思领导服务的政策'}]
+        {
+          title: '慕思服务政策',  //  文章标题
+          articleId: '201902201234' //  文章id
+        },
+        {
+          title: '幕思服务',  //  文章标题
+          articleId: '201902201235'  //  文章id
+        },
+        {
+          title: '幕思政策',  //  文章标题
+          articleId: '201902201236'  //  文章id
+        },
+        {
+          title: '幕思的领导政策',  //  文章标题
+          articleId: '201902201237'  //  文章id
+        }]
+      
+      
       let matchList  = fuzzyQuery(list, this.searchVal)
       //传递给标题下个页面
       this.setTitle(fuzzyQuery(list, this.searchVal))
+      // this.setTitle(list)
+      // this.showMatchList(list)
+      // this.showErrorTips(list)
       this.showMatchList(matchList)
       this.showErrorTips(matchList)
+      //关键字高亮
       this.list = changeColor(matchList, this.searchVal)
       //出现历史搜索
-      this.emptySearchVal()
+      this.emptySearchVal(this.searchType)
     }
   },
   created() {
-    this.compareTime()
+    this.searchType = this.$route.query.type
+    this.compareTime(this.searchType)
     this.showHistory()
   },
   methods: {
     //超出缓存5天的自动清除 （1000*60*60*24）
-    compareTime() {
-      if(getLocalStorage('title')) {
+    compareTime(type) {
+      if(getLocalStorage(type)) {
         let arrIndex = []
-        let localStorageTime = getLocalStorage('title')['currentTime']
-        let list = getLocalStorage('title')['list']
+        let localStorageTime = getLocalStorage(type)['currentTime']
+        let list = getLocalStorage(type)['list']
         let curTime = new Date().getTime()
         //判断缓存时间有没有过期
         localStorageTime.forEach((item, index) => {
-          if((curTime - localStorageTime)/86400000 > 5) {
+          if((curTime - item)/86400000 > 5) {
             arrIndex = [...arrIndex, index]
           }
         });
@@ -90,24 +118,32 @@ export default {
           list: list.slice(0, arrIndex[0]),
           currentTime: localStorageTime.slice(0, arrIndex[0])
         }
-        this.judgeObj(obj)
+        this.judgeObj(obj, type)
       }
     },
     ...mapMutations(['setTitle']),
     //获取缓存，历史搜索显示
     showHistory() {
-      let historyTitle = getLocalStorage('title')
-      if(historyTitle) {
-        this.hasHistory = true
+      if(this.searchType == 'question') {
+        this.judgeHistory('question')
+      }else if(this.searchType == 'msIndex') {
+        this.judgeHistory('msIndex')
+      }
+    },
+    //判断有没有历史记录
+    judgeHistory(type) {
+      let historyTitle = getLocalStorage(type)
+        if(historyTitle) {
+          this.hasHistory = true
       }
     },
     //点击跳转
     toArticle(index) {
-      let title = this.titleList[index]
-      if(title) {
+      let articleId = this.titleList[index].articleId
+      if(articleId) {
         this.historyTxt = this.searchVal
         setTimeout(() => {
-          skipNewPage(this.$router, '/articleDetails', {'articleId': title})
+          skipNewPage(this.$router, '/articleDetails', {'articleId': articleId})
           this.historyTxt = ''
         }, 100);
       }
@@ -115,14 +151,18 @@ export default {
     //点击历史搜索内容
     clickHistoryTxt(val) {
       this.searchVal = val
+    }, 
+    //清空输入框
+    deleteVal(val) {
+      this.searchVal = val
+    },
+    //清空历史搜索
+    isEmpty(val) {
+      this.hasHistory = val
     },
     //返回首页
     cancleBtn() {
       this.$router.go(-1)
-    },
-    //清空输入框
-    deleteVal(val) {
-      this.searchVal = val
     },
     //出现匹配列表
     showMatchList(list) {
@@ -141,25 +181,21 @@ export default {
         this.unMatchTxt = false
       }
     },
-    //清空历史搜索
-    isEmpty(val) {
-      this.hasHistory = val
-    },
     //输入框清空时出现历史搜索
-    emptySearchVal() {
-      if(getLocalStorage('title')) {
-        let list = getLocalStorage('title')['list']
+    emptySearchVal(type) {
+      if(getLocalStorage(type)) {
+        let list = getLocalStorage(type)['list']
         if(!this.searchVal.length && list.length) {
           this.hasHistory = true
         }
       }
     },
-    //判断有没有obj
-    judgeObj(obj) {
+    //判断有没有不超过5天的缓存
+    judgeObj(obj, type) {
       if(!obj.list.length) {
-        window.localStorage.removeItem('title')
+        window.localStorage.removeItem(type)
       }else {
-        setLocalStorage(obj,'title')
+        setLocalStorage(obj,type)
       }
     }
   }
