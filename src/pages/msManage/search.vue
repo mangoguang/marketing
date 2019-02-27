@@ -53,11 +53,6 @@ export default {
     //匹配关键字且关键字高亮
     searchVal() {
       this.hasHistory = false
-      if(this.searchType == 'question') {
-        console.log(111)
-      }else if(this.searchType == 'msIndex') {
-        console.log(222)
-      }
       //list请求得到的文章列表标题
       //格式在fuzzyQuery中转化 =======> axios  
       //根据搜索内容获取list///axios
