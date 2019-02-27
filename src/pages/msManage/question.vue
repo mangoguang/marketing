@@ -8,11 +8,9 @@
       <button @click="searchBtn">搜索</button>
     </div>
     <EggTreeList :list='list' :getParmas='getParmas' :getStatus='getStatus'/>
-    <ul :class="questionList">
-      <li v-for="i in 5">
-        1
-      </li>
-    </ul>
+    <div :class="questionList">
+      <EggQuestionList :questionData='questionData'/>
+    </div>
   </div>
 </template>
 
@@ -20,13 +18,15 @@
 import banner from '../../components/banner'
 import EggSearch from '../../components/msManage/search/eggSearchInp'
 import EggTreeList from '../../components/msManage/service/eggTreeListComp'
+import EggQuestionList from '../../components/msManage/question/eggQuestionList'
 export default {
-  components: { banner, EggSearch, EggTreeList },
+  components: { banner, EggSearch, EggTreeList, EggQuestionList },
   data() {
     return {
       title: '',
       searchVal: '',
       questionList: 'questionList',
+      questionData: [],
       list: [
         {
           name: '分类一',  //  分类名称
@@ -86,6 +86,19 @@ export default {
     //获取分类列表的值
     getParmas(val) {
       console.log(val)
+      // axios请求questionData
+      this.questionData = [
+        {
+        title: '床垫除螨哪种工具最好？',  //  问题标题
+        questionId: '20190220123'  //  问题id
+        },
+        {
+        title: '床垫除螨哪种工具最好？',  //  问题标题
+        questionId: '20190220124'  //  问题id
+        }
+      ]
+
+
     },
     //判断有没有二级参数，设置问题列表高度
     getStatus(val) {
@@ -149,16 +162,6 @@ export default {
     position: absolute;
     top: 28vw;
     left: 0;
-  }
-  ul{
-    width: 100vw;
-    padding-left: 4.26vw;
-    li {
-      border-bottom: 1px solid #e1e1e1;
-      width: 100%;
-      line-height: 10.81vw;
-      color: #363636;
-    }
   }
 }
 </style>

@@ -182,7 +182,7 @@ export var router = new VueRouter({
   },
   //常见问题详情
   {
-    path: '/questionDetail/:questionId',
+    path: '/questionDetail/:questionId?',
     name: '/questionDetail',
     component: resolve => require(['../pages/msManage/questionDetail'],resolve)
   }
