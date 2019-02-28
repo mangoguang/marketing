@@ -1,6 +1,7 @@
 <template>
   <div class="listComp">
     <ul>
+    <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
       <li v-for="(item, index) in list" :key="index" @click="toArticle(index)">
         <div class="list_left">
           <h1>{{item.title}}</h1>
@@ -13,14 +14,19 @@
           <!-- <img :src="itemUrl" alt=""> -->
         </div>
       </li>
+    </mt-loadmore>
     </ul>
   </div>
 </template>
 
 <script>
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
+import Vue from 'vue'
 export default {
   data() {
     return {
+      allLoaded:false,
       list: [
         {
           title: '慕思产品三包服务政策详解1111111',  //  文章标题
@@ -69,6 +75,22 @@ export default {
       this.$router.push({
         path: '/articleDetails',
         query: {articleId: this.list[index].articleId}})
+    },
+     //下拉刷新
+    loadBottom() {
+      this.$refs.loadmore.onBottomLoaded();
+      console.log(12)
+      this.pullDownData()
+    },
+    //下拉加载数据
+    pullDownData(startTime, endTime) {
+      // if (this.page < this.allPage) {
+      //   this.allLoaded = true
+      //   this.page ++;
+      //   this.getData(this.page, this.limit, startTime, endTime);
+      // }else {
+      //   mango.tip('没有更多数据了')
+      // }
     }
   }
 }
