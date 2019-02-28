@@ -79,7 +79,6 @@ export default {
      //下拉刷新
     loadBottom() {
       this.$refs.loadmore.onBottomLoaded();
-      console.log(12)
       this.pullDownData()
     },
     //下拉加载数据

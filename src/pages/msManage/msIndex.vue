@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import yanCircleList from "../../components/msManage/yanCircleList"
 import Footer from '../../components/Footer'
 import Search from '../../components/msManage/search/eggSearchInp'
@@ -51,9 +53,14 @@ export default {
     }
   },
   mounted() {
+    this.add()
   },
   methods: {
-   
+   add() {
+      indexModel.getList().then(res => {
+        console.log(res)
+    })
+   }
   }
 }
 </script>
