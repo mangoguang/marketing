@@ -159,11 +159,6 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/msManage/story'],resolve)
   },
   {
-    path: '/service',
-    name: '/service',
-    component: resolve => require(['../pages/msManage/service'],resolve)
-  },
-  {
     path: '/question',
     name: '/question',
     component: resolve => require(['../pages/msManage/question'],resolve)

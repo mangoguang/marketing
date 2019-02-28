@@ -46,6 +46,11 @@ export default {
       ],
       origin: true
     }
+  },
+  mounted() {
+  },
+  methods: {
+   
   }
 }
 </script>

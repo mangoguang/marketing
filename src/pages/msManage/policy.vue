@@ -19,7 +19,8 @@ export default {
     return {
       listComp: 'listComp',
       list: [
-        {name:'分类一',child:[{name:'分类1'}]},
+        {name:'分类一',categoryId: 'orderManage',
+        child:[{name:'分类1',categoryId: 'finishOrder'}]},  //  子类id}]},
          {name:'分类二'},
          {name:'分类三',child:[
           {name:'分类31'},
@@ -58,6 +59,7 @@ export default {
     },
     //获取每一级的参数name
     getParmas(val) {
+      console.log(val)
       this.parmas = val
     },
     //获取子级状态

@@ -9,10 +9,10 @@
         </span>
         <div class="child_wrapper" >
           <ul class="child_treeList " v-show="item.status" >
-            <li v-for="(el, i) in list[index].child" :key='i' class="select">
+            <li v-for="(el, i) in childList" :key='i' class="select">
               <span 
                 @click="changChildStatus(i, index)"
-                :class="isactive == i? 'childrenAddClass' : ''">
+                :class="el.status? 'childrenAddClass' : ''">
                 {{ el.name }}
               </span>
             </li>
@@ -32,7 +32,8 @@ export default {
     return {
       isactive: -1,
       addClass: '',
-      newList: []
+      newList: [],
+      childList: []
     }
   },
   created() {
@@ -43,49 +44,88 @@ export default {
     init(list) {
       if(list.length) {
         this.newList = this.getNewList(list, 0)
-        let parmas = {name1: list[0].name}
+        this.childList = this.getChildList(this.list, 0, -1)
+        let parmas = {
+          name1: list[0].name,
+          status: 0}
         this.getParmas(parmas)
       }
     },
     //获取父级循环列表
-    getNewList(list, index) {
+    getNewList(list, index, type) {
+      if(!list) {
+        return
+      }
+      let arrName = this.getListName(list)
+      let listName = mango.btnList(arrName, index)
+      return listName
+    },
+    getListName (list) {
+      let arr = []
+        list.forEach(el => {
+          arr.push(el.name)
+      })
+      return arr
+    },
+    getChildList(list, index, i) {
       if(!list) {
         return
       }
       let arr = []
-      list.forEach(el => {
-        arr.push(el.name)
-      });
-      let listName = mango.btnList(arr, index)
+      if(list[index].child) {
+        list[index].child.forEach(el => {
+          arr.push(el.name)
+        });
+      }
+      let listName = mango.btnList(arr, i)
       return listName
     },
+    //获取列表名称
+    // getListName (list, type, index) {
+    //   let arr = []
+    //   if(type == 'father') {
+    //     list.forEach(el => {
+    //       arr.push(el.name)
+    //     });
+    //   }else if(type == 'child') {
+    //      list[index].forEach(el => {
+    //       arr.push(el.child)
+    //     });
+    //   }
+    //   return arr
+    // },
     //点击切换父级css样式并获取参数
     changeNewStatus(index) {
       if(this.newList[index].status) {
         return
       }
-      this.isactive = -1
       this.newList = this.getNewList(this.list, index)
-      let parmas = {name1: this.newList[index].name}
+      //传递参数
+      let parmas = {
+        name1: this.newList[index].name,
+        status: index}
       this.getParmas(parmas)
-      //获取有没有子级
+      //父级下的子级出现
+      this.childList = this.getChildList(this.list, index, -1)
+      //初始化获取有没有子级
       this.getStatus(this.list[index].child)
     },
     //点击切换子级css样式并获取参数
     changChildStatus(i, index) {
-      if(this.isactive == i) {
+       if(this.childList[i].status) {
         return
-      }else {
-        this.isactive = i
-        this.getChildParmas(i,index)
       }
+      this.childList = this.getChildList(this.list, index, i)
+      this.getChildParmas(i,index)
     },
     //子级获取参数
     getChildParmas(i,index) {
       if(this.list[index].child.length) {
         let parmas = {
           name1: this.newList[index].name,
-          name2: this.list[index].child[i].name
+          name2: this.childList[i].name,
+          childstatus: i,
+          status: index
           }
         this.getParmas(parmas)
       }
