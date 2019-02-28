@@ -5,7 +5,7 @@
       <router-link 
         :to="{
           name:item.link,
-          query:{category1id: item.category1id,name:item.name}
+          query:{category1id: item.category1id,name:item.name,type:1}
           }">
         <div class="circle" :style="{backgroundColor:item.bgColor}">
           <img :src="item.imgUrl" alt="">

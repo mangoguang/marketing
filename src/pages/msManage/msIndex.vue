@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <Search :origin='origin' :type='"msIndex"'/>
-    <yan-circle-list :link="link"/>
+    <yan-circle-list :link="link" />
     <Footer />
   </div>
 </template>
@@ -20,7 +20,8 @@ export default {
           imgUrl:('./static/images/ms-policy.png'),//图片
           name:'服务政策',//名称
           bgColor:'#FF2D55',//背景颜色,
-          category1id: 'servicePolicy'
+          category1id: 'servicePolicy',
+          type:1
         },
         {
           link:'/story',
@@ -34,7 +35,8 @@ export default {
           imgUrl:('./static/images/ms-service.png'),//图片
           name:'金管家服务',
           bgColor:'#FFCC00',
-          category1id: 'serviceMsmanege'
+          category1id: 'serviceMsmanege',
+          type:1
         },
         {
           link:'/question',

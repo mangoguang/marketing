@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import {mapMutations} from 'vuex'
 import treeList from '../../components/msManage/service/eggTreeListComp'
 import listComp from '../../components/msManage/service/eggListComp'
 import banner from '../../components/banner'
@@ -19,8 +20,8 @@ export default {
     return {
       listComp: 'listComp',
       list: [
-        {name:'分类一',categoryId: 'orderManage',
-        child:[{name:'分类1',categoryId: 'finishOrder'}]},  //  子类id}]},
+        {name:'分类一',categoryId: 'orderManage'
+       },  //  子类id}]},
          {name:'分类二'},
          {name:'分类三',child:[
           {name:'分类31'},
@@ -51,16 +52,25 @@ export default {
   created() {
     this.initTop()
     this.initTitile()
+    this.initParmas()
   },
   methods: {
+    ...mapMutations(['setParmas']),
     //判断传进来的一级参数
     initTitile() {
       this.title = this.$route.query.name
     },
+    //初始化列表的active状态
+    initParmas() {
+      if(this.$route.query.type === 1) {    //type从acticle传回来变成字符串1
+        this.setParmas({})
+      }
+    },
     //获取每一级的参数name
     getParmas(val) {
-      console.log(val)
       this.parmas = val
+      this.setParmas(val)
+      console.log(val)
     },
     //获取子级状态
     getStatus(val) {

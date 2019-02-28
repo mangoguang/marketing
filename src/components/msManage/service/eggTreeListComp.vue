@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" v-if="list.length">
     <ul class="treeList">
-      <li v-for="(item, index) in newList" :key="index" class="select">
+      <li v-for="(item, index) in fatherList" :key="index" class="select">
         <span  
           @click="changeNewStatus(index)" 
           :class="item.status? 'addClass' : ''">
@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import mango from '../../../js' 
 export default {
   name: 'treeList',
@@ -32,45 +33,51 @@ export default {
     return {
       isactive: -1,
       addClass: '',
-      newList: [],
+      fatherList: [],
       childList: []
     }
   },
   created() {
     this.init(this.list)
   },
+  computed: {
+    ...mapState({
+      parmas: state => state.treeList.parmas
+    })
+  },
   methods: {
-    //初始进来的时候默认传第一个值
+    //初始进来的时候默认传第一个值/从内容详情返回的时候传store里面打值
     init(list) {
-      if(list.length) {
-        this.newList = this.getNewList(list, 0)
-        this.childList = this.getChildList(this.list, 0, -1)
-        let parmas = {
-          name1: list[0].name,
-          status: 0}
-        this.getParmas(parmas)
-      }
-    },
-    //获取父级循环列表
-    getNewList(list, index, type) {
-      if(!list) {
+      if(!this.list.length) {
         return
       }
-      let arrName = this.getListName(list)
-      let listName = mango.btnList(arrName, index)
-      return listName
+      let parmas = {}
+      if(this.parmas.name1) {
+        parmas = this.parmas
+        this.fatherList = this.getFateherList(list, parmas.status)
+        this.childList = this.getChildList(list, parmas.status, parmas.childstatus)
+      }else {
+        this.fatherList = this.getFateherList(list, 0)
+        this.childList = this.getChildList(list, 0, -1)
+        parmas = {
+          name1: list[0].name,
+          status: 0
+        }
+      }
+      this.getParmas(parmas)
+      this.getStatus(this.list[parmas.status].child)
     },
-    getListName (list) {
+    //获取父级列表
+    getFateherList (list, index) {
       let arr = []
         list.forEach(el => {
           arr.push(el.name)
       })
-      return arr
+      let listName = mango.btnList(arr, index)
+      return listName
     },
+    //获取子级列表
     getChildList(list, index, i) {
-      if(!list) {
-        return
-      }
       let arr = []
       if(list[index].child) {
         list[index].child.forEach(el => {
@@ -80,29 +87,15 @@ export default {
       let listName = mango.btnList(arr, i)
       return listName
     },
-    //获取列表名称
-    // getListName (list, type, index) {
-    //   let arr = []
-    //   if(type == 'father') {
-    //     list.forEach(el => {
-    //       arr.push(el.name)
-    //     });
-    //   }else if(type == 'child') {
-    //      list[index].forEach(el => {
-    //       arr.push(el.child)
-    //     });
-    //   }
-    //   return arr
-    // },
     //点击切换父级css样式并获取参数
     changeNewStatus(index) {
-      if(this.newList[index].status) {
+      if(this.fatherList[index].status) {
         return
       }
-      this.newList = this.getNewList(this.list, index)
+      this.fatherList = this.getFateherList(this.list, index)
       //传递参数
       let parmas = {
-        name1: this.newList[index].name,
+        name1: this.fatherList[index].name,
         status: index}
       this.getParmas(parmas)
       //父级下的子级出现
@@ -120,9 +113,9 @@ export default {
     },
     //子级获取参数
     getChildParmas(i,index) {
-      if(this.list[index].child.length) {
+      if(this.childList.length) {
         let parmas = {
-          name1: this.newList[index].name,
+          name1: this.fatherList[index].name,
           name2: this.childList[i].name,
           childstatus: i,
           status: index
@@ -131,6 +124,7 @@ export default {
       }
     }
   }
+  
 }
 </script>
 

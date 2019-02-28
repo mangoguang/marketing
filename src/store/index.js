@@ -18,6 +18,7 @@ import personMsg from './modules/login/index'
 import searchBox from './modules/msManage/searchBox'
 import collectArt from './modules/msManage/collectArt'
 import collect from './modules/msManage/collect'
+import treeList from './modules/msManage/treeList'
 
 export default new Vuex.Store({
   modules: {
@@ -38,6 +39,7 @@ export default new Vuex.Store({
     select,
     searchBox,
     collectArt,
-    collect
+    collect,
+    treeList
   }
 })
