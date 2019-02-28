@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import Vuex, { mapMutations, mapState } from 'vuex'
 import Search from '../../components/msManage/search/eggSearchInp'
 import historySearch from '../../components/msManage/search/eggHistorySearch'
@@ -56,6 +58,8 @@ export default {
       //list请求得到的文章列表标题
       //格式在fuzzyQuery中转化 =======> axios  
       //根据搜索内容获取list///axios
+      this.getSearchVal()
+
       let list = [
         {
           title: '慕思服务政策',  //  文章标题
@@ -95,6 +99,14 @@ export default {
     this.showHistory()
   },
   methods: {
+    //搜索接口
+    getSearchVal(keyword) {
+      indexModel.getArticleSearch(keyword).then(res => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err)
+      })
+   },
     //超出缓存5天的自动清除 （1000*60*60*24）
     compareTime(type) {
       if(getLocalStorage(type)) {

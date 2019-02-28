@@ -7,8 +7,9 @@
           name:item.link,
           query:{category1id: item.category1id,name:item.name,type:1}
           }">
+          <!-- 按照文档返回的参数修改图片参数名字 -->
         <div class="circle" :style="{backgroundColor:item.bgColor}">
-          <img :src="item.imgUrl" alt="">
+          <img :src="item.iconUrl" alt="">  
         </div>
         <p>{{item.name}}</p>
       </router-link>
@@ -18,18 +19,12 @@
 
 <script>
 export default {
-  props:['link'],
+  props:['link', 'list'],
   data () {
     return {
   }
-  },
-  created() {
-    
-  },
-  
-  methods: {
-  
   }
+ 
 }
 </script>
 

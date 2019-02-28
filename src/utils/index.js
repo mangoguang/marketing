@@ -1,12 +1,26 @@
 import { Request } from './request'
 
 class IndexModel extends Request {
-  // 模拟获取抽奖类型
-  // getAwardList() {
-  //   return this.getData({
-  //     url: '/good/seller',
-  //   })
-  // }
+  // 获取首页一级分类列表
+  getCategory1List() {
+    return this.getData({
+      url: '/get/category1List'
+    })
+  }
+  //首页搜索接口
+  getArticleSearch(keyword) {
+    return this.getData({
+      url: '/get/articleSearch',
+      params: {
+        key: keyword
+      }
+    })
+  }
+
+
+
+
+  
   getList () {
     return this.getData({
       url: 'http://10.11.8.7/api/train/repository/v1/get',

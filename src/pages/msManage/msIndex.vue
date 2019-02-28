@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <Search :origin='origin' :type='"msIndex"'/>
-    <yan-circle-list :link="link" />
+    <yan-circle-list :link="link"/>
     <Footer />
   </div>
 </template>
@@ -16,50 +16,40 @@ export default {
   components: {yanCircleList, Footer, Search},
   data() {
     return {
-      link:[
-        {
-          link:'/policy',//路由
-          imgUrl:('./static/images/ms-policy.png'),//图片
-          name:'服务政策',//名称
-          bgColor:'#FF2D55',//背景颜色,
-          category1id: 'servicePolicy',
-          type:1     //type需要缓存列表
-        },
-        {
-          link:'/story',
-          imgUrl:('./static/images/ms-story.png'),//图片
-          name:'英雄故事',
-          bgColor:'#FF964B',
-          category1id: 'story'
-        },
-        {
-          link:'/policy',
-          imgUrl:('./static/images/ms-service.png'),//图片
-          name:'金管家服务',
-          bgColor:'#FFCC00',
-          category1id: 'serviceMsmanege',
-          type:1
-        },
-        {
-          link:'/question',
-          imgUrl:('./static/images/ms-question.png'),//图片
-          name:'常见问题',
-          bgColor:'#007AFF',
-          category1id: 'question',
-          type: 1
-        }
-      ],
+      link: [],
       origin: true
     }
   },
-  mounted() {
-    this.add()
+  created() {
+    this.getData()
   },
   methods: {
-   add() {
-      indexModel.getList().then(res => {
-        console.log(res)
+    //获取首页一级列表接口
+   getData() {
+      indexModel.getCategory1List().then(res => {
+        this.link = this.getNewArr(res.data)
+      }).catch(err => {
+        console.log(err)
+      })
+   },
+   //获取新数组 （添加路径/颜色）
+   getNewArr(arr) {
+     arr.map((item, index) => {
+      if(item.name == '服务政策') {
+        item.link = '/policy'
+        item.bgColor = '#FF2D55'
+      }else if(item.name == '英雄故事') {
+        item.link = '/story'
+        item.bgColor = '#FF964B'
+      }else if(item.name == '金管家服务') {
+        item.link = '/policy'
+        item.bgColor = '#FFCC00'
+      }else if(item.name == '常见问题') {
+        item.link = '/question'
+        item.bgColor = '#007AFF'
+      }
     })
+    return arr
    }
   }
 }

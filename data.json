@@ -1,0 +1,46 @@
+{
+  "category1List": [
+    {
+      "name": "服务政策", 
+      "iconUrl": "./static/images/ms-policy.png", 
+      "category1id": "servicePolicy" 
+    },
+    {
+      "name": "英雄故事", 
+      "iconUrl": "./static/images/ms-story.png", 
+      "category1id": "story"
+    },
+    {
+      "name": "金管家服务", 
+      "iconUrl": "./static/images/ms-service.png", 
+      "category1id": "serviceMsmanage"
+    },
+    {
+      "name": "常见问题", 
+      "iconUrl": "./static/images/ms-question.png", 
+      "category1id": "question"
+    }
+  ],
+  "articleSearch": [
+    {
+      "title": "慕思服务政策", 
+      "articleId": "201902201234"
+    },
+    {
+      "title": "慕思服务", 
+      "articleId": "201902201235"
+    },
+    {
+      "title": "慕思政策", 
+      "articleId": "201902201236"
+    },
+    {
+      "title": "慕思的爱心服务", 
+      "articleId": "201902201237"
+    },
+    {
+      "title": "慕思的爱心", 
+      "articleId": "201902201238"
+    }
+  ]
+}
