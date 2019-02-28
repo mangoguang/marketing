@@ -42,7 +42,7 @@ export default {
     },
     go:function(id){
       /* this.$router.push({path:`/artcileDetails/${id}`}) */ 
-       this.$router.push({name:"/articleDetails",params:{articleId:id}});
+       this.$router.push({name:"/articleDetails",query:{articleId:id}});
     }
     
   }
