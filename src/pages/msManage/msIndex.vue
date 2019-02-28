@@ -21,7 +21,7 @@ export default {
           name:'服务政策',//名称
           bgColor:'#FF2D55',//背景颜色,
           category1id: 'servicePolicy',
-          type:1
+          type:1     //type需要缓存列表
         },
         {
           link:'/story',
@@ -43,7 +43,8 @@ export default {
           imgUrl:('./static/images/ms-question.png'),//图片
           name:'常见问题',
           bgColor:'#007AFF',
-          category1id: 'question'
+          category1id: 'question',
+          type: 1
         }
       ],
       origin: true

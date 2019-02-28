@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import {mapMutations} from 'vuex'
 import banner from '../../components/banner'
 import EggSearch from '../../components/msManage/search/eggSearchInp'
 import EggTreeList from '../../components/msManage/service/eggTreeListComp'
@@ -57,11 +58,19 @@ export default {
     this.initTitle()
     // this.getList()
     this.initTop()
+    this.initParmas()
   },
   methods: {
+    ...mapMutations(['setParmas']),
     //初始化标题
     initTitle() {
       this.title = this.$route.query.name
+    },
+    //初始化active状态
+    initParmas() {
+      if(this.$route.query.type === 1) {    //type从acticle传回来变成字符串1
+        this.setParmas({})
+      }
     },
     //获取分类列表
     getList() {
@@ -71,15 +80,16 @@ export default {
     //获取分类列表的值
     getParmas(val) {
       console.log(val)
+      this.setParmas(val)
       // axios请求questionData
       this.questionData = [
         {
-        title: '床垫除螨哪种工具最好？',  //  问题标题
-        questionId: '20190220123'  //  问题id
+          title: '床垫除螨哪种工具最好？',  //  问题标题
+          questionId: '20190220123'  //  问题id
         },
         {
-        title: '床垫除螨哪种工具最好？',  //  问题标题
-        questionId: '20190220124'  //  问题id
+          title: '床垫除螨哪种工具最好？',  //  问题标题
+          questionId: '20190220124'  //  问题id
         }
       ]
     },

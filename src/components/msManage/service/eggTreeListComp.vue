@@ -51,6 +51,7 @@ export default {
       if(!this.list.length) {
         return
       }
+      console.log(this.parmas)
       let parmas = {}
       if(this.parmas.name1) {
         parmas = this.parmas
