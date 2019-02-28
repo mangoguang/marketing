@@ -176,13 +176,13 @@ export var router = new VueRouter({
   },
   //文章详情
   {
-    path: '/articleDetails/:articleId?',
+    path: '/articleDetails',
     name: '/articleDetails',
     component: resolve => require(['../pages/msManage/articleDetails'],resolve)
   },
   //常见问题详情
   {
-    path: '/questionDetail/:questionId?',
+    path: '/questionDetail',
     name: '/questionDetail',
     component: resolve => require(['../pages/msManage/questionDetail'],resolve)
   }
