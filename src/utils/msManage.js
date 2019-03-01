@@ -1,10 +1,13 @@
 //匹配关键字（title）
 function fuzzyQuery(list, keyWord) {
-  var arr = [];
+  if(!list.length) {
+    return
+  }
+  let arr = [];
   if(keyWord === '' || null) {
     arr = []
   }else {
-    for (var i = 0; i < list.length; i++) {
+    for (let i = 0; i < list.length; i++) {
       if (list[i].title.match(keyWord) != null) {
         arr.push(list[i]);
       }
@@ -15,7 +18,7 @@ function fuzzyQuery(list, keyWord) {
 
 export {fuzzyQuery}
 
-//匹配的关键字高亮
+//匹配的关键字高亮	    //使用map改变原数组:resultsList
 function changeColor(resultsList, keyword){
   resultsList.map((item, index) => {
     if (keyword && keyword.length > 0) {
@@ -23,8 +26,7 @@ function changeColor(resultsList, keyword){
       let replaceString ='<span style="color: #ff2d55">' + keyword + '</span>'
       resultsList[index].title = item.title.replace(replaceReg,replaceString)}
     })
-    let list = resultsList
-    return list
+    return resultsList
 }
 
 export { changeColor }

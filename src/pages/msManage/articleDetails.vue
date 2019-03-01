@@ -43,6 +43,7 @@ export default {
   },
   created() {
     this.title = this.$route.query.articleId
+    console.log(this.title)
   },
   methods: {
     ...mapMutations(['setCollectArtList']),
