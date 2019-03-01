@@ -46,5 +46,86 @@
       "title": "慕思的家", 
       "articleId": "201902201238"
     }
+  ],
+  "categories": [
+    {
+      "name": "订单管理",  
+      "categoryId": "orderManage",  
+    "child": 
+    [{
+      "name": "已完成订单", 
+      "categoryId": "finishOrder"
+    },
+    {
+      "name": "未完成订单", 
+      "categoryId": "unfinishOrder"
+    }]
+    },
+    {
+      "name": "仓储物流",  
+      "categoryId": "storage"
+    },
+    {
+      "name": "配送安装",  
+      "categoryId": "send"
+    },
+    {
+      "name": "售后处理",  
+      "categoryId": "sellout"
+    },
+    {
+      "name": "增值服务",  
+      "categoryId": "service"
+    }
+    ],
+  "articles": [
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-29",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201234", 
+      "top": true,  
+      "collection": true  
+    },
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-20",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201235", 
+      "top": true,  
+      "collection": false  
+    },
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-18",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201236", 
+      "top": false,  
+      "collection": true  
+    },
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-17",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201237", 
+      "top": false,  
+      "collection": false  
+    },
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-16",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201238", 
+      "top": false,  
+      "collection": false  
+    },
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-02",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201239", 
+      "top": false,  
+      "collection": true  
+    }
   ]
 }

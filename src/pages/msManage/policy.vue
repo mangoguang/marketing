@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import {mapMutations} from 'vuex'
 import treeList from '../../components/msManage/service/eggTreeListComp'
 import listComp from '../../components/msManage/service/eggListComp'
@@ -20,42 +22,57 @@ export default {
     return {
       listComp: 'listComp',
       list: [
-        {name:'分类一',categoryId: 'orderManage'
-       },  //  子类id}]},
-         {name:'分类二'},
-         {name:'分类三',child:[
-          {name:'分类31'},
-          {name:'分类32'},
-          {name:'分类31'},
-          {name:'分类32'},
-          {name:'分类31'},
-          {name:'分类32'},
-          {name:'分类31'},
-          {name:'分类32'}
-         ]},
-         {name: '分类四',child: [
-           {name: '分类4'}
-         ]},
-         {name: '分类五',child: [
-           {name: '分类5'}
-         ]},
-          {name: '分类六',child: [
-           {name: '分类6'}
-         ]}, {name: '分类七',child: [
-           {name: '分类7'}
-         ]}
+        {
+          name: "订单管理",  
+          categoryId: "orderManage",  
+          child: 
+        [{
+          name: "已完成订单", 
+          categoryId: "finishOrder"
+        },
+        {
+          name: "未完成订单", 
+          categoryId: "unfinishOrder"
+        }]
+        },
+        {
+          name: "仓储物流",  
+          categoryId: "storage"
+        },
+        {
+          name: "配送安装",  
+          categoryId: "send"
+        },
+        {
+          name: "售后处理",  
+        categoryId: "sellout"
+        },
+        {
+          name: "增值服务",  
+          categoryId: "service"
+        }
       ],
-      parmas: {},
       title: ''
     }
   },
   created() {
-    this.initTop()
-    this.initTitile()
+    // this.getCategoriesList()
     this.initParmas()
+    this.initTitile()
+    this.initTop()
   },
   methods: {
     ...mapMutations(['setParmas']),
+    //获取分类列表
+    getCategoriesList() {
+      const type = 'question'
+      const categoryId = this.$route.query.categoryId
+      indexModel.getCategories().then(res => {
+        this.list = res.data
+        // console.log(123,this.list)
+        this.initTop()
+      })
+    },
     //判断传进来的一级参数
     initTitile() {
       this.title = this.$route.query.name
@@ -68,11 +85,10 @@ export default {
     },
     //获取每一级的参数name
     getParmas(val) {
-      this.parmas = val
       this.setParmas(val)
       console.log(val)
     },
-    //获取子级状态
+    //获取子级状态设置css
     getStatus(val) {
       if(!val) {
         this.listComp = 'listComp1'
@@ -80,7 +96,7 @@ export default {
         this.listComp = 'listComp'
       }
     },
-    //初始化列表的高度
+    //初始化列表的高度设置css
     initTop() {
       if(this.list.length) {
          if(this.list[0].child) {

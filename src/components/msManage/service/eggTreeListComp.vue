@@ -31,14 +31,14 @@ export default {
   props: ['list', 'getParmas', 'getStatus'],
   data() {
     return {
-      isactive: -1,
       addClass: '',
       fatherList: [],
       childList: []
     }
   },
-  created() {
-    this.init(this.list)
+  mounted() {
+    // console.log(22,this.list)
+      this.init(this.list)
   },
   computed: {
     ...mapState({
@@ -51,7 +51,7 @@ export default {
       if(!this.list.length) {
         return
       }
-      console.log(this.parmas)
+      // console.log(this.parmas)
       let parmas = {}
       if(this.parmas.name1) {
         parmas = this.parmas
@@ -61,7 +61,7 @@ export default {
         this.fatherList = this.getFateherList(list, 0)
         this.childList = this.getChildList(list, 0, -1)
         parmas = {
-          name1: list[0].name,
+          name1: list[0].categoryId,
           status: 0
         }
       }
@@ -96,7 +96,7 @@ export default {
       this.fatherList = this.getFateherList(this.list, index)
       //传递参数
       let parmas = {
-        name1: this.fatherList[index].name,
+        name1: this.list[index].categoryId,
         status: index}
       this.getParmas(parmas)
       //父级下的子级出现
@@ -116,8 +116,8 @@ export default {
     getChildParmas(i,index) {
       if(this.childList.length) {
         let parmas = {
-          name1: this.fatherList[index].name,
-          name2: this.childList[i].name,
+          name1: this.list[index].categoryId,
+          name2: this.list[index].child[i].categoryId,
           childstatus: i,
           status: index
           }
@@ -148,7 +148,7 @@ export default {
       font-size: 3.73vw;
       color: #666;
       padding: 2vw 4vw;
-      width: 12vw;
+      min-width: 12vw;
       .child_wrapper {
         overflow-x: hidden;
         display: flex;

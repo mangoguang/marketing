@@ -11,3 +11,13 @@ Mock.mock('/get/articleSearch',{
   codeMsg: 'success',
   data: data.articleSearch
 })
+Mock.mock('/get/categories',{
+  code: 0,
+  codeMsg: 'success',
+  data: data.categories
+})
+Mock.mock('/get/articles',{
+  code: 0,
+  codeMsg: 'success',
+  data: data.articles
+})

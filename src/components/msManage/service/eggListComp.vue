@@ -20,6 +20,9 @@
 </template>
 
 <script>
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
+import {mapState} from 'vuex'
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
 import Vue from 'vue'
@@ -66,7 +69,23 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapState({
+      parmas: state => state.treeList.parmas
+    })
+  },
+  watch: {
+    parmas() {
+      console.log(this.parmas)
+    }
+  },
   methods: {
+    //获取文章列表
+    getArticlesList() {
+      indexModel.getArticles().then(res => {
+        // console.log(res)
+      })
+    },
     getList() {
       //获取treelist组件传过来的参数，通过axios获取list
     },
