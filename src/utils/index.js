@@ -33,6 +33,50 @@ class IndexModel extends Request {
       params: obj
     })
   }
+  //文章详情接口
+  getArticleDetail(articleId) {
+    return this.getData({
+      url: '/get/articleDetail',
+      params: {
+        articleId: articleId
+      }
+    })
+  }
+  //收藏接口
+  collect(obj) {
+    return this.getData({
+      url: '/get/collect',
+      params: obj
+    })
+  }
+  //移除收藏接口
+  remove(obj) {
+    return this.getData({
+      url: '/get/remove',
+      params: obj
+    })
+  }
+  //常见问题列表接口
+  questionList(id) {
+    return this.getData({
+      url: '/get/questionList',
+      params: {
+        questionCategoryId: id  //  问题分类id
+      }
+    })
+  }
+  //常见问题详情接口
+  questionDetail(id) {
+    return this.getData({
+      url: '/get/questionDetail',
+      params: {
+        questionId: id
+      }
+    })
+  }
+
+
+
 
 
   getList () {

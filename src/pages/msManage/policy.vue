@@ -24,7 +24,7 @@ export default {
       list: [
         {
           name: "订单管理",  
-          categoryId: "orderManage",  
+          categoryId: "orderManage",
           child: 
         [{
           name: "已完成订单", 
@@ -41,7 +41,16 @@ export default {
         },
         {
           name: "配送安装",  
-          categoryId: "send"
+          categoryId: "send",
+          child: 
+        [{
+          name: "已完成订单", 
+          categoryId: "finishOrder"
+        },
+        {
+          name: "未完成订单", 
+          categoryId: "unfinishOrder"
+        }]
         },
         {
           name: "售后处理",  
@@ -65,7 +74,7 @@ export default {
     ...mapMutations(['setParmas']),
     //获取分类列表
     getCategoriesList() {
-      const type = 'question'
+      const type = 'article'
       const categoryId = this.$route.query.categoryId
       indexModel.getCategories().then(res => {
         this.list = res.data

@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import {mapMutations} from 'vuex'
 import banner from '../../components/banner'
 import EggSearch from '../../components/msManage/search/eggSearchInp'
@@ -29,34 +31,34 @@ export default {
       list: [
         {
           name: '分类一',  //  分类名称
-          questionCategoryId: 'salesBefore' //  问题分类id
+          categoryId: 'sales' //  问题分类id
         },
         {
           name: '分类二',  //  分类名称
-          questionCategoryId: 'salesBefore'  //  问题分类id
+          categoryId: 'salesBefore'  //  问题分类id
         },
         {
           name: '分类三',  //  分类名称
-          questionCategoryId: 'salesBefore'  //  问题分类id
+          categoryId: 'salesafter'  //  问题分类id
         },
         {
           name: '分类四',  //  分类名称
-          questionCategoryId: 'salesBefore' //  问题分类id
+          categoryId: 'sales' //  问题分类id
         },
         {
           name: '分类五',  //  分类名称
-          questionCategoryId: 'salesBefore'  //  问题分类id
+          categoryId: 'salesBefore'  //  问题分类id
         },
         {
           name: '分类六',  //  分类名称
-          questionCategoryId: 'salesBefore'  //  问题分类id
+          categoryId: 'salesBefore'  //  问题分类id
         }
       ]
     }
   },
   created() {
     this.initTitle()
-    // this.getList()
+    // this.getCategoriesList()
     this.initTop()
     this.initParmas()
   },
@@ -73,13 +75,17 @@ export default {
       }
     },
     //获取分类列表
-    getList() {
-      let id = this.$route.query.category1id
-      //axios
+    getCategoriesList() {
+      const type = 'question'
+      indexModel.getCategories().then(res => {
+        this.list = res.data
+        // console.log(123,this.list)
+        this.initTop()
+      })
     },
     //获取分类列表的值
     getParmas(val) {
-      console.log(val)
+      // console.log(val)
       this.setParmas(val)
       // axios请求questionData
       this.questionData = [

@@ -7,15 +7,15 @@
 
 <script>
 export default {
-  props: ['isCollect'],
+  props: ['collection'],
   data() {
     return {
       ImgUrl: './static/images/collect.png'
     }
   },
   watch: {
-    isCollect() {
-      if(this.isCollect) {
+    collection() {
+      if(!this.collection) {
         this.ImgUrl = './static/images/collect.png'
       }else {
         this.ImgUrl = './static/images/collected.png'

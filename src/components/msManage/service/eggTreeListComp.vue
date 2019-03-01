@@ -9,7 +9,7 @@
         </span>
         <div class="child_wrapper" >
           <ul class="child_treeList " v-show="item.status" >
-            <li v-for="(el, i) in childList" :key='i' class="select">
+            <li v-for="(el, i) in childList" :key='i' class="selectChild">
               <span 
                 @click="changChildStatus(i, index)"
                 :class="el.status? 'childrenAddClass' : ''">
@@ -148,7 +148,6 @@ export default {
       font-size: 3.73vw;
       color: #666;
       padding: 2vw 4vw;
-      min-width: 12vw;
       .child_wrapper {
         overflow-x: hidden;
         display: flex;
@@ -164,6 +163,12 @@ export default {
           display: flex;
           white-space: nowrap;
           width: 100vw;
+          .selectChild {
+            font-size: 3.73vw;
+            color: #666;
+            padding: 2vw 0;
+            padding-left: 4vw;
+            }
           span {
             padding: 1.23vw 4.26vw;
             background: #f8f8f8;
@@ -171,7 +176,7 @@ export default {
             border-radius: 3.86vw;
             text-align: center;
             font-size: 3.46vw;
-            margin-right: 4vw;
+            // margin-right: 4vw;
           }
           .childrenAddClass {
             color:#fff;

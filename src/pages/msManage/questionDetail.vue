@@ -5,8 +5,8 @@
       <div class="title">
         <h1>{{questionData.title}}</h1>
         <eggCollectBtn class="collectBtn"
-          :isCollect='isCollect' 
-          @click.native="collect"/>
+          :collection='collection' 
+          @click.native="changeCollectBtn"/>
       </div>
       <p>{{questionData.detail}}</p>
     </div>
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import banner from '../../components/banner'
 import eggCollectBtn from '../../components/msManage/eggCollectBtn'
 import Vuex, { mapMutations, mapState } from 'vuex'
@@ -22,7 +24,8 @@ export default {
   data() {
     return {
       questionData: {},
-      isCollect: true
+      collection: false,
+      questionId: ''
     }
   },
   computed: {
@@ -31,25 +34,51 @@ export default {
     })
   },
   created() {
-    console.log(this.$route.query.questionId)
-    let id = this.$route.query.questionId
-    this.getData(id)
+    this.questionId = this.$route.query.questionId
+    this.getQuestionDetail()
      //获取收藏列表常见问题路由"/collectList"传过来的常见问题questionId
     // console.log(this.$route.params.questionId);
   },
   methods: {
-    getData(id) {
+    getQuestionDetail(id) {
       // axios获取问题详情内容
-
-      this.questionData = {
-        title: '床垫除螨哪种工具?除螨哪',  //  问题标题
-        detail: '除螨用*************除螨用除螨用123231除螨用除螨用123231',  //  问题解答内容
-        questionId: '20190220123'  //  问题id
-      }
+      indexModel.questionDetail(id).then(res => {
+        this.questionData = res.data
+        this.collection = res.data.collection
+      })
     },
+      //收藏
     collect() {
-      //axios 收藏/移除收藏
-      this.isCollect = !this.isCollect
+      let obj = {
+        account: '11608050',      //获取账号
+        type: 'question',
+        questionId: this.questionId
+      }
+      indexModel.collect().then(res => {
+        console.log('collect')
+      })
+    },
+    //取消收藏
+    cancelCollect() {
+       let obj = {
+        account: '11608050',      //获取账号
+        type: 'question',
+        questionId: this.questionId
+      }
+      indexModel.remove().then(res => {
+        console.log('canclecollect')
+      })
+    },
+    // 切换收藏按钮
+    changeCollectBtn() {
+      this.collection = !this.collection
+      if(this.collection) {
+        //收藏接口
+        this.collect()
+      }else {
+        //移除收藏接口
+        this.cancelCollect()
+      }
     }
   }
 }

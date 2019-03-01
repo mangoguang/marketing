@@ -150,12 +150,16 @@ export default {
     },
     //点击跳转
     toArticle(index) {
-      // 2.===========可以不需要store中的titleList,使用this.lis======
+      // 2.===========可以不需要store中的titleList,使用this.list======
       let articleId = this.titleList[index].articleId
       if(articleId) {
         this.historyTxt = this.searchVal
         setTimeout(() => {
-          skipNewPage(this.$router, '/articleDetails', {'articleId': articleId})
+          if(this.searchType == 'msIndex') {
+            skipNewPage(this.$router, '/articleDetails', {'articleId': articleId, type: 'article'})
+          }else {
+            skipNewPage(this.$router, '/questionDetail', {'articleId': articleId, type: 'question'})
+          }
           this.historyTxt = ''
         }, 100);
       }

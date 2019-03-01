@@ -49,7 +49,7 @@
   ],
   "categories": [
     {
-      "name": "订单管理",  
+      "name": "订单管",  
       "categoryId": "orderManage",  
     "child": 
     [{
@@ -127,5 +127,47 @@
       "top": false,  
       "collection": true  
     }
-  ]
+  ],
+  "articleDetail": {
+    "data": "富文本",
+    "collection": false  
+  },
+  "collect": {
+    "status": 1
+  },
+  "remove": {
+    "status": 1
+  },
+  "questionList": [
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    }
+  ],
+  "questionDetail": {
+    "title": "床垫除螨哪种工具最好？",
+    "detail": "除螨用*************除螨用*************除螨用*************",  
+    "collection": false
+  }
+    
 }

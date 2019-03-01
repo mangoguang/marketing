@@ -27,46 +27,11 @@ import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
 import Vue from 'vue'
 export default {
+  props: ['id'],
   data() {
     return {
       allLoaded:false,
-      list: [
-        {
-          title: '慕思产品三包服务政策详解1111111',  //  文章标题
-          time: '2019-02-20',  //  文章上传时间
-          imgUrl: '../img.jpg',  //  文章缩略图
-          articleId: '201902201234',  //  文章id
-          top: true  //  是否置顶文章
-        },
-        {
-          title: '慕思产品三包服务政策详解',  //  文章标题
-          time: '2019-02-20',  //  文章上传时间
-          imgUrl: '../img.jpg',  //  文章缩略图
-          articleId: '201902201235',  //  文章id
-          top: true  //  是否置顶文章
-        },
-         {
-          title: '慕思产品三包服务政策详解',  //  文章标题
-          time: '2019-02-20',  //  文章上传时间
-          imgUrl: '../img.jpg',  //  文章缩略图
-          articleId: '201902201236',  //  文章id
-          top: false  //  是否置顶文章
-        },
-         {
-          title: '慕思产品三包服务政策详解',  //  文章标题
-          time: '2019-02-20',  //  文章上传时间
-          imgUrl: '../img.jpg',  //  文章缩略图
-          articleId: '201902201237',  //  文章id
-          top: false  //  是否置顶文章
-        },
-        {
-          title: '慕思产品三包服务政策详解',  //  文章标题
-          time: '2019-02-20',  //  文章上传时间
-          imgUrl: '../img.jpg',  //  文章缩略图
-          articleId: '201902201237',  //  文章id
-          top: false  //  是否置顶文章
-        }
-      ]
+      list: []
     }
   },
   computed: {
@@ -75,25 +40,54 @@ export default {
     })
   },
   watch: {
+    //二级才会触发
     parmas() {
-      console.log(this.parmas)
+      let obj = this.getCategoriesId()
+      // this.getArticlesList(obj)
     }
+  },
+  mounted() {
+    let obj = this.getCategoriesId()
+    console.log(22222,obj)
+    //obj传给getArticlesList
+    // this.getArticlesList(obj)
+    this.getArticlesList()
   },
   methods: {
     //获取文章列表
     getArticlesList() {
       indexModel.getArticles().then(res => {
-        // console.log(res)
+        this.list = res.data
       })
     },
-    getList() {
-      //获取treelist组件传过来的参数，通过axios获取list
+    //获取一二三级id参数
+    getCategoriesId(){
+      const scategory1Id = this.$route.query.category1id
+      let obj = {}
+      if(this.parmas.name1 && !this.parmas.name2) {
+        let category2Id = this.parmas.name1
+        obj = {
+          'scategory1Id': scategory1Id,
+          'category2Id': category2Id}
+      }else if(this.parmas.name1 && this.parmas.name2) {
+        let category2Id = this.parmas.name1
+        let category3Id = this.parmas.name2
+        obj = {
+          'scategory1Id': scategory1Id,
+          'category2Id': category2Id,
+          'category3Id': category3Id}
+      }else {
+        obj = {'scategory1Id': scategory1Id}
+      }
+      return obj
     },
     //跳转到文章详情	
     toArticle(index) {
       this.$router.push({
         path: '/articleDetails',
-        query: {articleId: this.list[index].articleId}})
+        query: {
+          articleId: this.list[index].articleId,
+          name: this.$route.query.name}})
     },
      //下拉刷新
     loadBottom() {

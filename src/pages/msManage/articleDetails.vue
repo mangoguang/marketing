@@ -2,10 +2,10 @@
   <div class="article paddingTop">
     <banner :title="'文章详情'"/>
     <div class="titleBar">
-      <h1>{{ title }}</h1>
+      <h1>{{ articleId }}</h1>
       <span>歌迪亚 2018.11.11</span>
       <collect-btn class="collentBtn" 
-        :isCollect='isCollect'
+        :collection='collection'
         v-on:click.native='changeCollectBtn'/>
     </div>
     <div class="content">
@@ -16,14 +16,14 @@
         <div class="video_wrapper" @click="beginPlay" v-if="isBegin">
           <img src="../../assets/imgs/play.png" >
         </div>
-        <video src=""></video>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Vuex, { mapMutations, mapState } from 'vuex'
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import {removeItem, addItem} from '../../utils/msManage'
 import Banner from '../../components/banner'
 import CollectBtn from '../../components/msManage/eggCollectBtn'
@@ -31,46 +31,55 @@ export default {
   components: {CollectBtn,Banner},
   data() {
     return {
-      isCollect: true,
       isBegin: true,
-      title: ''
+      articleId: '',
+      collection: false
     }
   },
-  computed: {
-    ...mapState({
-      collectArtList: state => state.collectArt.collectArtList
-    })
-  },
   created() {
-    this.title = this.$route.query.articleId
-    console.log(this.title)
+    this.articleId = this.$route.query.articleId
+    this.getArticleDetail()
   },
   methods: {
-    ...mapMutations(['setCollectArtList']),
-    // 切换收藏按钮
-    changeCollectBtn() {
-      this.isCollect = !this.isCollect
-      if(!this.isCollect) {
-        //收藏接口
-        this.collect(this.collectArtList, this.title)
-      }else {
-        //移除收藏接口
-        this.cancelCollect(this.collectArtList, this.title)
-      }
+    //获取文章详情
+    getArticleDetail() {
+      // const id = this.articleId
+      indexModel.getArticleDetail().then(res => {
+        this.collection = res.collection
+      })
     },
-    //点击收藏
-    collect(temp, title) {
-      if(!temp.length) {
-        this.setCollectArtList([title])
-      }else {
-        temp = addItem(temp, title)
-        this.setCollectArtList(temp)
+    //收藏
+    collect() {
+      let obj = {
+        account: '11608050',      //获取账号
+        type: 'article',
+        articleId: this.articleId
       }
+      indexModel.collect().then(res => {
+        console.log('collect')
+      })
     },
     //取消收藏
-    cancelCollect(temp, title) {
-      temp = removeItem(temp, title)
-      this.setCollectArtList(temp)
+    cancelCollect() {
+       let obj = {
+        account: '11608050',      //获取账号
+        type: 'article',
+        articleId: this.articleId
+      }
+      indexModel.remove().then(res => {
+        console.log('canclecollect')
+      })
+    },
+    // 切换收藏按钮
+    changeCollectBtn() {
+      this.collection = !this.collection
+      if(this.collection) {
+        //收藏接口
+        this.collect()
+      }else {
+        //移除收藏接口
+        this.cancelCollect()
+      }
     },
     //开始播放
     beginPlay() {

@@ -1,6 +1,6 @@
 <template>
   <ul>
-    <li v-for="(item, index) in questionData" :key="index" @click="toQuestionDetails(index)">
+    <li v-for="(item, index) in list" :key="index" @click="toQuestionDetails(index)">
       <span>{{item.title}}</span>
       <img src="../../../assets/imgs/rightside.png" alt="">
     </li>
@@ -8,20 +8,46 @@
 </template>
 
 <script>
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
+import { mapState } from 'vuex';
 export default {
   props: ['questionData'],
   data() {
     return {
-
+      list: []
     }
   },
+  computed: {
+    ...mapState({
+      parmas: state => state.treeList.parmas
+    })
+  },
+  watch: {
+    parmas() {
+      // this.getQuestionList()
+    }
+  },
+  mounted() {
+    console.log(this.parmas.name1)
+    this.getQuestionList()
+  },
   methods: {
+    //获取常见问题列表
+    getQuestionList() {
+      let id = this.parmas.name1
+      indexModel.questionList().then(res => {
+        this.list = res.data
+      })
+    },
     //跳转到问题详情
     toQuestionDetails(index) {
-      let id = this.questionData[index].questionId
+      let id = this.list[index].questionId
       this.$router.push({
         path: '/questionDetail',
-        query: {questionId: id}})
+        query: {
+          questionId: id
+        }})
     }
   }
 }
