@@ -24,11 +24,13 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
+import {mapState, mapMutations} from 'vuex'
 import mango from '../../../js' 
 export default {
   name: 'treeList',
-  props: ['list', 'getParmas', 'getStatus'],
+  props: ['getParmas', 'getStatus'],
   data() {
     return {
       addClass: '',
@@ -36,19 +38,35 @@ export default {
       childList: []
     }
   },
-  mounted() {
-    // console.log(22,this.list)
-      this.init(this.list)
+  created() {
+    this.getCategoriesList()
   },
   computed: {
     ...mapState({
-      parmas: state => state.treeList.parmas
+      parmas: state => state.treeList.parmas,
+      list: state => state.treeList.list
     })
   },
   methods: {
+    ...mapMutations(['setList']),
+    //获取分类列表
+    getCategoriesList() {
+      let type, categoryId
+      if(this.$route.query.name == '常见问题') {
+        type = 'question'
+      }else {
+        type = 'article'
+        categoryId = this.$route.query.category1id
+      }
+      console.log(type, categoryId)
+      indexModel.getCategories().then(res => {
+        this.setList(res.data)
+        this.init(this.list)
+      })
+    },
     //初始进来的时候默认传第一个值/从内容详情返回的时候传store里面打值
     init(list) {
-      if(!this.list.length) {
+      if(!list.length) {
         return
       }
       // console.log(this.parmas)

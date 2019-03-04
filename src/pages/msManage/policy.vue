@@ -3,16 +3,14 @@
     <banner :title="title"/>
     <!-- list为传入参数，getparmas为组件点击得到的选项-->
     <div class='treeList'>
-      <treeList :list='list' :getParmas='getParmas' :getStatus='getStatus'/>
+      <treeList :getParmas='getParmas' :getStatus='getStatus'/>
     </div>
     <listComp :class="listComp"/>
   </div>
 </template>
 
 <script>
-import {IndexModel} from '../../utils/index'
-const indexModel = new IndexModel()
-import {mapMutations} from 'vuex'
+import {mapMutations,mapState} from 'vuex'
 import treeList from '../../components/msManage/service/eggTreeListComp'
 import listComp from '../../components/msManage/service/eggListComp'
 import banner from '../../components/banner'
@@ -21,48 +19,13 @@ export default {
   data() {
     return {
       listComp: 'listComp',
-      list: [
-        {
-          name: "订单管理",  
-          categoryId: "orderManage",
-          child: 
-        [{
-          name: "已完成订单", 
-          categoryId: "finishOrder"
-        },
-        {
-          name: "未完成订单", 
-          categoryId: "unfinishOrder"
-        }]
-        },
-        {
-          name: "仓储物流",  
-          categoryId: "storage"
-        },
-        {
-          name: "配送安装",  
-          categoryId: "send",
-          child: 
-        [{
-          name: "已完成订单", 
-          categoryId: "finishOrder"
-        },
-        {
-          name: "未完成订单", 
-          categoryId: "unfinishOrder"
-        }]
-        },
-        {
-          name: "售后处理",  
-        categoryId: "sellout"
-        },
-        {
-          name: "增值服务",  
-          categoryId: "service"
-        }
-      ],
       title: ''
     }
+  },
+  computed: {
+    ...mapState({
+      list: state => state.treeList.list
+    })
   },
   created() {
     // this.getCategoriesList()
@@ -72,16 +35,6 @@ export default {
   },
   methods: {
     ...mapMutations(['setParmas']),
-    //获取分类列表
-    getCategoriesList() {
-      const type = 'article'
-      const categoryId = this.$route.query.categoryId
-      indexModel.getCategories().then(res => {
-        this.list = res.data
-        // console.log(123,this.list)
-        this.initTop()
-      })
-    },
     //判断传进来的一级参数
     initTitile() {
       this.title = this.$route.query.name

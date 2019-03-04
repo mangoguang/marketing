@@ -25,11 +25,11 @@ export default {
   },
   watch: {
     parmas() {
-      // this.getQuestionList()
+      this.getQuestionList()
     }
   },
-  mounted() {
-    console.log(this.parmas.name1)
+  created() {
+    // console.log(this.parmas.name1)
     this.getQuestionList()
   },
   methods: {
