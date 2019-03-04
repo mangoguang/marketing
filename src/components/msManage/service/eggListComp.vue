@@ -15,6 +15,7 @@
         </div>
       </li>
     </mt-loadmore>
+    <!-- <div>123</div> -->
     </ul>
   </div>
 </template>
@@ -95,9 +96,9 @@ export default {
       this.pullDownData()
     },
     //下拉加载数据
-    pullDownData(startTime, endTime) {
+    pullDownData() {
       // if (this.page < this.allPage) {
-      //   this.allLoaded = true
+        // this.allLoaded = true
       //   this.page ++;
       //   this.getData(this.page, this.limit, startTime, endTime);
       // }else {
@@ -145,14 +146,14 @@ export default {
       }
     }
     .list_right {
-        flex: 0.25;
-        width: 21.33vw;
-        height: 21.33vw;
-        border:1px solid rgba(225,225,225,1);
-        background:linear-gradient(30deg,rgba(60,182,238,1) 0%,rgba(125,226,255,1) 100%);
+      flex: 0.25;
+      width: 21.33vw;
+      height: 21.33vw;
+      border:1px solid rgba(225,225,225,1);
+      background:linear-gradient(30deg,rgba(60,182,238,1) 0%,rgba(125,226,255,1) 100%);
     }
   }
-  
+
 }
 </style>
 
