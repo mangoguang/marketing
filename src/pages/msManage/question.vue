@@ -7,7 +7,7 @@
     </div>
     <EggTreeList :list='list' :getParmas='getParmas' :getStatus='getStatus'/>
     <div :class="questionList">
-      <EggQuestionList :questionData='questionData'/>
+      <EggQuestionList />
     </div>
   </div>
 </template>
@@ -26,7 +26,6 @@ export default {
     return {
       title: '',
       questionList: 'questionList',
-      questionData: [],
       origin: true,
       list: [
         {
@@ -87,17 +86,6 @@ export default {
     getParmas(val) {
       // console.log(val)
       this.setParmas(val)
-      // axios请求questionData
-      this.questionData = [
-        {
-          title: '床垫除螨哪种工具最好？',  //  问题标题
-          questionId: '20190220123'  //  问题id
-        },
-        {
-          title: '床垫除螨哪种工具最好？',  //  问题标题
-          questionId: '20190220124'  //  问题id
-        }
-      ]
     },
     //判断有没有二级参数，设置问题列表高度
     getStatus(val) {
