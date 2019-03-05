@@ -1,5 +1,6 @@
 import { Request } from './request'
 
+
 class IndexModel extends Request {
   // 获取首页一级分类列表
   getCategory1List() {
@@ -36,9 +37,9 @@ class IndexModel extends Request {
   //文章详情接口
   getArticleDetail(articleId) {
     return this.getData({
-      url: '/get/articleDetail',
+      url: 'http://10.11.8.250/api/train/repository/v1/get',
       params: {
-        articleId: articleId
+        id: articleId
       }
     })
   }
@@ -75,7 +76,15 @@ class IndexModel extends Request {
     })
   }
 
-
+  //test
+  test() {
+    return this.getData({
+      url: 'http://10.11.8.250/api/train/repository/v1/get',
+      params: {
+        id: '1102757829179252738'
+      }
+    })
+  }
 
 
 

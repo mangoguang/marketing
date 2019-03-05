@@ -24,7 +24,7 @@ export default {
     this.getData()
   },
   methods: {
-    //获取首页一级列表接口
+  //获取首页一级列表接口
    getData() {
       indexModel.getCategory1List().then(res => {
         this.link = this.getNewArr(res.data)
@@ -56,6 +56,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.index {
-}
+
 </style>

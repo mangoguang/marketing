@@ -2,21 +2,14 @@
   <div class="article paddingTop">
     <banner :title="'文章详情'"/>
     <div class="titleBar">
-      <h1>{{ articleId }}</h1>
-      <span>歌迪亚 2018.11.11</span>
+      <div class="title">{{ articleDetails.title }}</div>
+      <span>{{ articleDetails.createTime }}</span>
       <collect-btn class="collentBtn" 
         :collection='collection'
         v-on:click.native='changeCollectBtn'/>
     </div>
-    <div class="content">
-      <h2>  (一)床垫的主要介绍</h2>
-      <p>1.一线弹簧</p>
-      <img src="../../assets/imgs/article_search.png" class="img">
-      <div class="m-video">
-        <div class="video_wrapper" @click="beginPlay" v-if="isBegin">
-          <img src="../../assets/imgs/play.png" >
-        </div>
-      </div>
+    <div class="content" v-html="myhtml">
+      
     </div>
   </div>
 </template>
@@ -24,7 +17,7 @@
 <script>
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
-import {removeItem, addItem} from '../../utils/msManage'
+import {removeItem, addItem, b64DecodeUnicode, changeImgStyle} from '../../utils/msManage'
 import Banner from '../../components/banner'
 import CollectBtn from '../../components/msManage/eggCollectBtn'
 export default {
@@ -33,7 +26,9 @@ export default {
     return {
       isBegin: true,
       articleId: '',
-      collection: false
+      collection: false,
+      myhtml: '',
+      articleDetails: ''
     }
   },
   created() {
@@ -44,8 +39,12 @@ export default {
     //获取文章详情
     getArticleDetail() {
       // const id = this.articleId
-      indexModel.getArticleDetail().then(res => {
-        this.collection = res.collection
+      const id = '1102757829179252738'
+      indexModel.getArticleDetail(id).then(res => {
+        this.articleDetails = res.info
+        let temp = res.info.remark
+        this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+        // this.collection = res.collection
       })
     },
     //收藏
@@ -99,9 +98,12 @@ export default {
   padding-top: 22vw;
   .titleBar {
     position: relative;
-    h1 {
+    .title {
       color: #353535;
       font-size: 4.53vw;
+      width: 50vw;
+      text-align: center;
+      margin: 0 auto;
     }
     span {
       color: #909090;
