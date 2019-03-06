@@ -11,7 +11,8 @@ class IndexModel extends Request {
   //首页搜索接口
   getArticleSearch(keyword) {
     return this.getData({
-      url: '/get/articleSearch',
+      // url: '/get/articleSearch',
+      url: 'http://10.11.8.250/api/train/repository/v1/getRepositoryByKey',
       params: {
         key: keyword
       }
@@ -57,21 +58,29 @@ class IndexModel extends Request {
       params: obj
     })
   }
+  //获取问题分类列表接口
+  getQuestionCategoryList() {
+    return this.getData({
+      url: 'http://10.11.8.250/api/question/repository/v1/getCategoryList'
+    }) 
+  }
   //常见问题列表接口
   questionList(id) {
     return this.getData({
-      url: '/get/questionList',
+      // url: '/get/questionList',
+      url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
       params: {
-        questionCategoryId: id  //  问题分类id
+        id: id  //  问题分类id
       }
     })
   }
   //常见问题详情接口
   questionDetail(id) {
     return this.getData({
-      url: '/get/questionDetail',
+      // url: '/get/questionDetail',
+      url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
       params: {
-        questionId: id
+        id: id
       }
     })
   }
@@ -79,31 +88,15 @@ class IndexModel extends Request {
   //test
   test() {
     return this.getData({
-      url: 'http://10.11.8.250/api/train/repository/v1/get',
+      url: 'http://10.11.8.250/api/question/repository/v1/getCategoryList',
       params: {
-        id: '1102757829179252738'
+        // id: "1098130239495827458"
       }
     })
   }
 
 
 
-  getList () {
-    return this.getData({
-      url: 'http://10.11.8.7/api/train/repository/v1/get',
-      params: {
-        id: '1038252893971357698 '
-      }
-    })
-  }
-  rotateSaveInfo() {
-    return this.getPostData({
-      url: '',
-      data: {
-
-      }
-    })
-  }
 }
 
 export { IndexModel }

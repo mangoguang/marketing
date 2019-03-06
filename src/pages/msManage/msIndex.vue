@@ -22,8 +22,14 @@ export default {
   },
   created() {
     this.getData()
+    this.test()
   },
   methods: {
+    test() {
+      indexModel.test().then(res => {
+        console.log(123,res)
+      })
+    },
   //获取首页一级列表接口
    getData() {
       indexModel.getCategory1List().then(res => {

@@ -54,15 +54,18 @@ export default {
       let type, categoryId
       if(this.$route.query.name == '常见问题') {
         type = 'question'
+        indexModel.getQuestionCategoryList().then(res => {
+          this.setList(res.data)
+          this.init(this.list)
+        })
       }else {
         type = 'article'
         categoryId = this.$route.query.category1id
+        indexModel.getCategories().then(res => {
+          this.setList(res.data)
+          this.init(this.list)
+        })
       }
-      console.log(type, categoryId)
-      indexModel.getCategories().then(res => {
-        this.setList(res.data)
-        this.init(this.list)
-      })
     },
     //初始进来的时候默认传第一个值/从内容详情返回的时候传store里面打值
     init(list) {
@@ -79,7 +82,7 @@ export default {
         this.fatherList = this.getFateherList(list, 0)
         this.childList = this.getChildList(list, 0, -1)
         parmas = {
-          name1: list[0].categoryId,
+          name1: list[0].id,
           status: 0
         }
       }
@@ -114,7 +117,7 @@ export default {
       this.fatherList = this.getFateherList(this.list, index)
       //传递参数
       let parmas = {
-        name1: this.list[index].categoryId,
+        name1: this.list[index].id,
         status: index}
       this.getParmas(parmas)
       //父级下的子级出现
@@ -134,8 +137,8 @@ export default {
     getChildParmas(i,index) {
       if(this.childList.length) {
         let parmas = {
-          name1: this.list[index].categoryId,
-          name2: this.list[index].child[i].categoryId,
+          name1: this.list[index].id,
+          name2: this.list[index].child[i].id,
           childstatus: i,
           status: index
           }

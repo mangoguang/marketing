@@ -51,7 +51,7 @@ export default {
     },
     //获取分类列表的值
     getParmas(val) {
-      // console.log(val)
+      console.log(val)
       this.setParmas(val)
     },
     //判断有没有二级参数，设置问题列表高度

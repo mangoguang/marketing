@@ -12,7 +12,6 @@ import {IndexModel} from '../../../utils/index'
 const indexModel = new IndexModel()
 import { mapState } from 'vuex';
 export default {
-  props: ['questionData'],
   data() {
     return {
       list: []
@@ -29,24 +28,23 @@ export default {
     }
   },
   created() {
-    // console.log(this.parmas.name1)
     this.getQuestionList()
   },
   methods: {
     //获取常见问题列表
     getQuestionList() {
       let id = this.parmas.name1
-      indexModel.questionList().then(res => {
+      indexModel.questionList(id).then(res => {
         this.list = res.data
       })
     },
     //跳转到问题详情
     toQuestionDetails(index) {
-      let id = this.list[index].questionId
+      let id = this.list[index].id
       this.$router.push({
         path: '/questionDetail',
         query: {
-          questionId: id
+          id: id
         }})
     }
   }

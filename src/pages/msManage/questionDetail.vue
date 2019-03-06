@@ -3,17 +3,18 @@
     <banner :title="'常见问题'"/>
     <div class="content">
       <div class="title">
-        <h1>{{questionData.title}}</h1>
+        <h1>{{ questionData.title }}</h1>
         <eggCollectBtn class="collectBtn"
           :collection='collection' 
           @click.native="changeCollectBtn"/>
       </div>
-      <p>{{questionData.detail}}</p>
+      <p v-html="myhtml"></p>
     </div>
   </div>
 </template>
 
 <script>
+import { b64DecodeUnicode, changeImgStyle } from '../../utils/msManage'
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import banner from '../../components/banner'
@@ -25,7 +26,8 @@ export default {
     return {
       questionData: {},
       collection: false,
-      questionId: ''
+      questionId: '',
+      myhtml: ''
     }
   },
   computed: {
@@ -34,7 +36,7 @@ export default {
     })
   },
   created() {
-    this.questionId = this.$route.query.questionId
+    this.questionId = this.$route.query.id
     this.getQuestionDetail()
      //获取收藏列表常见问题路由"/collectList"传过来的常见问题questionId
     // console.log(this.$route.params.questionId);
@@ -43,8 +45,10 @@ export default {
     getQuestionDetail(id) {
       // axios获取问题详情内容
       indexModel.questionDetail(id).then(res => {
-        this.questionData = res.data
-        this.collection = res.data.collection
+        this.questionData = res.data[0]
+        let temp = res.data[0].remark
+        this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+        // this.collection = res.data.collection
       })
     },
       //收藏
@@ -103,6 +107,9 @@ export default {
         padding-top: 3vw;
         padding-bottom: 3vw;
         width: 76%;
+        text-align: center;
+        width: 55vw;
+        margin: 0 auto;
       }
       .collectBtn {
         position: absolute;
