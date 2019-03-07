@@ -51,19 +51,16 @@ export default {
     ...mapMutations(['setList']),
     //获取分类列表
     getCategoriesList() {
-      let type, categoryId
+      let categoryId
       if(this.$route.query.name == '常见问题') {
-        type = 'question'
-        console.log(111,this.parmas)
-        indexModel.getQuestionCategoryList(this.parmas.name1).then(res => {
+        indexModel.getQuestionCategoryList().then(res => {
           this.setList(res.data)
           this.init(this.list)
         })
       }else {
-        type = 'article'
-        categoryId = this.$route.query.category1id
-        indexModel.getCategories().then(res => {
-          this.setList(res.data)
+        categoryId = this.$route.query.id
+        indexModel.getCategories(categoryId).then(res => {
+          this.setList(res.data[0].subCateList)
           this.init(this.list)
         })
       }
@@ -73,7 +70,6 @@ export default {
       if(!list.length) {
         return
       }
-      // console.log(this.parmas)
       let parmas = {}
       if(this.parmas.name1) {
         parmas = this.parmas
@@ -88,7 +84,7 @@ export default {
         }
       }
       this.getParmas(parmas)
-      this.getStatus(this.list[parmas.status].child)
+      this.getStatus(this.list[parmas.status].subCateList)
     },
     //获取父级列表
     getFateherList (list, index) {
@@ -102,8 +98,8 @@ export default {
     //获取子级列表
     getChildList(list, index, i) {
       let arr = []
-      if(list[index].child) {
-        list[index].child.forEach(el => {
+      if(list[index].subCateList) {
+        list[index].subCateList.forEach(el => {
           arr.push(el.name)
         });
       }
@@ -124,7 +120,7 @@ export default {
       //父级下的子级出现
       this.childList = this.getChildList(this.list, index, -1)
       //初始化获取有没有子级
-      this.getStatus(this.list[index].child)
+      this.getStatus(this.list[index].subCateList)
     },
     //点击切换子级css样式并获取参数
     changChildStatus(i, index) {
@@ -139,7 +135,7 @@ export default {
       if(this.childList.length) {
         let parmas = {
           name1: this.list[index].id,
-          name2: this.list[index].child[i].id,
+          name2: this.list[index].subCateList[i].id,
           childstatus: i,
           status: index
           }

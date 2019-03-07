@@ -7,7 +7,7 @@
           <h1>{{item.title}}</h1>
           <div class="list_bottom">
             <span v-if="item.top" class="top">置顶</span>
-            <span class="time">{{item.time}}</span>
+            <span class="time">{{item.createTime}}</span>
           </div>
         </div>
         <div class="list_right">
@@ -44,42 +44,43 @@ export default {
     //二级才会触发
     parmas() {
       let obj = this.getCategoriesId()
-      // this.getArticlesList(obj)
+      this.getArticlesList(obj)
     }
   },
   mounted() {
     let obj = this.getCategoriesId()
     console.log(22222,obj)
     //obj传给getArticlesList
-    // this.getArticlesList(obj)
-    this.getArticlesList()
+    this.getArticlesList(obj)
+    // this.getArticlesList()
   },
   methods: {
     //获取文章列表
-    getArticlesList() {
-      indexModel.getArticles().then(res => {
-        this.list = res.data
+    getArticlesList(obj) {
+      indexModel.getArticles(obj).then(res => {
+        this.list = res.list
       })
     },
     //获取一二三级id参数
     getCategoriesId(){
-      const scategory1Id = this.$route.query.category1id
+      const categoryId = this.$route.query.id
       let obj = {}
       if(this.parmas.name1 && !this.parmas.name2) {
-        let category2Id = this.parmas.name1
+        let subCateId = this.parmas.name1
         obj = {
-          'scategory1Id': scategory1Id,
-          'category2Id': category2Id}
+          'categoryId': categoryId,
+          'subCateId': subCateId}
       }else if(this.parmas.name1 && this.parmas.name2) {
-        let category2Id = this.parmas.name1
-        let category3Id = this.parmas.name2
+        let subCateId = this.parmas.name1
+        let subCate2Id = this.parmas.name2
         obj = {
-          'scategory1Id': scategory1Id,
-          'category2Id': category2Id,
-          'category3Id': category3Id}
+          'categoryId': categoryId,
+          'subCateId': subCateId,
+          'subCate2Id': subCate2Id}
       }else {
-        obj = {'scategory1Id': scategory1Id}
+        obj = {'categoryId': categoryId}
       }
+      console.log('obj', obj)
       return obj
     },
     //跳转到文章详情	
@@ -87,7 +88,7 @@ export default {
       this.$router.push({
         path: '/articleDetails',
         query: {
-          articleId: this.list[index].articleId,
+          articleId: this.list[index].id,
           name: this.$route.query.name}})
     },
      //下拉刷新

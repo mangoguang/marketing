@@ -5,33 +5,31 @@ class IndexModel extends Request {
   // 获取首页一级分类列表
   getCategory1List() {
     return this.getData({
-      url: '/get/category1List'
+      url: 'http://10.11.8.250/api/train/repository/v1/category'
     })
   }
   //首页搜索接口
   getArticleSearch(keyword) {
     return this.getData({
-      // url: '/get/articleSearch',
       url: 'http://10.11.8.250/api/train/repository/v1/getRepositoryByKey',
       params: {
         key: keyword
       }
     })
   }
-  //分页列表接口	      //传list的时候顺序问题！！！
-  getCategories(type, categoryId) {
+  //分页列表接口	 
+  getCategories(categoryId) {
     return this.getData({
-      url: '/get/categories',
+      url: 'http://10.11.8.250/api/train/repository/v1/getCategoryList',
       params: {
-        type: type,//article/question,  //  article:文章分类，question：问题分类
-        categoryId: categoryId  //  一级分类id（此参数文章分类的时候才需要，问题分类不需要传）
+        id: categoryId 
       }
     })
   }
-  //文章列表接口	  //scategory1Id: 'servicePolicy',  //  一级分类代码，必须 category2Id,category3Id
+  //文章列表接口	 
   getArticles(obj) {
     return this.getData({
-      url: '/get/articles',
+      url: 'http://10.11.8.250/api/train/repository/v1/queryByCategoryId',
       params: obj
     })
   }
@@ -71,12 +69,14 @@ class IndexModel extends Request {
   getQuestionCategoryList() {
     return this.getData({
       url: 'http://10.11.8.250/api/question/repository/v1/getCategoryList'
+      // params: {
+      //   id: id
+      // }
     }) 
   }
   //常见问题列表接口
   questionList(id) {
     return this.getData({
-      // url: '/get/questionList',
       url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
       params: {
         categoryId: id  //  问题分类id
@@ -86,26 +86,12 @@ class IndexModel extends Request {
   //常见问题详情接口
   questionDetail(id) {
     return this.getData({
-      // url: '/get/questionDetail',
       url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
       params: {
         id: id
       }
     })
   }
-
-  //test
-  test() {
-    return this.getData({
-      url: 'http://10.11.8.250/api/question/repository/v1/getCategoryList',
-      params: {
-        // id: "1098130239495827458"
-      }
-    })
-  }
-
-
-
 }
 
 export { IndexModel }

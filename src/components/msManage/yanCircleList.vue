@@ -5,7 +5,7 @@
       <router-link 
         :to="{
           name:item.link,
-          query:{category1id: item.category1id,name:item.name,type:1}
+          query:{id: item.id,name:item.name,type:1}
           }">
           <!-- 按照文档返回的参数修改图片参数名字 -->
         <div class="circle" :style="{backgroundColor:item.bgColor}">

@@ -22,14 +22,8 @@ export default {
   },
   created() {
     this.getData()
-    this.test()
   },
   methods: {
-    test() {
-      indexModel.test().then(res => {
-        console.log(123,res)
-      })
-    },
   //获取首页一级列表接口
    getData() {
       indexModel.getCategory1List().then(res => {
@@ -44,18 +38,28 @@ export default {
       if(item.name == '服务政策') {
         item.link = '/policy'
         item.bgColor = '#FF2D55'
-      }else if(item.name == '英雄故事') {
-        item.link = '/story'
-        item.bgColor = '#FF964B'
+        item.iconUrl = './static/images/ms-policy.png'
       }else if(item.name == '金管家服务') {
         item.link = '/policy'
         item.bgColor = '#FFCC00'
-      }else if(item.name == '常见问题') {
-        item.link = '/question'
-        item.bgColor = '#007AFF'
+        item.iconUrl = './static/images/ms-service.png'
       }
     })
-    return arr
+    let story = {
+      name: '英雄故事',
+      link: '/story',
+      bgColor: '#FF964B',
+      id: '3',
+      iconUrl: './static/images/ms-story.png'
+    }
+    let question = {
+      name: '常见问题',
+      link: '/question',
+      bgColor: '#007AFF',
+      id: '4',
+      iconUrl: './static/images/ms-question.png'
+    }
+    return [...arr,story,question]
    }
   }
 }
