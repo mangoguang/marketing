@@ -58,6 +58,15 @@ class IndexModel extends Request {
       params: obj
     })
   }
+  //问题搜索接口
+  getQuestionSearch(key) {
+    return this.getData({
+      url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
+      params: {
+        key: key
+      }
+    })
+  }
   //获取问题分类列表接口
   getQuestionCategoryList() {
     return this.getData({
@@ -70,7 +79,7 @@ class IndexModel extends Request {
       // url: '/get/questionList',
       url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
       params: {
-        id: id  //  问题分类id
+        categoryId: id  //  问题分类id
       }
     })
   }

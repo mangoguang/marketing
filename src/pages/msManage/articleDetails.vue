@@ -38,11 +38,11 @@ export default {
   methods: {
     //获取文章详情
     getArticleDetail() {
-      // const id = this.articleId
-      const id = '1102757829179252738'
+      const id = this.articleId
+      // const id = '1102757829179252738'
       indexModel.getArticleDetail(id).then(res => {
-        this.articleDetails = res.info
-        let temp = res.info.remark
+        this.articleDetails = res.data
+        let temp = res.data.remark
         this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
         // this.collection = res.collection
       })

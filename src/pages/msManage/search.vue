@@ -55,36 +55,11 @@ export default {
     //匹配关键字且关键字高亮
     searchVal() {
       this.hasHistory = false
-      //list请求得到的文章列表标题
-      // let list = [
-      //   {
-      //     title: '慕思哎服务政策',  //  文章标题
-      //     articleId: '201902201234' //  文章id
-      //   },
-      //   {
-      //     title: '慕思服务政策',  //  文章标题
-      //     articleId: '201902201234' //  文章id
-      //   },
-      //   {
-      //     title: '幕思服务',  //  文章标题
-      //     articleId: '201902201235'  //  文章id
-      //   },
-      //   {
-      //     title: '幕思政策',  //  文章标题
-      //     articleId: '201902201236'  //  文章id
-      //   },
-      //   {
-      //     title: '幕思的领导政策',  //  文章标题
-      //     articleId: '201902201237'  //  文章id
-      //   }]
-      // let matchList  = fuzzyQuery(list, this.searchVal)
-      // this.setTitle(matchList)
-      // this.showMatchList(matchList)
-      // this.showErrorTips(matchList)
-      // this.list = changeColor(matchList, this.searchVal)
       //传递给标题下个页面
-      if(!this.searchVal == '') {
-        this.getSearchVal()
+      if(this.searchVal !== '') {
+        this.getSearchVal(this.searchVal)
+      }else {
+        this.unMatchTxt = false
       }
       //出现历史搜索
       this.emptySearchVal(this.searchType)
@@ -96,17 +71,39 @@ export default {
     this.showHistory()
   },
   methods: {
-    //搜索接口
+    //文章搜索接口
     getSearchVal(keyword) {
-      indexModel.getArticleSearch(keyword).then(res => {
+      if(this.searchType == 'question') {
+        this.QuestionSearch(keyword)
+      }else {
+        this.articleSearch(keyword)
+      }
+   },
+   //文章搜索
+   articleSearch(keyword) {
+     indexModel.getArticleSearch(keyword).then(res => {
         //关键字高亮
         let list = res.data
         //1.========可以不需要fuzzyQuery=====
-        let matchList  = fuzzyQuery(list, this.searchVal)
-        this.setTitle(matchList)
-        this.showMatchList(matchList)
-        this.showErrorTips(matchList)
-        this.list = changeColor(matchList, this.searchVal)
+        // let matchList  = fuzzyQuery(list, this.searchVal)
+        this.setTitle(list)
+        this.showMatchList(list)
+        this.showErrorTips(list)
+        this.list = changeColor(list, this.searchVal)
+      }).catch(err => {
+        console.log(err)
+      })
+   },
+   //问题搜索
+   QuestionSearch(keyword) {
+     indexModel.getQuestionSearch(keyword).then(res => {
+        let list = res.data
+        // let matchList  = fuzzyQuery(list, this.searchVal)
+        this.setTitle(list)
+        this.showMatchList(list)
+        this.showErrorTips(list)
+        //关键字高亮
+        this.list = changeColor(list, this.searchVal)
       }).catch(err => {
         console.log(err)
       })
@@ -150,15 +147,15 @@ export default {
     },
     //点击跳转
     toArticle(index) {
-      // 2.===========可以不需要store中的titleList,使用this.list======
-      let articleId = this.titleList[index].articleId
-      if(articleId) {
+      // let articleId = this.titleList[index].articleId
+      let id = this.list[index].id
+      if(id) {
         this.historyTxt = this.searchVal
         setTimeout(() => {
           if(this.searchType == 'msIndex') {
-            skipNewPage(this.$router, '/articleDetails', {'articleId': articleId, type: 'article'})
+            skipNewPage(this.$router, '/articleDetails', {'articleId': id, type: 'article'})
           }else {
-            skipNewPage(this.$router, '/questionDetail', {'articleId': articleId, type: 'question'})
+            skipNewPage(this.$router, '/questionDetail', {'id': id, type: 'question'})
           }
           this.historyTxt = ''
         }, 100);

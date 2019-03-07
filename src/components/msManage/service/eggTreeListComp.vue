@@ -54,7 +54,8 @@ export default {
       let type, categoryId
       if(this.$route.query.name == '常见问题') {
         type = 'question'
-        indexModel.getQuestionCategoryList().then(res => {
+        console.log(111,this.parmas)
+        indexModel.getQuestionCategoryList(this.parmas.name1).then(res => {
           this.setList(res.data)
           this.init(this.list)
         })

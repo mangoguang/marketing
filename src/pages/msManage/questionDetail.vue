@@ -37,7 +37,7 @@ export default {
   },
   created() {
     this.questionId = this.$route.query.id
-    this.getQuestionDetail()
+    this.getQuestionDetail(this.questionId)
      //获取收藏列表常见问题路由"/collectList"传过来的常见问题questionId
     // console.log(this.$route.params.questionId);
   },
