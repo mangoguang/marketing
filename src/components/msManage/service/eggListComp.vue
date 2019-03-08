@@ -15,7 +15,6 @@
         </div>
       </li>
     </mt-loadmore>
-    <!-- <div>123</div> -->
     </ul>
   </div>
 </template>
@@ -49,16 +48,18 @@ export default {
   },
   mounted() {
     let obj = this.getCategoriesId()
-    console.log(22222,obj)
     //obj传给getArticlesList
-    this.getArticlesList(obj)
-    // this.getArticlesList()
+    if(this.$route.query.type === 1) {
+      return
+    }else {
+      this.getArticlesList(obj)
+    }
   },
   methods: {
     //获取文章列表
     getArticlesList(obj) {
       indexModel.getArticles(obj).then(res => {
-        this.list = res.list
+        this.list = res.data
       })
     },
     //获取一二三级id参数

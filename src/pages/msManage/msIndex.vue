@@ -2,18 +2,22 @@
   <div class="index">
     <Search :origin='origin' :type='"msIndex"'/>
     <yan-circle-list :link="link"/>
+    <egg-scan />
+    <egg-share />
     <Footer />
   </div>
 </template>
 
 <script>
+import eggShare from '../../components/myApi/eggShare'
+import eggScan from '../../components/myApi/eggScan'
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import yanCircleList from "../../components/msManage/yanCircleList"
 import Footer from '../../components/Footer'
 import Search from '../../components/msManage/search/eggSearchInp'
 export default {
-  components: {yanCircleList, Footer, Search},
+  components: {yanCircleList, Footer, Search, eggShare, eggScan},
   data() {
     return {
       link: [],
