@@ -2,8 +2,14 @@
   <div class="index">
     <Search :origin='origin' :type='"msIndex"'/>
     <yan-circle-list :link="link"/>
-    <egg-scan />
-    <egg-share />
+    <!-- <egg-scan /> -->
+    <!-- <egg-share /> -->
+      <div class="entry">
+        <router-link to='/gallery'>
+          <img src="../../assets/imgs/picentry.png" alt="">
+        </router-link>
+        <span style="color: #666">营销助手图库</span>
+      </div>
     <Footer />
   </div>
 </template>
@@ -70,5 +76,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.entry {
+  padding: 4vw;
+  img {
+    background: rgba(255, 45, 85, 1);
+    width: 20vw;
+    height: 20vw;
+    display: block;
+    border-radius: 2vw;
+  }
+ 
+}
 </style>

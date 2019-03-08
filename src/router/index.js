@@ -180,6 +180,36 @@ export var router = new VueRouter({
     path: '/questionDetail',
     name: '/questionDetail',
     component: resolve => require(['../pages/msManage/questionDetail'],resolve)
+  },
+  //营销助手图库主页
+  {
+    path: '/gallery',
+    name: 'index',
+    component: resolve => require(['../pages/Gallery/index'],resolve)
+  },
+  //产品详情
+  {
+    path: '/productDetails',
+    name: 'productDetails',
+    component: resolve => require(['../pages/Gallery/productDetails'],resolve)
+  },
+  //产品列表
+  {
+    path: '/productList',
+    name: 'productList',
+    component: resolve => require(['../pages/Gallery/productList'],resolve)
+  },
+  //介绍页
+  {
+    path: '/recommend',
+    name: 'recommend',
+    component: resolve => require(['../pages/Gallery/recommend'],resolve)
+  },
+  //搜索结果详情
+  {
+    path: '/searchResult',
+    name: 'searchResult',
+    component: resolve => require(['../pages/Gallery/searchResult'],resolve)
   }
 
 ],
