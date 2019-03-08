@@ -42,8 +42,10 @@ export default {
       // const id = '1102757829179252738'
       indexModel.getArticleDetail(id).then(res => {
         this.articleDetails = res.data
-        let temp = res.data.remark
-        this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+        if(res.data.remark) {
+          let temp = res.data.remark
+          this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+        }
         // this.collection = res.collection
       })
     },

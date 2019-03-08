@@ -46,8 +46,10 @@ export default {
       // axios获取问题详情内容
       indexModel.questionDetail(id).then(res => {
         this.questionData = res.data[0]
-        let temp = res.data[0].remark
-        this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+        if(res.data[0].remark) {
+          let temp = res.data[0].remark
+          this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+        }
         // this.collection = res.data.collection
       })
     },
