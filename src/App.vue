@@ -3,19 +3,19 @@
     id="app"
     :style="{'min-height': `${height}px`, background: '#fff', 'padding-top':`${padding}vw`}"
   >
-    <v-touch
+    <!-- <v-touch
       v-on:swiperight="onSwipeRight"
       tag="div"
       v-on:swipeleft="onSwipeLeft"
       :style="{'min-height': `${height}px`}"
-    >
+    > -->
       <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
       <!-- <router-view :myStyle="myStyle"></router-view> -->
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"  :myStyle="myStyle"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive"  :myStyle="myStyle"></router-view>
-    </v-touch>
+    <!-- </v-touch> -->
   </div>
 </template>
 

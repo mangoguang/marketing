@@ -19,6 +19,7 @@ import searchBox from './modules/msManage/searchBox'
 import collectArt from './modules/msManage/collectArt'
 import collect from './modules/msManage/collect'
 import treeList from './modules/msManage/treeList'
+import leftNavList from './modules/gallery/index/index'
 
 export default new Vuex.Store({
   modules: {
@@ -40,6 +41,7 @@ export default new Vuex.Store({
     searchBox,
     collectArt,
     collect,
-    treeList
+    treeList,
+    leftNavList
   }
 })
