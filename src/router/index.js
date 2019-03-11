@@ -187,6 +187,12 @@ export var router = new VueRouter({
     name: 'index',
     component: resolve => require(['../pages/Gallery/index'],resolve)
   },
+  //搜索页
+  {
+    path: '/gSearch',
+    name: 'gSearch',
+    component: resolve => require(['../pages/Gallery/search'],resolve)
+  },
   //产品详情
   {
     path: '/productDetails',

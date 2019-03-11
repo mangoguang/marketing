@@ -42,8 +42,15 @@ export default {
     //如果是首页点击进入搜索页面
     toSearch() {
       if(this.origin) {
-        this.$router.push(
-          {path: '/search',query: {type: this.type}}) //type判断是首页还是常见问题
+        if(this.type === 'gallery') {
+          this.$router.push({
+            path: '/gSearch'
+          })
+        }else {
+          this.$router.push({
+            path: '/search',query: {type: this.type}
+          }) //type判断是首页还是常见问题
+        }
       }
     }
   }
