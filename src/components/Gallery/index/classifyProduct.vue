@@ -1,10 +1,10 @@
 <template>
   <div class="classifyProduct">
-    <div class="hot" v-if="type">
+    <div class="hot" v-if="isHot">
       <h1>产品分类</h1>
       <ul class="loopList">
           <li v-for="(item, index) in list" :key="index">
-            <router-link to='/'>
+            <router-link :to='{name:"productList", query:{name: item.name}}'>
               <img :src="item.src" alt="">
               <p>{{ item.name }}</p>
             </router-link>
@@ -14,7 +14,7 @@
     <div class="brand" v-for="(item, index) in bedList" :key="index" v-else>
       <div class="topBar">
         <h1>{{ item.brand }}</h1>
-        <router-link :to='{name: item.brand}'>
+        <router-link :to='{name:"productList", query:{brand: type, name: item.brand}}'>
           <div class="more">
             <span>更多</span>
             <span class="icon_more"></span>
@@ -23,8 +23,10 @@
       </div>
       <ul class="loopList">
         <li v-for="(el, i) in item.list" :key='i + "_" + el'>
-          <img :src="el.src" alt="">
-          <p>{{ el.name }}</p>
+          <router-link :to='{name: "productDetails",query: {id: el.name,brand: type,name:item.brand}}'>
+            <img :src="el.src" alt="">
+            <p>{{ el.name }}</p>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -108,6 +110,15 @@ export default {
         }]
       }
       ]
+    }
+  },
+  computed: {
+    isHot () {
+      if(this.type === '热门推荐') {
+        return true
+      }else {
+        return false
+      }
     }
   }
 }

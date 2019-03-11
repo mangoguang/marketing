@@ -35,19 +35,34 @@ class IndexModel extends Request {
     })
   }
   //文章详情接口
-  getArticleDetail(articleId) {
+  getArticleDetail(articleId, account) {
     return this.getData({
       url: 'http://10.11.8.250/api/train/repository/v1/get',
       params: {
-        id: articleId
+        id: articleId,
+        account: account
       }
     })
   }
-  //收藏接口
-  collect(obj) {
+  //文章收藏接口
+  articleCollect(id, account) {
     return this.getData({
-      url: '/get/collect',
-      params: obj
+      // url: '/get/collect',
+      url: 'http://10.11.8.250/api/train/repository/v1/collect',
+      params: {
+        id:id,
+        account:account
+      }
+    })
+  }
+  //问题收藏接口
+  questionCollect(id, account) {
+    return this.getData({
+      url: 'http://10.11.8.250/api/question/repository/v1/collect',
+      params: {
+        id: id,
+        account: account
+      }
     })
   }
   //移除收藏接口
@@ -85,11 +100,12 @@ class IndexModel extends Request {
     })
   }
   //常见问题详情接口
-  questionDetail(id) {
+  questionDetail(id, account) {
     return this.getData({
       url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
       params: {
-        id: id
+        id: id,
+        account: account
       }
     })
   }

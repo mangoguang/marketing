@@ -210,14 +210,7 @@ export var router = new VueRouter({
     path: '/recommend',
     name: 'recommend',
     component: resolve => require(['../pages/Gallery/recommend'],resolve)
-  },
-  //搜索结果详情
-  {
-    path: '/productResult',
-    name: 'productResult',
-    component: resolve => require(['../pages/Gallery/productResult'],resolve)
   }
-
 ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {  

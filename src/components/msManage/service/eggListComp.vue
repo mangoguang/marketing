@@ -31,7 +31,8 @@ export default {
   data() {
     return {
       allLoaded:false,
-      list: []
+      list: [],
+      ajaxData: {}
     }
   },
   computed: {
@@ -45,6 +46,10 @@ export default {
       let obj = this.getCategoriesId()
       this.getArticlesList(obj)
     }
+  },
+  created() {
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
     let obj = this.getCategoriesId()
@@ -65,23 +70,25 @@ export default {
     //获取一二三级id参数
     getCategoriesId(){
       const categoryId = this.$route.query.id
+      const account = this.ajaxData.account
       let obj = {}
       if(this.parmas.name1 && !this.parmas.name2) {
         let subCateId = this.parmas.name1
         obj = {
           'categoryId': categoryId,
-          'subCateId': subCateId}
+          'subCateId': subCateId,
+          'account': account}
       }else if(this.parmas.name1 && this.parmas.name2) {
         let subCateId = this.parmas.name1
         let subCate2Id = this.parmas.name2
         obj = {
           'categoryId': categoryId,
           'subCateId': subCateId,
-          'subCate2Id': subCate2Id}
+          'subCate2Id': subCate2Id,
+          'account':account}
       }else {
-        obj = {'categoryId': categoryId}
+        obj = {'categoryId': categoryId,'account':account}
       }
-      console.log('obj', obj)
       return obj
     },
     //跳转到文章详情	

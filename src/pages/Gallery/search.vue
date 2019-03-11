@@ -66,7 +66,6 @@ export default {
         },{
           title: '幕思服务政策',id: '3'
         }]
-        //防抖函数
         let matchList  = fuzzyQuery(list, this.searchVal)
         this.setTitle(matchList)
         this.showMatchList(matchList)
@@ -140,7 +139,7 @@ export default {
       if(id) {
         this.historyTxt = this.searchVal
         setTimeout(() => {
-          skipNewPage(this.$router, '/productResult', {'articleId': id, type: 'gallery'})
+          skipNewPage(this.$router, '/productDetails', {'articleId': id, type: 'gallery'})
           this.historyTxt = ''
         }, 100);
       }
@@ -206,20 +205,21 @@ export default {
   background: #f7f7f7;
   box-sizing: border-box;
   .search_box {
+    padding: 2vw 4vw;
     background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
     .searchComp {
       width: 78.66vw;
-      margin-left: 0;
+      margin-left: 2vw;
     }
     .cancle {
       background: url(../../assets/imgs/back.png) no-repeat center;
       background-size: contain;
       width: 2.66vw;
       height: 4.8vw;
-      padding: 0 6vw;
+      padding-right: 6vw;
     }
   }
   .search_nothing {

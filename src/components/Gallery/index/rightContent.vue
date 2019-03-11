@@ -7,7 +7,7 @@
     </div>
     <m-slider class="m-slider" :list='imgSliderList'/>
     <div class="classify">
-      <ClassifyComp :type='isHot'/>
+      <ClassifyComp :type='listVal' />
     </div>
   </div>
 </template>

@@ -27,7 +27,8 @@ export default {
       questionData: {},
       collection: false,
       questionId: '',
-      myhtml: ''
+      myhtml: '',
+      ajaxData: {}
     }
   },
   computed: {
@@ -36,6 +37,8 @@ export default {
     })
   },
   created() {
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
     this.questionId = this.$route.query.id
     this.getQuestionDetail(this.questionId)
      //获取收藏列表常见问题路由"/collectList"传过来的常见问题questionId
@@ -44,23 +47,22 @@ export default {
   methods: {
     getQuestionDetail(id) {
       // axios获取问题详情内容
+      // const account = this.ajaxData.account
       indexModel.questionDetail(id).then(res => {
         this.questionData = res.data[0]
         if(res.data[0].remark) {
           let temp = res.data[0].remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
         }
-        // this.collection = res.data.collection
+        this.collection = res.data[0].collect
       })
     },
       //收藏
     collect() {
-      let obj = {
-        account: '11608050',      //获取账号
-        type: 'question',
-        questionId: this.questionId
-      }
-      indexModel.collect().then(res => {
+      let account = this.ajaxData.account
+      let id = this.questionId
+      console.log(id)
+      indexModel.questionCollect(id, account).then(res => {
         console.log('collect')
       })
     },

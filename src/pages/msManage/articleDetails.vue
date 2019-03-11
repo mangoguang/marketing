@@ -9,7 +9,6 @@
         v-on:click.native='changeCollectBtn'/>
     </div>
     <div class="content" v-html="myhtml">
-      
     </div>
   </div>
 </template>
@@ -28,36 +27,36 @@ export default {
       articleId: '',
       collection: false,
       myhtml: '',
-      articleDetails: ''
+      articleDetails: '',
+      ajaxData: {}
     }
   },
   created() {
     this.articleId = this.$route.query.articleId
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
     this.getArticleDetail()
   },
   methods: {
     //获取文章详情
     getArticleDetail() {
       const id = this.articleId
-      // const id = '1102757829179252738'
-      indexModel.getArticleDetail(id).then(res => {
+      const account = this.ajaxData.account
+      indexModel.getArticleDetail(id, account).then(res => {
         this.articleDetails = res.data
         if(res.data.remark) {
           let temp = res.data.remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
         }
-        // this.collection = res.collection
+        this.collection = res.data.collect
       })
     },
     //收藏
     collect() {
-      let obj = {
-        account: '11608050',      //获取账号
-        type: 'article',
-        articleId: this.articleId
-      }
-      indexModel.collect().then(res => {
-        console.log('collect')
+      let account = this.ajaxData.account
+      let id = this.articleId
+      indexModel.articleCollect(id, account).then(res => {
+        console.log('res')
       })
     },
     //取消收藏

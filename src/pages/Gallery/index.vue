@@ -2,7 +2,7 @@
   <div class="index">
     <div class="top-bar">
       <scan/>
-      <Search :origin="origin" :type="'gallery'" class="search"/>
+      <Search :origin="true" :type="'gallery'" class="search"/>
     </div>
     <TopNav/>
     <div class="content">
@@ -32,7 +32,6 @@ export default {
   },
   data() {
     return {
-      origin: true
     };
   },
   methods: {}
@@ -46,7 +45,7 @@ export default {
   height: 100vh;
   box-sizing: border-box;
   .top-bar {
-    padding: 4vw;
+    padding: 2vw 4vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
