@@ -213,9 +213,9 @@ export var router = new VueRouter({
   },
   //搜索结果详情
   {
-    path: '/searchResult',
-    name: 'searchResult',
-    component: resolve => require(['../pages/Gallery/searchResult'],resolve)
+    path: '/productResult',
+    name: 'productResult',
+    component: resolve => require(['../pages/Gallery/productResult'],resolve)
   }
 
 ],

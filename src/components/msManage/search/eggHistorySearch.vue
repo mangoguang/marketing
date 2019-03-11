@@ -9,18 +9,26 @@
         {{ item }}
       </li>
     </ul>
+    <div class="clearBtn" v-show="clearVal">
+      <clearBtn class="btn" :text='text' :getVal='getVal'/>
+    </div>
   </div>
 </template>
 
 <script>
+import clearBtn from '../../Gallery/index/eggBtn'
 import {setLocalStorage,getLocalStorage,skipNewPage} from '../../../utils/msManage'
 export default {
   //historyTxt是搜索框内容，isEmpty是清空搜索框，clickHistoryTxt点击历史搜索中的内容
   props: ['historyTxt', 'isEmpty', 'clickHistoryTxt', 'searchType'],
+  components: { clearBtn },
   data() {
     return {
       list: [],
-      currentTime: []
+      currentTime: [],
+      text: '确定清空历史搜索？',
+      clearVal: false,
+      isClear: ''
     }
   },
   watch: {
@@ -29,12 +37,25 @@ export default {
         return
       }
       this.addLocalStorage()
+    },
+    isClear() {
+      if(this.isClear) {
+        this.emptyWay()
+        this.clearVal = false
+      }else {
+        this.clearVal = false
+      }
+      this.isClear = ''
     }
   },
   created() {
     this.getHistoryList(this.searchType)
   },
   methods: {
+    //获取清空历史搜索弹框的值
+    getVal(val) {
+      this.isClear = val
+    },
     //添加localStorage
     addLocalStorage() {
       let time = new Date().getTime()
@@ -86,13 +107,20 @@ export default {
     },
     //清空历史搜索
     emptyHisList() {
+      if(this.searchType == 'gallery') {
+        this.clearVal = true
+      }else {
+        this.emptyWay()
+      }
+    },
+    clickTitle(index) {
+      this.clickHistoryTxt(this.list[index])
+    },
+    emptyWay() {
       this.list = []
       this.currentTime = []
       window.localStorage.removeItem(this.searchType)
       this.isEmpty(false)
-    },
-    clickTitle(index) {
-      this.clickHistoryTxt(this.list[index])
     }
   }
 }
@@ -100,6 +128,7 @@ export default {
 
 <style lang="scss" scoped>
 .eggHistorySearch {
+  position: relative;
   padding: 4.4vw;
   border-bottom: 1px solid #fff;
   box-shadow:0px 2px 6px 0px rgba(136,136,136,0.2);
@@ -126,6 +155,20 @@ export default {
       margin-right: 2vw;
       margin-bottom: 2vw;
       border-radius: 0.53vw;
+    }
+  }
+  .clearBtn {
+    background-color:rgba(0, 0, 0, 0.5) ;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    .btn {
+      position: absolute;
+      top: 54.13vw;
+      left: 50%;
+      margin-left: -37.33vw;
     }
   }
 }

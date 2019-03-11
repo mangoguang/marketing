@@ -8,7 +8,8 @@
       />
     </div>
     <!-- 历史记录 -->
-    <historySearch v-show='hasHistory' 
+    <historySearch class="historySearch"
+      v-show='hasHistory' 
       :historyTxt='historyTxt'
       :isEmpty='isEmpty'
       :clickHistoryTxt='clickHistoryTxt'
@@ -20,16 +21,15 @@
     </ul>
     <!-- 没有匹配到相关内容 -->
     <div class="search_nothing" v-show="unMatchTxt">
-      <p>很抱歉，没有找到相关内容</p>
-      <div class="search_bg"></div>
+      <p>未找到相关产品</p>
     </div>
   </div>
 </template>
 
 <script>
-// import {IndexModel} from '../../utils/index'
-// const indexModel = new IndexModel()
-import Vuex, { mapMutations, mapState } from 'vuex'
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
+import { mapMutations, mapState } from 'vuex'
 import Search from '../../components/msManage/search/eggSearchInp'
 import historySearch from '../../components/msManage/search/eggHistorySearch'
 import {fuzzyQuery, changeColor, setLocalStorage, getLocalStorage, skipNewPage} from '../../utils/msManage'
@@ -43,7 +43,8 @@ export default {
       matchTxt: true,
       unMatchTxt: false,
       historyTxt: '',
-      searchType: ''
+      searchType: '',
+      ajaxData:{}
     }
   },
   computed: {
@@ -57,9 +58,23 @@ export default {
       this.hasHistory = false
       //传递给标题下个页面
       if(this.searchVal !== '') {
-        this.getSearchVal(this.searchVal)
+        // this.articleSearch(this.searchVal)
+        let list = [{
+          title: '幕思',id: '1'
+        },{
+          title: '幕思政策',id: '2'
+        },{
+          title: '幕思服务政策',id: '3'
+        }]
+        //防抖函数
+        let matchList  = fuzzyQuery(list, this.searchVal)
+        this.setTitle(matchList)
+        this.showMatchList(matchList)
+        this.showErrorTips(matchList)
+        this.list = changeColor(matchList, this.searchVal)
       }else {
         this.unMatchTxt = false
+        this.matchTxt = false
       }
       //出现历史搜索
       this.emptySearchVal(this.searchType)
@@ -68,46 +83,28 @@ export default {
   created() {
     this.searchType = this.$route.query.type
     this.compareTime(this.searchType)
-    this.showHistory()
+    this.judgeHistory(this.searchType)
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
   },
   methods: {
-    //文章搜索接口
-    getSearchVal(keyword) {
-      if(this.searchType == 'question') {
-        this.QuestionSearch(keyword)
-      }else {
-        this.articleSearch(keyword)
-      }
-   },
+    ...mapMutations(['setTitle']),
    //文章搜索
-   articleSearch(keyword) {
-     indexModel.getArticleSearch(keyword).then(res => {
-        //关键字高亮
-        let list = res.data
-        //1.========可以不需要fuzzyQuery=====
-        // let matchList  = fuzzyQuery(list, this.searchVal)
-        this.setTitle(list)
-        this.showMatchList(list)
-        this.showErrorTips(list)
-        this.list = changeColor(list, this.searchVal)
-      }).catch(err => {
-        console.log(err)
-      })
-   },
-   //问题搜索
-   QuestionSearch(keyword) {
-     indexModel.getQuestionSearch(keyword).then(res => {
-        let list = res.data
-        // let matchList  = fuzzyQuery(list, this.searchVal)
-        this.setTitle(list)
-        this.showMatchList(list)
-        this.showErrorTips(list)
-        //关键字高亮
-        this.list = changeColor(list, this.searchVal)
-      }).catch(err => {
-        console.log(err)
-      })
-   },
+  //  articleSearch(keyword) {
+  //    let account = this.ajaxData.account
+  //    indexModel.getArticleSearch(keyword, account).then(res => {
+  //       //关键字高亮
+  //       let list = res.data
+  //       //1.========可以不需要fuzzyQuery=====
+  //       // let matchList  = fuzzyQuery(list, this.searchVal)
+  //       this.setTitle(list)
+  //       this.showMatchList(list)
+  //       this.showErrorTips(list)
+  //       this.list = changeColor(list, this.searchVal)
+  //     }).catch(err => {
+  //       console.log(err)
+  //     })
+  //  },
     //超出缓存5天的自动清除 （1000*60*60*24）
     compareTime(type) {
       if(getLocalStorage(type)) {
@@ -129,15 +126,6 @@ export default {
         this.judgeObj(obj, type)
       }
     },
-    ...mapMutations(['setTitle']),
-    //获取缓存，历史搜索显示
-    showHistory() {
-      if(this.searchType == 'question') {
-        this.judgeHistory('question')
-      }else if(this.searchType == 'msIndex') {
-        this.judgeHistory('msIndex')
-      }
-    },
     //判断有没有历史记录
     judgeHistory(type) {
       let historyTitle = getLocalStorage(type)
@@ -152,11 +140,7 @@ export default {
       if(id) {
         this.historyTxt = this.searchVal
         setTimeout(() => {
-          if(this.searchType == 'msIndex') {
-            skipNewPage(this.$router, '/articleDetails', {'articleId': id, type: 'article'})
-          }else {
-            skipNewPage(this.$router, '/questionDetail', {'id': id, type: 'question'})
-          }
+          skipNewPage(this.$router, '/productResult', {'articleId': id, type: 'gallery'})
           this.historyTxt = ''
         }, 100);
       }
@@ -218,41 +202,37 @@ export default {
 
 <style lang="scss" scoped>
 .search {
+  height: 100vh;
+  background: #f7f7f7;
+  box-sizing: border-box;
   .search_box {
+    background: #fff;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     .searchComp {
-      width: 75.47vw;
+      width: 78.66vw;
+      margin-left: 0;
     }
     .cancle {
-      width: 16vw;
-      font-size: 4.26vw;
-      color: #007aff;
+      background: url(../../assets/imgs/back.png) no-repeat center;
+      background-size: contain;
+      width: 2.66vw;
+      height: 4.8vw;
+      padding: 0 6vw;
     }
   }
   .search_nothing {
-    border-top: 1px solid #ccc;
-    position: relative;
     p {
-      width: 100%;
-      font-size: 4.8vw;
-      color: #42596c;
-      font-weight: bold;
-      background:linear-gradient(0deg,rgba(63,186,230,1) 0%, rgba(172,208,218,1) 100%);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-      text-align: center;
-      position: absolute;
-      top: 40.06vw;
-      left: 0;
+      color: #666;
+      font-size: 3.73vw;
+      border-bottom: 1px solid #e1e1e1;
+      margin-left: 4vw;
+      line-height: 10vw;
     }
-    .search_bg {
-      background: url(../../assets/imgs/search_nothing.png) no-repeat center;
-      width: 100%;
-      height: 129.6vw;
-      background-size: 100% 100%;
-      margin-top: 16vw;
-    }
+  }
+  .historySearch {
+    background: #fff;
   }
   .matchTxt {
     width: 100%;

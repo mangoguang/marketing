@@ -9,11 +9,12 @@ class IndexModel extends Request {
     })
   }
   //首页搜索接口
-  getArticleSearch(keyword) {
+  getArticleSearch(keyword,account) {
     return this.getData({
       url: 'http://10.11.8.250/api/train/repository/v1/getRepositoryByKey',
       params: {
-        key: keyword
+        key: keyword,
+        account: account
       }
     })
   }

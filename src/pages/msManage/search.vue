@@ -43,7 +43,8 @@ export default {
       matchTxt: true,
       unMatchTxt: false,
       historyTxt: '',
-      searchType: ''
+      searchType: '',
+      ajaxData: {}
     }
   },
   computed: {
@@ -60,6 +61,7 @@ export default {
         this.getSearchVal(this.searchVal)
       }else {
         this.unMatchTxt = false
+        this.matchTxt = false
       }
       //出现历史搜索
       this.emptySearchVal(this.searchType)
@@ -69,6 +71,8 @@ export default {
     this.searchType = this.$route.query.type
     this.compareTime(this.searchType)
     this.showHistory()
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
   },
   methods: {
     //文章搜索接口
@@ -81,7 +85,8 @@ export default {
    },
    //文章搜索
    articleSearch(keyword) {
-     indexModel.getArticleSearch(keyword).then(res => {
+     let account = this.ajaxData.account
+     indexModel.getArticleSearch(keyword, account).then(res => {
         //关键字高亮
         let list = res.data
         //1.========可以不需要fuzzyQuery=====
@@ -96,7 +101,8 @@ export default {
    },
    //问题搜索
    QuestionSearch(keyword) {
-     indexModel.getQuestionSearch(keyword).then(res => {
+     let account = this.ajaxData.account
+     indexModel.getQuestionSearch(keyword, account).then(res => {
         let list = res.data
         // let matchList  = fuzzyQuery(list, this.searchVal)
         this.setTitle(list)

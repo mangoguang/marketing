@@ -44,7 +44,7 @@ export default {
       if(this.origin) {
         if(this.type === 'gallery') {
           this.$router.push({
-            path: '/gSearch'
+            path: '/gSearch',query: {type: this.type}
           })
         }else {
           this.$router.push({

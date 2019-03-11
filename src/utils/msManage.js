@@ -109,3 +109,33 @@ function changeImgStyle(html){
 export {changeImgStyle}
 
 
+//超出缓存5天的自动清除 （1000*60*60*24）
+function compareTime(type) {
+  if(getLocalStorage(type)) {
+    let arrIndex = []
+    let localStorageTime = getLocalStorage(type)['currentTime']
+    let list = getLocalStorage(type)['list']
+    let curTime = new Date().getTime()
+    //判断缓存时间有没有过期
+    localStorageTime.forEach((item, index) => {
+      if((curTime - item)/86400000 > 5) {
+        arrIndex = [...arrIndex, index]
+      }
+    });
+    //过期的清除
+    let obj = {
+      list: list.slice(0, arrIndex[0]),
+      currentTime: localStorageTime.slice(0, arrIndex[0])
+    }
+    judgeObj(obj, type)
+  }
+}
+
+//判断有没有不超过5天的缓存
+function judgeObj(obj, type) {
+  if(!obj.list.length) {
+    window.localStorage.removeItem(type)
+  }else {
+    setLocalStorage(obj,type)
+  }
+}

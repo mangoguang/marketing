@@ -1,9 +1,11 @@
 const state = {
-  titleList: []
+  titleList: [],
+  timer: ''
 }
 
 const mutations = {
-  setTitle: (state, obj) => state.titleList = obj
+  setTitle: (state, obj) => state.titleList = obj,
+  setTimer: (state, str) => state.timer = str
 }
 
 const actions = {
