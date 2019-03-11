@@ -1,6 +1,6 @@
 <template>
   <div class="classifyProduct">
-    <div class="hot" v-show="false">
+    <div class="hot" v-if="type">
       <h1>产品分类</h1>
       <ul class="loopList">
           <li v-for="(item, index) in list" :key="index">
@@ -11,7 +11,7 @@
           </li>
       </ul>
     </div>
-    <div class="brand" v-for="(item, index) in bedList" :key="index">
+    <div class="brand" v-for="(item, index) in bedList" :key="index" v-else>
       <div class="topBar">
         <h1>{{ item.brand }}</h1>
         <router-link :to='{name: item.brand}'>
@@ -33,6 +33,7 @@
 
 <script>
 export default {
+  props: ['type'],
   data() {
     return {
       list: [{

@@ -22,20 +22,22 @@ export default {
   },
   computed: {
     ...mapState({
-      leftNavList: state => state.leftNavList.leftNavList
+      leftNavList: state => state.leftNavList.leftNavList,
+      listVal: state => state.leftNavList.listVal
     })
   },
   created() {
     this.initNav()
   },
   methods: {
-    ...mapMutations(['setLeftNavList']),
+    ...mapMutations(['setLeftNavList', 'getListVal']),
     //初始化默认选热门
     initNav() {
       if(this.leftNavList.length) {
         return
       }
       this.setLeftNavList(mango.btnList(this.list, 0))
+      this.getListVal()
     },
     //切换导航
     toggleNav(index) {
@@ -43,6 +45,7 @@ export default {
         return
       }
       this.setLeftNavList(mango.btnList(this.list, index))
+      this.getListVal()
     }
   }
 }

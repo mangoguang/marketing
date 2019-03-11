@@ -2,7 +2,7 @@
   <mt-swipe class="wrapper" :auto="2000">
     <mt-swipe-item 
       :style="{backgroundImage:'url(' + item.src + ')',backgroundSize: 'contain'}"
-      v-for='(item,index) in imgList' :key='index'
+      v-for='(item,index) in list' :key='index'
       @click.native="goNext(index)">
     </mt-swipe-item>
   </mt-swipe>
@@ -14,15 +14,10 @@ import Vue from 'vue'
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 export default {
+  props: ['list'],
   data() {
     return {
-      imgList: [{
-        src: './static/images/p1.png'
-      },{
-        src: './static/images/p2.png'
-      },{
-        src: './static/images/p3.png'
-      }]
+
     }
   },
   methods: {

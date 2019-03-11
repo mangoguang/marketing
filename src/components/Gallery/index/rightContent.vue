@@ -2,20 +2,73 @@
   <div class="m-right">
     <div class="pictureLink">
       <router-link to='/recommend'>
-        <img src="../../../assets/imgs/p1.png" alt="">
+        <img :src="imgUrl" alt="">
       </router-link>
     </div>
-    <m-slider class="m-slider"/>
+    <m-slider class="m-slider" :list='imgSliderList'/>
     <div class="classify">
-      <ClassifyComp />
+      <ClassifyComp :type='isHot'/>
     </div>
   </div>
 </template>
 <script>
+import {mapState} from 'vuex'
 import MSlider from './slider'
 import ClassifyComp from './classifyProduct'
 export default {
-  components: { MSlider, ClassifyComp }
+  components: { MSlider, ClassifyComp },
+  computed: {
+     ...mapState({
+      listVal: state => state.leftNavList.listVal
+    })
+  },
+  watch: {
+    listVal() {
+      this.changeImg()
+    }
+  },
+  created() {
+    this.changeImg()
+  },
+  data() {
+    return {
+      imgUrl: './static/images/p1.png',
+      imgSliderList: [{
+        src: './static/images/p2.png'
+      },{
+        src: './static/images/p1.png'
+      },{
+        src: './static/images/p3.png'
+      }],
+      isHot: true
+    }
+  },
+  methods: {
+    //改变图片
+    changeImg () {
+      if(this.listVal !== '热门推荐') {
+        this.imgUrl = './static/images/p2.png'
+        this.imgSliderList = [{
+          src: './static/images/p4.png'
+        },{
+          src: './static/images/p3.png'
+        },{
+          src: './static/images/p2.png'
+        }]
+        this.isHot = false
+      }else {
+        this.isHot = true
+        this.imgUrl = './static/images/p1.png'
+        this.imgSliderList = [{
+        src: './static/images/p2.png'
+      },{
+        src: './static/images/p1.png'
+      },{
+        src: './static/images/p3.png'
+      }]
+      }
+    }
+  }
 }
 </script>
 
