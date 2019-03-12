@@ -4,7 +4,7 @@
       <span>{{ downListVal }}</span>
       <img src="../../../assets/imgs/down.png" alt="">
     </div>
-    <ul class="downList" v-show="key">
+    <ul class="downList" v-show="showDownList">
       <li v-for="(item, index) in downList" :key="index"
         :class="{active : item.status}"
         @click="toggleList(index)">
@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       list: ['综合', '最新发布', '价格↑', '价格↓', '收藏数', '销量'],
-      key: false
+      showDownList: false
     }
   },
   computed: {
@@ -46,17 +46,17 @@ export default {
     },
     //出现下啦列表
     showList() {
-      this.key = !this.key
+      this.showDownList = !this.showDownList
     },
      //切换列表
     toggleList(index) {
       if(this.downList[index].status) {
-        this.key = !this.key
+        this.showDownList = !this.showDownList
         return
       }
       this.setDownList(mango.btnList(this.list, index))
       this.setDownListVal()
-      this.key = !this.key
+      this.showDownList = !this.showDownList
     }
   }
 }
@@ -64,6 +64,8 @@ export default {
 
 <style lang="scss" scoped>
 .sortList {
+  // width: 60vw;
+  position: relative;
   .all {
     font-size: 4vw;
     color: #666;
@@ -76,11 +78,14 @@ export default {
     }
   }
   .downList {
-    padding: 0 4vw;
+    position: absolute;
+    top: 10.3vw;
+    left: 0;
     width: 100vw;
     background: #f8f8f8;
     box-sizing: border-box;
     li {
+      padding: 0 4vw;
       color: #909090;
       font-size: 4vw;
       line-height: 10.66vw;

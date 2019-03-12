@@ -47,8 +47,8 @@ export default {
   methods: {
     getQuestionDetail(id) {
       // axios获取问题详情内容
-      // const account = this.ajaxData.account
-      indexModel.questionDetail(id).then(res => {
+      const account = this.ajaxData.account
+      indexModel.questionDetail(id, account).then(res => {
         this.questionData = res.data[0]
         if(res.data[0].remark) {
           let temp = res.data[0].remark
@@ -60,20 +60,17 @@ export default {
       //收藏
     collect() {
       let account = this.ajaxData.account
+      console.log('ajaxdata',this.ajaxData)
       let id = this.questionId
-      console.log(id)
-      indexModel.questionCollect(id, account).then(res => {
+      indexModel.collect(2, id, account).then(res => {
         console.log('collect')
       })
     },
     //取消收藏
     cancelCollect() {
-       let obj = {
-        account: '11608050',      //获取账号
-        type: 'question',
-        questionId: this.questionId
-      }
-      indexModel.remove().then(res => {
+      let account = this.ajaxData.account
+      let id = this.questionId
+      indexModel.remove(2, id, account).then(res => {
         console.log('canclecollect')
       })
     },

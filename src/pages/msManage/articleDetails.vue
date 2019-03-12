@@ -55,18 +55,15 @@ export default {
     collect() {
       let account = this.ajaxData.account
       let id = this.articleId
-      indexModel.articleCollect(id, account).then(res => {
+      indexModel.collect(1, id, account).then(res => {
         console.log('res')
       })
     },
     //取消收藏
     cancelCollect() {
-       let obj = {
-        account: '11608050',      //获取账号
-        type: 'article',
-        articleId: this.articleId
-      }
-      indexModel.remove().then(res => {
+      let account = this.ajaxData.account
+      let id = this.articleId
+      indexModel.remove(1, id, account).then(res => {
         console.log('canclecollect')
       })
     },

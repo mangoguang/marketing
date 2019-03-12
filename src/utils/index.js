@@ -44,32 +44,26 @@ class IndexModel extends Request {
       }
     })
   }
-  //文章收藏接口
-  articleCollect(id, account) {
-    return this.getData({
-      // url: '/get/collect',
-      url: 'http://10.11.8.250/api/train/repository/v1/collect',
-      params: {
-        id:id,
-        account:account
-      }
-    })
-  }
   //问题收藏接口
-  questionCollect(id, account) {
+   collect(type, id, account) {
     return this.getData({
-      url: 'http://10.11.8.250/api/question/repository/v1/collect',
+      url: 'http://10.11.8.250/api/user/collect/v1/collect',
       params: {
+        type: type,
         id: id,
         account: account
       }
     })
   }
   //移除收藏接口
-  remove(obj) {
+  remove(type, id, account) {
     return this.getData({
-      url: '/get/remove',
-      params: obj
+      url: 'http://10.11.8.250/api/user/collect/v1/cancelCollect',
+      params: {
+        type,
+        id,
+        account
+      }
     })
   }
   //问题搜索接口

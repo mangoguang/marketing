@@ -13,7 +13,7 @@
       </div>
       <m-filter />
     </div>
-    <div>
+    <div class="list">
       产品列表
     </div>
   </div>
@@ -59,9 +59,9 @@ export default {
 <style lang="scss" scoped>
 .prodectList {
   width: 100vw;
-  min-height: 100vh;
-  background: #fff;
+  height: 100vh;
   .topBar {
+    background: #fff;
     padding: 2vw 4vw;
     display: flex;
     align-items: center;
@@ -83,6 +83,8 @@ export default {
     align-items: center;
     justify-content: space-between;
     line-height: 10.6vw;
+    background:rgba(255,255,255,1);
+    box-shadow:0px 1px 3px 0px rgba(0, 0, 0, 0.3);
     .sortList {
       flex: 0.94;
     }
@@ -93,6 +95,12 @@ export default {
         height: 3.46vw;
       }
     }
+    .list {
+
+    }
   }
+}
+.changbg {
+  background: rgba(0, 0, 0, 0.5);
 }
 </style>
