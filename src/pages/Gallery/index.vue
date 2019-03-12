@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import {mapMutations} from 'vuex'
 import Search from "../../components/msManage/search/eggSearchInp";
 import Scan from "../../components/Gallery/index/scan";
 import LeftNav from "../../components/Gallery/index/leftNav";
@@ -34,7 +35,12 @@ export default {
     return {
     };
   },
-  methods: {}
+  created() {
+    this.setProductNavList([])
+  },
+  methods: {
+    ...mapMutations(['setProductNavList'])
+  }
 };
 </script>
 

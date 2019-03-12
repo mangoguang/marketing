@@ -20,6 +20,7 @@ import collectArt from './modules/msManage/collectArt'
 import collect from './modules/msManage/collect'
 import treeList from './modules/msManage/treeList'
 import leftNavList from './modules/gallery/index/index'
+import productNavList from './modules/gallery/productList/index'
 
 export default new Vuex.Store({
   modules: {
@@ -42,6 +43,7 @@ export default new Vuex.Store({
     collectArt,
     collect,
     treeList,
-    leftNavList
+    leftNavList,
+    productNavList
   }
 })

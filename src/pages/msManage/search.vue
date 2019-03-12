@@ -44,7 +44,8 @@ export default {
       unMatchTxt: false,
       historyTxt: '',
       searchType: '',
-      ajaxData: {}
+      ajaxData: {},
+      key: true
     }
   },
   computed: {
@@ -57,14 +58,20 @@ export default {
     searchVal() {
       this.hasHistory = false
       //传递给标题下个页面
-      if(this.searchVal !== '') {
-        this.getSearchVal(this.searchVal)
-      }else {
-        this.unMatchTxt = false
-        this.matchTxt = false
+      if(this.key) {
+        this.key = false
+        setTimeout(() => {
+          if(this.searchVal !== '') {
+            this.getSearchVal(this.searchVal)
+          }else {
+            this.unMatchTxt = false
+            this.matchTxt = false
+          }
+          this.key = true
+        }, 200);
+        //出现历史搜索
+        this.emptySearchVal(this.searchType)
       }
-      //出现历史搜索
-      this.emptySearchVal(this.searchType)
     }
   },
   created() {

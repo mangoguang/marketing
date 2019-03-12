@@ -33,6 +33,7 @@ import { mapMutations, mapState } from 'vuex'
 import Search from '../../components/msManage/search/eggSearchInp'
 import historySearch from '../../components/msManage/search/eggHistorySearch'
 import {fuzzyQuery, changeColor, setLocalStorage, getLocalStorage, skipNewPage} from '../../utils/msManage'
+import { clearTimeout } from 'timers';
 export default {
   components: { Search, historySearch },
   data() {
@@ -44,7 +45,8 @@ export default {
       unMatchTxt: false,
       historyTxt: '',
       searchType: '',
-      ajaxData:{}
+      ajaxData:{},
+      key: true
     }
   },
   computed: {
@@ -56,8 +58,10 @@ export default {
     //匹配关键字且关键字高亮
     searchVal() {
       this.hasHistory = false
-      //传递给标题下个页面
-      if(this.searchVal !== '') {
+      //防抖函数，设置input并不实时监听请求。
+      if(this.key) {
+        this.key = false
+        if(this.searchVal !== '') {
         // this.articleSearch(this.searchVal)
         let list = [{
           title: '幕思',id: '1'
@@ -66,17 +70,22 @@ export default {
         },{
           title: '幕思服务政策',id: '3'
         }]
-        let matchList  = fuzzyQuery(list, this.searchVal)
-        this.setTitle(matchList)
-        this.showMatchList(matchList)
-        this.showErrorTips(matchList)
-        this.list = changeColor(matchList, this.searchVal)
+        setTimeout(() => {
+          this.key = true
+          let matchList  = fuzzyQuery(list, this.searchVal)
+          this.setTitle(matchList)
+          this.showMatchList(matchList)
+          this.showErrorTips(matchList)
+          this.list = changeColor(matchList, this.searchVal)
+        }, 200);
       }else {
+        this.key = true
         this.unMatchTxt = false
         this.matchTxt = false
       }
       //出现历史搜索
       this.emptySearchVal(this.searchType)
+      }
     }
   },
   created() {
