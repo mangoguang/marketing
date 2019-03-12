@@ -7,12 +7,13 @@
     </div>
     <div class="filter-box">
       <div class="contain right">
-        <dl v-for="(item, index) in list" :key="index">
+        <dl v-for="(item, index) in filterList" :key="index">
           <dt class="brand">{{ item.name }}</dt>
           <dd v-for="(el, i) in item.child" :key="el + '_' + i" 
-            @click="getVal"
-            :class="{active: name == el.name}"
-            :data-type="el.name">
+            @click="getVal(index, i)"
+            :class="{active : el.status}"
+            :data-type='item.name'
+            :data-name='el.name'>
             {{ el.name }}
           </dd>
         </dl>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import {mapState, mapMutations} from 'vuex'
 export default {
   data() {
     return {
@@ -84,24 +86,50 @@ export default {
         }],
         price: '',
         name: '',
-        nameVal: []
+        brand: '',
+        nameVal: [],
+        newList: []
     }
   },
   computed: {
-    status() {
-
-    }
+    ...mapState({
+      filterList: state => state.productNavList.filterList
+    })
+  },
+  created() {
+    this.setFilterList(this.list)
   },
   methods: {
-    getVal (e) {
-      let dom = e.target;
-      let tagName = dom.tagName.toLowerCase();
-      if (tagName != "dd") {
-        return false;
-      }
-      this.name = dom.getAttribute("data-type");
-      console.log(this.name)
-      // this.name = dom.getAttribute("data-type");
+    ...mapMutations(['setFilterList']),
+    getList(index, i) {
+      this.list.map((el,v) => {
+        el.child.map((item, k) => {
+          if(el.name == this.list[index].name) {
+            this.$set(item, 'status', k == i)
+            // item.status = k == i
+          }else {
+            if(item.status) {
+              this.$set(item, 'status', true)
+            }else {
+              this.$set(item, 'status', false)
+            }
+          }
+        })
+      })
+      this.setFilterList(this.list)
+    },
+    getVal (index, i) {
+      this.getList(index, i)
+      console.log(11,this.list)
+      // let dom = e.target;
+      // let tagName = dom.tagName.toLowerCase();
+      // if (tagName != "dd") {
+      //   return false;
+      // }
+      // this.brand = dom.getAttribute("data-type");
+      // this.name = dom.getAttribute("data-name");
+      
+      // console.log(this.name)
       // let temp = 0;
       // if(this.nameVal.length) {
       //   this.nameVal.forEach(item => {
@@ -122,13 +150,14 @@ export default {
       // console.log(this.nameVal)
     },
     checkVal(index, i) {
-        this.nameVal.forEach(item => {
-          if(item.name == this.list[index].child[i].name) {
-            this.name = item.name
-          }else {
-            this.name = ''
-          }
-        })
+      console.log(this.nameVal)
+      // this.nameVal.forEach(item => {
+      //   if(item.name == this.list[index].child[i].name) {
+      //     this.name = item.name
+      //   }else {
+      //     this.name = ''
+      //   }
+      // })
     },
     //相同的品牌替换选中的值
     replaceVal(index, i) {

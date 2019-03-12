@@ -3,7 +3,8 @@ export default {
     productNavList: [],
     productNavlistVal: '',
     downList: [],
-    downListVal: ''
+    downListVal: '',
+    filterList: []
   },
   mutations: {
     setProductNavList: (state, arr) => state.productNavList = arr,
@@ -21,6 +22,7 @@ export default {
           state.downListVal =  item.name
         }
       });
-    }
+    },
+    setFilterList: (state, arr) => state.filterList = arr
   }
 }
