@@ -49,12 +49,14 @@ export default {
       // axios获取问题详情内容
       const account = this.ajaxData.account
       indexModel.questionDetail(id, account).then(res => {
-        this.questionData = res.data[0]
-        if(res.data[0].remark) {
-          let temp = res.data[0].remark
-          this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+        if(res.data) {
+          this.questionData = res.data[0]
+          if(res.data[0].remark) {
+            let temp = res.data[0].remark
+            this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+          }
+          this.collection = res.data[0].collect
         }
-        this.collection = res.data[0].collect
       })
     },
       //收藏

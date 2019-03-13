@@ -19,6 +19,7 @@
 import mango from '../../../js'
 import {mapMutations, mapState} from 'vuex'
 export default {
+  props: ['changeStatus', 'reset'],
   data() {
     return {
       list: ['综合', '最新发布', '价格↑', '价格↓', '收藏数', '销量'],
@@ -30,6 +31,14 @@ export default {
       downList: state => state.productNavList.downList,
       downListVal: state => state.productNavList.downListVal
     })
+  },
+  watch: {
+    changeStatus() {
+      if(this.changeStatus) {
+        this.showDownList = false
+        this.reset(false)
+      }
+    }
   },
   created() {
     this.initList()
@@ -79,6 +88,7 @@ export default {
   }
   .downList {
     position: absolute;
+    z-index: 99;
     top: 10.3vw;
     left: 0;
     width: 100vw;

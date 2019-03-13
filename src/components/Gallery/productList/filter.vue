@@ -1,19 +1,18 @@
 <template>
   <div class="filter">
-    <div class="icon">
+    <div class="icon" @click="showFilter">
       <span class="line">|</span>
       <span>筛选</span>
       <img src="../../../assets/imgs/select.png" alt="筛选">
     </div>
-    <div class="filter-box">
+    <div class="filter-box" v-show="filterStatus"  @click.self="hideBox">
       <div class="contain right">
         <dl v-for="(item, index) in filterList" :key="index">
           <dt class="brand">{{ item.name }}</dt>
           <dd v-for="(el, i) in item.child" :key="el + '_' + i" 
-            @click="getVal(index, i)"
+            @click="chooseVal(index, i)"
             :class="{active : el.status}"
-            :data-type='item.name'
-            :data-name='el.name'>
+            >
             {{ el.name }}
           </dd>
         </dl>
@@ -21,17 +20,21 @@
           <p>价格区间</p>
           <div class="inp_box">
              <span>
-                ¥<input type="text" v-model="price">
+                ¥<input type="number" ref="inputPrice1" maxlength="8" 
+                  v-model="price1" 
+                  @change="changePrice">
               </span>
               &nbsp;-&nbsp;
               <span>
-                ¥<input type="text">
+                ¥<input type="number" ref="inputPrice2" maxlength="8" 
+                  v-model="price2"
+                  @change="changePrice">
               </span>
           </div>
         </div>
         <div class="btn">
-          <button class="reset">重置</button>
-          <button class="confirm">完成</button>
+          <button class="reset" @click="reset">重置</button>
+          <button class="confirm" @click="confirm">完成</button>
         </div>
       </div>
     </div>
@@ -43,6 +46,7 @@ import {mapState, mapMutations} from 'vuex'
 export default {
   data() {
     return {
+      filterStatus: false,
       list: [{
         name: '品牌',
         child: [{
@@ -84,29 +88,43 @@ export default {
             id: '2'
           }]
         }],
-        price: '',
-        name: '',
-        brand: '',
-        nameVal: [],
-        newList: []
+        price1: '',
+        price2: ''
     }
   },
   computed: {
     ...mapState({
-      filterList: state => state.productNavList.filterList
+      filterList: state => state.productNavList.filterList,
+      filterVal: state => state.productNavList.filterVal
     })
   },
   created() {
     this.setFilterList(this.list)
   },
   methods: {
-    ...mapMutations(['setFilterList']),
+    ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList']),
+    //出现筛选框
+    showFilter() {
+      this.filterStatus = true
+    },
+    //隐藏筛选框
+    hideBox() {
+      this.filterStatus = false
+    },
+    //获取筛选的值
+     chooseVal (index, i) {
+      this.getList(index, i)
+    },
+    //获取新列表
     getList(index, i) {
       this.list.map((el,v) => {
         el.child.map((item, k) => {
           if(el.name == this.list[index].name) {
-            this.$set(item, 'status', k == i)
-            // item.status = k == i
+            if(item.status) {
+              this.$set(item, 'status', false)
+            }else {
+              this.$set(item, 'status', k == i)
+            }
           }else {
             if(item.status) {
               this.$set(item, 'status', true)
@@ -117,63 +135,30 @@ export default {
         })
       })
       this.setFilterList(this.list)
+      this.getFilterVal()
+      //=======每点击一次发一个请求。防抖500ms
     },
-    getVal (index, i) {
-      this.getList(index, i)
-      console.log(11,this.list)
-      // let dom = e.target;
-      // let tagName = dom.tagName.toLowerCase();
-      // if (tagName != "dd") {
-      //   return false;
-      // }
-      // this.brand = dom.getAttribute("data-type");
-      // this.name = dom.getAttribute("data-name");
-      
-      // console.log(this.name)
-      // let temp = 0;
-      // if(this.nameVal.length) {
-      //   this.nameVal.forEach(item => {
-      //     if(item.brand == this.list[index].name) {
-      //       this.replaceVal(index, i)
-      //     }else {
-      //       temp += 1;
-      //     }
-      //     //如果第一级别都不同。添加选中的值
-      //     if(temp == this.nameVal.length) {
-      //       this.getNameVal(index, i)
-      //     }
-      //   });
-      // }else {
-      //   this.getNameVal(index, i)
-      // }
-      // this.checkVal(index, i)
-      // console.log(this.nameVal)
-    },
-    checkVal(index, i) {
-      console.log(this.nameVal)
-      // this.nameVal.forEach(item => {
-      //   if(item.name == this.list[index].child[i].name) {
-      //     this.name = item.name
-      //   }else {
-      //     this.name = ''
-      //   }
-      // })
-    },
-    //相同的品牌替换选中的值
-    replaceVal(index, i) {
-      this.nameVal.map(item => {
-        if(item.brand == this.list[index].name) {
-          item.name = this.list[index].child[i].name
+    //判断区间第一个值与第二个值相比
+    changePrice() {
+      if(this.price2) {
+        if(parseInt(this.price1) > parseInt(this.price2)) {
+          this.price2 = ''
+          this.$refs.inputPrice2.focus()
+        }else {
+          console.log('send')
+          ///发送请求
         }
-      })
-    },
-    //获取选中的值
-    getNameVal(index, i) {
-      let obj = {
-        brand: this.list[index].name,
-        name: this.list[index].child[i].name
       }
-      this.nameVal = [...this.nameVal, obj]
+    },
+    //重置筛选框,清空选中的值
+    reset() {
+      this.resetFilterList(this.list)
+      this.getFilterVal()
+      //重置发送请求
+    },
+    //确认
+    confirm() {
+      this.filterStatus = false
     }
   }
 }
@@ -196,6 +181,7 @@ export default {
     }
   }
   .filter-box {
+    z-index: 999;
     position: absolute;
     top: 0;
     left: 0;

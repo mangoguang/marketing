@@ -94,7 +94,8 @@ export default {
    articleSearch(keyword) {
      let account = this.ajaxData.account
      indexModel.getArticleSearch(keyword, account).then(res => {
-        //关键字高亮
+       if(res.data) {
+          //关键字高亮
         let list = res.data
         //1.========可以不需要fuzzyQuery=====
         // let matchList  = fuzzyQuery(list, this.searchVal)
@@ -102,6 +103,7 @@ export default {
         this.showMatchList(list)
         this.showErrorTips(list)
         this.list = changeColor(list, this.searchVal)
+       }
       }).catch(err => {
         console.log(err)
       })
@@ -110,6 +112,7 @@ export default {
    QuestionSearch(keyword) {
      let account = this.ajaxData.account
      indexModel.getQuestionSearch(keyword, account).then(res => {
+       if(res.data) {
         let list = res.data
         // let matchList  = fuzzyQuery(list, this.searchVal)
         this.setTitle(list)
@@ -117,6 +120,7 @@ export default {
         this.showErrorTips(list)
         //关键字高亮
         this.list = changeColor(list, this.searchVal)
+       }
       }).catch(err => {
         console.log(err)
       })
