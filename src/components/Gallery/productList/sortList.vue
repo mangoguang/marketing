@@ -22,7 +22,7 @@ export default {
   props: ['changeStatus', 'reset'],
   data() {
     return {
-      list: ['综合', '最新发布', '价格↑', '价格↓', '收藏数', '销量'],
+      list: ['综合', '最新发布', '价格↑', '价格↓', '收藏数'],
       showDownList: false
     }
   },

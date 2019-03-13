@@ -1,0 +1,75 @@
+<template>
+  <div class="product">
+    <m-slider :list='imgSliderList' :auto='0' class="productSlider"/>
+    <button class="cancle" @click.prevent="backBtn"></button>
+    <more-details class="details"/>
+    <div class="case">产品案例</div>
+  </div>
+</template>
+
+<script>
+import MSlider from '../index/slider'
+import MoreDetails from './moreDetail'
+export default {
+  components: {
+    MSlider,
+    MoreDetails
+  },
+  data() {
+    return {
+      imgSliderList: [{
+        src: './static/images/bed0.png'
+      },{
+        src: './static/images/bb2.png'
+      },{
+        src: './static/images/bb3.png'
+      }]
+    }
+  },
+  methods: {
+    backBtn() {
+      this.$router.go(-1)
+    }
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+.product {
+  position: relative;
+  .productSlider {
+    width:100vw;
+    height: 100vw;
+  }
+  .cancle {
+    background: url(../../../assets/imgs/back.png) no-repeat center;
+    background-size: contain;
+    width: 2.66vw;
+    height: 4.8vw;
+    position: absolute;
+    top: 4.26vw;
+    left: 4.26vw;
+  }
+  .details {
+    position: absolute;
+    top: 4.26vw;
+    right: 4.26vw;
+  }
+}
+</style>
+
+<style lang="scss">
+.mint-swipe-indicators {
+  right: 76%;
+    .mint-swipe-indicator {
+      background: #363636;
+      opacity: 0.6;
+    }
+    .is-active {
+      background: #363636;
+      width: 3.4vw;
+      border-radius: 36%;
+      opacity: 0.6;
+    }
+  }
+</style>

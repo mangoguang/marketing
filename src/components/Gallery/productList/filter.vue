@@ -7,7 +7,7 @@
     </div>
     <div class="filter-box" v-show="filterStatus"  @click.self="hideBox">
       <div class="contain right">
-        <dl v-for="(item, index) in filterList" :key="index">
+        <!-- <dl v-for="(item, index) in filterList" :key="index">
           <dt class="brand">{{ item.name }}</dt>
           <dd v-for="(el, i) in item.child" :key="el + '_' + i" 
             @click="chooseVal(index, i)"
@@ -15,7 +15,7 @@
             >
             {{ el.name }}
           </dd>
-        </dl>
+        </dl> -->
         <div class="price">
           <p>价格区间</p>
           <div class="inp_box">

@@ -14,15 +14,17 @@
       <m-filter @click.native="changeSortListStatus"/>
     </div>
     <!-- 列表 -->
-    <div v-for="(item, index) in list" :key='index' v-show="!type"> 
-      <router-link to='/'>
-        <m-list :list='item'/>
-      </router-link>
+    <div class="m-list" v-show="!type">
+      <div v-for="(item, index) in list" :key='index'> 
+        <router-link to='/productDetails'>
+          <m-list :list='item'/>
+        </router-link>
+      </div>
     </div>
     <!-- 瀑布流 -->
     <div class="list" v-show="type">
       <div class="item" v-for="(item, index) in list" :key='index'>
-        <router-link to='/'>
+        <router-link to='/productDetails'>
           <w-list :list='item'/>
         </router-link>
       </div>  
@@ -54,7 +56,7 @@ export default {
       list: [{
         brand: '床',
         imgUrl: './static/images/bed1.jpg',
-        title: '3D BCD1-046 克莱夫特',
+        title: '3D BCD1-046 克莱夫特克莱夫特克莱夫特克莱夫特',
         type: [{
           name: '热销'
         },{
@@ -186,7 +188,11 @@ export default {
       }
     }
   }
+  .m-list {
+    background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
+  }
   .list {
+    background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
     margin: 3vw;
     display: flex;
     flex-wrap: wrap;

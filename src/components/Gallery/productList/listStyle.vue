@@ -49,19 +49,22 @@ export default {
   align-items: center;
   position: relative;
   .img_icon {
-    // background: url(../../../assets/imgs/bed1.jpg) no-repeat center;
     background-size: 100% 100%;
     width: 26.66vw;
     height: 26.66vw;
     border-radius: 1.33vw;
-    flex: 0.3
+    // flex: 0.3
   }
   .text_box {
     margin-left: 4vw;
-    flex: 0.7;
+    // flex: 0.7;
     .title {
+      width: 62vw;
       color: #363636;
       font-size: 3.73vw;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
     .type_icon {
       border: 1px solid #ff2d55;

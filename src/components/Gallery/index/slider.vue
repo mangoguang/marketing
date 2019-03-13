@@ -1,5 +1,5 @@
 <template>
-  <mt-swipe class="wrapper" :auto="2000">
+  <mt-swipe class="wrapper" :auto="auto" >
     <mt-swipe-item 
       :style="{backgroundImage:'url(' + item.src + ')',backgroundSize: 'contain'}"
       v-for='(item,index) in list' :key='index'
@@ -14,7 +14,7 @@ import Vue from 'vue'
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 export default {
-  props: ['list'],
+  props: ['list', 'auto'],
   data() {
     return {
 
