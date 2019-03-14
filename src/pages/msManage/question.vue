@@ -5,7 +5,7 @@
       <EggSearch :origin='origin' :type='"question"'/>
       <!-- <button>搜索</button> -->
     </div>
-    <EggTreeList :getParmas='getParmas' :getStatus='getStatus'/>
+    <EggTreeList :getParmas='getParmas' :getStatus='getStatus' class="list"/>
     <div :class="questionList">
       <EggQuestionList />
     </div>
@@ -113,6 +113,9 @@ export default {
     position: absolute;
     top: 28vw;
     left: 0;
+  }
+  .list {
+    margin-top: -5vw;
   }
 }
 </style>
