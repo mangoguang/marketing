@@ -67,11 +67,12 @@ class IndexModel extends Request {
     })
   }
   //问题搜索接口
-  getQuestionSearch(key) {
+  getQuestionSearch(key, account) {
     return this.getData({
       url: '/api/question/repository/v1//getQuestionList',
       params: {
-        key: key
+        key: key,
+        account:account
       }
     })
   }
@@ -79,9 +80,6 @@ class IndexModel extends Request {
   getQuestionCategoryList() {
     return this.getData({
       url: '/api/question/repository/v1/getCategoryList'
-      // params: {
-      //   id: id
-      // }
     }) 
   }
   //常见问题列表接口
@@ -96,7 +94,7 @@ class IndexModel extends Request {
   //常见问题详情接口
   questionDetail(id, account) {
     return this.getData({
-      url: '/api/question/repository/v1//getQuestionList',
+      url: '/api/question/repository/v1/get',
       params: {
         id: id,
         account: account

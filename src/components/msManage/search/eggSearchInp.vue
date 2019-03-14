@@ -59,7 +59,7 @@ export default {
 
 <style lang="scss" scoped>
 .eggSearchInp {
-    margin: 3vw auto;
+    margin: 5vw auto;
     width: 91.46vw;
     position: relative;
   .search_icon {

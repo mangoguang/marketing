@@ -242,7 +242,7 @@ export default {
       width: 75.47vw;
     }
     .cancle {
-      width: 16vw;
+      width: 20vw;
       font-size: 4.26vw;
       color: #007aff;
     }

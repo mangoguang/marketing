@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="list_right">
-          <!-- <img :src="itemUrl" alt=""> -->
+          <img :src="baseUrl + item.image" alt="" class="img">
         </div>
       </li>
     </mt-loadmore>
@@ -32,7 +32,8 @@ export default {
     return {
       allLoaded:false,
       list: [],
-      ajaxData: {}
+      ajaxData: {},
+      baseUrl: ''
     }
   },
   computed: {
@@ -65,6 +66,7 @@ export default {
     getArticlesList(obj) {
       indexModel.getArticles(obj).then(res => {
         this.list = res.data
+        this.baseUrl = res.baseUrl
       })
     },
     //获取一二三级id参数
@@ -77,7 +79,9 @@ export default {
         obj = {
           'categoryId': categoryId,
           'subCateId': subCateId,
-          'account': account}
+          'account': account,
+          'page': 1,
+          'limit':10}
       }else if(this.parmas.name1 && this.parmas.name2) {
         let subCateId = this.parmas.name1
         let subCate2Id = this.parmas.name2
@@ -85,9 +89,12 @@ export default {
           'categoryId': categoryId,
           'subCateId': subCateId,
           'subCate2Id': subCate2Id,
-          'account':account}
+          'account':account,
+          'page': 1,
+          'limit':10}
       }else {
-        obj = {'categoryId': categoryId,'account':account}
+        obj = {'categoryId': categoryId,'account':account,'page': 1,
+          'limit':10}
       }
       return obj
     },
@@ -159,7 +166,11 @@ export default {
       width: 21.33vw;
       height: 21.33vw;
       border:1px solid rgba(225,225,225,1);
-      background:linear-gradient(30deg,rgba(60,182,238,1) 0%,rgba(125,226,255,1) 100%);
+      // background:linear-gradient(30deg,rgba(60,182,238,1) 0%,rgba(125,226,255,1) 100%);
+       .img {
+        width: 21.33vw;
+        height: 21.33vw;
+      }
     }
   }
 

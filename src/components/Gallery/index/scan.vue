@@ -1,6 +1,6 @@
 <template>
   <div class="m-scan">
-    <span class="scan">
+    <span class="scan" @touchend="openScan">
       <img src="../../../assets/imgs/scan.png" alt="">
       <p>扫一扫</p>
     </span>
@@ -9,7 +9,26 @@
 
 <script>
 export default {
-  
+  methods: {
+    openScan() {
+      this.openscan()
+    },
+    openscan() {
+      var FNScanner = api.require('FNScanner');
+      FNScanner.open({
+        autorotation: true,
+        verticalLineColor: '##94f8fa',
+        isAlbum: true,
+        hintText:'将二维码放入取景框内即可自动扫描'
+      }, function(ret, err) {
+        if (ret) {
+            console.log(JSON.stringify(ret));
+        } else {
+            console.log(JSON.stringify(err));
+        }
+      });
+    }
+  }
 }
 </script>
 

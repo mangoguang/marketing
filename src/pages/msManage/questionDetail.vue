@@ -50,12 +50,12 @@ export default {
       const account = this.ajaxData.account
       indexModel.questionDetail(id, account).then(res => {
         if(res.data) {
-          this.questionData = res.data[0]
-          if(res.data[0].remark) {
-            let temp = res.data[0].remark
+          this.questionData = res.data
+          if(res.data.remark) {
+            let temp = res.data.remark
             this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
           }
-          this.collection = res.data[0].collect
+          this.collection = res.data.collect
         }
       })
     },

@@ -2,7 +2,7 @@
   <div class="index">
     <Search :origin="origin" :type='"msIndex"'/>
     <yan-circle-list :link="link"/>
-    <egg-scan />
+    <!-- <egg-scan /> -->
     <!-- <egg-share /> -->
     <div class="entry">
       <router-link to="/gallery">
