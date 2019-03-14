@@ -5,7 +5,7 @@
         <img :src="imgUrl" alt="">
       </router-link>
     </div>
-    <m-slider class="m-slider" :list='imgSliderList'/>
+    <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext"/>
     <div class="classify">
       <ClassifyComp :type='listVal' :auto='2000'/>
     </div>
@@ -67,6 +67,16 @@ export default {
         src: './static/images/p3.png'
       }]
       }
+    },
+    //轮播图跳转到活动
+    goNext(e) {
+      let dom = e.target
+      let className = dom.className.toLowerCase();
+      if (className != "mint-swipe-item is-active") {
+        return false;
+      }
+      let index = dom.getAttribute("data-type");
+      this.$router.push({path: '/gallery'})
     }
   }
 }

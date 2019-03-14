@@ -10,6 +10,10 @@ const state = {
     {
       tabName:'常见问题',
       componentName:'collectFaq'
+    },
+    {
+      tabName:'产品',
+      componentName:'collectProduct'
     }
   ],
   messageBox:{

@@ -3,7 +3,7 @@
     <mt-swipe-item 
       :style="{backgroundImage:'url(' + item.src + ')',backgroundSize: 'contain'}"
       v-for='(item,index) in list' :key='index'
-      @click.native="goNext(index)">
+      :data-type="index">
     </mt-swipe-item>
   </mt-swipe>
 </template>
@@ -14,18 +14,7 @@ import Vue from 'vue'
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 export default {
-  props: ['list', 'auto'],
-  data() {
-    return {
-
-    }
-  },
-  methods: {
-    goNext(index) {
-      console.log('index', index)
-      this.$router.push({path: '/gallery'})
-    }
-  }
+  props: ['list', 'auto']
 }
 </script>
 
@@ -34,6 +23,24 @@ export default {
   width: 70.13vw;
   height: 21.33vw;
 }
+
 </style>
+
+<style lang="scss">
+.mint-swipe-indicators {
+  right: -3%;
+    .mint-swipe-indicator {
+      background: #fff;
+      opacity: 0.5;
+    }
+    .is-active {
+      background: #fff;
+      // width: 3.4vw;
+      // border-radius: 36%;
+      opacity: 1;
+    }
+}
+</style>
+
 
 

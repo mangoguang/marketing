@@ -1,9 +1,11 @@
 import axios from 'axios'
+// let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
+let baseUrl = 'http://10.11.8.250'
 class Request {
   getData ({ url, params, method = 'GET' }) {
     return new Promise((resolve, reject) => {
       axios({
-        url: url,
+        url: baseUrl + url,
         params: params,
         method: method
       }).then(res => {
@@ -18,7 +20,7 @@ class Request {
     return new Promise((resolve, reject) => {
       axios({
         method: 'post',
-        url: url,
+        url: baseUrl + url,
         params: data
         // headers: {
         //   'Content-Type': 'application/x-www-form-urlencoded'
@@ -31,5 +33,4 @@ class Request {
     })
   }
 }
-
 export {Request}

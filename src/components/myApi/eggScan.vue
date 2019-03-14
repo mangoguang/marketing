@@ -19,7 +19,10 @@ export default {
    openscan() {
     var FNScanner = api.require('FNScanner');
     FNScanner.open({
-      autorotation: true
+      autorotation: true,
+      verticalLineColor: '##94f8fa',
+      isAlbum: true,
+      hintText:'将二维码放入取景框内即可自动扫描'
     }, function(ret, err) {
       if (ret) {
           console.log(JSON.stringify(ret));

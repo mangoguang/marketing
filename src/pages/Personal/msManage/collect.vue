@@ -27,12 +27,14 @@ import mybanner from '../../../components/banner'
 import collectArticle from './collectArticle'
 import collectFaq from './collectFaq'
 import messageBox from '../../../components/msManage/yanMessageBox'
+import collectProduct from './collectProduct'
 export default {
   components:{
     mybanner,
     collectArticle,
     collectFaq,
-    messageBox
+    messageBox,
+    collectProduct
   },
   data(){
     return{

@@ -4,22 +4,22 @@
       <product />
     </div>
     <div class="content">
-      content
+      <productContent />
     </div>
     <div class="details">
-      details
+      富文本
     </div>
   </div>
 </template>
 
 <script>
 
-import MoreDetails from '../../components/Gallery/productDetails/moreDetail'
 import product from '../../components/Gallery/productDetails/product'
+import productContent from '../../components/Gallery/productDetails/productContent'
 export default {
   components: {
-    MoreDetails,
-    product
+    product,
+    productContent
   },
   data() {
     return {
@@ -28,5 +28,18 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.productDetails {
+  background: #f1f1f1;
+  .content {
+    background: #fff;
+  }
+  .details {
+    margin-top: 4vw;
+  }
+}
+</style>
+
 
 

@@ -210,6 +210,12 @@ export var router = new VueRouter({
     path: '/recommend',
     name: 'recommend',
     component: resolve => require(['../pages/Gallery/recommend'],resolve)
+  },
+  //分享页
+  {
+    path: '/share',
+    name: 'share',
+    component: resolve => require(['../pages/Gallery/share'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {

@@ -1,28 +1,56 @@
 <template>
   <div class="moreDetails">
-    <div class="icon_more"></div>
-    <div class="trigon"></div>
-    <ul >
-      <li>图库首页</li>
-      <li>图库首页</li>
-      <li>图库首页</li>
-    </ul>
+    <div class="icon_more" @click="changeShow">
+      <img src="../../../assets/imgs/more.png" alt="">
+    </div>
+    <div class="more_content" v-show="isShow">
+      <div class="trigon"></div>
+      <ul >
+        <li v-for="(item, index) in list" :key="index">
+          <router-link :to="{name: item.src}">
+            {{item.name}}
+          </router-link>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  
+  data() {
+    return {
+      isShow: false,
+      list:[{
+        name: '图库首页',
+        src: 'index'
+      },{
+        name: '我的收藏',
+        src: '/collectList'
+      },{
+        name: '扫一扫',
+        src: '/collectList'
+      }]
+    }
+  },
+  methods: {
+    changeShow(){
+      this.isShow = !this.isShow
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .moreDetails {
   .icon_more {
-    background: url(../../../assets/imgs/more.png) no-repeat center;
-    background-size: contain;
-    width: 4.26vw;
-    height: 1.06vw;
+    padding: 4vw;
+    margin-top: -4vw;
+    margin-right: -4vw;
+    img {
+      width: 4.26vw;
+      height: 1.06vw;
+    }
   }
   .trigon {
     background: url(../../../assets/imgs/trigon.png) no-repeat center;
@@ -30,14 +58,14 @@ export default {
     width: 2vw;
     height: 1.06vw;
     position: absolute;
-    top: 1.98vw;
+    top: 4.98vw;
     right: 1vw;
   }
   ul {
     position: absolute;
     width: 21.33vw;
     right: 0;
-    top: 3vw;
+    top: 6vw;
     background: rgba(54,54,54,1);
     box-shadow: 0px .26vw .8vw 0px rgba(67,66,66,0.2);
     opacity: 0.96;
@@ -51,6 +79,9 @@ export default {
       box-shadow:0px 1px 0px 0px rgba(67,66,66,1);
     }
   }
+}
+a{
+  color: #909090;
 }
 </style>
 

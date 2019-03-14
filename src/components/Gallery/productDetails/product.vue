@@ -3,7 +3,7 @@
     <m-slider :list='imgSliderList' :auto='0' class="productSlider"/>
     <button class="cancle" @click.prevent="backBtn"></button>
     <more-details class="details"/>
-    <div class="case">产品案例</div>
+    <div class="case"></div>
   </div>
 </template>
 
@@ -54,6 +54,15 @@ export default {
     position: absolute;
     top: 4.26vw;
     right: 4.26vw;
+  }
+  .case {
+    background: url(../../../assets/imgs/case.png) no-repeat center;
+    background-size: contain;
+    width: 11.87vw;
+    height: 10.13vw;
+    position: absolute;
+    right: 5.33vw;
+    bottom: 2.66vw;
   }
 }
 </style>

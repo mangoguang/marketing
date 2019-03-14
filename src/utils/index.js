@@ -5,13 +5,13 @@ class IndexModel extends Request {
   // 获取首页一级分类列表
   getCategory1List() {
     return this.getData({
-      url: 'http://10.11.8.250/api/train/repository/v1/category'
+      url: '/api/train/repository/v1/category'
     })
   }
   //首页搜索接口
   getArticleSearch(keyword,account) {
     return this.getData({
-      url: 'http://10.11.8.250/api/train/repository/v1/getRepositoryByKey',
+      url: '/api/train/repository/v1/getRepositoryByKey',
       params: {
         key: keyword,
         account: account
@@ -21,7 +21,7 @@ class IndexModel extends Request {
   //分页列表接口	 
   getCategories(categoryId) {
     return this.getData({
-      url: 'http://10.11.8.250/api/train/repository/v1/getCategoryList',
+      url: '/api/train/repository/v1/getCategoryList',
       params: {
         id: categoryId 
       }
@@ -30,14 +30,14 @@ class IndexModel extends Request {
   //文章列表接口	 
   getArticles(obj) {
     return this.getData({
-      url: 'http://10.11.8.250/api/train/repository/v1/queryByCategoryId',
+      url: '/api/train/repository/v1/queryByCategoryId',
       params: obj
     })
   }
   //文章详情接口
   getArticleDetail(articleId, account) {
     return this.getData({
-      url: 'http://10.11.8.250/api/train/repository/v1/get',
+      url: '/api/train/repository/v1/get',
       params: {
         id: articleId,
         account: account
@@ -47,7 +47,7 @@ class IndexModel extends Request {
   //问题收藏接口
    collect(type, id, account) {
     return this.getData({
-      url: 'http://10.11.8.250/api/user/collect/v1/collect',
+      url: '/api/user/collect/v1/collect',
       params: {
         type: type,
         id: id,
@@ -58,7 +58,7 @@ class IndexModel extends Request {
   //移除收藏接口
   remove(type, id, account) {
     return this.getData({
-      url: 'http://10.11.8.250/api/user/collect/v1/cancelCollect',
+      url: '/api/user/collect/v1/cancelCollect',
       params: {
         type,
         id,
@@ -69,7 +69,7 @@ class IndexModel extends Request {
   //问题搜索接口
   getQuestionSearch(key) {
     return this.getData({
-      url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
+      url: '/api/question/repository/v1//getQuestionList',
       params: {
         key: key
       }
@@ -78,7 +78,7 @@ class IndexModel extends Request {
   //获取问题分类列表接口
   getQuestionCategoryList() {
     return this.getData({
-      url: 'http://10.11.8.250/api/question/repository/v1/getCategoryList'
+      url: '/api/question/repository/v1/getCategoryList'
       // params: {
       //   id: id
       // }
@@ -87,7 +87,7 @@ class IndexModel extends Request {
   //常见问题列表接口
   questionList(id) {
     return this.getData({
-      url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
+      url: '/api/question/repository/v1//getQuestionList',
       params: {
         categoryId: id  //  问题分类id
       }
@@ -96,7 +96,7 @@ class IndexModel extends Request {
   //常见问题详情接口
   questionDetail(id, account) {
     return this.getData({
-      url: 'http://10.11.8.250/api/question/repository/v1//getQuestionList',
+      url: '/api/question/repository/v1//getQuestionList',
       params: {
         id: id,
         account: account
