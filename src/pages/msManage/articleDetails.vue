@@ -6,7 +6,7 @@
       <span>{{ articleDetails.createTime }}</span>
       <collect-btn class="collentBtn" 
         :collection='collection'
-        v-on:click.native='changeCollectBtn'/>
+        v-on:touchend.native='changeCollectBtn'/>
     </div>
     <div class="content" v-html="myhtml">
     </div>

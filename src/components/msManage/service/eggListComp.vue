@@ -2,7 +2,7 @@
   <div class="listComp">
     <ul>
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
-      <li v-for="(item, index) in list" :key="index" @click="toArticle(index)">
+      <li v-for="(item, index) in list" :key="index" @touchend="toArticle(index)">
         <div class="list_left">
           <h1>{{item.title}}</h1>
           <div class="list_bottom">

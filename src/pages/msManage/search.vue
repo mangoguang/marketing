@@ -1,7 +1,7 @@
 <template>
   <div class="search">
     <div class="search_box">
-      <Search class="searchComp"
+      <Search class="searchComp" id="debounce"
         v-model.trim="searchVal"
         :deleteVal='deleteVal'
       />
@@ -45,7 +45,7 @@ export default {
       historyTxt: '',
       searchType: '',
       ajaxData: {},
-      key: true
+      key: false
     }
   },
   computed: {
@@ -57,21 +57,18 @@ export default {
     //匹配关键字且关键字高亮
     searchVal() {
       this.hasHistory = false
-      //传递给标题下个页面
-      if(this.key) {
-        this.key = false
-        setTimeout(() => {
-          if(this.searchVal !== '') {
-            this.getSearchVal(this.searchVal)
-          }else {
-            this.unMatchTxt = false
-            this.matchTxt = false
-          }
-          this.key = true
-        }, 200);
-        //出现历史搜索
-        this.emptySearchVal(this.searchType)
+      //输入框为空的时候
+      if(this.searchVal === '') {
+        this.unMatchTxt = false
+        this.matchTxt = false
       }
+      //点击历史搜索关键字的时候搜索
+      if(this.key) {
+        this.getSearchVal(this.searchVal)
+        this.key = false
+      } 
+      //出现历史搜索
+        this.emptySearchVal(this.searchType)
     }
   },
   created() {
@@ -81,7 +78,31 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
   },
+  mounted() {
+    this.monitorInpub()
+  },
   methods: {
+    //监听输入框变化
+    monitorInpub() {
+      let inputb = document.getElementById('debounce')
+      let debounceAjax = this.debounce(this.articleSearch, 200)
+      inputb.addEventListener('keyup', function (e) {
+        if(e.target.value !== '') {
+          debounceAjax(e.target.value)
+        }
+      })
+    },
+    //防抖函数
+    debounce(fun, delay) {
+      return function (args) {
+        let that = this
+        let _args = args
+        clearTimeout(fun.id)
+        fun.id = setTimeout(function () {
+          fun.call(that, _args)
+        }, delay)
+      }
+    },
     //文章搜索接口
     getSearchVal(keyword) {
       if(this.searchType == 'question') {
@@ -181,9 +202,11 @@ export default {
     //点击历史搜索内容
     clickHistoryTxt(val) {
       this.searchVal = val
+      this.key = true
     }, 
     //清空输入框
     deleteVal(val) {
+      this.unMatchTxt = false
       this.searchVal = val
     },
     //清空历史搜索

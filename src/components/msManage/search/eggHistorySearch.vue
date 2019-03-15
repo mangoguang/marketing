@@ -2,10 +2,10 @@
   <div class="eggHistorySearch">
     <div class="title">
       <span>历史搜索</span>
-      <button @click="emptyHisList">清除</button>
+      <button @touchend="emptyHisList">清除</button>
     </div>
     <ul>
-      <li v-for="(item, index) in list" :key="index" @click='clickTitle(index)'>
+      <li v-for="(item, index) in list" :key="index" @touchend='clickTitle(index)'>
         {{ item }}
       </li>
     </ul>

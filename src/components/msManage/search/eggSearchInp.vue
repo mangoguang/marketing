@@ -8,10 +8,11 @@
       :value='value'
       v-on:input="$emit('input',$event.target.value)"
       maxlength="20"
+      @blur="viewDefault"
       />
       <button class="deleteVal" 
         v-show="showDeleteIcon && !origin"
-        @click="deleteBtn"></button>
+        @touchend="deleteBtn"></button>
   </div>
 </template>
 
@@ -33,7 +34,23 @@ export default {
       }
     }
   },
+  created() {
+    if(this.$route.path === '/search') {
+      this.changfouce()
+    }
+  },
   methods: {
+    //输入框回弹的时候恢复页面
+    viewDefault() {
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+    },
+    //输入框自动聚焦
+    changfouce(){
+      this.$nextTick((x) => {   //正确写法
+        this.$refs.inpComp.focus();
+      })
+    },
     //清空输入框
     deleteBtn() {
       this.deleteVal('')
@@ -62,6 +79,10 @@ export default {
     margin: 5vw auto;
     width: 91.46vw;
     position: relative;
+    box-sizing: border-box;
+    input{
+      caret-color:#000;
+    }
   .search_icon {
     background: url(../../../assets/imgs/egg_search.png) no-repeat center;
     background-size: 100% 100%;
@@ -73,6 +94,7 @@ export default {
   }
   .eggInp {
     width: 100%;
+    height: 8vw;
     line-height: 8vw;
     background: #f7f7f7;
     border-radius:  4vw;
@@ -82,12 +104,13 @@ export default {
   }
   .deleteVal {
     background: url(../../../assets/imgs/egg_delete.png) no-repeat center;
-    background-size: 100% 100%;
+    background-size: contain;
     width: 4.26vw;
     height: 4.26vw;
     position: absolute;
     right: 2vw;
-    top: 2vw
+    top: 2vw;
+    z-index: 10;
   }
 }
 </style>

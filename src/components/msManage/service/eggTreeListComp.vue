@@ -3,7 +3,7 @@
     <ul class="treeList">
       <li v-for="(item, index) in fatherList" :key="index" class="select">
         <span  
-          @click="changeNewStatus(index)" 
+          @touchend="changeNewStatus(index)" 
           :class="item.status? 'addClass' : ''">
           {{ item.name }}
         </span>
@@ -11,7 +11,7 @@
           <ul class="child_treeList " v-show="item.status" >
             <li v-for="(el, i) in childList" :key='i' class="selectChild">
               <span 
-                @click="changChildStatus(i, index)"
+                @touchend="changChildStatus(i, index)"
                 :class="el.status? 'childrenAddClass' : ''">
                 {{ el.name }}
               </span>

@@ -1,6 +1,6 @@
 <template>
   <ul>
-    <li v-for="(item, index) in list" :key="index" @click="toQuestionDetails(index)">
+    <li v-for="(item, index) in list" :key="index" @touchend="toQuestionDetails(index)">
       <span>{{item.title}}</span>
       <img src="../../../assets/imgs/rightside.png" alt="">
     </li>

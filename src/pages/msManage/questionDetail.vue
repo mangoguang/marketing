@@ -6,7 +6,7 @@
         <h1>{{ questionData.title }}</h1>
         <eggCollectBtn class="collectBtn"
           :collection='collection' 
-          @click.native="changeCollectBtn"/>
+          @touchend.native="changeCollectBtn"/>
       </div>
       <p v-html="myhtml"></p>
     </div>
