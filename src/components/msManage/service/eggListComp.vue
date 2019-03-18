@@ -2,7 +2,7 @@
   <div class="listComp"  ref='myScroll'>
     <ul>
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="load" :auto-fill="false"> 
-      <li v-for="(item, index) in msManageList" :key="index" @click.prevent="toArticle(index)" >
+      <li v-for="(item, index) in artList" :key="index" @click.prevent="toArticle(index)" >
         <div class="list_left">
           <h1>{{item.title}}</h1>
           <div class="list_bottom">
@@ -37,7 +37,8 @@ export default {
       baseUrl: '',
       page: 1,
       limit: 10,
-      typeId: ''
+      typeId: '',
+      key: false
     }
   },
   computed: {
@@ -45,15 +46,31 @@ export default {
       parmas: state => state.treeList.parmas,
       listScroll: state => state.loadmore.listScroll,
       msManageList: state => state.loadmore.msManageList,
-      listId: state => state.loadmore.listId
+      artList: state => state.loadmore.artList
     })
   },
   watch: {
     parmas() {
-      this.list = []
-      let obj = this.getCategoriesId(1, 10)
-      obj = this.setType(obj)
-      this.getArticlesList(obj)
+      if(this.key) {
+        let temp = this.hasList(this.parmas.name1)
+        if(temp > this.msManageList.length) {
+          let obj = this.getCategoriesId(1, 10)
+          obj = this.setType(obj)
+          this.getArticlesList(obj)
+        }else {
+          this.getList(this.parmas.name1)
+          this.allLoaded = false
+          // setTimeout(() => {
+          //   this.listenScrollTop()
+          // }, 100);
+          this.$nextTick(() => {
+            this.listenScrollTop()
+          })
+        }
+      }else {
+        this.initGetData()
+        this.key = true
+      }
     }
   },
   created() {
@@ -69,12 +86,15 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setListScroll','setMsManageList']),
+    ...mapMutations(['setListScroll','getList', 'setMsManageList','getInitList']),
     //获取滚动条高度
     recordScrollPosition(e) {
-      this.listTop = e.target.scrollTop
-      this.setListScroll(e.target.scrollTop)
-      // console.log(this.listScroll)
+      //如果没有数据源则不改变缓存高度
+      if(this.artList) {
+        if(this.artList.length) {
+          this.setListScroll(e.target.scrollTop)
+        }
+      }
     },
     //监听滚动条高度
     listenScrollTop() {
@@ -98,17 +118,33 @@ export default {
         return obj
       }
     },
+    //初始请求
+    initGetData() {
+      let obj = this.getCategoriesId(1, 10)
+      obj = this.setType(obj)
+      indexModel.getArticles(obj).then(res => {
+        this.saveList(res.data)
+        this.getInitList(res.data)
+        this.listenScrollTop()
+        this.allLoaded = false
+      })
+    },
     //获取文章列表
     getArticlesList(obj) {
       indexModel.getArticles(obj).then(res => {
-        if(res.data.length) {
-          this.allLoaded = false
-          this.list = this.list.concat(res.data)
-          this.setMsManageList(this.list)
-          this.baseUrl = res.baseUrl
-          this.listenScrollTop()
-        }else {
-          this.allLoaded = true
+        if(res.data) {
+          if(res.data.length) {
+            this.baseUrl = res.baseUrl
+            this.allLoaded = false
+            this.list = this.artList.concat(res.data)
+            this.saveList(this.list)
+            this.getList(this.parmas.name1)
+            this.listenScrollTop()
+          }else {
+            this.saveList()
+            this.getList(this.parmas.name1)
+            this.allLoaded = true
+          }
         }
       })
     },
@@ -147,12 +183,41 @@ export default {
       }
       return obj
     },
+    //获取id
+    getId() {
+      if(this.parmas.name2) {
+        return this.parmas.name2
+      }else{
+        return this.parmas.name1
+      }
+    },
+    //数据存到vuex
+    saveList(list) {
+      let id = this.getId()
+      let data = [
+        {id: id},
+        {list: list}
+      ]
+      this.setMsManageList(data)
+    },
+    //判断vuex是否已存储list
+    hasList(id) {
+      let temp = this.msManageList.length
+      this.msManageList.forEach(item => {
+        if(item[0].id == id) {
+          temp -= 1 
+        }else {
+          temp += 1
+        }
+      });
+      return temp
+    },
     //跳转到文章详情	
     toArticle(index) {
       this.$router.push({
         path: '/articleDetails',
         query: {
-          articleId: this.list[index].id,
+          articleId: this.artList[index].id,
           name: this.$route.query.name}})
     },
      //下拉刷新
@@ -163,7 +228,8 @@ export default {
     //下拉加载数据
     pullDownData() {
       this.allLoaded = true
-      this.page ++;
+      let len = (this.artList.length)/10 + 1
+      this.page = len
       let obj = this.getCategoriesId(this.page, this.limit)
       this.getArticlesList(obj);
     }

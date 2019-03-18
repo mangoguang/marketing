@@ -1,6 +1,6 @@
 import axios from 'axios'
-let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
-// let baseUrl = 'http://10.11.8.250'
+// let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
+let baseUrl = 'http://10.11.8.250'
 class Request {
   getData ({ url, params, method = 'GET' }) {
     return new Promise((resolve, reject) => {
