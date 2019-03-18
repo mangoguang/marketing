@@ -3,6 +3,6 @@ export default {
     listScroll: 0
   },
   mutations: {
-    setListScroll: (state, num) => state.listScroll = num
+    setListScroll: (state, arr) => state.listScroll = arr
   }
 }

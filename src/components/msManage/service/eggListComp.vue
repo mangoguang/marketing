@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="list_right">
-          <img :src="baseUrl + item.image" alt="" class="img">
+          <!-- <img :src="baseUrl + item.image" alt="" class="img"> -->
         </div>
       </li>
     </mt-loadmore>
@@ -55,14 +55,17 @@ export default {
       let obj = this.getCategoriesId(1, 10)
       obj = this.setType(obj)
       this.getArticlesList(obj)
+      // console.log(12,this.parmas)
+      // this.listenScrollTop()
     }
+
   },
   created() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
-    this.listenScrollTop()
+    
     let obj = this.getCategoriesId(1, 10)
     obj = this.setType(obj)
     //obj传给getArticlesList
@@ -71,6 +74,8 @@ export default {
     }else {
       this.getArticlesList(obj)
     }
+    this.$refs.listCom.addEventListener('scroll', this.handleScroll,true)
+    this.$refs.listCom.scrollTop =  this.listScroll
   },
   methods: {
     ...mapMutations(['setListScroll']),
@@ -83,16 +88,14 @@ export default {
     listenScrollTop() {
       this.$refs.listCom.addEventListener('scroll', this.handleScroll,true)
       this.$refs.listCom.scrollTop = this.listScroll
-      console.log(11,this.listScroll)
     },
     //初始化数据
     initData() {
       this.baceLimit = 10
-      // this.setDealScroll(0);
-      // this.$refs.deal.scrollTop = this.dealScroll
+      this.setListScroll(0);
+      this.$refs.listCom.scrollTop = this.listScroll
       // localStorage.removeItem('selectDealLimit')
       // localStorage.removeItem('dealLimit');  
-      this.getSelectLimit()
     },
     //区分金管家服务和学院
     setType(obj) {
