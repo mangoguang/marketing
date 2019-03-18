@@ -21,6 +21,8 @@ import collect from './modules/msManage/collect'
 import treeList from './modules/msManage/treeList'
 import leftNavList from './modules/gallery/index/index'
 import productNavList from './modules/gallery/productList/index'
+import share from './modules/gallery/share/index'
+import loadmore from './modules/msManage/loadmore'
 
 export default new Vuex.Store({
   modules: {
@@ -44,6 +46,8 @@ export default new Vuex.Store({
     collect,
     treeList,
     leftNavList,
-    productNavList
+    productNavList,
+    share,
+    loadmore
   }
 })

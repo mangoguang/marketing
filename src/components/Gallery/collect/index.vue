@@ -8,7 +8,9 @@
             :style="deleteSlider"
         >
       <!-- 插槽中放具体项目中需要内容-->   
-          <slot><listStyle :list='list'/></slot>
+          <slot>
+            <listStyle :list='list' @click.native="toDetails" />
+          </slot>
         </div>
         <div class="remove" ref='remove' @click="deleteBtn">
           <p class="delete" v-show="isDelete">删除</p>
@@ -32,16 +34,21 @@ import listStyle from '../productList/listStyle'
         endX:0,     //结束位置
         moveX: 0,   //滑动时的位置
         disX: 0,    //移动距离
-        deleteSlider: ''//滑动时的效果,使用v-bind:style="deleteSlider"
+        deleteSlider: '',//滑动时的效果,使用v-bind:style="deleteSlider"
+        key: true
       }
      },
      methods:{
+       //跳转详情页面
+       toDetails() {
+         this.key && this.$router.push({path:'/productDetails'})
+       },
+       //删除收藏
       deleteBtn() {
         if(!this.makeSureDelete) {
           this.isDelete = false
           this.makeSureDelete = true
         }else {
-          console.log('delete')
           this.deleteSlider = "transform:translateX(0px)";
           this.isDelete = true
           this.makeSureDelete = false
@@ -56,8 +63,9 @@ import listStyle from '../productList/listStyle'
         }
       },
       touchMove(ev){
+        this.key = false
         ev = ev || event;
-            //获取删除按钮的宽度，此宽度为滑块左滑的最大距离
+        //获取删除按钮的宽度，此宽度为滑块左滑的最大距离
         let wd=this.$refs.remove.offsetWidth;
         if(ev.touches.length == 1) {
             // 滑动时距离浏览器左侧实时距离
@@ -88,6 +96,11 @@ import listStyle from '../productList/listStyle'
             //如果距离小于删除按钮一半,强行回到起点
             if ((this.disX*6) < (wd/2)) {
               this.deleteSlider = "transform:translateX(0px)";
+              this.isDelete = true
+              this.makeSureDelete = false
+              setTimeout(() => {
+                this.key = true
+              }, 300);
             }else{
                 //大于一半 滑动到最大值
               this.deleteSlider = "transform:translateX(-"+wd+ "px)";

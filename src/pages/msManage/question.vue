@@ -89,6 +89,12 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 90;
+    position: fixed;
+    left: 0;
+    top: 14vw;
+    background: #fff;
+    width: 100vw;
     // button {
     //   font-size: 3.466vw;
     //   color: #fff;
@@ -115,7 +121,10 @@ export default {
     left: 0;
   }
   .list {
-    margin-top: -5vw;
+    // margin-top: -5vw;
+    position: fixed;
+    top: 28vw;
+    left: 0;
   }
 }
 </style>

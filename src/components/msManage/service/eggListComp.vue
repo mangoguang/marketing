@@ -1,8 +1,8 @@
 <template>
-  <div class="listComp">
+  <div class="listComp" ref='listCom'>
     <ul>
-    <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
-      <li v-for="(item, index) in list" :key="index" @touchend="toArticle(index)">
+    <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="load" :auto-fill="false"> 
+      <li v-for="(item, index) in list" :key="index" @click.prevent="toArticle(index)">
         <div class="list_left">
           <h1>{{item.title}}</h1>
           <div class="list_bottom">
@@ -20,9 +20,10 @@
 </template>
 
 <script>
+import {mapState,mapMutations} from 'vuex'
 import {IndexModel} from '../../../utils/index'
+import mango from '../../../js'
 const indexModel = new IndexModel()
-import {mapState} from 'vuex'
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
 import Vue from 'vue'
@@ -33,18 +34,26 @@ export default {
       allLoaded:false,
       list: [],
       ajaxData: {},
-      baseUrl: ''
+      baseUrl: '',
+      page: 1,
+      limit: 10,
+      baceLimit: 10,
+      typeId: '',
+      allPage: 2
     }
   },
   computed: {
     ...mapState({
-      parmas: state => state.treeList.parmas
+      parmas: state => state.treeList.parmas,
+      listScroll: state => state.loadmore.listScroll
     })
   },
   watch: {
     //二级才会触发
     parmas() {
-      let obj = this.getCategoriesId()
+      this.list = []
+      let obj = this.getCategoriesId(1, 10)
+      obj = this.setType(obj)
       this.getArticlesList(obj)
     }
   },
@@ -53,7 +62,9 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
-    let obj = this.getCategoriesId()
+    this.listenScrollTop()
+    let obj = this.getCategoriesId(1, 10)
+    obj = this.setType(obj)
     //obj传给getArticlesList
     if(this.$route.query.type === 1) {
       return
@@ -62,15 +73,55 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setListScroll']),
+    //获取滚动条
+    handleScroll(e) {
+      let top = e.target.scrollTop
+      this.setListScroll(top)
+    },
+    //监听滚动条高度
+    listenScrollTop() {
+      this.$refs.listCom.addEventListener('scroll', this.handleScroll,true)
+      this.$refs.listCom.scrollTop = this.listScroll
+      console.log(11,this.listScroll)
+    },
+    //初始化数据
+    initData() {
+      this.baceLimit = 10
+      // this.setDealScroll(0);
+      // this.$refs.deal.scrollTop = this.dealScroll
+      // localStorage.removeItem('selectDealLimit')
+      // localStorage.removeItem('dealLimit');  
+      this.getSelectLimit()
+    },
+    //区分金管家服务和学院
+    setType(obj) {
+      this.typeId = this.$route.query.id
+      if(this.typeId) {
+        if(this.typeId === '1') {
+          this.$set(obj, 'classify', 1)
+        }else if(this.typeId === '2') {
+          this.$set(obj, 'classify', 2)
+        }
+        return obj
+      }
+    },
     //获取文章列表
     getArticlesList(obj) {
       indexModel.getArticles(obj).then(res => {
-        this.list = res.data
-        this.baseUrl = res.baseUrl
+        if(res.data.length) {
+          this.allLoaded = false
+          this.list = this.list.concat(res.data)
+          this.baseUrl = res.baseUrl
+        }else {
+          this.allLoaded = true
+          // this.list = []
+          mango.tip('没有更多数据了')
+        }
       })
     },
     //获取一二三级id参数
-    getCategoriesId(){
+    getCategoriesId(page, limit){
       const categoryId = this.$route.query.id
       const account = this.ajaxData.account
       let obj = {}
@@ -80,8 +131,9 @@ export default {
           'categoryId': categoryId,
           'subCateId': subCateId,
           'account': account,
-          'page': 1,
-          'limit':10}
+          'page': page,
+          'limit':limit
+          }
       }else if(this.parmas.name1 && this.parmas.name2) {
         let subCateId = this.parmas.name1
         let subCate2Id = this.parmas.name2
@@ -90,11 +142,16 @@ export default {
           'subCateId': subCateId,
           'subCate2Id': subCate2Id,
           'account':account,
-          'page': 1,
-          'limit':10}
+          'page': page,
+          'limit':limit
+          }
       }else {
-        obj = {'categoryId': categoryId,'account':account,'page': 1,
-          'limit':10}
+        obj = {
+          'categoryId': categoryId,
+          'account':account,
+          'page': page,
+          'limit':limit
+        }
       }
       return obj
     },
@@ -108,18 +165,15 @@ export default {
     },
      //下拉刷新
     loadBottom() {
-      this.$refs.loadmore.onBottomLoaded();
+      this.$refs.load.onBottomLoaded();
       this.pullDownData()
     },
     //下拉加载数据
     pullDownData() {
-      // if (this.page < this.allPage) {
-        // this.allLoaded = true
-      //   this.page ++;
-      //   this.getData(this.page, this.limit, startTime, endTime);
-      // }else {
-      //   mango.tip('没有更多数据了')
-      // }
+      this.allLoaded = true
+      this.page ++;
+      let obj = this.getCategoriesId(this.page, this.limit)
+      this.getArticlesList(obj);
     }
   }
 }
@@ -127,6 +181,11 @@ export default {
 
 <style lang="scss" scoped>
 .listComp {
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll; 
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
   li {
     width: 100vw;
     height: 26.66vw;

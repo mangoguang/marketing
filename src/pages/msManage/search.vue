@@ -117,8 +117,7 @@ export default {
      indexModel.getArticleSearch(keyword, account).then(res => {
        if(res.data) {
           //关键字高亮
-        let list = res.data
-        //1.========可以不需要fuzzyQuery=====
+        let list = res.data.splice(0,200) //截取前200条
         // let matchList  = fuzzyQuery(list, this.searchVal)
         this.setTitle(list)
         this.showMatchList(list)
@@ -185,7 +184,6 @@ export default {
     },
     //点击跳转
     toArticle(index) {
-      // let articleId = this.titleList[index].articleId
       let id = this.list[index].id
       if(id) {
         this.historyTxt = this.searchVal
@@ -301,6 +299,8 @@ export default {
     font-size: 3.73vw;
     padding-left: 4vw;
     border-top: 1px solid #ccc;
+    max-height: 100vh;
+    overflow: scroll;
     li {
       border-bottom: 1px solid #e1e1e1;
     }

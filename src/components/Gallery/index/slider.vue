@@ -1,5 +1,5 @@
 <template>
-  <mt-swipe class="wrapper" :auto="auto" >
+  <mt-swipe class="wrapper" :auto="auto" @change="handleChange" >
     <mt-swipe-item 
       :style="{backgroundImage:'url(' + item.src + ')',backgroundSize: 'contain'}"
       v-for='(item,index) in list' :key='index'
@@ -9,12 +9,22 @@
 </template>
 
 <script>
+import {mapMutations} from 'vuex'
 import { Swipe, SwipeItem } from 'mint-ui';
 import Vue from 'vue'
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 export default {
-  props: ['list', 'auto']
+  props: ['list', 'auto'],
+  created() {
+    this.setImgUrl(this.list[0].src)
+  },
+  methods: {
+    ...mapMutations(['setImgUrl']),
+    handleChange(index) {
+      this.setImgUrl(this.list[index].src)
+    }
+  }
 }
 </script>
 

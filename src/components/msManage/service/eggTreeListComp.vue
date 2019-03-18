@@ -155,9 +155,15 @@ export default {
   background-color:#fff;
 }
 .wrapper {
+  min-width: 100vw;
   overflow-x: hidden;
   position: relative;
-  height: 25vw;
+  // height: 25vw;
+  position: fixed;
+  background: #fff;
+  z-index: 90;
+  top: 16vw;
+  left: 0;
   .treeList{
     overflow-x: auto;
     display: flex;
@@ -172,8 +178,8 @@ export default {
         white-space: nowrap;
         background: #e1e1e1;
         width: 100vw;
-        position: absolute;
-        top: 12vw;
+        position: fixed;
+        top: 28vw;
         left: 0;
         // z-index: 99;
         .child_treeList {

@@ -5,7 +5,10 @@ class IndexModel extends Request {
   // 获取首页一级分类列表
   getCategory1List() {
     return this.getData({
-      url: '/api/train/repository/v1/category'
+      url: '/api/train/repository/v1/category',
+      params: {
+        // classify: 2
+      }
     })
   }
   //首页搜索接口
@@ -14,7 +17,8 @@ class IndexModel extends Request {
       url: '/api/train/repository/v1/getRepositoryByKey',
       params: {
         key: keyword,
-        account: account
+        account: account,
+        classify:1        //1代表金管家2代表学院
       }
     })
   }
@@ -72,7 +76,9 @@ class IndexModel extends Request {
       url: '/api/question/repository/v1//getQuestionList',
       params: {
         key: key,
-        account:account
+        account:account,
+        page: 1,
+        limit: 200
       }
     })
   }
@@ -83,11 +89,13 @@ class IndexModel extends Request {
     }) 
   }
   //常见问题列表接口
-  questionList(id) {
+  questionList(id,page,limit) {
     return this.getData({
       url: '/api/question/repository/v1//getQuestionList',
       params: {
-        categoryId: id  //  问题分类id
+        categoryId: id,  //  问题分类id
+        page: page,
+        limit: limit
       }
     })
   }

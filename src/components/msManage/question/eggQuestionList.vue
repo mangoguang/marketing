@@ -1,20 +1,29 @@
 <template>
   <ul>
-    <li v-for="(item, index) in list" :key="index" @touchend="toQuestionDetails(index)">
+    <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="load" :auto-fill="false"> 
+    <li v-for="(item, index) in list" :key="index" @click.prevent="toQuestionDetails(index)">
       <span>{{item.title}}</span>
       <img src="../../../assets/imgs/rightside.png" alt="">
     </li>
+    </mt-loadmore>
   </ul>
 </template>
 
 <script>
+import Vue from 'vue'
 import {IndexModel} from '../../../utils/index'
+import mango from '../../../js'
 const indexModel = new IndexModel()
 import { mapState } from 'vuex';
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
 export default {
   data() {
     return {
-      list: []
+      list: [],
+      allLoaded: false,
+      page: 1,
+      limit: 10
     }
   },
   computed: {
@@ -24,18 +33,30 @@ export default {
   },
   watch: {
     parmas() {
+      this.list = []
+      this.getQuestionList(1,10)
+    }
+  },
+  mounted() {
+    if(this.$route.query.type === 1) {
+      return
+    }else {
       this.getQuestionList()
     }
   },
-  created() {
-    this.getQuestionList()
-  },
   methods: {
     //获取常见问题列表
-    getQuestionList() {
+    getQuestionList(page,limit) {
       let id = this.parmas.name1
-      indexModel.questionList(id).then(res => {
-        this.list = res.data
+      indexModel.questionList(id,page,limit).then(res => {
+        if(res.data.length) {
+          this.allLoaded = false
+          // this.list = res.data
+          this.list = this.list.concat(res.data)
+        }else {
+          this.allLoaded = true
+          mango.tip('没有更多数据了')
+        }
       })
     },
     //跳转到问题详情
@@ -46,6 +67,16 @@ export default {
         query: {
           id: id
         }})
+    },
+    loadBottom() {
+      this.$refs.load.onBottomLoaded();
+      this.pullDownData()
+    },
+    //下拉加载数据
+    pullDownData() {
+      this.allLoaded = true
+      this.page ++;
+      this.getQuestionList(this.page, this.limit);
     }
   }
 }

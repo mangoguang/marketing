@@ -297,9 +297,7 @@ export default {
   box-sizing: border-box;
   padding-top: 33.88vw;
   background: #f8f8f8;
-  box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
-
   ul {
     border-top: 1px solid #e1e1e1;
     // border-bottom: 1px solid #e1e1e1;
