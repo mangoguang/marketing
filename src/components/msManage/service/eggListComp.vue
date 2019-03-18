@@ -1,5 +1,5 @@
 <template>
-  <div class="listComp" ref='listCom'>
+  <div class="listComp" ref='scroll'>
     <ul>
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="load" :auto-fill="false"> 
       <li v-for="(item, index) in list" :key="index" @click.prevent="toArticle(index)">
@@ -39,7 +39,8 @@ export default {
       limit: 10,
       baceLimit: 10,
       typeId: '',
-      allPage: 2
+      allPage: 2,
+      listTop: 0
     }
   },
   computed: {
@@ -49,23 +50,22 @@ export default {
     })
   },
   watch: {
-    //二级才会触发
     parmas() {
       this.list = []
       let obj = this.getCategoriesId(1, 10)
       obj = this.setType(obj)
       this.getArticlesList(obj)
-      // console.log(12,this.parmas)
-      // this.listenScrollTop()
+    },
+    listTop() {
+      console.log(this.listTop)
     }
-
   },
   created() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
-    
+    this.listenScrollTop()
     let obj = this.getCategoriesId(1, 10)
     obj = this.setType(obj)
     //obj传给getArticlesList
@@ -74,28 +74,26 @@ export default {
     }else {
       this.getArticlesList(obj)
     }
-    this.$refs.listCom.addEventListener('scroll', this.handleScroll,true)
-    this.$refs.listCom.scrollTop =  this.listScroll
+    // this.recordScrollPosition()
   },
   methods: {
     ...mapMutations(['setListScroll']),
-    //获取滚动条
-    handleScroll(e) {
-      let top = e.target.scrollTop
-      this.setListScroll(top)
+    //获取滚动条高度
+    recordScrollPosition(e) {
+      this.listTop = e.target.scrollTop
+      console.log(this.listTop)
+      this.setListScroll(e.target.scrollTop)
     },
     //监听滚动条高度
     listenScrollTop() {
-      this.$refs.listCom.addEventListener('scroll', this.handleScroll,true)
-      this.$refs.listCom.scrollTop = this.listScroll
+      this.$refs.scroll.addEventListener("scroll",this.recordScrollPosition);
+      this.$refs.scroll.scrollTop = this.listScroll;       
     },
     //初始化数据
     initData() {
       this.baceLimit = 10
       this.setListScroll(0);
       this.$refs.listCom.scrollTop = this.listScroll
-      // localStorage.removeItem('selectDealLimit')
-      // localStorage.removeItem('dealLimit');  
     },
     //区分金管家服务和学院
     setType(obj) {
@@ -189,6 +187,8 @@ export default {
   overflow: scroll; 
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
+//   -webkit-backface-visibility: hidden;    
+// -webkit-transform: translate3d(0,0,0);
   li {
     width: 100vw;
     height: 26.66vw;
