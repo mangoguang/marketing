@@ -52,17 +52,19 @@ export default {
   watch: {
     parmas() {
       if(this.key) {
-        let temp = this.hasList(this.parmas.name1)
-        if(temp > this.msManageList.length) {
+        let temp = 0
+        if(this.parmas.name1 && !this.parmas.name2) {
+          temp = this.hasList(this.parmas.name1)
+        }else if(this.parmas.name1 && this.parmas.name2){
+          temp = this.hasList(this.parmas.name2)
+        }
+        if(temp === this.msManageList.length) {
           let obj = this.getCategoriesId(1, 10)
           obj = this.setType(obj)
           this.getArticlesList(obj)
         }else {
           this.getList(this.parmas.name1)
           this.allLoaded = false
-          // setTimeout(() => {
-          //   this.listenScrollTop()
-          // }, 100);
           this.$nextTick(() => {
             this.listenScrollTop()
           })
@@ -126,7 +128,9 @@ export default {
         this.saveList(res.data)
         this.getInitList(res.data)
         this.listenScrollTop()
-        this.allLoaded = false
+        if(res.data && res.data.length < 10) {
+          this.allLoaded = true
+        }
       })
     },
     //获取文章列表
@@ -202,15 +206,15 @@ export default {
     },
     //判断vuex是否已存储list
     hasList(id) {
-      let temp = this.msManageList.length
+      let temp1 = 0
       this.msManageList.forEach(item => {
         if(item[0].id == id) {
-          temp -= 1 
+          temp1 -= 1 
         }else {
-          temp += 1
+          temp1 += 1
         }
       });
-      return temp
+      return temp1
     },
     //跳转到文章详情	
     toArticle(index) {
