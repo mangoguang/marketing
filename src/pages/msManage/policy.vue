@@ -48,7 +48,7 @@ export default {
     //获取每一级的参数name
     getParmas(val) {
       this.setParmas(val)
-      console.log(val)
+      // console.log(val)
     },
     //获取子级状态设置css
     getStatus(val) {
@@ -77,6 +77,8 @@ export default {
 <style lang="scss" scoped>
 .policy {
   position: relative;
+  // height: 100vh;
+  // overflow: scroll;
   .treeList {
     padding-top: 16vw;
   }

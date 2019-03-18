@@ -1,8 +1,8 @@
 <template>
-  <div class="listComp" ref='scroll'>
+  <div class="listComp"  ref='myScroll'>
     <ul>
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="load" :auto-fill="false"> 
-      <li v-for="(item, index) in list" :key="index" @click.prevent="toArticle(index)">
+      <li v-for="(item, index) in msManageList" :key="index" @click.prevent="toArticle(index)" >
         <div class="list_left">
           <h1>{{item.title}}</h1>
           <div class="list_bottom">
@@ -37,16 +37,15 @@ export default {
       baseUrl: '',
       page: 1,
       limit: 10,
-      baceLimit: 10,
-      typeId: '',
-      allPage: 2,
-      listTop: 0
+      typeId: ''
     }
   },
   computed: {
     ...mapState({
       parmas: state => state.treeList.parmas,
-      listScroll: state => state.loadmore.listScroll
+      listScroll: state => state.loadmore.listScroll,
+      msManageList: state => state.loadmore.msManageList,
+      listId: state => state.loadmore.listId
     })
   },
   watch: {
@@ -55,9 +54,6 @@ export default {
       let obj = this.getCategoriesId(1, 10)
       obj = this.setType(obj)
       this.getArticlesList(obj)
-    },
-    listTop() {
-      console.log(this.listTop)
     }
   },
   created() {
@@ -65,35 +61,30 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
-    this.listenScrollTop()
-    let obj = this.getCategoriesId(1, 10)
-    obj = this.setType(obj)
-    //obj传给getArticlesList
     if(this.$route.query.type === 1) {
+      this.initData()
       return
     }else {
-      this.getArticlesList(obj)
+      this.listenScrollTop()
     }
-    // this.recordScrollPosition()
   },
   methods: {
-    ...mapMutations(['setListScroll']),
+    ...mapMutations(['setListScroll','setMsManageList']),
     //获取滚动条高度
     recordScrollPosition(e) {
       this.listTop = e.target.scrollTop
-      console.log(this.listTop)
       this.setListScroll(e.target.scrollTop)
+      // console.log(this.listScroll)
     },
     //监听滚动条高度
     listenScrollTop() {
-      this.$refs.scroll.addEventListener("scroll",this.recordScrollPosition);
-      this.$refs.scroll.scrollTop = this.listScroll;       
+      this.$refs.myScroll.addEventListener('scroll',this.recordScrollPosition,false);
+      this.$refs.myScroll.scrollTop = this.listScroll; 
     },
     //初始化数据
     initData() {
-      this.baceLimit = 10
       this.setListScroll(0);
-      this.$refs.listCom.scrollTop = this.listScroll
+      this.$refs.myScroll.scrollTop = this.listScroll
     },
     //区分金管家服务和学院
     setType(obj) {
@@ -113,11 +104,11 @@ export default {
         if(res.data.length) {
           this.allLoaded = false
           this.list = this.list.concat(res.data)
+          this.setMsManageList(this.list)
           this.baseUrl = res.baseUrl
+          this.listenScrollTop()
         }else {
           this.allLoaded = true
-          // this.list = []
-          mango.tip('没有更多数据了')
         }
       })
     },

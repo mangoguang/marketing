@@ -82,8 +82,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.index {
+  height: 100vh;
+  overflow: scroll;
+}
 .entry {
   padding: 4vw;
+  box-sizing: border-box;
   img {
     background: rgba(255, 45, 85, 1);
     width: 20vw;

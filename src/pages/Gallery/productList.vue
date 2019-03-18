@@ -16,7 +16,7 @@
     <!-- 列表 -->
     <div class="m-list" v-show="!type">
       <div v-for="(item, index) in list" :key='index'> 
-        <router-link to='/productDetails'>
+        <router-link :to='{name:"productDetails",query: {id: item.title}}'>
           <m-list :list='item'/>
         </router-link>
       </div>
@@ -24,7 +24,7 @@
     <!-- 瀑布流 -->
     <div class="list" v-show="type">
       <div class="item" v-for="(item, index) in list" :key='index'>
-        <router-link to='/productDetails'>
+        <router-link :to='{name:"productDetails",query: {id: item.title}}'>
           <w-list :list='item'/>
         </router-link>
       </div>  
