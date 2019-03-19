@@ -32,7 +32,8 @@ export default {
       parmas: state => state.treeList.parmas,
       listScroll: state => state.loadmore.listScroll,
       msManageList: state => state.loadmore.msManageList,
-      artList: state => state.loadmore.artList
+      artList: state => state.loadmore.artList,
+      listAllScroll: state => state.loadmore.listAllScroll
     })
   },
   watch: {
@@ -60,24 +61,35 @@ export default {
       this.initData()
       return
     }else {
+      this.key = true
       this.listenScrollTop()
     }
   },
   methods: {
-    ...mapMutations(['setListScroll','getList', 'setMsManageList','getInitList']),
-      //获取滚动条高度
+    ...mapMutations([
+      'setListScroll',
+      'getList',
+      'setMsManageList',
+      'getInitList',
+      'getScroll',
+      'setListAllScroll'
+    ]),
+    //获取滚动条高度
     recordScrollPosition(e) {
-      //如果没有数据源则不改变缓存高度
-      if(this.artList) {
-        if(this.artList.length) {
-          this.setListScroll(e.target.scrollTop)
-        }
+      let obj = {
+        id: this.parmas.name1,
+        scroll: e.target.scrollTop
       }
+      this.setListAllScroll(obj)
     },
     //监听滚动条高度
     listenScrollTop() {
       this.$refs.questionScroll.addEventListener('scroll',this.recordScrollPosition,false);
-      this.$refs.questionScroll.scrollTop = this.listScroll; 
+      this.getScroll(this.parmas.name1)
+      console.log('scrpll',this.listScroll)
+      this.$nextTick(() => {
+        this.$refs.questionScroll.scrollTop = this.listScroll; 
+      })
     },
     //初始化数据
     initData() {
@@ -174,6 +186,7 @@ export default {
   overflow: scroll; 
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: 40vw;
     li {
       border-bottom: 1px solid #e1e1e1;
       width: 100%;

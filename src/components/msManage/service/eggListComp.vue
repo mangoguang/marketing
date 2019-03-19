@@ -46,7 +46,8 @@ export default {
       parmas: state => state.treeList.parmas,
       listScroll: state => state.loadmore.listScroll,
       msManageList: state => state.loadmore.msManageList,
-      artList: state => state.loadmore.artList
+      artList: state => state.loadmore.artList,
+      listAllScroll: state => state.loadmore.listAllScroll
     })
   },
   watch: {
@@ -59,6 +60,7 @@ export default {
           temp = this.hasList(this.parmas.name2)
         }
         if(temp === this.msManageList.length) {
+          this.getInitList([])
           let obj = this.getCategoriesId(1, 10)
           obj = this.setType(obj)
           this.getArticlesList(obj)
@@ -88,25 +90,39 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setListScroll','getList', 'setMsManageList','getInitList']),
+    ...mapMutations([
+      'setListScroll',
+      'getList', 
+      'setMsManageList',
+      'getInitList',
+      'getScroll',
+      'setListAllScroll',
+      'initSrcoll'
+    ]),
     //获取滚动条高度
     recordScrollPosition(e) {
-      //如果没有数据源则不改变缓存高度
-      if(this.artList) {
-        if(this.artList.length) {
-          this.setListScroll(e.target.scrollTop)
-        }
+      let id = this.getId()
+      let obj = {
+        id: id,
+        scroll: e.target.scrollTop
       }
+      this.setListAllScroll(obj)
     },
     //监听滚动条高度
     listenScrollTop() {
+      let id = this.getId()
       this.$refs.myScroll.addEventListener('scroll',this.recordScrollPosition,false);
-      this.$refs.myScroll.scrollTop = this.listScroll; 
+      this.getScroll(id)
+      console.log('scrpll',this.listScroll)
+      this.$nextTick(() => {
+        this.$refs.myScroll.scrollTop = this.listScroll; 
+      })
     },
     //初始化数据
     initData() {
       this.setListScroll(0);
       this.$refs.myScroll.scrollTop = this.listScroll
+      this.initSrcoll([])
     },
     //区分金管家服务和学院
     setType(obj) {
@@ -252,8 +268,7 @@ export default {
   overflow: scroll; 
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
-//   -webkit-backface-visibility: hidden;    
-// -webkit-transform: translate3d(0,0,0);
+  padding-bottom: 38vw;
   li {
     width: 100vw;
     height: 26.66vw;

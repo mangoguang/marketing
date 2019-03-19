@@ -77,8 +77,8 @@ export default {
 <style lang="scss" scoped>
 .policy {
   position: relative;
-  // height: 100vh;
-  // overflow: scroll;
+  height: 100vh;
+  overflow: hidden;
   .treeList {
     padding-top: 16vw;
   }
