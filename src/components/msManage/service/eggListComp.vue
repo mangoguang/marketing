@@ -233,9 +233,13 @@ export default {
     pullDownData() {
       this.allLoaded = true
       let len = (this.artList.length)/10 + 1
-      this.page = len
-      let obj = this.getCategoriesId(this.page, this.limit)
-      this.getArticlesList(obj);
+      if(Math.floor(len) < len) {
+        this.allLoaded = true
+      }else {
+        this.page = len
+        let obj = this.getCategoriesId(this.page, this.limit)
+        this.getArticlesList(obj);
+      }
     }
   }
 }
