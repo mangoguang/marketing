@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="list_right">
-          <!-- <img :src="baseUrl + item.image" alt="" class="img"> -->
+          <img :src="baseUrl + item.image" alt="" class="img">
         </div>
       </li>
     </mt-loadmore>
@@ -113,7 +113,7 @@ export default {
       let id = this.getId()
       this.$refs.myScroll.addEventListener('scroll',this.recordScrollPosition,false);
       this.getScroll(id)
-      console.log('scrpll',this.listScroll)
+      // console.log('scrpll',this.listScroll)
       this.$nextTick(() => {
         this.$refs.myScroll.scrollTop = this.listScroll; 
       })
@@ -141,6 +141,7 @@ export default {
       let obj = this.getCategoriesId(1, 10)
       obj = this.setType(obj)
       indexModel.getArticles(obj).then(res => {
+        this.baseUrl = res.baseUrl
         this.saveList(res.data)
         this.getInitList(res.data)
         this.listenScrollTop()
@@ -308,7 +309,6 @@ export default {
       width: 21.33vw;
       height: 21.33vw;
       border:1px solid rgba(225,225,225,1);
-      // background:linear-gradient(30deg,rgba(60,182,238,1) 0%,rgba(125,226,255,1) 100%);
        .img {
         width: 21.33vw;
         height: 21.33vw;

@@ -25,7 +25,6 @@ export default {
     getList(state, id) { //比较三级id
       state.msManageList.forEach(item => {
         if(item[0].id == id) {
-          console.log(123123,item[1].list)
           state.artList = item[1].list
         }
       });

@@ -86,7 +86,7 @@ export default {
     listenScrollTop() {
       this.$refs.questionScroll.addEventListener('scroll',this.recordScrollPosition,false);
       this.getScroll(this.parmas.name1)
-      console.log('scrpll',this.listScroll)
+      // console.log('scrpll',this.listScroll)
       this.$nextTick(() => {
         this.$refs.questionScroll.scrollTop = this.listScroll; 
       })
