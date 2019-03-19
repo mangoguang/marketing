@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div class="save">
+    <div class="save" @click="getScanner">
       <img src="../../assets/imgs/download.png" alt="">
       <span>保存图片</span>
     </div>
@@ -58,6 +58,24 @@ export default {
     }
   },
   methods: {
+    getScanner() {
+      var FNScanner = api.require('FNScanner');
+      FNScanner.encodeImg({
+          content: 'http://www.apicloud.com/',
+          saveToAlbum: true,
+          saveImg: {
+              path: 'fs://album.png',
+              w: 200,
+              h: 200
+          }
+      }, function(ret, err) {
+          if (ret.status) {
+              alert(JSON.stringify(ret));
+          } else {
+              alert(JSON.stringify(err));
+          }
+      });
+    },
     imgTogether (url, callback) {
         var canvas = document.createElement('canvas');
         var size = 180;
