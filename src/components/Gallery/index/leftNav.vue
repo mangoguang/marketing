@@ -12,39 +12,54 @@
 </template>
 
 <script>
-import mango from '../../../js'
+// import mango from '../../../js'
+import {getAjax, btnList} from '../../../utils/gallery'
 import {mapState, mapMutations} from 'vuex'
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
 export default {
   data() {
     return {
-      list: ['热门推荐','凯奇','3D','0769']
     }
   },
   computed: {
     ...mapState({
       leftNavList: state => state.leftNavList.leftNavList,
-      listVal: state => state.leftNavList.listVal
+      listVal: state => state.leftNavList.listVal,
+      initlist: state => state.leftNavList.initlist
     })
   },
-  created() {
+  mounted() {
     this.initNav()
   },
   methods: {
-    ...mapMutations(['setLeftNavList', 'getListVal']),
+    ...mapMutations(['setLeftNavList', 'getListVal', 'setInitList']),
     //初始化默认选热门
     initNav() {
       if(this.leftNavList.length) {
         return
       }
-      this.setLeftNavList(mango.btnList(this.list, 0))
-      this.getListVal()
+      this.getBrand()
+    },
+    //获取导航栏
+    getBrand() {
+      let account = getAjax().account
+      indexModel.getBrand(account).then(res => {
+        if(res.data) {
+          let hot = {name: '热门推荐'}
+          res.data.list.unshift(hot)
+          this.setInitList(res.data.list)
+          this.setLeftNavList(btnList(this.initlist, 0))
+          this.getListVal()
+        }
+      })
     },
     //切换导航
     toggleNav(index) {
       if(this.leftNavList[index].status) {
         return
       }
-      this.setLeftNavList(mango.btnList(this.list, index))
+      this.setLeftNavList(btnList(this.initlist, index))
       this.getListVal()
     }
   }

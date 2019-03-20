@@ -109,6 +109,22 @@ class IndexModel extends Request {
       }
     })
   }
+
+  //图库
+  //品牌集合
+  getBrand(account) {
+    return this.getData({
+      url: '/api/product/v1/brand',
+      params: {
+        account: account
+      }
+    })
+  }
+  MusiCategory() {
+    return this.getData({
+      url: '/api/product/v1/category'
+    })
+  }
 }
 
 export { IndexModel }

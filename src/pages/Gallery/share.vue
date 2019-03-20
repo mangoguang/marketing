@@ -2,9 +2,9 @@
   <div class="share">
     <div class="canvas">
       <Banner :title="'产品分享'"/>
-      <img :src="imgUrl" alt="">
-      <div class="content">
-        <img src="../../assets/imgs/share_bottom.png" alt="">
+      <img :src="imgUrl" alt>
+      <div class="content" ref="creatImg">
+        <img src="../../assets/imgs/share_bottom.png" alt>
         <div class="msg">
           <p class="title">{{msg.title}}</p>
           <span class="price">¥{{msg.price}}</span>
@@ -12,37 +12,49 @@
         </div>
       </div>
     </div>
-    <div class="save" @click="getScanner">
-      <img src="../../assets/imgs/download.png" alt="">
+    <div class="save" @click="saveImg">
+      <img src="../../assets/imgs/download.png" alt>
       <span>保存图片</span>
     </div>
-    <m-share  v-for="(item, index) in list" :key='index' :list='item' @touchend.native='shareBtn(index)'/>
+    <m-share
+      v-for="(item, index) in list"
+      :key="index"
+      :list="item"
+      @touchend.native="shareBtn(index)"
+    />
   </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
-import Banner from '../../components/banner'
-import MShare from '../../components/Gallery/productDetails/productShare'
+import html2canvas from "html2canvas";
+import { mapState } from "vuex";
+import Banner from "../../components/banner";
+import MShare from "../../components/Gallery/productDetails/productShare";
 export default {
-  components: { MShare,Banner },
+  components: { MShare, Banner },
   data() {
     return {
       msg: {},
-      list: [{
-        name: '分享给微信好友',
-        imgUrl: './static/images/session.png'
-      },{
-        name: '分享到微信朋友圈',
-        imgUrl: './static/images/timeline.png'
-      },{
-        name: '分享给QQ好友',
-        imgUrl: './static/images/qq.png'
-      },{
-        name: '分享到微博',
-        imgUrl: './static/images/weibo.png'
-      }]
-    }
+      list: [
+        {
+          name: "分享给微信好友",
+          imgUrl: "./static/images/session.png"
+        },
+        {
+          name: "分享到微信朋友圈",
+          imgUrl: "./static/images/timeline.png"
+        },
+        {
+          name: "分享给QQ好友",
+          imgUrl: "./static/images/qq.png"
+        },
+        {
+          name: "分享到微博",
+          imgUrl: "./static/images/weibo.png"
+        }
+      ],
+      url: ''
+    };
   },
   computed: {
     ...mapState({
@@ -50,56 +62,117 @@ export default {
     })
   },
   created() {
-    this.msg = this.$route.query.msg
+    this.msg = this.$route.query.msg;
   },
   watch: {
     imgUrl() {
-      console.log(this.imgUrl)
+      console.log(this.imgUrl);
     }
   },
   methods: {
-    getScanner() {
-      var FNScanner = api.require('FNScanner');
-      FNScanner.encodeImg({
-          content: 'http://www.apicloud.com/',
-          saveToAlbum: true,
-          saveImg: {
-              path: 'fs://album.png',
-              w: 200,
-              h: 200
-          }
-      }, function(ret, err) {
-          if (ret.status) {
-              alert(JSON.stringify(ret));
-          } else {
-              alert(JSON.stringify(err));
-          }
+    saveImg() {
+      html2canvas(this.$refs.creatImg, {
+        backgroundColor: null
+      }).then(canvas => {
+        // document.body.appendChild(canvas);
+        // var link = document.createElement('a');
+         this.url = canvas.toDataURL();
+        console.log(this.url)
+        this.savePicture()
       });
     },
-    imgTogether (url, callback) {
-        var canvas = document.createElement('canvas');
-        var size = 180;
-        canvas.width = size;
-        canvas.height = size;
-        var context = canvas.getContext('2d');
-        // 这是上传图像
-        var imgUpload = new Image();
-        imgUpload.onload = function () {
-            // 绘制
-            context.drawImage(imgUpload, 0, 0, size, size, 0,0, size, size);
-            // 再次绘制
-            context.drawImage(eleImgCover, 0, 0, size, size, 0,0, size, size);
-            // 回调
-            callback(canvas.toDataURL('image/png'));
-        };
-        imgUpload.src = url;
+    download(url1) {
+      var url = url1;
+      // var url =
+      //   "http://img1.3lian.com/gif/more/11/201206/a5194ba8c27b17def4a7c5495aba5e32.jpg";
+      api.saveMediaToAlbum(
+        {
+          path: "fs://http.jpg"
+        },
+        function(ret, err) {
+          if (ret && ret.status) {
+            alert("保存成功");
+          } else {
+            alert("保存失败");
+          }
+        }
+      );
     },
-    shareBtn (index) {
-      console.log(index)
+    savePicture() {
+      // var url =
+      //   "http://img1.3lian.com/gif/more/11/201206/a5194ba8c27b17def4a7c5495aba5e32.jpg";
+      var timestamp = new Date().getTime();
+      api.download(
+        {
+          url: this.url,
+          savePath: "fs://album" + timestamp + ".png",
+          report: true,
+          cache: true,
+          allowResume: true
+        },
+        function(ret, err) {
+          if (ret) {
+            api.toast({
+              msg: "图片已保存到本地"
+            });
+          }else{
+            alert(err)
+          }
+          api.saveMediaToAlbum(
+            {
+              path: "fs://album" + timestamp + ".png"
+            },
+            function(ret, err) {}
+          );
+        }
+      );
+    },
+    getScanner() {
+      var FNScanner = api.require("FNScanner");
+      FNScanner.encodeImg(
+        {
+          content: "http://www.apicloud.com/",
+          saveToAlbum: true,
+          type: "image",
+          saveImg: {
+            path: "fs://album.png",
+            w: 200,
+            h: 200
+          }
+        },
+        function(ret, err) {
+          console.log('scanner',ret)
+          if (ret.status) {
+            alert(JSON.stringify(ret));
+          } else {
+            alert(JSON.stringify(err));
+          }
+        }
+      );
+    },
+    imgTogether(url, callback) {
+      var canvas = document.createElement("canvas");
+      var size = 180;
+      canvas.width = size;
+      canvas.height = size;
+      var context = canvas.getContext("2d");
+      // 这是上传图像
+      var imgUpload = new Image();
+      imgUpload.onload = function() {
+        // 绘制
+        context.drawImage(imgUpload, 0, 0, size, size, 0, 0, size, size);
+        // 再次绘制
+        context.drawImage(eleImgCover, 0, 0, size, size, 0, 0, size, size);
+        // 回调
+        callback(canvas.toDataURL("image/png"));
+      };
+      imgUpload.src = url;
+    },
+    shareBtn(index) {
+      console.log(index);
     }
-  } 
-  
-}
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -146,15 +219,16 @@ export default {
           width: 9.33vw;
           height: 9.33vw;
           top: 7.3vw;
-          border: 1px solid #dcbf8a
+          border: 1px solid #dcbf8a;
         }
       }
     }
   }
   .save {
-    background:linear-gradient(0deg,rgba(21,25,34,1),rgba(55,58,79,1));
-    border:1px solid rgba(10,11,16,1);
-    box-shadow:0px 0.8vw 1.6vw 0px rgba(18,26,41,0.17), 0px 2px 0px 0px rgba(255,255,255,0.11);
+    background: linear-gradient(0deg, rgba(21, 25, 34, 1), rgba(55, 58, 79, 1));
+    border: 1px solid rgba(10, 11, 16, 1);
+    box-shadow: 0px 0.8vw 1.6vw 0px rgba(18, 26, 41, 0.17),
+      0px 2px 0px 0px rgba(255, 255, 255, 0.11);
     border-radius: 4.53vw;
     width: 28.26vw;
     height: 9.06vw;
@@ -167,7 +241,7 @@ export default {
     margin-bottom: 4vw;
     img {
       width: 5.06vw;
-      height: auto;;
+      height: auto;
     }
     span {
       color: #fff;
