@@ -4,7 +4,7 @@
       v-for="(item, index) in list"
       :key="index"
       :class="{active : item.status}"
-      @click="changeStatus(index)"
+      @touchend="changeStatus(index)"
     >
       {{item.name}}
       <hr v-show="item.status">

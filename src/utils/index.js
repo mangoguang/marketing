@@ -120,9 +120,46 @@ class IndexModel extends Request {
       }
     })
   }
+  //热门推荐//产品分类（幕思）
   MusiCategory() {
     return this.getData({
       url: '/api/product/v1/category'
+    })
+  }
+  //品牌的产品列表
+  brandCategory(brand) {
+    return this.getData({
+      url: '/api/product/v1/product/category',
+      params: {
+        brand: brand
+      }
+    })
+  }
+  //轮播图接口
+  getAdvert(brand) {
+    return this.getData({
+      url: '/api/product/v1/advert',
+      params: {
+        brand: brand
+      }
+    })
+  }
+  //品牌介绍接口
+  brandIntroduce(brand) {
+    return this.getData({
+      url: '/api/product/v1/introduce',
+      params: {
+        brand: brand
+      }
+    })
+  }
+  //搜索接口
+  productSearch(key) {
+    return this.getData({
+      url: '/api/product/v1/goods',
+      params: {
+        keys: key
+      }
     })
   }
 }

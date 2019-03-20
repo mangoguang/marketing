@@ -1,7 +1,7 @@
 <template>
   <mt-swipe class="wrapper" :auto="auto" @change="handleChange" >
     <mt-swipe-item 
-      :style="{backgroundImage:'url(' + item.src + ')',backgroundSize: 'contain'}"
+      :style="{backgroundImage:'url('+ item.imgUrl + ')',backgroundSize: 'contain'}"
       v-for='(item,index) in list' :key='index'
       :data-type="index">
     </mt-swipe-item>
@@ -17,12 +17,12 @@ Vue.component(SwipeItem.name, SwipeItem);
 export default {
   props: ['list', 'auto'],
   created() {
-    this.setImgUrl(this.list[0].src)
+    this.setImgUrl(this.list[0].imgUrl)
   },
   methods: {
     ...mapMutations(['setImgUrl']),
     handleChange(index) {
-      this.setImgUrl(this.list[index].src)
+      this.setImgUrl(this.list[index].imgUrl)
     }
   }
 }

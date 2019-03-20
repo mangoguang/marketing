@@ -1,13 +1,14 @@
 <template>
   <div class="m-right">
     <div class="pictureLink">
-      <router-link to='/recommend'>
+      <router-link :to='{name:"recommend",query: {brand: listVal}}'>
+        <!-- <img :src="'10.11.8.229:8099/'+imgUrl" alt=""> -->
         <img :src="imgUrl" alt="">
       </router-link>
     </div>
     <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext"/>
     <div class="classify">
-      <ClassifyComp :type='listVal' :auto='2000'/>
+      <ClassifyComp :type='dataList' :auto='2000'/>
     </div>
   </div>
 </template>
@@ -15,6 +16,8 @@
 import {mapState} from 'vuex'
 import MSlider from './slider'
 import ClassifyComp from './classifyProduct'
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
 export default {
   components: { MSlider, ClassifyComp },
   computed: {
@@ -24,59 +27,89 @@ export default {
   },
   watch: {
     listVal() {
-      this.changeImg()
+      this.getDiffList()
+      // this.getBrandIntroduce()
+      // this.getAdvert()
     }
   },
   created() {
-    this.changeImg()
+    this.getBackList()
+    // this.getBrandIntroduce()
+    // this.getAdvert()
   },
   data() {
     return {
-      imgUrl: './static/images/p1.png',
+      imgUrl: './static/images/p2.png',
       imgSliderList: [{
-        src: './static/images/p2.png'
+        imgUrl: './static/images/p2.png'
       },{
-        src: './static/images/p1.png'
+        imgUrl: './static/images/p1.png'
       },{
-        src: './static/images/p3.png'
+        imgUrl: './static/images/p3.png'
       }],
-      isHot: true
+      dataList: {
+        name: '',
+        list: []
+      },
+      key: false
     }
   },
   methods: {
-    //改变图片
-    changeImg () {
-      if(this.listVal !== '热门推荐') {
-        this.imgUrl = './static/images/p2.png'
-        this.imgSliderList = [{
-          src: './static/images/p4.png'
-        },{
-          src: './static/images/p3.png'
-        },{
-          src: './static/images/p2.png'
-        }]
-        this.isHot = false
+    //获取热门分类
+    getCategory() {
+      indexModel.MusiCategory().then(res => {
+        this.dataList.list = res.data.list
+      })
+    },
+    //获取产品分类
+    brandCategory() {
+      let brand = this.listVal
+      indexModel.brandCategory(brand).then(res => {
+        this.dataList.list = res.data.list
+      })
+    },
+    //不同分类的数据
+    getDiffList() {
+      if(this.listVal === '慕思') {
+        this.getCategory()
+        this.dataList.name = this.listVal
       }else {
-        this.isHot = true
-        this.imgUrl = './static/images/p1.png'
-        this.imgSliderList = [{
-        src: './static/images/p2.png'
-      },{
-        src: './static/images/p1.png'
-      },{
-        src: './static/images/p3.png'
-      }]
+        this.brandCategory()
+        this.dataList.name = this.listVal
       }
+    },
+    //返回的时候获取数据
+    getBackList() {
+      this.listVal && this.getDiffList()
+    },
+    //获取广告轮播图
+    getAdvert() {
+      let brand = this.listVal
+      indexModel.getAdvert(brand).then(res => {
+        // this.imgSliderList = res.data
+      })
+    },
+    getBrandIntroduce() {
+      let brand = this.listVal
+      indexModel.brandIntroduce(brand).then(res => {
+        // this.imgUrl = res.data.imgUrl
+      })
     },
     //轮播图跳转到活动
     goNext(e) {
+      // var browser = api.require('webBrowser');
+      // browser.open({
+      //     url: 'https://baidu.com'
+      // })
       let dom = e.target
       let className = dom.className.toLowerCase();
       if (className != "mint-swipe-item is-active") {
         return false;
       }
       let index = dom.getAttribute("data-type");
-      this.$router.push({path: '/gallery'})
+      console.log(index)
+      // window.location.href="https://baidu.com"
+      // this.$router.push({path: 'https://baidu.com'})
     }
   }
 }
@@ -84,6 +117,10 @@ export default {
 
 <style lang="scss" scoped>
 .m-right {
+  height: 100vh;
+  overflow: scroll;
+  box-sizing: border-box;
+  background: #fff;
   .pictureLink {
     padding: 4.26vw;
     padding-bottom: 3vw;

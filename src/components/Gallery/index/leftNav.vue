@@ -2,7 +2,7 @@
   <ul class="m-left">
     <li v-for="(item, index) in leftNavList" :key="index" 
       :class="{active : item.status}"
-      @click="toggleNav(index)">
+      @touchend="toggleNav(index)">
       <div class="wrapper" :class="{leftline_active : item.status}">
         <img src="../../../assets/imgs/hot.png" alt="" class="hot" v-if="index == 0">
         <span>{{ item.name }}</span>
@@ -12,7 +12,6 @@
 </template>
 
 <script>
-// import mango from '../../../js'
 import {getAjax, btnList} from '../../../utils/gallery'
 import {mapState, mapMutations} from 'vuex'
 import {IndexModel} from '../../../utils/index'
@@ -29,7 +28,7 @@ export default {
       initlist: state => state.leftNavList.initlist
     })
   },
-  mounted() {
+  created() {
     this.initNav()
   },
   methods: {
@@ -46,7 +45,7 @@ export default {
       let account = getAjax().account
       indexModel.getBrand(account).then(res => {
         if(res.data) {
-          let hot = {name: '热门推荐'}
+          let hot = {name: '慕思'}
           res.data.list.unshift(hot)
           this.setInitList(res.data.list)
           this.setLeftNavList(btnList(this.initlist, 0))

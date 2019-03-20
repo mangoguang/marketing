@@ -1,8 +1,9 @@
 <template>
   <div class="eggSearchInp">
     <div class="search_icon"></div>
+    <form action='' @submit.prevent>
     <input class="eggInp" ref="inpComp"
-      type="text" 
+      type="search" 
       placeholder="请输入搜索内容"
       @click="toSearch"
       :value='value'
@@ -10,6 +11,7 @@
       maxlength="20"
       @blur="viewDefault"
       />
+      </form>
       <button class="deleteVal" 
         v-show="showDeleteIcon && !origin"
         @touchend="deleteBtn"></button>
@@ -35,7 +37,7 @@ export default {
     }
   },
   created() {
-    if(this.$route.path === '/search') {
+    if(this.$route.path === '/search' || this.$route.path === '/gSearch') {
       this.changfouce()
     }
   },

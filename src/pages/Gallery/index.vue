@@ -50,6 +50,7 @@ export default {
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
+  overflow: hidden;
   .top-bar {
     padding: 2vw 4vw;
     display: flex;

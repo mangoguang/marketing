@@ -1,8 +1,8 @@
 export default {
   state: {
-    leftNavList: [],
-    listVal: '',
-    initlist: []
+    leftNavList: [],    //主页左导航条的品牌分类加状态
+    listVal: '',        //选中的值
+    initlist: []        //品牌分类
   },
   mutations: {
     setLeftNavList: (state, arr) => state.leftNavList = arr,
