@@ -1,16 +1,16 @@
 <template>
   <div class="list">
-    <div class="img_icon" :style="{backgroundImage:'url(' + list.imgUrl + ')'}"></div>
+    <div class="img_icon" :style="{backgroundImage:'url(' + list.image + ')'}"></div>
     <div class="text_box">
-      <p class="title">{{ list.title }}</p>
-      <span class="type_icon" v-for="(el, v) in list.type" :key='v'>
-        {{ el.name }}
+      <p class="title">{{ list.goodsName }}</p>
+      <span class="type_icon" v-for="(el, v) in getLabel(list.label)" :key=v >
+        {{ el }}
       </span>
-      <p class="price">¥{{ list.price }}</p>
+      <p class="price">¥{{ Math.round(list.price*100)/100 }}</p>
       <div class="like_btn" @click.prevent="changLike">
-        <img src="../../../assets/imgs/like.png" alt="收藏" v-if="like">
+        <img src="../../../assets/imgs/like.png" alt="收藏" v-if="list.collect">
         <img src="../../../assets/imgs/unlike.png" alt="未收藏" v-else>
-        <span>{{ list.num }}</span>
+        <span>{{ list.collections }}</span>
       </div>
     </div>
   </div>
@@ -31,6 +31,12 @@ export default {
     //点击收藏
     changLike() {
       this.like = !this.like
+    },
+    //字符串转为数组
+    getLabel(label) {
+      if(label) {
+        return this.list.label.split(',')
+      }
     }
   }
 }
@@ -44,7 +50,7 @@ export default {
   border-radius: 1.33vw; 
   background: #fff;
   margin: 0 auto;
-  margin-top: 2.66vw;
+  // margin-top: 2.66vw;
   display: flex;
   align-items: center;
   position: relative;
@@ -67,13 +73,13 @@ export default {
       overflow: hidden;
     }
     .type_icon {
-      border: 1px solid #ff2d55;
-      border-radius: 1.33vw;
-      width: 8vw;
-      line-height: 3.2vw;
+      // border: 1px solid #ff2d55;
+      // border-radius: 1.33vw;
+      // width: 8vw;
       display: inline-block;
+      // line-height: 3.6vw;
       font-size: 2.4vw;
-      color: #ff2d55;
+      color: #666;
       text-align: center;
       margin-right: 2vw;
     }

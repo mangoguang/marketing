@@ -192,7 +192,7 @@ export default {
       background: #fff;
       height: 100%;
       width: 80vw;
-      padding-top: 2vw;
+      padding-top: 12vw;
       box-sizing: border-box;
       overflow: scroll;
       padding-bottom: 22vw;
