@@ -184,6 +184,16 @@ class IndexModel extends Request {
       params: obj
     })
   }
+  //产品详情
+  productList(id, account) {
+    return this.getData({
+      url: '/api/product/v1/product/details',
+      params: {
+        productId: id,
+        account: account
+      }
+    })
+  }
 }
 
 export { IndexModel }
