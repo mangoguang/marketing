@@ -171,25 +171,17 @@ class IndexModel extends Request {
     })
   }
   //收藏/分享接口
-  galleryCollect(id, account, type) {        //3收藏，4分享
+  galleryCollect(obj) {        //3收藏，4分享
     return this.getData({
       url: '/api/user/collect/v1/collect',
-      params: {
-        id: id,
-        account: account,
-        type: type
-      }
+      params: obj
     })
   }
   //取消收藏/分享
-  galleryCancelCollect(id, account, type) {
+  galleryCancelCollect(obj) {
     return this.getData({
       url: '/api/user/collect/v1/cancelCollect',
-      params: {
-        id: id,
-        account: account,
-        type: type
-      }
+      params: obj
     })
   }
 }

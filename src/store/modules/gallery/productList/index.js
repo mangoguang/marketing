@@ -5,7 +5,11 @@ export default {
     downList: [],
     downListVal: '',
     filterList: [],
-    filterVal: []
+    filterVal: [],
+    price: {
+      price1: '',
+      price2: ''
+    }
   },
   mutations: {
     //获取产品列表顶部导航栏
@@ -47,6 +51,7 @@ export default {
           }
         })
       });
-    }
+    },
+    setPrice: (state, obj) => state.price = obj
   }
 }

@@ -8,35 +8,84 @@
       </span>
       <p class="price">¥{{ Math.round(list.price*100)/100 }}</p>
       <div class="like_btn" @click.prevent="changLike">
-        <img src="../../../assets/imgs/like.png" alt="收藏" v-if="list.collect">
+        <img src="../../../assets/imgs/like.png" alt="收藏" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="未收藏" v-else>
-        <span>{{ list.collections }}</span>
+        <span>{{ num }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
 export default {
   props: ['list'],
   data() {
     return {
-      like: ''
+      like: '',
+      num: '',
+      ajaxData: {}
     }
   },
-  created() {
-    this.like = this.list.like
+  mounted() {
+    this.setCollect()
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+  },
+  watch: {
+    list() {
+      this.setCollect()
+    }
   },
   methods: {
     //点击收藏
     changLike() {
-      this.like = !this.like
+      if(!this.like) {
+        this.collect()
+      }else {
+        this.cancleCollect()
+      }
     },
     //字符串转为数组
     getLabel(label) {
       if(label) {
         return this.list.label.split(',')
       }
+    },
+     //收藏
+    collect() {
+      let obj = this.getParmas()
+      indexModel.galleryCollect(obj).then(res => {
+        if(res.status == 1) {
+          this.like = !this.like
+          this.num += 1
+        }
+      })
+    },
+    //取消收藏
+    cancleCollect() {
+      let obj = this.getParmas()
+      indexModel.galleryCancelCollect(obj).then(res => {
+        if(res.status == 1) {
+          this.like = !this.like
+          this.num -= 1
+        }
+      })
+    },
+    //获取参数
+    getParmas() {
+      let obj = {
+        id :this.list.id,
+        account : this.ajaxData.account,
+        type : 3
+      }
+      return obj
+    },
+    //设置收藏参数
+    setCollect() {
+      this.like = this.list.collect
+      this.num = this.list.collections
     }
   }
 }

@@ -12,7 +12,7 @@
       <div class="like_btn" @click.prevent="changLike">
         <img src="../../../assets/imgs/like.png" alt="收藏" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="未收藏" v-else>
-        <span>{{ list.collections }}</span>
+        <span>{{ num }}</span>
       </div>
     </div>
   </div>
@@ -26,18 +26,27 @@ export default {
   data() {
     return {
       like: '',
-      ajaxData: {}
+      ajaxData: {},
+      num: ''
     }
   },
-  created() {
-    this.like = this.list.collect
+  watch: {
+    list() {
+      this.setCollect()
+    }
+  },
+  mounted() {
+    this.setCollect()
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
   },
   methods: {
     changLike() {
-      this.collect()
-      this.like = !this.like
+      if(!this.like) {
+        this.collect()
+      }else {
+        this.cancleCollect()
+      }
     },
     //字符串转为数组
     getLabel(label) {
@@ -47,12 +56,37 @@ export default {
     },
     //收藏
     collect() {
-      let id = this.list.id
-      let account = this.ajaxData.account
-      let type = 3
-      indexModel.galleryCollect(id, account, type).then(res => {
-        console.log(res)
+      let obj = this.getParmas()
+      indexModel.galleryCollect(obj).then(res => {
+        if(res.status == 1) {
+          this.like = !this.like
+          this.num += 1
+        }
       })
+    },
+    //取消收藏
+    cancleCollect() {
+      let obj = this.getParmas()
+      indexModel.galleryCancelCollect(obj).then(res => {
+        if(res.status == 1) {
+          this.like = !this.like
+          this.num -= 1
+        }
+      })
+    },
+    //获取参数
+    getParmas() {
+      let obj = {
+        id :this.list.id,
+        account : this.ajaxData.account,
+        type : 3
+      }
+      return obj
+    },
+    //设置收藏参数
+    setCollect() {
+      this.like = this.list.collect
+      this.num = this.list.collections
     }
   }
 }

@@ -84,11 +84,36 @@ export default {
         }
         this.searchKey(obj)
       }
+    },
+    filterVal() {
+      if(this.matchTxt) {
+        let obj = {
+          account: this.ajaxData.account,
+          brand: this.filterVal[0],
+          key: this.searchVal,
+          rp: this.getPrice()
+        }
+        this.searchKey(obj)
+      }
+    },
+    price() {
+      if(this.matchTxt) {
+        let rp = this.getPrice()
+        let obj = {
+          rp: rp,
+          account: this.ajaxData.account,
+          key: this.searchVal,
+          brand: this.filterVal[0]
+        }
+        this.searchKey(obj)
+      }
     }
   },
   computed: {
     ...mapState({
-      downListVal: state => state.productNavList.downListVal
+      downListVal: state => state.productNavList.downListVal,
+      filterVal: state => state.productNavList.filterVal,
+      price: state => state.productNavList.price
     })
   },
   created() {
@@ -96,6 +121,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   methods: {
+    ...mapMutations(['resetFilterList']),
     //键盘搜索事件
     search(event) {
       if (event.keyCode == 13) { //如果按的是enter键 13是enter 
@@ -146,6 +172,14 @@ export default {
           this.type = !this.type
           this.key = true
         }, 200);
+      }
+    },
+    //获取价格参数
+    getPrice() {
+      if(this.price.price2 === '') {
+        return this.price.price1 + ''
+      }else {
+        return this.price.price1 + '-' + this.price.price2
       }
     }
   }
