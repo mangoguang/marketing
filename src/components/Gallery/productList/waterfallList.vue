@@ -145,7 +145,7 @@ export default {
     .like_btn {
       position: absolute;
       right: 2vw;
-      bottom: -2vw;
+      bottom: 0;
       color: #909090;
       font-size: 3.2vw;
       padding-top: 2vw;

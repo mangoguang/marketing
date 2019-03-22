@@ -2,6 +2,8 @@ import axios from 'axios'
 // let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
 // let baseUrl = 'http://10.11.8.250'
 let baseUrl = 'http://10.11.8.229'
+// let baseUrl = 'http://172.16.8.216'
+// let baseUrl = 'http://10.11.8.7'
 class Request {
   getData ({ url, params, method = 'GET' }) {
     return new Promise((resolve, reject) => {

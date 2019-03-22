@@ -19,8 +19,10 @@
       </div>
     <div class="title">
       <h1>{{list.goodsName}}</h1>
-      <img src="../../../assets/imgs/trigon1.png" alt="">
-      <p>{{list.remark}}</p>
+      <div v-if="list.remark">
+        <img src="../../../assets/imgs/trigon1.png" alt="">
+      <p >{{list.remark}}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -34,6 +36,11 @@ export default {
     return {
       like: '',
       ajaxData: {}
+    }
+  },
+  watch: {
+    list() {
+      this.like = this.list.collect
     }
   },
   mounted() {

@@ -13,7 +13,7 @@
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 import MSlider from './slider'
 import ClassifyComp from './classifyProduct'
 import {IndexModel} from '../../../utils/index'
@@ -55,11 +55,13 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['setInitNavList']),
     //获取热门分类
     getCategory() {
       indexModel.MusiCategory().then(res => {
         if(res.data) {
           this.dataList.list = res.data.list
+          this.setInitNavList(res.data.list)
         }
       })
     },

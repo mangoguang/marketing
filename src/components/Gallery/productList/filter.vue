@@ -7,7 +7,7 @@
     </div>
     <div class="filter-box" v-show="filterStatus"  @click.self="hideBox">
       <div class="contain right">
-        <dl v-for="(item, index) in filterList" :key="index">
+        <dl v-for="(item, index) in filterList" :key="index" v-show='filterParmas.brand'>
           <dt class="brand">{{ item.name }}</dt>
           <dd v-for="(el, i) in item.child" :key="el + '_' + i" 
             @click="chooseVal(index, i)"
@@ -60,17 +60,28 @@ export default {
     ...mapState({
       filterList: state => state.productNavList.filterList,
       filterVal: state => state.productNavList.filterVal,
-      initlist: state => state.leftNavList.initlist
+      initlist: state => state.leftNavList.initlist,
+      filterParmas: state => state.filterParmas.filterParmas,
+      price: state => state.productNavList.price
     })
   },
   created() {
     this.list[0].child = this.initlist.slice(1);
-    this.resetFilterList(this.list)
-    this.setPrice({price1:'',price2:''})
+    this.initBrand()
     this.setFilterList(this.list)
   },
   methods: {
     ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList', 'setPrice']),
+    //初始化品牌筛选//价格
+    initBrand() {
+      if(typeof this.$route.query.index == 'number') {
+       this.resetFilterList(this.list)
+       this.setPrice({price1:'',price2:''})
+      }else {
+        this.price1 = this.price.price1
+        this.price2 = this.price.price2
+      }
+    },
     //出现筛选框
     showFilter() {
       this.filterStatus = true
@@ -136,6 +147,7 @@ export default {
     confirm() {
       this.filterStatus = false
     },
+    //获取价格参数
     getPrice(p1,p2) {
       let obj = {
         price1: p1,

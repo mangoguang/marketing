@@ -14,7 +14,7 @@
 <script>
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
-import { b64DecodeUnicode, changeImgStyle } from '../../utils/msManage'
+import { b64DecodeUnicode, changeGalleryStyle } from '../../utils/msManage'
 import product from '../../components/Gallery/productDetails/product'
 import productContent from '../../components/Gallery/productDetails/productContent'
 export default {
@@ -41,7 +41,7 @@ export default {
       indexModel.productList(id, account).then(res => {
         if(res.data) {
           let temp = res.data.details
-          this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+          this.myhtml = changeGalleryStyle(b64DecodeUnicode(temp))
           this.productList = res.data
         }
       })
@@ -58,6 +58,11 @@ export default {
   }
   .details {
     margin-top: 4vw;
+    width: 100vw;
+    img {
+      width: 100vw;
+      height: auto;
+    }
   }
 }
 </style>
