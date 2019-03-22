@@ -85,24 +85,28 @@ export default {
   watch: {
     downListVal() {
       if(this.init) {
+        this.obj = this.filterParmas
         this.$set(this.obj, 'st', fliterItem(this.downListVal))
         this.changeParmas()
       }
     },
     filterVal() {
       if(this.init) {
+        this.obj = this.filterParmas
         this.$set(this.obj, 'brand', this.filterVal[0])
         this.changeParmas()
       }
     },
     price() {
       if(this.init) {
+        this.obj = this.filterParmas
         this.$set(this.obj, 'rp', this.getPrice())
         this.changeParmas()
       }
     },
     productNavlistVal() {
       if(this.init) {
+        this.obj = this.filterParmas
         this.$set(this.obj, 'category', this.productNavlistVal)
         this.changeParmas()
       }
@@ -139,22 +143,22 @@ export default {
     initParmas() {
       this.obj.account = this.ajaxData.account
       this.obj.category = this.$route.query.categoryName
+      this.initBrand()
       this.setParmas(this.obj)
       this.filterData(this.filterParmas)
     },
     //初始化品牌
     initBrand() {
-      this.obj = this.filterParmas
       if(this.listVal === '慕思') {
         this.obj.brand = ''
       }else {
-        if(this.filterParmas.brand) {
-          this.obj.brand = this.filterParmas.brand
-        }else {
-          this.obj.brand = this.listVal
-        }
+        this.obj.brand = this.listVal
       }
-      this.setParmas(this.obj)
+    },
+    //
+    getBrand() {
+      this.obj = this.filterParmas
+
     },
     //改变参数
     changeParmas() {

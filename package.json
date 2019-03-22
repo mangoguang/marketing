@@ -16,6 +16,7 @@
     "axios": "^0.18.0",
     "css-line-break": "^1.0.1",
     "echarts": "^3.8.5",
+    "html2canvas": "^1.0.0-alpha.12",
     "js-md5": "^0.7.3",
     "js-sha1": "^0.6.0",
     "jsonp": "^0.2.1",

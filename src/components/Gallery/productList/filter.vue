@@ -7,7 +7,7 @@
     </div>
     <div class="filter-box" v-show="filterStatus"  @click.self="hideBox">
       <div class="contain right">
-        <dl v-for="(item, index) in filterList" :key="index" v-show='filterParmas.brand'>
+        <dl v-for="(item, index) in filterList" :key="index" v-show='showBrand'>
           <dt class="brand">{{ item.name }}</dt>
           <dd v-for="(el, i) in item.child" :key="el + '_' + i" 
             @click="chooseVal(index, i)"
@@ -53,11 +53,13 @@ export default {
         child: []
       }],
         price1: '',
-        price2: ''
+        price2: '',
+      showBrand: false
     }
   },
   computed: {
     ...mapState({
+      listVal: state => state.leftNavList.listVal,
       filterList: state => state.productNavList.filterList,
       filterVal: state => state.productNavList.filterVal,
       initlist: state => state.leftNavList.initlist,
@@ -67,19 +69,27 @@ export default {
   },
   created() {
     this.list[0].child = this.initlist.slice(1);
+    this.initFilter()
     this.initBrand()
     this.setFilterList(this.list)
   },
   methods: {
     ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList', 'setPrice']),
     //初始化品牌筛选//价格
-    initBrand() {
+    initFilter() {
       if(typeof this.$route.query.index == 'number') {
        this.resetFilterList(this.list)
        this.setPrice({price1:'',price2:''})
       }else {
         this.price1 = this.price.price1
         this.price2 = this.price.price2
+      }
+    },
+    initBrand() {
+      if(this.listVal === '慕思') {
+        this.showBrand = true
+      }else {
+        this.showBrand = false
       }
     },
     //出现筛选框
