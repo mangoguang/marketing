@@ -155,11 +155,6 @@ export default {
         this.obj.brand = this.listVal
       }
     },
-    //
-    getBrand() {
-      this.obj = this.filterParmas
-
-    },
     //改变参数
     changeParmas() {
       this.setParmas(this.obj)

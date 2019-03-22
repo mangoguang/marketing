@@ -24,6 +24,7 @@ import productNavList from './modules/gallery/productList/index'
 import share from './modules/gallery/share/index'
 import loadmore from './modules/msManage/loadmore'
 import filterParmas from './modules/gallery/productList/filterParmas'
+import searchParmas from './modules/gallery/productList/searchParmas'
 
 export default new Vuex.Store({
   modules: {
@@ -50,6 +51,7 @@ export default new Vuex.Store({
     productNavList,
     share,
     loadmore,
-    filterParmas
+    filterParmas,
+    searchParmas
   }
 })

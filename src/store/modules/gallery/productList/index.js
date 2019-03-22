@@ -1,5 +1,7 @@
+import mango from '../../../../js'
 export default {
   state: {
+    list: mango.btnList(['综合', '最新发布', '价格↑', '价格↓', '收藏数'], 0),
     initNavList: [],
     productNavList: [],
     productNavlistVal: '',

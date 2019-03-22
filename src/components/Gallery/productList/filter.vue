@@ -86,10 +86,10 @@ export default {
       }
     },
     initBrand() {
-      if(this.listVal === '慕思') {
-        this.showBrand = true
-      }else {
+      if(this.filterParmas.brand && !this.filterParmas.key) {
         this.showBrand = false
+      }else {
+        this.showBrand = true
       }
     },
     //出现筛选框

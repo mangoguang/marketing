@@ -15,7 +15,7 @@
           <img src="../../assets/imgs/waterfall.png" alt="瀑布流" v-if="type">
           <img src="../../assets/imgs/listStyle.png" alt="列表" v-else>
         </div>
-        <m-filter @click.native="changeSortListStatus"/>
+        <m-filter @click.native="changeSortListStatus" />
       </div>
       <div class="productList">
         <!-- 列表 -->
@@ -48,6 +48,7 @@ import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import { mapMutations, mapState } from 'vuex'
 import {fliterItem} from '../../utils/gallery'
+import mango from '../../js'
 import Search from '../../components/msManage/search/eggSearchInp'
 import SortList from '../../components/Gallery/productList/sortList';
 import MFilter from '../../components/Gallery/productList/filter';
@@ -64,7 +65,32 @@ export default {
       changeStatus: false,
       key: true,
       list: [],
-      ajaxData: {}
+      ajaxData: {},
+      searchTurn: true,
+      obj:{
+        brand: '',
+        key: '',
+        st: 0,
+        rp: '',
+        account: '',
+        category: '',
+        page: 1,
+        limit: 10
+      }
+    }
+  },
+  //判断是初始还是后退
+  beforeRouteEnter (to, from, next) {
+    if(from.path === '/gallery' || from.path === '/productList') {
+      next(vm => {
+        vm.$set(vm.obj, 'account', vm.ajaxData.account)
+        vm.setSearchParmas(vm.obj)
+      })
+    }else {
+      next(vm => {
+        vm.searchVal = vm.searchParmas.key
+        vm.searchKey(vm.searchParmas)
+      })
     }
   },
   watch: {
@@ -75,37 +101,20 @@ export default {
       }
     },
     downListVal() {
-      if(this.matchTxt) {
+      if(this.matchTxt && this.searchTurn) {
         let st = fliterItem(this.downListVal)
-        let obj = {
-          key: this.searchVal,
-          account: this.ajaxData.account,
-          st: st
-        }
-        this.searchKey(obj)
+        this.setParmas('st', st)
       }
     },
     filterVal() {
-      if(this.matchTxt) {
-        let obj = {
-          account: this.ajaxData.account,
-          brand: this.filterVal[0],
-          key: this.searchVal,
-          rp: this.getPrice()
-        }
-        this.searchKey(obj)
+      if(this.matchTxt && this.searchTurn) {
+        this.setParmas('brand', this.filterVal[0])
       }
     },
     price() {
-      if(this.matchTxt) {
+      if(this.matchTxt && this.searchTurn) {
         let rp = this.getPrice()
-        let obj = {
-          rp: rp,
-          account: this.ajaxData.account,
-          key: this.searchVal,
-          brand: this.filterVal[0]
-        }
-        this.searchKey(obj)
+        this.setParmas('rp', rp)
       }
     }
   },
@@ -113,7 +122,9 @@ export default {
     ...mapState({
       downListVal: state => state.productNavList.downListVal,
       filterVal: state => state.productNavList.filterVal,
-      price: state => state.productNavList.price
+      price: state => state.productNavList.price,
+      searchParmas: state => state.searchParmas.searchParmas,
+      initParmas: state => state.searchParmas.initParmas
     })
   },
   created() {
@@ -121,16 +132,35 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
   },
   methods: {
-    ...mapMutations(['resetFilterList']),
+    ...mapMutations([
+      'setSearchParmas', 
+      'setDownList', 
+      'setDownListVal',
+      'resetFilterList'
+      ]),
     //键盘搜索事件
     search(event) {
       if (event.keyCode == 13) { //如果按的是enter键 13是enter 
-        let obj = {
-          key: this.searchVal,
-          account: this.ajaxData.account
-        }
-        this.searchKey(obj)
+        this.initSearch(event.target.value)
+        this.searchKey(this.searchParmas)
       }
+    },
+    //每次重新搜索都初始化参数
+    initSearch(val) {
+      this.searchTurn = false
+      let obj = this.initParmas
+      this.setDownList(this.$store.state.productNavList.list)
+      this.setDownListVal()
+      this.$set(obj, 'account', this.ajaxData.account)
+      this.$set(obj, 'key', val)
+      this.setSearchParmas(obj)
+    },
+    //设置参数
+    setParmas(key, value) {
+      this.obj = this.searchParmas
+      this.$set(this.obj, key, value)
+      this.setSearchParmas(this.obj)
+      this.searchKey(this.obj)
     },
     //搜索请求
     searchKey(obj) {
@@ -144,6 +174,7 @@ export default {
           this.unMatchTxt = false
           this.list = []
         }
+        this.searchTurn = true
       })
     },
     //清空输入框
