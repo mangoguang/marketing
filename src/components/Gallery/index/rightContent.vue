@@ -58,14 +58,18 @@ export default {
     //获取热门分类
     getCategory() {
       indexModel.MusiCategory().then(res => {
-        this.dataList.list = res.data.list
+        if(res.data) {
+          this.dataList.list = res.data.list
+        }
       })
     },
     //获取产品分类
     brandCategory() {
       let brand = this.listVal
       indexModel.brandCategory(brand).then(res => {
-        this.dataList.list = res.data.list
+        if(res.data) {
+          this.dataList.list = res.data.list
+        }
       })
     },
     //不同分类的数据

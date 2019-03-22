@@ -13,21 +13,23 @@
       </div>
       <m-filter @click.native="changeSortListStatus"/>
     </div>
-    <!-- 列表 -->
-    <div class="m-list" v-show="!type">
-      <div v-for="(item, index) in list" :key='index'> 
-        <router-link :to='{name:"productDetails",query: {id: item.title}}'>
-          <m-list :list='item'/>
-        </router-link>
+    <div class="productList">
+       <!-- 列表 -->
+      <div class="m-list" v-show="!type">
+        <div v-for="(item, index) in list" :key='index'> 
+          <router-link :to='{name:"productDetails",query: {id: item.title}}'>
+            <m-list :list='item'/>
+          </router-link>
+        </div>
       </div>
-    </div>
-    <!-- 瀑布流 -->
-    <div class="list" v-show="type">
-      <div class="item" v-for="(item, index) in list" :key='index'>
-        <router-link :to='{name:"productDetails",query: {id: item.title}}'>
-          <w-list :list='item'/>
-        </router-link>
-      </div>  
+      <!-- 瀑布流 -->
+      <div class="list" v-show="type">
+        <div class="item" v-for="(item, index) in list" :key='index'>
+          <router-link :to='{name:"productDetails",query: {id: item.title}}'>
+            <w-list :list='item'/>
+          </router-link>
+        </div>  
+      </div>
     </div>
   </div>
 </template>
@@ -55,68 +57,20 @@ export default {
       changeStatus: false,
       list: [{
         brand: '床',
-        imgUrl: './static/images/bed1.jpg',
-        title: '3D BCD1-046 克莱夫特克莱夫特克莱夫特克莱夫特',
-        type: [{
-          name: '热销'
-        },{
-          name: '人气'
-        }],
+        image: './static/images/bed1.jpg',
+        goodsName: '3D BCD1-046 克莱夫特克莱夫特克莱夫特克莱夫特',
+        label: '123',
         price: 22800,
-        like: true,
-        num: 1600
+        collect: true,
+        collections: 1600
       },{
         brand: '床',
-        imgUrl: './static/images/bed2.jpg',
-        title: '歌蒂亚 BCG1-016 爱巢',
-        type: [{
-          name: '热销'
-        }],
+        image: './static/images/bed2.jpg',
+        goodsName: '歌蒂亚 BCG1-016 爱巢',
+        label: '123',
         price: 15800,
-        like: false,
-        num: 1628
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed3.jpg',
-        title: '歌蒂亚 BCG1-016 天使之翼',
-        type: [{
-          name: '热销'
-        },{
-          name: '新品'
-        }],
-        price: 18800,
-        like: false,
-        num: 1628
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed4.jpg',
-        title: 'V6 BCG1-016 路虎',
-        type: [{
-          name: '人气'
-        }],
-        price: 25800,
-        like: true,
-        num: 2200
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed4.jpg',
-        title: 'V6 BCG1-016 路虎',
-        type: [{
-          name: '人气'
-        }],
-        price: 25800,
-        like: true,
-        num: 2200
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed4.jpg',
-        title: 'V6 BCG1-016 爱巢',
-        type: [{
-          name: '人气'
-        }],
-        price: 25800,
-        like: true,
-        num: 2200
+        collect: false,
+        collections: 1628
       }]
     }
   },
@@ -209,4 +163,10 @@ export default {
 .changbg {
   background: rgba(0, 0, 0, 0.5);
 }
+ .productList {
+    height: 100vh;
+    overflow: scroll;
+    padding-bottom: 30vw;
+    box-sizing: border-box;
+  }
 </style>

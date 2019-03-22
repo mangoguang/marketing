@@ -1,36 +1,91 @@
 <template>
   <div class="list">
-    <div class="img_icon" :style="{backgroundImage:'url(' + list.imgUrl + ')'}"></div>
+    <div class="img_icon" :style="{backgroundImage:'url(' + list.image + ')'}"></div>
     <div class="text_box">
-      <p class="title">{{ list.title }}</p>
-      <span class="type_icon" v-for="(el, v) in list.type" :key='v'>
-        {{ el.name }}
+      <p class="title">{{ list.goodsName }}</p>
+      <span class="type_icon" v-for="(el, v) in getLabel(list.label)" :key=v >
+        {{ el }}
       </span>
-      <p class="price">¥{{ list.price }}</p>
+      <p class="price">¥{{ Math.round(list.price*100)/100 }}</p>
       <div class="like_btn" @click.prevent="changLike">
         <img src="../../../assets/imgs/like.png" alt="收藏" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="未收藏" v-else>
-        <span>{{ list.num }}</span>
+        <span>{{ num }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
 export default {
   props: ['list'],
   data() {
     return {
-      like: ''
+      like: '',
+      num: '',
+      ajaxData: {}
     }
   },
-  created() {
-    this.like = this.list.like
+  mounted() {
+    this.setCollect()
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+  },
+  watch: {
+    list() {
+      this.setCollect()
+    }
   },
   methods: {
     //点击收藏
     changLike() {
-      this.like = !this.like
+      if(!this.like) {
+        this.collect()
+      }else {
+        this.cancleCollect()
+      }
+    },
+    //字符串转为数组
+    getLabel(label) {
+      if(label) {
+        return this.list.label.split(',')
+      }
+    },
+     //收藏
+    collect() {
+      let obj = this.getParmas()
+      indexModel.galleryCollect(obj).then(res => {
+        if(res.status == 1) {
+          this.like = !this.like
+          this.num += 1
+        }
+      })
+    },
+    //取消收藏
+    cancleCollect() {
+      let obj = this.getParmas()
+      indexModel.galleryCancelCollect(obj).then(res => {
+        if(res.status == 1) {
+          this.like = !this.like
+          this.num -= 1
+        }
+      })
+    },
+    //获取参数
+    getParmas() {
+      let obj = {
+        id :this.list.id,
+        account : this.ajaxData.account,
+        type : 3
+      }
+      return obj
+    },
+    //设置收藏参数
+    setCollect() {
+      this.like = this.list.collect
+      this.num = this.list.collections
     }
   }
 }
@@ -44,7 +99,7 @@ export default {
   border-radius: 1.33vw; 
   background: #fff;
   margin: 0 auto;
-  margin-top: 2.66vw;
+  // margin-top: 2.66vw;
   display: flex;
   align-items: center;
   position: relative;
@@ -67,13 +122,13 @@ export default {
       overflow: hidden;
     }
     .type_icon {
-      border: 1px solid #ff2d55;
-      border-radius: 1.33vw;
-      width: 8vw;
-      line-height: 3.2vw;
+      // border: 1px solid #ff2d55;
+      // border-radius: 1.33vw;
+      // width: 8vw;
       display: inline-block;
+      // line-height: 3.6vw;
       font-size: 2.4vw;
-      color: #ff2d55;
+      color: #666;
       text-align: center;
       margin-right: 2vw;
     }

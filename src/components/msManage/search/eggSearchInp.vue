@@ -10,6 +10,7 @@
       v-on:input="$emit('input',$event.target.value)"
       maxlength="20"
       @blur="viewDefault"
+      @keypress="search"
       />
       </form>
       <button class="deleteVal" 
@@ -46,6 +47,12 @@ export default {
     viewDefault() {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
+    },
+    search(event) {
+      if (event.keyCode == 13) { //如果按的是enter键 13是enter 
+        event.preventDefault(); //禁止默认事件（默认是换行） 
+        this.$refs.inpComp.blur()
+      }
     },
     //输入框自动聚焦
     changfouce(){
