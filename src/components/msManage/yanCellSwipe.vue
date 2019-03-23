@@ -25,33 +25,31 @@
 import Vue from 'vue'
 import { CellSwipe } from 'mint-ui';
 Vue.component(CellSwipe.name, CellSwipe);
+import {IndexModel} from "../../utils"
+const indexModel=new IndexModel()
 export default {
-  props:['id'],
+  props:['articleId','artIndex'],
   data () {
     return {
-    /*  obj:{
-      showMessageBox:false,
-      tip:'',
-      btnNum:2,
-      type:false 
-     } */
     }
   },
   created() {
-    
+    let ajaxData=localStorage.getItem("ajaxData");
+    this.account=JSON.parse(ajaxData).account;
   },
-  
   methods: {
     delete:function(){
-      if(this.$route.path=='/collectList'){
-          this.$store.commit('collect/setMessageBox',{
+        if(this.$route.path=='/collectList'){
+        this.$store.commit('collect/setMessageBox',{
           showMessageBox:true,
-          tip:'文章已不存在，是否从收藏夹中移除？',
+          tip:'是否从收藏夹中移除？',
           btnNum:2,
           type:false
         }); 
-        console.log(this.id);
-        this.$store.commit('collect/setArticleId',this.id);
+        this.$store.commit('collect/clearSingleArt',{
+          articleId:this.articleId,
+          index:this.artIndex
+        });
       }
      
     }

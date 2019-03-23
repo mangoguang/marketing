@@ -38,6 +38,7 @@ export default {
   created() {
     this.setProductNavList([])
     this.setInitParmas()
+    
   },
   methods: {
     ...mapMutations(['setProductNavList', 'setInitParmas'])

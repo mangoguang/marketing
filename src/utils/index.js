@@ -194,6 +194,14 @@ class IndexModel extends Request {
       }
     })
   }
+  //获取收藏文章/问题/产品接口
+  getCollect(obj){
+    return this.getData({
+      url:'/api/user/collect/v1/getcollect',
+      params: obj
+    })
+  }
+  
 }
 
 export { IndexModel }
