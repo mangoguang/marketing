@@ -26,6 +26,7 @@ import loadmore from './modules/msManage/loadmore'
 import filterParmas from './modules/gallery/productList/filterParmas'
 import searchParmas from './modules/gallery/productList/searchParmas'
 import searchScroll from './modules/gallery/search/scroll'
+import productScroll from './modules/gallery/productList/scroll'
 
 export default new Vuex.Store({
   modules: {
@@ -54,6 +55,7 @@ export default new Vuex.Store({
     loadmore,
     filterParmas,
     searchParmas,
-    searchScroll
+    searchScroll,
+    productScroll
   }
 })

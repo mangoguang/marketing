@@ -13,28 +13,33 @@
       </div>
       <m-filter @click.native="changeSortListStatus"/>
     </div>
-    <div class="productList">
-       <!-- 列表 -->
-      <div class="m-list" v-show="!showType">
-        <div v-for="(item, index) in list" :key='index'> 
-          <router-link :to='{name:"productDetails",query: {id: item.id}}'>
-            <m-list :list='item'/>
-          </router-link>
+    <div class="productList" ref="productListScroll">
+      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="prodectListLoad" :auto-fill="false"> 
+        <!-- 列表 -->
+        <div class="m-list" v-show="!showType">
+          <div v-for="(item, index) in list" :key='index'> 
+            <router-link :to='{name:"productDetails",query: {id: item.id}}'>
+              <m-list :list='item'/>
+            </router-link>
+          </div>
         </div>
-      </div>
-      <!-- 瀑布流 -->
-      <div class="list" v-show="showType">
-        <div class="item" v-for="(item, index) in list" :key='index'>
-          <router-link :to='{name:"productDetails",query: {id: item.id}}'>
-            <w-list :list='item'/>
-          </router-link>
-        </div>  
-      </div>
+        <!-- 瀑布流 -->
+        <div class="list" v-show="showType">
+          <div class="item" v-for="(item, index) in list" :key='index'>
+            <router-link :to='{name:"productDetails",query: {id: item.id}}'>
+              <w-list :list='item'/>
+            </router-link>
+          </div>  
+        </div>
+      </mt-loadmore>
     </div>
   </div>
 </template>
 
 <script>
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
+import Vue from 'vue'
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import {mapState, mapMutations} from 'vuex'
@@ -68,7 +73,8 @@ export default {
         st: 0,
         rp: '',
         account: ''
-      }
+      },
+      allLoaded: false
     }
   },
   computed: {
@@ -79,7 +85,11 @@ export default {
       downListVal: state => state.productNavList.downListVal,
       filterVal: state => state.productNavList.filterVal,
       price: state => state.productNavList.price,
-      productNavlistVal: state => state.productNavList.productNavlistVal
+      productNavlistVal: state => state.productNavList.productNavlistVal,
+      productNavList: state => state.productNavList.productNavList,
+      allCategoryScroll: state => state.productScroll.allCategoryScroll,
+      productScroll: state => state.productScroll.productScroll,
+      categoryScroll: state => state.productScroll.categoryScroll
     })
   },
   watch: {
@@ -109,6 +119,12 @@ export default {
         this.obj = this.filterParmas
         this.$set(this.obj, 'category', this.productNavlistVal)
         this.changeParmas()
+        this.listenScrollTop()
+      }
+    },
+    productScroll() {
+      if(this.init) {
+        this.setAllCategoryList(this.productNavList)
       }
     }
   },
@@ -120,7 +136,19 @@ export default {
     this.initGetData()
   },
   methods: {
-    ...mapMutations(['setParmas', 'setDownList', 'setShowType']),
+    ...mapMutations(['setParmas', 'setDownList', 'setShowType', 'setAllCategoryList', 'setProductScroll', 'getCategoryScroll']),
+    //获取滚动条高度
+    recordScrollPosition(e) {
+      this.setProductScroll(e.target.scrollTop)
+    },
+    //监听滚动条高度
+    listenScrollTop() {
+      this.$refs.productListScroll.addEventListener('scroll',this.recordScrollPosition,true);
+      this.getCategoryScroll(this.productNavlistVal)
+      this.$nextTick(() => {
+        this.$refs.productListScroll.scrollTop = this.categoryScroll; 
+      })
+    },
     //初始请求数据
     initGetData() {
       if(typeof this.$route.query.index == 'number') {
@@ -136,6 +164,7 @@ export default {
         if(res.data) {
           this.init = true
           this.list = res.data.list
+          this.listenScrollTop()
         }
       })
     },
@@ -189,6 +218,23 @@ export default {
           this.key = true
         }, 200);
       }
+    },
+    //下拉刷新
+    loadBottom() {
+      this.$refs.prodectListLoad.onBottomLoaded();
+      this.pullDownData()
+    },
+     //下拉加载数据
+    pullDownData() {
+      this.allLoaded = true
+      // let len = (this.list.length)/10 + 1
+      // if(Math.floor(len) < len) {
+      //   this.allLoaded = true
+      // }else {
+      //   this.setParmas('page', len)
+      //   this.setParmas('limit', 10)
+      //   this.searchKey(this.obj)
+      // }
     }
   }
 }
