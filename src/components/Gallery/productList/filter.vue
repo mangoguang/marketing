@@ -45,6 +45,7 @@
 import {mapState, mapMutations} from 'vuex'
 import { IndexModel } from '../../../utils';
 export default {
+  props: ['time'],
   data() {
     return {
       filterStatus: false,
@@ -64,8 +65,16 @@ export default {
       filterVal: state => state.productNavList.filterVal,
       initlist: state => state.leftNavList.initlist,
       filterParmas: state => state.filterParmas.filterParmas,
-      price: state => state.productNavList.price
+      price: state => state.productNavList.price,
+      searchParmas: state => state.searchParmas.searchParmas
     })
+  },
+  watch: {
+    time(){
+      this.$nextTick(() => {
+        this.initBrand()
+      })
+    }
   },
   created() {
     this.list[0].child = this.initlist.slice(1);
@@ -86,10 +95,10 @@ export default {
       }
     },
     initBrand() {
-      if(this.filterParmas.brand && !this.filterParmas.key) {
-        this.showBrand = false
-      }else {
+      if(!this.filterParmas.brand || this.searchParmas.key) {
         this.showBrand = true
+      }else {
+        this.showBrand = false
       }
     },
     //出现筛选框

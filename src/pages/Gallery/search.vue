@@ -15,7 +15,7 @@
           <img src="../../assets/imgs/waterfall.png" alt="瀑布流" v-if="type">
           <img src="../../assets/imgs/listStyle.png" alt="列表" v-else>
         </div>
-        <m-filter @click.native="changeSortListStatus" />
+        <m-filter @click.native="changeSortListStatus" :time='time'/>
       </div>
       <div class="productList">
         <!-- 列表 -->
@@ -76,7 +76,8 @@ export default {
         category: '',
         page: 1,
         limit: 10
-      }
+      },
+      time: 0
     }
   },
   //判断是初始还是后退
@@ -140,9 +141,11 @@ export default {
       ]),
     //键盘搜索事件
     search(event) {
-      if (event.keyCode == 13) { //如果按的是enter键 13是enter 
+      if (event.keyCode == 13 && this.searchVal) { //如果按的是enter键 13是enter 
         this.initSearch(event.target.value)
         this.searchKey(this.searchParmas)
+        this.time += 1
+        console.log(this.initParmas)
       }
     },
     //每次重新搜索都初始化参数
