@@ -17,8 +17,9 @@
         </div>
         <m-filter @click.native="changeSortListStatus" :time='time'/>
       </div> -->
-      <div class="productList">
+      <div class="productList" ref="searchLoadMore">
         <!-- 列表 -->
+        <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="searchLoad" :auto-fill="false"> 
         <div class="m-list" v-show="!type">
           <div v-for="(item, index) in list" :key='index'> 
             <router-link :to='{name:"productDetails",query: {id: item.id}}'>
@@ -34,6 +35,7 @@
             </router-link>
           </div>  
         </div>
+        </mt-loadmore>
       </div>
   </div>
     <!-- 没有匹配到相关内容 -->
@@ -44,6 +46,9 @@
 </template>
 
 <script>
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
+import Vue from 'vue'
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import { mapMutations, mapState } from 'vuex'
@@ -77,7 +82,8 @@ export default {
         page: 1,
         limit: 10
       },
-      time: 0
+      time: 0,
+      allLoaded: false
     }
   },
   //判断是初始还是后退
@@ -89,8 +95,12 @@ export default {
       })
     }else {
       next(vm => {
+        let limit = (vm.searchParmas.page)* 10
+        vm.setParmas('page', 1)
+        vm.setParmas('limit', limit)
         vm.searchVal = vm.searchParmas.key
         vm.searchKey(vm.searchParmas)
+        vm.listenScrollTop()
       })
     }
   },
@@ -100,24 +110,24 @@ export default {
         this.matchTxt = false
         this.unMatchTxt = true
       }
-    },
-    downListVal() {
-      if(this.matchTxt && this.searchTurn) {
-        let st = fliterItem(this.downListVal)
-        this.setParmas('st', st)
-      }
-    },
-    filterVal() {
-      if(this.matchTxt && this.searchTurn) {
-        this.setParmas('brand', this.filterVal[0])
-      }
-    },
-    price() {
-      if(this.matchTxt && this.searchTurn) {
-        let rp = this.getPrice()
-        this.setParmas('rp', rp)
-      }
     }
+    // downListVal() {
+    //   if(this.matchTxt && this.searchTurn) {
+    //     let st = fliterItem(this.downListVal)
+    //     this.setParmas('st', st)
+    //   }
+    // },
+    // filterVal() {
+    //   if(this.matchTxt && this.searchTurn) {
+    //     this.setParmas('brand', this.filterVal[0])
+    //   }
+    // },
+    // price() {
+    //   if(this.matchTxt && this.searchTurn) {
+    //     let rp = this.getPrice()
+    //     this.setParmas('rp', rp)
+    //   }
+    // }
   },
   computed: {
     ...mapState({
@@ -125,7 +135,8 @@ export default {
       filterVal: state => state.productNavList.filterVal,
       price: state => state.productNavList.price,
       searchParmas: state => state.searchParmas.searchParmas,
-      initParmas: state => state.searchParmas.initParmas
+      initParmas: state => state.searchParmas.initParmas,
+      searchScroll: state => state.searchScroll.searchScroll
     })
   },
   created() {
@@ -137,12 +148,26 @@ export default {
       'setSearchParmas', 
       'setDownList', 
       'setDownListVal',
-      'resetFilterList'
-      ]),
+      'resetFilterList',
+      'setSearchScroll'
+    ]),
+     //获取滚动条高度
+    recordScrollPosition(e) {
+      this.setSearchScroll(e.target.scrollTop)
+    },
+    //监听滚动条高度
+    listenScrollTop() {
+      this.$refs.searchLoadMore.addEventListener('scroll',this.recordScrollPosition,true);
+      this.$nextTick(() => {
+        this.$refs.searchLoadMore.scrollTop = this.searchScroll; 
+      })
+    },
     //键盘搜索事件
     search(event) {
       if (event.keyCode == 13 && this.searchVal) { //如果按的是enter键 13是enter 
         this.time += 1
+        this.list = []
+        this.setSearchScroll(0)
         this.initSearch(event.target.value)
       }
     },
@@ -166,15 +191,17 @@ export default {
       this.obj = this.searchParmas
       this.$set(this.obj, key, value)
       this.setSearchParmas(this.obj)
-      this.searchKey(this.obj)
+      // this.searchKey(this.obj)
     },
     //搜索请求
     searchKey(obj) {
       indexModel.fliterList(obj).then(res => {
         if(res.status == 1 && res.data.list.length) {
-          this.list = res.data.list
+          this.list = this.list.concat(res.data.list)
           this.matchTxt = true
           this.unMatchTxt = true
+          this.allLoaded = false
+          this.listenScrollTop()
         }else {
           this.matchTxt = false
           this.unMatchTxt = false
@@ -217,6 +244,23 @@ export default {
         return this.price.price1 + ''
       }else {
         return this.price.price1 + '-' + this.price.price2
+      }
+    },
+    //下拉刷新
+    loadBottom() {
+      this.$refs.searchLoad.onBottomLoaded();
+      this.pullDownData()
+    },
+     //下拉加载数据
+    pullDownData() {
+      this.allLoaded = true
+      let len = (this.list.length)/10 + 1
+      if(Math.floor(len) < len) {
+        this.allLoaded = true
+      }else {
+        this.setParmas('page', len)
+        this.setParmas('limit', 10)
+        this.searchKey(this.obj)
       }
     }
   }
