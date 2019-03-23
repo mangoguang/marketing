@@ -28,6 +28,8 @@ import collectArticle from './collectArticle'
 import collectFaq from './collectFaq'
 import messageBox from '../../../components/msManage/yanMessageBox'
 import collectProduct from './collectProduct'
+import {IndexModel} from "../../../utils"
+const indexModel=new IndexModel()
 export default {
   components:{
     mybanner,
@@ -38,7 +40,7 @@ export default {
   },
   data(){
     return{
-    
+      account:''
     }
   },
   computed:{
@@ -48,14 +50,18 @@ export default {
       activeComponent: state => state.collect.activeComponent,
       tabList: state => state.collect.tabList,
       messageBox: state => state.collect.messageBox,
-      articleId: state => state.collect.articleId
+      // articleId: state => state.collect.articleId
+      singleArt: state => state.collect.singleArt,
+      articleData:state => state.collect.articleData
     })
   },
   watch:{
    
   },
   created() {
-   
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.account = JSON.parse(ajaxData).account;
+    
   },
   methods:{
    changeTab(index){
@@ -63,12 +69,35 @@ export default {
      this.$store.commit('collect/setActiveComponent',index);
    },
     remove(){
-      this.$store.commit('collect/setMessageBox',{showMessageBox:false});
-      console.log(this.articleId);
+      if(this.activeComponent==='collectArticle'){
+        let id=this.singleArt.articleId;
+        //console.log(id);
+        let account=this.account;
+        indexModel.remove(1,id,account).then(res => {
+            if(res.code===0){
+              this.$store.commit('collect/setMessageBox',{
+                showMessageBox:true,
+                tip:res.msg,
+                btnNum:1,
+                type:true
+              });
+              var dataList=this.articleData;
+              dataList.splice(this.singleArt.index,1);
+              this.$store.commit('collect/updateArticleData',dataList);
+            }
+       });
+      }else if(this.activeComponent==='collectFaq'){
+
+      }else{
+
+      }
+      
+      
     },
     cancel(){
       this.$store.commit('collect/setMessageBox',{showMessageBox:false});
     }
+    
   }
 }
 </script>

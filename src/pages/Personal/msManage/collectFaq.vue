@@ -1,6 +1,6 @@
 <template>
   <div>
-    <yan-cell-arrow v-for="(item,index) in list" :key="index" :path="{name:'/questionDetail',query:{questionId:item.questionId}}">{{item.title}}</yan-cell-arrow>
+    <yan-cell-arrow v-for="(item,index) in list" :key="index" :path="{name:'/questionDetail',query:{questionId:item.id}}">{{item.title}}</yan-cell-arrow>
   </div>
     
 </template>

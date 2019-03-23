@@ -1,18 +1,20 @@
 <template>
-    <ul id="list">
-      <li v-for='(items,index) in dataList' :key='index' @click="go(items.articleId)">
-        <yan-cell-swipe :id="items.articleId">
+    <ul id="list" v-infinite-scroll="loadMore"
+  infinite-scroll-disabled="loading"
+  infinite-scroll-distance="10">
+      <li v-for='(items,index) in dataList' :key='index' @click="go(items.id)">
+        <yan-cell-swipe :id="items.id">
             <template v-slot:lititle>
               {{items.title}}
             </template>
-            <template v-slot:button><button type="button" v-if="items.top" @click="stick(index,$event)">置顶</button></template>
+            <template v-slot:button><button type="button" v-if="items.top" >置顶</button></template>
             <template v-slot:time>
-              {{items.time}}
+              {{items.collectTime}}
             </template> 
             <!-- <img :src="require(`${items.imgUrl}`)" alt=""  slot:img> -->
              <template v-slot:img>
              <!-- <img src="../../assets/imgs/example.png" alt="" > -->
-              <img :src="items.imgUrl" alt=""> 
+              <img :src="items.image" alt=""> 
             </template> 
             
         </yan-cell-swipe>
@@ -24,25 +26,54 @@
 <script>
 //使用时，绑定属性dataList
 //<yan-list-swipe :dataList="data"></yan-list-swipe>
+import Vue from 'vue'
+import { InfiniteScroll } from 'mint-ui';
 import yanCellSwipe from "./yanCellSwipe"
+import {IndexModel} from "../../utils"
+const indexModel=new IndexModel()
+Vue.use(InfiniteScroll);
 export default {
   props:['dataList'],
   data(){
     return {
-     
+      params:{
+        type:1,
+        account:'',
+        page:1,
+        limit:10
+      },
+      ajaxData:{}
     }
   },
   components:{
     yanCellSwipe
   },
+  created:function(){
+    let ajaxData = localStorage.getItem('ajaxData')
+    //this.ajaxData = JSON.parse(ajaxData);
+    //console.log(this.account);
+    this.params.account=JSON.parse(ajaxData).account;
+    console.log(this.params.account);
+    this.getCollect();
+  },
   methods:{
-    stick:function(index,e){
-      e.stopPropagation();
-      alert("置顶"+index);
-    },
     go:function(id){
       /* this.$router.push({path:`/artcileDetails/${id}`}) */ 
        this.$router.push({name:"/articleDetails",query:{articleId:id}});
+    },
+    getCollect:function(){
+      var obj=this.params;
+      indexModel.getCollect(obj).then(res => {
+            console.log(res);
+            if(res.data.length>0){
+              this.$store.commit('collect/setArticleData',res.data);
+            }
+      })
+    },
+    loadMore:function(){
+        
+        this.loading=true;
+        
     }
     
   }

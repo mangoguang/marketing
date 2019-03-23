@@ -22,68 +22,12 @@ const state = {
     btnNum:2,
     type:false
   },
-  articleId:'',
-  articleData:[
-    {
-      title:'慕思产品三包服务政策详解',
-      time:'2019-02-20',
-      imgUrl:require('assets/imgs/example.png'),
-      articleId:'1',
-      top:true
-    },
-    {
-      title:'慕思产品三包服务政策详解2',
-      time:'2019-02-21',
-      imgUrl:require('assets/imgs/example.png'),
-      articleId:'2',
-      top:false
-    },
-    {
-      title:'慕思产品三包服务政策详解3',
-      time:'2019-02-22',
-      imgUrl:require('assets/imgs/example.png'),
-      articleId:'3',
-      top:true
-    }
-  ], 
-  FaqList:[
-    {
-      title: '床垫除螨哪种工具最好？', // 问题标题
-      questionId: '1' // 问题id
-    },
-     {
-      title: '客户投诉怎么处理？', // 问题标题
-      questionId: '2'// 问题id
-    },
-     {
-      title: '按摩椅怎么安装？', // 问题标题
-      questionId: '3' // 问题id
-    },
-     {
-      title: '床架怎么安装？', // 问题标题
-      questionId: '4' // 问题id
-    },
-     {
-      title: '床垫除螨哪种工具最好？', // 问题标题
-      questionId: '5'// 问题id
-    },
-     {
-      title: '客户投诉怎么处理？', // 问题标题
-      questionId: '6' // 问题id
-    },
-     {
-      title: '客户投诉怎么处理？', // 问题标题
-      questionId: '7' // 问题id
-    },
-     {
-      title: '按摩椅怎么安装？', // 问题标题
-      questionId: '8' // 问题id
-    },
-     {
-      title: '床架怎么安装？', // 问题标题
-      questionId: '9' // 问题id
-    }
-  ]
+  singleArt:{
+    articleId:'',
+    index:''
+  },
+  articleData:[], 
+  FaqList:[]
 }
 
 const mutations = {
@@ -95,13 +39,17 @@ const mutations = {
     state.messageBox.btnNum = obj.btnNum;
     state.messageBox.type = obj.type
   },
-  setArticleId: (state, id) => state.articleId = id,
-  setArticleData: (state, array) => state.articleData = array,
-  setFaqList: (state, array) => state.FaqList = array
+  clearSingleArt: (state, obj) => state.singleArt = obj,
+  setArticleData: (state, array) => state.articleData =[...state.articleData,...array],
+  setFaqList: (state, array) => state.FaqList =[...state.FaqList,...array],
+  clearArticleData: state => state.articleData = [],
+  removeArticle: (state,index) => state.articleData = state.articleData.splice(index,1),
+  updateArticleData:(state, array) => state.articleData = array
 }
 
 const actions = {
-
+ 
+  
 }
 
 const getters = {
