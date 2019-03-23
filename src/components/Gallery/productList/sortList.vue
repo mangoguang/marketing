@@ -29,7 +29,8 @@ export default {
   computed: {
     ...mapState({
       downList: state => state.productNavList.downList,
-      downListVal: state => state.productNavList.downListVal
+      downListVal: state => state.productNavList.downListVal,
+      filterParmas: state => state.filterParmas.filterParmas
     })
   },
   watch: {
@@ -42,6 +43,9 @@ export default {
   },
   created() {
     this.initList()
+    if(this.filterParmas.st > 0) {
+      this.hasCash()
+    }
   },
   methods: {
      ...mapMutations(['setDownList', 'setDownListVal']),
@@ -70,6 +74,12 @@ export default {
       this.setDownList(mango.btnList(this.list, index))
       this.setDownListVal()
       this.showDownList = !this.showDownList
+    },
+    //缓存
+    hasCash() {
+      let st = this.filterParmas.st 
+      this.setDownList(mango.btnList(this.list, st))
+      this.setDownListVal()
     }
   }
 }

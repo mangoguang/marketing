@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import mango from '../../../js'
 import {btnList} from '../../../utils/gallery';
 import {mapState, mapMutations} from 'vuex'
 import { IndexModel } from '../../../utils';
@@ -61,7 +62,7 @@ export default {
       list: [],
         price1: '',
         price2: '',
-      showBrand: false
+      showBrand: true
     }
   },
   computed: {
@@ -84,23 +85,37 @@ export default {
     }
   },
   created() {
-    this.list = this.$store.state.leftNavList.initlist.slice(1)
     this.initFilter()
-    this.initBrand()
-    this.setFilterList(this.list)
   },
   methods: {
-    ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList', 'setPrice']),
+    ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList', 'setPrice', 'setSearchBrandList']),
     //初始化品牌筛选//价格
     initFilter() {
       if(typeof this.$route.query.index == 'number') {
-       this.resetFilterList(this.list)
-       this.setPrice({price1:'',price2:''})
+        this.list = this.$store.state.leftNavList.initlist.slice(1)
+        this.list = btnList(this.list, -1)
+        this.resetFilterList(this.list)
+        this.setPrice({price1:'',price2:''})
+        this.initBrand()
       }else {
+        this.getBrand()
         this.price1 = this.price.price1
         this.price2 = this.price.price2
       }
     },
+    //后退缓存状态
+    getBrand() {
+      let val = this.filterParmas.brand
+      let i
+      this.filterList.forEach((el,index) => {
+        if(el.name == val) {
+          i = index
+        }
+      });
+      this.list = btnList(this.filterList, i)
+      this.setFilterList(this.list)
+    },
+    //初始化品牌筛选
     initBrand() {
       if(!this.filterParmas.brand || this.searchParmas.key) {
         this.showBrand = true
@@ -173,7 +188,6 @@ export default {
       this.price1 = ''
       this.price2 = ''
       this.getPrice(this.price1, this.price2)
-      //重置发送请求
     },
     //确认
     confirm() {

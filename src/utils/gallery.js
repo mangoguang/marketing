@@ -22,9 +22,9 @@ function fliterItem(str) {
     case '最新发布':
       return 1;
     case '价格↑':
-      return 3;
-    case '价格↓':
       return 2;
+    case '价格↓':
+      return 3;
     case '收藏数':
       return 4;
   }

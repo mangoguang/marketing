@@ -9,14 +9,14 @@
       />
     </div>
     <div class="matchTxt" v-show="matchTxt">
-      <div class="nav_function">
+      <!-- <div class="nav_function">
         <sort-list  class="sortList" :changeStatus='changeStatus' :reset='reset'/>
         <div class="changeStyle" @click="changStyle">
           <img src="../../assets/imgs/waterfall.png" alt="瀑布流" v-if="type">
           <img src="../../assets/imgs/listStyle.png" alt="列表" v-else>
         </div>
         <m-filter @click.native="changeSortListStatus" :time='time'/>
-      </div>
+      </div> -->
       <div class="productList">
         <!-- 列表 -->
         <div class="m-list" v-show="!type">
@@ -142,21 +142,24 @@ export default {
     //键盘搜索事件
     search(event) {
       if (event.keyCode == 13 && this.searchVal) { //如果按的是enter键 13是enter 
-        this.initSearch(event.target.value)
-        this.searchKey(this.searchParmas)
         this.time += 1
-        console.log(this.initParmas)
+        this.initSearch(event.target.value)
       }
     },
     //每次重新搜索都初始化参数
     initSearch(val) {
       this.searchTurn = false
-      let obj = this.initParmas
+      this.$set(this.obj, 'brand', '')
+      this.$set(this.obj, 'st', '')
+      this.$set(this.obj, 'rp', '')
+      this.$set(this.obj, 'category', '')
+      this.$set(this.obj, 'page', 1)
+      this.$set(this.obj, 'limit', 10)
+      this.$set(this.obj, 'key', val)
       this.setDownList(this.$store.state.productNavList.list)
       this.setDownListVal()
-      this.$set(obj, 'account', this.ajaxData.account)
-      this.$set(obj, 'key', val)
-      this.setSearchParmas(obj)
+      this.setSearchParmas(this.obj)
+      this.searchKey(this.searchParmas)
     },
     //设置参数
     setParmas(key, value) {
@@ -282,7 +285,7 @@ export default {
     font-size: 3.73vw;
     // padding-left: 4vw;
     border-top: 1px solid #ccc;
-   
+    // margin-top: 4vw;
   }
   a {
     color: #666
@@ -309,8 +312,9 @@ export default {
   .productList {
     height: 100vh;
     overflow: scroll;
-    padding-bottom: 30vw;
+    padding-bottom: 20vw; ///有头部30vw
     box-sizing: border-box;
+    margin-top: 2vw;
   }
 }
 </style>
