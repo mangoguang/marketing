@@ -38,19 +38,7 @@ export default {
   },
   data(){
     return{
-      /* title:'我的收藏',
-      activeIndex:0,
-      activeComponent:'collectArticle',
-      tabList:[
-        {
-          tabName:'文章',
-          componentName:'collectArticle'
-        },
-        {
-          tabName:'常见问题',
-          componentName:'collectFaq'
-        }
-      ]  */
+    
     }
   },
   computed:{

@@ -45,7 +45,7 @@ const state = {
       articleId:'3',
       top:true
     }
-  ],
+  ], 
   FaqList:[
     {
       title: '床垫除螨哪种工具最好？', // 问题标题
@@ -95,8 +95,9 @@ const mutations = {
     state.messageBox.btnNum = obj.btnNum;
     state.messageBox.type = obj.type
   },
-  setArticleId: (state, id) => state.articleId = id
-  
+  setArticleId: (state, id) => state.articleId = id,
+  setArticleData: (state, array) => state.articleData = array,
+  setFaqList: (state, array) => state.FaqList = array
 }
 
 const actions = {
