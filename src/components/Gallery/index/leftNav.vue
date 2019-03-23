@@ -46,8 +46,9 @@ export default {
       indexModel.getBrand(account).then(res => {
         if(res.data) {
           let hot = {name: '慕思'}
-          res.data.list.unshift(hot)
-          this.setInitList(res.data.list)
+          let list = res.data.list
+          list.unshift(hot)
+          this.setInitList(list)
           this.setLeftNavList(btnList(this.initlist, 0))
           this.getListVal()
         }

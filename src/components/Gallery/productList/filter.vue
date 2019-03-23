@@ -7,13 +7,21 @@
     </div>
     <div class="filter-box" v-show="filterStatus"  @click.self="hideBox">
       <div class="contain right">
-        <dl v-for="(item, index) in filterList" :key="index" v-show='showBrand'>
+        <!-- <dl v-for="(item, index) in filterList" :key="index" v-show='showBrand'>
           <dt class="brand">{{ item.name }}</dt>
           <dd v-for="(el, i) in item.child" :key="el + '_' + i" 
             @click="chooseVal(index, i)"
             :class="{active : el.status}"
             >
             {{ el.name }}
+          </dd>
+        </dl> -->
+        <dl v-show='showBrand'>
+          <dt>品牌</dt>
+          <dd v-for="(item, index) in filterList" :key="index"
+            @click="chooseVal(index)"
+            :class="{active : item.status}">
+            {{ item.name }}
           </dd>
         </dl>
         <div class="price">
@@ -42,19 +50,19 @@
 </template>
 
 <script>
+import mango from '../../../js'
+import {btnList} from '../../../utils/gallery';
 import {mapState, mapMutations} from 'vuex'
 import { IndexModel } from '../../../utils';
 export default {
+  props: ['time'],
   data() {
     return {
       filterStatus: false,
-      list: [{
-        name: '品牌',
-        child: []
-      }],
+      list: [],
         price1: '',
         price2: '',
-      showBrand: false
+      showBrand: true
     }
   },
   computed: {
@@ -64,32 +72,55 @@ export default {
       filterVal: state => state.productNavList.filterVal,
       initlist: state => state.leftNavList.initlist,
       filterParmas: state => state.filterParmas.filterParmas,
-      price: state => state.productNavList.price
+      price: state => state.productNavList.price,
+      searchParmas: state => state.searchParmas.searchParmas
     })
   },
+  watch: {
+    time(){
+      this.$nextTick(() => {
+        this.initBrand()
+        this.reset()
+      })
+    }
+  },
   created() {
-    this.list[0].child = this.initlist.slice(1);
     this.initFilter()
-    this.initBrand()
-    this.setFilterList(this.list)
   },
   methods: {
-    ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList', 'setPrice']),
+    ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList', 'setPrice', 'setSearchBrandList']),
     //初始化品牌筛选//价格
     initFilter() {
       if(typeof this.$route.query.index == 'number') {
-       this.resetFilterList(this.list)
-       this.setPrice({price1:'',price2:''})
+        this.list = this.$store.state.leftNavList.initlist.slice(1)
+        this.list = btnList(this.list, -1)
+        this.resetFilterList(this.list)
+        this.setPrice({price1:'',price2:''})
+        this.initBrand()
       }else {
+        this.getBrand()
         this.price1 = this.price.price1
         this.price2 = this.price.price2
       }
     },
+    //后退缓存状态
+    getBrand() {
+      let val = this.filterParmas.brand
+      let i
+      this.filterList.forEach((el,index) => {
+        if(el.name == val) {
+          i = index
+        }
+      });
+      this.list = btnList(this.filterList, i)
+      this.setFilterList(this.list)
+    },
+    //初始化品牌筛选
     initBrand() {
-      if(this.filterParmas.brand && !this.filterParmas.key) {
-        this.showBrand = false
-      }else {
+      if(!this.filterParmas.brand || this.searchParmas.key) {
         this.showBrand = true
+      }else {
+        this.showBrand = false
       }
     },
     //出现筛选框
@@ -101,32 +132,38 @@ export default {
       this.filterStatus = false
     },
     //获取筛选的值
-     chooseVal (index, i) {
-      this.getList(index, i)
+     chooseVal (index) {
+       if(this.list[index].status) {
+         this.list[index].status = false
+       }else {
+        this.list = btnList(this.list, index)
+       }
+       this.setFilterList(this.list)
+       this.getFilterVal()
     },
     //获取新列表
-    getList(index, i) {
-      this.list.map((el,v) => {
-        el.child.map((item, k) => {
-          if(el.name == this.list[index].name) {
-            if(item.status) {
-              this.$set(item, 'status', false)
-            }else {
-              this.$set(item, 'status', k == i)
-            }
-          }else {
-            if(item.status) {
-              this.$set(item, 'status', true)
-            }else {
-              this.$set(item, 'status', false)
-            }
-          }
-        })
-      })
-      this.setFilterList(this.list)
-      this.getFilterVal()
-      //=======每点击一次发一个请求。防抖500ms
-    },
+    // getList(index, i) {
+    //   this.list.map((el,v) => {
+    //     el.child.map((item, k) => {
+    //       if(el.name == this.list[index].name) {
+    //         if(item.status) {
+    //           this.$set(item, 'status', false)
+    //         }else {
+    //           this.$set(item, 'status', k == i)
+    //         }
+    //       }else {
+    //         if(item.status) {
+    //           this.$set(item, 'status', true)
+    //         }else {
+    //           this.$set(item, 'status', false)
+    //         }
+    //       }
+    //     })
+    //   })
+    //   this.setFilterList(this.list)
+    //   this.getFilterVal()
+    //   //=======每点击一次发一个请求。防抖500ms
+    // },
     //判断区间第一个值与第二个值相比
     changePrice() {
       if(this.price1 > 0 && this.price2 === '') {
@@ -151,7 +188,6 @@ export default {
       this.price1 = ''
       this.price2 = ''
       this.getPrice(this.price1, this.price2)
-      //重置发送请求
     },
     //确认
     confirm() {

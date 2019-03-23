@@ -40,8 +40,12 @@ export default {
           state.searchParmas.limit = obj[item]
         }else if(item === 'account') {
           state.searchParmas.account = obj[item]
-        }
+       }
       }
+    },
+    setInitParmas(state) {
+      state.searchParmas = state.initParmas
+      state.searchParmas.key = ''
     }
   }
 }

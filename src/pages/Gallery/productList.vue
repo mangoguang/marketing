@@ -189,7 +189,7 @@ export default {
           this.key = true
         }, 200);
       }
-      console.log(this.type)
+      // console.log(this.type)
     }
   }
 }
@@ -264,7 +264,7 @@ export default {
  .productList {
     height: 100vh;
     overflow: scroll;
-    padding-bottom: 46vw;
+    padding-bottom: 50vw;
     box-sizing: border-box;
   }
 </style>
