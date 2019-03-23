@@ -97,7 +97,7 @@ function b64DecodeUnicode(str) {
 
 export {b64DecodeUnicode}
 
-//正则匹配html中的img，把img中alt换成style样式
+//正则匹配html中的img，把img中alt换成style样式 //alt
 function changeImgStyle(html){
   var newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
   var match = match.replace(/alt=\"(.*)\"/gi, 'style="width: 100%;height:auto"');
@@ -107,6 +107,17 @@ function changeImgStyle(html){
 }
 
 export {changeImgStyle}
+
+//正则匹配html中的img，把img中alt换成style样式 //title
+function changeGalleryStyle(html){
+  var newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
+  var match = match.replace(/title=\"(.*)\"/gi, 'style="width: 100%;height:auto"');
+  return match;
+  });
+  return newContent;
+}
+
+export {changeGalleryStyle}
 
 
 //超出缓存5天的自动清除 （1000*60*60*24）

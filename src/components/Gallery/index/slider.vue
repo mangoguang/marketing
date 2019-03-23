@@ -16,8 +16,15 @@ Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 export default {
   props: ['list', 'auto'],
+  watch: {
+    list() {
+      if(this.list && this.list.length) {
+        this.setImgUrl(this.list[0].imgUrl)
+      }
+    }
+  },
   created() {
-    this.setImgUrl(this.list[0].imgUrl)
+     this.list && this.setImgUrl(this.list[0].imgUrl)
   },
   methods: {
     ...mapMutations(['setImgUrl']),

@@ -12,18 +12,18 @@
 </template>
 
 <script>
-import mango from '../../../js'
+import {btnList} from '../../../utils/gallery'
 import {mapMutations, mapState} from 'vuex'
 export default {
   data() {
     return {
-      list: ['床', '床垫', '枕类', '排骨架', '床品', '助眠类', '桌椅类']
     };
   },
   computed: {
     ...mapState({
       productNavList: state => state.productNavList.productNavList,
-      productNavlistVal: state => state.productNavList.productNavlistVal
+      productNavlistVal: state => state.productNavList.productNavlistVal,
+      initNavList: state => state.productNavList.initNavList
     })
   },
   created() {
@@ -36,7 +36,7 @@ export default {
       if(this.productNavList.length) {
         return
       }
-      this.setProductNavList(mango.btnList(this.list, 0))
+      this.setProductNavList(btnList(this.initNavList, this.$route.query.index))
       this.getProductNavListVal()
     },
      //切换导航
@@ -44,7 +44,7 @@ export default {
       if(this.productNavList[index].status) {
         return
       }
-      this.setProductNavList(mango.btnList(this.list, index))
+      this.setProductNavList(btnList(this.initNavList, index))
       this.getProductNavListVal()
     }
   }

@@ -1,15 +1,23 @@
+import mango from '../../../../js'
 export default {
   state: {
+    list: mango.btnList(['综合', '最新发布', '价格↑', '价格↓', '收藏数'], 0),
+    initNavList: [],
     productNavList: [],
     productNavlistVal: '',
     downList: [],
     downListVal: '',
     filterList: [],
-    filterVal: []
+    filterVal: [],
+    price: {
+      price1: '',
+      price2: ''
+    }
   },
   mutations: {
     //获取产品列表顶部导航栏
     setProductNavList: (state, arr) => state.productNavList = arr,
+    setInitNavList: (state, arr) => state.initNavList = arr,
     //获取选中的值
     getProductNavListVal(state) {
       state.productNavList.forEach(item => {
@@ -47,6 +55,7 @@ export default {
           }
         })
       });
-    }
+    },
+    setPrice: (state, obj) => state.price = obj
   }
 }

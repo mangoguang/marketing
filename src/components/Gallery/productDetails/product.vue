@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <m-slider :list='imgSliderList' :auto='0' class="productSlider"/>
+    <m-slider :list='imgList' :auto='0' class="productSlider"/>
     <button class="cancle" @click.prevent="backBtn"></button>
     <more-details class="details"/>
     <div class="case"></div>
@@ -11,19 +11,13 @@
 import MSlider from '../index/slider'
 import MoreDetails from './moreDetail'
 export default {
+  props: ['imgList'],
   components: {
     MSlider,
     MoreDetails
   },
   data() {
     return {
-      imgSliderList: [{
-        src: './static/images/bed0.png'
-      },{
-        src: './static/images/bb2.png'
-      },{
-        src: './static/images/bb3.png'
-      }]
     }
   },
   methods: {

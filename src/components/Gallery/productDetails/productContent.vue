@@ -1,48 +1,94 @@
 <template>
   <div class="content">
     <div class="topbar">
-      <p>¥{{list.price}}<span>起</span></p>
-      <div class="like" @click="collect">
-        <img src="../../../assets/imgs/like.png" alt="" v-if="list.like">
+      <p>¥{{Math.round(list.price*100)/100}}<span>起</span></p>
+      <div class="like" @click="changLike">
+        <img src="../../../assets/imgs/like.png" alt="" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="" v-else>
       </div>
       <div class="share">
-        <router-link :to="{name: 'share', query: {msg: {title: list.title, price: list.price}}}">
+        <router-link :to="{name: 'share', query: {msg: {title: list.goodsName, price: Math.round(list.price*100)/100}}}">
           <img src="../../../assets/imgs/share.png" alt="">
         </router-link>
       </div>
     </div>
-    <div class="label" >
-      <span v-for="(item, index) in list.type" :key="index">{{item.name}}</span>
-    </div>
+    <div class="type">
+        <div class="type_icon" v-for="(el, v) in getLabel(list.label)" :key='v'>
+          {{ el }}
+        </div>
+      </div>
     <div class="title">
-      <h1>{{list.title}}</h1>
-      <img src="../../../assets/imgs/trigon1.png" alt="">
-      <p>{{list.describe}}</p>
+      <h1>{{list.goodsName}}</h1>
+      <div v-if="list.remark">
+        <img src="../../../assets/imgs/trigon1.png" alt="">
+      <p >{{list.remark}}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
 export default {
+  props: ['list'],
   data() {
     return {
-      list: {
-        price: 16800,
-        like: true,
-        type: [{
-          name: '热销'
-        },{
-          name: '新品'
-        }],
-        title: '歌迪亚BCG1-018 珍珠物语 床/床架',
-        describe: '产品描述产品描述产品描述产品描述产品描述产品描述产品描述'
-      }
+      like: '',
+      ajaxData: {}
     }
   },
+  watch: {
+    list() {
+      this.like = this.list.collect
+    }
+  },
+  mounted() {
+    this.like = this.list.collect
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+  },
   methods: {
+    //收藏按钮
+    changLike() {
+      if(!this.like) {
+        this.collect()
+      }else {
+        this.cancleCollect()
+      }
+    },
+    //字符串转为数组
+    getLabel(label) {
+      if(label) {
+        return this.list.label.split(',')
+      }
+    },
+      //收藏
     collect() {
-      this.list.like = ! this.list.like
+      let obj = this.getParmas()
+      indexModel.galleryCollect(obj).then(res => {
+        if(res.status == 1) {
+          this.like = !this.like
+        }
+      })
+    },
+    //取消收藏
+    cancleCollect() {
+      let obj = this.getParmas()
+      indexModel.galleryCancelCollect(obj).then(res => {
+        if(res.status == 1) {
+          this.like = !this.like
+        }
+      })
+    },
+     //获取参数
+    getParmas() {
+      let obj = {
+        id :this.list.id,
+        account : this.ajaxData.account,
+        type : 3
+      }
+      return obj
     }
   }
 }
@@ -103,5 +149,19 @@ export default {
       margin-top: -2.4vw;
     }
   }
+   .type{
+      display: flex;
+      min-height: 6vw;
+      .type_icon {
+        font-size: 2.4vw;
+        color: #666;
+        line-height: 1.4em;
+        margin-right: 2vw;
+        max-width: 42vw;
+        word-wrap:break-word;
+        word-break:break-all;
+        display: flex;
+      }
+    }
 }
 </style>

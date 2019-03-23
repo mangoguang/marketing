@@ -1,10 +1,10 @@
 <template>
-  <div class="sortList">
+  <div class="sortList" >
     <div class="all" @click="showList">
       <span>{{ downListVal }}</span>
       <img src="../../../assets/imgs/down.png" alt="">
     </div>
-    <ul class="downList" v-show="showDownList">
+    <ul class="downList" v-show="showDownList" @click.self="clickSelf">
       <li v-for="(item, index) in downList" :key="index"
         :class="{active : item.status}"
         @click="toggleList(index)">
@@ -45,6 +45,10 @@ export default {
   },
   methods: {
      ...mapMutations(['setDownList', 'setDownListVal']),
+     //点击蒙层的时候收回下啦列表
+     clickSelf() {
+      this.showDownList = !this.showDownList
+     },
     //初始化默认选热门
     initList() {
       if(this.downList.length) {
@@ -87,13 +91,17 @@ export default {
     }
   }
   .downList {
-    position: absolute;
+    position: fixed;
     z-index: 99;
-    top: 10.3vw;
+    // top: 10.3vw;
+    top: 32.6vw;
     left: 0;
     width: 100vw;
     background: #f8f8f8;
     box-sizing: border-box;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    // overflow: hidden;
     li {
       padding: 0 4vw;
       color: #909090;
@@ -102,6 +110,7 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: #f8f8f8;
       .selected {
         width: 2.93;
         height: 2.93vw;

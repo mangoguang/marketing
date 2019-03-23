@@ -154,11 +154,43 @@ class IndexModel extends Request {
     })
   }
   //搜索接口
-  productSearch(key) {
+  getProductList(key, account) {
     return this.getData({
-      url: '/api/product/v1/goods',
+      url: '/api/product/v1/product/list',
       params: {
-        keys: key
+        key: key,
+        account: account
+      }
+    })
+  }
+  //筛选接口
+  fliterList(obj) {
+    return this.getData({
+      url: '/api/product/v1/product/list',
+      params: obj
+    })
+  }
+  //收藏/分享接口
+  galleryCollect(obj) {        //3收藏，4分享
+    return this.getData({
+      url: '/api/user/collect/v1/collect',
+      params: obj
+    })
+  }
+  //取消收藏/分享
+  galleryCancelCollect(obj) {
+    return this.getData({
+      url: '/api/user/collect/v1/cancelCollect',
+      params: obj
+    })
+  }
+  //产品详情
+  productList(id, account) {
+    return this.getData({
+      url: '/api/product/v1/product/details',
+      params: {
+        productId: id,
+        account: account
       }
     })
   }

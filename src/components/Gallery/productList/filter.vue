@@ -7,7 +7,7 @@
     </div>
     <div class="filter-box" v-show="filterStatus"  @click.self="hideBox">
       <div class="contain right">
-        <!-- <dl v-for="(item, index) in filterList" :key="index">
+        <dl v-for="(item, index) in filterList" :key="index" v-show='showBrand'>
           <dt class="brand">{{ item.name }}</dt>
           <dd v-for="(el, i) in item.child" :key="el + '_' + i" 
             @click="chooseVal(index, i)"
@@ -15,7 +15,7 @@
             >
             {{ el.name }}
           </dd>
-        </dl> -->
+        </dl>
         <div class="price">
           <p>价格区间</p>
           <div class="inp_box">
@@ -43,66 +43,55 @@
 
 <script>
 import {mapState, mapMutations} from 'vuex'
+import { IndexModel } from '../../../utils';
 export default {
   data() {
     return {
       filterStatus: false,
       list: [{
         name: '品牌',
-        child: [{
-          name: '歌蒂娅',
-          id: '1'
-        },{
-          name: '凯奇',
-          id: '2'
-        },{
-          name: '3D',
-          id: '3'
-        },{
-          name: '0769',
-          id: '4'
-        },{
-          name: 'V6',
-          id: '5'
-        },{
-          name: '幕思儿童',
-          id: '6'
-        }]},{
-          name: '风格',
-          child: [{
-          name: '时尚风',
-          id: '1'
-        },{
-          name: '简约风',
-          id: '2'
-        },{
-          name: '欧美风',
-          id: '3'
-        }]},{
-          name: '材质',
-          child: [{
-            name: '皮质',
-            id: '1'
-          },{
-            name: '布艺',
-            id: '2'
-          }]
-        }],
+        child: []
+      }],
         price1: '',
-        price2: ''
+        price2: '',
+      showBrand: false
     }
   },
   computed: {
     ...mapState({
+      listVal: state => state.leftNavList.listVal,
       filterList: state => state.productNavList.filterList,
-      filterVal: state => state.productNavList.filterVal
+      filterVal: state => state.productNavList.filterVal,
+      initlist: state => state.leftNavList.initlist,
+      filterParmas: state => state.filterParmas.filterParmas,
+      price: state => state.productNavList.price
     })
   },
   created() {
+    this.list[0].child = this.initlist.slice(1);
+    this.initFilter()
+    this.initBrand()
     this.setFilterList(this.list)
   },
   methods: {
-    ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList']),
+    ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList', 'setPrice']),
+    //初始化品牌筛选//价格
+    initFilter() {
+      if(typeof this.$route.query.index == 'number') {
+       this.resetFilterList(this.list)
+       this.setPrice({price1:'',price2:''})
+      }else {
+        this.price1 = this.price.price1
+        this.price2 = this.price.price2
+      }
+    },
+    initBrand() {
+      if(this.filterParmas.brand && !this.filterParmas.key) {
+        this.showBrand = false
+      }else {
+        this.showBrand = true
+      }
+    },
     //出现筛选框
     showFilter() {
       this.filterStatus = true
@@ -140,25 +129,41 @@ export default {
     },
     //判断区间第一个值与第二个值相比
     changePrice() {
-      if(this.price2) {
+      if(this.price1 > 0 && this.price2 === '') {
+        this.getPrice(this.price1, this.price2)
+      }else if(this.price2 > 0 && this.price1 === '') {
+        this.getPrice(this.price1, this.price2)
+      }else if(this.price2) {
         if(parseInt(this.price1) > parseInt(this.price2)) {
           this.price2 = ''
           this.$refs.inputPrice2.focus()
         }else {
-          console.log('send')
-          ///发送请求
+          this.getPrice(this.price1, this.price2)
         }
+      }else{
+        this.getPrice(this.price1, this.price2)
       }
     },
     //重置筛选框,清空选中的值
     reset() {
       this.resetFilterList(this.list)
       this.getFilterVal()
+      this.price1 = ''
+      this.price2 = ''
+      this.getPrice(this.price1, this.price2)
       //重置发送请求
     },
     //确认
     confirm() {
       this.filterStatus = false
+    },
+    //获取价格参数
+    getPrice(p1,p2) {
+      let obj = {
+        price1: p1,
+        price2: p2
+      }
+      this.setPrice(obj)
     }
   }
 }
@@ -192,7 +197,7 @@ export default {
       background: #fff;
       height: 100%;
       width: 80vw;
-      padding-top: 2vw;
+      padding-top: 12vw;
       box-sizing: border-box;
       overflow: scroll;
       padding-bottom: 22vw;

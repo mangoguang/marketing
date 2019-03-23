@@ -13,26 +13,32 @@
       </div>
       <m-filter @click.native="changeSortListStatus"/>
     </div>
-    <!-- 列表 -->
-    <div class="m-list" v-show="!type">
-      <div v-for="(item, index) in list" :key='index'> 
-        <router-link :to='{name:"productDetails",query: {id: item.title}}'>
-          <m-list :list='item'/>
-        </router-link>
+    <div class="productList">
+       <!-- 列表 -->
+      <div class="m-list" v-show="!type">
+        <div v-for="(item, index) in list" :key='index'> 
+          <router-link :to='{name:"productDetails",query: {id: item.id}}'>
+            <m-list :list='item'/>
+          </router-link>
+        </div>
       </div>
-    </div>
-    <!-- 瀑布流 -->
-    <div class="list" v-show="type">
-      <div class="item" v-for="(item, index) in list" :key='index'>
-        <router-link :to='{name:"productDetails",query: {id: item.title}}'>
-          <w-list :list='item'/>
-        </router-link>
-      </div>  
+      <!-- 瀑布流 -->
+      <div class="list" v-show="type">
+        <div class="item" v-for="(item, index) in list" :key='index'>
+          <router-link :to='{name:"productDetails",query: {id: item.id}}'>
+            <w-list :list='item'/>
+          </router-link>
+        </div>  
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
+import {mapState, mapMutations} from 'vuex'
+import {fliterItem} from '../../utils/gallery'
 import Search from "../../components/msManage/search/eggSearchInp";
 import PTopNav from "../../components/Gallery/productList/pTopNav";
 import SortList from '../../components/Gallery/productList/sortList';
@@ -53,74 +59,115 @@ export default {
       key: true,
       type: true,
       changeStatus: false,
-      list: [{
-        brand: '床',
-        imgUrl: './static/images/bed1.jpg',
-        title: '3D BCD1-046 克莱夫特克莱夫特克莱夫特克莱夫特',
-        type: [{
-          name: '热销'
-        },{
-          name: '人气'
-        }],
-        price: 22800,
-        like: true,
-        num: 1600
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed2.jpg',
-        title: '歌蒂亚 BCG1-016 爱巢',
-        type: [{
-          name: '热销'
-        }],
-        price: 15800,
-        like: false,
-        num: 1628
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed3.jpg',
-        title: '歌蒂亚 BCG1-016 天使之翼',
-        type: [{
-          name: '热销'
-        },{
-          name: '新品'
-        }],
-        price: 18800,
-        like: false,
-        num: 1628
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed4.jpg',
-        title: 'V6 BCG1-016 路虎',
-        type: [{
-          name: '人气'
-        }],
-        price: 25800,
-        like: true,
-        num: 2200
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed4.jpg',
-        title: 'V6 BCG1-016 路虎',
-        type: [{
-          name: '人气'
-        }],
-        price: 25800,
-        like: true,
-        num: 2200
-      },{
-        brand: '床',
-        imgUrl: './static/images/bed4.jpg',
-        title: 'V6 BCG1-016 爱巢',
-        type: [{
-          name: '人气'
-        }],
-        price: 25800,
-        like: true,
-        num: 2200
-      }]
+      list: [],
+      ajaxData: {},
+      init: false,
+      obj:{
+        category: '',
+        brand: '',
+        key: '',
+        st: 0,
+        rp: '',
+        account: ''
+      }
     }
   },
+  computed: {
+    ...mapState({
+      listVal: state => state.leftNavList.listVal,
+      filterParmas: state => state.filterParmas.filterParmas,
+      downListVal: state => state.productNavList.downListVal,
+      filterVal: state => state.productNavList.filterVal,
+      price: state => state.productNavList.price,
+      productNavlistVal: state => state.productNavList.productNavlistVal
+    })
+  },
+  watch: {
+    downListVal() {
+      if(this.init) {
+        this.obj = this.filterParmas
+        this.$set(this.obj, 'st', fliterItem(this.downListVal))
+        this.changeParmas()
+      }
+    },
+    filterVal() {
+      if(this.init) {
+        this.obj = this.filterParmas
+        this.$set(this.obj, 'brand', this.filterVal[0])
+        this.changeParmas()
+      }
+    },
+    price() {
+      if(this.init) {
+        this.obj = this.filterParmas
+        this.$set(this.obj, 'rp', this.getPrice())
+        this.changeParmas()
+      }
+    },
+    productNavlistVal() {
+      if(this.init) {
+        this.obj = this.filterParmas
+        this.$set(this.obj, 'category', this.productNavlistVal)
+        this.changeParmas()
+      }
+    }
+  },
+  created() {
+    let ajaxData = localStorage.getItem('ajaxData')
+    this.ajaxData = JSON.parse(ajaxData)
+    this.$set(this.obj, 'account', this.ajaxData.account)
+    this.initBrand()
+    this.initGetData()
+  },
   methods: {
+    ...mapMutations(['setParmas', 'setDownList']),
+    //初始请求数据
+    initGetData() {
+      if(typeof this.$route.query.index == 'number') {
+        this.setDownList('')
+        this.initParmas()
+      }else {
+        this.filterData(this.filterParmas)
+      }
+    },
+    //请求数据
+    filterData(obj) {
+      indexModel.fliterList(obj).then(res => {
+        if(res.data) {
+          this.init = true
+          this.list = res.data.list
+        }
+      })
+    },
+    //初始化参数
+    initParmas() {
+      this.obj.account = this.ajaxData.account
+      this.obj.category = this.$route.query.categoryName
+      this.initBrand()
+      this.setParmas(this.obj)
+      this.filterData(this.filterParmas)
+    },
+    //初始化品牌
+    initBrand() {
+      if(this.listVal === '慕思') {
+        this.obj.brand = ''
+      }else {
+        this.obj.brand = this.listVal
+      }
+    },
+    //改变参数
+    changeParmas() {
+      this.setParmas(this.obj)
+      this.filterData(this.filterParmas)
+    },
+    //获取价格参数
+    getPrice() {
+      if(this.price.price2 === '') {
+        return this.price.price1 + ''
+      }else {
+        return this.price.price1 + '-' + this.price.price2
+      }
+    },
     //改变下啦列表的状态
     changeSortListStatus() {
       this.changeStatus = true
@@ -152,6 +199,9 @@ export default {
 .prodectList {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
+  background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
   .topBar {
     background: #fff;
     padding: 2vw 4vw;
@@ -177,6 +227,7 @@ export default {
     line-height: 10.6vw;
     background:rgba(255,255,255,1);
     box-shadow:0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2vw;
     .sortList {
       flex: 0.94;
     }
@@ -197,6 +248,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    // margin-top: 0;
     // column-count: 2;
     // column-gap: 0;
     // .item {
@@ -209,4 +261,10 @@ export default {
 .changbg {
   background: rgba(0, 0, 0, 0.5);
 }
+ .productList {
+    height: 100vh;
+    overflow: scroll;
+    padding-bottom: 46vw;
+    box-sizing: border-box;
+  }
 </style>
