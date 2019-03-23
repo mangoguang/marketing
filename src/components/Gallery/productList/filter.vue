@@ -7,13 +7,21 @@
     </div>
     <div class="filter-box" v-show="filterStatus"  @click.self="hideBox">
       <div class="contain right">
-        <dl v-for="(item, index) in filterList" :key="index" v-show='showBrand'>
+        <!-- <dl v-for="(item, index) in filterList" :key="index" v-show='showBrand'>
           <dt class="brand">{{ item.name }}</dt>
           <dd v-for="(el, i) in item.child" :key="el + '_' + i" 
             @click="chooseVal(index, i)"
             :class="{active : el.status}"
             >
             {{ el.name }}
+          </dd>
+        </dl> -->
+        <dl v-show='showBrand'>
+          <dt>品牌</dt>
+          <dd v-for="(item, index) in filterList" :key="index"
+            @click="chooseVal(index)"
+            :class="{active : item.status}">
+            {{ item.name }}
           </dd>
         </dl>
         <div class="price">
@@ -42,6 +50,7 @@
 </template>
 
 <script>
+import {btnList} from '../../../utils/gallery';
 import {mapState, mapMutations} from 'vuex'
 import { IndexModel } from '../../../utils';
 export default {
@@ -49,10 +58,7 @@ export default {
   data() {
     return {
       filterStatus: false,
-      list: [{
-        name: '品牌',
-        child: []
-      }],
+      list: [],
         price1: '',
         price2: '',
       showBrand: false
@@ -73,11 +79,12 @@ export default {
     time(){
       this.$nextTick(() => {
         this.initBrand()
+        this.reset()
       })
     }
   },
   created() {
-    this.list[0].child = this.initlist.slice(1);
+    this.list = this.$store.state.leftNavList.initlist.slice(1)
     this.initFilter()
     this.initBrand()
     this.setFilterList(this.list)
@@ -110,32 +117,38 @@ export default {
       this.filterStatus = false
     },
     //获取筛选的值
-     chooseVal (index, i) {
-      this.getList(index, i)
+     chooseVal (index) {
+       if(this.list[index].status) {
+         this.list[index].status = false
+       }else {
+        this.list = btnList(this.list, index)
+       }
+       this.setFilterList(this.list)
+       this.getFilterVal()
     },
     //获取新列表
-    getList(index, i) {
-      this.list.map((el,v) => {
-        el.child.map((item, k) => {
-          if(el.name == this.list[index].name) {
-            if(item.status) {
-              this.$set(item, 'status', false)
-            }else {
-              this.$set(item, 'status', k == i)
-            }
-          }else {
-            if(item.status) {
-              this.$set(item, 'status', true)
-            }else {
-              this.$set(item, 'status', false)
-            }
-          }
-        })
-      })
-      this.setFilterList(this.list)
-      this.getFilterVal()
-      //=======每点击一次发一个请求。防抖500ms
-    },
+    // getList(index, i) {
+    //   this.list.map((el,v) => {
+    //     el.child.map((item, k) => {
+    //       if(el.name == this.list[index].name) {
+    //         if(item.status) {
+    //           this.$set(item, 'status', false)
+    //         }else {
+    //           this.$set(item, 'status', k == i)
+    //         }
+    //       }else {
+    //         if(item.status) {
+    //           this.$set(item, 'status', true)
+    //         }else {
+    //           this.$set(item, 'status', false)
+    //         }
+    //       }
+    //     })
+    //   })
+    //   this.setFilterList(this.list)
+    //   this.getFilterVal()
+    //   //=======每点击一次发一个请求。防抖500ms
+    // },
     //判断区间第一个值与第二个值相比
     changePrice() {
       if(this.price1 > 0 && this.price2 === '') {
