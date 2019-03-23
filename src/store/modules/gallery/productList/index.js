@@ -12,9 +12,12 @@ export default {
     price: {
       price1: '',
       price2: ''
-    }
+    },
+    showType: true
   },
   mutations: {
+    //列表展现形式
+    setShowType: (state, str) => state.showType = str,
     //获取产品列表顶部导航栏
     setProductNavList: (state, arr) => state.productNavList = arr,
     setInitNavList: (state, arr) => state.initNavList = arr,

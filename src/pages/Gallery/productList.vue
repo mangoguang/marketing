@@ -8,14 +8,14 @@
     <div class="nav_function">
       <sort-list  class="sortList" :changeStatus='changeStatus' :reset='reset'/>
       <div class="changeStyle" @click="changStyle">
-        <img src="../../assets/imgs/waterfall.png" alt="瀑布流" v-if="type">
+        <img src="../../assets/imgs/waterfall.png" alt="瀑布流" v-if="showType">
         <img src="../../assets/imgs/listStyle.png" alt="列表" v-else>
       </div>
       <m-filter @click.native="changeSortListStatus"/>
     </div>
     <div class="productList">
        <!-- 列表 -->
-      <div class="m-list" v-show="!type">
+      <div class="m-list" v-show="!showType">
         <div v-for="(item, index) in list" :key='index'> 
           <router-link :to='{name:"productDetails",query: {id: item.id}}'>
             <m-list :list='item'/>
@@ -23,7 +23,7 @@
         </div>
       </div>
       <!-- 瀑布流 -->
-      <div class="list" v-show="type">
+      <div class="list" v-show="showType">
         <div class="item" v-for="(item, index) in list" :key='index'>
           <router-link :to='{name:"productDetails",query: {id: item.id}}'>
             <w-list :list='item'/>
@@ -57,7 +57,6 @@ export default {
   data() {
     return{
       key: true,
-      type: true,
       changeStatus: false,
       list: [],
       ajaxData: {},
@@ -74,6 +73,7 @@ export default {
   },
   computed: {
     ...mapState({
+      showType: state => state.productNavList.showType,
       listVal: state => state.leftNavList.listVal,
       filterParmas: state => state.filterParmas.filterParmas,
       downListVal: state => state.productNavList.downListVal,
@@ -120,7 +120,7 @@ export default {
     this.initGetData()
   },
   methods: {
-    ...mapMutations(['setParmas', 'setDownList']),
+    ...mapMutations(['setParmas', 'setDownList', 'setShowType']),
     //初始请求数据
     initGetData() {
       if(typeof this.$route.query.index == 'number') {
@@ -185,11 +185,10 @@ export default {
       if(this.key) {
         this.key = false
         setTimeout(() => {
-          this.type = !this.type
+          this.setShowType(!this.showType)
           this.key = true
         }, 200);
       }
-      // console.log(this.type)
     }
   }
 }
