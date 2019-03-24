@@ -8,7 +8,7 @@
         <div class="msg">
           <p class="title">{{msg.title}}</p>
           <span class="price">¥{{msg.price}}</span>
-          <div class="qrscan"></div>
+          <div id="qrcode"></div>
         </div>
       </div>
     </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import QRCode from "qrcodejs2";
 import html2canvas from "html2canvas";
 import { mapState } from "vuex";
 import Banner from "../../components/banner";
@@ -53,7 +54,7 @@ export default {
           imgUrl: "./static/images/weibo.png"
         }
       ],
-      url: ''
+      url: ""
     };
   },
   computed: {
@@ -69,16 +70,28 @@ export default {
       console.log(this.imgUrl);
     }
   },
+  mounted() {
+    this.getCode()
+  },
   methods: {
+    getCode() {
+      let qrcode = new QRCode("qrcode", {
+        width: 40,
+        height: 40, // 高度
+        text: "http://baidu.com", // 二维码内容
+        colorDark: "#000",
+        colorLight: "#fff"
+      });
+    },
     saveImg() {
       html2canvas(this.$refs.creatImg, {
         backgroundColor: null
       }).then(canvas => {
         // document.body.appendChild(canvas);
         // var link = document.createElement('a');
-         this.url = canvas.toDataURL();
-        console.log(this.url)
-        this.savePicture()
+        this.url = canvas.toDataURL();
+        console.log(this.url);
+        this.savePicture();
       });
     },
     download(url1) {
@@ -115,8 +128,8 @@ export default {
             api.toast({
               msg: "图片已保存到本地"
             });
-          }else{
-            alert(err)
+          } else {
+            alert(err);
           }
           api.saveMediaToAlbum(
             {
@@ -141,7 +154,7 @@ export default {
           }
         },
         function(ret, err) {
-          console.log('scanner',ret)
+          console.log("scanner", ret);
           if (ret.status) {
             alert(JSON.stringify(ret));
           } else {
@@ -213,13 +226,12 @@ export default {
           top: 12vw;
           left: 3vw;
         }
-        .qrscan {
+        #qrcode {
           position: absolute;
           right: 3vw;
           width: 9.33vw;
           height: 9.33vw;
           top: 7.3vw;
-          border: 1px solid #dcbf8a;
         }
       }
     }
