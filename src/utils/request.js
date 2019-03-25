@@ -24,10 +24,11 @@ class Request {
       axios({
         method: 'post',
         url: baseUrl + url,
-        params: data
-        // headers: {
-        //   'Content-Type': 'application/x-www-form-urlencoded'
-        // }
+        data: data,
+        headers: {
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "multipart/form-data"
+        }
       }).then(res => {
         resolve(res)
       }).catch(err => {

@@ -1,9 +1,10 @@
 <template>
   <div class="share">
-    <div class="canvas">
-      <Banner :title="'产品分享'"/>
+    <Banner :title="'产品分享'"/>
+    <div class="saveTips" v-show="successSave">保存成功</div>
+    <div class="canvas" ref="creatImg">
       <img :src="imgUrl" alt>
-      <div class="content" ref="creatImg">
+      <div class="content">
         <img src="../../assets/imgs/share_bottom.png" alt>
         <div class="msg">
           <p class="title">{{msg.title}}</p>
@@ -26,6 +27,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import QRCode from "qrcodejs2";
 import html2canvas from "html2canvas";
 import { mapState } from "vuex";
@@ -54,7 +56,10 @@ export default {
           imgUrl: "./static/images/weibo.png"
         }
       ],
-      url: ""
+      url: "",
+      loadImgUrl: "",
+      successSave: false,
+      imageData: ''
     };
   },
   computed: {
@@ -71,119 +76,173 @@ export default {
     }
   },
   mounted() {
-    this.getCode()
+    this.getCode();
   },
   methods: {
+    //生成二维码
     getCode() {
       let qrcode = new QRCode("qrcode", {
-        width: 40,
-        height: 40, // 高度
-        text: "http://baidu.com", // 二维码内容
+        width: 48,
+        height: 48, // 高度
+        text:
+          "https://derucci.net/web/marketing/#/productDetails?id=1100231733594095620", // 二维码内容
         colorDark: "#000",
-        colorLight: "#fff"
+        colorLight: "#fff",
+        correctLevel: QRCode.CorrectLevel.L,
+        QRCodeVersion: 8
       });
     },
+    //点击保存图片
     saveImg() {
       html2canvas(this.$refs.creatImg, {
         backgroundColor: null
       }).then(canvas => {
-        // document.body.appendChild(canvas);
-        // var link = document.createElement('a');
         this.url = canvas.toDataURL();
-        console.log(this.url);
-        this.savePicture();
+        this.postImage();
       });
     },
-    download(url1) {
-      var url = url1;
-      // var url =
-      //   "http://img1.3lian.com/gif/more/11/201206/a5194ba8c27b17def4a7c5495aba5e32.jpg";
-      api.saveMediaToAlbum(
-        {
-          path: "fs://http.jpg"
-        },
-        function(ret, err) {
-          if (ret && ret.status) {
-            alert("保存成功");
-          } else {
-            alert("保存失败");
-          }
-        }
-      );
+    //base64转成formdata形式上传
+    changeFormData() {
+      let bytes = window.atob(this.url.split(",")[1]);
+      let temp = new ArrayBuffer(bytes.length);
+      let ia = new Uint8Array(temp);
+      for (var i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i); 
+      }
+      //Blob对象
+      let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
+      //FormData对象
+      this.imageData = new FormData();
+      this.imageData.append("dataFile", blob, Date.now() + ".jpg");
     },
+    //上传图片获取图片地址
+    postImage() {
+      this.changeFormData()
+      if(this.imageData) {
+        this.getImgUrl()
+      }
+    },
+    //请求服务器图片路径
+    getImgUrl() {
+       axios.post("http://10.11.8.229/upload/file", this.imageData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(res => {
+          this.loadImgUrl = res.data.url;
+          this.savePicture();
+        });
+    },
+    //保存图片
     savePicture() {
-      // var url =
-      //   "http://img1.3lian.com/gif/more/11/201206/a5194ba8c27b17def4a7c5495aba5e32.jpg";
       var timestamp = new Date().getTime();
       api.download(
         {
-          url: this.url,
-          savePath: "fs://album" + timestamp + ".png",
-          report: true,
-          cache: true,
-          allowResume: true
+          url: this.loadImgUrl,
+          savePath: "fs://album" + timestamp + ".jpg"
+          // report: true,
+          // cache: true,
+          // allowResume: true
         },
-        function(ret, err) {
+        (ret, err) => {
           if (ret) {
-            api.toast({
-              msg: "图片已保存到本地"
-            });
-          } else {
-            alert(err);
+            this.showTips()
           }
           api.saveMediaToAlbum(
             {
-              path: "fs://album" + timestamp + ".png"
+              path: "fs://album" + timestamp + ".jpg"
             },
             function(ret, err) {}
           );
         }
       );
     },
-    getScanner() {
-      var FNScanner = api.require("FNScanner");
-      FNScanner.encodeImg(
-        {
-          content: "http://www.apicloud.com/",
-          saveToAlbum: true,
-          type: "image",
-          saveImg: {
-            path: "fs://album.png",
-            w: 200,
-            h: 200
-          }
-        },
-        function(ret, err) {
-          console.log("scanner", ret);
-          if (ret.status) {
-            alert(JSON.stringify(ret));
-          } else {
-            alert(JSON.stringify(err));
-          }
-        }
-      );
-    },
-    imgTogether(url, callback) {
-      var canvas = document.createElement("canvas");
-      var size = 180;
-      canvas.width = size;
-      canvas.height = size;
-      var context = canvas.getContext("2d");
-      // 这是上传图像
-      var imgUpload = new Image();
-      imgUpload.onload = function() {
-        // 绘制
-        context.drawImage(imgUpload, 0, 0, size, size, 0, 0, size, size);
-        // 再次绘制
-        context.drawImage(eleImgCover, 0, 0, size, size, 0, 0, size, size);
-        // 回调
-        callback(canvas.toDataURL("image/png"));
-      };
-      imgUpload.src = url;
+    //出现保存成功提示
+    showTips() {
+      this.successSave = true
+      setTimeout(() => {
+        this.successSave = false;
+      }, 1500);
     },
     shareBtn(index) {
-      console.log(index);
-    }
+      console.log(index)
+      switch (index) {
+        case 0: 
+        this.shareWeixin('session',this.msg.title);
+        break;
+        case 1: 
+        this.shareWeixin('timeline', this.msg.title);
+        break;
+        case 2: 
+        this.shareQQ(this.msg.title);
+        break;
+        case 3:
+        this.shareWeibo(this.msg.title);
+        break
+      }
+    },
+    qqsharetext() {
+      var qq = api.require('qq');
+      qq.shareText({
+          text: 'testtext'
+      });
+    },
+    //微信和朋友圈
+     shareWeixin(Vscene,title) {
+      //  var weiXin = api.require('weiXin');
+        var wx = api.require('wx');
+        wx.shareWebpage({
+            apiKey: '',
+            scene: Vscene,
+            title: title,
+            description: '分享网页的描述',
+            thumb: 'widget://static/images/bed0.png',
+            contentUrl: 'http://www.baidu.com'
+        }, function(ret, err) {
+            if (ret.status) {
+                alert(JSON.stringify(ret))
+            } else {
+                alert(JSON.stringify(err))
+            }
+        });
+    },
+    shareQQ(title) {
+      var qq = api.require('qq');
+      qq.shareNews({
+          url: 'http://www.baidu.com',
+          title: title,
+          description: '描述',
+          imgUrl: './static/bed0.png',
+          type:'QFriend'
+      });
+    },
+    shareWeibo(title) {
+      var sinaWeiBo = api.require('sinaWeiBo');
+      sinaWeiBo.sendRequest({
+          contentType: 'web_page',
+          text: 'http://www.apicloud.com',
+          media: {
+              title: title,
+              description: '多媒体描述',
+              webpageUrl: 'http://v.ku6.com/show/ZgeIWrUgvfSuDN_fl_qNsQ...html'
+          }
+      }, function(ret, err) {
+          if (ret.status) {
+              api.alert({
+                  title: '发表微博',
+                  msg: '发表成功',
+                  buttons: ['确定']
+              });
+          } else {
+              api.alert({
+                  title: '发表失败',
+                  msg: err.msg,
+                  buttons: ['确定']
+              });
+          }
+      });
+  }
   }
 };
 </script>
@@ -192,12 +251,27 @@ export default {
 .share {
   width: 100vw;
   height: 100vh;
+  overflow: hidden;
   background: #ededed;
   padding-top: 25.33vw;
   box-sizing: border-box;
+  .saveTips {
+    width: 100vw;
+    line-height: 9.06vw;
+    background: rgba(76, 217, 100, 0.7);
+    color: #136f23;
+    font-size: 3.46vw;
+    position: absolute;
+    top: 22vw;
+    left: 0;
+    text-align: center;
+    z-index: 10;
+  }
   .canvas {
     margin: 0 auto;
     width: 61.33vw;
+    box-sizing: border-box;
+    position: relative;
     img {
       width: 61.33vw;
       height: auto;
@@ -205,6 +279,7 @@ export default {
     .content {
       margin-top: -10vw;
       position: relative;
+      height: 21vw;
       img {
         width: 100%;
         height: auto;
@@ -228,11 +303,13 @@ export default {
         }
         #qrcode {
           position: absolute;
-          right: 3vw;
-          width: 9.33vw;
-          height: 9.33vw;
-          top: 7.3vw;
+          right: 2vw;
+          top: 4.3vw;
+          padding: 1vw;
+          // box-sizing: border-box;
+          background: #fff;
         }
+        /*生成的二维码里面的img标签宽高自适应*/
       }
     }
   }

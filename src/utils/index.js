@@ -201,6 +201,15 @@ class IndexModel extends Request {
       params: obj
     })
   }
+  //合成海报上传接口
+  postImg(url) {
+    return this.getPostData({
+      url: '/upload/file',
+      data: {
+        dataFile: url
+      }
+    })
+  }
   
 }
 

@@ -146,13 +146,11 @@ export default {
         scroll: e.target.scrollTop
       }
       this.setAllCategoryList(obj)
-      // this.setProductScroll(e.target.scrollTop)
     },
     //监听滚动条高度
     listenScrollTop() {
       let category = this.productNavlistVal
       this.$refs.productListScroll.addEventListener('scroll',this.recordScrollPosition,false);
-      // this.getCategoryScroll(this.productNavlistVal)
       this.getProductScroll(category)
       this.$nextTick(() => {
         this.$refs.productListScroll.scrollTop = this.productScroll; 
