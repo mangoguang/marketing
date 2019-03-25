@@ -1,22 +1,23 @@
 <template>
-  <div>
-    <ul id="faq" v-if="list.length>0">
+  <div class="content">
+    <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="true">
+    <ul id="faq">
       <li  v-for="(item,index) in list" :key="index">
        <yan-cell-arrow  :i="index" :id="item.id" :title="item.title" :path="{name:'/questionDetail',query:{id:item.id}}">{{item.title}}</yan-cell-arrow>
       </li>
     </ul>
-    <div v-else style="text-align:center;color:#000;background:#fff">暂无记录</div>
-    <div style="text-align:center;color:#000;background:#fff" v-if="showTip">{{tip}}</div>
+   </mt-loadmore>
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { InfiniteScroll } from 'mint-ui';
+import { InfiniteScroll ,Loadmore } from 'mint-ui';
 import { mapState } from 'vuex'
 import {IndexModel} from "../../../utils"
 const indexModel=new IndexModel()
 Vue.use(InfiniteScroll);
+Vue.component(Loadmore.name, Loadmore)
 import yanCellArrow from "../../../components/msManage/yanCellArrow"
 export default {
   components:{
@@ -32,8 +33,7 @@ export default {
       },
       ajaxData:{},
       baseUrl:'',
-      tip:'加载中',
-      showTip:false
+      allLoaded:false
     }
   },
   computed:{
@@ -41,33 +41,23 @@ export default {
      list: state => state.collect.FaqList
    })
   },
-  watch:{
-   
-  },
   created() {
    let ajaxData = localStorage.getItem('ajaxData')
     this.params.account=JSON.parse(ajaxData).account;
     this.getCollect();
   },
-  mounted(){
-     var _this=this;
-      window.onscroll=function(){
-      var scrollTop=document.documentElement.scrollTop || document.body.scrollTop;
-      var scrollHeight=document.documentElement.scrollHeight || document.body.scrollHeight;
-      var clientHeight=document.documentElement.clientHeight || document.body.clientHeight;
-      if(scrollTop+clientHeight>=scrollHeight){
-        _this.params.page++;
-        _this.more();
-      }
-    }
-  },
   methods:{
     getCollect:function(){
       var obj=this.params;
       indexModel.getCollect(obj).then(res => {
-            //console.log(123, res);
             if(res.code===0){
+              if(res.data.length<this.params.limit){
+                this.allLoaded=true;
+              }else{
+                this.allLoaded=false;
+              }
               this.$store.commit('collect/setFaqList', res.data);
+              this.params.page++;
             }
       })
     },
@@ -78,7 +68,6 @@ export default {
        setTimeout(() => {
         indexModel.getCollect(obj).then(res => {
               if(res.code===0&&this.params.page!==1&&res.data.length>0){
-                this.baseUrl=res.baseUrl;
                 this.$store.commit('collect/setFaqList', res.data);
                 this.tip="--加载完成--";
               }else{
@@ -86,7 +75,12 @@ export default {
               }
         })
       },500)
+    },
+    loadBottom:function(){
+      this.$refs.loadmore.onBottomLoaded();
+      this.getCollect()
     }
+
    
   },
   destroyed(){
@@ -96,6 +90,9 @@ export default {
 </script>
 
 <style lang="scss">
+.content{
+  overflow: scroll;
+}
 #faq{
   .mint-cell{
        min-height: .4rem;
