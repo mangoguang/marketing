@@ -1,9 +1,11 @@
 <template>
-  <div class="policy">
+  <div class="policy paddingTop">
     <banner :title="title"/>
     <!-- list为传入参数，getparmas为组件点击得到的选项-->
     <div class='treeList'>
-      <treeList :getParmas='getParmas' :getStatus='getStatus'/>
+      <treeList :style="{'paddingTop':`${paddingTop}vw`}"
+        :getParmas='getParmas' 
+        :getStatus='getStatus'/>
     </div>
     <listComp :class="listComp"/>
   </div>
@@ -14,12 +16,14 @@ import {mapMutations,mapState} from 'vuex'
 import treeList from '../../components/msManage/service/eggTreeListComp'
 import listComp from '../../components/msManage/service/eggListComp'
 import banner from '../../components/banner'
+import {isIPhoneX} from '../../utils/msManage'
 export default {
   components:{ treeList,listComp,banner },
   data() {
     return {
       listComp: 'listComp',
-      title: ''
+      title: '',
+      paddingTop: ''
     }
   },
   computed: {
@@ -32,6 +36,7 @@ export default {
     this.initParmas()
     this.initTitile()
     this.initTop()
+    this.isIPhoneX()
   },
   methods: {
     ...mapMutations(['setParmas']),
@@ -69,6 +74,19 @@ export default {
       }else {
         this.listComp = 'listComp0'
       }
+    },
+    isIPhoneX : function(fn){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.paddingTop = '22'
+        }else{
+          this.paddingTop = '16'
+        } 
+      }else{
+        this.paddingTop = '16'
+      }
     }
   }
 }
@@ -79,6 +97,7 @@ export default {
   position: relative;
   height: 100vh;
   overflow: hidden;
+  box-sizing: border-box;
   .treeList {
     padding-top: 16vw;
   }

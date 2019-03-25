@@ -7,7 +7,7 @@
           :class="item.status? 'addClass' : ''">
           {{ item.name }}
         </span>
-        <div class="child_wrapper" >
+        <div class="child_wrapper" :style="{'top':`${top}vw`}">
           <ul class="child_treeList " v-show="item.status" >
             <li v-for="(el, i) in childList" :key='i' class="selectChild">
               <span 
@@ -35,11 +35,13 @@ export default {
     return {
       addClass: '',
       fatherList: [],
-      childList: []
+      childList: [],
+      top: ''
     }
   },
   created() {
     this.getCategoriesList()
+    this.isIPhoneX()
   },
   computed: {
     ...mapState({
@@ -141,6 +143,19 @@ export default {
           }
         this.getParmas(parmas)
       }
+    },
+    isIPhoneX : function(fn){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.top = '33'
+        }else{
+          this.top = '28'
+        } 
+      }else{
+        this.top = '33'
+      }
     }
   }
   
@@ -162,12 +177,13 @@ export default {
   position: fixed;
   background: #fff;
   z-index: 90;
-  top: 16vw;
+  top: 0;
   left: 0;
   .treeList{
     overflow-x: auto;
     display: flex;
     white-space: nowrap;
+    width: 100vw;
     .select {
       font-size: 3.73vw;
       color: #666;
@@ -179,7 +195,7 @@ export default {
         background: #e1e1e1;
         width: 100vw;
         position: fixed;
-        top: 28vw;
+        top: 0;
         left: 0;
         // z-index: 99;
         .child_treeList {

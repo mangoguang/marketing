@@ -2,10 +2,16 @@
   <div class="question">
     <banner :title="title"/>
     <div class="search_box">
-      <EggSearch :origin='origin' :type='"question"'/>
+      <EggSearch :style="{'paddingTop':`${paddingTop}vw`}"
+        :origin='origin' 
+        :type='"question"' />
       <!-- <button>搜索</button> -->
     </div>
-    <EggTreeList :getParmas='getParmas' :getStatus='getStatus' class="list"/>
+    <div>
+       <EggTreeList :style="{'top':`${top}vw`}"
+        :getParmas='getParmas' 
+        :getStatus='getStatus' />
+    </div>
     <div :class="questionList">
       <EggQuestionList />
     </div>
@@ -24,7 +30,9 @@ export default {
     return {
       title: '',
       questionList: 'questionList',
-      origin: true
+      origin: true,
+      paddingTop: '',
+      top: ''
     }
   },
   computed: {
@@ -36,6 +44,7 @@ export default {
     this.initTitle()
     this.initTop()
     this.initParmas()
+    this.isIPhoneX()
   },
   methods: {
     ...mapMutations(['setParmas']),
@@ -73,6 +82,22 @@ export default {
       }else {
         this.questionList = 'questionList0'
       }
+    },
+    isIPhoneX (){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.paddingTop = '20'
+          this.top = '34'
+        }else{
+          this.paddingTop = '14'
+          this.top = '28'
+        } 
+      }else{
+        this.paddingTop = '14'
+        this.top = '28'
+      }
     }
   }
 }
@@ -82,21 +107,23 @@ export default {
 .question {
   background: #fff;
   padding: 0 4.26vw;
-  padding-top: 16vw;
+  // padding-top: 16vw;
   box-sizing: border-box;
   position: relative;
   height: 100vh;
   overflow: hidden;
   .search_box {
+    // padding-top: 16vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 90;
     position: fixed;
     left: 0;
-    top: 14vw;
+    top: 0;
     background: #fff;
     width: 100vw;
+    box-sizing: border-box;
     // button {
     //   font-size: 3.466vw;
     //   color: #fff;
@@ -111,21 +138,24 @@ export default {
     position: absolute;
     top: 54vw;
     left: 0;
+    z-index: 999;
   }
    .questionList1 {
     position: absolute;
     top: 40vw;
     left: 0;
+    z-index: 999;
   }
    .questionList0 {
     position: absolute;
     top: 28vw;
     left: 0;
+    z-index: 999;
   }
   .list {
     // margin-top: -5vw;
     position: fixed;
-    top: 28vw;
+    top: 0;
     left: 0;
   }
 }

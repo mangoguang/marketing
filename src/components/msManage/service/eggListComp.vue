@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="list_right">
-          <img :src="baseUrl + item.image" alt="" class="img">
+          <!-- <img :src="baseUrl + item.image" alt="" class="img"> -->
         </div>
       </li>
     </mt-loadmore>
