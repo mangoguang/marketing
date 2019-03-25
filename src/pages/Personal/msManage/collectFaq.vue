@@ -5,7 +5,7 @@
        <yan-cell-arrow  :i="index" :id="item.id" :title="item.title" :path="{name:'/questionDetail',query:{id:item.id}}">{{item.title}}</yan-cell-arrow>
       </li>
     </ul>
-    <div v-else>暂无记录</div>
+    <div v-else style="text-align:center;color:#000;background:#fff">暂无记录</div>
     <div style="text-align:center;color:#000;background:#fff" v-if="showTip">{{tip}}</div>
   </div>
 </template>

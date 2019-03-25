@@ -19,7 +19,7 @@
         
       </li>
     </ul>
-     <div v-else>
+     <div v-else style="text-align:center;color:#000;background:#fff">
         暂无记录
     </div>
     <div style="text-align:center;color:#000;background:#fff" v-if="showTip">{{tip}}</div>
