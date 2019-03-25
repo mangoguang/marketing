@@ -88,8 +88,7 @@ export default {
       productNavlistVal: state => state.productNavList.productNavlistVal,
       productNavList: state => state.productNavList.productNavList,
       allCategoryScroll: state => state.productScroll.allCategoryScroll,
-      productScroll: state => state.productScroll.productScroll,
-      categoryScroll: state => state.productScroll.categoryScroll
+      productScroll: state => state.productScroll.productScroll
     })
   },
   watch: {
@@ -119,12 +118,6 @@ export default {
         this.obj = this.filterParmas
         this.$set(this.obj, 'category', this.productNavlistVal)
         this.changeParmas()
-        this.listenScrollTop()
-      }
-    },
-    productScroll() {
-      if(this.init) {
-        // this.setAllCategoryList(this.productNavList)
       }
     }
   },
@@ -186,18 +179,13 @@ export default {
     },
     //初始化参数
     initParmas() {
+      this.setProductScroll(0);
+      this.initAllCategoryScroll([])
       this.obj.account = this.ajaxData.account
       this.obj.category = this.$route.query.categoryName
       this.initBrand()
       this.setParmas(this.obj)
       this.filterData(this.filterParmas)
-
-      // this.setProductScroll(0);
-      // this.$refs.productListScroll.scrollTop = this.productScroll
-      // this.initAllCategoryScroll([])
-      // this.setProductScroll(0);
-      // this.$refs.productListScroll.scrollTop = 0
-      // this.initAllCategoryScroll([])
     },
     //初始化品牌
     initBrand() {
