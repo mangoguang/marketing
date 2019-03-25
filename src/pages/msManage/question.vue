@@ -136,21 +136,18 @@ export default {
   }
   .questionList {
     position: absolute;
-    top: 54vw;
+    top: 58vw;
     left: 0;
-    z-index: 999;
   }
    .questionList1 {
     position: absolute;
-    top: 40vw;
+    top: 44vw;
     left: 0;
-    z-index: 999;
   }
    .questionList0 {
     position: absolute;
-    top: 28vw;
+    top: 32vw;
     left: 0;
-    z-index: 999;
   }
   .list {
     // margin-top: -5vw;

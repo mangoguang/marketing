@@ -98,22 +98,23 @@ export default {
   height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
+  // margin-bottom: 10vw;
   .treeList {
     padding-top: 16vw;
   }
   .listComp {
     position: absolute;
-    top: 40vw;
+    top: 44vw;
     left: 0;
   }
    .listComp1 {
     position: absolute;
-    top: 28vw;
+    top: 30vw;
     left: 0;
   }
    .listComp0 {
     position: absolute;
-    top: 18vw;
+    top: 20vw;
     left: 0;
   }
 }

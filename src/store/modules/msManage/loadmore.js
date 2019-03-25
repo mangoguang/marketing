@@ -32,7 +32,7 @@ export default {
     getInitList:(state,arr) => state.artList = arr,
     setListAllScroll(state, obj) {
       let count = 0
-      state.listAllScroll.forEach(item => {
+      state.listAllScroll.map(item => {
         if(item) {
           if(item.id == obj.id) {
             item.scroll = obj.scroll

@@ -54,23 +54,23 @@ export default {
     parmas() {
       if(this.key) {
         let temp = 0
-        if(this.parmas.name1 && !this.parmas.name2) {
-          temp = this.hasList(this.parmas.name1)
-        }else if(this.parmas.name1 && this.parmas.name2){
-          temp = this.hasList(this.parmas.name2)
-        }
+        let parmas = this.getId()
+        // if(this.parmas.name1 && !this.parmas.name2) {
+        //   temp = this.hasList(this.parmas.name1)
+        // }else if(this.parmas.name1 && this.parmas.name2){
+        //   temp = this.hasList(this.parmas.name2)
+        // }
+         temp = this.hasList(parmas)
         if(temp === this.msManageList.length) {
           this.getInitList([])
           let obj = this.getCategoriesId(1, 10)
           obj = this.setType(obj)
           this.getArticlesList(obj)
         }else {
-          this.getList(this.parmas.name1)
+          this.getList(parmas)
           this.allLoaded = false
-          this.$nextTick(() => {
-            this.listenScrollTop()
-          })
         }
+        this.listenScrollTop()
       }else {
         this.initGetData()
         this.key = true
@@ -152,6 +152,7 @@ export default {
     },
     //获取文章列表
     getArticlesList(obj) {
+      let parmas = this.getId()
       indexModel.getArticles(obj).then(res => {
         if(res.data) {
           if(res.data.length) {
@@ -159,11 +160,11 @@ export default {
             this.allLoaded = false
             this.list = this.artList.concat(res.data)
             this.saveList(this.list)
-            this.getList(this.parmas.name1)
+            this.getList(parmas)
             this.listenScrollTop()
           }else {
-            this.saveList()
-            this.getList(this.parmas.name1)
+            // this.saveList()
+            this.getList(parmas)
             this.allLoaded = true
           }
         }
@@ -269,7 +270,7 @@ export default {
   overflow: scroll; 
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 38vw;
+  padding-bottom: 44vw;
   li {
     width: 100vw;
     height: 26.66vw;
