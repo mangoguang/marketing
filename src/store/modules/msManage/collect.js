@@ -26,6 +26,10 @@ const state = {
     articleId:'',
     index:''
   },
+  singleFaq:{
+    id:'',
+    index:''
+  },
   articleData:[], 
   FaqList:[]
 }
@@ -40,11 +44,14 @@ const mutations = {
     state.messageBox.type = obj.type
   },
   clearSingleArt: (state, obj) => state.singleArt = obj,
+  clearSingleFaq: (state, obj) => state.singleFaq = obj,
   setArticleData: (state, array) => state.articleData =[...state.articleData,...array],
   setFaqList: (state, array) => state.FaqList =[...state.FaqList,...array],
   clearArticleData: state => state.articleData = [],
+  clearFaqList: state => state.FaqList = [],
   removeArticle: (state,index) => state.articleData = state.articleData.splice(index,1),
-  updateArticleData:(state, array) => state.articleData = array
+  updateArticleData:(state, array) => state.articleData = array,
+  updateFaqList:(state, array) => state.articleData = array
 }
 
 const actions = {

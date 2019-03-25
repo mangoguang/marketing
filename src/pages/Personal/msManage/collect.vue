@@ -50,9 +50,10 @@ export default {
       activeComponent: state => state.collect.activeComponent,
       tabList: state => state.collect.tabList,
       messageBox: state => state.collect.messageBox,
-      // articleId: state => state.collect.articleId
       singleArt: state => state.collect.singleArt,
-      articleData:state => state.collect.articleData
+      articleData:state => state.collect.articleData,
+      singleFaq: state => state.collect.singleFaq,
+      FaqList:state => state.collect.FaqList
     })
   },
   watch:{
@@ -71,7 +72,6 @@ export default {
     remove(){
       if(this.activeComponent==='collectArticle'){
         let id=this.singleArt.articleId;
-        //console.log(id);
         let account=this.account;
         indexModel.remove(1,id,account).then(res => {
             if(res.code===0){
@@ -81,16 +81,31 @@ export default {
                 btnNum:1,
                 type:true
               });
-              var dataList=this.articleData;
+              let dataList=this.articleData;
               dataList.splice(this.singleArt.index,1);
               this.$store.commit('collect/updateArticleData',dataList);
             }
        });
-      }else if(this.activeComponent==='collectFaq'){
-
-      }else{
-
       }
+      if(this.activeComponent==='collectFaq'){
+        let id=this.singleFaq.id;
+        let account=this.account;
+        indexModel.remove(2,id,account).then(res => {
+            if(res.code===0){
+              this.$store.commit('collect/setMessageBox',{
+                showMessageBox:true,
+                tip:res.msg,
+                btnNum:1,
+                type:true
+              });
+              let dataList=this.FaqList;
+              dataList.splice(this.singleFaq.index,1);
+              this.$store.commit('collect/updateFaqList',dataList);
+            }
+       });
+      }
+
+      
       
       
     },
