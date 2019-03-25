@@ -98,7 +98,7 @@ export default {
 
 <style lang="scss" scoped>
 .content{
-  overflow: scroll; */
+  overflow: scroll;
 }
 #list{
  padding-bottom:.02rem;
