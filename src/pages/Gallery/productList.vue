@@ -124,7 +124,7 @@ export default {
     },
     productScroll() {
       if(this.init) {
-        this.setAllCategoryList(this.productNavList)
+        // this.setAllCategoryList(this.productNavList)
       }
     }
   },
@@ -136,17 +136,33 @@ export default {
     this.initGetData()
   },
   methods: {
-    ...mapMutations(['setParmas', 'setDownList', 'setShowType', 'setAllCategoryList', 'setProductScroll', 'getCategoryScroll']),
+    ...mapMutations([
+      'setParmas', 
+      'setDownList', 
+      'setShowType', 
+      'setAllCategoryList', 
+      'setProductScroll', 
+      'initAllCategoryScroll',
+      'getProductScroll'
+    ]),
     //获取滚动条高度
     recordScrollPosition(e) {
-      this.setProductScroll(e.target.scrollTop)
+      let category = this.productNavlistVal
+      let obj = {
+        category: category,
+        scroll: e.target.scrollTop
+      }
+      this.setAllCategoryList(obj)
+      // this.setProductScroll(e.target.scrollTop)
     },
     //监听滚动条高度
     listenScrollTop() {
-      this.$refs.productListScroll.addEventListener('scroll',this.recordScrollPosition,true);
-      this.getCategoryScroll(this.productNavlistVal)
+      let category = this.productNavlistVal
+      this.$refs.productListScroll.addEventListener('scroll',this.recordScrollPosition,false);
+      // this.getCategoryScroll(this.productNavlistVal)
+      this.getProductScroll(category)
       this.$nextTick(() => {
-        this.$refs.productListScroll.scrollTop = this.categoryScroll; 
+        this.$refs.productListScroll.scrollTop = this.productScroll; 
       })
     },
     //初始请求数据
@@ -175,6 +191,13 @@ export default {
       this.initBrand()
       this.setParmas(this.obj)
       this.filterData(this.filterParmas)
+
+      // this.setProductScroll(0);
+      // this.$refs.productListScroll.scrollTop = this.productScroll
+      // this.initAllCategoryScroll([])
+      // this.setProductScroll(0);
+      // this.$refs.productListScroll.scrollTop = 0
+      // this.initAllCategoryScroll([])
     },
     //初始化品牌
     initBrand() {
