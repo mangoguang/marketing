@@ -85,12 +85,20 @@ export default {
     //监听输入框变化
     monitorInpub() {
       let inputb = document.getElementById('debounce')
-      let debounceAjax = this.debounce(this.articleSearch, 200)
+      let ajaxRequest = this.getRequest()
+      let debounceAjax = this.debounce(ajaxRequest, 200)
       inputb.addEventListener('keyup', function (e) {
         if(e.target.value !== '') {
           debounceAjax(e.target.value)
         }
       })
+    },
+    getRequest() {
+       if(this.searchType == 'question') {
+         return  this.QuestionSearch
+       }else {
+         return  this.articleSearch
+       }
     },
     //防抖函数
     debounce(fun, delay) {

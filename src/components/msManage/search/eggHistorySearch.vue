@@ -114,6 +114,7 @@ export default {
       }
     },
     clickTitle(index) {
+      console.log(1111,this.list[index])
       this.clickHistoryTxt(this.list[index])
     },
     emptyWay() {
