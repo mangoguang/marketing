@@ -41,7 +41,7 @@ export default {
         type:1,
         account:'', 
         page:1,
-        limit:8
+        limit:10
       },
       ajaxData:{},
       baseUrl:'',
@@ -98,7 +98,7 @@ export default {
 
 <style lang="scss" scoped>
 .content{
-  overflow: scroll;
+  overflow: scroll; */
 }
 #list{
  padding-bottom:.02rem;

@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="true">
+    <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false">
     <ul id="faq">
       <li  v-for="(item,index) in list" :key="index">
        <yan-cell-arrow  :i="index" :id="item.id" :title="item.title" :path="{name:'/questionDetail',query:{id:item.id}}">{{item.title}}</yan-cell-arrow>
@@ -60,21 +60,6 @@ export default {
               this.params.page++;
             }
       })
-    },
-    more:function(){
-      var obj=this.params;
-      this.tip="加载中...";
-      this.showTip=true;
-       setTimeout(() => {
-        indexModel.getCollect(obj).then(res => {
-              if(res.code===0&&this.params.page!==1&&res.data.length>0){
-                this.$store.commit('collect/setFaqList', res.data);
-                this.tip="--加载完成--";
-              }else{
-                this.tip="--无更多数据--";
-              }
-        })
-      },500)
     },
     loadBottom:function(){
       this.$refs.loadmore.onBottomLoaded();
