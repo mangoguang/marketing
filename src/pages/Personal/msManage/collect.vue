@@ -61,7 +61,6 @@ export default {
   created() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.account = JSON.parse(ajaxData).account;
-    
   },
   methods:{
    changeTab(index){
@@ -105,6 +104,8 @@ export default {
 <style lang="scss" scoped>
 .collect{
   background: #f8f8f8;
+  height: 100vh;
+  overflow: hidden;
 }
 .list-tab{
   margin-top: 16vw;

@@ -28,6 +28,7 @@ import searchParmas from './modules/gallery/productList/searchParmas'
 import searchScroll from './modules/gallery/search/scroll'
 import productScroll from './modules/gallery/productList/scroll'
 import productLoadMore from './modules/gallery/productList/loadmore'
+import collectLoadMore from './modules/gallery/collect'
 
 export default new Vuex.Store({
   modules: {
@@ -58,6 +59,7 @@ export default new Vuex.Store({
     searchParmas,
     searchScroll,
     productScroll,
-    productLoadMore
+    productLoadMore,
+    collectLoadMore
   }
 })
