@@ -2,7 +2,6 @@
   <div class="m-right">
     <div class="pictureLink">
       <router-link :to='{name:"recommend",query: {brand: listVal}}'>
-        <!-- <img :src="'10.11.8.229:8099/'+imgUrl" alt=""> -->
         <img :src="imgUrl" alt="">
       </router-link>
     </div>
@@ -28,8 +27,8 @@ export default {
   watch: {
     listVal() {
       this.getDiffList()
-      // this.getBrandIntroduce()
-      // this.getAdvert()
+      this.getBrandIntroduce()
+      this.getAdvert()
     }
   },
   created() {
@@ -39,14 +38,8 @@ export default {
   },
   data() {
     return {
-      imgUrl: './static/images/p2.png',
-      imgSliderList: [{
-        imgUrl: './static/images/p2.png'
-      },{
-        imgUrl: './static/images/p1.png'
-      },{
-        imgUrl: './static/images/p3.png'
-      }],
+      imgUrl: '',
+      imgSliderList: [],
       dataList: {
         name: '',
         list: []
@@ -92,13 +85,13 @@ export default {
     getAdvert() {
       let brand = this.listVal
       indexModel.getAdvert(brand).then(res => {
-        // this.imgSliderList = res.data
+        this.imgSliderList = res.data
       })
     },
     getBrandIntroduce() {
       let brand = this.listVal
       indexModel.brandIntroduce(brand).then(res => {
-        // this.imgUrl = res.data.imgUrl
+        this.imgUrl = res.data.imgUrl
       })
     },
     //轮播图跳转到活动

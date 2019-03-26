@@ -11,18 +11,18 @@
 import MSlider from '../index/slider'
 import MoreDetails from './moreDetail'
 export default {
-  // props: ['imgList'],
+  props: ['imgList'],
   components: {
     MSlider,
     MoreDetails
   },
   data() {
     return {
-      imgList: [{
-        imgUrl: './static/images/bed0.png'
-      },{
-        imgUrl: './static/images/bed0.png'
-      }]
+      // imgList: [{
+      //   imgUrl: './static/images/bed0.png'
+      // },{
+      //   imgUrl: './static/images/bed0.png'
+      // }]
     }
   },
   methods: {

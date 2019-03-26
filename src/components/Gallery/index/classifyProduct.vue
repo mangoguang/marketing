@@ -6,7 +6,7 @@
           <li v-for="(item, index) in type.list" :key="index">
             <router-link :to='{name:"productList", query:{index:index, categoryName:item.name}}'>
               <div class="img">
-                <!-- <img :src="item.img" alt=""> -->
+                <img :src="item.img" alt="">
               </div>
               <p>{{ item.name }}</p>
             </router-link>
@@ -27,7 +27,7 @@
         <li v-for="(el, i) in item.products" :key='i + "_" + el'>
           <router-link :to='{name: "productDetails",query: {id: el.id}}'>
             <div class="img">
-              <!-- <img :src="'10.11.8.229:8099' + el.imgUrl" alt=""> -->
+              <img :src="el.imgUrl" alt="">
             </div>
             <p>{{ el.name }}</p>
           </router-link>
@@ -101,7 +101,7 @@ export default {
       .img {
         width: 21.33vw;
         height: 21.33vw;
-        border: 1px solid #e1e1e1;
+        // border: 1px solid #e1e1e1;
       }
     }
     li:nth-child(3n+0) {
