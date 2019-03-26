@@ -127,6 +127,7 @@ export default {
   overflow: scroll;
   box-sizing: border-box;
   background: #fff;
+  -webkit-overflow-scrolling: touch;
   .pictureLink {
     padding: 4.26vw;
     padding-bottom: 3vw;

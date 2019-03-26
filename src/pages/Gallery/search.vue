@@ -356,9 +356,10 @@ export default {
   .productList {
     height: 100vh;
     overflow: scroll;
-    padding-bottom: 20vw; ///有头部30vw
+    padding-bottom: 30vw; ///有头部30vw
     box-sizing: border-box;
     margin-top: 2vw;
+    -webkit-overflow-scrolling: touch
   }
 }
 </style>

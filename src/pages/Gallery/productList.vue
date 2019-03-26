@@ -320,5 +320,6 @@ export default {
     overflow: scroll;
     padding-bottom: 50vw;
     box-sizing: border-box;
+    -webkit-overflow-scrolling: touch
   }
 </style>

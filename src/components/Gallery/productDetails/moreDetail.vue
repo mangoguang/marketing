@@ -65,7 +65,7 @@ export default {
 .moreDetails {
   .icon_more {
     padding: 4vw;
-    margin-top: -4vw;
+    margin-top: 0vw;
     margin-right: -4vw;
     img {
       width: 4.26vw;

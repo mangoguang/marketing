@@ -1,5 +1,5 @@
 <template>
-  <div class="filter">
+  <div class="filter" ref="filter">
     <div class="icon" @click="showFilter">
       <span class="line">|</span>
       <span>筛选</span>
@@ -87,6 +87,9 @@ export default {
   created() {
     this.initFilter()
   },
+  mounted() {
+    this.stopMove()
+  },
   methods: {
     ...mapMutations(['setFilterList', 'getFilterVal', 'resetFilterList', 'setPrice', 'setSearchBrandList']),
     //初始化品牌筛选//价格
@@ -102,6 +105,11 @@ export default {
         this.price1 = this.price.price1
         this.price2 = this.price.price2
       }
+    },
+    stopMove() {
+      this.$refs.filter.addEventListener('touchmove',(e) => {
+        e.preventDefault()
+      },true);
     },
     //后退缓存状态
     getBrand() {

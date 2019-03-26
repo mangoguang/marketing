@@ -68,6 +68,7 @@ export default {
 <style lang="scss" scoped>
 .productDetails {
   background: #f1f1f1;
+  -webkit-overflow-scrolling: touch;
   // margin-top: -5vw;
   .content {
     background: #fff;

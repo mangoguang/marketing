@@ -46,7 +46,7 @@ export default {
     width: 2.66vw;
     height: 4.8vw;
     position: absolute;
-    top: 4.26vw;
+    top: 10.26vw;
     left: 4.26vw;
   }
   .details {
