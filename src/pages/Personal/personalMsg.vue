@@ -34,7 +34,7 @@ export default {
     return{
       text:'退出账号',
       ListItem: [
-        '关于我','组织架构','功勋榜','日报'
+        '关于我','组织架构','功勋榜','日报','我的收藏'
       ]
     }
   },
@@ -88,6 +88,9 @@ export default {
         break;
         case 3 :
         this.$router.push({path: '/dailyPaper'});
+        break;
+        case 4 :
+        this.$router.push({path: '/collectList'});
         break;
         default:
         return

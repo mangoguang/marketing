@@ -15,6 +15,19 @@ import tabStatus from './modules/components/tabStatus'
 import orderList from './modules/components/orderList'
 import customerScroll from './modules/customer/scroll'
 import personMsg from './modules/login/index'
+import searchBox from './modules/msManage/searchBox'
+import collectArt from './modules/msManage/collectArt'
+import collect from './modules/msManage/collect'
+import treeList from './modules/msManage/treeList'
+import leftNavList from './modules/gallery/index/index'
+import productNavList from './modules/gallery/productList/index'
+import share from './modules/gallery/share/index'
+import loadmore from './modules/msManage/loadmore'
+import filterParmas from './modules/gallery/productList/filterParmas'
+import searchParmas from './modules/gallery/productList/searchParmas'
+import searchScroll from './modules/gallery/search/scroll'
+import productScroll from './modules/gallery/productList/scroll'
+import productLoadMore from './modules/gallery/productList/loadmore'
 
 export default new Vuex.Store({
   modules: {
@@ -32,6 +45,19 @@ export default new Vuex.Store({
     serachResult,
     customerScroll,
     personMsg,
-    select
+    select,
+    searchBox,
+    collectArt,
+    collect,
+    treeList,
+    leftNavList,
+    productNavList,
+    share,
+    loadmore,
+    filterParmas,
+    searchParmas,
+    searchScroll,
+    productScroll,
+    productLoadMore
   }
 })

@@ -1,0 +1,145 @@
+<template>
+  <div class="m-right">
+    <div class="pictureLink">
+      <router-link :to='{name:"recommend",query: {brand: listVal}}'>
+        <!-- <img :src="'10.11.8.229:8099/'+imgUrl" alt=""> -->
+        <img :src="imgUrl" alt="">
+      </router-link>
+    </div>
+    <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext"/>
+    <div class="classify">
+      <ClassifyComp :type='dataList' :auto='2000'/>
+    </div>
+  </div>
+</template>
+<script>
+import {mapState, mapMutations} from 'vuex'
+import MSlider from './slider'
+import ClassifyComp from './classifyProduct'
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
+export default {
+  components: { MSlider, ClassifyComp },
+  computed: {
+     ...mapState({
+      listVal: state => state.leftNavList.listVal
+    })
+  },
+  watch: {
+    listVal() {
+      this.getDiffList()
+      // this.getBrandIntroduce()
+      // this.getAdvert()
+    }
+  },
+  created() {
+    this.getBackList()
+    // this.getBrandIntroduce()
+    // this.getAdvert()
+  },
+  data() {
+    return {
+      imgUrl: './static/images/p2.png',
+      imgSliderList: [{
+        imgUrl: './static/images/p2.png'
+      },{
+        imgUrl: './static/images/p1.png'
+      },{
+        imgUrl: './static/images/p3.png'
+      }],
+      dataList: {
+        name: '',
+        list: []
+      },
+      key: false
+    }
+  },
+  methods: {
+    ...mapMutations(['setInitNavList']),
+    //获取热门分类
+    getCategory() {
+      indexModel.MusiCategory().then(res => {
+        if(res.data) {
+          this.dataList.list = res.data.list
+          this.setInitNavList(res.data.list)
+        }
+      })
+    },
+    //获取产品分类
+    brandCategory() {
+      let brand = this.listVal
+      indexModel.brandCategory(brand).then(res => {
+        if(res.data) {
+          this.dataList.list = res.data.list
+        }
+      })
+    },
+    //不同分类的数据
+    getDiffList() {
+      if(this.listVal === '慕思') {
+        this.getCategory()
+        this.dataList.name = this.listVal
+      }else {
+        this.brandCategory()
+        this.dataList.name = this.listVal
+      }
+    },
+    //返回的时候获取数据
+    getBackList() {
+      this.listVal && this.getDiffList()
+    },
+    //获取广告轮播图
+    getAdvert() {
+      let brand = this.listVal
+      indexModel.getAdvert(brand).then(res => {
+        // this.imgSliderList = res.data
+      })
+    },
+    getBrandIntroduce() {
+      let brand = this.listVal
+      indexModel.brandIntroduce(brand).then(res => {
+        // this.imgUrl = res.data.imgUrl
+      })
+    },
+    //轮播图跳转到活动
+    goNext(e) {
+      // var browser = api.require('webBrowser');
+      // browser.open({
+      //     url: 'https://baidu.com'
+      // })
+      let dom = e.target
+      let className = dom.className.toLowerCase();
+      if (className != "mint-swipe-item is-active") {
+        return false;
+      }
+      let index = dom.getAttribute("data-type");
+      console.log(index)
+      // window.location.href="https://baidu.com"
+      // this.$router.push({path: 'https://baidu.com'})
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.m-right {
+  height: 100vh;
+  overflow: scroll;
+  box-sizing: border-box;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+  .pictureLink {
+    padding: 4.26vw;
+    padding-bottom: 3vw;
+    img {
+      width: 70.13vw;
+      height: 21.33vw;
+    }
+  }
+  .m-slider {
+    margin-left: 4vw;
+  }
+}
+</style>
+
+

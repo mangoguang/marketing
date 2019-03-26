@@ -135,7 +135,89 @@ export var router = new VueRouter({
     path: '/ResetPwd',
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
-  }],
+  },
+  //金管家模块-我的收藏
+  {
+    path: '/collectList',
+    name: '/collectList',
+    component: resolve => require(['../pages/Personal/msManage/collect'],resolve)
+  },
+  //金管家模块
+  {
+    path: '/msManage',
+    name: '/msManage',
+    component: resolve => require(['../pages/msManage/msIndex'],resolve)
+  },
+  {
+    path: '/policy',
+    name: '/policy',
+    component: resolve => require(['../pages/msManage/policy'],resolve)
+  },
+  {
+    path: '/story',
+    name: '/story',
+    component: resolve => require(['../pages/msManage/story'],resolve)
+  },
+  {
+    path: '/question',
+    name: '/question',
+    component: resolve => require(['../pages/msManage/question'],resolve)
+  },
+  //首页搜索
+  {
+    path: '/search',
+    name: '/search',
+    component: resolve => require(['../pages/msManage/search'],resolve)
+  },
+  //文章详情
+  {
+    path: '/articleDetails',
+    name: '/articleDetails',
+    component: resolve => require(['../pages/msManage/articleDetails'],resolve)
+  },
+  //常见问题详情
+  {
+    path: '/questionDetail',
+    name: '/questionDetail',
+    component: resolve => require(['../pages/msManage/questionDetail'],resolve)
+  },
+  //营销助手图库主页
+  {
+    path: '/gallery',
+    name: 'index',
+    component: resolve => require(['../pages/Gallery/index'],resolve)
+  },
+  //搜索页
+  {
+    path: '/gSearch',
+    name: 'gSearch',
+    component: resolve => require(['../pages/Gallery/search'],resolve)
+  },
+  //产品详情
+  {
+    path: '/productDetails',
+    name: 'productDetails',
+    component: resolve => require(['../pages/Gallery/productDetails'],resolve)
+  },
+  //产品列表
+  {
+    path: '/productList',
+    name: 'productList',
+    component: resolve => require(['../pages/Gallery/productList'],resolve)
+  },
+  //介绍页
+  {
+    path: '/recommend',
+    name: 'recommend',
+    component: resolve => require(['../pages/Gallery/recommend'],resolve)
+  },
+  //分享页
+  {
+    path: '/share',
+    name: 'share',
+    component: resolve => require(['../pages/Gallery/share'],resolve)
+  }
+],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {  
       // console.log(324242,savedPosition)      

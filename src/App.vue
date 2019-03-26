@@ -3,19 +3,19 @@
     id="app"
     :style="{'min-height': `${height}px`, background: '#fff', 'padding-top':`${padding}vw`}"
   >
-    <v-touch
+    <!-- <v-touch
       v-on:swiperight="onSwipeRight"
       tag="div"
       v-on:swipeleft="onSwipeLeft"
       :style="{'min-height': `${height}px`}"
-    >
+    > -->
       <!-- <mybanner :title='title' :turnPath='turnPath'/> -->
       <!-- <router-view :myStyle="myStyle"></router-view> -->
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"  :myStyle="myStyle"></router-view>
     </keep-alive>
     <router-view v-if="!$route.meta.keepAlive"  :myStyle="myStyle"></router-view>
-    </v-touch>
+    <!-- </v-touch> -->
   </div>
 </template>
 
@@ -283,7 +283,8 @@ ul.infoNav{
   padding: 0 4.26vw;
   margin-top: -8vw;
   li{
-    width: 29.3vw;
+    // width: 29.3vw;
+    width: 49%;
     line-height: 8vw;
     text-align: center;
     background: #b2d7ff;

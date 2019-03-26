@@ -1,30 +1,31 @@
 <template>
   <div class="orderInfoDetails">
     <div class="product-wrapper">
-      <div class="product">
+      <div class="product" 
+        v-for="(item,index) in orderInfoDetails.orderItemList " :key="index">
         <!-- <div class="product-photo">产品图</div> -->
         <div class="product-details">
           <div class="details">
-            <span>{{ orderInfoDetails.goodsName }}</span>
-            <p>{{ orderInfoDetails.goodsSpec }}</p>
+            <span>{{ item.goodsName || 1}}</span>
+            <p>{{ item.goodsSpec }}</p>
           </div>
           <div class="price">
-            <p>￥{{ Math.round(orderInfoDetails.price) }}</p>
-            <span>x{{ Math.round(orderInfoDetails.quantity) }}</span>
+            <p>￥{{ Math.round(item.price) }}</p>
+            <span>x{{ Math.round(item.quantity) }}</span>
           </div>
         </div>
       </div>
       <div class="total-amount">
         <span>订单总额</span>
-        <span>￥{{Math.round(orderInfoDetails.salesAmount)}}</span>
+        <span>￥{{Math.round(total)}}</span>
       </div>
       <div class="discount">
         <span>折扣金额</span>
-        <span>￥{{ Math.round(orderInfoDetails.salesAmount) - Math.round(orderInfoDetails.salesAmount) }}</span>
+        <span>￥{{ Math.round(discount)}}</span>
       </div>
       <div class="payment">
         <p>实付款</p>
-        <span>￥{{Math.round(orderInfoDetails.salesAmount)}}</span>
+        <span>￥{{Math.round(orderInfoDetails.totalAmount)}}</span>
       </div>
     </div>
     <div class="orderInfo">
@@ -42,13 +43,13 @@
         <li>
           <div>
             <span>客户姓名:</span>
-            <p>{{ orderInfoDetails.username }}</p>
+            <p>{{ `*${orderInfoDetails.username ? orderInfoDetails.username.slice(1, 5) : ''}` }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>客户电话:</span>
-            <p>{{ orderInfoDetails.phone }}</p>
+            <p>{{ `******${orderInfoDetails.phone ? orderInfoDetails.phone.slice(6, 11) : ''}` }}</p>
           </div>
         </li>
         <li>
@@ -78,7 +79,7 @@
         <li> 
           <div>
             <span>送货地址:</span>
-            <p>{{ orderInfoDetails.address }}</p>
+            <p>{{ `******${orderInfoDetails.address ? orderInfoDetails.address.slice(6, 50) : ''}` }}</p>
           </div>
         </li>
       </ul>
@@ -94,13 +95,50 @@ import Vuex, { mapMutations, mapState } from 'vuex'
 export default {
   data(){
     return{
-    
+      total: '',
+      discount: ''
     } 
   },
- computed: {
-    ...mapState({
-      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails
-    })
+  destroyed() {
+    this.setTotalPrice(0)
+    this.setDiscountPrice(0)
+    this.setOrderTotalPrice(0)
+    this.setOrderTotalPrice(0)
+  },
+  computed: {
+      ...mapState({
+        orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
+        totalPrice: state => state.dealOrderInfoDetails.totalPrice,
+        discountPrice: state => state.dealOrderInfoDetails.discountPrice,
+        orderTotalPrice: state => state.orderInfoDetails.orderTotalPrice,
+        orderDiscountPrice: state => state.orderInfoDetails.orderDiscountPrice
+      })
+    },
+  watch: {
+    totalPrice() {
+      this.total = this.totalPrice
+    },
+    discountPrice() {
+      this.discount = this.discountPrice
+    },
+    orderTotalPrice() {
+      this.total = this.orderTotalPrice
+    },
+    orderDiscountPrice() {
+      this.discount = this.orderDiscountPrice
+    }
+  },
+  created() {
+    // this.calcPrice()
+    // console.log(144, this.orderTotalPrice, this.orderDiscountPrice)
+  },
+  methods: {
+    ...mapMutations([
+      'setTotalPrice', 
+      'setDiscountPrice',
+      'setOrderTotalPrice',
+      'setOrderDiscountPrice'
+    ])
   }
 }
 </script>
@@ -118,6 +156,7 @@ export default {
     background: #fff;
     .product {
       display: flex;
+      margin-bottom: 4vw;
       // .product-photo {
       //   background: #ccc;
       //   width: 24vw;
