@@ -2,7 +2,9 @@ export default {
   state: {
     leftNavList: [],    //主页左导航条的品牌分类加状态
     listVal: '',        //选中的值
-    initlist: []        //品牌分类
+    initlist: [],        //品牌分类
+    classifyScroll: 0,
+    classifyScrollList: []
   },
   mutations: {
     setLeftNavList: (state, arr) => state.leftNavList = arr,
@@ -13,6 +15,21 @@ export default {
           state.listVal =  item.name
         }
       });
-    }
+    },
+    setClassifyScrollList(state, obj) {
+      let count = 0
+      state.classifyScrollList.map(item => {
+        if(item.name === obj.name) {
+          item.scroll = obj.scroll
+        }else {
+          count ++
+        }
+      })
+      if(count === state.classifyScrollList.length) {
+        state.classifyScrollList.push(obj)
+      }
+    },
+    initClassifyScrollList: (state, arr) => state.classifyScrollList = arr,
+    initClassifyScroll: (state, num) => state.classifyScroll = num
   }
 }

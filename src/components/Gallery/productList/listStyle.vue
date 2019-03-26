@@ -29,7 +29,6 @@ export default {
     }
   },
   mounted() {
-    console.log(222,this.list)
     this.setCollect()
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
