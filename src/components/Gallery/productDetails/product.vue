@@ -11,18 +11,18 @@
 import MSlider from '../index/slider'
 import MoreDetails from './moreDetail'
 export default {
-  props: ['imgList'],
+  // props: ['imgList'],
   components: {
     MSlider,
     MoreDetails
   },
   data() {
     return {
-      // imgList: [{
-      //   imgUrl: './static/images/bed0.png'
-      // },{
-      //   imgUrl: './static/images/bed0.png'
-      // }]
+      imgList: [{
+        imgUrl: './static/images/bed0.png'
+      },{
+        imgUrl: './static/images/bed0.png'
+      }]
     }
   },
   methods: {
@@ -80,4 +80,15 @@ export default {
       opacity: 0.6;
     }
   }
+//   .mint-swipe-indicators {
+//   right: -3%;
+//     .mint-swipe-indicator {
+//       background: #fff;
+//       opacity: 0.5;
+//     }
+//     .is-active {
+//       background: #fff;
+//       opacity: 1;
+//     }
+// }
 </style>

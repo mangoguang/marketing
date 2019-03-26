@@ -35,9 +35,10 @@ export default {
     this.getData();
     //图库的进入默认热门搜索
     this.setLeftNavList([])
+    this.initListVal('慕思')
   },
   methods: {
-    ...mapMutations(['setLeftNavList']),
+    ...mapMutations(['setLeftNavList', 'initListVal']),
     //获取首页一级列表接口
     getData() {
       indexModel.getCategory1List()

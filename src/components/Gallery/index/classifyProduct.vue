@@ -13,7 +13,7 @@
           </li>
       </ul>
     </div>
-    <div class="brand" v-for="(item, index) in type.list" :key="index" v-else ref="classfiyScroll" >
+    <div class="brand" v-for="(item, index) in type.list" :key="index" v-else  >
       <div class="topBar">
         <h1>{{ item.categoryName }}</h1>
         <router-link :to='{name:"productList", query:{categoryName: item.categoryName, index:index}}'>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-
+import {mapState, mapMutations} from 'vuex'
 export default {
   props: ['type'],
   data() {
@@ -56,21 +56,7 @@ export default {
     }
   },
   methods: {
-    //获取滚动条高度
-    // recordScrollPosition(e) {
-    //   if(e.target.scrollTop === 0) {
-    //     return
-    //   }
-      
-    //   this.setCollectScorll(e.target.scrollTop)
-    // },
-    // //监听滚动条高度
-    // listenScrollTop() {
-    //   this.$refs.classfiyScroll.addEventListener('scroll',this.recordScrollPosition,false);
-    //   this.$nextTick(() => {
-    //     this.$refs.classfiyScroll.scrollTop = this.collectScorll; 
-    //   })
-    // },
+    
   }
 
 }

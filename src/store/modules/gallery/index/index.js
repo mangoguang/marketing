@@ -7,6 +7,7 @@ export default {
     classifyScrollList: []
   },
   mutations: {
+    initListVal: (state, arr) => state.listVal = arr,
     setLeftNavList: (state, arr) => state.leftNavList = arr,
     setInitList: (state, arr) => state.initlist = arr,
     getListVal(state) {
@@ -28,6 +29,13 @@ export default {
       if(count === state.classifyScrollList.length) {
         state.classifyScrollList.push(obj)
       }
+    },
+    getClassScroll(state, name) {
+      state.classifyScrollList.forEach(item => {
+        if(item.name === name) {
+          state.classifyScroll = item.scroll
+        }
+      })
     },
     initClassifyScrollList: (state, arr) => state.classifyScrollList = arr,
     initClassifyScroll: (state, num) => state.classifyScroll = num

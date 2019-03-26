@@ -44,19 +44,30 @@ export default {
 </style>
 
 <style lang="scss">
+// .mint-swipe-indicators {
+//   right: -3%;
+//     .mint-swipe-indicator {
+//       background: #fff;
+//       opacity: 0.5;
+//     }
+//     .is-active {
+//       background: #fff;
+//       opacity: 1;
+//     }
+// }
 .mint-swipe-indicators {
-  right: -3%;
+  right: 76%;
     .mint-swipe-indicator {
-      background: #fff;
-      opacity: 0.5;
+      background: #363636;
+      opacity: 0.6;
     }
     .is-active {
-      background: #fff;
-      // width: 3.4vw;
-      // border-radius: 36%;
-      opacity: 1;
+      background: #363636;
+      width: 3.4vw;
+      border-radius: 36%;
+      opacity: 0.6;
     }
-}
+  }
 </style>
 
 
