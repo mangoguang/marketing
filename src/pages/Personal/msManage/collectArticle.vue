@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false">
-      <ul id="list">
+      <ul id="list" v-if="list.length>0">
         <li v-for='(item,index) in list' :key='index' @click="go(item.id)" >
           <yan-cell-swipe :articleId="item.id" :artIndex="index" ref="item.id">
               <template v-slot:lititle>
@@ -18,13 +18,15 @@
           </yan-cell-swipe>
         </li>
       </ul>
+      <div v-else style="text-align:center;color:#000;background:#fff">暂无记录</div>
     </mt-loadmore>
+    
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { mapState } from 'vuex';
+import { mapState,mapGetters } from 'vuex';
 import { InfiniteScroll, Loadmore } from 'mint-ui';
 import yanCellSwipe from "../../../components/msManage/yanCellSwipe"
 import {IndexModel} from "../../../utils"
@@ -54,9 +56,15 @@ export default {
    ...mapState({
      list: state => state.collect.articleData
    })
+   /* ...mapGetters('collect',{
+     'list':'newArtData'
+   }) */
   },
   watch:{
    
+  },
+  mounted(){
+    //console.log(window);
   },
   created:function(){
     let ajaxData = localStorage.getItem('ajaxData');

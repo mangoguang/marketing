@@ -1,11 +1,12 @@
 <template>
   <div class="content">
     <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false">
-    <ul id="faq">
+    <ul id="faq" v-if="list.length>0">
       <li  v-for="(item,index) in list" :key="index">
        <yan-cell-arrow  :i="index" :id="item.id" :title="item.title" :path="{name:'/questionDetail',query:{id:item.id}}">{{item.title}}</yan-cell-arrow>
       </li>
     </ul>
+    <div v-else style="text-align:center;color:#000;background:#fff">暂无记录</div>
    </mt-loadmore>
   </div>
 </template>
@@ -13,7 +14,7 @@
 <script>
 import Vue from 'vue'
 import { InfiniteScroll ,Loadmore } from 'mint-ui';
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import {IndexModel} from "../../../utils"
 const indexModel=new IndexModel()
 Vue.use(InfiniteScroll);
@@ -40,6 +41,9 @@ export default {
    ...mapState({
      list: state => state.collect.FaqList
    })
+   /* ...mapGetters('collect',{
+     'list':'newFaqList'
+   }) */
   },
   created() {
    let ajaxData = localStorage.getItem('ajaxData')
@@ -48,6 +52,7 @@ export default {
   },
   methods:{
     getCollect:function(){
+      
       var obj=this.params;
       indexModel.getCollect(obj).then(res => {
             if(res.code===0){

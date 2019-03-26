@@ -81,9 +81,11 @@ export default {
                 btnNum:1,
                 type:true
               });
-              let dataList=this.articleData;
+              this.$store.commit('collect/removeArticle',this.singleArt.index);
+              //this.$store.dispatch('collect/delArt',this.singleArt.index);
+             /*  let dataList=this.articleData;
               dataList.splice(this.singleArt.index,1);
-              this.$store.commit('collect/updateArticleData',dataList);
+              this.$store.commit('collect/updateArticleData',dataList); */
             }
        });
       }
@@ -98,9 +100,11 @@ export default {
                 btnNum:1,
                 type:true
               });
-              let dataList=this.FaqList;
+              this.$store.commit('collect/removeFaq',this.singleFaq.index);
+              //this.$store.dispatch('collect/delFaq',this.singleFaq.index);
+             /*  let dataList=this.FaqList;
               dataList.splice(this.singleFaq.index,1);
-              this.$store.commit('collect/updateFaqList',dataList);
+              this.$store.commit('collect/updateFaqList',dataList); */
             }
        });
       }
