@@ -102,10 +102,14 @@ export default {
     //获取滚动条高度
     recordScrollPosition(e) {
       let id = this.getId()
+      if(e.target.scrollTop === 0) {
+        return
+      }
       let obj = {
         id: id,
         scroll: e.target.scrollTop
       }
+      
       this.setListAllScroll(obj)
     },
     //监听滚动条高度
