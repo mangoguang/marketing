@@ -1,5 +1,5 @@
 <template>
-  <div class="productDetails">
+  <div class="productDetails" :style="{'marginTop':`${marginTop}vw`}">
     <div class="prodect">
       <product :imgList='productList.goodsImageList'/>
     </div>
@@ -26,13 +26,15 @@ export default {
     return {
       ajaxData: {},
       myhtml: '',
-      productList: {}
+      productList: {},
+      marginTop: ''
     }
   },
   created() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     this.getProductList()
+    this.isIPhoneX()
   },
   methods: {
     getProductList() {
@@ -45,6 +47,19 @@ export default {
           this.productList = res.data
         }
       })
+    },
+     isIPhoneX : function(fn){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.marginTop = '-6'
+        }else{
+          this.marginTop = '0'
+        } 
+      }else{
+        this.marginTop = '0'
+      }
     }
   }
 }
@@ -53,6 +68,7 @@ export default {
 <style lang="scss" scoped>
 .productDetails {
   background: #f1f1f1;
+  // margin-top: -5vw;
   .content {
     background: #fff;
   }

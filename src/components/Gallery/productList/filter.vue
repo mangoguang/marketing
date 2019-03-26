@@ -208,7 +208,8 @@ export default {
 <style lang="scss" scoped>
 .filter {
   margin-right: 4vw;
-  margin-top: -0.6vw;
+  // margin-top: -0.6vw;
+  box-sizing: border-box;
   .icon {
     color: #666;
     font-size: 4vw;

@@ -2,7 +2,7 @@
   <div class="content">
     <div class="topbar">
       <p>¥{{Math.round(list.price*100)/100}}<span>起</span></p>
-      <div class="like" @click="changLike">
+      <div class="like" @touchend="changLike">
         <img src="../../../assets/imgs/like.png" alt="" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="" v-else>
       </div>

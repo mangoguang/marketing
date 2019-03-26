@@ -20,12 +20,18 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   props: [ 'origin', 'value', 'deleteVal', 'type' ],
   data() {
     return {
       showDeleteIcon: false
     }
+  },
+  computed: {
+    ...mapState({
+      searchParmas: state => state.searchParmas.searchParmas
+    })
   },
   watch: {
     //清空按钮出现/隐藏
@@ -39,6 +45,9 @@ export default {
   },
   created() {
     if(this.$route.path === '/search' || this.$route.path === '/gSearch') {
+      if(this.searchParmas && this.searchParmas.key) {
+        return
+      }
       this.changfouce()
     }
   },
