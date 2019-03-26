@@ -1,44 +1,38 @@
 <template>
-  <div>   
-    <!-- <yan-list-swipe :dataList="data" class="list"></yan-list-swipe> -->
-    <ul id="list" v-infinite-scroll="loadMore"
-  infinite-scroll-disabled="loading"
-  infinite-scroll-distance="10" v-if="list.length>0">
-      <li v-for='(item,index) in list' :key='index' @click="go(item.id)" >
-        <yan-cell-swipe :articleId="item.id" :artIndex="index" ref="item.id">
-            <template v-slot:lititle>
-              {{item.title}}
-            </template>
-            <template v-slot:button><button type="button" v-if="item.top" >置顶</button></template>
-            <template v-slot:time>
-              {{item.collectTime}}
-            </template> 
-            
-             <template v-slot:img>
-              <img :src="baseUrl+item.image" alt=""> 
-            </template> 
-            
-        </yan-cell-swipe>
-        
-      </li>
-    </ul>
-     <div v-else>
-        暂无记录
-    </div>
+  <div class="content">
+    <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false">
+      <ul id="list" v-if="list.length>0">
+        <li v-for='(item,index) in list' :key='index' @click="go(item.id)" >
+          <yan-cell-swipe :articleId="item.id" :artIndex="index" ref="item.id">
+              <template v-slot:lititle>
+                {{item.title}}
+              </template>
+              <template v-slot:button><button type="button" v-if="item.top" >置顶</button></template>
+              <template v-slot:time>
+                {{item.collectTime}}
+              </template> 
+              
+              <template v-slot:img>
+                <img :src="baseUrl+item.image" alt=""> 
+              </template> 
+          </yan-cell-swipe>
+        </li>
+      </ul>
+      <div v-else style="text-align:center;color:#000;background:#fff">暂无记录</div>
+    </mt-loadmore>
     
-   
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
-import { mapState } from 'vuex';
-import { InfiniteScroll } from 'mint-ui';
+import { mapState,mapGetters } from 'vuex';
+import { InfiniteScroll, Loadmore } from 'mint-ui';
 import yanCellSwipe from "../../../components/msManage/yanCellSwipe"
-// import yanCellSwipe from "./yanCellSwipe"
 import {IndexModel} from "../../../utils"
 const indexModel=new IndexModel()
 Vue.use(InfiniteScroll);
+Vue.component(Loadmore.name, Loadmore)
 export default {
   components:{
    yanCellSwipe
@@ -47,13 +41,14 @@ export default {
     return{
      params:{
         type:1,
-        account:'',
+        account:'', 
         page:1,
         limit:10
       },
       ajaxData:{},
       baseUrl:'',
-      dataList:[]
+      dataList:[],
+      allLoaded:false
     }
     
   },
@@ -61,39 +56,45 @@ export default {
    ...mapState({
      list: state => state.collect.articleData
    })
+   /* ...mapGetters('collect',{
+     'list':'newArtData'
+   }) */
   },
   watch:{
    
   },
+  mounted(){
+    //console.log(window);
+  },
   created:function(){
-    let ajaxData = localStorage.getItem('ajaxData')
-    //this.ajaxData = JSON.parse(ajaxData);
-    //console.log(this.account);
+    let ajaxData = localStorage.getItem('ajaxData');
     this.params.account=JSON.parse(ajaxData).account;
     console.log(this.params.account);
     this.getCollect();
   },
-  mounted(){
-    console.log(this.list);
-  },
   methods:{
     go:function(id){
-      /* this.$router.push({path:`/artcileDetails/${id}`}) */ 
        this.$router.push({name:"/articleDetails",query:{articleId:id}});
     },
     getCollect:function(){
       var obj=this.params;
       indexModel.getCollect(obj).then(res => {
-            console.log(123, res);
             if(res.code===0){
+              if(res.data.length<this.params.limit){
+                  this.allLoaded=true;
+              }else{
+                  this.allLoaded=false;
+              }
               this.baseUrl=res.baseUrl;
-              // console.log('articleData', [...this.list, ...res.data])
               this.$store.commit('collect/setArticleData', res.data);
+              this.params.page++;
             }
+
       })
     },
-    loadMore:function(){
-        this.loading=true;
+    loadBottom:function(){
+      this.$refs.loadmore.onBottomLoaded();
+      this.getCollect();
     }
   },
   destroyed(){
@@ -104,7 +105,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-ul{
+.content{
+  overflow: scroll;
+}
+#list{
  padding-bottom:.02rem;
   li{
   margin-bottom: .05rem;

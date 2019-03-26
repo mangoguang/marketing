@@ -36,7 +36,7 @@ export default {
       ajaxData: {},
       baseUrl: '',
       page: 1,
-      limit: 10,
+      limit: 5,
       typeId: '',
       key: false
     }

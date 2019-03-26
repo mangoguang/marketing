@@ -11,9 +11,7 @@
             <template v-slot:time>
               {{items.collectTime}}
             </template> 
-            <!-- <img :src="require(`${items.imgUrl}`)" alt=""  slot:img> -->
              <template v-slot:img>
-             <!-- <img src="../../assets/imgs/example.png" alt="" > -->
               <img :src="items.image" alt=""> 
             </template> 
             
@@ -24,8 +22,6 @@
 </template>
 
 <script>
-//使用时，绑定属性dataList
-//<yan-list-swipe :dataList="data"></yan-list-swipe>
 import Vue from 'vue'
 import { InfiniteScroll } from 'mint-ui';
 import yanCellSwipe from "./yanCellSwipe"
@@ -58,7 +54,6 @@ export default {
   },
   methods:{
     go:function(id){
-      /* this.$router.push({path:`/artcileDetails/${id}`}) */ 
        this.$router.push({name:"/articleDetails",query:{articleId:id}});
     },
     getCollect:function(){
