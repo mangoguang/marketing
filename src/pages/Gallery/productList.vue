@@ -88,12 +88,16 @@ export default {
       productNavlistVal: state => state.productNavList.productNavlistVal,
       productNavList: state => state.productNavList.productNavList,
       allCategoryScroll: state => state.productScroll.allCategoryScroll,
-      productScroll: state => state.productScroll.productScroll
+      productScroll: state => state.productScroll.productScroll,
+      productLimit: state => state.productLoadMore.productLimit,
+      productPageList: state => state.productLoadMore.productPageList
     })
   },
   watch: {
     downListVal() {
       if(this.init) {
+        this.list = []
+        this.allLoaded = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'st', fliterItem(this.downListVal))
         this.changeParmas()
@@ -101,6 +105,8 @@ export default {
     },
     filterVal() {
       if(this.init) {
+        this.list = []
+        this.allLoaded = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'brand', this.filterVal[0])
         this.changeParmas()
@@ -108,6 +114,8 @@ export default {
     },
     price() {
       if(this.init) {
+        this.list = []
+        this.allLoaded = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'rp', this.getPrice())
         this.changeParmas()
@@ -115,6 +123,8 @@ export default {
     },
     productNavlistVal() {
       if(this.init) {
+        this.list = []
+        this.allLoaded = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'category', this.productNavlistVal)
         this.changeParmas()
@@ -136,7 +146,10 @@ export default {
       'setAllCategoryList', 
       'setProductScroll', 
       'initAllCategoryScroll',
-      'getProductScroll'
+      'getProductScroll',
+      'initPageList',
+      'setProductPage',
+      'getProductLimit'
     ]),
     //获取滚动条高度
     recordScrollPosition(e) {
@@ -162,7 +175,11 @@ export default {
         this.setDownList('')
         this.initParmas()
       }else {
-        this.filterData(this.filterParmas)
+        //后退
+        this.getLimit()
+        this.$nextTick(() => {
+          this.filterData(this.filterParmas)
+        })
       }
     },
     //请求数据
@@ -170,10 +187,43 @@ export default {
       indexModel.fliterList(obj).then(res => {
         if(res.data) {
           this.init = true
-          this.list = res.data.list
+          this.list = this.list.concat(res.data.list)
+          this.saveLimit()
+          this.getProductLimit(this.productNavlistVal)
+          // this.list = this.list.concat(res.data.list)
           this.listenScrollTop()
         }
       })
+    },
+    //获取limit
+    getLimit() {
+      this.getProductLimit(this.productNavlistVal)
+      console.log(123,this.productLimit)
+      let limit
+      this.$nextTick(() => {
+        if(this.productLimit) {
+          if(this.productLimit > 10) {
+            limit = {'limit': this.productLimit}
+          }else {
+            limit = {'limit': 10}
+          }
+        }else {
+          limit = {'limit': 10}
+        }
+        let page = {'page': 1}
+        this.setParmas(limit)
+        this.setParmas(page)
+      })
+     
+    },
+    //缓存limit
+    saveLimit() {
+      let limit = this.list.length
+      let obj = {
+        category: this.productNavlistVal,
+        limit: limit
+      }
+      this.setProductPage(obj)
     },
     //初始化参数
     initParmas() {
@@ -196,6 +246,7 @@ export default {
     //改变参数
     changeParmas() {
       this.setParmas(this.obj)
+      this.getLimit()
       this.filterData(this.filterParmas)
     },
     //获取价格参数
@@ -236,14 +287,17 @@ export default {
      //下拉加载数据
     pullDownData() {
       this.allLoaded = true
-      // let len = (this.list.length)/10 + 1
-      // if(Math.floor(len) < len) {
-      //   this.allLoaded = true
-      // }else {
-      //   this.setParmas('page', len)
-      //   this.setParmas('limit', 10)
-      //   this.searchKey(this.obj)
-      // }
+      let len = (this.list.length)/10 + 1
+      if(Math.floor(len) < len) {
+        this.allLoaded = true
+      }else {
+        // this.getProductLimit(this.productNavlistVal)
+        let obj = {'page': len}
+        let obj1 = {'limit': 10}
+        this.setParmas(obj)
+        this.setParmas(obj1)
+        this.filterData(this.filterParmas)
+      }
     }
   }
 }

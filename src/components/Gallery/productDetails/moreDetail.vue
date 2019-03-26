@@ -78,14 +78,14 @@ export default {
     width: 2vw;
     height: 1.06vw;
     position: absolute;
-    top: 4.98vw;
+    top: 8.98vw;
     right: 1vw;
   }
   ul {
     position: absolute;
     width: 21.33vw;
     right: 0;
-    top: 6vw;
+    top: 10vw;
     background: rgba(54, 54, 54, 1);
     box-shadow: 0px 0.26vw 0.8vw 0px rgba(67, 66, 66, 0.2);
     opacity: 0.96;
