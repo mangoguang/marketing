@@ -35,13 +35,13 @@ export default {
     return {
     };
   },
-  created() {
+  mounted() {
     this.setProductNavList([])
     this.setInitParmas()
-    
+    this.initPageList([])
   },
   methods: {
-    ...mapMutations(['setProductNavList', 'setInitParmas'])
+    ...mapMutations(['setProductNavList', 'setInitParmas', 'initPageList'])
   }
 };
 </script>

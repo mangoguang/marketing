@@ -7,7 +7,7 @@ export default {
     setProductScroll: (state, arr) => state.productScroll = arr,
     setAllCategoryList(state, obj) {
       let count = 0
-      state.allCategoryScroll.forEach(item => {
+      state.allCategoryScroll.map(item => {
         if(item) {
           if(item.category === obj.category) {
             item.scroll = obj.scroll
@@ -22,7 +22,7 @@ export default {
     },
     getProductScroll(state, category) { //比较三级id
       state.allCategoryScroll.forEach(item => {
-        if(item.category == category) {
+        if(item.category === category) {
           state.productScroll = item.scroll
         }
       })

@@ -72,7 +72,9 @@ export default {
         key: '',
         st: 0,
         rp: '',
-        account: ''
+        account: '',
+        limit: 10,
+        page: 1
       },
       allLoaded: false
     }
@@ -127,6 +129,7 @@ export default {
         this.allLoaded = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'category', this.productNavlistVal)
+        this.listenScrollTop()
         this.changeParmas()
       }
     }
@@ -154,6 +157,9 @@ export default {
     //获取滚动条高度
     recordScrollPosition(e) {
       let category = this.productNavlistVal
+      if(e.target.scrollTop === 0) {
+        return
+      }
       let obj = {
         category: category,
         scroll: e.target.scrollTop
@@ -164,8 +170,8 @@ export default {
     listenScrollTop() {
       let category = this.productNavlistVal
       this.$refs.productListScroll.addEventListener('scroll',this.recordScrollPosition,false);
-      this.getProductScroll(category)
       this.$nextTick(() => {
+        this.getProductScroll(category)
         this.$refs.productListScroll.scrollTop = this.productScroll; 
       })
     },
@@ -190,15 +196,15 @@ export default {
           this.list = this.list.concat(res.data.list)
           this.saveLimit()
           this.getProductLimit(this.productNavlistVal)
-          // this.list = this.list.concat(res.data.list)
           this.listenScrollTop()
+          // this.list = this.list.concat(res.data.list)
         }
       })
     },
     //获取limit
     getLimit() {
       this.getProductLimit(this.productNavlistVal)
-      console.log(123,this.productLimit)
+      // console.log(123,this.productLimit)
       let limit
       this.$nextTick(() => {
         if(this.productLimit) {
