@@ -26,6 +26,10 @@ const state = {
     articleId:'',
     index:''
   },
+  singleFaq:{
+    id:'',
+    index:''
+  },
   articleData:[], 
   FaqList:[]
 }
@@ -40,20 +44,23 @@ const mutations = {
     state.messageBox.type = obj.type
   },
   clearSingleArt: (state, obj) => state.singleArt = obj,
+  clearSingleFaq: (state, obj) => state.singleFaq = obj,
   setArticleData: (state, array) => state.articleData =[...state.articleData,...array],
   setFaqList: (state, array) => state.FaqList =[...state.FaqList,...array],
   clearArticleData: state => state.articleData = [],
-  removeArticle: (state,index) => state.articleData = state.articleData.splice(index,1),
-  updateArticleData:(state, array) => state.articleData = array
+  clearFaqList: state => state.FaqList = [],
+  removeArticle: (state,index) => state.articleData.splice(index,1),
+  removeFaq: (state,index) => state.FaqList.splice(index,1)
 }
 
 const actions = {
- 
-  
+  //delArt:({commit}, i) => commit("removeArticle",i),
+  //delFaq:({commit}, i) => commit("removeFaq",i)
 }
 
 const getters = {
-
+  newArtData: state => state.articleData,
+  newFaqList: state => state.FaqList
 }
 
 export default {
