@@ -24,7 +24,7 @@ export default {
     }
   },
   created() {
-    if(this.list.length) {
+    if(this.list && this.list.length) {
       this.setImgUrl(this.list[0].imgUrl)
     }
   },
