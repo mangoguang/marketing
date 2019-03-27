@@ -97,10 +97,11 @@ export default {
   padding-top: 22vw;
   position: relative;
   .collentBtn {
-      position: absolute;
+      position: fixed;
       right: 4.26vw;
-      top: 6vw;
+      top: 0;
       z-index: 99;
+      margin-top: 6vw;
     }
   .titleBar {
     .title {
@@ -117,6 +118,7 @@ export default {
   }
   .content {
     text-align: left;
+    word-wrap: break-word !important;
     h2,p {
       color: #363636;
       font-size: 3.73vw;

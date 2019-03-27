@@ -11,11 +11,15 @@
           </div>
         </div>
         <div class="list_right">
-          <!-- <img :src="baseUrl + item.image" alt="" class="img"> -->
+          <img :src="baseUrl + item.image" alt="" class="img">
         </div>
       </li>
     </mt-loadmore>
     </ul>
+    <div class="search_nothing" v-show="noData">
+      <p>很抱歉，没有找到相关内容</p>
+      <div class="search_bg"></div>
+    </div>
   </div>
 </template>
 
@@ -34,11 +38,11 @@ export default {
       allLoaded:false,
       list: [],
       ajaxData: {},
-      baseUrl: '',
       page: 1,
       limit: 5,
       typeId: '',
-      key: false
+      key: false,
+      noData: false
     }
   },
   computed: {
@@ -47,11 +51,13 @@ export default {
       listScroll: state => state.loadmore.listScroll,
       msManageList: state => state.loadmore.msManageList,
       artList: state => state.loadmore.artList,
-      listAllScroll: state => state.loadmore.listAllScroll
+      listAllScroll: state => state.loadmore.listAllScroll,
+      baseUrl: state => state.treeList.baseUrl
     })
   },
   watch: {
     parmas() {
+      this.hasData()
       if(this.key) {
         let temp = 0
         let parmas = this.getId()
@@ -97,7 +103,8 @@ export default {
       'getInitList',
       'getScroll',
       'setListAllScroll',
-      'initSrcoll'
+      'initSrcoll',
+      'setBaseUrl'
     ]),
     //获取滚动条高度
     recordScrollPosition(e) {
@@ -109,7 +116,6 @@ export default {
         id: id,
         scroll: e.target.scrollTop
       }
-      
       this.setListAllScroll(obj)
     },
     //监听滚动条高度
@@ -121,6 +127,21 @@ export default {
       this.$nextTick(() => {
         this.$refs.myScroll.scrollTop = this.listScroll; 
       })
+    },
+    //判断二级分类有没有数据
+    hasData() {
+      let id = this.getId()
+      let list
+      this.msManageList.forEach(item => {
+        if(item[0].id === id) {
+          list = item[1].list
+        }
+      })
+      if(list && list.length) {
+        this.noData = false
+      }else {
+        this.noData = true
+      }
     },
     //初始化数据
     initData() {
@@ -145,13 +166,14 @@ export default {
       let obj = this.getCategoriesId(1, 10)
       obj = this.setType(obj)
       indexModel.getArticles(obj).then(res => {
-        this.baseUrl = res.baseUrl
+        this.setBaseUrl(res.baseUrl)
         this.saveList(res.data)
         this.getInitList(res.data)
         this.listenScrollTop()
         if(res.data && res.data.length < 10) {
           this.allLoaded = true
         }
+        this.hasData()
       })
     },
     //获取文章列表
@@ -160,7 +182,7 @@ export default {
       indexModel.getArticles(obj).then(res => {
         if(res.data) {
           if(res.data.length) {
-            this.baseUrl = res.baseUrl
+            this.setBaseUrl(res.baseUrl)
             this.allLoaded = false
             this.list = this.artList.concat(res.data)
             this.saveList(this.list)
@@ -320,7 +342,31 @@ export default {
       }
     }
   }
-
+ .search_nothing {
+    // border-top: 1px solid #ccc;
+    position: relative;
+    box-sizing: border-box;
+    p {
+      width: 100%;
+      font-size: 4.8vw;
+      color: #42596c;
+      font-weight: bold;
+      background:linear-gradient(0deg,rgba(63,186,230,1) 0%, rgba(172,208,218,1) 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-align: center;
+      position: absolute;
+      top: 20.06vw;
+      left: 0;
+    }
+    .search_bg {
+      background: url(../../../assets/imgs/search_nothing.png) no-repeat center;
+      width: 100%;
+      height: 129.6vw;
+      background-size: 100% 100%;
+      box-sizing: border-box;
+    }
+  }
 }
 </style>
 

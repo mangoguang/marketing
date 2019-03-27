@@ -6,6 +6,10 @@
       <img src="../../../assets/imgs/rightside.png" alt="">
     </li>
     </mt-loadmore>
+    <div class="search_nothing" v-show="noData">
+      <p>很抱歉，没有找到相关内容</p>
+      <div class="search_bg"></div>
+    </div>
   </ul>
 </template>
 
@@ -24,7 +28,8 @@ export default {
       allLoaded: false,
       page: 1,
       limit: 20,
-      key: false
+      key: false,
+      noData: false
     }
   },
   computed: {
@@ -38,6 +43,7 @@ export default {
   },
   watch: {
     parmas() {
+      this.hasData()
       if(this.key) {
         let temp = this.hasList(this.parmas.name1)
         if(temp === this.msManageList.length) {
@@ -63,6 +69,7 @@ export default {
     }else {
       this.key = true
       this.listenScrollTop()
+      this.hasData()
     }
   },
   methods: {
@@ -91,6 +98,21 @@ export default {
         this.$refs.questionScroll.scrollTop = this.listScroll; 
       })
     },
+    //判断有没有数据返回
+    hasData() {
+      let id = this.parmas.name1
+      let list
+      this.msManageList.forEach(item => {
+        if(item[0].id === id) {
+          list = item[1].list
+        }
+      })
+      if(list && list.length) {
+        this.noData = false
+      }else {
+        this.noData = true
+      }
+    },
     //初始化数据
     initData() {
       this.setListScroll(0);
@@ -106,6 +128,7 @@ export default {
         if(res.data && res.data.length < 20) {
           this.allLoaded = true
         }
+        this.hasData()
       })
     },
     //获取常见问题列表
@@ -124,6 +147,7 @@ export default {
             this.getList(this.parmas.name1)
             this.allLoaded = true
           }
+          this.hasData()
         }
       })
     },
@@ -205,6 +229,31 @@ export default {
     li:last-child {
       border: none
     }
+    .search_nothing {
+    // border-top: 1px solid #ccc;
+    position: relative;
+    box-sizing: border-box;
+    p {
+      width: 100%;
+      font-size: 4.8vw;
+      color: #42596c;
+      font-weight: bold;
+      background:linear-gradient(0deg,rgba(63,186,230,1) 0%, rgba(172,208,218,1) 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      text-align: center;
+      position: absolute;
+      top: 20.06vw;
+      left: 0;
+    }
+    .search_bg {
+      background: url(../../../assets/imgs/search_nothing.png) no-repeat center;
+      width: 100%;
+      height: 129.6vw;
+      background-size: 100% 100%;
+      box-sizing: border-box;
+    }
+  }
   }
 </style>
 

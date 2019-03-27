@@ -96,12 +96,13 @@ export default {
 .question {
   position: relative;
   .collectBtn {
-    position: absolute;
+    position: fixed;
     top: 6vw;
     right: 4.26vw;
     z-index: 99;
   }
   .content {
+    word-wrap: break-word !important;
     padding-top: 16vw;
     background:#fff;
     box-shadow:0px 2px 6px 0px rgba(136,136,136,0.2);
