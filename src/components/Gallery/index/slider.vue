@@ -24,7 +24,9 @@ export default {
     }
   },
   created() {
-     this.list && this.setImgUrl(this.list[0].imgUrl)
+    if(this.list.length) {
+      this.setImgUrl(this.list[0].imgUrl)
+    }
   },
   methods: {
     ...mapMutations(['setImgUrl']),
