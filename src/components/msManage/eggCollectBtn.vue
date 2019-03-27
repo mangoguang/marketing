@@ -1,7 +1,7 @@
 <template>
   <div class="collect">
     <img :src="ImgUrl" alt="">
-    <span>收藏</span>
+    <span>{{ text }}</span>
   </div>
 </template>
 
@@ -10,15 +10,18 @@ export default {
   props: ['collection'],
   data() {
     return {
-      ImgUrl: './static/images/collect.png'
+      ImgUrl: './static/images/collect.png',
+      text: '加入收藏'
     }
   },
   watch: {
     collection() {
       if(!this.collection) {
         this.ImgUrl = './static/images/collect.png'
+        this.text = '加入收藏'
       }else {
         this.ImgUrl = './static/images/collected.png'
+        this.text = '已收藏'
       }
     }
   }
@@ -27,7 +30,7 @@ export default {
 
 <style lang="scss" scoped>
 .collect {
-  width: 17.33vw;
+  width: 20.33vw;
   height: 8vw;
   border: 2px solid #ffba00;
   border-radius: 1.06vw;
@@ -40,7 +43,7 @@ export default {
   }
   span {
     color: #ffba00;
-    font-size: 3.73vw;
+    font-size: 3.2vw;
     padding-left: 1.6vw;
     line-height: 8vw;
   }

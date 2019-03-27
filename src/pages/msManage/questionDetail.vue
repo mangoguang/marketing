@@ -1,12 +1,13 @@
 <template>
   <div class="question">
     <banner :title="'常见问题'"/>
+    <eggCollectBtn class="collectBtn"
+          :collection='collection' 
+          @touchend.native="changeCollectBtn"
+          />
     <div class="content">
       <div class="title">
         <h1>{{ questionData.title }}</h1>
-        <eggCollectBtn class="collectBtn"
-          :collection='collection' 
-          @touchend.native="changeCollectBtn"/>
       </div>
       <p v-html="myhtml"></p>
     </div>
@@ -93,6 +94,13 @@ export default {
 
 <style lang="scss" scoped>
 .question {
+  position: relative;
+  .collectBtn {
+    position: absolute;
+    top: 6vw;
+    right: 4.26vw;
+    z-index: 99;
+  }
   .content {
     padding-top: 16vw;
     background:#fff;
@@ -102,7 +110,6 @@ export default {
       padding-right:4.25vw;
       margin-left: 4.25vw;
       box-sizing: border-box;
-      position: relative;
       h1 {
         white-space:pre-wrap;
         color: #363636;
@@ -113,11 +120,6 @@ export default {
         text-align: center;
         width: 55vw;
         margin: 0 auto;
-      }
-      .collectBtn {
-        position: absolute;
-        top: 3vw;
-        right: 4.25vw;
       }
     }
     p {

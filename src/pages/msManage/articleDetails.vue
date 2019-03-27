@@ -1,12 +1,13 @@
 <template>
   <div class="article paddingTop">
     <banner :title="'文章详情'"/>
+    <collect-btn class="collentBtn" 
+        :collection='collection'
+        v-on:touchend.native='changeCollectBtn'
+        />
     <div class="titleBar">
       <div class="title">{{ articleDetails.title }}</div>
       <span>{{ articleDetails.createTime }}</span>
-      <collect-btn class="collentBtn" 
-        :collection='collection'
-        v-on:touchend.native='changeCollectBtn'/>
     </div>
     <div class="content" v-html="myhtml">
     </div>
@@ -94,8 +95,14 @@ export default {
   padding: 4.26vw;
   text-align: center;
   padding-top: 22vw;
+  position: relative;
+  .collentBtn {
+      position: absolute;
+      right: 4.26vw;
+      top: 6vw;
+      z-index: 99;
+    }
   .titleBar {
-    position: relative;
     .title {
       color: #353535;
       font-size: 4.53vw;
@@ -107,11 +114,6 @@ export default {
       color: #909090;
       font-size: 3.73vw;
     }
-    .collentBtn {
-      position: absolute;
-      right: 0;
-      top: 0
-    }
   }
   .content {
     text-align: left;
@@ -122,31 +124,6 @@ export default {
     .img {
       width: 91.48vw;
       height: auto;
-    }
-    .m-video {
-      position: relative;
-      height: 50vw;
-      width: 91.48vw;
-      .video_wrapper {
-        z-index: 99;
-        width: 91.48vw;
-        height: 50vw;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: #000;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        img {
-          width: 15.46vw;
-          height: 15.46vw;
-        }
-      }
-      video {
-        height: 50vw;
-        width: 91.48vw;
-      }
     }
   }
 }
