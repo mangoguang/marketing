@@ -9,7 +9,8 @@
     </div>
     <div class="login">
       <div class="box">
-        <h1>Hi,欢迎使用慕思营销助手</h1>
+        <div class="welcome">Hi,</div>
+        <h1>欢迎使用慕思营销助手</h1>
         <form>
           <ul>
             <li
@@ -42,20 +43,21 @@
               <div class="forgetpwd" @touchend="forgetPwd">忘记密码?</div>
             </li>
             <li>
-              <btn @click.native="submitForm('ruleForm')" :text="text"></btn>
+              <btn @click.native="submitForm('ruleForm')" :text="text" class="myBtn"></btn>
             </li>
           </ul>
         </form>
       </div>
     </div>
     <div class="wechatLogin">
-      <div class="wechatText">
+      <!-- <div class="wechatText">
         <hr>
         <span>第三方账号登录</span>
         <hr>
       </div>
-      <div class="wechat-icon"></div>
+      <div class="wechat-icon"></div> -->
     </div>
+    <footer></footer>
   </div>
 </template>
 
@@ -235,6 +237,9 @@ export default {
 .login {
   font-family: PINGPANG;
   position: relative;
+  // height: 100vh;
+  box-sizing: border-box;
+  // overflow: hidden;
   .fix {
     width: 100%;
     height: 6vw;
@@ -245,24 +250,37 @@ export default {
   }
   .topBar {
     width: 100vw;
-    height: 43.78vw;
-    background: #e1e1e1;
+    height: 45.06vw;
+    position: relative;
+    // height: 43.78vw;
+    // background: #e1e1e1;
+    // padding-top: 22vw;
     box-sizing: border-box;
-    padding-top: 22vw;
+    background: url(../assets/imgs/loginBg.png) no-repeat center;
+    background-size: 100% 100%;
+    margin-top: -6vw;
     .sriangle {
-      border-top: 11vw solid transparent;
-      border-bottom: 11vw solid #fff;
-      border-right: 50vw solid #fff;
-      border-left: 50vw solid transparent;
-      box-sizing: border-box;
+      // border-top: 11vw solid transparent;
+      // border-bottom: 11vw solid #fff;
+      // border-right: 50vw solid #fff;
+      // border-left: 50vw solid transparent;
+      // box-sizing: border-box;
     }
     .line {
-      width: 14.66vw;
-      height: 0.8vw;
-      background-color: #020202;
+      width: 22.66vw;
+      height: 22.66vw;
+      z-index: 99;
       position: absolute;
-      top: 32.93vw;
-      left: 42.66vw;
+      left: 38.67vw;
+      top: 32.13vw;
+      background: url(../assets/imgs/login_icon.png) no-repeat center;
+      background-size: 100% 100%;
+      // width: 14.66vw;
+      // height: 0.8vw;
+      // background-color: #020202;
+      // position: absolute;
+      // top: 32.93vw;
+      // left: 42.66vw;
     }
   }
   .login {
@@ -272,12 +290,17 @@ export default {
       height: 69.2vw;
       margin: 0 auto;
       padding: 8.133vw;
+      .welcome {
+        font-size: 8vw;
+        color: #010101;
+        text-align: center;
+      }
       h1 {
-        font-size: 4vw;
+        font-size: 4.8vw;
         text-align: center;
         color: #010101;
         line-height: 6.4vw;
-        font-weight: 600;
+        font-weight: 500;
       }
       ul {
         //按钮
@@ -319,6 +342,10 @@ export default {
             text-decoration: underline;
           }
         }
+        .myBtn {
+          background:rgba(0,122,255,1);
+          border: .13vw solid rgba(0,93,194,1);
+        }
       }
     }
   }
@@ -345,6 +372,15 @@ export default {
       background: url(../assets/imgs/wechat.png) no-repeat center;
       background-size: 100% 100%;
     }
+  }
+  footer {
+    background: url(../assets/imgs/login_db.png) no-repeat center;
+    background-size: 100% 100%;
+    width: 93.06vw;
+    height: 29.86vw;
+    position: fixed;
+    bottom: 4vw;
+    left: 3.5vw;
   }
 }
 </style>
