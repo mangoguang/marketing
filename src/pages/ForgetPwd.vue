@@ -126,7 +126,7 @@ data () {
 <style lang="scss" scoped>
 
 .forgetPwd{
-  font-family: PINGPANG;
+  // font-family: PINGPANG;
   background:#fff;
   height: 100vh;
   .banner{

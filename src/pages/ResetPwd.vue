@@ -126,7 +126,7 @@ export default {
 <style lang="scss" scoped>
 
 .resetPwd{
-  font-family: PINGPANG;
+  // font-family: PINGPANG;
   height: 100vh;
   background: #fff;
   .banner{

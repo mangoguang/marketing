@@ -139,7 +139,7 @@ export default {
 <style lang="scss" scoped>
 
 .reportForms{
-  font-family: PINGPANG;
+  // font-family: PINGPANG;
   background: #f8f8f8;
   position: relative;
    .fix{

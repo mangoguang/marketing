@@ -89,12 +89,13 @@ $fontcolor: #fff;
 $subfontcolor: #525252;
 $bgcolor: #31c3b0;
 /*reset css */
-@font-face {
-  font-family: PINGPANG;
-  src: url("./assets/font/pingfang.ttf");
-}
+// @font-face {
+//   font-family: PINGPANG;
+//   src: url("./assets/font/pingfang.ttf");
+// }
 body {
-  font-family: PINGFANG;
+  background: #fff;
+  // font-family: PINGFANG;
 }
 body,
 dl,

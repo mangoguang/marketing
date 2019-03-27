@@ -50,12 +50,12 @@
       </div>
     </div>
     <div class="wechatLogin">
-      <!-- <div class="wechatText">
+      <div class="wechatText">
         <hr>
         <span>第三方账号登录</span>
         <hr>
       </div>
-      <div class="wechat-icon"></div> -->
+      <div class="wechat-icon"></div>
     </div>
     <footer></footer>
   </div>
@@ -235,10 +235,11 @@ export default {
 
 <style lang="scss" scoped>
 .login {
-  font-family: PINGPANG;
+  background: #fff;
+  // font-family: PINGPANG;
   position: relative;
   // height: 100vh;
-  box-sizing: border-box;
+  // box-sizing: border-box;
   // overflow: hidden;
   .fix {
     width: 100%;
@@ -379,7 +380,7 @@ export default {
     width: 93.06vw;
     height: 29.86vw;
     position: fixed;
-    bottom: 4vw;
+    bottom: 0;
     left: 3.5vw;
   }
 }
