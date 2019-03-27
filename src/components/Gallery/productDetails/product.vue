@@ -68,7 +68,7 @@ export default {
 
 <style lang="scss">
 .mint-swipe-indicators {
-  right: 76%;
+  right: 70%;
     .mint-swipe-indicator {
       background: #363636;
       opacity: 0.6;

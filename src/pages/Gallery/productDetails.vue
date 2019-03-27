@@ -72,10 +72,12 @@ export default {
   // margin-top: -5vw;
   .content {
     background: #fff;
+    word-wrap: break-word !important;
   }
   .details {
     margin-top: 4vw;
     width: 100vw;
+    word-wrap: break-word !important;
     img {
       width: 100vw;
       height: auto;
