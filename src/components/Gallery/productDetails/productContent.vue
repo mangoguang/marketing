@@ -7,7 +7,7 @@
         <img src="../../../assets/imgs/unlike.png" alt="" v-else>
       </div>
       <div class="share">
-        <router-link :to="{name: 'share', query: {msg: {title: list.goodsName, price: Math.round(list.price*100)/100}}}">
+        <router-link :to="{path: '/share', query: {list:list}}">
           <img src="../../../assets/imgs/share.png" alt="">
         </router-link>
       </div>

@@ -99,7 +99,6 @@ export default {
     },
     //不同分类的数据
     getDiffList() {
-      console.log(111,this.listVal)
       if(this.listVal === '慕思') {
         this.getCategory()
         this.dataList.name = this.listVal

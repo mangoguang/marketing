@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <div class="img_icon" :style="{backgroundImage:'url(' + list.image + ')'}"></div>
+    <div class="img_icon" :style="{backgroundImage:'url(' + list.image || list.imgUrl + ')'}"></div>
     <div class="text_box">
       <p class="title">{{ list.goodsName }}</p>
       <span class="type_icon" v-for="(el, v) in getLabel(list.label)" :key=v >

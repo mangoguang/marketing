@@ -7,8 +7,8 @@
       <div class="content">
         <img src="../../assets/imgs/share_bottom.png" alt>
         <div class="msg">
-          <p class="title">{{msg.title}}</p>
-          <span class="price">¥{{msg.price}}</span>
+          <p class="title">{{msg.goodsName}}</p>
+          <span class="price">¥{{Math.round(msg.price*100)/100}}</span>
           <div id="qrcode"></div>
         </div>
       </div>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import {baseUrl} from '../../utils/request'
 import axios from "axios";
 import QRCode from "qrcodejs2";
 import html2canvas from "html2canvas";
@@ -59,7 +60,8 @@ export default {
       url: "",
       loadImgUrl: "",
       successSave: false,
-      imageData: ''
+      imageData: "",
+      pageUrl: ''
     };
   },
   computed: {
@@ -68,7 +70,8 @@ export default {
     })
   },
   created() {
-    this.msg = this.$route.query.msg;
+    this.msg = this.$route.query.list;
+    this.pageUrl = baseUrl + "/web/marketing/#/productDetails?id=" + this.msg.id
   },
   watch: {
     imgUrl() {
@@ -84,8 +87,7 @@ export default {
       let qrcode = new QRCode("qrcode", {
         width: 48,
         height: 48, // 高度
-        text:
-          "https://derucci.net/web/marketing/#/productDetails?id=1100231733594095620", // 二维码内容
+        text: this.pageUrl,
         colorDark: "#000",
         colorLight: "#fff",
         correctLevel: QRCode.CorrectLevel.L,
@@ -107,7 +109,7 @@ export default {
       let temp = new ArrayBuffer(bytes.length);
       let ia = new Uint8Array(temp);
       for (var i = 0; i < bytes.length; i++) {
-        ia[i] = bytes.charCodeAt(i); 
+        ia[i] = bytes.charCodeAt(i);
       }
       //Blob对象
       let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
@@ -117,14 +119,15 @@ export default {
     },
     //上传图片获取图片地址
     postImage() {
-      this.changeFormData()
-      if(this.imageData) {
-        this.getImgUrl()
+      this.changeFormData();
+      if (this.imageData) {
+        this.getImgUrl();
       }
     },
     //请求服务器图片路径
     getImgUrl() {
-       axios.post("http://10.11.8.229/upload/file", this.imageData, {
+      axios
+        .post(baseUrl + "/upload/file", this.imageData, {
           headers: {
             "Content-Type": "multipart/form-data"
           }
@@ -147,7 +150,7 @@ export default {
         },
         (ret, err) => {
           if (ret) {
-            this.showTips()
+            this.showTips();
           }
           api.saveMediaToAlbum(
             {
@@ -160,89 +163,87 @@ export default {
     },
     //出现保存成功提示
     showTips() {
-      this.successSave = true
+      this.successSave = true;
       setTimeout(() => {
         this.successSave = false;
       }, 1500);
     },
     shareBtn(index) {
-      console.log(index)
       switch (index) {
-        case 0: 
-        this.shareWeixin('session',this.msg.title);
-        break;
-        case 1: 
-        this.shareWeixin('timeline', this.msg.title);
-        break;
-        case 2: 
-        this.shareQQ(this.msg.title);
-        break;
+        case 0:
+          this.shareWeixin("session", this.msg.goodsName);
+          break;
+        case 1:
+          this.shareWeixin("timeline", this.msg.goodsName);
+          break;
+        case 2:
+          this.shareQQ(this.msg.goodsName);
+          break;
         case 3:
-        this.shareWeibo(this.msg.title);
-        break
+          this.shareWeibo(this.msg.goodsName);
+          break;
       }
     },
-    qqsharetext() {
-      var qq = api.require('qq');
-      qq.shareText({
-          text: 'testtext'
-      });
-    },
     //微信和朋友圈
-     shareWeixin(Vscene,title) {
-      //  var weiXin = api.require('weiXin');
-        var wx = api.require('wx');
-        wx.shareWebpage({
-            apiKey: '',
-            scene: Vscene,
-            title: title,
-            description: '分享网页的描述',
-            thumb: 'widget://static/images/bed0.png',
-            contentUrl: 'http://www.baidu.com'
-        }, function(ret, err) {
-            if (ret.status) {
-                alert(JSON.stringify(ret))
-            } else {
-                alert(JSON.stringify(err))
-            }
-        });
+    shareWeixin(Vscene, title) {
+      var wx = api.require("wx");
+      wx.shareWebpage(
+        {
+          apiKey: "",
+          scene: Vscene,
+          title: title,
+          description: this.msg.remark,
+          thumb: this.imgUrl,
+          contentUrl: this.pageUrl
+        },
+        function(ret, err) {
+          if (ret.status) {
+            alert('分享成功');
+          } else {
+            alert('分享失败');
+          }
+        }
+      );
     },
     shareQQ(title) {
-      var qq = api.require('qq');
+      var qq = api.require("qq");
       qq.shareNews({
-          url: 'http://www.baidu.com',
-          title: title,
-          description: '描述',
-          imgUrl: './static/bed0.png',
-          type:'QFriend'
+        url:  this.pageUrl,
+        title: title,
+        description: this.msg.remark,
+        imgUrl: this.imgUrl,
+        type: "QFriend"
       });
     },
     shareWeibo(title) {
-      var sinaWeiBo = api.require('sinaWeiBo');
-      sinaWeiBo.sendRequest({
-          contentType: 'web_page',
-          text: 'http://www.apicloud.com',
+      var sinaWeiBo = api.require("sinaWeiBo");
+      sinaWeiBo.sendRequest(
+        {
+          contentType: "web_page",
+          text:  this.pageUrl,
           media: {
-              title: title,
-              description: '多媒体描述',
-              webpageUrl: 'http://v.ku6.com/show/ZgeIWrUgvfSuDN_fl_qNsQ...html'
+            title: title,
+            description: this.msg.remark,
+            webpageUrl: this.pageUrl
           }
-      }, function(ret, err) {
+        },
+        function(ret, err) {
           if (ret.status) {
-              api.alert({
-                  title: '发表微博',
-                  msg: '发表成功',
-                  buttons: ['确定']
-              });
+            api.alert({
+              title: "发表微博",
+              msg: "发表成功",
+              buttons: ["确定"]
+            });
           } else {
-              api.alert({
-                  title: '发表失败',
-                  msg: err.msg,
-                  buttons: ['确定']
-              });
+            api.alert({
+              title: "发表失败",
+              msg: err.msg,
+              buttons: ["确定"]
+            });
           }
-      });
-  }
+        }
+      );
+    }
   }
 };
 </script>
