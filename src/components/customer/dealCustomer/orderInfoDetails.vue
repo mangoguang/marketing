@@ -10,7 +10,7 @@
             <p>{{ item.goodsSpec }}</p>
           </div>
           <div class="price">
-            <p>￥{{ Math.round(item.price) }}</p>
+            <!-- <p>￥{{ Math.round(item.price) }}</p> -->
             <span>x{{ Math.round(item.quantity) }}</span>
           </div>
         </div>
@@ -172,16 +172,19 @@ export default {
         // flex: 0.7;
         flex: 1;
         display: flex;
-        flex-direction: column;
+        // flex-direction: column;
         justify-content: space-between;
         line-height: 1.4em;
         .details {
+          flex: 0.9;
           span {
             color: #363636;
           }
         }
         .price {
-          margin-top: 3.73vw;
+          flex: 0.04;
+          // margin-top: 3.73vw;
+          // margin-top: 3.73vw;
           display: flex;
           justify-content: space-between;
           p {
