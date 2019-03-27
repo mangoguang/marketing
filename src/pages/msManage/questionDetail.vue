@@ -4,6 +4,7 @@
     <eggCollectBtn class="collectBtn"
           :collection='collection' 
           @touchend.native="changeCollectBtn"
+          :style="{top: top}"
           />
     <div class="content">
       <div class="title">
@@ -29,7 +30,8 @@ export default {
       collection: false,
       questionId: '',
       myhtml: '',
-      ajaxData: {}
+      ajaxData: {},
+      top: ''
     }
   },
   computed: {
@@ -42,6 +44,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
     this.questionId = this.$route.query.id
     this.getQuestionDetail(this.questionId)
+    this.isIPhoneX()
      //获取收藏列表常见问题路由"/collectList"传过来的常见问题questionId
     // console.log(this.$route.params.questionId);
   },
@@ -86,6 +89,20 @@ export default {
       }else {
         //移除收藏接口
         this.cancelCollect()
+      }
+    },
+    //收藏的样式
+     isIPhoneX (){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.top = '11vw'
+        }else{
+          this.top = '6vw'
+        } 
+      }else{
+        this.top = '6vw'
       }
     }
   }

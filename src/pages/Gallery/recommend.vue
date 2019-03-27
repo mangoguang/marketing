@@ -28,3 +28,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.recommend {
+  word-break: break-word !important;
+}
+</style>

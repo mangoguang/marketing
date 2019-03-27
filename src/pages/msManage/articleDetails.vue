@@ -4,6 +4,7 @@
     <collect-btn class="collentBtn" 
         :collection='collection'
         v-on:touchend.native='changeCollectBtn'
+        :style="{top: top}"
         />
     <div class="titleBar">
       <div class="title">{{ articleDetails.title }}</div>
@@ -29,7 +30,8 @@ export default {
       collection: false,
       myhtml: '',
       articleDetails: '',
-      ajaxData: {}
+      ajaxData: {},
+      top: ''
     }
   },
   created() {
@@ -37,6 +39,7 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     this.getArticleDetail()
+    this.isIPhoneX()
   },
   methods: {
     //获取文章详情
@@ -79,13 +82,21 @@ export default {
         this.cancelCollect()
       }
     },
-    //开始播放
-    beginPlay() {
-      this.isBegin = false
+    //收藏的样式
+    isIPhoneX (){
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.top = '11vw'
+        }else{
+          this.top = '6vw'
+        } 
+      }else{
+        this.top = '6vw'
+      }
     }
-    // console.log(123,this.titleList);
-    //  //获取收藏列表文章路由"/collectList"传过来的文章articleId
-    // console.log(this.$route.params.articleId);
+    
   }
 }
 </script>
@@ -101,7 +112,6 @@ export default {
       right: 4.26vw;
       top: 0;
       z-index: 99;
-      margin-top: 6vw;
     }
   .titleBar {
     .title {
