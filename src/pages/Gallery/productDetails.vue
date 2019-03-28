@@ -23,22 +23,19 @@ export default {
   },
   data() {
     return {
-      ajaxData: {},
       myhtml: "",
       productList: {},
       marginTop: ""
     };
   },
   created() {
-    let ajaxData = localStorage.getItem("ajaxData");
-    this.ajaxData = JSON.parse(ajaxData);
     this.getProductList();
     this.isIPhoneX();
   },
   methods: {
     getProductList() {
       let id = this.$route.query.id;
-      let account = this.ajaxData.account;
+      let account = this.__localAjax().account
       indexModel.productList(id, account).then(res => {
         if (res.data) {
           let temp = res.data.details;

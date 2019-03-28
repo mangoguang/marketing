@@ -37,12 +37,12 @@ export default {
     return {
       allLoaded:false,
       list: [],
-      ajaxData: {},
       page: 1,
       limit: 5,
       typeId: '',
       key: false,
-      noData: false
+      noData: false,
+      account: ''
     }
   },
   computed: {
@@ -84,8 +84,7 @@ export default {
     }
   },
   created() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    this.account = this._localAjax().account
   },
   mounted() {
     if(this.$route.query.type === 1) {
@@ -199,14 +198,13 @@ export default {
     //获取一二三级id参数
     getCategoriesId(page, limit){
       const categoryId = this.$route.query.id
-      const account = this.ajaxData.account
       let obj = {}
       if(this.parmas.name1 && !this.parmas.name2) {
         let subCateId = this.parmas.name1
         obj = {
           'categoryId': categoryId,
           'subCateId': subCateId,
-          'account': account,
+          'account': this.account,
           'page': page,
           'limit':limit
           }
@@ -217,14 +215,14 @@ export default {
           'categoryId': categoryId,
           'subCateId': subCateId,
           'subCate2Id': subCate2Id,
-          'account':account,
+          'account':this.account,
           'page': page,
           'limit':limit
           }
       }else {
         obj = {
           'categoryId': categoryId,
-          'account':account,
+          'account':this.account,
           'page': page,
           'limit':limit
         }

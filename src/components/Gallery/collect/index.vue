@@ -38,12 +38,11 @@ export default {
       disX: 0, //移动距离
       deleteSlider: "", //滑动时的效果,使用v-bind:style="deleteSlider"
       key: true,
-      ajaxData: {}
+      account: ''
     };
   },
   created() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    this.account = this._localAjax().account
   },
   methods: {
     //跳转详情页面
@@ -73,7 +72,7 @@ export default {
       let obj = {
         type: 3,
         id: this.list.id,
-        account: this.ajaxData.account
+        account: this.account
       };
       indexModel.galleryCancelCollect(obj).then(res => {
         if(res.status === 1) {

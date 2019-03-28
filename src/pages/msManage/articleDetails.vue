@@ -30,14 +30,13 @@ export default {
       collection: false,
       myhtml: '',
       articleDetails: '',
-      ajaxData: {},
-      top: ''
+      top: '',
+      account: ''
     }
   },
   created() {
     this.articleId = this.$route.query.articleId
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    this.account = this._localAjax().account
     this.getArticleDetail()
     this.isIPhoneX()
   },
@@ -45,8 +44,7 @@ export default {
     //获取文章详情
     getArticleDetail() {
       const id = this.articleId
-      const account = this.ajaxData.account
-      indexModel.getArticleDetail(id, account).then(res => {
+      indexModel.getArticleDetail(id, this.account).then(res => {
         this.articleDetails = res.data
         if(res.data.remark) {
           let temp = res.data.remark
@@ -57,17 +55,15 @@ export default {
     },
     //收藏
     collect() {
-      let account = this.ajaxData.account
       let id = this.articleId
-      indexModel.collect(1, id, account).then(res => {
+      indexModel.collect(1, id, this.account).then(res => {
         console.log('res')
       })
     },
     //取消收藏
     cancelCollect() {
-      let account = this.ajaxData.account
       let id = this.articleId
-      indexModel.remove(1, id, account).then(res => {
+      indexModel.remove(1, id, this.account).then(res => {
         console.log('canclecollect')
       })
     },

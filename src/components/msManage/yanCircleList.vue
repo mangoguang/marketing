@@ -36,6 +36,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    flex-wrap: wrap;
     a{
       display: block;
       .circle{

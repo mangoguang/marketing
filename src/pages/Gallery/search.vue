@@ -70,7 +70,6 @@ export default {
       changeStatus: false,
       key: true,
       list: [],
-      ajaxData: {},
       searchTurn: true,
       obj:{
         brand: '',
@@ -90,7 +89,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     if(from.path === '/gallery' || from.path === '/productList') {
       next(vm => {
-        vm.$set(vm.obj, 'account', vm.ajaxData.account)
+        vm.$set(vm.obj, 'account', vm._localAjax().account)
         vm.setSearchParmas(vm.obj)
       })
     }else {
@@ -138,10 +137,6 @@ export default {
       initParmas: state => state.searchParmas.initParmas,
       searchScroll: state => state.searchScroll.searchScroll
     })
-  },
-  created() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
   },
   methods: {
     ...mapMutations([
