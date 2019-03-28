@@ -84,7 +84,7 @@ export default {
 
 <style lang="scss" scoped>
 .index {
-  height: 100vh;
+  max-height: 100vh;
   overflow: scroll;
 }
 .entry {

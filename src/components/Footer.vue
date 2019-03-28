@@ -91,16 +91,9 @@ export default {
       alert('该模块尚未开发')
     },
     isIPhoneX(){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-         if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-            
-            this.padding = '4.53'
-            
-          }else{
-            console.log('no iphonex')
-          } 
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.padding = '4.53'
       }
     }
   }

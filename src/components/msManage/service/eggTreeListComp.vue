@@ -144,17 +144,14 @@ export default {
         this.getParmas(parmas)
       }
     },
-    isIPhoneX : function(fn){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-          this.top = '33'
-        }else{
-          this.top = '28'
-        } 
-      }else{
+    isIPhoneX (){
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
         this.top = '33'
+      }else if(phone === 'iphone') {
+        this.top = '28'
+      }else {
+        this.top = '28'
       }
     }
   }

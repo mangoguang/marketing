@@ -7,6 +7,8 @@ import api from './js/api.js'
 import VueTouch from 'vue-touch'
 import 'mint-ui/lib/style.min.css'
 import '../mockjs/index' 	
+import base from './Global/index'
+Vue.use(base)
 Vue.config.devtools = true
 Vue.use(VueTouch, {name: 'v-touch'})
 VueTouch.config.swipe = {

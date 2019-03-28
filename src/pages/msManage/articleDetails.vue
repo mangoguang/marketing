@@ -84,15 +84,12 @@ export default {
     },
     //收藏的样式
     isIPhoneX (){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-          this.top = '11vw'
-        }else{
-          this.top = '6vw'
-        } 
-      }else{
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.top = '11vw'
+      }else if(phone === 'iphone') {
+        this.top = '6vw'
+      }else {
         this.top = '6vw'
       }
     }
