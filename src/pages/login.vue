@@ -72,7 +72,8 @@ import tipsError from "../components/charts/tipsError";
 import tipsWeb from "../components/charts/tipsWeb";
 import btn from "../components/btn";
 import myinput from "../components/myInput";
-
+import { IndexModel } from "../utils/index";
+const indexModel = new IndexModel();
 export default {
   name: "login",
   components: {
@@ -114,7 +115,7 @@ export default {
     this.getAccountMsg();
   },
   methods: {
-    ...mapMutations(['setPersonMsg']),
+    ...mapMutations(["setPersonMsg"]),
     //去除input输入框的左边空格
     trimStr: function(str) {
       return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -122,7 +123,6 @@ export default {
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
     submitForm(formName) {
       let _this = this;
-
       if (_this.key) {
         //如果请求失败，只可以请求一次
         _this.key = false;
@@ -132,39 +132,46 @@ export default {
       }
       //登陆接口
       function getApi() {
-        mango.loading('open')
-        var Name = _this.inputValue1
-        var Pwd = _this.inputValue2 
-        const url = `${mango.port}app/login.api`
-      // return new Promise((resolve, reject) => {
-      axios({
-        method: 'post',
-        url: url,
-        headers: {
-          'UUID': 'e10adc3949ba59abbe56e057f20f883e'
-        },
-        timeout: 10000,
-        params: {
-          // account: '18080028',
-          account:Name,
-          password: md5(Pwd)
-        }
-      })
-        .then((res) => {
-          mango.loading('close')
-          let status = res.data.status  
-          if(res.status == 200){    //状态200，请求成功
-            if(status == 0){           //如果为0，账号或密码错误，出现弹框。
-            _this.display = 'block' 
-            _this.key = true
-            
-            }else{  
-              //账号密码正确，跳转页面。
-              res = res.data.data
-              let shops = JSON.stringify(res.shops)
-              _this.$store.commit('setPersonMsg',res)
-              let shopsArr = `${shops}`
-              let ajaxData = `{
+        mango.loading("open");
+        var Name = _this.inputValue1;
+        var Pwd = _this.inputValue2;
+        let asToken, reToken, saveTime;
+        indexModel.getToken(Name, md5(Pwd)).then(res => {
+          if (res.data) {
+            asToken = res.data.access_token;
+            reToken = res.data.refresh_token;
+            saveTime = res.data.expires_in;
+            localStorage.setItem("loginData", JSON.stringify(res.data));
+            axios({
+              method: "post",
+              url: url,
+              headers: {
+                UUID: "e10adc3949ba59abbe56e057f20f883e"
+              },
+              timeout: 10000,
+              params: {
+                // account: '18080028',
+                account: Name,
+                password: md5(Pwd),
+                access_token: asToken
+              }
+            })
+              .then(res => {
+                mango.loading("close");
+                let status = res.data.status;
+                if (res.status == 200) {
+                  //状态200，请求成功
+                  if (status == 0) {
+                    //如果为0，账号或密码错误，出现弹框。
+                    _this.display = "block";
+                    _this.key = true;
+                  } else {
+                    //账号密码正确，跳转页面。
+                    res = res.data.data;
+                    let shops = JSON.stringify(res.shops);
+                    _this.$store.commit("setPersonMsg", res);
+                    let shopsArr = `${shops}`;
+                    let ajaxData = `{
                 "account": "${res.account}",
                 "tenantId": "${res.tenantId}",
                 "token": "${res.token}",
@@ -174,35 +181,39 @@ export default {
                 "phone": "${res.mobile}",
                 "sex": "${res.sex}",
                 "type":"${res.type}"
-              }`
-              // 将账号所属店铺存储到本地存储
-              // let shopsArr = res.shops
-              // let shopsStr = ''
-              // shopsArr.forEach(element => {
-              //   shopsStr += `"{'id': '${element.id}', 'name': '${element.name}'}",`
-              // })
-              // shopsStr = `[${shopsStr}]`
-              // localStorage.setItem("shops", shopsStr);
-                localStorage.setItem("ajaxData", ajaxData);
-                localStorage.setItem("shops", shopsArr);
-                if (_this.checked) {
-                  _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
+              }`;
+                    // 将账号所属店铺存储到本地存储
+                    // let shopsArr = res.shops
+                    // let shopsStr = ''
+                    // shopsArr.forEach(element => {
+                    //   shopsStr += `"{'id': '${element.id}', 'name': '${element.name}'}",`
+                    // })
+                    // shopsStr = `[${shopsStr}]`
+                    // localStorage.setItem("shops", shopsStr);
+                    localStorage.setItem("ajaxData", ajaxData);
+                    localStorage.setItem("shops", shopsArr);
+                    if (_this.checked) {
+                      _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
+                    } else {
+                      _this.setAccountMsg("", "");
+                    }
+                    _this.$router.push({ path: "/" });
+                  }
                 } else {
-                  _this.setAccountMsg("", "");
+                  //状态不为200，请求失败
+                  console.log(res.status);
                 }
-                _this.$router.push({ path: "/" });
-              }
-            } else {
-              //状态不为200，请求失败
-              console.log(res.status);
-            }
-          })
-          .catch(function(error) {
-            mango.loading("close");
-            console.log("返回错误方法：", error);
-            _this.display1 = "block";
-            _this.key = true;
-          });
+              })
+              .catch(function(error) {
+                mango.loading("close");
+                console.log("返回错误方法：", error);
+                _this.display1 = "block";
+                _this.key = true;
+              });
+          }
+        });
+        const url = `${mango.port}app/login.api`;
+        // return new Promise((resolve, reject) => {
       }
     },
     setAccountMsg(uname, upwd) {
@@ -344,8 +355,8 @@ export default {
           }
         }
         .myBtn {
-          background:rgba(0,122,255,1);
-          border: .13vw solid rgba(0,93,194,1);
+          background: rgba(0, 122, 255, 1);
+          border: 0.13vw solid rgba(0, 93, 194, 1);
         }
       }
     }

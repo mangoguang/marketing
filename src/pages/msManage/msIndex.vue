@@ -2,8 +2,6 @@
   <div class="index">
     <Search :origin="origin" :type='"msIndex"'/>
     <yan-circle-list :link="link"/>
-    <!-- <egg-scan /> -->
-    <!-- <egg-share /> -->
     <div class="entry">
       <router-link to="/gallery">
         <img src="../../assets/imgs/picentry.png" alt>
@@ -15,6 +13,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapMutations } from "vuex";
 import eggShare from "../../components/myApi/eggShare";
 import eggScan from "../../components/myApi/eggScan";

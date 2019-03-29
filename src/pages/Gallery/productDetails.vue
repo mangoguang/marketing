@@ -35,7 +35,7 @@ export default {
   methods: {
     getProductList() {
       let id = this.$route.query.id;
-      let account = this.__localAjax().account
+      let account = this._localAjax().account
       indexModel.productList(id, account).then(res => {
         if (res.data) {
           let temp = res.data.details;

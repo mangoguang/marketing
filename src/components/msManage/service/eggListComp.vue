@@ -245,6 +245,7 @@ export default {
         {list: list}
       ]
       this.setMsManageList(data)
+      this.hasData()
     },
     //判断vuex是否已存储list
     hasList(id) {
