@@ -13,7 +13,7 @@
               </template> 
               
               <template v-slot:img>
-                <img :src="baseUrl+item.image" alt=""> 
+                <img :src="item.image" alt=""> 
               </template> 
           </yan-cell-swipe>
         </li>
@@ -106,6 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 .content{
+  height:calc(100vh - 28.5vw);
   overflow: scroll;
 }
 #list{
