@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="list_right">
-          <img :src="baseUrl + item.image" alt="" class="img">
+          <img :src="item.image" alt="" class="img">
         </div>
       </li>
     </mt-loadmore>
@@ -51,8 +51,8 @@ export default {
       listScroll: state => state.loadmore.listScroll,
       msManageList: state => state.loadmore.msManageList,
       artList: state => state.loadmore.artList,
-      listAllScroll: state => state.loadmore.listAllScroll,
-      baseUrl: state => state.treeList.baseUrl
+      listAllScroll: state => state.loadmore.listAllScroll
+      // baseUrl: state => state.treeList.baseUrl
     })
   },
   watch: {
@@ -165,7 +165,7 @@ export default {
       let obj = this.getCategoriesId(1, 10)
       obj = this.setType(obj)
       indexModel.getArticles(obj).then(res => {
-        this.setBaseUrl(res.baseUrl)
+        // this.setBaseUrl(res.baseUrl)
         this.saveList(res.data)
         this.getInitList(res.data)
         this.listenScrollTop()
@@ -181,7 +181,7 @@ export default {
       indexModel.getArticles(obj).then(res => {
         if(res.data) {
           if(res.data.length) {
-            this.setBaseUrl(res.baseUrl)
+            // this.setBaseUrl(res.baseUrl)
             this.allLoaded = false
             this.list = this.artList.concat(res.data)
             this.saveList(this.list)

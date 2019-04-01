@@ -56,14 +56,18 @@ export default {
       let categoryId
       if(this.$route.query.name == '常见问题') {
         indexModel.getQuestionCategoryList().then(res => {
-          this.setList(res.data)
-          this.init(this.list)
+          if(res.data && res.data.length) {
+            this.setList(res.data)
+            this.init(this.list)
+          }
         })
       }else {
         categoryId = this.$route.query.id
         indexModel.getCategories(categoryId).then(res => {
-          this.setList(res.data[0].subCateList)
-          this.init(this.list)
+          if(res.data && res.data[0].subCateList) {
+            this.setList(res.data[0].subCateList)
+            this.init(this.list)
+          }
         })
       }
     },

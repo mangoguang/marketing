@@ -32,6 +32,16 @@ class IndexModel extends Request {
       }
     })
   }
+  //知识库首页置顶文章接口
+  getTopArt(account) {
+    return this.getData({
+      url: '/api/train/repository/v1/getTopRepository',
+      params: {
+        classify: 1,
+        account: account
+      }
+    })
+  }
   //首页搜索接口
   getArticleSearch(keyword,account) {
     return this.getData({

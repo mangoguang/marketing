@@ -111,13 +111,15 @@ export default {
     getAdvert() {
       let brand = this.listVal
       indexModel.getAdvert(brand).then(res => {
-        this.imgSliderList = res.data
+        this.imgSliderList = res.data.list
       })
     },
     getBrandIntroduce() {
       let brand = this.listVal
       indexModel.brandIntroduce(brand).then(res => {
-        this.imgUrl = res.data.imgUrl
+        if(res.data) {
+          this.imgUrl = res.data.imgUrl
+        }
       })
     },
     //轮播图跳转到活动
