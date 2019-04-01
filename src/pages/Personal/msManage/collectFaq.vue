@@ -81,6 +81,7 @@ export default {
 
 <style lang="scss">
 .content{
+  height:calc(100vh - 28.5vw);
   overflow: scroll;
 }
 #faq{
