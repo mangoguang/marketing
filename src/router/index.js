@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
-    path: '/',
+    path: '/index',
     name: 'index',
     component: resolve => require(['../pages/index'], resolve)
   },{
@@ -44,7 +44,7 @@ export var router = new VueRouter({
     name: '/AudioTechnica',
     component: resolve => require(['../pages/charts/AudioTechnica/audioTechnica'],resolve)
   },{
-    path: '/personal',
+    path: '/Personal',
     name: '/Personal',
     component: resolve => require(['../pages/charts/AudioTechnica/personal'],resolve)
   },{
@@ -122,8 +122,8 @@ export var router = new VueRouter({
   },
   /****个人模块****/
   {
-    path: '/personal',
-    name: '/Personal',
+    path: '/',
+    name: '/personal',
     component: resolve => require(['../pages/Personal/personalMsg'],resolve)
   },
   {

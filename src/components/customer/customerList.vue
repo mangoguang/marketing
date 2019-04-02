@@ -16,15 +16,15 @@
                 <!-- <div>1</div>
                 <div>2</div>
                 <div>2</div> -->
-                <strong>{{item.username}}</strong>
                 <i :class="`important${item.important}`"></i>
+                <strong>{{item.username}}</strong>
                 <div :class="`urgency${item.urgency}`"></div>
               </li>
               <li >
                 <span class="intention">{{item.intention}}</span>
-                <span>{{item.followTime}}</span>
+                <!-- <span>{{item.followTime}}</span> -->
               </li>
-              <li>{{item.probability}}</li>
+              <li class="followTime">{{item.followTime}}</li>
             </ul>
           </li>
           <li><button @click="newCustomer" class="new"></button></li>
@@ -64,8 +64,8 @@ export default {
     return {
       topbar:{
         leftTitle: '客户信息',
-        centerTitle: '需求信息',
-        rightTitle: '成交概率'
+        centerTitle: '意向产品',
+        rightTitle: '最近跟进'
       }
     }
   },
@@ -153,5 +153,8 @@ export default {
 @import '../../main.scss';
 .customerList{
   position: relative;
+  .new {
+    
+  }
 }
 </style>

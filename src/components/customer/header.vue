@@ -23,9 +23,6 @@
           class="topBarTitle"
           :class="{on: item.status}"
           @click="moduleSelect(index)">
-          <!-- <div class="">
-
-          </div> -->
           <!-- <img src="../../assets/imgs/customer-icon.png" class="topBarimg"> -->
           {{item.name}}
           </button>
@@ -428,7 +425,7 @@ header{
     position: absolute;
     height: 100vh;
     width: 100vw;
-    top: 9vw;
+    top: 6vw;
     left: -4.266vw;;
     background: rgba(0, 0, 0, .5);
     li{

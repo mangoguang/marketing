@@ -8,7 +8,8 @@
           :key="`customerList${index}`"
           @click="getDetails(index)"
         >
-          <span>{{index + 1}}</span>
+          <!-- <span>{{index + 1}}</span> -->
+          <!-- <i :class="`important${item.important}`"></i> -->
           <span>{{`*${item.username.slice(1, 5)}`}}</span>
           <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
           <span>{{`******${item.phone.slice(6, 11)}`}}</span>
@@ -47,9 +48,9 @@ export default {
       allLoaded:false,
       address: '',
       topbar:{
-        leftTitle: '姓名',
+        leftTitle: '客户信息',
         centerTitle: '电话',
-        rightTitle: '最新下单日期'
+        rightTitle: '战败时间'
       }
     };
   },
@@ -298,6 +299,7 @@ export default {
   padding-top: 33.88vw;
   background: #f8f8f8;
   -webkit-overflow-scrolling: touch;
+  // margin-bottom: 20vw;
   ul {
     border-top: 1px solid #e1e1e1;
     // border-bottom: 1px solid #e1e1e1;
@@ -305,29 +307,29 @@ export default {
     color: #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
-    padding-bottom: 21vw;
+    padding-bottom: 40vw;
     li {
       display: flex;
       justify-content: space-between;
       padding-right: 3.86vw;
       border-top: 1px solid #e1e1e1;
-      span:nth-child(2) {
+      span:nth-child(1) {
         color: #363636;
-        flex: 0.3;
+        flex: 0.5;
       }
-      span:nth-child(4) {
+      span:nth-child(3) {
         color: #363636;
         flex: 0.4;
       }
-      span:nth-child(3) {
+      span:nth-child(2) {
         flex: 0.5;
       }
       // span:nth-child(4) {
       //   flex: 0.5;
       // }
-      span:nth-child(1) {
-        flex: 0.15;
-      }
+      // span:nth-child(1) {
+      //   flex: 0.15;
+      // }
     }
     li:nth-child(1) {
       border-top: none;

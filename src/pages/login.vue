@@ -202,7 +202,7 @@ export default {
                 } else {
                   _this.setAccountMsg("", "");
                 }
-                _this.$router.push({ path: "/personal" });
+                _this.$router.push({ path: "/" });
               }
             } else {
               //状态不为200，请求失败

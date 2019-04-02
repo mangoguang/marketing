@@ -91,11 +91,12 @@ export default {
 <style lang="scss">
 .customer {
   position: relative;
-  // height: 100vh;
+  height: 100vh;
   width: 100vw;
   box-sizing: border-box;
   // overflow: scroll;
   background-color: #f8f8f8;
+  overflow: hidden;
   .CustomerList1 {
     margin-top: 19vw;
   }
