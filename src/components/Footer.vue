@@ -77,7 +77,6 @@ export default {
       if(this.ajaxData.type === 'dealer') {
         this.setChartActive(false)
         this.$router.push({path: "/ReportForms"})
-
       }else {
         alert('暂无权限')
         this.setChartActive(true)
@@ -88,7 +87,9 @@ export default {
       // if(e.path[1].id){
       //   alert('该模块尚未开发')
       // }
-      alert('该模块尚未开发')
+      // alert('该模块尚未开发')
+      this.$router.push({path: '/'})
+      this.setChartActive(false)
     },
     isIPhoneX(){
       let phone = this.phoneSize()
