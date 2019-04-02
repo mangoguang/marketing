@@ -6,9 +6,9 @@
       <span v-show="headerStatus[2].status">{{dealResultTit}}</span>
     </Header>
     <!-- 客户列表 -->
-    <CustomerList v-show="headerStatus[0].status"/>
-    <EnquiryOrder @changeResultTit="changeOrderResultTit" v-show=" headerStatus[1].status"/>
-    <DealCustomerList @changeResultTit="changeDealResultTit" v-show=" headerStatus[2].status"/>
+    <CustomerList v-show="headerStatus[0].status" class="CustomerList1"/>
+    <EnquiryOrder @changeResultTit="changeOrderResultTit" v-show=" headerStatus[1].status" class="CustomerList"/>
+    <DealCustomerList @changeResultTit="changeDealResultTit" v-show=" headerStatus[2].status" class="CustomerList"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
     <RightTimeSelect v-show='rightTimeSelect'/>
@@ -96,5 +96,11 @@ export default {
   box-sizing: border-box;
   // overflow: scroll;
   background-color: #f8f8f8;
+  .CustomerList1 {
+    margin-top: 19vw;
+  }
+  .CustomerList {
+    margin-top: 22vw;
+  }
 }
 </style>

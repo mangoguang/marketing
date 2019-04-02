@@ -1,6 +1,6 @@
 import mango from '../../../js'
 const state = {
-  headerStatus: mango.btnList(['我的客户', '订单查询', '成交客户'], 0),
+  headerStatus: mango.btnList(['意向客户', '成交客户', '战败客户'], 0),
   searchKey: ''
 }
 

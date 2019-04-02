@@ -15,7 +15,6 @@
         <!-- <button @click="searchCustomer">搜索</button> -->
         </form>
       </div>
-
       <!-- 模块选择 -->
       <ul :style="{display: !navShow ? 'none' : 'flex'}">
         <li v-for="(item, index) in headerStatus"
@@ -224,7 +223,7 @@ export default {
     },
     // 选择页面模块
     moduleSelect(i) {
-      this.setHeaderStatus(mango.btnList(['我的客户', '订单查询', '成交客户'], i))
+      this.setHeaderStatus(mango.btnList(['意向客户', '成交客户', '战败客户'], i))
     },
     // ajax请求客户列表
     getCustomerList() {
@@ -267,7 +266,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/common.scss";
 header{
-  height: 46.66vw;
+  // height: 46.66vw;
   background-image: linear-gradient(32deg, 
 		#007aff 0%, 
 		#5ac8fa 100%);
@@ -278,19 +277,21 @@ header{
   left: 0;
   width: 100vw;
   box-sizing: border-box;
-  padding: 0 4.266vw;
+  padding: 1vw 4.266vw;
   // background: #fff;
   z-index: 100;
   box-sizing: border-box;
   &>div{
     // height: 9vw;
     button{
-      font-size: 14px;
+      font-size: 4.26vw;
       color: #fff;
+      text-align: center;
     }
     button:first-child{
       padding-left: 0;
       color: #fff;
+      // font-size: 4.8vw;
     }
   }
   .top{
@@ -301,17 +302,24 @@ header{
       align-items: center;
       justify-content: space-around;
       h1 {
-        font-size: 6vw;
+        font-size: 8vw;
         color: #fff;
         font-weight: bold;
       } 
     }
     ul{
       display: flex;
+      margin-top: 3.26vw;
+      justify-content: center;
+      margin-bottom: 3.26vw;
+      li {
+        margin-left: 7.73vw;
+        text-align: center;
+      }
     }
     &>div{
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       &>button{
         height: 9vw;
         padding: 0 4.5vw;
@@ -370,9 +378,9 @@ header{
     button.on{
       font-size: 4.8vw;
       color: #fff;
-      // border-bottom:2px solid #fff;
-      // border-radius: 2px;
-      opacity: 1;
+      border-bottom: .8vw solid #fff;
+      border-radius: .26vw;
+      opacity: 0.8;
       .topBarimg{
         width: 3vw;
         // height: 3.6vw;
