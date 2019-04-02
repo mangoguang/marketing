@@ -3,7 +3,8 @@
     <Header/>
     <ul>
       <li v-for = "(item,index) in ListItem" :key='index' @click="routeTo(index)">
-        <span>{{item}}</span>
+        <span v-if="index!==3">{{item}}</span>
+        <div v-else class="version"><span>{{item}}</span><span style="color:#666">版本&nbsp;1.0.1</span></div>
         <div class="icon-right">
           <img src="../../assets/imgs/rightside.png" alt="">
         </div>
@@ -33,8 +34,11 @@ export default {
   data(){
     return{
       text:'退出账号',
-      ListItem: [
+      /* ListItem: [
         '关于我','组织架构','功勋榜','日报','我的收藏'
+      ] */
+      ListItem: [
+        '我的收藏','意见反馈','账户安全','关于我们'
       ]
     }
   },
@@ -78,19 +82,16 @@ export default {
       switch (index)
       {
         case 0 :
-        console.log(index)
+        this.$router.push({path: '/collectList'});
         break;
         case 1 :
-        console.log(index)
+        console.log(index,'意见反馈')
         break;
         case 2 :
-        console.log(index)
+        console.log(index,'账户安全')
         break;
         case 3 :
-        this.$router.push({path: '/dailyPaper'});
-        break;
-        case 4 :
-        this.$router.push({path: '/collectList'});
+        this.$router.push({path: '/aboutUs'});
         break;
         default:
         return
@@ -122,12 +123,20 @@ export default {
     color: #363636;
     margin-bottom: 8.13vw;
     background: #fff;
+    border-bottom: 1px solid #CCC;
     li{
       border-bottom: 1px solid #e1e1e1;
       height: 12vw;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      .version{
+        flex:1;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
       .icon-right{
         padding: 0 4.53vw;
         img{
@@ -135,6 +144,9 @@ export default {
           height: 3.06vw;
         }
       }
+    }
+    li:last-child{
+        border:none;
     }
   
   }

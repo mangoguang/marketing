@@ -19,7 +19,7 @@ export default {
 .btn{
   width: 84.26vw;
   height: 13.73vw;
-  background-color: #040404;
+  background-color: #007AFF;
   border-radius: 0.53vw;
   font-family: "MicrosoftYaHei";
   font-size: 4.8vw;
