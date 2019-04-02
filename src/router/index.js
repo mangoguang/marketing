@@ -139,6 +139,10 @@ export var router = new VueRouter({
     path: '/aboutUs',
     name: '/aboutUs',
     component: resolve => require(['../pages/aboutUs'],resolve)
+  },{
+    path: '/safe',
+    name: '/safe',
+    component: resolve => require(['../pages/safe'],resolve)
   },
   //金管家模块-我的收藏
   {

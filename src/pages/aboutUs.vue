@@ -28,7 +28,7 @@ export default {
       mybanner
   },
   mounted(){
-    document.getElementById("app").style.backgroundColor="#f8f8f8";
+   
   },
   methods:{
     

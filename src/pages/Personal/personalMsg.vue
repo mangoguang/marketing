@@ -88,7 +88,7 @@ export default {
         console.log(index,'意见反馈')
         break;
         case 2 :
-        console.log(index,'账户安全')
+        this.$router.push({path: '/safe'});
         break;
         case 3 :
         this.$router.push({path: '/aboutUs'});
