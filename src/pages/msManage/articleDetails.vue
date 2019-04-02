@@ -126,10 +126,6 @@ export default {
       color: #363636;
       font-size: 3.73vw;
     }
-    .img {
-      width: 91.48vw;
-      height: auto;
-    }
   }
 }
 </style>

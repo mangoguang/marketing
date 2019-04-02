@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 .topArt {
   width: 100vw;
-  margin-bottom: 20vw;
+  // margin-bottom: 20vw;
   .title {
     width: 26.66vw;
     margin: 0 auto;

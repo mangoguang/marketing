@@ -216,6 +216,11 @@ export var router = new VueRouter({
     path: '/share',
     name: 'share',
     component: resolve => require(['../pages/Gallery/share'],resolve)
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: resolve => require(['../pages/home/index'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {

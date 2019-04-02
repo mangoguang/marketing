@@ -2,6 +2,20 @@
 <template>
   <header class="header" :style="{'padding-top': `${top}vw`}">
     <div class="top">
+       <!-- 搜索组件 -->
+      <div class="search">
+        <h1>客户</h1>
+        <!-- <button @click="showNav(headerStatus)">返回</button> -->
+        <form action='' @submit.prevent>
+          <input ref="inpComp" class="input"
+              v-model="searchKey" 
+              type="search" 
+              placeholder="请输入姓名或电话"
+              @keypress="search">
+        <!-- <button @click="searchCustomer">搜索</button> -->
+        </form>
+      </div>
+
       <!-- 模块选择 -->
       <ul :style="{display: !navShow ? 'none' : 'flex'}">
         <li v-for="(item, index) in headerStatus"
@@ -16,17 +30,9 @@
           <!-- <img src="../../assets/imgs/customer-icon.png" class="topBarimg"> -->
           {{item.name}}
           </button>
-          <button class="search" @click="showNav"></button>
+          <!-- <button class="search" @click="showNav"></button> -->
         </li>
       </ul>
-      <!-- 搜索组件 -->
-      <div :style="{display: navShow ? 'none' : 'flex'}">
-        <button @click="showNav(headerStatus)">返回</button>
-        <div>
-          <input v-model="searchKey" type="text" placeholder="请输入姓名或电话">
-          <button @click="searchCustomer">搜索</button>
-        </div>
-      </div>
     </div>
     <div class="bot-select" v-show="headerStatus[0].status">
       <button @click="showCustomerClassify">{{selectBtnText}}</button>
@@ -135,6 +141,14 @@ export default {
       'setRightTimeSelect',
       'setRightHeadTitle'
     ]),
+    //搜索
+    search(event) {
+      if (event.keyCode == 13) { //如果按的是enter键 13是enter 
+        event.preventDefault(); //禁止默认事件（默认是换行） 
+        // this.$refs.inpComp.blur()
+        this.searchCustomer()
+      }
+    },
     //订单查询成交客户的侧标栏
     showRightTimeSelect() {
       this.setRightTimeSelect(true)
@@ -158,9 +172,9 @@ export default {
       }
     },
     // 显示导航
-    showNav(status) {
-      this.navShow = !this.navShow
-    },
+    // showNav(status) {
+    //   this.navShow = !this.navShow
+    // },
     // 选择客户类型
     customerClassifySelect(i) {
       this.ifShow = 'hide'
@@ -253,6 +267,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/common.scss";
 header{
+  height: 46.66vw;
   background-image: linear-gradient(32deg, 
 		#007aff 0%, 
 		#5ac8fa 100%);
@@ -268,7 +283,7 @@ header{
   z-index: 100;
   box-sizing: border-box;
   &>div{
-    height: 9vw;
+    // height: 9vw;
     button{
       font-size: 14px;
       color: #fff;
@@ -281,6 +296,16 @@ header{
   .top{
     margin-top: 5vw;
     position: relative;
+    .search {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      h1 {
+        font-size: 6vw;
+        color: #fff;
+        font-weight: bold;
+      } 
+    }
     ul{
       display: flex;
     }
@@ -293,22 +318,25 @@ header{
         border-radius: 4.5vw;
         background: #5ac8fa;
       }
-      div{
-        // background: $btnCol;
-        font-size: 0;
-        input, button{
-          display: inline-block;
-          height: 9vw;
-        }
-        input{
+      // div{
+      //   // background: $btnCol;
+      //   font-size: 0;
+      //   input, button{
+      //     display: inline-block;
+      //     height: 9vw;
+      //   }
+        .input{
           color: #fff;
-          width: 45vw;
+          width: 65.33vw;
+          line-height: 8vw;
           background: url('../../assets/imgs/search.png') no-repeat center;
           background-size: 3vw 3vw;
           background-position: $btnHeight/2 center;
           padding-left: $btnHeight;
           border-top-left-radius: $btnHeight/2;
           border-bottom-left-radius: $btnHeight/2;
+          border-top-right-radius: $btnHeight/2;
+          border-bottom-right-radius: $btnHeight/2;
           font-size: 14px;
           background-color: rgba(255, 255, 255, .2);
         }
@@ -328,7 +356,7 @@ header{
           border-top-right-radius: $btnHeight/2;
           border-bottom-right-radius: $btnHeight/2;
         }
-      }
+      // }
     }
     button.search{
       position: absolute;
@@ -340,7 +368,7 @@ header{
       background-size: 5vw 5vw;
     }
     button.on{
-      font-size: 20px;
+      font-size: 4.8vw;
       color: #fff;
       // border-bottom:2px solid #fff;
       // border-radius: 2px;
