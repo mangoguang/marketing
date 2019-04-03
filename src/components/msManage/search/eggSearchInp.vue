@@ -76,6 +76,12 @@ export default {
     },
     //如果是首页点击进入搜索页面
     toSearch() {
+      let classify
+      if(this.$route.query.classify) {
+        classify = this.$route.query.classify
+      }else {
+        classify = ''
+      }
       if(this.origin) {
         if(this.type === 'gallery') {
           this.$router.push({
@@ -83,7 +89,10 @@ export default {
           })
         }else {
           this.$router.push({
-            path: '/search',query: {type: this.type, classify: this.$route.query.classify}
+            path: '/search',
+            query: {
+              type: this.type + classify,
+              classify: classify}
           }) //type判断是首页还是常见问题
         }
       }

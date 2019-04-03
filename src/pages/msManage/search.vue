@@ -177,8 +177,8 @@ export default {
     showHistory() {
       if(this.searchType == 'question') {
         this.judgeHistory('question')
-      }else if(this.searchType == 'msIndex') {
-        this.judgeHistory('msIndex')
+      }else if(this.searchType == 'msIndex' + this.$route.query.classify) {
+        this.judgeHistory(this.searchType)
       }
     },
     //判断有没有历史记录
@@ -194,7 +194,7 @@ export default {
       if(id) {
         this.historyTxt = this.searchVal
         setTimeout(() => {
-          if(this.searchType == 'msIndex') {
+          if(this.searchType == 'msIndex' + this.$route.query.classify) {
             skipNewPage(this.$router, '/articleDetails', {'articleId': id, type: 'article'})
           }else {
             skipNewPage(this.$router, '/questionDetail', {'id': id, type: 'question'})
