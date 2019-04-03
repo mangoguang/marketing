@@ -28,7 +28,8 @@ class IndexModel extends Request {
     return this.getData({
       url: '/api/train/repository/v1/category',
       params: {
-        // classify: 2
+        classify: 1,
+        level: 1
       }
     })
   }
