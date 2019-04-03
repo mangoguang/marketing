@@ -64,7 +64,6 @@ export default {
       key: true,
       changeStatus: false,
       list: [],
-      ajaxData: {},
       init: false,
       obj:{
         category: '',
@@ -135,9 +134,7 @@ export default {
     }
   },
   created() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
-    this.$set(this.obj, 'account', this.ajaxData.account)
+    this.$set(this.obj, 'account', this._localAjax().account)
     this.initBrand()
     this.initGetData()
   },
@@ -235,7 +232,7 @@ export default {
     initParmas() {
       this.setProductScroll(0);
       this.initAllCategoryScroll([])
-      this.obj.account = this.ajaxData.account
+      this.obj.account = this._localAjax().account
       this.obj.category = this.$route.query.categoryName
       this.initBrand()
       this.setParmas(this.obj)

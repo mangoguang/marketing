@@ -43,17 +43,14 @@ export default {
     this.isIPhoneX()
   },
   methods:{
-    isIPhoneX : function(fn){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-          this.height = '54.4'
-          this.marginTop = '-5.86'
-        }else{
-          this.height = '49.26'
-        } 
-      }else{
+    isIPhoneX(){
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.height = '54.4'
+        this.marginTop = '-5.86'
+      }else if(phone === 'iphone') {
+        this.height = '49.26'
+      }else {
         this.height = '49.26'
       }
     }

@@ -25,13 +25,12 @@ export default {
     return {
       like: '',
       num: '',
-      ajaxData: {}
+      account: ''
     }
   },
   mounted() {
     this.setCollect()
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    this.account = this._localAjax().account
   },
   watch: {
     list() {
@@ -77,7 +76,7 @@ export default {
     getParmas() {
       let obj = {
         id :this.list.id,
-        account : this.ajaxData.account,
+        account : this.account,
         type : 3
       }
       return obj

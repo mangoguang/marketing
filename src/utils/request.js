@@ -4,6 +4,7 @@ import axios from 'axios'
 // let baseUrl = 'http://10.11.8.229'
 // let baseUrl = 'http://172.16.8.216'
 // let baseUrl = 'http://10.11.8.7'
+// let baseUrl = 'http://172.16.11.144'
 export {baseUrl}
 class Request {
   getData ({ url, params, method = 'GET' }) {
@@ -26,9 +27,15 @@ class Request {
         method: 'post',
         url: baseUrl + url,
         data: data,
+        transformRequest: [function(data) {
+          let ret = ''
+          for(let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
         headers: {
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-          "Content-Type": "multipart/form-data"
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then(res => {
         resolve(res)

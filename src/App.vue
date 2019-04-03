@@ -58,24 +58,18 @@ export default {
       // this.$router.go(+1);
     },
     //判断是否iphoneX
-    isIPhoneX: function(fn) {
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {
-        if (
-          (screen.height == 812 && screen.width == 375) ||
-          (screen.height == 896 && screen.width == 414)
-        ) {
-          this.padding = "5.86";
-          this.height = window.innerHeight - 44;
-          this.myStyle.fgPwdTop = "-6";
-          this.myStyle.loginFix = "fix";
-          this.myStyle.formOverFlow = "";
-        } else {
-          this.padding = "";
-          this.myStyle.formOverFlow = "hidden";
-        }
-      } else {
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.padding = "5.86";
+        this.height = window.innerHeight - 44;
+        this.myStyle.fgPwdTop = "-6";
+        this.myStyle.loginFix = "fix";
+        this.myStyle.formOverFlow = "";
+      }else if(phone === 'iphone') {
+        this.padding = "";
+        this.myStyle.formOverFlow = "hidden";
+      }else {
         this.myStyle.formOverFlow = "hidden";
       }
     }
@@ -93,6 +87,9 @@ $bgcolor: #31c3b0;
 //   font-family: PINGPANG;
 //   src: url("./assets/font/pingfang.ttf");
 // }
+#app {
+  box-sizing: border-box;
+}
 body {
   background: #fff;
   // font-family: PINGFANG;

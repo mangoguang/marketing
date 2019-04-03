@@ -72,7 +72,8 @@ import tipsError from "../components/charts/tipsError";
 import tipsWeb from "../components/charts/tipsWeb";
 import btn from "../components/btn";
 import myinput from "../components/myInput";
-
+import {IndexModel} from '../utils/index'
+const indexModel = new IndexModel()
 export default {
   name: "login",
   components: {
@@ -122,10 +123,10 @@ export default {
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
     submitForm(formName) {
       let _this = this;
-
       if (_this.key) {
         //如果请求失败，只可以请求一次
         _this.key = false;
+        
         getApi();
         _this.display = "none";
         _this.display1 = "none";
@@ -135,8 +136,18 @@ export default {
         mango.loading('open')
         var Name = _this.inputValue1
         var Pwd = _this.inputValue2 
+        // let asToken,reToken,saveTime
+        // indexModel.getToken(Name,md5(Pwd)).then(res => {
+        //   if(res.data) {
+        //     asToken = res.data.access_token
+        //     reToken = res.data.refresh_token
+        //     saveTime = res.data.expires_in
+        //     localStorage.setItem("loginData", JSON.stringify(res.data));
+        //   }
+        // })
         const url = `${mango.port}app/login.api`
       // return new Promise((resolve, reject) => {
+      // if(asToken) {
       axios({
         method: 'post',
         url: url,
@@ -148,6 +159,7 @@ export default {
           // account: '18080028',
           account:Name,
           password: md5(Pwd)
+          // access_token: asToken
         }
       })
         .then((res) => {
@@ -190,7 +202,7 @@ export default {
                 } else {
                   _this.setAccountMsg("", "");
                 }
-                _this.$router.push({ path: "/" });
+                _this.$router.push({ path: "/personal" });
               }
             } else {
               //状态不为200，请求失败
@@ -203,6 +215,7 @@ export default {
             _this.display1 = "block";
             _this.key = true;
           });
+        // }
       }
     },
     setAccountMsg(uname, upwd) {

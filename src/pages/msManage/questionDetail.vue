@@ -30,8 +30,8 @@ export default {
       collection: false,
       questionId: '',
       myhtml: '',
-      ajaxData: {},
-      top: ''
+      top: '',
+      account: ''
     }
   },
   computed: {
@@ -40,8 +40,7 @@ export default {
     })
   },
   created() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    this.account = this._localAjax().account
     this.questionId = this.$route.query.id
     this.getQuestionDetail(this.questionId)
     this.isIPhoneX()
@@ -51,8 +50,7 @@ export default {
   methods: {
     getQuestionDetail(id) {
       // axios获取问题详情内容
-      const account = this.ajaxData.account
-      indexModel.questionDetail(id, account).then(res => {
+      indexModel.questionDetail(id, this.account).then(res => {
         if(res.data) {
           this.questionData = res.data
           if(res.data.remark) {
@@ -65,18 +63,15 @@ export default {
     },
       //收藏
     collect() {
-      let account = this.ajaxData.account
-      console.log('ajaxdata',this.ajaxData)
       let id = this.questionId
-      indexModel.collect(2, id, account).then(res => {
+      indexModel.collect(2, id, this.account).then(res => {
         console.log('collect')
       })
     },
     //取消收藏
     cancelCollect() {
-      let account = this.ajaxData.account
       let id = this.questionId
-      indexModel.remove(2, id, account).then(res => {
+      indexModel.remove(2, id, this.account).then(res => {
         console.log('canclecollect')
       })
     },
@@ -93,15 +88,12 @@ export default {
     },
     //收藏的样式
      isIPhoneX (){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-          this.top = '11vw'
-        }else{
-          this.top = '6vw'
-        } 
-      }else{
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.top = '11vw'
+      }else if(phone === 'iphone') {
+        this.top = '6vw'
+      }else {
         this.top = '6vw'
       }
     }

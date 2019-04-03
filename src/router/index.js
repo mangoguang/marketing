@@ -7,6 +7,10 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
+    path: '/',
+    name: 'index',
+    component: resolve => require(['../pages/index'], resolve)
+  },{
     path: '/ReportForms',
     name: 'ReportForms',
     component: resolve => require(['../pages/ReportForms'], resolve)
@@ -118,7 +122,7 @@ export var router = new VueRouter({
   },
   /****个人模块****/
   {
-    path: '/',
+    path: '/personal',
     name: '/Personal',
     component: resolve => require(['../pages/Personal/personalMsg'],resolve)
   },
@@ -229,6 +233,11 @@ export var router = new VueRouter({
     path: '/share',
     name: 'share',
     component: resolve => require(['../pages/Gallery/share'],resolve)
+  },
+  {
+    path: '/home',
+    name: 'home',
+    component: resolve => require(['../pages/home/index'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {

@@ -1,5 +1,6 @@
 <template>
   <div class="index">
+    <banner :title='"图库"'/>
     <div class="top-bar">
       <scan/>
       <Search :origin="true" :type="'gallery'" class="search"/>
@@ -18,6 +19,7 @@
 
 <script>
 import {mapMutations} from 'vuex'
+import banner from '../../components/banner'
 import Search from "../../components/msManage/search/eggSearchInp";
 import Scan from "../../components/Gallery/index/scan";
 import LeftNav from "../../components/Gallery/index/leftNav";
@@ -29,7 +31,8 @@ export default {
     Scan,
     LeftNav,
     RightContent,
-    TopNav
+    TopNav,
+    banner
   },
   data() {
     return {
@@ -58,6 +61,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 16vw;
     .search {
       width: 76.66vw;
     }

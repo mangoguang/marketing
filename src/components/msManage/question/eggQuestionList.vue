@@ -194,6 +194,7 @@ export default {
         {list: list}
       ]
       this.setMsManageList(data)
+      this.hasData()
     }
   }
 }

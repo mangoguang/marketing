@@ -1,22 +1,21 @@
 <template>
   <div class="productDetails" :style="{'marginTop':`${marginTop}vw`}">
     <div class="prodect">
-      <product :imgList='productList.goodsImageList'/>
+      <product :imgList="productList.goodsImageList"/>
     </div>
     <div class="content">
-      <productContent :list='productList'/>
+      <productContent :list="productList"/>
     </div>
-    <div class="details" v-html="myhtml">
-    </div>
+    <div class="details" v-html="myhtml"></div>
   </div>
 </template>
 
 <script>
-import {IndexModel} from '../../utils/index'
-const indexModel = new IndexModel()
-import { b64DecodeUnicode, changeGalleryStyle } from '../../utils/msManage'
-import product from '../../components/Gallery/productDetails/product'
-import productContent from '../../components/Gallery/productDetails/productContent'
+import { IndexModel } from "../../utils/index";
+const indexModel = new IndexModel();
+import { b64DecodeUnicode, changeGalleryStyle } from "../../utils/msManage";
+import product from "../../components/Gallery/productDetails/product";
+import productContent from "../../components/Gallery/productDetails/productContent";
 export default {
   components: {
     product,
@@ -24,45 +23,39 @@ export default {
   },
   data() {
     return {
-      ajaxData: {},
-      myhtml: '',
+      myhtml: "",
       productList: {},
-      marginTop: ''
-    }
+      marginTop: ""
+    };
   },
   created() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
-    this.getProductList()
-    this.isIPhoneX()
+    this.getProductList();
+    this.isIPhoneX();
   },
   methods: {
     getProductList() {
-      let id = this.$route.query.id
-      let account = this.ajaxData.account
+      let id = this.$route.query.id;
+      let account = this._localAjax().account
       indexModel.productList(id, account).then(res => {
-        if(res.data) {
-          let temp = res.data.details
-          this.myhtml = changeGalleryStyle(b64DecodeUnicode(temp))
-          this.productList = res.data
+        if (res.data) {
+          let temp = res.data.details;
+          this.myhtml = changeGalleryStyle(b64DecodeUnicode(temp));
+          this.productList = res.data;
         }
-      })
+      });
     },
-     isIPhoneX : function(fn){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-          this.marginTop = '-6'
-        }else{
-          this.marginTop = '0'
-        } 
-      }else{
-        this.marginTop = '0'
+    isIPhoneX() {
+      let phone = this.phoneSize();
+      if (phone === "iphonex") {
+        this.marginTop = "-6";
+      } else if (phone === "iphone") {
+        this.marginTop = "0";
+      } else {
+        this.marginTop = "0";
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

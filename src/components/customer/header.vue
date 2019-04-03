@@ -2,6 +2,19 @@
 <template>
   <header class="header" :style="{'padding-top': `${top}vw`}">
     <div class="top">
+       <!-- 搜索组件 -->
+      <div class="search">
+        <h1>客户</h1>
+        <!-- <button @click="showNav(headerStatus)">返回</button> -->
+        <form action='' @submit.prevent>
+          <input ref="inpComp" class="input"
+              v-model="searchKey" 
+              type="search" 
+              placeholder="请输入姓名或电话"
+              @keypress="search">
+        <!-- <button @click="searchCustomer">搜索</button> -->
+        </form>
+      </div>
       <!-- 模块选择 -->
       <ul :style="{display: !navShow ? 'none' : 'flex'}">
         <li v-for="(item, index) in headerStatus"
@@ -16,17 +29,9 @@
           <!-- <img src="../../assets/imgs/customer-icon.png" class="topBarimg"> -->
           {{item.name}}
           </button>
-          <button class="search" @click="showNav"></button>
+          <!-- <button class="search" @click="showNav"></button> -->
         </li>
       </ul>
-      <!-- 搜索组件 -->
-      <div :style="{display: navShow ? 'none' : 'flex'}">
-        <button @click="showNav(headerStatus)">返回</button>
-        <div>
-          <input v-model="searchKey" type="text" placeholder="请输入姓名或电话">
-          <button @click="searchCustomer">搜索</button>
-        </div>
-      </div>
     </div>
     <div class="bot-select" v-show="headerStatus[0].status">
       <button @click="showCustomerClassify">{{selectBtnText}}</button>
@@ -135,6 +140,14 @@ export default {
       'setRightTimeSelect',
       'setRightHeadTitle'
     ]),
+    //搜索
+    search(event) {
+      if (event.keyCode == 13) { //如果按的是enter键 13是enter 
+        event.preventDefault(); //禁止默认事件（默认是换行） 
+        // this.$refs.inpComp.blur()
+        this.searchCustomer()
+      }
+    },
     //订单查询成交客户的侧标栏
     showRightTimeSelect() {
       this.setRightTimeSelect(true)
@@ -158,9 +171,9 @@ export default {
       }
     },
     // 显示导航
-    showNav(status) {
-      this.navShow = !this.navShow
-    },
+    // showNav(status) {
+    //   this.navShow = !this.navShow
+    // },
     // 选择客户类型
     customerClassifySelect(i) {
       this.ifShow = 'hide'
@@ -210,7 +223,7 @@ export default {
     },
     // 选择页面模块
     moduleSelect(i) {
-      this.setHeaderStatus(mango.btnList(['我的客户', '订单查询', '成交客户'], i))
+      this.setHeaderStatus(mango.btnList(['意向客户', '成交客户', '战败客户'], i))
     },
     // ajax请求客户列表
     getCustomerList() {
@@ -253,6 +266,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/common.scss";
 header{
+  // height: 46.66vw;
   background-image: linear-gradient(32deg, 
 		#007aff 0%, 
 		#5ac8fa 100%);
@@ -263,52 +277,74 @@ header{
   left: 0;
   width: 100vw;
   box-sizing: border-box;
-  padding: 0 4.266vw;
+  padding: 1vw 4.266vw;
   // background: #fff;
   z-index: 100;
   box-sizing: border-box;
   &>div{
-    height: 9vw;
+    // height: 9vw;
     button{
-      font-size: 14px;
+      font-size: 4.26vw;
       color: #fff;
+      text-align: center;
     }
     button:first-child{
       padding-left: 0;
       color: #fff;
+      // font-size: 4.8vw;
     }
   }
   .top{
     margin-top: 5vw;
     position: relative;
+    .search {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      h1 {
+        font-size: 8vw;
+        color: #fff;
+        font-weight: bold;
+      } 
+    }
     ul{
       display: flex;
+      margin-top: 3.26vw;
+      justify-content: center;
+      margin-bottom: 3.26vw;
+      li {
+        margin-left: 7.73vw;
+        text-align: center;
+      }
     }
     &>div{
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       &>button{
         height: 9vw;
         padding: 0 4.5vw;
         border-radius: 4.5vw;
         background: #5ac8fa;
       }
-      div{
-        // background: $btnCol;
-        font-size: 0;
-        input, button{
-          display: inline-block;
-          height: 9vw;
-        }
-        input{
+      // div{
+      //   // background: $btnCol;
+      //   font-size: 0;
+      //   input, button{
+      //     display: inline-block;
+      //     height: 9vw;
+      //   }
+        .input{
           color: #fff;
-          width: 45vw;
+          width: 65.33vw;
+          line-height: 8vw;
           background: url('../../assets/imgs/search.png') no-repeat center;
           background-size: 3vw 3vw;
           background-position: $btnHeight/2 center;
           padding-left: $btnHeight;
           border-top-left-radius: $btnHeight/2;
           border-bottom-left-radius: $btnHeight/2;
+          border-top-right-radius: $btnHeight/2;
+          border-bottom-right-radius: $btnHeight/2;
           font-size: 14px;
           background-color: rgba(255, 255, 255, .2);
         }
@@ -328,7 +364,7 @@ header{
           border-top-right-radius: $btnHeight/2;
           border-bottom-right-radius: $btnHeight/2;
         }
-      }
+      // }
     }
     button.search{
       position: absolute;
@@ -340,11 +376,11 @@ header{
       background-size: 5vw 5vw;
     }
     button.on{
-      font-size: 20px;
+      font-size: 4.8vw;
       color: #fff;
-      // border-bottom:2px solid #fff;
-      // border-radius: 2px;
-      opacity: 1;
+      border-bottom: .8vw solid #fff;
+      border-radius: .26vw;
+      opacity: 0.8;
       .topBarimg{
         width: 3vw;
         // height: 3.6vw;

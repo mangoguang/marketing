@@ -2,12 +2,43 @@ import { Request } from './request'
 
 
 class IndexModel extends Request {
+  //获取令牌
+  getToken(account,password) {
+    return this.getPostData({
+      url: '/oauth/token',
+      data: {
+        grant_type:'password',        //固定填 password
+        username: account,   //登录账号
+        password: password    //MD5(密码)
+      }
+    })
+  }
+  //刷新令牌
+  refeshToken(reToken) {
+    return this.getPostData({
+      url: '/oauth/token',
+      data: {
+        grant_type:'refresh_token',  
+        refresh_token: reToken
+      }
+    })
+  }
   // 获取首页一级分类列表
   getCategory1List() {
     return this.getData({
       url: '/api/train/repository/v1/category',
       params: {
         // classify: 2
+      }
+    })
+  }
+  //知识库首页置顶文章接口
+  getTopArt(account) {
+    return this.getData({
+      url: '/api/train/repository/v1/getTopRepository',
+      params: {
+        classify: 1,
+        account: account
       }
     })
   }

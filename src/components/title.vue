@@ -1,15 +1,10 @@
-<!-- <keep-alive> -->
 <template>
   <div class="banner" :style="{'margin-top':`${top}vw`}">
     <div :class="`${fix}`"></div>
-    <div class="icon-back" @click='cilck'>
-      <div class="icon"></div>
-    </div>
     <span>{{title}}</span>
     <slot></slot>
   </div>
 </template>
-<!-- </keep-alive> -->
 
 <script>
 import Vue from 'vue'
@@ -27,9 +22,6 @@ export default {
     this.isIPhoneX()
   },
   methods:{
-    cilck:function(){
-      this.$router.back(-1)
-    },
     isIPhoneX : function(fn){
       var u = navigator.userAgent;
       var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -37,9 +29,7 @@ export default {
         if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
           this.fix = 'fix'
           this.top = '6'
-        }else{
-          
-        } 
+        }
       }
     }
   }
@@ -60,7 +50,7 @@ export default {
   top: 0;
   left: 0;
   align-items: center;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #aaa;
   background: #f8f8f8;
   padding-top: 5vw;
   .fix{
@@ -87,20 +77,10 @@ export default {
   span{
     width: 100%;
     text-align: center;
-    padding-right: 7.86vw;
+    // padding-right: 7.86vw;
     font-size: 5.06vw;
     letter-spacing: -1px;
     color: #363636;
-  }
-  button{
-    position: absolute;
-    right: 0;
-    font-size: 14px;
-    line-height: 11vw;
-    width: 25vw;
-    padding: 0 5vw;
-    text-align: right;
-    color: #007aff;
   }
 }
 </style>

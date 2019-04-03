@@ -39,13 +39,16 @@ export default {
       ] */
       ListItem: [
         '我的收藏','意见反馈','账户安全','关于我们','日报'
-      ]
+      ],
+      key: true
     }
   },
   created(){
+    // if(this.key) {
+    //   this.setTime()
+    // }
     this.checkLogin()
   //  console.log(this.forms[0].text)
-
   //到时候放在初始页面
     localStorage.removeItem('limit');  
     localStorage.removeItem('selectLimit');  
@@ -62,6 +65,21 @@ export default {
       'setDealScroll',
       'setIsSelectStatus'
     ]),
+    //判断token过期时间，设置定时器
+    setTime() {
+      this.key = false
+      let count = 0
+      let time = JSON.parse(localStorage.getItem('loginData')).expires_in
+      let timer = setInterval(() => {
+        count ++;
+        console.log(123,count)
+        if(count === time) {
+          clearInterval(timer)
+          this.key = true
+        }
+      }, 1000);
+    },
+    //缓存时间
     checkLogin() {
       let ajaxData = localStorage.getItem('ajaxData')
       // console.log(Date.parse(new Date()) - timeLong)

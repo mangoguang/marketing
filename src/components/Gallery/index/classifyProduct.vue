@@ -85,9 +85,15 @@ export default {
       box-sizing: border-box;
       padding-bottom: 4vw;
       .img {
-        width: 21.33vw;
-        height: 21.33vw;
+        img {
+          width: 21.33vw;
+          height: 21.33vw;
+        }
         // border: 1px solid #e1e1e1;
+        img{
+          width: 100%;
+          height: 100%;
+        }
       }
     }
     li:nth-child(3n+0) {

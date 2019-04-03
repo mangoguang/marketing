@@ -84,17 +84,14 @@ export default {
       }
     },
     isIPhoneX (){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-          this.paddingTop = '20'
-          this.top = '34'
-        }else{
-          this.paddingTop = '14'
-          this.top = '28'
-        } 
-      }else{
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.paddingTop = '20'
+        this.top = '34'
+      }else if(phone === 'iphone') {
+        this.paddingTop = '14'
+        this.top = '28'
+      }else {
         this.paddingTop = '14'
         this.top = '28'
       }

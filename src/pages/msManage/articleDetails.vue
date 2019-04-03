@@ -30,14 +30,13 @@ export default {
       collection: false,
       myhtml: '',
       articleDetails: '',
-      ajaxData: {},
-      top: ''
+      top: '',
+      account: ''
     }
   },
   created() {
     this.articleId = this.$route.query.articleId
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    this.account = this._localAjax().account
     this.getArticleDetail()
     this.isIPhoneX()
   },
@@ -45,8 +44,7 @@ export default {
     //获取文章详情
     getArticleDetail() {
       const id = this.articleId
-      const account = this.ajaxData.account
-      indexModel.getArticleDetail(id, account).then(res => {
+      indexModel.getArticleDetail(id, this.account).then(res => {
         this.articleDetails = res.data
         if(res.data.remark) {
           let temp = res.data.remark
@@ -57,17 +55,15 @@ export default {
     },
     //收藏
     collect() {
-      let account = this.ajaxData.account
       let id = this.articleId
-      indexModel.collect(1, id, account).then(res => {
+      indexModel.collect(1, id, this.account).then(res => {
         console.log('res')
       })
     },
     //取消收藏
     cancelCollect() {
-      let account = this.ajaxData.account
       let id = this.articleId
-      indexModel.remove(1, id, account).then(res => {
+      indexModel.remove(1, id, this.account).then(res => {
         console.log('canclecollect')
       })
     },
@@ -84,15 +80,12 @@ export default {
     },
     //收藏的样式
     isIPhoneX (){
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-      if (isIOS) {        
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
-          this.top = '11vw'
-        }else{
-          this.top = '6vw'
-        } 
-      }else{
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.top = '11vw'
+      }else if(phone === 'iphone') {
+        this.top = '6vw'
+      }else {
         this.top = '6vw'
       }
     }
@@ -132,10 +125,6 @@ export default {
     h2,p {
       color: #363636;
       font-size: 3.73vw;
-    }
-    .img {
-      width: 91.48vw;
-      height: auto;
     }
   }
 }

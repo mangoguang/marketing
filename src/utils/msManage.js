@@ -100,7 +100,7 @@ export {b64DecodeUnicode}
 //正则匹配html中的img，把img中alt换成style样式 //alt
 function changeImgStyle(html){
   var newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
-  var match = match.replace(/alt=\"(.*)\"/gi, 'style="width: 100%;height:auto"');
+  var match = match.replace(/title=\"(.*)\"/gi, 'style="width: 100%;height:auto"');
   return match;
   });
   return newContent;

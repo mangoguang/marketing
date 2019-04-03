@@ -11,7 +11,7 @@
           </div>
         </div>
         <div class="list_right">
-          <img :src="baseUrl + item.image" alt="" class="img">
+          <img :src="item.image" alt="" class="img">
         </div>
       </li>
     </mt-loadmore>
@@ -37,12 +37,12 @@ export default {
     return {
       allLoaded:false,
       list: [],
-      ajaxData: {},
       page: 1,
       limit: 5,
       typeId: '',
       key: false,
-      noData: false
+      noData: false,
+      account: ''
     }
   },
   computed: {
@@ -51,8 +51,8 @@ export default {
       listScroll: state => state.loadmore.listScroll,
       msManageList: state => state.loadmore.msManageList,
       artList: state => state.loadmore.artList,
-      listAllScroll: state => state.loadmore.listAllScroll,
-      baseUrl: state => state.treeList.baseUrl
+      listAllScroll: state => state.loadmore.listAllScroll
+      // baseUrl: state => state.treeList.baseUrl
     })
   },
   watch: {
@@ -84,8 +84,7 @@ export default {
     }
   },
   created() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    this.account = this._localAjax().account
   },
   mounted() {
     if(this.$route.query.type === 1) {
@@ -166,7 +165,7 @@ export default {
       let obj = this.getCategoriesId(1, 10)
       obj = this.setType(obj)
       indexModel.getArticles(obj).then(res => {
-        this.setBaseUrl(res.baseUrl)
+        // this.setBaseUrl(res.baseUrl)
         this.saveList(res.data)
         this.getInitList(res.data)
         this.listenScrollTop()
@@ -182,7 +181,7 @@ export default {
       indexModel.getArticles(obj).then(res => {
         if(res.data) {
           if(res.data.length) {
-            this.setBaseUrl(res.baseUrl)
+            // this.setBaseUrl(res.baseUrl)
             this.allLoaded = false
             this.list = this.artList.concat(res.data)
             this.saveList(this.list)
@@ -199,14 +198,13 @@ export default {
     //获取一二三级id参数
     getCategoriesId(page, limit){
       const categoryId = this.$route.query.id
-      const account = this.ajaxData.account
       let obj = {}
       if(this.parmas.name1 && !this.parmas.name2) {
         let subCateId = this.parmas.name1
         obj = {
           'categoryId': categoryId,
           'subCateId': subCateId,
-          'account': account,
+          'account': this.account,
           'page': page,
           'limit':limit
           }
@@ -217,14 +215,14 @@ export default {
           'categoryId': categoryId,
           'subCateId': subCateId,
           'subCate2Id': subCate2Id,
-          'account':account,
+          'account':this.account,
           'page': page,
           'limit':limit
           }
       }else {
         obj = {
           'categoryId': categoryId,
-          'account':account,
+          'account':this.account,
           'page': page,
           'limit':limit
         }
@@ -247,6 +245,7 @@ export default {
         {list: list}
       ]
       this.setMsManageList(data)
+      this.hasData()
     },
     //判断vuex是否已存储list
     hasList(id) {

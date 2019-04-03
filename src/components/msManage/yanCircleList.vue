@@ -36,6 +36,11 @@ export default {
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    // flex-wrap: wrap;
+    overflow: scroll;
+    li {
+      margin-right: 9vw;
+    }
     a{
       display: block;
       .circle{

@@ -44,8 +44,8 @@ export default {
       unMatchTxt: false,
       historyTxt: '',
       searchType: '',
-      ajaxData: {},
-      key: false
+      key: false,
+      account: ''
     }
   },
   computed: {
@@ -75,8 +75,7 @@ export default {
     this.searchType = this.$route.query.type
     this.compareTime(this.searchType)
     this.showHistory()
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    this.account = this._localAjax().account
   },
   mounted() {
     this.monitorInpub()
@@ -121,8 +120,7 @@ export default {
    },
    //文章搜索
    articleSearch(keyword) {
-     let account = this.ajaxData.account
-     indexModel.getArticleSearch(keyword, account).then(res => {
+     indexModel.getArticleSearch(keyword, this.account).then(res => {
        if(res.data) {
           //关键字高亮
         let list = res.data.splice(0,200) //截取前200条
@@ -138,8 +136,7 @@ export default {
    },
    //问题搜索
    QuestionSearch(keyword) {
-     let account = this.ajaxData.account
-     indexModel.getQuestionSearch(keyword, account).then(res => {
+     indexModel.getQuestionSearch(keyword, this.account).then(res => {
        if(res.data) {
         let list = res.data
         // let matchList  = fuzzyQuery(list, this.searchVal)
