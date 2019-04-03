@@ -6,9 +6,6 @@
         <span>头像</span>
         <div class="cell">
           <img src="../assets/imgs/avatar.png" alt="" class="avatar">
-          <div class="icon-right">
-            <img src="../assets/imgs/rightside.png" alt="">
-          </div>
         </div>
       </li>
        <li>

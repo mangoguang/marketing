@@ -144,6 +144,11 @@ export var router = new VueRouter({
     name: '/safe',
     component: resolve => require(['../pages/safe'],resolve)
   },
+  {
+    path: '/feedback',
+    name: '/feedback',
+    component: resolve => require(['../pages/Personal/feedback'],resolve)
+  },
   //金管家模块-我的收藏
   {
     path: '/collectList',
