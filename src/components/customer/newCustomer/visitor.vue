@@ -1,22 +1,22 @@
 <template>
   <div class="visitor">
     <ul>
-      <li is="customerLi" :leftText="'客户姓名'">
+      <!-- <li is="customerLi" :leftText="'客户姓名'">
         <input v-model="info.username" type="text" placeholder="无名氏">
-      </li>
+      </li> -->
       <!-- <li is="customerLi" :leftText="'客户性别'">
         <span @click="selectSex">{{info.sex || '男'}}</span>
       </li> -->
-      <li is="sexSelect" :sexVal="info.sex" @sexChange="sexChange"></li>
-      <li is="customerLi" :leftText="'意向产品'">
+      <!-- <li is="sexSelect" :sexVal="info.sex" @sexChange="sexChange"></li> -->
+      <!-- <li is="customerLi" :leftText="'意向产品'">
         <input v-model="info.demand" placeholder="填写客户意向产品" type="text">
-      </li>
+      </li> -->
       <li is="leaveStoreSelect" :leaveStoreVal="info.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
       <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true">
         <span @click="selectTime">{{info.leaveStore || '选择客户留店时间'}}</span>
       </li> -->
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
-        <span>{{turnDate(info.storeDate) || '请选择客户进店日期'}}</span>
+        <span>{{turnDate(info.storeDate) || Time}}</span>
       </li>
       <li is="shopSelect"  @shopChange="shopChange"></li>
       <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
@@ -29,7 +29,7 @@
         <!-- <h3>备注：</h3>
         <textarea name="" id="" cols="30" rows="10"></textarea> -->
       </li>
-      <my-range :title="'成交概率'" @changeVal="changeMyRangeVal" />
+      <!-- <my-range :title="'成交概率'" @changeVal="changeMyRangeVal" /> -->
       <!-- <li class="range">
         成交率
         <mt-range
@@ -103,7 +103,8 @@ export default {
       shopName: '',
       shopId: '',
       today: new Date(),
-      shops: []
+      shops: [],
+      Time: ''
     }
   },
   created() {
@@ -112,6 +113,7 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
+    this.Time = this.turnDate(mango.indexTimeB(this.today)[1])
   },
   computed: {
      ...mapState({
@@ -172,7 +174,7 @@ export default {
       this.setSexVal(val)
     },
     leaveStoreChange(val) {
-      console.log('sex改变了：', val)
+      // console.log('sex改变了：', val)
       this.setLeaveStoreVal(val)
       this.info.leaveStore = val
     },
@@ -237,7 +239,7 @@ export default {
       this.customerDemand.storeDate = mango.indexTimeB(value)[0]
     },
     changeMyRangeVal(val) {
-      console.log('mtrange:', val)
+      // console.log('mtrange:', val)
       this.info.percent = val
     },
     onValuesChange(picker, values) {

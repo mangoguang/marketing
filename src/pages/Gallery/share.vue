@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {baseUrl} from '../../utils/request'
+import {baseUrl} from '../../Request/request'
 import axios from "axios";
 import QRCode from "qrcodejs2";
 import html2canvas from "html2canvas";
