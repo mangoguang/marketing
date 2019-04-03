@@ -68,6 +68,7 @@ export default {
 
 <style lang="scss" scoped>
 .m-left {
+  margin-bottom: 48vw;
   li {
     font-size: 4vw;
     color: #363636;

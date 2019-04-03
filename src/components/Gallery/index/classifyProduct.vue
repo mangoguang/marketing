@@ -65,7 +65,7 @@ export default {
 <style lang="scss" scoped>
 .classifyProduct {
   padding: 4vw;
-  margin-bottom: 30vw;
+  margin-bottom: 45vw;
   h1 {
     font-size: 3.46vw;
     color: #666;
@@ -78,21 +78,19 @@ export default {
     text-align: center;
     padding-top: 4vw;
     li {
-      flex: 0.3;
+      width: 33%;
+      // flex: 0.3;
       color: #666;
       font-size: 3.2vw;
       padding-right: 1vw;
       box-sizing: border-box;
       padding-bottom: 4vw;
       .img {
+        width: 21.33vw;
+        height: 21.33vw;
         img {
           width: 21.33vw;
           height: 21.33vw;
-        }
-        // border: 1px solid #e1e1e1;
-        img{
-          width: 100%;
-          height: 100%;
         }
       }
     }
