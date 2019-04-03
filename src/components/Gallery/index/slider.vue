@@ -58,7 +58,7 @@ export default {
 //     }
 // }
 .mint-swipe-indicators {
-  right: 70%;
+  right: 66%;
     .mint-swipe-indicator {
       background: #363636;
       opacity: 0.6;
