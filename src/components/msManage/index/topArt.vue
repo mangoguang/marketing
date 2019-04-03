@@ -41,7 +41,8 @@ export default {
     },
     getData() {
       let account = this._localAjax().account
-      indexModel.getTopArt(account).then(res => {
+      let classify = this.$route.query.classify
+      indexModel.getTopArt(account, classify).then(res => {
         if(res.data) {
           this.list = res.data
         }

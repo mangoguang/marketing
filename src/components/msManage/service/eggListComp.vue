@@ -150,7 +150,8 @@ export default {
     },
     //区分金管家服务和学院
     setType(obj) {
-      this.typeId = this.$route.query.id
+      this.typeId = this.$route.query.classify
+      console.log(123,this.typeId)
       if(this.typeId) {
         if(this.typeId === '1') {
           this.$set(obj, 'classify', 1)

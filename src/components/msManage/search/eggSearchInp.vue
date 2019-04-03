@@ -83,7 +83,7 @@ export default {
           })
         }else {
           this.$router.push({
-            path: '/search',query: {type: this.type}
+            path: '/search',query: {type: this.type, classify: this.$route.query.classify}
           }) //type判断是首页还是常见问题
         }
       }

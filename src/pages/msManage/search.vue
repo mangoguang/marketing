@@ -120,7 +120,8 @@ export default {
    },
    //文章搜索
    articleSearch(keyword) {
-     indexModel.getArticleSearch(keyword, this.account).then(res => {
+     let classify = this.$route.query.classify
+     indexModel.getArticleSearch(keyword, this.account, classify).then(res => {
        if(res.data) {
           //关键字高亮
         let list = res.data.splice(0,200) //截取前200条

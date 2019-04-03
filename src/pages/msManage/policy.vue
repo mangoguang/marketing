@@ -37,7 +37,6 @@ export default {
       this.init()
     },
     list() {
-      console.log(this.list)
       this.initTop()
     }
   },
@@ -48,7 +47,8 @@ export default {
     this.isIPhoneX()
   },
   mounted() {
-    this.initTop()
+    // this.initTop()
+    this.init()
   },
   methods: {
     ...mapMutations(['setParmas']),
