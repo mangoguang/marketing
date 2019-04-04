@@ -16,7 +16,7 @@
         <span @click="selectTime">{{info.leaveStore || '选择客户留店时间'}}</span>
       </li> -->
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
-        <span>{{turnDate(info.storeDate) || Time}}</span>
+        <span :style="timeColor">{{turnDate(info.storeDate) || Time}}</span>
       </li>
       <li is="shopSelect"  @shopChange="shopChange"></li>
       <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
@@ -43,25 +43,25 @@
       </li> -->
       <li class="saveBtn"><big-btn :text="'保存'" @click.native="saveCustomerInfo"></big-btn></li>
     </ul>
-    <mt-popup 
-    class="picker"
-    position="bottom"
-    v-model="popupVisible">
-      <mt-picker
-      :slots="slots"
-      @change="onValuesChange"
-      ref="Picker"></mt-picker>
-    </mt-popup>
-      <mt-datetime-picker
-      ref="datePicker"
-      type="date"
-      v-model="today"
-      :startDate="new Date('1930-01-01')"
-      year-format="{value} 年"
-      month-format="{value} 月"
-      date-format="{value} 日"
-      @confirm="setStoreDate">
-    </mt-datetime-picker>
+      <mt-popup 
+      class="picker"
+      position="bottom"
+      v-model="popupVisible">
+        <mt-picker
+        :slots="slots"
+        @change="onValuesChange"
+        ref="Picker"></mt-picker>
+      </mt-popup>
+        <mt-datetime-picker
+        ref="datePicker"
+        type="date"
+        v-model="today"
+        :startDate="new Date('1930-01-01')"
+        year-format="{value} 年"
+        month-format="{value} 月"
+        date-format="{value} 日"
+        @confirm="setStoreDate">
+      </mt-datetime-picker>
   </div>
 </template>
 
@@ -104,7 +104,8 @@ export default {
       shopId: '',
       today: new Date(),
       shops: [],
-      Time: ''
+      Time: '',
+      timeColor: 'color: #999'
     }
   },
   created() {
@@ -140,6 +141,7 @@ export default {
       this.$refs.datePicker.open()
     },
     setStoreDate(value) {
+      this.timeColor = 'color: #363636'
       this.$set(this.info, 'storeDate', mango.indexTimeB(value)[1])
     },
     // getShopName() {

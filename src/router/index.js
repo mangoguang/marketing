@@ -225,6 +225,12 @@ export var router = new VueRouter({
     path: '/home',
     name: 'home',
     component: resolve => require(['../pages/home/index'],resolve)
+  },
+  //app二期迭代
+  {
+    path: '/chooseShop',
+    name: 'chooseShop',
+    component: resolve => require(['../pages/customer/newCustomer/chooseShop'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {
