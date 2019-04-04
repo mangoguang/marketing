@@ -8,8 +8,10 @@
           v-for="(item, index) in orderList.records"
           :key="`list${index}`"
           @click="orderInfoIn(index)">
-          <span >{{index + 1}}</span>
+          <!-- <span >{{index + 1}}</span> -->
+           <!-- <i :class="`important${item.important}`"></i> -->
           <span :class='{active : compareTime[index]}'>{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span>
+          <!-- <div :class="`urgency${item.urgency}`"></div> -->
           <span>{{item.demandTime}}</span>
           <span :class='{active : compareTime[index]}'>{{item.orderStatus}}</span>
         </li>
@@ -48,8 +50,8 @@ export default {
       activecolor:[],
       topbar:{
         leftTitle: '客户信息',
-        centerTitle: '订单交期',
-        rightTitle: '订单状态'
+        centerTitle: '电话',
+        rightTitle: '最近跟进'
       }
     };
   },
@@ -297,23 +299,23 @@ export default {
     color: #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
-    padding-bottom: 22vw;
+    padding-bottom: 40vw;
     li {
       display: flex;
       justify-content: space-between;
       padding-right: 3.86vw;
       border-top: 1px solid #e1e1e1;
+      // span:nth-child(1) {
+      //   flex: 0.15;
+      // }
       span:nth-child(1) {
-        flex: 0.15;
+        color: #363636;
+        flex: 0.5;
       }
       span:nth-child(2) {
-        color: #363636;
-        flex: 0.3;
-      }
-      span:nth-child(3) {
         flex: 0.4;
       }
-      span:nth-child(4) {
+      span:nth-child(3) {
         flex: 0.4;
         color: #363636;
         text-align: right;

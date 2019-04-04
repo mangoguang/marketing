@@ -28,13 +28,16 @@ export default {
       }],
       cateList: [{
         name: '图库',
-        link: '/gallery'
+        link: '/gallery',
+        id: 0
       },{
         name: '金管家知识库',
-        link: '/msManage'
+        link: '/msManage',
+        id: 1
       },{
         name: '学院知识库',
-        link: '/home'
+        link: '/msManage',
+        id: 2
       }],
       bgColor: []
     }
@@ -51,7 +54,11 @@ export default {
   methods: {
     ...mapMutations(['setLeftNavList', 'initListVal']),
     toArt(index) {
-      this.$router.push({path: this.cateList[index].link})
+      this.$router.push({
+        path: this.cateList[index].link,
+        query: {
+          classify: this.cateList[index].id
+        }})
     },
     //获取背景颜色
     getBgColor() {

@@ -23,6 +23,8 @@ import Vuex, { mapMutations, mapState } from "vuex";
 import btn from '../../components/personal/Btn'
 import Footer from '../../components/Footer'
 import Header from '../../components/personal/header'
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 
 export default {
   name:'personMsg',
@@ -57,6 +59,9 @@ export default {
     this.setDealScroll(0)
     // this.setIsSelectStatus(false)
     this.$store.commit('setIsSelectStatus', false)
+  },
+  mounted() {
+    console.log('个人中心页面：', this.$root.token)
   },
   methods:{
     ...mapMutations([

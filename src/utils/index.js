@@ -1,4 +1,4 @@
-import { Request } from './request'
+import { Request } from '../Request/request'
 
 
 class IndexModel extends Request {
@@ -14,7 +14,7 @@ class IndexModel extends Request {
     })
   }
   //刷新令牌
-  refeshToken(reToken) {
+  refreshToken(reToken) {
     return this.getPostData({
       url: '/oauth/token',
       data: {
@@ -24,32 +24,33 @@ class IndexModel extends Request {
     })
   }
   // 获取首页一级分类列表
-  getCategory1List() {
+  getCategory1List(classify) {
     return this.getData({
       url: '/api/train/repository/v1/category',
       params: {
-        // classify: 2
+        classify: classify,
+        level: 1
       }
     })
   }
   //知识库首页置顶文章接口
-  getTopArt(account) {
+  getTopArt(account, classify) {
     return this.getData({
       url: '/api/train/repository/v1/getTopRepository',
       params: {
-        classify: 1,
+        classify: classify,
         account: account
       }
     })
   }
   //首页搜索接口
-  getArticleSearch(keyword,account) {
+  getArticleSearch(keyword,account,classify) {
     return this.getData({
       url: '/api/train/repository/v1/getRepositoryByKey',
       params: {
         key: keyword,
         account: account,
-        classify:1        //1代表金管家2代表学院
+        classify:classify       //1代表金管家2代表学院
       }
     })
   }

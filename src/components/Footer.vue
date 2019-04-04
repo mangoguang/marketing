@@ -85,9 +85,9 @@ export default {
       // if(e.path[1].id){
       //   alert('该模块尚未开发')
       // }
-      // alert('该模块尚未开发')
-      this.$router.push({path: '/'})
-      this.setChartActive(false)
+      alert('该模块尚未开发')
+      // this.$router.push({path: '/'})
+      // this.setChartActive(false)
     },
     isIPhoneX() {
       let phone = this.phoneSize();

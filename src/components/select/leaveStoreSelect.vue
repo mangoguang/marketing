@@ -2,7 +2,7 @@
   <li class="leaveStoreSelect">
     <ul>
       <li is="customerLi" :leftText="'留店时长'" :icon="true" @click.native="selectLeaveStore">
-        <span>{{leaveStoreVal || '请选择客户留店时长'}}</span>
+        <span :style="color">{{leaveStoreVal || '请选择客户留店时长'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -39,7 +39,8 @@ export default {
     return {
       slots: [{values: ['15分钟', '30分钟', '45分钟', '1小时以上']}],
       popupVisible: false,
-      key: false
+      key: false,
+      color: 'color: #999'
     }
   },
   computed:{
@@ -53,6 +54,7 @@ export default {
   methods:{
     ...mapMutations(["setLeaveStoreVal"]),
     selectLeaveStore() {
+      this.color = 'color: #363636'
       if(this.leaveStoreVal === '') {
         this.setLeaveStoreVal(this.slots[0].values[0])
       }else {

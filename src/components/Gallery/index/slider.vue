@@ -1,7 +1,7 @@
 <template>
   <mt-swipe class="wrapper" :auto="auto" @change="handleChange" >
     <mt-swipe-item 
-      :style="{backgroundImage:'url('+ item.imgUrl + ')',backgroundSize: 'contain'}"
+      :style="{backgroundImage:'url('+ item.imgUrl + ')',backgroundSize: '100% 100%'}"
       v-for='(item,index) in list' :key='index'
       :data-type="index">
     </mt-swipe-item>
@@ -58,7 +58,7 @@ export default {
 //     }
 // }
 .mint-swipe-indicators {
-  right: 70%;
+  right: 66%;
     .mint-swipe-indicator {
       background: #363636;
       opacity: 0.6;

@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
-    path: '/',
+    path: '/index',
     name: 'index',
     component: resolve => require(['../pages/index'], resolve)
   },{
@@ -44,7 +44,7 @@ export var router = new VueRouter({
     name: '/AudioTechnica',
     component: resolve => require(['../pages/charts/AudioTechnica/audioTechnica'],resolve)
   },{
-    path: '/personal',
+    path: '/Personal',
     name: '/Personal',
     component: resolve => require(['../pages/charts/AudioTechnica/personal'],resolve)
   },{
@@ -243,6 +243,23 @@ export var router = new VueRouter({
     path: '/home',
     name: 'home',
     component: resolve => require(['../pages/home/index'],resolve)
+  },
+  /***报表模块***/
+  {
+    path: '/work',
+    name: 'work',
+    component: resolve => require(['../pages/work'],resolve)
+  },
+  {
+    path: '/dailyReport',
+    name: 'dailyReport',
+    component: resolve => require(['../pages/work/dailyReport'],resolve)
+  },
+  //app二期迭代
+  {
+    path: '/chooseShop',
+    name: 'chooseShop',
+    component: resolve => require(['../pages/customer/newCustomer/chooseShop'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {

@@ -28,15 +28,27 @@ export default {
   },
   computed: {
     ...mapState({
-      list: state => state.treeList.list
+      list: state => state.treeList.list,
+      parmas: state => state.treeList.parmas
     })
+  },
+  watch: {
+    parmas() {
+      this.init()
+    },
+    list() {
+      this.initTop()
+    }
   },
   created() {
     // this.getCategoriesList()
     this.initParmas()
     this.initTitile()
-    this.initTop()
     this.isIPhoneX()
+  },
+  mounted() {
+    // this.initTop()
+    this.init()
   },
   methods: {
     ...mapMutations(['setParmas']),
@@ -53,7 +65,6 @@ export default {
     //获取每一级的参数name
     getParmas(val) {
       this.setParmas(val)
-      // console.log(val)
     },
     //获取子级状态设置css
     getStatus(val) {
@@ -66,12 +77,15 @@ export default {
     //初始化列表的高度设置css
     initTop() {
       if(this.list.length) {
-         if(this.list[0].child) {
+        if(this.list[0].subCateList) {
         this.listComp = 'listComp'
-        }else if(!this.list[0].child) {
+        }else if(!this.list[0].subCateList) {
           this.listComp = 'listComp1'
         }
-      }else {
+      }
+    },
+    init() {
+      if(!this.parmas.name1) {
         this.listComp = 'listComp0'
       }
     },
@@ -111,7 +125,7 @@ export default {
   }
    .listComp0 {
     position: absolute;
-    top: 20vw;
+    top: 16vw;
     left: 0;
   }
 }

@@ -83,7 +83,7 @@ export default {
       endDateVal: mango.indexTime(new Date(), 'day'),
       dateType: '',
       urgencyBtns: mango.btnList(['是', '否']),
-      keyBtns: mango.btnList(['高', '中', '低']),
+      keyBtns: mango.btnList(['A', 'B', 'C']),
       ajaxData:[],
       marginTop:''
     }
@@ -251,11 +251,15 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/common.scss";
 .rightContainer{
+  // position: fixed;
+  // top: 0;
+  // right: 0;
+  // z-index: 999;
   div.content{
     box-sizing: border-box;
     display: flex;
     justify-content: flex-end;
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100vw;
     height: 100vh;

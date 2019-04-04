@@ -40,7 +40,7 @@ export default {
   },
   data() {
     return {
-      btns: mango.btnList(['潜客', '游客'], 0)
+      btns: mango.btnList(['意向客户', '游客'], 0)
     };
   },
   computed: {

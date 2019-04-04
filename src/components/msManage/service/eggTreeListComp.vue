@@ -67,6 +67,8 @@ export default {
           if(res.data && res.data[0].subCateList) {
             this.setList(res.data[0].subCateList)
             this.init(this.list)
+          }else {
+            this.getParmas(categoryId)
           }
         })
       }

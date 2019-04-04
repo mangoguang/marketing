@@ -72,6 +72,9 @@ export default {
     display: flex;
     .nav-left {
       flex: 0.25;
+      height: 100vh;
+      overflow: scroll;
+      // padding-bottom: 50vw;
     }
     .nav-right {
       flex: 0.77;

@@ -40,7 +40,8 @@ export default {
   methods: {
     //获取首页一级列表接口
     getData() {
-      indexModel.getCategory1List().then(res => {
+      let classify = this.$route.query.classify
+      indexModel.getCategory1List(classify).then(res => {
         if (res.data) {
           this.list = res.data;
           this.getBgColor()
@@ -71,7 +72,8 @@ export default {
         query: {
           id: this.list[index].id,
           name: this.list[index].name,
-          type: 1
+          type: 1,
+          classify: this.$route.query.classify
         }
       });
     }
