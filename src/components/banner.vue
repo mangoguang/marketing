@@ -26,11 +26,11 @@ export default {
   mounted(){
     this.isIPhoneX()
   },
-  methods:{
-    cilck:function(){
+  methods: {
+    cilck:function() {
       this.$router.back(-1)
     },
-    isIPhoneX : function(fn){
+    isIPhoneX : function(fn) {
       var u = navigator.userAgent;
       var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
       if (isIOS) {        

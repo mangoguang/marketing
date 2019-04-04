@@ -225,6 +225,17 @@ export var router = new VueRouter({
     path: '/home',
     name: 'home',
     component: resolve => require(['../pages/home/index'],resolve)
+  },
+  /***报表模块***/
+  {
+    path: '/work',
+    name: 'work',
+    component: resolve => require(['../pages/work'],resolve)
+  },
+  {
+    path: '/dailyReport',
+    name: 'dailyReport',
+    component: resolve => require(['../pages/work/dailyReport'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {
