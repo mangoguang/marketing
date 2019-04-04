@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <banner :title="'慕思金管家'"/>
+    <banner :title="title"/>
     <Search :origin="origin" :type='"msIndex"' class="search"/>
     <MSlider :list='list' class="slider"/>
     <category-list />
@@ -26,8 +26,12 @@ export default {
       origin: true,
       list: [{
         imgUrl: './static/images/bed0.png'
-      }]
+      }],
+      title: ''
     };
+  },
+  created() {
+    this.title = (this.$route.query.classify === 1)? '慕思金管家' : '学院'
   }
 };
 </script>

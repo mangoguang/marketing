@@ -58,7 +58,7 @@ export default {
   },
   created() {
     this.checkLogin();
-    // this.test()
+    this.test()
   },
   methods: {
     test() {
