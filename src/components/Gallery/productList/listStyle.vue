@@ -1,6 +1,6 @@
 <template>
   <div class="list">
-    <div class="img_icon" :style="{backgroundImage:'url(' + list.image || list.imgUrl + ')'}"></div>
+    <div class="img_icon" :style="{backgroundImage:'url(' + img + ')'}"></div>
     <div class="text_box">
       <p class="title">{{ list.goodsName }}</p>
       <span class="type_icon" v-for="(el, v) in getLabel(list.label)" :key=v >
@@ -25,10 +25,16 @@ export default {
     return {
       like: '',
       num: '',
-      account: ''
+      account: '',
+      img: ''
     }
   },
   mounted() {
+    if(this.list.image) {
+      this.img = this.list.image
+    }else if(this.list.imgUrl) {
+      this.img = this.list.imgUrl
+    }
     this.setCollect()
     this.account = this._localAjax().account
   },

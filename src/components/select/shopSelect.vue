@@ -5,7 +5,7 @@
         <span>{{shopVal || '请选择门店'}}</span>
       </li>
       <!-- 性别选择插件 -->
-      <li>
+      <!-- <li>
       <mt-popup 
       position="bottom"
       v-model="popupVisible">
@@ -14,7 +14,7 @@
         @change="onValuesChange"
         ref="sourcePicker"></mt-picker>
       </mt-popup>
-      </li>
+      </li> -->
     </ul>
   </li>
 </template>
@@ -50,7 +50,7 @@ export default {
   created() {
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
-    this.getShopName()
+    // this.getShopName()
   },
   methods:{
     ...mapMutations(["setShopVal"]),
@@ -64,12 +64,16 @@ export default {
       }
     },
     selectShop() {
-      if(this.shopVal === '') {
-        this.setShopVal(this.slots[0].values[0])
-      }else {
-        this.$refs.sourcePicker.setSlotValue(0, this.shopVal)
-      }
-      this.popupVisible = true
+      console.log(123)
+      this.$router.push({
+        path: '/chooseShop'
+      })
+      // if(this.shopVal === '') {
+      //   this.setShopVal(this.slots[0].values[0])
+      // }else {
+      //   this.$refs.sourcePicker.setSlotValue(0, this.shopVal)
+      // }
+      // this.popupVisible = true
     },
     onValuesChange(picker, values) {
       if(this.key) {

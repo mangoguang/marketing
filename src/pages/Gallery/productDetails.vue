@@ -66,6 +66,7 @@ export default {
   .content {
     background: #fff;
     word-wrap: break-word !important;
+    height: auto;
   }
   .details {
     margin-top: 4vw;

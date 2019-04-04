@@ -1,13 +1,17 @@
 <template>
-  <div class="recommend" v-html="myhtml">
+  <div class="r-index">
+    <banner :title="'品牌介绍'"/>
+    <div class="recommend" v-html="myhtml"></div>
   </div>
 </template>
 
 <script>
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
+import banner from '../../components/banner'
 import { b64DecodeUnicode, changeImgStyle } from '../../utils/msManage'
 export default {
+  components: {banner},
   data() {
     return {
       myhtml: ''
@@ -30,7 +34,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.r-index {
+  height: 100vh;
+  width: 100vw;
+  overflow: scroll;
+}
 .recommend {
   word-break: break-word !important;
+  margin-top: 16vw;
+  box-sizing: border-box;
 }
 </style>

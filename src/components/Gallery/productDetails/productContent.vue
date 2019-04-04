@@ -97,6 +97,8 @@ export default {
 .content {
   padding: 0 4vw;
   padding-bottom: 4vw;
+  box-sizing: border-box;
+  height: auto;
   .topbar {
     display: flex;
     align-items: center;

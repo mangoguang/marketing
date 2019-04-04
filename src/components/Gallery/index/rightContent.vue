@@ -35,6 +35,8 @@ export default {
   },
   created() {
     this.getBackList()
+    this.getAdvert()
+    this.getBrandIntroduce()
   },
   data() {
     return {
