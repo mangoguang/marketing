@@ -43,7 +43,7 @@
               <div class="forgetpwd" @touchend="forgetPwd">忘记密码?</div>
             </li>
             <li>
-              <btn @click.native="submitForm('ruleForm')" :text="text" class="myBtn"></btn>
+              <btn @click.native="submitForm()" :text="text" class="myBtn"></btn>
             </li>
           </ul>
         </form>
@@ -72,6 +72,7 @@ import tipsError from "../components/charts/tipsError";
 import tipsWeb from "../components/charts/tipsWeb";
 import btn from "../components/btn";
 import myinput from "../components/myInput";
+import refreshToken from '../utils/token/refreshToken.js'
 import {IndexModel} from '../utils/index'
 const indexModel = new IndexModel()
 export default {
@@ -110,6 +111,8 @@ export default {
     // }
     // mango.getSign(obj)
     // console.log(mango.getSign1)
+    this.$root.author = 'mangoguang'
+    this.login()
   },
   created() {
     this.getAccountMsg();
@@ -121,7 +124,7 @@ export default {
       return str.replace(/(^\s*)|(\s*$)/g, "");
     },
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
-    submitForm(formName) {
+    submitForm() {
       let _this = this;
       if (_this.key) {
         //如果请求失败，只可以请求一次
@@ -217,6 +220,27 @@ export default {
           });
         // }
       }
+    },
+    login(account = '19020001', pwd = '123456') {
+      indexModel.getToken(account,md5(pwd)).then(res => {
+        let data = res.data
+        if(data) {
+          // 将账号信息添加到对象
+          Object.assign(data, {
+            account,
+            pwd
+          })
+          // 转成字符串
+          let str = JSON.stringify(data)
+          // 存储到本地
+          localStorage.setItem('token', str)
+          this.$root.token = data
+          clearInterval(this.$root.tokenTime)
+          this.$root.tokenTime = setInterval(() => {
+            refreshToken.call(this)
+          }, 7000000)
+        }
+      })
     },
     setAccountMsg(uname, upwd) {
       let string = `{"name":" ${uname}", "pwd": "${upwd}"}`;

@@ -14,7 +14,7 @@ class IndexModel extends Request {
     })
   }
   //刷新令牌
-  refeshToken(reToken) {
+  refreshToken(reToken) {
     return this.getPostData({
       url: '/oauth/token',
       data: {
