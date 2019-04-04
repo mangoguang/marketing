@@ -1,7 +1,8 @@
 export default {
   state: {
     shopList: [],
-    shopVal: ''
+    shopVal: '',
+    btn: []
   },
   mutations: {
     initShopList: (state,arr) => state.shopList = arr,
@@ -11,6 +12,7 @@ export default {
           state.shopVal = item.name
         }
       });
-    }
+    },
+    setBtn: (state,arr) => state.btn = arr
   }
 }

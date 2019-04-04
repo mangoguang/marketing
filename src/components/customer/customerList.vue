@@ -103,7 +103,8 @@ export default {
       "setCustomerScroll", 
       "setCustomerTabStatus",
       "setCustomerList",
-      "setAllLoaded"
+      "setAllLoaded",
+      'setBtn'
     ]),
     handleScroll(e) {
       let top = e.target.scrollTop
@@ -142,6 +143,7 @@ export default {
       // this.setCustomerTabStatus(mango.btnList(['客户描述', '新建需求', '需求信息'], 0))
     },
     newCustomer() {
+      this.setBtn([])
       this.$router.push({path: './newCustomer'})
     }
   }

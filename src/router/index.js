@@ -226,6 +226,17 @@ export var router = new VueRouter({
     name: 'home',
     component: resolve => require(['../pages/home/index'],resolve)
   },
+  /***报表模块***/
+  {
+    path: '/work',
+    name: 'work',
+    component: resolve => require(['../pages/work'],resolve)
+  },
+  {
+    path: '/dailyReport',
+    name: 'dailyReport',
+    component: resolve => require(['../pages/work/dailyReport'],resolve)
+  },
   //app二期迭代
   {
     path: '/chooseShop',

@@ -112,7 +112,6 @@ export default {
     // mango.getSign(obj)
     // console.log(mango.getSign1)
     this.$root.author = 'mangoguang'
-    this.login()
   },
   created() {
     this.getAccountMsg();
@@ -168,7 +167,8 @@ export default {
         .then((res) => {
           mango.loading('close')
           let status = res.data.status  
-          if(res.status == 200){    //状态200，请求成功
+          if(res.status == 200){   //状态200，请求成功
+            _this.login(Name, _this.inputValue2)
             if(status == 0){           //如果为0，账号或密码错误，出现弹框。
             _this.display = 'block' 
             _this.key = true
@@ -221,7 +221,7 @@ export default {
         // }
       }
     },
-    login(account = '19020001', pwd = '123456') {
+    login(account, pwd) {
       indexModel.getToken(account,md5(pwd)).then(res => {
         let data = res.data
         if(data) {
