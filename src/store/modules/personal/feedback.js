@@ -11,7 +11,8 @@ const state = {
     btnNum:1,
     type:true,
     tip:'提交成功！感谢您的反馈~'
-  }
+  },
+  imgList:[]
 }
 
 const mutations = {
@@ -26,6 +27,9 @@ const mutations = {
   },
   updateContact:(state, val) => {
     state.contact = val
+  },
+  updateImgList:(state,array) => {
+    state.imgList = array
   }
 }
 

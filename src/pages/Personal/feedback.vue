@@ -5,22 +5,7 @@
       <textarea name="" id=""  placeholder="请描述你的反馈意见，我们将不断改进" maxlength="250" v-model="remark"></textarea>
       <span>{{remark.length}}/250</span>
     </div>
-    <div class="uploadBox">
-      <ul class="upload_list">
-        <li>
-          <img src="" alt="">
-        </li>
-        <li>
-          <img src="" alt="">
-        </li>
-      </ul>
-      <div class="upload">
-          <img src="../../assets/imgs/upload.png" alt="">
-          <span>添加图片</span>
-          <input type="file" name="" id="">
-      </div>
-      <span class="count">2/3</span>
-    </div>
+    <upload ref="upload"/>
     <div class="form">
       <yan-input v-bind="contactObj" v-model="contact" :showIcon="false"/>
     </div>
@@ -43,6 +28,7 @@ import mybanner from '../../components/banner'
 import Btn from "../../components/personal/Btn"
 import yanInput from "../../components/yanInput"
 import messageBox from '../../components/msManage/yanMessageBox'
+import upload from '../../components/upload/filesUpload'
 import { mapState, mapMutations } from 'vuex'
 export default {
   data () {
@@ -53,17 +39,17 @@ export default {
         type:true,
         tip:'提交成功！感谢您的反馈~'
       }
-     
     }
   },
   components:{
       mybanner,
       Btn,
       yanInput,
-      messageBox
+      messageBox,
+      upload
   },
   computed:{
-    ...mapState('feedback',['title','contactObj','messageBox']),
+    ...mapState('feedback',['title','contactObj','messageBox','imgList']),
     remark:{
       get(){
         return this.$store.state.feedback.remark
@@ -82,14 +68,20 @@ export default {
     }
   },
   methods:{
-    ...mapMutations('feedback',['setMessageBox','updateRemark','updateContact']),
+    ...mapMutations('feedback',['setMessageBox','updateRemark','updateContact','updateImgList']),
     submit(){
+      let imgList=this.$refs.upload.isUpload();
+      this.getImgs(imgList);
       this.messageTip.showMessageBox=true;
       this.setMessageBox(this.messageTip);
     },
     cancel(){
       this.messageTip.showMessageBox=false;
       this.setMessageBox(this.messageTip);
+    },
+    getImgs(array){
+      console.log(array);
+      this.updateImgList(array);
     }
 
   }
@@ -138,61 +130,6 @@ export default {
       color:#909090;
     }
 
-  }
-  .uploadBox{
-    padding:2.666vw 4.266vw;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    position: relative;
-    .upload_list{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      li{
-        width:20vw;
-        height:20vw;
-        border-radius: 1.066vw;
-        border:1px solid #e1e1e1;
-        overflow: hidden;
-        margin-right:1.333vw;
-      }
-    }
-    .upload{
-      position:relative;
-      width:20vw;
-      height:20vw;
-      border-radius: 1.066vw;
-      border:1px dashed #e1e1e1;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      img{
-        width: 5.333vw;
-        margin-bottom: 2.133vw;
-      }
-      span{
-        color:#909090;
-        font-size: 2.4vw;
-      }
-      input{
-        opacity: 0;
-        position: absolute;
-        top:0;
-        right:0;
-        left:0;
-        bottom:0;
-      }
-    }
-    .count{
-      position: absolute;
-      bottom:2.666vw;
-      right:4.533vw;
-      color:#909090;
-      font-size: 2.4vw;
-    }
   }
   .form{
     border-top:1px solid #e1e1e1;

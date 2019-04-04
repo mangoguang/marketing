@@ -122,8 +122,8 @@ export var router = new VueRouter({
   },
   /****个人模块****/
   {
-    path: '/personal',
-    name: '/Personal',
+    path: '/personalCenter',
+    name: '/personalCenter',
     component: resolve => require(['../pages/Personal/personalMsg'],resolve)
   },
   {
@@ -152,6 +152,11 @@ export var router = new VueRouter({
     path: '/feedback',
     name: '/feedback',
     component: resolve => require(['../pages/Personal/feedback'],resolve)
+  },
+  {
+    path: '/previewImg',
+    name: '/previewImg',
+    component: resolve => require(['../pages/Personal/imgPreview'],resolve)
   },
   //金管家模块-我的收藏
   {
