@@ -2,7 +2,8 @@
   <li class="sourceSelect">
     <ul>
       <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShop">
-        <span>{{shopVal || '请选择门店'}}</span>
+        <!-- <span>{{shopVal || '请选择门店'}}</span> -->
+        <span>{{ val }}</span>
       </li>
       <!-- 性别选择插件 -->
       <!-- <li>
@@ -25,7 +26,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from "vuex"
 import { Picker, Popup } from 'mint-ui'
-
+import {btnList} from '../../utils/gallery'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
 import customerLi from '../customer/customerLi'
@@ -39,21 +40,29 @@ export default {
       popupVisible: false,
       key: false,
       shop: [],
-      shopName: ''
+      shopName: '',
+      val: ''
     }
   },
   computed:{
     ...mapState({
-      shopVal: state => state.select.shopVal
+      shopVal: state => state.select.shopVal,
+      shopList: state => state.chooseShop.shopList,
+      shopVal: state => state.chooseShop.shopVal
     })
   },
-  created() {
+  mounted() {
     let shops = localStorage.getItem('shops')
-    this.shops = JSON.parse(shops)
+    this.shops = btnList(JSON.parse(shops), 0)
+    this.initShopList(this.shops)
     // this.getShopName()
+    this.hasList()
   },
   methods:{
-    ...mapMutations(["setShopVal"]),
+    ...mapMutations(["setShopVal", 'initShopList']),
+    hasList() {
+      this.val = this.shopVal? this.shopVal : this.shopList[0].name
+    },
     getShopName() {
       let shopName = []
       if(this.shops) {
