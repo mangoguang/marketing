@@ -29,7 +29,7 @@ const mutations = {
     state.contact = val
   },
   updateImgList:(state,array) => {
-    state.imgList = array
+    state.imgList =array
   }
 }
 

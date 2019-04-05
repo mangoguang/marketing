@@ -18,8 +18,10 @@
 <script>
 import Vue from 'vue'
 import { Actionsheet, Toast } from 'mint-ui';
+import { mapState, mapMutations } from 'vuex'
 Vue.component(Actionsheet.name, Actionsheet);
 export default {
+  props:['path'],
   data () {
     let that=this;
     return {
@@ -34,8 +36,11 @@ export default {
       }
       ],
       sheetVisible:false,
-      picVal:[] 
+      picVal:[]
     }
+  },
+  mounted(){
+   this.picVal=window.picVal||[];
   },
   methods:{
     openAction(){
@@ -88,8 +93,12 @@ export default {
       return this.picVal;
     },
     preview(i){
-      this.$router.push({name:'/previewImg',params:{picVal:this.picVal}});
+
+      this.$router.push({name:'/previewImg',params:{path:this.path,picVal:this.picVal}});
     }
+  },
+  destroyed(){
+    window.picVal=[];
   }
 };
 </script>

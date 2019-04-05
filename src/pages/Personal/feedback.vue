@@ -5,7 +5,7 @@
       <textarea name="" id=""  placeholder="请描述你的反馈意见，我们将不断改进" maxlength="250" v-model="remark"></textarea>
       <span>{{remark.length}}/250</span>
     </div>
-    <upload ref="upload"/>
+    <upload ref="upload" path="this.path"/>
     <div class="form">
       <yan-input v-bind="contactObj" v-model="contact" :showIcon="false"/>
     </div>
@@ -38,7 +38,8 @@ export default {
         btnNum:1,
         type:true,
         tip:'提交成功！感谢您的反馈~'
-      }
+      },
+      path:'/feedback'
     }
   },
   components:{
