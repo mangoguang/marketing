@@ -1,15 +1,15 @@
 <template>
-  <div class="yan-swipe-left" @touchstart='start($event)' @touchmove="move($event)" @touchend="end($event)" ref="swipeBox">
-    <div class="yan-box" ref='left'>
+  <div class="yan-swipe-left" @touchstart='start($event)' @touchmove="move($event)" @touchend="end($event)" :style="swipe">
+    <div class="yan-box">
       <div class="yan-box-left">
-        <div>
+        <div class="yan-box-value">
           <h1>三居室&nbsp;&nbsp;&nbsp;&nbsp;电梯房</h1>
           <p>广东省东莞市厚街镇 双岗上环工业区 艾慕工业园</p>
         </div>
         <div class="yan-edit"><div class="yan-edit-btn">编辑</div></div>
       </div>
     </div>
-    <div class="yan-del" ref="yan-del">{{delTxt}}</div>
+    <div class="yan-del" ref="yanDel">{{delTxt}}</div>
   </div>
 </template>
 
@@ -21,70 +21,50 @@ export default {
       startX:0,
       endX:0,
       distance:0,
-      maxLeft:0,
-      moveX:0
+      moveX:0,
+      swipe:''
     }
-  },
-  mounted(){
-    this.maxLeft=this.$refs.swipeBox.offsetWidth-this.$refs.left.offsetWidth;
   },
   methods:{
     start(e){
       e=e||event;
       e.preventDefault();
-      if(e.changedTouches.length == 1){
-        this.startX=e.changedTouches[0].clientX;
+      if(e.touches.length == 1){
+        this.startX=e.touches[0].clientX;
       }
     },
     move(e){
       e=e||event;
       e.preventDefault();
-      if(e.changedTouches.length == 1){
-        this.moveX=e.changedTouches[0].clientX;
+      let wd=this.$refs.yanDel.offsetWidth;
+      if(e.touches.length == 1){
+        this.moveX=e.touches[0].clientX;
         this.distance=this.moveX-this.startX;
         if(this.distance<0){
-          if(Math.abs(this.distance)>this.maxLeft){
-            this.$refs.swipeBox.style.transition="transform .3s";
-            this.$refs.swipeBox.style.transform="translateX(-"+this.maxLeft+"px)";
-          }
-          if(Math.abs(this.distance)<this.maxLeft){
-            this.$refs.swipeBox.style.transition="transform .3s";
-            this.$refs.swipeBox.style.transform="translateX("+this.distance+"px)";
-          }
+            this.swipe="translateX("+this.distance*5+"px)";
+            if(this.distance>=wd){
+              this.swipe="transform:translateX(-"+wd+"px)";
+            }
          
         }
-        if(this.distance>0){
-          if(Math.abs(this.distance)>this.maxLeft){
-            this.$refs.swipeBox.style.transition="transform .3s";
-            this.$refs.swipeBox.style.transform="translateX(-"+this.maxLeft+"px)";
-          }
-          this.$refs.swipeBox.style.transition="transform .3s";
-          this.$refs.swipeBox.style.transform="translateX(0px)";
+        if(this.distance>0||this.distance==0){
+          this.swipe="transform:translateX(0px)";
         }
-        if(this.distance==0){
-          this.$refs.swipeBox.style.transition="transform .3s";
-          this.$refs.swipeBox.style.transform="translateX(0px)";
-        }
+        
 
       }
     },
     end(e){
       e=e||event;
       e.preventDefault();
+      let wd=this.$refs.yanDel.offsetWidth;
       if(e.changedTouches.length == 1){
         this.endX=e.changedTouches[0].clientX;
         this.distance=this.endX-this.startX;
-        if(this.distance<0){
-          this.$refs.swipeBox.style.transition="transform .3s";
-          this.$refs.swipeBox.style.transform="translateX(-"+this.maxLeft+"px)";
-        }
-        if(this.distance>0){
-          this.$refs.swipeBox.style.transition="transform .3s";
-          this.$refs.swipeBox.style.transform="translateX(0px)";
-        }
-        if(this.distance==0){
-          this.$refs.swipeBox.style.transition="transform .3s";
-          this.$refs.swipeBox.style.transform="translateX(0px)";
+        if((-this.distance*5)<(wd/2)){
+          this.swipe="transform:translateX(0px)";
+        }else{
+          this.swipe="transform:translateX(-"+wd+"px)";
         }
       }
     }
@@ -102,6 +82,7 @@ export default {
   flex-direction: row;
   flex-wrap: nowrap;
   position: relative;
+  transition:transform .3s;
   .yan-box{
     width:100vw;
     padding-left:4.266vw;
@@ -113,15 +94,20 @@ export default {
       justify-content: space-between;
       border-bottom:1px solid#E1E1E1;
       padding:2.666vw 0;
-      h1{
-        color:#363636;
-        font-size: 4vw;
-        margin-bottom:2.666vw;
+      .yan-box-value{
+        padding-right: 16.8vw;
+        h1{
+          color:#363636;
+          font-size: 4vw;
+          margin-bottom:2.666vw;
+        }
+        p{
+          font-size: 3.2vw;
+          color:#363636;
+        }
+
       }
-      p{
-        font-size: 3.2vw;
-        color:#363636;
-      }
+     
       .yan-edit{
         padding-right:4.266vw;
         .yan-edit-btn{
