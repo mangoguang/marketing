@@ -158,6 +158,11 @@ export var router = new VueRouter({
     name: '/previewImg',
     component: resolve => require(['../pages/Personal/imgPreview'],resolve)
   },
+  {
+    path: '/address',
+    name: '/address',
+    component: resolve => require(['../pages/Personal/address/address'],resolve)
+  },
   //金管家模块-我的收藏
   {
     path: '/collectList',
