@@ -7,37 +7,59 @@
         @click="selectTime(index)"
         :class="{on: item.status}">{{item.name}}</button>
     </li>
-    <li class="last"></li>
+    <li
+    class="last">
+      <TimeInterval
+      @getTimeInterval="getTimeInterval" />
+    </li>
   </ul>
 </template>
 
 <script>
 import mango from '../../../js'
+import TimeInterval from '../../common/timeInterval'
+import { IndexModel } from "../../../utils/index";
+const indexModel = new IndexModel();
 export default {
   name: 'timeSelect',
   props: [],
-  components: {},
+  components: {TimeInterval},
   data() {
     return{
-      timeBtns: mango.btnList(['今日', '本周', '本月', '本年'], 0)
+      timeBtns: mango.btnList(['今日', '本周', '本月', '本年'], 0),
+      ajaxData: {}
     }
   },
   mounted() {
-    console.log('日常数据时间选择', this.timeBtns)
+    this.ajaxData = JSON.parse(localStorage.getItem('ajaxData'))
   },
   created(){
-
   },
   methods: {
     selectTime(index) {
       this.timeBtns.forEach((element, i) => {
         element.status = index === i
       })
-      console.log('选择时间')
+      this.getDailyData()
+      // 更改数据
       this.$emit('changeList', {
         number: '100',
         title: 'mangoguang'
       })
+    },
+    getDailyData() {
+      indexModel.getDailyData({
+        tenantId: this.ajaxData.tenantId,
+        account: this.ajaxData.account,
+        date: '2018-11-14'
+      }).then(res => {
+        if (res.data) {
+          console.log(res.data)
+        }
+      })
+    },
+    getTimeInterval(obj) {
+      console.log(obj)
     }
   }
 }
@@ -72,11 +94,6 @@ export default {
     }
     li:last-child{
       position: absolute;
-      width: 6vw;
-      height: 6vw;
-      background: url('../../../assets/imgs/date.png') no-repeat;
-      background-size: 4.8vw 4.8vw;
-      background-position: center;
       top: 50%;
       right: 4vw;
       margin-top: -3vw;

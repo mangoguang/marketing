@@ -242,6 +242,13 @@ class IndexModel extends Request {
       }
     })
   }
+  //获取个人日报概览数据
+  getDailyData(obj) {
+    return this.getTokenData({
+      url:'/v2/app/daily',
+      params: obj
+    })
+  }
   
 }
 
