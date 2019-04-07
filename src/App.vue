@@ -1,7 +1,7 @@
 <template>
   <div
     id="app"
-    :style="{'min-height': `${height}px`, background: '#fff', 'padding-top':`${padding}vw`}"
+    :style="{'min-height': `${height}px`, background: '#f8f8f8', 'padding-top':`${padding}vw`}"
   >
     <!-- <v-touch
       v-on:swiperight="onSwipeRight"

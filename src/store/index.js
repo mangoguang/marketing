@@ -30,6 +30,8 @@ import productScroll from './modules/gallery/productList/scroll'
 import productLoadMore from './modules/gallery/productList/loadmore'
 import collectLoadMore from './modules/gallery/collect'
 import chooseShop from './modules/customer/chooseShop'
+import feedback from './modules/personal/feedback'
+import preview from './modules/components/preview'
 
 export default new Vuex.Store({
   modules: {
@@ -62,6 +64,8 @@ export default new Vuex.Store({
     productScroll,
     productLoadMore,
     collectLoadMore,
-    chooseShop
+    chooseShop,
+    feedback,
+    preview
   }
 })

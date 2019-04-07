@@ -60,7 +60,7 @@ export default {
   top: 0;
   left: 0;
   align-items: center;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #ccc;
   background: #f8f8f8;
   padding-top: 5vw;
   .fix{
