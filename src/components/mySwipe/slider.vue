@@ -1,20 +1,15 @@
 <template>
-  <div class="yan-swipe-left" @touchstart='start' @touchmove="move" @touchend="end" :style="swipe">
+  <div class="yan-swipe-left">
     <div class="yan-box">
-      <div class="yan-box-left">
-        <div class="yan-box-value">
-          <h1>三居室&nbsp;&nbsp;&nbsp;&nbsp;电梯房</h1>
-          <p>广东省东莞市厚街镇 双岗上环工业区 艾慕工业园</p>
-        </div>
-        <div class="yan-edit"><div class="yan-edit-btn">编辑</div></div>
-      </div>
+      <slot></slot>
     </div>
-    <div class="yan-del" ref="yanDel">删除</div>
+    <div class="yan-del">{{text}}</div>
   </div>
 </template>
 
 <script>
 export default {
+  props:['text'],
   data(){
     return{
       startX:0,
@@ -87,44 +82,6 @@ export default {
     width:100vw;
     padding-left:4.266vw;
     box-sizing: border-box;
-    .yan-box-left{
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom:1px solid#E1E1E1;
-      padding:2.666vw 0;
-      .yan-box-value{
-        padding-right: 16.8vw;
-        h1{
-          color:#363636;
-          font-size: 4vw;
-          margin-bottom:2.666vw;
-        }
-        p{
-          font-size: 3.2vw;
-          color:#363636;
-        }
-
-      }
-     
-      .yan-edit{
-        padding-right:4.266vw;
-        .yan-edit-btn{
-          width:13.33vw;
-          height:6.666vw;
-          font-size:3.2vw;
-          color:#999;
-          border:1px solid #ccc;
-          outline:none;
-          background: #fff;
-          border-radius:2.666vw;
-          text-align: center;
-          line-height: 6.666vw;
-          overflow: hidden;
-        }
-      }
-    }
   }
   .yan-del{
     width:18.666vw;
@@ -143,4 +100,5 @@ export default {
   }
 }
  
+
 </style>

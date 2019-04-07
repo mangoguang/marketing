@@ -33,6 +33,7 @@ import feedback from './modules/personal/feedback'
 import preview from './modules/components/preview'
 import address from './modules/address/address'
 import addAddress from './modules/address/addAddress'
+import selectAddress from './modules/address/selectAddress'
 export default new Vuex.Store({
   modules: {
     common,
@@ -67,6 +68,7 @@ export default new Vuex.Store({
     feedback,
     preview,
     address,
-    addAddress
+    addAddress,
+    selectAddress
   }
 })
