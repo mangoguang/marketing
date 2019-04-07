@@ -4,8 +4,8 @@ import { Indicator, Toast } from 'mint-ui'
 
 export default class Common {
   constructor() {
-    // this.port = "http://10.11.8.7:8086/"
-    this.port = 'https://agency.derucci.com/'
+    this.port = "http://10.11.8.7/"
+    // this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
     // this.port = 'http://10.11.8.181/'
@@ -114,24 +114,17 @@ export default class Common {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    // console.log('生成的sign字符串', str)
+    console.log('生成的sign字符串', str, token)
     return sha1.hex(str + token)
   }
-  getAjax(_vue, port, params, pathVersion,type) {
+  getAjax(path, params,type) {
     let _this = this
+    let token = JSON.parse(localStorage.getItem('token'))
     return new Promise((resolve, reject) => {
       let thatType = type == 'post' ? 'post' : 'get'
-      let url = ''
-      if (pathVersion === 'v2') {
-        url = `${this.v2path}${port}`
-      } else if (pathVersion === 'v3') {
-        url = `${this.apipath}${port}`
-      } else {
-        url = `${this.path}${port}`
-      }
-      // const url = `${pathVersion === 'v2' ? this.v2path : this.path}${port}`
-      let sign = this.getSign(params, _vue.ajaxData.token)
-      // console.log('header参数', _vue, sign)
+      let url = `${this.port}${path}`
+      let sign = this.getSign(params, token.access_token)
+      // 显示加载动画，并在10秒后隐藏
       this.loading('open')
       let loadingTimeOut = setTimeout(function() {
         _this.loading('close')
@@ -141,10 +134,8 @@ export default class Common {
         method: thatType,
         async: false,
         url: url,
-        // timeout: 3000,
         headers: {
-          'token': _vue.ajaxData.token,
-          'UUID': _vue.ajaxData.uuid,
+          "Authorization": `Bearer ${token.access_token}`,
           'sign': sign
         },
         params: params
@@ -159,6 +150,48 @@ export default class Common {
       })
     })
   }
+  // getAjax(_vue, port, params, pathVersion,type) {
+  //   let _this = this
+  //   return new Promise((resolve, reject) => {
+  //     let thatType = type == 'post' ? 'post' : 'get'
+  //     let url = ''
+  //     if (pathVersion === 'v2') {
+  //       url = `${this.v2path}${port}`
+  //     } else if (pathVersion === 'v3') {
+  //       url = `${this.apipath}${port}`
+  //     } else {
+  //       url = `${this.path}${port}`
+  //     }
+  //     // const url = `${pathVersion === 'v2' ? this.v2path : this.path}${port}`
+  //     let sign = this.getSign(params, _vue.ajaxData.token)
+  //     // console.log('header参数', _vue, sign)
+  //     this.loading('open')
+  //     let loadingTimeOut = setTimeout(function() {
+  //       _this.loading('close')
+  //       clearTimeout(loadingTimeOut)
+  //     }, 10000)
+  //     axios({
+  //       method: thatType,
+  //       async: false,
+  //       url: url,
+  //       // timeout: 3000,
+  //       headers: {
+  //         'token': _vue.ajaxData.token,
+  //         'UUID': _vue.ajaxData.uuid,
+  //         'sign': sign
+  //       },
+  //       params: params
+  //     })
+  //     .then((res) => {
+  //       _this.loading('close')
+  //       if (res.data) {
+  //         resolve(res.data)
+  //       } else {
+  //         resolve(false)
+  //       }
+  //     })
+  //   })
+  // }
   // 加载动画
   loading(str) {
     if (str === 'open') {

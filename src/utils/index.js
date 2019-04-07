@@ -1,4 +1,5 @@
 import { Request } from '../Request/request'
+import mango from '../js/'
 
 
 class IndexModel extends Request {
@@ -240,6 +241,13 @@ class IndexModel extends Request {
       data: {
         dataFile: url
       }
+    })
+  }
+  //获取个人日报概览数据
+  getDailyData(obj) {
+    return this.getTokenData({
+      url:'/v2/app/daily',
+      params: obj
     })
   }
   
