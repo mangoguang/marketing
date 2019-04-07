@@ -246,7 +246,7 @@ export var router = new VueRouter({
   },
   /***报表模块***/
   {
-    path: '/work',
+    path: '/',
     name: 'work',
     component: resolve => require(['../pages/work'],resolve)
   },
