@@ -6,7 +6,7 @@ const state = {
   areaVal: '',
   enterStoreVal: '',
   sourceVal: '',
-  leaveStoreVal: '',
+  leaveStoreVal: "",
   shopVal: ''
 }
 

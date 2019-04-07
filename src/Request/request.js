@@ -5,6 +5,7 @@ import axios from 'axios'
 // let baseUrl = 'http://172.16.8.216'
 let baseUrl = 'http://10.11.8.7'
 // let baseUrl = 'http://172.16.11.144'
+let token = JSON.parse(localStorage.getItem('token'))
 export {baseUrl}
 class Request {
   getData ({ url, params, method = 'GET' }) {
@@ -39,6 +40,24 @@ class Request {
         }
       }).then(res => {
         resolve(res)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
+
+  getTokenData ({ url, params, method = 'GET' }) {
+    console.log('token123', token)
+    return new Promise((resolve, reject) => {
+      axios({
+        url: baseUrl + url,
+        headers: {
+          'Authorization': token.access_token
+        },
+        params: params,
+        method: method
+      }).then(res => {
+        resolve(res.data)
       }).catch(err => {
         reject(err)
       })

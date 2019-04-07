@@ -43,6 +43,7 @@ export default {
 <style lang="scss" scoped>
 
 .work{
+  height: 100vh;
   background: #f8f8f8;
 }
 </style>
