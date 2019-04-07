@@ -122,8 +122,8 @@ export var router = new VueRouter({
   },
   /****个人模块****/
   {
-    path: '/',
-    name: '/personal',
+    path: '/personalCenter',
+    name: '/personalCenter',
     component: resolve => require(['../pages/Personal/personalMsg'],resolve)
   },
   {
@@ -139,6 +139,24 @@ export var router = new VueRouter({
     path: '/ResetPwd',
     name: '/ResetPwd',
     component: resolve => require(['../pages/ResetPwd'],resolve)
+  },{
+    path: '/aboutUs',
+    name: '/aboutUs',
+    component: resolve => require(['../pages/aboutUs'],resolve)
+  },{
+    path: '/safe',
+    name: '/safe',
+    component: resolve => require(['../pages/safe'],resolve)
+  },
+  {
+    path: '/feedback',
+    name: '/feedback',
+    component: resolve => require(['../pages/Personal/feedback'],resolve)
+  },
+  {
+    path: '/previewImg',
+    name: '/previewImg',
+    component: resolve => require(['../pages/Personal/imgPreview'],resolve)
   },
   //金管家模块-我的收藏
   {

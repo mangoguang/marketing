@@ -32,7 +32,7 @@
         <!-- </router-link> -->
       </li>
       <li id="5">
-        <router-link to="/" @click.native="changeActive">
+        <router-link to="/personalCenter" @click.native="changeActive">
           <div class="iconPerson"></div>
           <p class="iconCharP">个人</p>
         </router-link>
