@@ -61,7 +61,7 @@ export default {
   methods:{
     ...mapMutations(["setShopVal", 'initShopList']),
     hasList() {
-      this.val = this.shopVal? this.shopVal : this.shopList[0].name
+      this.val =  this.shopVal? this.shopVal : (this.shopList.length? this.shopList[0].name: '')
     },
     getShopName() {
       let shopName = []
