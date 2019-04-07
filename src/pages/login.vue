@@ -124,105 +124,17 @@ export default {
     },
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
     submitForm() {
-      let _this = this;
-      if (_this.key) {
+      if (this.key) {
         //如果请求失败，只可以请求一次
-        _this.key = false;
-        
-        getApi();
-        _this.display = "none";
-        _this.display1 = "none";
-      }
-      //登陆接口
-      function getApi() {
-        mango.loading('open')
-        var Name = _this.inputValue1
-        var Pwd = _this.inputValue2 
-        // let asToken,reToken,saveTime
-        // indexModel.getToken(Name,md5(Pwd)).then(res => {
-        //   if(res.data) {
-        //     asToken = res.data.access_token
-        //     reToken = res.data.refresh_token
-        //     saveTime = res.data.expires_in
-        //     localStorage.setItem("loginData", JSON.stringify(res.data));
-        //   }
-        // })
-        const url = `${mango.port}app/login.api`
-      // return new Promise((resolve, reject) => {
-      // if(asToken) {
-      axios({
-        method: 'post',
-        url: url,
-        headers: {
-          'UUID': 'e10adc3949ba59abbe56e057f20f883e'
-        },
-        timeout: 10000,
-        params: {
-          // account: '18080028',
-          account:Name,
-          password: md5(Pwd)
-          // access_token: asToken
-        }
-      })
-        .then((res) => {
-          mango.loading('close')
-          let status = res.data.status  
-          if(res.status == 200){   //状态200，请求成功
-            _this.login(Name, _this.inputValue2)
-            if(status == 0){           //如果为0，账号或密码错误，出现弹框。
-            _this.display = 'block' 
-            _this.key = true
-            
-            }else{  
-              //账号密码正确，跳转页面。
-              res = res.data.data
-              let shops = JSON.stringify(res.shops)
-              _this.$store.commit('setPersonMsg',res)
-              let shopsArr = `${shops}`
-              let ajaxData = `{
-                "account": "${res.account}",
-                "tenantId": "${res.tenantId}",
-                "token": "${res.token}",
-                "uuid": "${res.uuid}",
-                "timestamp": "${Date.parse(new Date())}",
-                "name": "${res.username}",
-                "phone": "${res.mobile}",
-                "sex": "${res.sex}",
-                "type":"${res.type}"
-              }`
-              // 将账号所属店铺存储到本地存储
-              // let shopsArr = res.shops
-              // let shopsStr = ''
-              // shopsArr.forEach(element => {
-              //   shopsStr += `"{'id': '${element.id}', 'name': '${element.name}'}",`
-              // })
-              // shopsStr = `[${shopsStr}]`
-              // localStorage.setItem("shops", shopsStr);
-                localStorage.setItem("ajaxData", ajaxData);
-                localStorage.setItem("shops", shopsArr);
-                if (_this.checked) {
-                  _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
-                } else {
-                  _this.setAccountMsg("", "");
-                }
-                _this.$router.push({ path: "/" });
-              }
-            } else {
-              //状态不为200，请求失败
-              console.log(res.status);
-            }
-          })
-          .catch(function(error) {
-            mango.loading("close");
-            console.log("返回错误方法：", error);
-            _this.display1 = "block";
-            _this.key = true;
-          });
-        // }
+        this.key = false;
+        this.display = "none";
+        this.display1 = "none";
+        this.login(this.inputValue1, this.inputValue2)
       }
     },
     login(account, pwd) {
       indexModel.getToken(account,md5(pwd)).then(res => {
+        mango.loading('close')
         let data = res.data
         if(data) {
           // 将账号信息添加到对象
@@ -239,6 +151,8 @@ export default {
           this.$root.tokenTime = setInterval(() => {
             refreshToken.call(this)
           }, 7000000)
+          // 登陆成功跳转页面
+          this.$router.push({ path: "/" });
         }
       })
     },
@@ -264,6 +178,73 @@ export default {
     },
     forgetPwd: function() {
       this.$router.push({ path: "/ForgetPwd" });
+    },
+    //登陆接口
+    getApi() {
+      mango.loading('open')
+      var Name = _this.inputValue1
+      var Pwd = _this.inputValue2 
+      const url = `${mango.port}app/login.api`
+    axios({
+      method: 'post',
+      url: url,
+      headers: {
+        'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+      },
+      timeout: 10000,
+      params: {
+        // account: '18080028',
+        account:Name,
+        password: md5(Pwd)
+        // access_token: asToken
+      }
+    })
+      .then((res) => {
+        mango.loading('close')
+        let status = res.data.status  
+        if(res.status == 200){   //状态200，请求成功
+          if(status == 0){           //如果为0，账号或密码错误，出现弹框。
+          _this.display = 'block' 
+          _this.key = true
+          
+          }else {
+            //账号密码正确，跳转页面。
+            res = res.data.data
+            let shops = JSON.stringify(res.shops)
+            _this.$store.commit('setPersonMsg',res)
+            let shopsArr = `${shops}`
+            let ajaxData = `{
+              "account": "${res.account}",
+              "tenantId": "${res.tenantId}",
+              "token": "${res.token}",
+              "uuid": "${res.uuid}",
+              "timestamp": "${Date.parse(new Date())}",
+              "name": "${res.username}",
+              "phone": "${res.mobile}",
+              "sex": "${res.sex}",
+              "type":"${res.type}"
+            }`
+              localStorage.setItem("ajaxData", ajaxData);
+              localStorage.setItem("shops", shopsArr);
+              if (_this.checked) {
+                _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
+              } else {
+                _this.setAccountMsg("", "");
+              }
+              _this.$router.push({ path: "/" });
+            }
+          } else {
+            //状态不为200，请求失败
+            console.log(res.status);
+          }
+        })
+        .catch(function(error) {
+          mango.loading("close");
+          console.log("返回错误方法：", error);
+          _this.display1 = "block";
+          _this.key = true;
+        });
+      // }
     }
   }
 };

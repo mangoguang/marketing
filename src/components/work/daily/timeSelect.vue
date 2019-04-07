@@ -48,14 +48,10 @@ export default {
       })
     },
     getDailyData() {
-      indexModel.getDailyData({
-        tenantId: this.ajaxData.tenantId,
-        account: this.ajaxData.account,
-        date: '2018-11-14'
-      }).then(res => {
-        if (res.data) {
-          console.log(res.data)
-        }
+      mango.getAjax('v2/app/address', {
+        addressId: '1112612691244748801'
+      }).then((res) => {
+        console.log('获取数据', res)
       })
     },
     getTimeInterval(obj) {
