@@ -1,7 +1,7 @@
 <template>
     <div class="uploadBox">
       <ul class="upload_list">
-        <li v-for="(imgs,index) in picVal" :key="index" @click="preview(index)">
+        <li v-for="(imgs,index) in picVal" :key="index" @click="preview">
           <img :src="imgs.url" alt="">
         </li>
       </ul>
@@ -92,9 +92,8 @@ export default {
     isUpload(){
       return this.picVal;
     },
-    preview(i){
-
-      this.$router.push({name:'/previewImg',params:{path:this.path,picVal:this.picVal}});
+    preview(){
+      this.$router.push({path:'/previewImg',query:{picVal:JSON.stringify(this.picVal)}});
     }
   },
   destroyed(){

@@ -137,6 +137,7 @@ export default {
     border-bottom: 1px solid #e1e1e1;
     margin-bottom: 13.333vw;
     background: #fff;
+    padding-left: 4.266vw;
   }
 }
 

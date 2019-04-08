@@ -31,7 +31,9 @@ import productLoadMore from './modules/gallery/productList/loadmore'
 import collectLoadMore from './modules/gallery/collect'
 import feedback from './modules/personal/feedback'
 import preview from './modules/components/preview'
-
+import address from './modules/address/address'
+import addAddress from './modules/address/addAddress'
+import selectAddress from './modules/address/selectAddress'
 export default new Vuex.Store({
   modules: {
     common,
@@ -64,6 +66,9 @@ export default new Vuex.Store({
     productLoadMore,
     collectLoadMore,
     feedback,
-    preview
+    preview,
+    address,
+    addAddress,
+    selectAddress
   }
 })

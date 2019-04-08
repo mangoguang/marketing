@@ -30,7 +30,7 @@ export default {
   color:#363636;
   height:12vw;
   line-height: 12vw;
-  padding-left:4.266vw;
+  //padding-left:4.266vw;
   display:flex;
   flex-direction: row;
   align-items: center;

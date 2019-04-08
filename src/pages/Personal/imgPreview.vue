@@ -52,7 +52,7 @@ export default {
      mybanner
   },
   created(){
-    this.picVal=this.$route.params.picVal;
+    this.picVal=JSON.parse(this.$route.query.picVal);
     this.path=this.$route.params.path;
     this.len=this.picVal.length;
     this.title=this.index+"/"+this.len;
