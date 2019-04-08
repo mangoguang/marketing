@@ -18,6 +18,7 @@
 <script>
 import mango from '../../../js'
 import TimeInterval from '../../common/timeInterval'
+import Vuex, { mapState } from "vuex"
 import { IndexModel } from "../../../utils/index";
 const indexModel = new IndexModel();
 export default {
@@ -29,6 +30,11 @@ export default {
       timeBtns: mango.btnList(['今日', '本周', '本月', '本年'], 0),
       ajaxData: {}
     }
+  },
+  computed: {
+    ...mapState({
+      dateInterVal: state => state.common.dateInterVal
+    })
   },
   mounted() {
     this.ajaxData = JSON.parse(localStorage.getItem('ajaxData'))
@@ -42,7 +48,7 @@ export default {
       })
       this.getDailyData()
       // 更改数据
-      this.$emit('changeList', {
+      this.$emit('changeDailyData', {
         number: '100',
         title: 'mangoguang'
       })
@@ -55,7 +61,7 @@ export default {
       })
     },
     getTimeInterval(obj) {
-      console.log(obj)
+      // this.$refs.startDatePick.open()
     }
   }
 }

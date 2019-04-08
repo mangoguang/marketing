@@ -1,7 +1,7 @@
 <template>
   <div class="daily">
     <TimeSelect
-    @changeList="changeList" />
+    @changeDailyData="changeDailyData" />
     <DailyUl
     :list="dailyList" />
   </div>
@@ -52,8 +52,7 @@ export default {
 
   },
   methods:{
-    changeList(obj) {
-      console.log(obj)
+    changeDailyData(obj) {
       this.dailyList = [obj]
     }
   }

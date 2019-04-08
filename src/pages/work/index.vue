@@ -15,6 +15,8 @@ import WorkHeader from '../../components/work/header'
 import Footer from '../../components/Footer'
 import WorkModules from '../../components/work/workModules/'
 import Daily from '../../components/work/daily/'
+import { IndexModel } from "../../utils/";
+const indexModel = new IndexModel();
 
 export default {
   name: 'work',
@@ -31,7 +33,23 @@ export default {
     }
   },
   mounted() {
-
+    // `{
+    //           "account": "${res.account}",
+    //           "tenantId": "${res.tenantId}",
+    //           "token": "${res.token}",
+    //           "uuid": "${res.uuid}",
+    //           "timestamp": "${Date.parse(new Date())}",
+    //           "name": "${res.username}",
+    //           "phone": "${res.mobile}",
+    //           "sex": "${res.sex}",
+    //           "type":"${res.type}"
+    //         }`
+    // indexModel.getUserInfo().then(res => {
+    //   console.log('获取用户个人信息', res)
+    //   if (res.data) {
+        
+    //   }
+    // })
   },
   methods:{
 

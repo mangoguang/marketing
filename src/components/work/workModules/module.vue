@@ -1,6 +1,9 @@
 <template>
   <li class="module">
-    <div></div>
+    <div :style="{
+      background: `url(../../../../static/images/work/${obj.icon}.png)`,
+      backgroundSize: '100%'
+    }"></div>
     <h3>{{obj.title}}</h3>
   </li>
 </template>
@@ -35,7 +38,6 @@ export default {
     div{
       width: 13.3vw;
       height: 13.3vw;
-      background: #dfdfdf;
     }
     h3{
       font-size: 14px;

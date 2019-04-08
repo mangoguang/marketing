@@ -3,7 +3,8 @@ import axios from 'axios'
 // let baseUrl = 'http://10.11.8.250'
 // let baseUrl = 'http://10.11.8.229'
 // let baseUrl = 'http://172.16.8.216'
-let baseUrl = 'http://10.11.8.7'
+// let baseUrl = 'http://10.11.8.7'
+let baseUrl = 'http://172.16.10.107'
 // let baseUrl = 'http://172.16.11.144'
 let token = JSON.parse(localStorage.getItem('token'))
 export {baseUrl}

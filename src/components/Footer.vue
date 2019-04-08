@@ -72,7 +72,7 @@ export default {
       this.setChartActive(true);
     },
     isDeal() {
-      if(this.ajaxData.type === 'dealer') {
+      if(this.ajaxData.type === 3) {
         this.setChartActive(false)
         this.$router.push({path: "/ReportForms"})
       }else {
