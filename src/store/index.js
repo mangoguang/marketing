@@ -34,6 +34,8 @@ import preview from './modules/components/preview'
 import address from './modules/address/address'
 import addAddress from './modules/address/addAddress'
 import selectAddress from './modules/address/selectAddress'
+import intentionProduct from './modules/intention/intentionProduct'
+import searchProduct from './modules/intention/searchProduct'
 export default new Vuex.Store({
   modules: {
     common,
@@ -69,6 +71,8 @@ export default new Vuex.Store({
     preview,
     address,
     addAddress,
-    selectAddress
+    selectAddress,
+    intentionProduct,
+    searchProduct
   }
 })

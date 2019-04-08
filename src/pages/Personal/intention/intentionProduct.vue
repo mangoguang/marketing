@@ -1,20 +1,14 @@
 <template>
     <div class="address">
-      <mybanner :title="title" style="background:#fff;"></mybanner>
+      <mybanner :title="title" style="background:#fff;">
+        <button type="button" @click="update">保存</button>
+      </mybanner>
       <div class="list">
-        <div class="noRecord">
-          <p>暂无地址</p>
-          <p>请添加地址哦~</p>
-          <img src="../../../assets/imgs/arrow-down.png" alt="">
-        </div>
-       <customer-address v-for="(item,index) in list" :key="index" :index="index" @edit="edit" @del="del">
-          <div class="address_li">
-            <h1>三居室&nbsp;&nbsp;&nbsp;&nbsp;电梯房</h1>
-            <p>广东省东莞市厚街镇 双岗上环工业区 艾慕工业园</p>
-          </div>
-        </customer-address> 
+        <customer-product v-for="(item,index) in list" :key="index" :index="index" :num="item.num" @edit="edit" @add="add" @cut="cut">
+          {{item.item}}
+        </customer-product>
       </div>
-      <btn text='添加新地址' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
+      <btn text='添加意向产品' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
     </div>
 </template>
 
@@ -22,24 +16,24 @@
 import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import Btn from '../../../components/personal/Btn'
-import customerAddress from '../../../components/mySwipe/customerAddress'
+import customerProduct from '../../../components/mySwipe/customerProduct'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
-      list:[1,2,3,4]
     }
   },
   components:{
      mybanner,
      Btn,
-     customerAddress
+     customerProduct
   },
   computed:{
-    ...mapState('address',[
-      'title'
+    ...mapState('intentionProduct',[
+      'title',
+      'list'
     ])
   }, 
   created(){
@@ -50,14 +44,23 @@ export default {
     
   },
   methods:{
-   ...mapMutations('address',['updateAddress','delAddress']),
+   ...mapMutations('intentionProduct',['updateList','delList']),
+   update(){
+
+   },
    jump(){
-     this.$router.push({path:'/addAddress'});
+     this.$router.push({path:'/searchProduct'});
    },
    edit(i){
      console.log(i);
    },
    del(i){
+     console.log(i);
+   },
+   add(i){
+     console.log(i);
+   },
+   cut(i){
      console.log(i);
    }
   }
@@ -72,6 +75,15 @@ export default {
   overflow-x: hidden;
   position: relative;
   box-sizing: border-box;
+ 
+  .btnBox{
+    position:relative;
+    span{
+      color:#007AFF;
+      font-size: 3.733vw;
+    }
+  }
+  
    .list{
     margin-top:16.466vw;
     width:100vw;

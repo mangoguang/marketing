@@ -5,7 +5,11 @@
         <div class="yan-box-value" @touchstart='start' @touchmove="move" @touchend="end">
           <slot></slot>
         </div>
-        <div class="yan-edit"><div class="yan-edit-btn" @click="edit(index)">编辑</div></div>
+        <div class="yan-edit">
+            <i class="cut" @click="cut(index)"></i>
+            <span>{{num}}</span>
+            <i class="add" @click="add(index)"></i>
+        </div>
       </div>
     </div>
     <div class="yan-del" ref="yanDel" @click="del(index)">删除</div>
@@ -14,7 +18,7 @@
 
 <script>
 export default {
-  props:['index','id'],
+  props:['index','num'],
   data(){
     return{
       startX:0,
@@ -83,8 +87,11 @@ export default {
         listItems[i].style="transform:translateX(0px)";
       }
     },
-    edit(index){
-      this.$emit('edit',index);
+    cut(index){
+      this.$emit('cut',index);
+    },
+    add(index){
+      this.$emit('add',index);
     },
     del(index){
       this.$emit('del',index);
@@ -122,20 +129,29 @@ export default {
       }
      
       .yan-edit{
+        width:16.8vw;
         padding-right:4.266vw;
-        .yan-edit-btn{
-          width:13.33vw;
-          height:6.666vw;
-          font-size:3.2vw;
-          color:#999;
-          border:1px solid #ccc;
-          outline:none;
-          background: #fff;
-          border-radius:2.666vw;
-          text-align: center;
-          line-height: 6.666vw;
-          overflow: hidden;
+        display: flex;
+        flex-direction:row;
+        align-items: center;
+        justify-content:space-between;
+        font-size: 4vw;
+        color:#363636;
+        .cut{
+          display: block;
+          width:3.466vw;
+          height:3.466vw;
+          background: url("../../assets/imgs/cutP.png") no-repeat;
+          background-size: 100% 100%;
         }
+        .add{
+          display: block;
+          width:3.466vw;
+          height:3.466vw;
+          background: url("../../assets/imgs/addP.png") no-repeat;
+          background-size: 100% 100%;
+        }
+        
       }
     }
   }
