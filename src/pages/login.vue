@@ -152,7 +152,27 @@ export default {
             refreshToken.call(this)
           }, 7000000)
           // 登陆成功跳转页面
-          this.$router.push({ path: "/" });
+          this.getUserInfo()
+        }
+      })
+    },
+    // 获取用户个人信息
+    getUserInfo() {
+      indexModel.getUserInfo().then(res => {
+        res = res.data
+        if (res) {
+          let ajaxData = {
+            account: res.account,
+            tenantId: res.tenantId,
+            timestamp: Date.parse(new Date()),
+            name: res.username,
+            phone: res.phone,
+            sex: res.sex,
+            type:res.type
+          }
+          localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
+          this.$root.ajaxData = ajaxData
+          this.$router.push({ path: "/" })
         }
       })
     },

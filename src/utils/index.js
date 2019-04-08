@@ -250,6 +250,18 @@ class IndexModel extends Request {
       params: obj
     })
   }
+  //获取用户个人数据
+  getUserInfo(obj) {
+    return mango.getAjax('v1/app/userinfo', obj)
+  }
+
+  /* 
+    报表模块 
+  */
+  //获取总体销售额
+  getSalesData(obj) {
+    // return mango.getAjax('v1/app/userinfo', obj)
+  }
   
 }
 

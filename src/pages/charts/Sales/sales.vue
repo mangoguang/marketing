@@ -6,6 +6,7 @@
     <div class="barBox">
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
+        <span>123</span>
       </chartsTit>
       <div v-show="!salesShow" :style="{height: `100vw`}" ref="salesContainer"></div>
       <noData v-show="salesShow"></noData>
