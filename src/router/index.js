@@ -260,6 +260,11 @@ export var router = new VueRouter({
     path: '/chooseShop',
     name: 'chooseShop',
     component: resolve => require(['../pages/customer/newCustomer/chooseShop'],resolve)
+  },
+  {
+    path: '/newAddress',
+    name: 'newAddress',
+    component: resolve => require(['../pages/customer/newCustomer/newAddress'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {
