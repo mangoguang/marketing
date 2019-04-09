@@ -64,7 +64,7 @@ export default {
       name: '',
       phone: '',
       sex: '',
-      topTitle: ['客户描述', '客户需求', '洽谈记录'],
+      topTitle: ['客户描述', '意向信息', '跟进情况'],
       isShowDemand: false,
       isShowDeal: false,
       shops: []
