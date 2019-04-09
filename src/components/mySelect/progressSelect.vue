@@ -1,22 +1,25 @@
 <template>
   <div class="inputBox">
       <label>
-          <span>{{label}}</span>
-          <input :id="id" type="text" :value="value" :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
+          <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
-        <img src="../assets/imgs/rightside.png" alt="">
+        <img src="../../assets/imgs/rightside.png" alt="">
       </div>
    </div>
 </template>
 
 <script>
 export default {
-  props:['id','value','label','placeholder','showIcon'],
+  props:['value','label','placeholder','showIcon','required','path','id'],
   data(){
     return{
 
     }
+  },
+  methods:{
+  
   }
  
 }
@@ -42,7 +45,10 @@ export default {
       display: inline-block;
       width:22.4vw;
     }
-    
+    .yan-red{
+      display: inline;
+      color:#FB222B;
+    }
     
   }
   input:-moz-input-placeholder{

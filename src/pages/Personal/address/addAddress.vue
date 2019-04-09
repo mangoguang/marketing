@@ -1,14 +1,21 @@
 <template>
     <div class="addAdress">
-      <mybanner :title="title" style="border:none;background:#fff"></mybanner>
+      <mybanner :title="title" style="background:#fff"></mybanner>
       <ul class="list">
-        <li><yanInput v-bind="addressInfo" v-model="form.address" :showIcon="false" class="li_border"/></li>
-        <li>6666</li>
+        <li>
+          <area-select v-bind="formInfo.areaInfo" v-model="form.area" :showIcon="selectIcon" class="li_border"/>
+        </li>
+        <li>
+          <yan-input v-bind="formInfo.addressInfo" v-model="form.address" :showIcon="inputIcon" class="li_border"/>
+        </li>
+        <li>
+          <house-select v-bind="formInfo.houseInfo" v-model="form.house" :showIcon="selectIcon" class="li_border"/>
+        </li>
+        <li>
+          <elevator-select v-bind="formInfo.elevatorInfo" v-model="form.elevator" :showIcon="selectIcon"/>
+        </li>
       </ul>
-      <div class="remark">
-        <p>备注信息</p>
-        <textarea name="" id="" placeholder="填写备注信息" v-model="form.remark"></textarea>
-      </div>
+      <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark"/>
       <btn text='保存' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
     </div>
 </template>
@@ -18,6 +25,10 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import Btn from '../../../components/personal/Btn'
 import yanInput from '../../../components/yanInput'
+import yanTextarea from '../../../components/yanTextarea'
+import areaSelect from '../../../components/mySelect/areaSelect'
+import houseSelect from '../../../components/mySelect/houseSelect'
+import elevatorSelect from '../../../components/mySelect/elevatorSelect'
 import { Picker, Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 Vue.component(Picker.name, Picker);
@@ -26,20 +37,29 @@ export default {
     return {
       form:{
         address:'',
-        remark:''
-      }
+        remark:'',
+        area:'',
+        house:'',
+        elevator:''
+      },
+      selectIcon:true,
+      inputIcon:false
     
     }
   },
   components:{
      mybanner,
      Btn,
-     yanInput
+     yanInput,
+     yanTextarea,
+     areaSelect,
+     houseSelect,
+     elevatorSelect
   },
   computed:{
     ...mapState('addAddress',[
       'title',
-      'addressInfo'
+      'formInfo'
     ])
   },
   created(){
@@ -47,7 +67,7 @@ export default {
   },
   
   mounted(){
-    
+
   },
   methods:{
    jump(){
@@ -58,7 +78,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
  .addAdress{
    width:100vw;
    min-height: 100vh;
@@ -68,6 +88,7 @@ export default {
   .list{
     width:100vw;
     border-bottom: 1px solid #e1e1e1;
+    background: #fff;
     li{
       padding-left:4.266vw;
       .li_border{
@@ -76,44 +97,6 @@ export default {
       }
     }
   }
-  .remark{
-    p{
-      color:#363636;
-      font-size:4vw;
-      padding-left: 4.266vw;
-      margin-top:4vw;
-      margin-bottom:2.666vw;
-    }
-    textarea::-moz-placeholder{
-      color:#999;
-      font-size:4vw;
-    }
-     textarea:-moz-placeholder{
-      color:#999;
-      font-size:4vw;
-    }
-    textarea::-ms-input-placeholder{
-      color:#999;
-      font-size:4vw;
-    }
-    textarea::-webkit-input-placeholder{
-      color:#999;
-      font-size:4vw;
-    }
-    textarea{
-      color:#363636;
-      font-size:4vw;
-      width:100vw;
-      min-height: 23.733vw;
-      background: #fff;
-      outline: none;
-      resize: none;
-      border:1px solid #e1e1e1;
-      border-left:none;
-      border-right: none;
-      padding:4.266vw;
-      box-sizing: border-box;
-    }
-  }
+
  }
 </style>

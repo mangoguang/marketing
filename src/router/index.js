@@ -183,6 +183,16 @@ export var router = new VueRouter({
     name: '/searchProduct',
     component: resolve => require(['../pages/Personal/intention/searchProduct'],resolve)
   },
+  {
+    path: '/followRecord',
+    name: '/followRecord',
+    component: resolve => require(['../pages/Personal/intention/followRecord'],resolve)
+  },
+  {
+    path: '/intention',
+    name: '/intention',
+    component: resolve => require(['../pages/Personal/intention/addIntention'],resolve)
+  },
   //金管家模块-我的收藏
   {
     path: '/collectList',
