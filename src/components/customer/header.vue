@@ -68,8 +68,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../js'
+import { deepclone } from "../../utils/customer";
 Vue.use(Vuex)
-
 export default {
   name: 'customerHeader',
   data () {
@@ -78,10 +78,11 @@ export default {
       ifShow: 'hide',
       navShow: true,
       ajaxData: {},
-      customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
+      customerClassifyList: mango.btnList(['全部', '紧急降序', '级别A到C', '级别C到A'], 0),
       selectBtnText: '全部',
       searchKey: '',
-      ajaxData:[]
+      ajaxData:[],
+      key: true
     }
   },
   computed: {
@@ -96,8 +97,8 @@ export default {
   },
   watch: {
     'customerAjaxParams': function(val) {
-      console.log('变化后的customerAjaxParams参数：', val)
-      if (val.page === 1) {
+      // console.log('变化后的customerAjaxParams参数：', val)
+      if (val.page === 1 && this.key) {
         this.getCustomerList()
       }
     },
@@ -107,8 +108,11 @@ export default {
       }
     },
     rightContainerStatus(val) {
-      console.log(123,this.rightContainerStatus)
-      this.getCustomerList()
+      this.key = false
+      if(val === 'hideRightContainer') {
+        this.getCustomerList()
+        this.key = true
+      }
     }
   },
   created() {
@@ -169,44 +173,46 @@ export default {
     // 选择客户类型
     customerClassifySelect(i) {
       this.ifShow = 'hide'
-      let [temp, tempObj] = [this.customerAjaxParams, {}]
-      // 对象深拷贝
-      for (let key in temp) {
-        tempObj[key] = temp[key]
-      }
+      let parmas = deepclone(this.customerAjaxParams, {})
       if (this.selectBtnText === '全部' || this.selectBtnText != this.customerClassifyList[i].name) {
         this.selectBtnText = this.customerClassifyList[i].name
         mango.changeBtnStatus(this.customerClassifyList, i)
         switch(i) {
           case 0:
-            tempObj.uo = 1
-            tempObj.io = 1
-            tempObj.page = 1
-            tempObj.startTime = ''
-            tempObj.endTime = ''
+            parmas.sort = ''
+            parmas.u = ''
+            parmas.sd = ''
+            parmas.ed = ''
             this.setAllLoaded(false)
-            this.setCustomerAjaxParams(tempObj)
-            console.log('全部', this.customerAjaxParams)
+            this.setCustomerAjaxParams(parmas)
+            // console.log('全部', this.customerAjaxParams)
             break
           case 1:
-            tempObj.uo = 1
-            tempObj.io = 0
-            tempObj.page = 1
-            tempObj.startTime = ''
-            tempObj.endTime = ''
+            parmas.sort = 'u'
+            parmas.u = ''
+            parmas.sd = ''
+            parmas.ed = ''
             this.setAllLoaded(false)
-            this.setCustomerAjaxParams(tempObj)
-            console.log('紧急降序', this.customerAjaxParams)
+            this.setCustomerAjaxParams(parmas)
+            // console.log('紧急降序', this.customerAjaxParams)
             break
           case 2:
-            tempObj.uo = 0
-            tempObj.io = 1
-            tempObj.page = 1
-            tempObj.startTime = ''
-            tempObj.endTime = ''
+            parmas.sort = 'la'
+            parmas.u = ''
+            parmas.sd = ''
+            parmas.ed = ''
             this.setAllLoaded(false)
-            this.setCustomerAjaxParams(tempObj)
-            console.log('关键降序', this.customerAjaxParams)
+            this.setCustomerAjaxParams(parmas)
+            // console.log('级别降序', this.customerAjaxParams)
+            break
+          case 3:
+            parmas.sort = 'ld'
+            parmas.u = ''
+            parmas.sd = ''
+            parmas.ed = ''
+            this.setAllLoaded(false)
+            this.setCustomerAjaxParams(parmas)
+            // console.log('级别降序', this.customerAjaxParams)
             break
           default:
             break
