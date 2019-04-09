@@ -1,7 +1,8 @@
 <template>
   <li class="category">
     <div class="icon" :style="{background: bgColor}">
-      <img src="../../../assets/imgs/ms-policy.png" alt="">
+      <!-- <img src="../../../assets/imgs/ms-policy.png" alt=""> -->
+      <img :src="list.image" alt="">
     </div>
     <div class="text">
       <p>{{ list.name }}</p>
@@ -33,8 +34,9 @@ export default {
     justify-content: center;
     margin: 0 auto;
     img {
-      width: auto;
-      height: auto;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
     }
   }
   .text {
