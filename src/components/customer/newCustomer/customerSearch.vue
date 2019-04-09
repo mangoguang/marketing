@@ -59,11 +59,10 @@ export default {
     toCustomerInfo() {
       let testPhoneNum = variable.testPhone(this.phone)
       if(testPhoneNum) {
-          mango.getAjax(this, 'customer/phone', {
-          phone: this.phone,
-          account: this.ajaxData.account,
-          tenantId: this.ajaxData.tenantId
-        }, 'v2').then((res) => {
+          mango.getAjax('v3/app/customer/check', {
+            type: 'phone',
+            value: this.phone
+          }).then((res) => {
           res = res.data
           if (res) {
             this.existStatus = true
