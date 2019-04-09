@@ -4,17 +4,18 @@
     type="button"
     @click="openDatePick"
     ></button>
+    <DoubleDatePick ref="doubleDatePick" :show="datePickShow" />
   </div>
 </template>
 
 <script>
-// import mango from '../../../js'
+import DoubleDatePick from './doubleDatePick'
 export default {
   name: 'timeInterval',
-  components: {},
+  components: {DoubleDatePick},
   data() {
     return{
-
+      datePickShow: false
     }
   },
   mounted() {
@@ -24,11 +25,7 @@ export default {
   },
   methods: {
     openDatePick() {
-      console.log('suss')
-      this.$emit('getTimeInterval', {
-        startTime: '2019-04-04',
-        endTime: '2119-04-04'
-      })
+      this.$refs.doubleDatePick.$refs.startDatePick.open()
     }
   }
 }

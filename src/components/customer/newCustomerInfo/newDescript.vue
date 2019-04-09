@@ -98,7 +98,8 @@
         year-format="{value} 年"
         month-format="{value} 月"
         date-format="{value} 日"
-        @confirm="setStoreDate1">
+        @confirm="setStoreDate1"
+        >
       </mt-datetime-picker>
     </div>
   </div>

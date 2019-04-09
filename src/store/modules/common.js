@@ -1,22 +1,12 @@
 const state = {
-  // ajaxData: {}
+  dateInterVal: {}  // 日期插件的日期区间
 }
 
 const mutations = {
-  // setAjaxData: (state, obj) => state.ajaxData = obj
-}
-
-const actions = {
-
-}
-
-const getters = {
-
+  setDateInterVal: (state, obj) => state.dateInterVal = obj
 }
 
 export default {
   state,
-  getters,
-  actions,
   mutations
 }

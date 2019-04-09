@@ -101,6 +101,7 @@ export default {
     padding: 0 5vw;
     text-align: right;
     color: #007aff;
+    font-weight: bold;
   }
 }
 </style>

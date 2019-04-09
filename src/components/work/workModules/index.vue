@@ -21,9 +21,9 @@ export default {
   data() {
     return{
       list: [
-        { title: '公告' },
-        { title: '日报' },
-        { title: '订单查询' }
+        { title: '公告', icon: 'noticeIcon' },
+        { title: '日报', icon: 'dailyReportIcon' },
+        { title: '订单查询', icon: 'orderSearchIcon' }
       ]
     }
   },

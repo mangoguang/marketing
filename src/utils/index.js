@@ -1,4 +1,5 @@
 import { Request } from '../Request/request'
+import mango from '../js/'
 
 
 class IndexModel extends Request {
@@ -248,6 +249,18 @@ class IndexModel extends Request {
       url:'/v2/app/daily',
       params: obj
     })
+  }
+  //获取用户个人数据
+  getUserInfo(obj) {
+    return mango.getAjax('v1/app/userinfo', obj)
+  }
+
+  /* 
+    报表模块 
+  */
+  //获取总体销售额
+  getSalesData(obj) {
+    // return mango.getAjax('v1/app/userinfo', obj)
   }
   
 }

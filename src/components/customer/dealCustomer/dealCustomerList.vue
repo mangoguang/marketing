@@ -8,13 +8,10 @@
           :key="`customerList${index}`"
           @click="getDetails(index)"
         >
-          <!-- <span>{{index + 1}}</span> -->
-          <!-- <i :class="`important${item.important}`"></i> -->
+          <i :class="`important${item.level}`"></i>
           <span>{{`*${item.username.slice(1, 5)}`}}</span>
-          <!-- <span>{{item.sex == 0 ? '未知' : item.sex == 1? '男' : '女'}}</span> -->
           <span>{{`******${item.phone.slice(6, 11)}`}}</span>
-          <!-- <span>{{item.createDate}}</span> -->
-          <span>{{item.recordTime}}</span>
+          <span>{{item.followDate}}</span>
         </li>
       </mt-loadmore>
     </ul>
@@ -22,6 +19,7 @@
 </template>
 
 <script>
+import {deepclone} from '../../../utils/customer'
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations, mapState } from "vuex";
@@ -51,7 +49,8 @@ export default {
         leftTitle: '客户信息',
         centerTitle: '电话',
         rightTitle: '战败时间'
-      }
+      },
+      parmas: {}
     };
   },
   computed: {
@@ -61,7 +60,8 @@ export default {
       isSelectStatus: state => state.rightContainer.isSelectStatus,
       dealScroll: state => state.customerScroll.dealScroll,
       dealLength: state => state.dealCustomerList.dealLength,
-      dealTime: state => state.rightContainer.dealTime
+      dealTime: state => state.rightContainer.dealTime,
+      customerAjaxParams: state => state.customer.customerAjaxParams
     })
   },
   watch: {
@@ -102,9 +102,8 @@ export default {
   },
   created() {
     //获取本地缓存信息
-    let ajaxData = localStorage.getItem("ajaxData");
-    this.ajaxData = JSON.parse(ajaxData);
-    this.account = this.ajaxData.account.trim();
+    this.parmas = deepclone(this.customerAjaxParams, this.parmas)
+    this.parmas.type = 'Closed'
     if(!this.isSelectStatus) {
       this.loadData()
     } else {
@@ -196,16 +195,12 @@ export default {
     },
     getData(page, limit, startTime, endTime) {
       this.key = false;
-      mango.getAjax(this,"makedeal",{
-            account: this.account,
-            page: page,
-            limit: limit,
-            // type:1,
-            startTime,
-            endTime,
-            key: ""
-      },"v2")
-        .then(res => {
+      this.parmas.page = page
+      this.parmas.limit = limit
+      this.parmas.sd = startTime
+      this.parmas.ed = endTime
+      mango.getAjax('v3/app/customer/list', this.parmas).then((res) => {
+        if (res) {
           this.allLoaded = false
           this.allPage = Math.ceil(res.data.total / 10);
           if (page <= 3) {
@@ -220,6 +215,34 @@ export default {
             this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
             this.setDealCustomerList(this.dealCusList);
           }
+          // this.setCustomerList(res.data)
+        }
+      })
+
+      // mango.getAjax(this,"makedeal",{
+      //       account: this.account,
+      //       page: page,
+      //       limit: limit,
+      //       // type:1,
+      //       startTime,
+      //       endTime,
+      //       key: ""
+      // },"v2")
+      //   .then(res => {
+      //     this.allLoaded = false
+      //     this.allPage = Math.ceil(res.data.total / 10);
+      //     if (page <= 3) {
+      //       this.setDealCustomerList(res.data);
+      //       this.dealCusList = this.dealCustomerList;
+      //       this.$emit("changeResultTit",`全部客户 (${this.dealCustomerList.total == null? "0": this.dealCustomerList.total})`);
+      //     } else {
+      //       //筛选和非筛选时候缓存的limit
+      //       this.getDiffLimit()
+      //       //上啦刷新加载数据
+      //       this.addPullData = res.data;
+      //       this.dealCusList.records = this.dealCusList.records.concat(this.addPullData.records);
+      //       this.setDealCustomerList(this.dealCusList);
+      //     }
           //初始进来
           // this.allLoaded = false
           // this.allPage = Math.ceil(res.data.total / 10);
@@ -230,7 +253,7 @@ export default {
           // // this.dealCusList = this.dealCustomerList.records;
           // // this.setDealLength(res.data.total)
           // this.setHeader(res.data.total)
-        });
+        // });
     },
     // setHeader(length) {
     //   this.$emit("changeResultTit",`全部客户 (${length == 0? "0": length})`);
@@ -337,6 +360,25 @@ export default {
     li:last-child {
       border-bottom: 1px solid #e1e1e1;
       // margin-bottom: 3vw;
+    }
+    i{
+      width: 10.6vw;
+      height: 4vw;
+    }
+    .importantA{
+      background: url(../../../assets/imgs/A.png) no-repeat;
+      background-size: auto 100%;
+      // background-position: center;
+    }
+    .importantB{
+      background: url(../../../assets/imgs/B.png) no-repeat;
+      background-size: auto 100%;
+      // background-position: center;
+    }
+    .importantC{
+      background: url(../../../assets/imgs/C.png) no-repeat;
+      background-size: auto 100%;
+      // background-position: center;
     }
   }
 }

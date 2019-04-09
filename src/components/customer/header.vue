@@ -113,12 +113,7 @@ export default {
   },
   created() {
     // 获取本地存储信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
-    this.customerAjaxParams.account = this.ajaxData.account
-    this.customerAjaxParams.tenantId = this.ajaxData.tenantId
-    this.customerAjaxParams.account = this.ajaxData.account
-    this.customerAjaxParams.key = ''
+    this.customerAjaxParams.type = 'New'
     this.setCustomerAjaxParams(this.customerAjaxParams)
     if(this.headerStatus[0].status){
       this.getCustomerList()
@@ -156,7 +151,7 @@ export default {
     },
     // 显示右侧边栏
     showRightContainer() {
-      console.log('显示侧边栏。')
+      // console.log('显示侧边栏。')
       this.setRightContainerStatus('show')
     },
     // 显示类型选择列表
@@ -228,7 +223,7 @@ export default {
       this.customerAjaxParams.page = 1
       this.setAllLoaded(false)
       this.setCustomerAjaxParams(this.customerAjaxParams)
-      mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
+      mango.getAjax('v3/app/customer/list', this.customerAjaxParams).then((res) => {
         if (res) {
           this.setCustomerList(res.data)
         }

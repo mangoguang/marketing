@@ -194,7 +194,7 @@ export default {
       this.getLimit()
       let tempage = (this.baceLimit - 30)/10
       this.page = 3 + tempage
-      this.getOrderList(1,this.baceLimit)
+      // this.getOrderList(1,this.baceLimit)
     },
     //加载筛选数据
     loadSelectData(time) {
@@ -202,7 +202,7 @@ export default {
         this.getSelectLimit()
         let tempage = (this.baceLimit - 30)/10
         this.page = 3 + tempage
-        this.getOrderList(1,this.baceLimit, time.startTime, time.endTime)
+        // this.getOrderList(1,this.baceLimit, time.startTime, time.endTime)
       }
     },
     //下拉加载数据
@@ -210,7 +210,7 @@ export default {
       if (this.page < this.allPage) {
         this.allLoaded = true
         this.page ++;
-        this.getOrderList(this.page, this.limit, startTime, endTime);
+        // this.getOrderList(this.page, this.limit, startTime, endTime);
       }else {
         mango.tip('没有更多数据了')
       }

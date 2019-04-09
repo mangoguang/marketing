@@ -158,6 +158,31 @@ export var router = new VueRouter({
     name: '/previewImg',
     component: resolve => require(['../pages/Personal/imgPreview'],resolve)
   },
+  {
+    path: '/address',
+    name: '/address',
+    component: resolve => require(['../pages/Personal/address/address'],resolve)
+  },
+  {
+    path: '/addAddress',
+    name: '/addAddress',
+    component: resolve => require(['../pages/Personal/address/addAddress'],resolve)
+  },
+  {
+    path: '/selectAddress',
+    name: '/selectAddress',
+    component: resolve => require(['../pages/Personal/address/selectAddress'],resolve)
+  },
+  {
+    path: '/intentionProduct',
+    name: '/intentionProduct',
+    component: resolve => require(['../pages/Personal/intention/intentionProduct'],resolve)
+  },
+  {
+    path: '/searchProduct',
+    name: '/searchProduct',
+    component: resolve => require(['../pages/Personal/intention/searchProduct'],resolve)
+  },
   //金管家模块-我的收藏
   {
     path: '/collectList',

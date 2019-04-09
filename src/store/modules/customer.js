@@ -3,16 +3,13 @@ const state = {
   customerAjaxParams: {
     page: 1,   //页数
     limit: 50,    //每页条数
-    u: '',   //1:紧急排序，0：非
-    i: '',   //1关键排序
-    uo: 1,   // 1:紧急排序，0：非
-    io: 1,   // //1关键排序
-    key: '',     //搜索关键字，电话或名字
-    startTime: '',
-    endTime: '',
-    tut: 0,   //只看今天更新数据 ,优先级最高
-    tenantId: '',
-    account: ''
+    type: '',     //New:意向客户，Approved：成交客户，Closed：战败客户
+    sort: '',      //u：紧急排序，l：意向分类排序
+    sd: '',          //跟进日期
+    ed: '',
+    u: '',     //1：紧急，0不紧急
+    l: '',     // A B C
+    key: ''    //搜索关键字，电话或名字
   },
   newCustomerInfo: {},
   customerDemand: {},

@@ -2,6 +2,7 @@
 <template>
   <div class="title">
     <h3 class="chartsTit">{{text}}</h3>
+    <strong>456</strong>
     <slot></slot>
   </div>
 </template>
@@ -45,13 +46,20 @@ export default {
    
     margin: 0 4.266vw;
    
-    h6{
+    &h6 + span{
       padding-left: 3vw;
       font-size: 14px;
       line-height: 2em;
       color: #909090;
       margin-top: -20px;
     }
+    // span{
+    //   padding-left: 3vw;
+    //   font-size: 14px;
+    //   line-height: 2em;
+    //   color: #909090;
+    //   margin-top: -20px;
+    // }
   }
   .chartsTit{
     position: relative;
