@@ -46,24 +46,19 @@ export default {
       this.tipsVal = this.radioVal == '客户手机'? '手机号码已存在，' : '微信号已存在，'
     }
   },
-  created() {
-    // 获取本地存储信息
-    let [ajaxData, cityMsg] = [localStorage.getItem('ajaxData'), localStorage.getItem('cityMsg')]
-    this.ajaxData = JSON.parse(ajaxData)
-  },
   mounted() {
     this.radioVal = this.text[0].name
   },
   methods: {
     //新建客户时候验证手机/微信号
     toCustomerInfo() {
+      let type = this.radioVal === '客户手机'? 'phone' : 'wechat'
       let testPhoneNum = variable.testPhone(this.phone)
       if(testPhoneNum) {
-          mango.getAjax(this, 'customer/phone', {
-          phone: this.phone,
-          account: this.ajaxData.account,
-          tenantId: this.ajaxData.tenantId
-        }, 'v2').then((res) => {
+        mango.getAjax('v3/app/customer/check', {
+          value: this.phone,
+          type: type
+        }).then((res) => {
           res = res.data
           if (res) {
             this.existStatus = true

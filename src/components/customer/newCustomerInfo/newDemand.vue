@@ -1,9 +1,14 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'">
+      <li is="customerLi" :leftText="'意向产品'" :start="'*'">
         <input v-model="newCustomerInfo.intention" placeholder="请填写意向产品" type="text">
       </li>
+      <li is="shopSelect"  @shopChange="shopChange"></li>
+      <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
+        <span :style="timeColor">{{turnDate(newCustomerInfo.storeDate) || '请选择进店日期'}}</span>
+      </li>
+      <li is="leaveStoreSelect" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
       <li is="customerLi" :leftText="'颜色偏好'" :icon="true" @click.native="selectColorPref">
         <span >{{newCustomerInfo.colorPref || '请填写颜色偏好'}}</span>
       </li>
@@ -19,7 +24,6 @@
       <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
         <span >{{roomNum || '请填写房间数量'}}</span>
       </li>
-      <li is="shopSelect" @shopChange="shopChange"></li>
       <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
         <span>{{shopName}}</span>
       </li> -->
@@ -45,6 +49,16 @@
         @change="onValuesChange"
         ref="Picker"></mt-picker>
       </mt-popup>
+       <mt-datetime-picker
+        ref="datePicker"
+        type="date"
+        v-model="today"
+        :startDate="new Date('1930-01-01')"
+        year-format="{value} 年"
+        month-format="{value} 月"
+        date-format="{value} 日"
+        @confirm="setStoreDate">
+      </mt-datetime-picker>
     </div>
   </div>
 </template>
@@ -53,7 +67,7 @@
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import { Picker, Popup } from 'mint-ui'
-
+import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
 import customerLi from '../../../components/customer/customerLi'
@@ -67,7 +81,8 @@ export default {
   components: {
     customerLi,
     bigBtn,
-    shopSelect
+    shopSelect,
+    leaveStoreSelect
   },
   data(){
     return{
@@ -89,13 +104,16 @@ export default {
       proto: '',
       roomNum: '',
       shopName: '',
-      shopId: ''
+      shopId: '',
+      timeColor: 'color: #999',
+      today: new Date()
    }
   },
   computed: {
     ...mapState({
       newCustomerInfo: state => state.customer.newCustomerInfo,
-      shopVal: state => state.select.shopVal
+      shopVal: state => state.select.shopVal,
+      leaveStoreVal: state => state.select.leaveStoreVal
     })
   },
   created() {
@@ -109,9 +127,34 @@ export default {
     // this.getDemand()
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo",'setShopVal']),
+    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal']),
     shopChange(val) {
       this.setShopVal(val)
+    },
+    //选择门店
+    leaveStoreChange(val) {
+      // console.log('sex改变了：', val)
+      this.setLeaveStoreVal(val)
+      this.newCustomerInfo.leaveStore = val
+    },
+    //打开日期选择插件
+    selectStoreDate() {
+      this.$refs.datePicker.open()
+    },
+    //选择日期
+    setStoreDate(value) {
+      this.timeColor = 'color: #363636'
+      this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(value)[1])
+    },
+    turnDate(date) {
+      if (date) {
+        let arr = date.split('-')
+        if (arr.length > 1) {
+          return `${arr[0]}年${arr[1]}月${arr[2]}日`
+        } else {
+          return date
+        }
+      }
     },
     // getShopName() {
     //   let shopName = []
