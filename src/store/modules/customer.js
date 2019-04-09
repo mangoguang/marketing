@@ -2,7 +2,7 @@ const state = {
   customerList: [],
   customerAjaxParams: {
     page: 1,   //页数
-    limit: 50,    //每页条数
+    limit: 30,    //每页条数
     type: '',     //New:意向客户，Approved：成交客户，Closed：战败客户
     sort: '',      //u：紧急排序，l：意向分类排序
     sd: '',          //跟进日期

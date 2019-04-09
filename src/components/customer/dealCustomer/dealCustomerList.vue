@@ -9,9 +9,9 @@
           @click="getDetails(index)"
         >
           <i :class="`important${item.level}`"></i>
-          <span>{{`*${item.username.slice(1, 5)}`}}</span>
-          <span>{{`******${item.phone.slice(6, 11)}`}}</span>
-          <span>{{item.followDate}}</span>
+          <span class="name">{{`*${item.username.slice(1, 5)}`}}</span>
+          <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span>
+          <span class="date">{{item.followDate}}</span>
         </li>
       </mt-loadmore>
     </ul>
@@ -159,6 +159,7 @@ export default {
         this.page ++;
         this.getData(this.page, this.limit, startTime, endTime);
       }else {
+        this.allLoaded = true
         mango.tip('没有更多数据了')
       }
     },
@@ -286,7 +287,7 @@ export default {
     },
     //详细订单信息
     getDetails(index) {
-      let id = this.dealCustomerList.records[index].customerId
+      let id = this.dealCustomerList.records[index].accntId
       // this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], 0))
       this.setTabStatus(mango.btnList(['订单信息', '需求信息'], 0))
       mango.getAjax(this,"customerinfo",{
@@ -325,27 +326,34 @@ export default {
   // margin-bottom: 20vw;
   ul {
     border-top: 1px solid #e1e1e1;
+    margin-top: -1vw;
     // border-bottom: 1px solid #e1e1e1;
-    padding-left: 4.266vw;
     color: #999;
     font-size: 4.26vw;
     line-height: 11.73vw;
     padding-bottom: 40vw;
+    box-sizing: border-box;
+    background: #f8f8f8;
     li {
       display: flex;
       justify-content: space-between;
       padding-right: 3.86vw;
-      border-top: 1px solid #e1e1e1;
-      span:nth-child(1) {
+      // border-top: 1px solid #e1e1e1;
+      align-items: center;
+      height: 17.33vw;
+      margin-top: 1vw;
+      background: #fff;
+      padding-left: 4.266vw;
+      .name {
         color: #363636;
         flex: 0.5;
       }
-      span:nth-child(3) {
-        color: #363636;
+      .phone {
         flex: 0.4;
       }
-      span:nth-child(2) {
+      .date {
         flex: 0.5;
+        color: #363636;
       }
       // span:nth-child(4) {
       //   flex: 0.5;
@@ -364,6 +372,7 @@ export default {
     i{
       width: 10.6vw;
       height: 4vw;
+      margin-right: -3vw;
     }
     .importantA{
       background: url(../../../assets/imgs/A.png) no-repeat;

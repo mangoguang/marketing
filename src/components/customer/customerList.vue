@@ -118,7 +118,7 @@ export default {
         res = res.data
         if (res) {
           if (res.records) {
-            if (res.records.length < 50) {
+            if (res.records.length < 30) {
               this.setAllLoaded(true)
             }
             this.customerList.records = this.customerList.records.concat(res.records)

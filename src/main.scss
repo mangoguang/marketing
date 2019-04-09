@@ -25,17 +25,18 @@
       // display: inline-block;
     }
     li:nth-child(1){
-      flex: 0.55;
+      flex: 0.7;
       // justify-content: space-around;
       align-items: center;
     }
     li:nth-child(2){
-      flex: 0.6;
+      flex: 0.4;
       // flex-direction: column;
       align-items: center;
+      
     }
     li:nth-child(3){
-      flex: 0.4;
+      flex: 0.5;
       color: #363636;
       font-size: 4vw!important;
       align-items: center;
@@ -46,14 +47,15 @@
       // line-height: 14vw;
       // padding: 1vw 0;
       position: relative;
+      height: 17.33vw;
       div{
         // position: absolute;
         height: 4vw;
         width: 3.73vw;
         // top: 3vw;
         // right: 10vw;
-        margin-left: 1vw;
-        margin-top: -5vw;
+        // margin-left: 1vw;
+        margin-top: -7vw;
       }
       div.urgencyfalse{
         // background: url(../../assets/imgs/jinji1.png) no-repeat;
