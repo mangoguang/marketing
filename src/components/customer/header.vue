@@ -183,6 +183,7 @@ export default {
             parmas.u = ''
             parmas.sd = ''
             parmas.ed = ''
+            parmas.l = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(parmas)
             // console.log('全部', this.customerAjaxParams)
@@ -192,6 +193,7 @@ export default {
             parmas.u = ''
             parmas.sd = ''
             parmas.ed = ''
+            parmas.l = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(parmas)
             // console.log('紧急降序', this.customerAjaxParams)
@@ -201,6 +203,7 @@ export default {
             parmas.u = ''
             parmas.sd = ''
             parmas.ed = ''
+            parmas.l = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(parmas)
             // console.log('级别降序', this.customerAjaxParams)
@@ -210,6 +213,7 @@ export default {
             parmas.u = ''
             parmas.sd = ''
             parmas.ed = ''
+            parmas.l = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(parmas)
             // console.log('级别降序', this.customerAjaxParams)

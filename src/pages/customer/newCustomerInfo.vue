@@ -7,7 +7,7 @@
       <li>
         <div class="title">
           <p ></p>
-          <span>客户描述</span>
+          <span>意向信息</span>
         </div>
       </li>
       <new-descript/>
@@ -16,7 +16,11 @@
       <li @click="controlDemand">
         <div class="title">
           <p ></p>
+<<<<<<< HEAD
           <span>意向信息</span>
+=======
+          <span>跟进情况</span>
+>>>>>>> 77dd9b02cdbb45a3862994e55f32e08049e5e362
         </div>
         <div class="pullDown-icon">
           <img src="../../assets/imgs/newPullDown.png" :class="{changSide:isShowDemand}">
