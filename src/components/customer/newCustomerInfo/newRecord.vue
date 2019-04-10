@@ -2,14 +2,10 @@
   <div>
     <ul class="newRecord">
       <li is="followSelect" :ageVal="newCustomerInfo.follow"  @followChange="followChange"></li>
-      <!-- <li>
-        <strong>DR-1103床垫</strong>
-        <span>2018年11月30日</span>
-      </li> -->
       <li class="timeLi" is="customerLi" :start="'*'" :leftText="'跟进时间'" :icon="true" @click.native="selectFollowTime">
         <span>{{turnDate(newCustomerInfo.followTime || setDay)}}</span>
       </li>
-      <!-- <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.follow" @leaveStoreChange="leaveStoreChange"></li> -->
+      <li is="leaveStoreSelect" :start="true" :text='"跟进时长"' @leaveStoreChange="leaveStoreChange"></li>
       
       <li class="noPadding">
         <remark :title="'跟进情况'">
@@ -28,6 +24,8 @@
         </remark>
       </li>
     </ul>
+    <upLoad />
+    <p class="bottom">到底啦</p>
     <!-- <div class="btnsBox">
       <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
       <big-btn :text="'保存'" @click.native="saveTalksRecord"></big-btn>
@@ -60,6 +58,8 @@ import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from "vuex"
 import { DatetimePicker, MessageBox } from 'mint-ui'
 import followSelect from '../../select/followSelect'
+import leaveStoreSelect from '../../select/leaveStoreSelect'
+import upLoad from './upload'
 Vue.component(DatetimePicker.name, DatetimePicker)
 import remark from '../remark'
 import myRange from '../myRange'
@@ -74,7 +74,9 @@ export default {
     myRange,
     customerLi,
     bigBtn,
-    followSelect
+    followSelect,
+    leaveStoreSelect,
+    upLoad
   },
   props: ['btns'],
   data(){
@@ -97,10 +99,9 @@ export default {
   },
   mounted() {
     // this.newCustomerInfo.percent = 50
-    // console.log(this.$route.params.id)
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo", 'setFollowVal']),
+    ...mapMutations(["setNewCustomerInfo", 'setFollowVal', 'setFollowTiming']),
     // changeMyRangeVal(val) {
     //   // console.log('mtrange:', val)
     //   this.newCustomerInfo.percent = val
@@ -136,6 +137,11 @@ export default {
       this.setFollowVal(val)
       this.newCustomerInfo.follow = val
       this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //跟进时长
+    leaveStoreChange(val) {
+      this.setFollowTiming(val)
+      this.newCustomerInfo.followTiming = val
     }
     // preModule() {
     //   this.btns[1].status = true
@@ -231,5 +237,11 @@ export default {
     button{
       margin: 5vw;
     }
+  }
+  .bottom {
+    width: 100vw;
+    text-align: center;
+    color: #909090;
+    font-size: 3.4vw;
   }
 </style>
