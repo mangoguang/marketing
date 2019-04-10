@@ -5,25 +5,45 @@
         <input v-model="newCustomerInfo.intention" placeholder="请填写意向产品" type="text">
       </li>
       <li is="shopSelect"  @shopChange="shopChange"></li>
-      <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
+      <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
         <span :style="timeColor">{{turnDate(newCustomerInfo.storeDate) || '请选择进店日期'}}</span>
       </li>
-      <li is="leaveStoreSelect" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
-      <li is="customerLi" :leftText="'颜色偏好'" :icon="true" @click.native="selectColorPref">
-        <span >{{newCustomerInfo.colorPref || '请填写颜色偏好'}}</span>
+      <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
+      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
+      <li is="customerLi" :leftText="'客户地址'" :icon='true'>
+         <span style="color: #999">请选择客户地址</span>
       </li>
-      <li is="customerLi" :leftText="'风格偏好'" :icon="true" @click.native="selectStylePref">
-        <span >{{newCustomerInfo.stylePref || '请填写风格偏好'}}</span>
+      <li is="customerLi" :leftText="'户型大小'">
+        <input v-model="newCustomerInfo.home" type="text" placeholder="请先选客户地址">
+      </li>
+       <li is="customerLi" :leftText="'有无电梯'">
+        <input v-model="newCustomerInfo.lift" type="text" placeholder="请先选客户地址">
       </li>
        <li is="customerLi" :leftText="'购买原因'" :icon="true" @click.native="selectBuyReason">
         <span >{{newCustomerInfo.buyReason || '请选择购买原因'}}</span>
       </li>
+       <li is="customerLi" :leftText="'装修风格'" :icon="true" @click.native="selectStylePref">
+        <span >{{newCustomerInfo.stylePref || '请填写风格偏好'}}</span>
+      </li>
       <li is="customerLi" :leftText="'装修进度'" :icon="true" @click.native="selectProgress">
         <span >{{newCustomerInfo.progress || '请选择装修进度'}}</span>
       </li>
-      <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
-        <span >{{roomNum || '请填写房间数量'}}</span>
+      <li is="customerLi" :leftText="'竞品产品'">
+        <input v-model="newCustomerInfo.aproduct" type="text" placeholder="请填写竞品产品">
       </li>
+       <li is="customerLi" :leftText="'颜色偏好'" :icon="true" @click.native="selectColorPref">
+        <span >{{newCustomerInfo.colorPref || '请填写颜色偏好'}}</span>
+      </li>
+      <li is="customerLi" :leftText="'预算金额'">
+        <input v-model="newCustomerInfo.pay" type="number" placeholder="请填写预算金额">
+      </li>
+      <li is="customerLi" :leftText="'已交定金'">
+        <input v-model="newCustomerInfo.pay" type="number" placeholder="请填写已交金额">
+      </li>
+      <li is="discountSelect" :discountVal="newCustomerInfo.discount" @discountChange="discountChange"></li>
+      <!-- <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
+        <span >{{roomNum || '请填写房间数量'}}</span>
+      </li> -->
       <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
         <span>{{shopName}}</span>
       </li> -->
@@ -31,8 +51,8 @@
         <input v-model="newCustomerInfo.roomNum" placeholder="请填写房间数量" type="number">
       </li> -->
       <li class="textarea">
-        <h3>备注：</h3>
-        <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧"></textarea>
+        <h3>备注信息</h3>
+        <textarea v-model="newCustomerInfo.remark" placeholder="添加备注信息"></textarea>
       </li>
       <!-- <li>
         <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
@@ -40,7 +60,6 @@
       </li> -->
     </ul>
     <div class="mintComponent">
-      <!-- 性别选择插件 -->
       <mt-popup 
       position="bottom"
       v-model="popupVisible">
@@ -73,6 +92,8 @@ Vue.component(Popup.name, Popup)
 import customerLi from '../../../components/customer/customerLi'
 import bigBtn from '../../../components/customer/bigBtn'
 import shopSelect from '../../select/shopSelect'
+import sourceSelect from '../../select/sourceSelect'
+import discountSelect from '../../select/discountSelect'
 import mango from '../../../js'
 import {turnParams} from '../../../utils/customer'
 export default {
@@ -82,17 +103,19 @@ export default {
     customerLi,
     bigBtn,
     shopSelect,
-    leaveStoreSelect
+    leaveStoreSelect,
+    sourceSelect,
+    discountSelect
   },
   data(){
     return{
       popupVisible: false,
       slots: [],
-      progressList: [{values: ['装修中', '装修完成', '毛坯阶段', '水电木工', '油漆吊顶', '橱柜安装', '地板安装', '木门安装', '洁具安装', '灯饰安装']}],
+      progressList: [{values: ['前期设计', '主体拆改', '水电改造', '木工', '贴砖', '刷墙面漆', '厨卫吊顶', '橱柜安装', '木门安装', '地板安装', '铺贴壁纸', '开关插座安装', '灯具安装', '五金洁具安装', '窗帘杆安装', '拓荒保洁', '家具进场', '家电安装', '家居配饰', '装修完成']}],
       buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
       roomNumList: [{values: [1, 2, 3, 4, '5及以上']}],
       colorPrefList: [{values :['暖色', '冷色']}],
-      stylePrefList: [{values: ['现代', '中式古典', '欧式', '美式', '新中式']}],
+      stylePrefList: [{values: ['中式风格', '自然风格', '古典风格', '现代简约风格', '乡村田园风格', '现代中式风格', '地中海风格', '欧式风格', '混合型风格']}],
       shopNameList: [{values: []}],
       pickerShow: {
         progress: false,
@@ -113,7 +136,8 @@ export default {
     ...mapState({
       newCustomerInfo: state => state.customer.newCustomerInfo,
       shopVal: state => state.select.shopVal,
-      leaveStoreVal: state => state.select.leaveStoreVal
+      leaveStoreVal: state => state.select.leaveStoreVal,
+      discountVal: state => state.select.discountVal
     })
   },
   created() {
@@ -127,7 +151,7 @@ export default {
     // this.getDemand()
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal']),
+    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal']),
     shopChange(val) {
       this.setShopVal(val)
     },
@@ -146,6 +170,7 @@ export default {
       this.timeColor = 'color: #363636'
       this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(value)[1])
     },
+    //转变日期格式
     turnDate(date) {
       if (date) {
         let arr = date.split('-')
@@ -155,6 +180,17 @@ export default {
           return date
         }
       }
+    },
+    //客户来源
+    sourceChange(val) {
+      this.setSourceVal(val)
+      this.newCustomerInfo.source = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //选择折扣
+    discountChange(val) {
+      this.setDiscountVal(val)
+      this.newCustomerInfo.discount = val
     },
     // getShopName() {
     //   let shopName = []
@@ -294,6 +330,14 @@ export default {
       box-sizing: border-box;
       font-size: $fontSize;
     }
+  }
+  li:nth-child(6) {
+    margin-top: 3vw;
+    border-top: 1px solid #ccc;
+  }
+   li:nth-child(12) {
+    margin-top: 3vw;
+    border-top: 1px solid #ccc;
   }
   li.textarea{
     display: block;
