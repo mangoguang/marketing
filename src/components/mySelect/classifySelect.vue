@@ -4,7 +4,7 @@
     <span class="label">{{label}}</span>
     <div class="yan-select-box">
       <label v-for="(item,index) in options" :key="index">
-        <input type="radio" :name="name" :value="item" @change="updataVal" class="yan-radio">
+        <input type="radio" :name="name" :value="item"  @change="updataVal" class="yan-radio">
         <span>{{item}}</span>
       </label>
     </div>
@@ -14,11 +14,23 @@
 
 <script>
 export default {
-  props:['options','name','label'],
+  props:['options','name','label','checked'],
   data(){
     return{
      
     }
+  },
+  mounted(){
+    let radiosList=document.getElementsByName(`${this.name}`);
+    //console.log(radiosList);
+    radiosList.forEach((item,index) => {
+      //console.log(item);
+      if(item.value===this.checked){
+        item.checked=true
+      }else{
+        item.checked=false
+      }
+    });
   },
   methods:{
     updataVal(ev){

@@ -28,10 +28,10 @@
           <address-select v-bind="formInfo.address" v-model="form.address" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.house" v-model="form.house" :showIcon="inputIcon"/>
+          <yan-input v-bind="formInfo.house" v-model="form.house"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.elevator" v-model="form.elevator" :showIcon="inputIcon"/>
+          <yan-input v-bind="formInfo.elevator" v-model="form.elevator"/>
         </li>
         <li>
           <reason-select v-bind="formInfo.reason" v-model="form.reason" :showIcon="selectIcon"/>
@@ -45,16 +45,16 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model="form.goods" :showIcon="inputIcon"/>
+          <yan-input v-bind="formInfo.goods" v-model="form.goods"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.color" v-model="form.color" :showIcon="inputIcon"/>
+          <yan-input v-bind="formInfo.color" v-model="form.color"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.budget" v-model="form.budget" :showIcon="inputIcon"/>
+          <yan-input v-bind="formInfo.budget" v-model="form.budget"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.paid" v-model="form.paid" :showIcon="inputIcon"/>
+          <yan-input v-bind="formInfo.paid" v-model="form.paid"/>
         </li>
         <li>
           <discount-select v-bind="formInfo.discount" v-model="form.discount" :showIcon="selectIcon"/>
@@ -62,18 +62,27 @@
       </ul>
       <yan-textarea v-bind="formInfo.remark"></yan-textarea>
       <div class="select">
-        <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :options="formInfo.classify"/>
-        <classify-select label="是否紧急" @update="updateUrgency" name="classify" :options="formInfo.urgency"/>
+        <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="classify" :options="formInfo.classify"/>
+        <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
       </div>
-      <div>
+      <div v-show="true">
          <title-bar :text="titleModule.report">
            <button type="button">添加记录</button>
          </title-bar>
+         <record-pannel/>
       </div>
-      <div>
-         <title-bar :text="titleModule.order"/>
+      <div v-show="true">
+        <title-bar :text="titleModule.order"/>
+        <order-info class="order"/>
       </div>
       <p class="last">到底啦</p>
+      <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
+        <span slot='update'>确定</span>
+        <span slot='cancel'>取消</span>
+      </yan-layer-prompt>
+      <yan-layer-msg v-if="isMsg" @confirm="confirm" :info="list">
+        <span slot='confirm'>确定</span>
+      </yan-layer-msg>
     </div>
 </template>
 
@@ -95,9 +104,12 @@ import progressSelect from '../../../components/mySelect/progressSelect'
 import discountSelect from '../../../components/mySelect/discountSelect'
 import classifySelect from '../../../components/mySelect/classifySelect'
 import upload from '../../../components/upload/filesUpload'
-import { Picker, Toast } from 'mint-ui';
+import recordPannel from '../../../components/pannel/recordPannel'
+import orderInfo from '../../../components/pannel/orderInfo'
+import yanLayerPrompt from '../../../components/myLayer/yanLayerPrompt'
+import yanLayerMsg from '../../../components/myLayer/yanLayerMsg'
+import { Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
-Vue.component(Picker.name, Picker);
 export default {
   data () {
     return {
@@ -116,12 +128,29 @@ export default {
         budget:'',
         paid:'',
         discount:'',
-        remark:'',
-        classify:'',
-        urgency:''
+        remark:''
       },
+      classify:'',
+      urgency:'',
       selectIcon:true,
-      inputIcon:false
+      inputIcon:false,
+      failReason:'',
+      isPrompt:false,
+      isMsg:false,
+      list:[
+        {
+          title:'创建时间：',
+          value:''
+        },
+        {
+          title:'战败时间：',
+          value:''
+        },
+        {
+          title:'战败原因：',
+          value:''
+        }
+      ]
     }
   },
   components:{
@@ -140,7 +169,11 @@ export default {
      styleSelect,
      progressSelect,
      discountSelect,
-     classifySelect
+     classifySelect,
+     recordPannel,
+     orderInfo,
+     yanLayerPrompt,
+     yanLayerMsg
   },
   computed:{
     ...mapState('addIntention',[
@@ -162,12 +195,25 @@ export default {
    },
    updateClassify(option){
     console.log(option);
-    this.form.classify=option;
+    this.classify=option;
+    console.log("选择"+this.classify);
    },
    updateUrgency(option){
     console.log(option);
-    this.form.urgency=option;
-   } 
+    this.urgency=option;
+    console.log("选择"+this.urgency);
+   },
+   layerUpdate(){
+     console.log("确定");
+     console.log(this.failReason);
+   },
+   layerCancel(){
+     console.log("取消");
+     console.log(this.failReason);
+   },
+   confirm(){
+     console.log("取消");
+   }
   }
 };
 </script>
@@ -217,6 +263,13 @@ export default {
     color:#909090;
     font-size: 3.2vw;
     text-align: center;
+    margin-top:6.666vw;
+  }
+  .order{
+    border-top:1px solid #ccc;
+    border-bottom:1px solid #ccc;
+    background: #fff;
+    
   }
 
  }
