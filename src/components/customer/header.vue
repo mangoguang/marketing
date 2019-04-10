@@ -233,7 +233,7 @@ export default {
       this.customerAjaxParams.page = 1
       this.setAllLoaded(false)
       this.setCustomerAjaxParams(this.customerAjaxParams)
-      mango.getAjax('v3/app/customer/list', this.customerAjaxParams).then((res) => {
+      mango.getAjax('/v3/app/customer/list', this.customerAjaxParams).then((res) => {
         if (res) {
           this.setCustomerList(res.data)
         }

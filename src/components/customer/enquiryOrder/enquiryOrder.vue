@@ -12,7 +12,7 @@
           :class="{active : compareTime[index]}"
           v-for="(item, index) in orderList.records"
           :key="`list${index}`"
-          @click="orderInfoIn(index)"
+          @click="orderInfoIn(item.accntId)"
         >
           <div class="name">
             <i :class="`important${item.level}`"></i>
@@ -183,7 +183,7 @@ export default {
       this.parmas.limit = limit;
       this.parmas.sd = startTime;
       this.parmas.ed = endTime;
-      mango.getAjax("v3/app/customer/list", this.parmas).then(res => {
+      mango.getAjax("/v3/app/customer/list", this.parmas).then(res => {
         if (res) {
           this.allLoaded = false;
           this.allPage = Math.ceil(res.data.total / 10);
@@ -289,18 +289,16 @@ export default {
       }
     },
     //点击进入详情页面
-    orderInfoIn(index) {
-      mango
-        .getAjax(
-          this,
-          "orderById",
-          { orderId: this.orderList.records[index].orderId },
-          "v2"
-        )
+    orderInfoIn(accntId) {
+      mango.getAjax('/v3/app/customer/details',{ 
+        type: 'order',
+        customerId: accntId
+        })
         .then(res => {
           if (res) {
-            this.setOrderInfoDetails(res.data);
-            this.calcPrice(this.orderInfoDetails);
+            console.log(res)
+            // this.setOrderInfoDetails(res.data);
+            // this.calcPrice(this.orderInfoDetails);
           }
         });
       this.$router.push({ path: "/enquiryInfo" });

@@ -65,15 +65,15 @@ export default {
       // this.setCustomerTabStatus(mango.btnList(['客户描述', '新增需求', '需求信息'], index))
       if(index === 2) {
         let id = this.$route.params.id
-        mango.getAjax(this, 'customerById',{
-          id: id,
-          account: this.ajaxData.account
-        },'v2').then((res) => {
-          res = res.data
-          if (res) {
-            this.setDealOrderInfoDetails(res)
-          }
-        })
+        // mango.getAjax(this, 'customerById',{
+        //   id: id,
+        //   account: this.ajaxData.account
+        // },'v2').then((res) => {
+        //   res = res.data
+        //   if (res) {
+        //     this.setDealOrderInfoDetails(res)
+        //   }
+        // })
       }
     },
     setInfo(obj) {

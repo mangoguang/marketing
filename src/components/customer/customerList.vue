@@ -113,7 +113,7 @@ export default {
     loadBottom() {
       // console.log('接口参数：', this.customerAjaxParams, this.customerList)
       this.customerAjaxParams.page ++
-      mango.getAjax('v3/app/customer/list', this.customerAjaxParams).then((res) => {
+      mango.getAjax('/v3/app/customer/list', this.customerAjaxParams).then((res) => {
         this.$refs.loadmore.onBottomLoaded()
         res = res.data
         if (res) {

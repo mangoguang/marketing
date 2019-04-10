@@ -1,7 +1,6 @@
 <template>
   <div class="upload">
     <h1>附件图片</h1>
-   
     <ul class="load_box">
       <div v-if="imgLen>=5 ? false : true" class="addFile">
         <input
