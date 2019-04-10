@@ -1,6 +1,8 @@
 <template>
   <li :class="`customerLi ${icon ? 'icon' : ''}`">
-    <span>{{leftText}}</span>
+    <span>{{leftText}}
+      <strong style="color: #fb222b">{{ start }}</strong>
+    </span>
     <slot></slot>
     <!-- <span>{{mindText}}</span> -->
     <span></span>
@@ -12,7 +14,7 @@ import dealHeader from '../../components/customer/dealCustomer/dealHeader'
 import mango from '../../js'
 export default {
   name:'customerDemand',
-  props: ['leftText', 'icon'],
+  props: ['leftText', 'icon', 'start'],
   data(){
     return{
 
@@ -39,6 +41,9 @@ export default {
     span{
       color: $fontCol;
       line-height: 3em;
+    }
+    strong {
+      font-weight: normal;
     }
     span:first-child{
       margin-right: 5vw;

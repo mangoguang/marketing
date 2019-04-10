@@ -7,7 +7,12 @@
           <p>请添加地址哦~</p>
           <img src="../../../assets/imgs/arrow-down.png" alt="">
         </div>
-        <customer-address/>
+       <customer-address v-for="(item,index) in list" :key="index" :index="index" @edit="edit" @del="del">
+          <div class="address_li">
+            <h1>三居室&nbsp;&nbsp;&nbsp;&nbsp;电梯房</h1>
+            <p>广东省东莞市厚街镇 双岗上环工业区 艾慕工业园</p>
+          </div>
+        </customer-address> 
       </div>
       <btn text='添加新地址' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
     </div>
@@ -18,21 +23,19 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import Btn from '../../../components/personal/Btn'
 import customerAddress from '../../../components/mySwipe/customerAddress'
-import slider from '../../../components/mySwipe/slider'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
 
 export default {
   data () {
     return {
-      
+      list:[1,2,3,4]
     }
   },
   components:{
      mybanner,
      Btn,
-     customerAddress,
-     slider
+     customerAddress
   },
   computed:{
     ...mapState('address',[
@@ -50,12 +53,18 @@ export default {
    ...mapMutations('address',['updateAddress','delAddress']),
    jump(){
      this.$router.push({path:'/addAddress'});
+   },
+   edit(i){
+     console.log(i);
+   },
+   del(i){
+     console.log(i);
    }
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
  .address{
   width:100vw;
   min-height:100vh;
@@ -77,6 +86,17 @@ export default {
         width:4vw;
         margin-top:4vw;
       }
+    }
+    .address_li{
+       h1{
+          color:#363636;
+          font-size: 4vw;
+          margin-bottom:2.666vw;
+        }
+        p{
+          font-size: 3.2vw;
+          color:#363636;
+        }
     }
    }
  }

@@ -173,6 +173,16 @@ export var router = new VueRouter({
     name: '/selectAddress',
     component: resolve => require(['../pages/Personal/address/selectAddress'],resolve)
   },
+  {
+    path: '/intentionProduct',
+    name: '/intentionProduct',
+    component: resolve => require(['../pages/Personal/intention/intentionProduct'],resolve)
+  },
+  {
+    path: '/searchProduct',
+    name: '/searchProduct',
+    component: resolve => require(['../pages/Personal/intention/searchProduct'],resolve)
+  },
   //金管家模块-我的收藏
   {
     path: '/collectList',
@@ -275,6 +285,11 @@ export var router = new VueRouter({
     path: '/chooseShop',
     name: 'chooseShop',
     component: resolve => require(['../pages/customer/newCustomer/chooseShop'],resolve)
+  },
+  {
+    path: '/newAddress',
+    name: 'newAddress',
+    component: resolve => require(['../pages/customer/newCustomer/newAddress'],resolve)
   }
 ],
   scrollBehavior (to, from, savedPosition) {

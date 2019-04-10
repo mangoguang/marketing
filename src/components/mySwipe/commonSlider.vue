@@ -1,15 +1,16 @@
 <template>
-  <div class="yan-swipe-left">
-    <div class="yan-box">
+<div>
+  <div class="yan-swipe-left" :style="swipe" data-type="0">
+    <div class="yan-box" @touchstart='start' @touchmove="move" @touchend="end" >
       <slot></slot>
     </div>
-    <div class="yan-del">{{text}}</div>
+    <div class="yan-del" ref="yanDel" @click="del(index)">{{deltxt}}</div>
   </div>
+</div>
 </template>
-
 <script>
 export default {
-  props:['text'],
+  props:['deltxt','index'],
   data(){
     return{
       startX:0,
@@ -21,6 +22,7 @@ export default {
   },
   methods:{
     start(e){
+      this.restSlide();
       e=e||event;
       e.preventDefault();
       if(e.touches.length == 1){
@@ -30,19 +32,24 @@ export default {
     move(e){
       e=e||event;
       e.preventDefault();
+      let parentElement=e.currentTarget.parentElement;
+      //console.log(parentElement);
       let wd=this.$refs.yanDel.offsetWidth;
       if(e.touches.length == 1){
         this.moveX=e.touches[0].clientX;
         this.distance=this.moveX-this.startX;
         if(this.distance<0){
+            parentElement.dataset.type=1;
             this.swipe="translateX("+this.distance*5+"px)";
             if(this.distance>=wd){
+              parentElement.dataset.type=1;
               this.swipe="transform:translateX(-"+wd+"px)";
+             
             }
         }
         if(this.distance>0||this.distance==0){
           this.swipe="transform:translateX(0px)";
-
+          parentElement.dataset.type=0;
         }
         
 
@@ -51,17 +58,30 @@ export default {
     end(e){
       e=e||event;
       e.preventDefault();
+      let parentElement=e.currentTarget.parentElement;
       let wd=this.$refs.yanDel.offsetWidth;
       if(e.changedTouches.length == 1){
         this.endX=e.changedTouches[0].clientX;
         this.distance=this.endX-this.startX;
         if((-this.distance*5)<(wd/2)){
           this.swipe="transform:translateX(0px)";
+          parentElement.dataset.type=0;
         }else{
+          parentElement.dataset.type=1;
           this.swipe="transform:translateX(-"+wd+"px)";
          
         }
       }
+    },
+    restSlide(){
+      let listItems=document.querySelectorAll('.yan-swipe-left');
+      // 复位
+      for (let i=0;i<listItems.length;i++) {
+        listItems[i].style="transform:translateX(0px)";
+      }
+    },
+    del(index){
+      this.$emit('del',index);
     }
   }
 

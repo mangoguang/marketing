@@ -1,24 +1,46 @@
 <template>
   <div class="customerDescript">
     <ul>
-      <li is="customerLi" :leftText="'客户姓名'">
-        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户姓名">
+      <li is="customerLi" :leftText="'头像'" :icon="true">
+        <img src="" alt="">
       </li>
-      <!-- <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
+      <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>
+        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name">
+      </li>
+      <li is="sexSelect" :sexVal="newCustomerInfo.sex"  @sexChange="sexChange" class="sex"></li>
+      <!-- <li is="customerLi" :leftText="'客户性别'" :icon="true" :start='"*"' @click.native="selectSex">
         <span>{{newCustomerInfo.sex == 1 ? '男' : '女'}}</span>
       </li> -->
-      <li is="sexSelect" :sexVal="newCustomerInfo.sex" @sexChange="sexChange"></li>
+       <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
+        <span :style="color">{{turnDate(newCustomerInfo.birthday) || '请选择客户生日'}}</span>
+      </li>
+      <!-- <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
+        <span>{{turnDate(newCustomerInfo.storeDate)}}</span>
+      </li> -->
+      <li is="ageSelect" :ageVal="newCustomerInfo.age"  @ageChange="ageChange"></li>
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话">
       </li>
-      <li is="areaSelect" @areaChange="areaChange"></li>
-       <li is="customerLi" :leftText="'客户地址'">
-        <input v-model="newCustomerInfo.address" type="text" placeholder="请填写客户地址">
+      <li is="customerLi" :leftText="'客户微信'">
+        <input v-model="newCustomerInfo.wxchat" type="text" placeholder="请填写客户微信号">
       </li>
-      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
-      <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
-        <span>{{turnDate(newCustomerInfo.storeDate)}}</span>
+      <li is="customerLi" :leftText="'客户 QQ'">
+        <input v-model="newCustomerInfo.qq" type="text" placeholder="请填写客户 QQ">
       </li>
+      <li is="customerLi" :leftText="'客户职业'">
+        <input v-model="newCustomerInfo.work" type="text" placeholder="请填写客户职业">
+      </li>
+      <!-- <li is="areaSelect" @areaChange="areaChange"></li> -->
+       <li is="customerLi" :leftText="'客户地址'" :icon="true" @click.native='toNewAdress'>
+         <span>地址管理</span>
+        <!-- <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址"> -->
+      </li>
+      <li class="textarea">
+        <h3>客户描述</h3>
+        <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧"></textarea>
+      </li>
+      <!-- <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li> -->
+      
       <!-- <li is="addressSelect" :addressVal="newCustomerInfo.address" @addressChange="addressChange"></li> -->
       <!-- <li is="customerLi" :leftText="'客户来源'" :icon="true" @click.native="selectSource">
         <span>{{newCustomerInfo.source || '请选择客户来源'}}</span>
@@ -30,8 +52,8 @@
       <!-- <li is="customerLi" :leftText="'留店时长'" :icon="true" @click.native="selectTime">
         <span>{{newCustomerInfo.leaveStore || '请选择客户留店时间'}}</span>
       </li> -->
-      <li is="leaveStoreSelect" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
-      <li class="important">
+      <!-- <li is="leaveStoreSelect" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li> -->
+      <!-- <li class="important">
         关键程度
         <div>
           <button 
@@ -40,9 +62,9 @@
           @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
         </div>
-      </li>
-      <li class="urgency">
-        是否紧急
+      </li> -->
+      <!-- <li class="urgency">
+        是否紧急 -->
         <!-- <div>
           <button 
           v-for="(item, index) in importantBtns" 
@@ -50,8 +72,8 @@
           @click="changeImportant(index)"
           :class="{on: item.status}">{{item.name}}</button>
         </div> -->
-        <div class="switchBox"><mt-switch v-model="urgency"></mt-switch></div>
-      </li>
+        <!-- <div class="switchBox"><mt-switch v-model="urgency"></mt-switch></div> -->
+      <!-- </li> -->
     </ul>
     <!-- <div class="btnBox">
       <big-btn :text="'下一步'" @click.native="saveCustomerInfo"></big-btn>
@@ -95,6 +117,7 @@ Vue.component(Switch.name, Switch)
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
 import sexSelect from '../../select/sexSelect'
+import ageSelect from '../../select/ageSelect'
 import sourceSelect from '../../select/sourceSelect'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 import addressSelect from '../../select/addressSelect'
@@ -112,7 +135,8 @@ export default {
     sourceSelect,
     leaveStoreSelect,
     addressSelect,
-    areaSelect
+    areaSelect,
+    ageSelect
   },
   data(){
     return{
@@ -134,7 +158,8 @@ export default {
       county: [],
       countyName: '',
       parentBtns: [],
-      urgency:false
+      urgency:false,
+      color: 'color: #999'
     }
   },
   watch: {
@@ -163,6 +188,7 @@ export default {
     ...mapState({
       newCustomerInfo: state => state.customer.newCustomerInfo,
       sexVal: state => state.select.sexVal,
+      ageVal: state => state.select.ageVal,
       areaVal: state => state.select.areaVal,
       sourceVal: state => state.select.sourceVal,
       leaveStoreVal: state => state.select.leaveStoreVal
@@ -196,6 +222,7 @@ export default {
   mounted() {
     this.setNewCustomerInfo({})
     this.newCustomerInfo.phone = this.$route.query.phone
+    this.$set(this.newCustomerInfo, 'birthday', '')
     this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(this.today)[1])
     console.log('000111', this.newCustomerInfo)
     // this.turnDate('2018-01-01')
@@ -207,8 +234,13 @@ export default {
       'setSexVal',
       'setAreaVal',
       'setSourceVal',
-      'setLeaveStoreVal'
+      'setLeaveStoreVal',
+      'setAgeVal'
     ]),
+    //选择地址
+    toNewAdress() {
+      this.$router.push({path: '/newAddress'})
+    },
     checkBtnStatus(obj) {
       for (let i = 0; i < this.importantBtns.length; i++) {
         this.importantBtns[i].status = (obj.important - 1) === i
@@ -237,6 +269,7 @@ export default {
     // },
     selectStoreDate() {
       this.$refs.datePicker1.open()
+      this.color = 'color: #363636'
     },
     // selectSource() {
     //   this.slots = this.sourceList
@@ -263,18 +296,18 @@ export default {
     // },
     setStoreDate1(value) {
       // this.newCustomerInfo.storeDate = mango.indexTimeB(value)[0]
-      this.$set(this.newCustomerInfo,'storeDate',mango.indexTimeB(value)[1])
-      console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.storeDate)
+      this.$set(this.newCustomerInfo,'birthday',mango.indexTimeB(value)[1])
+      // console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.storeDate)
     },
     areaChange(val) {
-      console.log('选择的地区：', val)
+      // console.log('选择的地区：', val)
       this.newCustomerInfo.province = val.provinceCode
       this.newCustomerInfo.city = val.cityCode
       this.newCustomerInfo.area = val.countyCode
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     sexChange(val) {
-      console.log('sex改变了：', val)
+      // console.log('sex改变了：', val)
       if(val === '') {
         val = 0
         this.newCustomerInfo.sex = val
@@ -284,20 +317,26 @@ export default {
       this.setSexVal(val)
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
+    ageChange(val) {
+      // console.log('age改变了：', val)
+      this.setAgeVal(val)
+      this.newCustomerInfo.age = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
     sourceChange(val) {
-      console.log('sex123改变了：', val)
+      // console.log('sex123改变了：', val)
       this.setSourceVal(val)
       this.newCustomerInfo.source = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     leaveStoreChange(val) {
-      console.log('sex改变了：', val)
+      // console.log('sex改变了：', val)
       this.setLeaveStoreVal(val)
       this.newCustomerInfo.leaveStore = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     addressChange(val) {
-      console.log('addresschange')
+      // console.log('addresschange')
       // this.newCustomerInfo.leaveStore = val
     },
     // onValuesChange(picker, values) {
@@ -331,9 +370,10 @@ export default {
       if(!this.newCustomerInfo.important) {
         this.$set(this.newCustomerInfo, 'important', 1)
       }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
-      if(!this.newCustomerInfo.storeDate) {
-        this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
-      } //如果没有选进店时间。默认选择今天
+      // if(!this.newCustomerInfo.storeDate) {
+      //   this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
+      // } //如果没有选进店时间。默认选择今天
+     
     },
     saveCustomerInfo() {
       let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
@@ -409,7 +449,7 @@ export default {
       }
     },
     getCounty(city) {
-      console.log(mango.key)
+      // console.log(mango.key)
       return new Promise((resolve, reject) => {
         mango.getAjax(this, 'area', {
           city: city
@@ -466,12 +506,13 @@ export default {
     padding: 0 5vw;
   }
   li{
-    display: flex;
-    direction: row;
+    // display: flex;
+    // direction: row;
     color: $fontCol;
     line-height: 3em;
+    // padding-left: 4vw;
     div{
-      display: flex;
+      // display: flex;
       direction: row;
       margin-left: 5vw;
       align-items: center;
@@ -492,7 +533,16 @@ export default {
       }
     }
   }
-  li:nth-child(4){
+  li:nth-child(1) {
+    padding: 2vw 4vw;
+    img {
+      width: 14.66vw;
+      height: 14.66vw;
+      border: 1px solid #e1e1e1;
+      margin-left: 10vw;
+    }
+  }
+  li:nth-child(6){
     margin-top: 5vw;
     border-top: 1px solid #ccc;
   }
@@ -507,5 +557,31 @@ export default {
   .urgency{
     margin-bottom: 4vw;
   }
+  li{
+    display: flex;
+    h3{
+      color: $fontCol;
+      font-size: $fontSize;
+      padding: 0 5vw;
+      line-height: 3em;
+      border-bottom: 1px solid #ccc;
+    }
+    textarea{
+      background: #fff;
+      width: 100vw;
+      height: 40vw;
+      padding: 3vw 5vw;
+      box-sizing: border-box;
+      font-size: $fontSize;
+    }
+  }
+  li.textarea{
+    display: block;
+  }
+  .name{
+    margin-left: -3vw;
+    box-sizing: border-box;
+  }
+  
 }
 </style>

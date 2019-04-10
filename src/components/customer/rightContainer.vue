@@ -31,7 +31,7 @@
             </ul>
           </li>
           <li>
-            <h3>关键</h3>
+            <h3>级别</h3>
             <ul>
               <li v-for="(item, index) in keyBtns"
               :key="`keyBtns${index}`">
@@ -65,6 +65,7 @@
 <!-- </keep-alive> --> 
 
 <script>
+import { deepclone } from "../../utils/customer";
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
@@ -120,10 +121,7 @@ export default {
     let str = new Date()
     // console.log(333, str.getTime())
     // 对象深拷贝
-    let temp = this.customerAjaxParams
-    for (let key in temp) {
-      this.paramsObj[key] = temp[key]
-    }
+    this.paramsObj = deepclone(this.customerAjaxParams)
   },
   methods:{
     ...mapMutations([
@@ -132,9 +130,6 @@ export default {
       'setAllLoaded',
       'setCustomerList'  
     ]),
-    test() {
-      console.log('success')
-    },
     // 初始化起始日期
     initStartDateVal() {
       let date = new Date()
@@ -149,30 +144,20 @@ export default {
     },
     //重置
     resizeCustomerList() {
+      mango.changeBtnStatus(this.urgencyBtns, '')
+      mango.changeBtnStatus(this.keyBtns, '')
       this.$set(this.customerAjaxParams,'i','')
       this.$set(this.customerAjaxParams,'u','')
-      this.$set(this.customerAjaxParams, 'startTime', '')
-      this.$set(this.customerAjaxParams, 'endTime', '')
+      this.$set(this.customerAjaxParams, 'sd', '')
+      this.$set(this.customerAjaxParams, 'ed', '')
+      this.$set(this.customerAjaxParams, 'l', '')
       this.setRightContainerStatus('hideRightContainer')
     },
     // 隐藏右侧边栏
     hideRightContainer() {
-      // this.paramsObj.startTime = this.startDateVal
-      this.$set(this.paramsObj, 'startTime', this.startDateVal)
-      this.$set(this.paramsObj, 'endTime', this.endDateVal)
-      // this.paramsObj.endTime = this.endDateVal
-
-      if(this.paramsObj.u == 2) {     //非紧急写死了为9
-        this.paramsObj.u = 9
-      }
-      // if(this.paramsObj.i !== 1 && this.paramsObj.i !== 2 && this.paramsObj.i !== 3) {
-      //   this.paramsObj.i = 9      //当关键程度不为1/2/3的时候，为9
-      // }
-      // this.setCustomerAjaxParams(mango.customerAjaxParams)
-      // this.paramsObj.page = 1
-      // this.setAllLoaded(false)
+      this.$set(this.paramsObj, 'sd', this.startDateVal)
+      this.$set(this.paramsObj, 'ed', this.endDateVal)
       this.setCustomerAjaxParams(this.paramsObj)
-      console.log(11111,this.customerAjaxParams)
       this.setRightContainerStatus('hideRightContainer')
     },
     hideRightBar() {
@@ -180,27 +165,13 @@ export default {
     },
     // 紧急程度选择
     urgencySelect(i) {
-      let status = this.urgencyBtns[i].status
-      if (status) {
-        // 反选
-        this.urgencyBtns[i].status = false
-        this.paramsObj.u = ''
-      } else {
-        mango.changeBtnStatus(this.urgencyBtns, i)
-        this.paramsObj.u = i + 1
-      }
+      this.paramsObj.u = i? 0 : 1
+       mango.changeBtnStatus(this.urgencyBtns, i)
     },
     // 关键程度选择
     keySelect(i) {
-      let status = this.keyBtns[i].status
-      if (status) {
-        // 反选
-        this.keyBtns[i].status = false
-        this.paramsObj.i = ''
-      } else {
-        mango.changeBtnStatus(this.keyBtns, i)
-        this.paramsObj.i = i + 1
-      }
+      this.paramsObj.l = i === 0? "A" : i === 1? 'B' : 'C'
+      mango.changeBtnStatus(this.keyBtns, i)
     },
     // 选择时间
     handleConfirm(date) {

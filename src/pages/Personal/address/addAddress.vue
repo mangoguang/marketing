@@ -7,7 +7,7 @@
       </ul>
       <div class="remark">
         <p>备注信息</p>
-        <textarea name="" id="" placeholder="填写备注信息"></textarea>
+        <textarea name="" id="" placeholder="填写备注信息" v-model="form.remark"></textarea>
       </div>
       <btn text='保存' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
     </div>
@@ -24,7 +24,10 @@ Vue.component(Picker.name, Picker);
 export default {
   data () {
     return {
-      
+      form:{
+        address:'',
+        remark:''
+      }
     
     }
   },
@@ -36,8 +39,7 @@ export default {
   computed:{
     ...mapState('addAddress',[
       'title',
-      'addressInfo',
-      'form'
+      'addressInfo'
     ])
   },
   created(){

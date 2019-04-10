@@ -6,8 +6,10 @@ const state = {
   areaVal: '',
   enterStoreVal: '',
   sourceVal: '',
-  leaveStoreVal: '',
-  shopVal: ''
+  leaveStoreVal: "",
+  shopVal: '',
+  ageVal: '',
+  discountVal: ''
 }
 
 const mutations = {
@@ -19,7 +21,9 @@ const mutations = {
   setEnterStoreVal: (state, str) => state.enterStoreVal = str,
   setSourceVal: (state, str) => state.sourceVal = str,
   setLeaveStoreVal: (state, str) => state.leaveStoreVal = str,
-  setShopVal: (state, str) => state.shopVal = str
+  setShopVal: (state, str) => state.shopVal = str,
+  setAgeVal: (state, str) => state.ageVal = str,
+  setDiscountVal: (state, str) => state.discountVal = str
 }
 
 const actions = {

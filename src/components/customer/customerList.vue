@@ -9,22 +9,22 @@
           class="customerContent"
           v-for="(item, index) in customerList.records"
           :key="`customerList${index}`"
-          @click="toCustomerInfo(item.id)">
+          @click="toCustomerInfo(item.accntId)">
             {{item.name}}
             <ul>
               <li class="iconTips">
                 <!-- <div>1</div>
                 <div>2</div>
                 <div>2</div> -->
-                <i :class="`important${item.important}`"></i>
+                <i :class="`important${item.level}`"></i>
                 <strong>{{item.username}}</strong>
                 <div :class="`urgency${item.urgency}`"></div>
               </li>
               <li >
-                <span class="intention">{{item.intention}}</span>
+                <span class="intention">{{item.goodsName}}</span>
                 <!-- <span>{{item.followTime}}</span> -->
               </li>
-              <li class="followTime">{{item.followTime}}</li>
+              <li class="followTime">{{item.followDate}}</li>
             </ul>
           </li>
           <li><button @click="newCustomer" class="new"></button></li>
@@ -103,21 +103,22 @@ export default {
       "setCustomerScroll", 
       "setCustomerTabStatus",
       "setCustomerList",
-      "setAllLoaded"
+      "setAllLoaded",
+      'setBtn'
     ]),
     handleScroll(e) {
       let top = e.target.scrollTop
       this.setCustomerScroll(top)
     },
     loadBottom() {
-      console.log('接口参数：', this.customerAjaxParams, this.customerList)
-      this.customerAjaxParams.page++
-      mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
+      // console.log('接口参数：', this.customerAjaxParams, this.customerList)
+      this.customerAjaxParams.page ++
+      mango.getAjax('v3/app/customer/list', this.customerAjaxParams).then((res) => {
         this.$refs.loadmore.onBottomLoaded()
         res = res.data
         if (res) {
           if (res.records) {
-            if (res.records.length < 50) {
+            if (res.records.length < 30) {
               this.setAllLoaded(true)
             }
             this.customerList.records = this.customerList.records.concat(res.records)
@@ -142,6 +143,7 @@ export default {
       // this.setCustomerTabStatus(mango.btnList(['客户描述', '新建需求', '需求信息'], 0))
     },
     newCustomer() {
+      this.setBtn([])
       this.$router.push({path: './newCustomer'})
     }
   }

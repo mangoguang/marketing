@@ -3,9 +3,6 @@ const state = {
   addressInfo:{
     label:'详细地址',
     placeholder:'请填写详细地址'
-  },
-  form:{
-    address:''
   }
  
 }

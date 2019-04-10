@@ -7,8 +7,7 @@
           <p class="iconCharP">首页</p>
         </router-link>
       </li>
-      <li id="2" @click="isDeal">
-        <!-- <router-link to="/ReportForms" > -->
+      <!-- <li id="2" @click="isDeal">
         <div v-show="chartActive">
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
@@ -17,19 +16,18 @@
           <div class="charActive"></div>
           <p class="charPActive">报表</p>
         </div>
-        <!-- </router-link> -->
-      </li>
+      </li> -->
       <li id="3">
         <router-link to="/Customer" @click.native="changeActive">
           <div class="iconSalary"></div>
           <p class="iconCharP">客户</p>
         </router-link>
       </li>
-      <li id="4" @touchend='touchend'>
-        <!-- <router-link to="/msManage" @click.native="changeActive"> -->
+      <li id="4" >
+        <router-link to="/" @click.native="changeActive">
           <div class="iconMsg"></div>
-          <p class="iconCharP">消息</p>
-        <!-- </router-link> -->
+          <p class="iconCharP">工作</p>
+        </router-link>
       </li>
       <li id="5">
         <router-link to="/personalCenter" @click.native="changeActive">
