@@ -45,7 +45,7 @@ export default {
   display: flex;
   align-items: center;
   box-sizing: border-box;
-  padding: 4vw 4vw;
+  padding: 2vw 4vw;
   font-size: 4vw;
   color: #363636;
   .content {

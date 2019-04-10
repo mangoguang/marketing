@@ -1,24 +1,30 @@
 <template>
   <div>
     <ul class="newRecord">
+      <li is="followSelect" :ageVal="newCustomerInfo.follow"  @followChange="followChange"></li>
       <!-- <li>
         <strong>DR-1103床垫</strong>
         <span>2018年11月30日</span>
       </li> -->
+      <li class="timeLi" is="customerLi" :start="'*'" :leftText="'跟进时间'" :icon="true" @click.native="selectFollowTime">
+        <span>{{turnDate(newCustomerInfo.followTime || setDay)}}</span>
+      </li>
+      <!-- <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.follow" @leaveStoreChange="leaveStoreChange"></li> -->
+      
       <li class="noPadding">
         <remark :title="'跟进情况'">
           <textarea v-model="newCustomerInfo.followSituation" name="" id="" placeholder="描述一下跟进情况"></textarea>
         </remark>
       </li>
-      <li>
+      <!-- <li>
         <my-range :title="'成交概率'" @changeVal="changeMyRangeVal" />
-      </li>
-      <li class="timeLi" is="customerLi" :leftText="'下次跟进时间'" :icon="true" @click.native="selectTime">
-        <span>{{newCustomerInfo.followTime}}</span>
+      </li> -->
+      <li class="timeLi top" is="customerLi" :start="'*'" :leftText="'下次跟进'" :icon="true" @click.native="selectTime">
+        <span>{{turnDate(newCustomerInfo.time) || '请选择日期'}}</span>
       </li>
       <li class="noPadding">
-        <remark :title="'跟进计划'">
-          <textarea v-model="newCustomerInfo.followPlan" name="" id="" placeholder="接下来该怎么跟进呢？"></textarea>
+        <remark :title="'下一步计划'">
+          <textarea v-model="newCustomerInfo.followPlan" name="" id="" placeholder="请填写下一步跟进计划"></textarea>
         </remark>
       </li>
     </ul>
@@ -34,6 +40,16 @@
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"
+      @confirm="setFollowTime">
+    </mt-datetime-picker>
+    <mt-datetime-picker
+      ref="DatePicker"
+      type="date"
+      v-model="today"
+      :startDate="new Date()"
+      year-format="{value} 年"
+      month-format="{value} 月"
+      date-format="{value} 日"
       @confirm="setTime">
     </mt-datetime-picker>
   </div>
@@ -43,7 +59,7 @@
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from "vuex"
 import { DatetimePicker, MessageBox } from 'mint-ui'
-
+import followSelect from '../../select/followSelect'
 Vue.component(DatetimePicker.name, DatetimePicker)
 import remark from '../remark'
 import myRange from '../myRange'
@@ -57,43 +73,69 @@ export default {
     remark,
     myRange,
     customerLi,
-    bigBtn
+    bigBtn,
+    followSelect
   },
   props: ['btns'],
   data(){
     return{
-      today: new Date()
+      today: new Date(),
+      setDay: ''
     }
   },
   computed: {
     ...mapState({
-      newCustomerInfo: state => state.customer.newCustomerInfo
+      newCustomerInfo: state => state.customer.newCustomerInfo,
+      followVal: state => state.select.followVal
     })
   },
   created() {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    // 获取当天日期
-    // let temp = new Date()
-    // this.newCustomerInfo.followTime = mango.indexTimeB(temp)[0]
+    this.setDay = mango.indexTimeB(this.today)[0]
   },
   mounted() {
-    this.newCustomerInfo.percent = 50
+    // this.newCustomerInfo.percent = 50
     // console.log(this.$route.params.id)
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo"]),
-    changeMyRangeVal(val) {
-      console.log('mtrange:', val)
-      this.newCustomerInfo.percent = val
-    },
+    ...mapMutations(["setNewCustomerInfo", 'setFollowVal']),
+    // changeMyRangeVal(val) {
+    //   // console.log('mtrange:', val)
+    //   this.newCustomerInfo.percent = val
+    // },
     selectTime() {
+      this.$refs.DatePicker.open()
+    },
+    selectFollowTime() {
       this.$refs.followDatePicker.open()
     },
-    setTime(value) {
+    //跟进日期
+    setFollowTime(value) {
       this.$set(this.newCustomerInfo, 'followTime', mango.indexTimeB(value)[1])
+    },
+    //下次跟进日期
+    setTime(value) {
+      this.$set(this.newCustomerInfo, 'time', mango.indexTimeB(value)[1])
       // this.newCustomerInfo.followTime = mango.indexTimeB(value)[0]
+    },
+      //转变日期格式
+    turnDate(date) {
+      if (date) {
+        let arr = date.split('-')
+        if (arr.length > 1) {
+          return `${arr[0]}年${arr[1]}月${arr[2]}日`
+        } else {
+          return date
+        }
+      }
+    },
+    //跟进方式
+    followChange(val) {
+      this.setFollowVal(val)
+      this.newCustomerInfo.follow = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
     }
     // preModule() {
     //   this.btns[1].status = true
@@ -162,7 +204,7 @@ export default {
 @import "../../../assets/common.scss";
   .newRecord{
     li{
-      padding: 2vw 5vw;
+      // padding: 0 5vw;
       display: flex;
       flex-direction: column;
       strong{
@@ -174,10 +216,14 @@ export default {
       }
     }
     li.noPadding{
-      padding: 0;
+      padding: 1vw 0;
     }
     li.timeLi{
       flex-direction: row;
+    }
+    .top {
+      margin-top: 2vw;
+      border-top: 1px solid #ccc;
     }
   }
   .btnsBox{
