@@ -20,19 +20,19 @@
         <input v-model="newCustomerInfo.lift" type="text" placeholder="请先选客户地址">
       </li>
        <li is="customerLi" :leftText="'购买原因'" :icon="true" @click.native="selectBuyReason">
-        <span >{{newCustomerInfo.buyReason || '请选择购买原因'}}</span>
+        <span :style="color">{{newCustomerInfo.buyReason || '请选择购买原因'}}</span>
       </li>
        <li is="customerLi" :leftText="'装修风格'" :icon="true" @click.native="selectStylePref">
-        <span >{{newCustomerInfo.stylePref || '请填写风格偏好'}}</span>
+        <span :style="styleColor">{{newCustomerInfo.stylePref || '请填写风格偏好'}}</span>
       </li>
       <li is="customerLi" :leftText="'装修进度'" :icon="true" @click.native="selectProgress">
-        <span >{{newCustomerInfo.progress || '请选择装修进度'}}</span>
+        <span :style="proColor">{{newCustomerInfo.progress || '请选择装修进度'}}</span>
       </li>
       <li is="customerLi" :leftText="'竞品产品'">
         <input v-model="newCustomerInfo.aproduct" type="text" placeholder="请填写竞品产品">
       </li>
        <li is="customerLi" :leftText="'颜色偏好'" :icon="true" @click.native="selectColorPref">
-        <span >{{newCustomerInfo.colorPref || '请填写颜色偏好'}}</span>
+        <span :style="Color">{{newCustomerInfo.colorPref || '请填写颜色偏好'}}</span>
       </li>
       <li is="customerLi" :leftText="'预算金额'">
         <input v-model="newCustomerInfo.pay" type="number" placeholder="请填写预算金额">
@@ -54,6 +54,8 @@
         <h3>备注信息</h3>
         <textarea v-model="newCustomerInfo.remark" placeholder="添加备注信息"></textarea>
       </li>
+      <intentionSelect :intentionVal='intentionVal'/>
+      <urgentSelect :urgentVal='urgentVal'/>
       <!-- <li>
         <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
         <big-btn :text="'下一步'" @click.native="nextModule"></big-btn>
@@ -94,6 +96,8 @@ import bigBtn from '../../../components/customer/bigBtn'
 import shopSelect from '../../select/shopSelect'
 import sourceSelect from '../../select/sourceSelect'
 import discountSelect from '../../select/discountSelect'
+import intentionSelect from '../../select/intentionSelect'
+import urgentSelect from '../../select/urgentSelect'
 import mango from '../../../js'
 import {turnParams} from '../../../utils/customer'
 export default {
@@ -105,7 +109,9 @@ export default {
     shopSelect,
     leaveStoreSelect,
     sourceSelect,
-    discountSelect
+    discountSelect,
+    urgentSelect,
+    intentionSelect
   },
   data(){
     return{
@@ -129,7 +135,11 @@ export default {
       shopName: '',
       shopId: '',
       timeColor: 'color: #999',
-      today: new Date()
+      today: new Date(),
+      color: 'color: #999',
+      styleColor: 'color: #999',
+      proColor: 'color: #999',
+      Color: 'color: #999'
    }
   },
   computed: {
@@ -151,7 +161,7 @@ export default {
     // this.getDemand()
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal']),
+    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal']),
     shopChange(val) {
       this.setShopVal(val)
     },
@@ -192,6 +202,14 @@ export default {
       this.setDiscountVal(val)
       this.newCustomerInfo.discount = val
     },
+    //选择意向
+    intentionVal(val) {
+      console.log(val)
+    },
+    //是否紧急
+    urgentVal(val) {
+      console.log(val)
+    },
     // getShopName() {
     //   let shopName = []
     //   if(this.shops) {
@@ -231,6 +249,7 @@ export default {
     //   this.popupVisible = true
     // },
     selectProgress() {
+      this.proColor = 'color: #363636'
       this.slots = this.progressList
       this.proto = 'progress'
       // 设置性别选择插件的初始值
@@ -238,6 +257,7 @@ export default {
       this.popupVisible = true
     },
     selectBuyReason() {
+      this.color = 'color: #363636'
       this.slots = this.buyReasonList
       this.proto = 'buyReason'
       // 设置性别选择插件的初始值
@@ -256,6 +276,7 @@ export default {
       this.popupVisible = true
     },
     selectColorPref() {
+      this.Color = 'color: #363636'
       this.slots = this.colorPrefList
       this.proto = 'colorPref'
       // 设置性别选择插件的初始值
@@ -263,6 +284,7 @@ export default {
       this.popupVisible = true
     },
     selectStylePref() {
+      this.styleColor = 'color: #363636'
       this.slots = this.stylePrefList
       this.proto = 'stylePref'
       // 设置性别选择插件的初始值

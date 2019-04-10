@@ -25,7 +25,7 @@
         <input v-model="newCustomerInfo.wxchat" type="text" placeholder="请填写客户微信号">
       </li>
       <li is="customerLi" :leftText="'客户 QQ'">
-        <input v-model="newCustomerInfo.wxchat" type="text" placeholder="请填写客户 QQ">
+        <input v-model="newCustomerInfo.qq" type="text" placeholder="请填写客户 QQ">
       </li>
       <li is="customerLi" :leftText="'客户职业'">
         <input v-model="newCustomerInfo.work" type="text" placeholder="请填写客户职业">

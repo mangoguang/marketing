@@ -2,7 +2,7 @@
   <li class="ageSelect">
     <ul>
       <li is="customerLi" :leftText="'客户年龄'" :icon="true" @click.native="selectAge">
-        <span :style="color">{{ ageVal || '请选择客户年龄'}}</span>
+        <span :style="color">{{ ageVal? ageVal + '岁' :'请选择客户年龄'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -57,7 +57,6 @@ export default {
       this.popupVisible = true;
     },
     onValuesChange(picker, values) {
-      // this.val = values[0]
       if (this.key) {
         this.$emit("ageChange", values[0]);
       } else {

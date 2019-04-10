@@ -2,7 +2,7 @@
   <li class="sourceSelect">
     <ul>
       <li is="customerLi" :leftText="'客户来源'" :start='"*"' :icon="true" @click.native="selectSource">
-        <span>{{sourceVal}}</span>
+        <span :style="color">{{sourceVal || '请选择客户来源'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -39,7 +39,8 @@ export default {
     return {
       slots: [{values: ['异业带单', '主动营销引流', '活动引流', '设计公司带单', '合作伙伴带单', '自然进店', '拦截客户', '渠道引流', '老客带单', '老客复购']}],
       popupVisible: false,
-      key: false
+      key: false,
+      color: "color: #999"
     }
   },
   computed:{
@@ -48,17 +49,23 @@ export default {
     })
   },
   mounted() {
-    this.setSourceVal(this.slots[0].values[0])
+    // this.setSourceVal(this.slots[0].values[0])
     // this.$refs.sourcePicker.setSlotValue(0, this.val)
   },
   methods:{
     ...mapMutations(["setSourceVal"]),
     selectSource() {
-      this.$refs.sourcePicker.setSlotValue(0, this.sourceVal)
-      this.popupVisible = true
+      // this.$refs.sourcePicker.setSlotValue(0, this.sourceVal)
+      // this.popupVisible = true
+      this.color = "color: #363636";
+      if (this.sourceVal === "") {
+        this.setSourceVal(this.slots[0].values[0]);
+      } else {
+        this.$refs.sourcePicker.setSlotValue(0, this.sourceVal);
+      }
+      this.popupVisible = true;
     },
     onValuesChange(picker, values) {
-      console.log(123, values)
       if(this.key) {
         this.$emit('sourceChange', values[0])
       }else {

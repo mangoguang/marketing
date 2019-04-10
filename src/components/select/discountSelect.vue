@@ -53,7 +53,9 @@ export default {
       color: "color: #999",
       firstCount: '',
       secondCount: '',
-      discount:''
+      discount:'',
+      key1: false,
+      key2: false
     };
   },
   computed: {
@@ -64,14 +66,22 @@ export default {
   methods: {
     ...mapMutations(["setDiscountVal"]),
     firChange(picker, values) {
-      this.firstCount = values[0]
-      this.discount = this.secondCount? this.firstCount + '.' + this.secondCount + '折' : this.firstCount
-      this.$emit("discountChange", this.discount);
+      if(this.key1) {
+        this.firstCount = values[0]
+        this.discount = this.secondCount? this.firstCount + '.' + this.secondCount + '折' : this.firstCount + '.0 折'
+        this.$emit("discountChange", this.discount);
+      }else {
+        this.key1 = true
+      }
     },
     secChange(picker, values) {
-      this.secondCount = values[0]
-      this.discount = this.secondCount?this.firstCount + '.' + this.secondCount + '折' : ''
-      this.$emit("discountChange", this.discount);
+      if(this.key2) {
+        this.secondCount = values[0]
+        this.discount = this.secondCount?this.firstCount + '.' + this.secondCount + '折' : this.firstCount + '.0 折'
+        this.$emit("discountChange", this.discount);
+      }else {
+        this.key2 = true
+      }
     },
     selectDiscount() {
       this.color = "color: #363636";

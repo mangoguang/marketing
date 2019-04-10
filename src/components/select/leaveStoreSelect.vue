@@ -57,7 +57,6 @@ export default {
     })
   },
   mounted() {
-    console.log(this.start)
     this.getSlots();
     // this.$refs.leaveStorePicker.setSlotValue(0, this.val)
   },
