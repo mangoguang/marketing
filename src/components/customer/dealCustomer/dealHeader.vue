@@ -7,13 +7,13 @@
       <div class="via"></div>
       <div class="content">
         <div class="name">
-          <span>{{ `*${propsName ? propsName.slice(1, 5) : '' || username ? username.slice(1, 5) : ''}` }}</span>
+          <span>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</span>
           <span>|</span>
-          <span v-show="key">{{ (propsSex == 0) ?'未知':(propsSex == 1)? '男' : '女'}}</span>
-          <span v-show='key1'>{{`***${address ? address.slice(3, 50) : ''}`}}</span>
+          <span>{{ (list.sex == 'Ms.') ?'女':(list.sex == 'Mr.')? '男' : '未知'}}</span>
+          <!-- <span v-show='key1'>{{`***${address ? address.slice(3, 50) : ''}`}}</span> -->
         </div>
         <div class="phoneNumber">
-          <span>{{ `*****${propsPhone ? propsPhone.slice(5, 11) : '' || phone ? phone.slice(5, 11) : ''}` }}</span>
+          <span>{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</span>
           <div class="phone-icon">
             <!-- <a href="tel:1599999999"> -->
               <img src="../../../assets/imgs/call.png" alt="电话">
@@ -31,7 +31,7 @@ import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 
 export default {
-  props: ['propsName', 'propsPhone', 'propsSex'],
+  props: ['propsName', 'propsPhone', 'propsSex', 'list'],
   data(){
     return{
       height:'',

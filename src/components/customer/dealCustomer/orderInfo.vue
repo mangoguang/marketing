@@ -11,14 +11,13 @@
         <div class="orderList">
           <span>{{index + 1}}</span>
           <span>订单号{{item.orderNo}}</span>
-          <!-- <span>{{ explainType(type, item.status) }}</span> -->
           <span>{{item.status}}</span>
           <span >
             <img src="../../../assets/imgs/rightside.png" alt="" :class="{'pullDown':`${rotate}` == index}">
           </span>
         </div>
         <div class="setLine" v-show="i == index"> 
-        <OrderInfoDetails />
+          <OrderInfoDetails :list='list.orderList[index]'/>
         </div>
       </li>
     </ul>                    
@@ -32,10 +31,9 @@ import Vuex, { mapMutations, mapState } from 'vuex'
 import OrderInfoDetails from './orderInfoDetails'
 import personalLevel from './personalLevel'
 import mango from '../../../js'
-import {explainType} from '../../../utils/customer'
 export default {
   name:'dealOrderInfoDetails',
-  props: ['id'],
+  props: ['list'],
   components:{OrderInfoDetails,personalLevel},
   data(){
     return{
@@ -43,9 +41,7 @@ export default {
       status:false,
       i:-1,
       dealTotalPrice: 0,
-      dealDiscountPrice: 0,
-      list: {},
-      type: []
+      dealDiscountPrice: 0
     }
   },
   computed: {
@@ -55,34 +51,13 @@ export default {
       discountPrice: state => state.dealOrderInfoDetails.discountPrice
     })
   },
-  created() {
-    this.getData()
-    this.getStatus()
-  },
   methods:{
     ...mapMutations([
       'setOrderInfoDetails',
       'setTotalPrice',
       'setDiscountPrice'
     ]),
-    getData() {
-      //从父级传id过来请求
-      mango.getAjax('/v3/app/customer/details', {
-        type: 'order',
-        customerId: this.id
-      }).then(res => {
-        if(res.data) {
-          this.list = res.data
-        }
-      })
-    },
-    getStatus() {
-      this.getType('FS_ORDER_STATUS')
-      setTimeout(() => {
-        this.type = this._type
-        // console.log(a)
-      }, 100);
-    },
+     
     calcPrice(list) {
       this.dealTotalPrice = 0
       this.dealDiscountPrice = 0
@@ -97,23 +72,24 @@ export default {
     },
     //下拉状态改变，获取数据
     pullDown(index){
+      console.log(index)
       // this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
       // let orderList = this.dealOrderInfoDetails.orderList[index]
       // this.calcPrice(orderList)
-      // if(this.status){
-      //   if(this.rotate == index){
-      //     this.i = -1
-      //     this.status = false
-      //     this.rotate = -1
-      //   }else{
-      //     this.i = index
-      //     this.rotate = index  
-      //   }
-      // }else{
-      //   this.status = true
-      //   this.rotate = index
-      //   this.i = index
-      // }
+      if(this.status){
+        if(this.rotate == index){
+          this.i = -1
+          this.status = false
+          this.rotate = -1
+        }else{
+          this.i = index
+          this.rotate = index  
+        }
+      }else{
+        this.status = true
+        this.rotate = index
+        this.i = index
+      }
     }
   }
 }
@@ -155,10 +131,12 @@ export default {
         flex: 0.1;
       }
       span:nth-child(2){
-        flex: 1
+        flex: 0.86;
       }
       span:nth-child(3){
         font-size: 4vw;
+        flex: 0.4;
+        text-align: right;
       }
       span:nth-child(4){
         padding: 0 4.26vw;

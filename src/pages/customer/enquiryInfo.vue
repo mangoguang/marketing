@@ -12,7 +12,7 @@
         <div class="photo"></div>
       </div>
     </div> -->
-    <deal-header/>
+    <deal-header :list='list'/>
     <ul class="infoNav">
       <li  class="infoNavLi"
         v-for="(item,index) in dealTabStatus" :key="index" 
@@ -21,10 +21,10 @@
         {{item.name}}
       </li>
     </ul> 
-    <order-info v-show="dealTabStatus[0].status" :id='id'/>
+    <order-info v-show="dealTabStatus[0].status" :list='list' />
     <!-- <EnquiryOrderInfo/> -->
     <!-- <div class="line"></div> -->
-    <orderInfoDetails/>
+    <!-- <orderInfoDetails/> -->
   </div>
 </template>
 
@@ -35,11 +35,13 @@ import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../js";
 import EnquiryOrderInfo from "../../components/customer/enquiryOrder/enquiryOrderInfo";
 import orderInfoDetails from "../../components/customer/dealCustomer/orderInfoDetails";
-
+import {explainType} from '../../utils/customer'
 export default {
   components: { EnquiryOrderInfo, orderInfoDetails, dealHeader, OrderInfo },
   data() {
     return {
+      list: {},
+      type: []
     };
   },
   computed: {
@@ -49,10 +51,38 @@ export default {
     })
   },
   created() {
-    this.id = this.$route.query.id
+    this.getStatus()
+    this.getData()
   },
   methods: {
     ...mapMutations(['setDealTabStatus']),
+    getData() {
+      //从父级传id过来请求
+      mango.getAjax('/v3/app/customer/details', {
+        type: 'order',
+        customerId: this.$route.query.id
+      }).then(res => {
+        if(res.data) {
+          this.list = res.data
+          let arr = this.changeStatus(this.list.orderList)
+          this.list.orderList = arr
+        }
+      })
+    },
+     //获取status的type数组
+    getStatus() {
+      this.getType('FS_ORDER_STATUS')
+      setTimeout(() => {
+        this.type = this._type
+      }, 100);
+    },
+    //更改status
+    changeStatus(arr) {
+      arr.map(item => {
+        item.status = explainType(this.type,item.status)
+      })
+      return arr
+    },
     //切换顶部导航
     clickTab(index) {
       this.setDealTabStatus(mango.btnList(['订单信息', '客户信息', '意向信息'], index))
