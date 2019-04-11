@@ -16,7 +16,7 @@
       <li @click="controlDemand">
         <div class="title">
           <p ></p>
-          <span>客户需求</span>
+          <span>意向信息</span>
         </div>
         <div class="pullDown-icon">
           <img src="../../assets/imgs/newPullDown.png" :class="{changSide:isShowDemand}">
@@ -28,7 +28,7 @@
       <li @click="controlDaal">
         <div class="title">
           <p ></p>
-          <span>洽谈记录</span>
+          <span>跟进情况</span>
         </div>
         <div class="pullDown-icon">
           <img src="../../assets/imgs/newPullDown.png"  :class="{changSide:isShowDeal}">
@@ -64,7 +64,7 @@ export default {
       name: '',
       phone: '',
       sex: '',
-      topTitle: ['客户描述', '客户需求', '洽谈记录'],
+      topTitle: ['客户描述', '意向信息', '跟进情况'],
       isShowDemand: false,
       isShowDeal: false,
       shops: []

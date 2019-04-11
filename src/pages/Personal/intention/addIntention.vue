@@ -169,6 +169,17 @@ export default {
      styleSelect,
      progressSelect,
      discountSelect,
+
+
+
+
+
+
+
+
+
+
+     
      classifySelect,
      recordPannel,
      orderInfo,

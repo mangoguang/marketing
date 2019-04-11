@@ -3,7 +3,7 @@
     <m-slider :list='imgList' :auto='0' class="productSlider"/>
     <button class="cancle" @click.prevent="backBtn"></button>
     <more-details class="details"/>
-    <div class="case"></div>
+    <!-- <div class="case"></div> -->
   </div>
 </template>
 

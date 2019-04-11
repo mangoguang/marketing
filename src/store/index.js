@@ -29,6 +29,7 @@ import searchScroll from './modules/gallery/search/scroll'
 import productScroll from './modules/gallery/productList/scroll'
 import productLoadMore from './modules/gallery/productList/loadmore'
 import collectLoadMore from './modules/gallery/collect'
+import chooseShop from './modules/customer/chooseShop'
 import feedback from './modules/personal/feedback'
 import preview from './modules/components/preview'
 import address from './modules/address/address'
@@ -69,6 +70,7 @@ export default new Vuex.Store({
     productScroll,
     productLoadMore,
     collectLoadMore,
+    chooseShop,
     feedback,
     preview,
     address,

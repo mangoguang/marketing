@@ -103,11 +103,12 @@ export default {
     },
     getCityLevel() {
       let _this = this
-      mango.getAjax(this, 'getCityLevel', {
+      mango.getAjax('/v1/app/report/getCityLevel', {
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
+        console.log('获取城市等级接口', res)
+        res = res.data
         if (res) {
-          res = res.data
           // 如果本地存储了城市选择，则选择本地存储，否则选择城市列表第一个城市
           if (!_this.cityMsg.cityName) {
             _this.cityMsg = {

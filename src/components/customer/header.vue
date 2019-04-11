@@ -68,8 +68,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import mango from '../../js'
+import { deepclone } from "../../utils/customer";
 Vue.use(Vuex)
-
 export default {
   name: 'customerHeader',
   data () {
@@ -78,10 +78,11 @@ export default {
       ifShow: 'hide',
       navShow: true,
       ajaxData: {},
-      customerClassifyList: mango.btnList(['全部', '紧急降序', '关键降序'], 0),
+      customerClassifyList: mango.btnList(['全部', '紧急降序', '级别A到C', '级别C到A'], 0),
       selectBtnText: '全部',
       searchKey: '',
-      ajaxData:[]
+      ajaxData:[],
+      key: true
     }
   },
   computed: {
@@ -96,8 +97,8 @@ export default {
   },
   watch: {
     'customerAjaxParams': function(val) {
-      console.log('变化后的customerAjaxParams参数：', val)
-      if (val.page === 1) {
+      // console.log('变化后的customerAjaxParams参数：', val)
+      if (val.page === 1 && this.key) {
         this.getCustomerList()
       }
     },
@@ -107,18 +108,16 @@ export default {
       }
     },
     rightContainerStatus(val) {
-      console.log(123,this.rightContainerStatus)
-      this.getCustomerList()
+      this.key = false
+      if(val === 'hideRightContainer') {
+        this.getCustomerList()
+        this.key = true
+      }
     }
   },
   created() {
     // 获取本地存储信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
-    this.customerAjaxParams.account = this.ajaxData.account
-    this.customerAjaxParams.tenantId = this.ajaxData.tenantId
-    this.customerAjaxParams.account = this.ajaxData.account
-    this.customerAjaxParams.key = ''
+    this.customerAjaxParams.type = 'New'
     this.setCustomerAjaxParams(this.customerAjaxParams)
     if(this.headerStatus[0].status){
       this.getCustomerList()
@@ -156,7 +155,7 @@ export default {
     },
     // 显示右侧边栏
     showRightContainer() {
-      console.log('显示侧边栏。')
+      // console.log('显示侧边栏。')
       this.setRightContainerStatus('show')
     },
     // 显示类型选择列表
@@ -174,44 +173,46 @@ export default {
     // 选择客户类型
     customerClassifySelect(i) {
       this.ifShow = 'hide'
-      let [temp, tempObj] = [this.customerAjaxParams, {}]
-      // 对象深拷贝
-      for (let key in temp) {
-        tempObj[key] = temp[key]
-      }
+      let parmas = deepclone(this.customerAjaxParams, {})
       if (this.selectBtnText === '全部' || this.selectBtnText != this.customerClassifyList[i].name) {
         this.selectBtnText = this.customerClassifyList[i].name
         mango.changeBtnStatus(this.customerClassifyList, i)
         switch(i) {
           case 0:
-            tempObj.uo = 1
-            tempObj.io = 1
-            tempObj.page = 1
-            tempObj.startTime = ''
-            tempObj.endTime = ''
+            parmas.sort = ''
+            parmas.u = ''
+            parmas.sd = ''
+            parmas.ed = ''
             this.setAllLoaded(false)
-            this.setCustomerAjaxParams(tempObj)
-            console.log('全部', this.customerAjaxParams)
+            this.setCustomerAjaxParams(parmas)
+            // console.log('全部', this.customerAjaxParams)
             break
           case 1:
-            tempObj.uo = 1
-            tempObj.io = 0
-            tempObj.page = 1
-            tempObj.startTime = ''
-            tempObj.endTime = ''
+            parmas.sort = 'u'
+            parmas.u = ''
+            parmas.sd = ''
+            parmas.ed = ''
             this.setAllLoaded(false)
-            this.setCustomerAjaxParams(tempObj)
-            console.log('紧急降序', this.customerAjaxParams)
+            this.setCustomerAjaxParams(parmas)
+            // console.log('紧急降序', this.customerAjaxParams)
             break
           case 2:
-            tempObj.uo = 0
-            tempObj.io = 1
-            tempObj.page = 1
-            tempObj.startTime = ''
-            tempObj.endTime = ''
+            parmas.sort = 'la'
+            parmas.u = ''
+            parmas.sd = ''
+            parmas.ed = ''
             this.setAllLoaded(false)
-            this.setCustomerAjaxParams(tempObj)
-            console.log('关键降序', this.customerAjaxParams)
+            this.setCustomerAjaxParams(parmas)
+            // console.log('级别降序', this.customerAjaxParams)
+            break
+          case 3:
+            parmas.sort = 'ld'
+            parmas.u = ''
+            parmas.sd = ''
+            parmas.ed = ''
+            this.setAllLoaded(false)
+            this.setCustomerAjaxParams(parmas)
+            // console.log('级别降序', this.customerAjaxParams)
             break
           default:
             break
@@ -228,7 +229,7 @@ export default {
       this.customerAjaxParams.page = 1
       this.setAllLoaded(false)
       this.setCustomerAjaxParams(this.customerAjaxParams)
-      mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
+      mango.getAjax('v3/app/customer/list', this.customerAjaxParams).then((res) => {
         if (res) {
           this.setCustomerList(res.data)
         }

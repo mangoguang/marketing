@@ -58,10 +58,12 @@ export default {
   },
   created() {
     this.checkLogin();
-    this.test()
+    // this.test()
   },
   methods: {
     test() {
+      let token = this._localAjax().token
+      console.log(token)
       let obj = {
           type: 'New',   //New:意向客户，Approved：成交客户，Closed：战败客户
           key:'',     //搜索关键字，电话或名字
@@ -71,11 +73,21 @@ export default {
           u: '' ,    //1：紧急，0不紧急
           l:'',     //
           page: 1,   //页数
-          limit: 10    //每页条数
+          limit: 10,    //每页条数
+          token: token
       }
-      indexModel.getCustomerList(obj).then(res => {
-        console.log(res)
+      // indexModel.getCustomerList(obj).then(res => {
+      //   console.log(res)
+      // })
+      axios.get('http://10.11.8.7/v3/app/customer/list', {
+        params: obj
       })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     },
     checkLogin() {
       let ajaxData = localStorage.getItem("ajaxData");

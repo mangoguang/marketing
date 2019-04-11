@@ -1,11 +1,13 @@
 <template>
   <li>
-    <span>123</span>
-    <img src="../../../assets/imgs/chooseShop.png" alt>
+    <span>{{list.name}}</span>
+    <img src="../../../assets/imgs/chooseShop.png" alt v-show="list.status">
   </li>
 </template>
 <script>
-export default {};
+export default {
+  props: ['list']
+};
 </script>
 
 <style lang="scss" scoped>

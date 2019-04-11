@@ -1,8 +1,8 @@
 <template>
   <li class="sexSelect">
     <ul>
-      <li is="customerLi" :leftText="'客户性别'" :icon="true" @click.native="selectSex">
-        <span>{{sexVal || '请选择客户性别'}}</span>
+      <li is="customerLi" :leftText="'客户性别'" :start='"*"' :icon="true" @click.native="selectSex">
+        <span :style="color" class="sex">{{sexVal || '请选择客户性别'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -39,7 +39,8 @@ export default {
     return {
       slots: [{values: ['男', '女']}],
       popupVisible: false,
-      key: false
+      key: false,
+      color: 'color: #999'
     }
   },
   computed:{
@@ -56,6 +57,7 @@ export default {
       if(this.sexVal === '' || this.sexVal ==='未知') {
         this.setSexVal(this.slots[0].values[0])
       }else {
+        this.color = 'color: #363636'
         this.$refs.sexPicker.setSlotValue(0, this.sexVal)
       }
       this.popupVisible = true
@@ -77,6 +79,9 @@ export default {
   .sexSelect{
     ul{
       width: 100%;
+      .sex {
+        margin-left: -3vw
+      }
     }
   }
 </style>

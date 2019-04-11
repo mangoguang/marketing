@@ -47,3 +47,23 @@ let filterObj = (obj) => {
   return temp
 }
 export {filterObj}
+
+//深度拷贝
+function deepclone(origin, target) {
+  var target = target || {},
+      toStr = Object.prototype.toString,
+      arrStr = "[object Array]";
+  for(var prop in origin) {
+    if(origin.hasOwnProperty(prop)) {
+      if(origin[prop] !== 'null' && typeof(origin[prop]) == 'object') {
+        target[prop] = (toStr.call(origin[prop]) == arrStr)? [] : {}
+        deepclone(origin[prop], target[prop])
+      }else {
+        target[prop] = origin[prop]
+      }
+    }
+  }
+  return target
+}
+
+export {deepclone}

@@ -33,6 +33,19 @@ export default {
     }
   },
   mounted() {
+    // indexModel.getCusotmerList({
+    //   type: 'New',  //New:意向客户，Approved：成交客户，Closed：战败客户
+    //   key: '',  //搜索关键字，电话或名字
+    //   sort: 'u',  //u：紧急排序，l：意向分类排序
+    //   sd: '2018-03-12',  //跟进日期
+    //   ed: '2018-03-26',
+    //   u: 1,  //1：紧急，0不紧急
+    //   l: 'B',  //
+    //   page: 1,  //页数
+    //   limit: 10  //每页条数
+    // }).then((res) => {
+    //   console.log('succ111', res)
+    // })
     // `{
     //           "account": "${res.account}",
     //           "tenantId": "${res.tenantId}",

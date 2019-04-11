@@ -8,7 +8,7 @@ class Mango extends Common {
     this.customerAjaxParams = (tenantId) => {
       return {
         page: 1,   //页数
-        limit: 50,    //每页条数
+        limit: 30,    //每页条数
         u: '',   //1:紧急排序，0：非
         i: '',   //1关键排序
         uo: 1,   // 1:紧急排序，0：非

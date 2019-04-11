@@ -252,7 +252,7 @@ class IndexModel extends Request {
   }
   //获取用户个人数据
   getUserInfo(obj) {
-    return mango.getAjax('v1/app/userinfo', obj)
+    return mango.getAjax('/v1/app/userinfo', obj)
   }
 
   /* 
@@ -263,6 +263,12 @@ class IndexModel extends Request {
     // return mango.getAjax('v1/app/userinfo', obj)
   }
   
+  /* 
+    客户管理模块
+  */
+  getCusotmerList(obj) {
+    return mango.getAjax('/v3/app/customer/list', obj)
+  }
 }
 
 export { IndexModel }
