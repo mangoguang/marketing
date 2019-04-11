@@ -80,7 +80,7 @@ export default {
   mounted(){
     console.log('参数', this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
     this.getSalesData(this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
-    // this.getAreaSalesData(this.endTime)
+    this.getAreaSalesData(this.endTime)
   },
   computed: {
     ...mapState({
@@ -102,7 +102,7 @@ export default {
     endTimeSelect() {
       if (this.endTimeSelect && this.endTimeSelect != '') {
         this.getSalesData(this.citySelect.cityName, this.endTimeSelect, this.citySelect.cityLevel)
-        // this.getAreaSalesData(this.endTimeSelect)
+        this.getAreaSalesData(this.endTimeSelect)
       }
     },
     // 整体销售额对比
@@ -177,7 +177,7 @@ export default {
     },
     getAreaSalesData(time) {
       let _this = this
-      mango.getAjax(this, 'area/sales', {
+      mango.getAjax('/v1/app/report/area/sales', {
         date: time,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {

@@ -143,7 +143,7 @@ export default {
     getareaEffectivenessData(date, city, level) {
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'area/effectiveness', {
+      mango.getAjax('/v1/app/report/area/effectiveness', {
         cityLevel: level,
         cityName: city,
         // cityName: '苏州市',
@@ -164,7 +164,7 @@ export default {
       this.i += 1
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'area/effectiveness/shop', {
+      mango.getAjax('/v1/app/report/area/effectiveness/shop', {
         date: date,
         tenantId: this.ajaxData.tenantId,
         cityLevel: level,
