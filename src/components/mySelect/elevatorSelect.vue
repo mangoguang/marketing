@@ -1,21 +1,45 @@
 <template>
   <div class="inputBox">
-      <label>
-          <span>{{label}}</span>
-          <input :id="id" type="text" :value="value" :style="color" :readonly='readonly' :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+      <label @click="openElevatorSelect">
+          <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
+          <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
-        <img src="../assets/imgs/rightside.png" alt="">
+        <img src="../../assets/imgs/rightside.png" alt="">
       </div>
+      <mt-popup v-model="popupVisible" position="bottom">
+        <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true"></mt-picker>
+      </mt-popup>
    </div>
 </template>
-
+true
 <script>
+import Vue from 'vue'
+import { Popup, Picker } from 'mint-ui';
+Vue.component(Picker.name, Picker);
+Vue.component(Popup.name, Popup);
 export default {
-  props:['id','value','label','placeholder','showIcon','readonly','color'],
+  props:['value','label','placeholder','showIcon','required'],
   data(){
     return{
-
+      popupVisible:false,
+      slots:[
+        {
+          flex: 1,
+          values: ['是','否'],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ]
+    }
+  },
+  methods:{
+    onValuesChange(picker,values){
+      console.log(picker);
+      console.log(values);
+    },
+    openElevatorSelect(){
+      this.popupVisible=true;
     }
   }
  
@@ -42,7 +66,10 @@ export default {
       display: inline-block;
       width:22.4vw;
     }
-    
+    .yan-red{
+      display: inline;
+      color:#FB222B;
+    }
     
   }
   input:-moz-input-placeholder{
