@@ -2,7 +2,7 @@
   <div class="content">
     <div class="topbar">
       <p>¥{{Math.round(list.price*100)/100}}<span>起</span></p>
-      <div class="like" @touchend="changLike">
+      <div class="like" @touchend="changLike" v-show="status">
         <img src="../../../assets/imgs/like.png" alt="" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="" v-else>
       </div>
@@ -35,7 +35,8 @@ export default {
   data() {
     return {
       like: '',
-      account: ''
+      account: '',
+      status: true
     }
   },
   watch: {
@@ -44,10 +45,20 @@ export default {
     }
   },
   mounted() {
+    this.urlJudge()
     this.like = this.list.collect
     this.account = this._localAjax().account
   },
   methods: {
+    // 判断如果参数存在则点燃的取消
+    urlJudge() {
+      let url = window.location.href
+      if(url.indexOf("musi") === -1) {
+        this.status = true
+      }else {
+        this.status = false
+      }
+    },
     //收藏按钮
     changLike() {
       if(!this.like) {

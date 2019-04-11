@@ -204,7 +204,7 @@ export default {
       mango.loading('open')
       var Name = _this.inputValue1
       var Pwd = _this.inputValue2 
-      const url = `${mango.port}app/login.api`
+      const url = `${mango.port}/app/login.api`
     axios({
       method: 'post',
       url: url,
