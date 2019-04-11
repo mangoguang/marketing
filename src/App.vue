@@ -42,7 +42,7 @@ export default {
   mounted() {
     this.isIPhoneX();
     // 开发过程中手动刷新页面后刷新token
-    refreshToken.call(this)
+    // refreshToken.call(this)
     clearInterval(this.$root.tokenTime)
     this.$root.tokenTime = setInterval(() => {
       refreshToken.call(this)

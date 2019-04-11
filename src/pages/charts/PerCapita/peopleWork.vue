@@ -155,7 +155,7 @@ export default {
     getpeopleWorkData(date, city, level) {
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'people/work', {
+      mango.getAjax('/v1/app/report/people/work', {
         cityLevel: level,
         cityName: city,
         // cityName: '苏州市',
@@ -177,7 +177,7 @@ export default {
       this.i += 1
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'people/work/shop', {
+      mango.getAjax('/v1/app/report/people/work/shop', {
         date: date,
         tenantId: this.ajaxData.tenantId,
         cityLevel: level,

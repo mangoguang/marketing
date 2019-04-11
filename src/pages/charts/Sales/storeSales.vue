@@ -102,7 +102,7 @@ export default {
     // ajax请求
     getStoreSalesData() {
       let _this = this
-      mango.getAjax(this, 'shops/sales', {
+      mango.getAjax('/v1/app/report/shops/sales', {
         date: this.endTime,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {

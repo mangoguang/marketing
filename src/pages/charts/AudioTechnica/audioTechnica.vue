@@ -263,7 +263,7 @@ export default {
     getStoreGetInTotalData(date, city, level) {
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'store/number/all', {
+      mango.getAjax('/v1/app/report/store/number/all', {
         tenantId: this.ajaxData.tenantId,
         date: date,
         cityLevel: level,
@@ -286,7 +286,7 @@ export default {
       console.log(this.i)
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'store/number', {
+      mango.getAjax('/v1/app/report/store/number', {
         tenantId: this.ajaxData.tenantId,
         date: date
       }).then((res) => {
@@ -308,7 +308,7 @@ export default {
     getAchieveRatioTotalData(date, city, level) {
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'turnover/ratio', {
+      mango.getAjax('/v1/app/report/turnover/ratio', {
         tenantId: this.ajaxData.tenantId,
         date: date,
         cityLevel: level,
@@ -329,7 +329,7 @@ export default {
     getPerAchieveRatioData(date, city, level) {
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'store/turnover/ratio', {
+      mango.getAjax('/v1/app/report/store/turnover/ratio', {
         tenantId: this.ajaxData.tenantId,
         date: date,
         cityLevel: level,
@@ -353,7 +353,7 @@ export default {
     getOrderFormTotalData(date, city, level) {
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'guest/order', {
+      mango.getAjax('/v1/app/report/guest/order', {
         tenantId: this.ajaxData.tenantId,
         date: date,
         cityLevel: level,
@@ -374,7 +374,7 @@ export default {
     getPerOrderFormData(date, city, level) {
        mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'store/guest/order', {
+      mango.getAjax('/v1/app/report/store/guest/order', {
         tenantId: this.ajaxData.tenantId,
         date: date,
         cityLevel: level,
