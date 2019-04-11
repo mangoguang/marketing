@@ -52,27 +52,25 @@ export default {
     })
   },
   methods:{
-    ...mapMutations([
-      'setOrderInfoDetails',
-      'setTotalPrice',
-      'setDiscountPrice'
-    ]),
-     
-    calcPrice(list) {
-      this.dealTotalPrice = 0
-      this.dealDiscountPrice = 0
-      let itemList = list.orderItemList
-      let priceArr = []
-      itemList.forEach((item, index) => {
-        this.dealTotalPrice += item.price * item.quantity
-      });
-      this.dealDiscountPrice = this.dealTotalPrice - list.totalAmount
-      this.setTotalPrice(this.dealTotalPrice)
-      this.setDiscountPrice(this.dealDiscountPrice)
-    },
+    // ...mapMutations([
+    //   'setOrderInfoDetails',
+    //   'setTotalPrice',
+    //   'setDiscountPrice'
+    // ]),
+    // calcPrice(list) {
+    //   this.dealTotalPrice = 0
+    //   this.dealDiscountPrice = 0
+    //   let itemList = list.orderItemList
+    //   let priceArr = []
+    //   itemList.forEach((item, index) => {
+    //     this.dealTotalPrice += item.price * item.quantity
+    //   });
+    //   this.dealDiscountPrice = this.dealTotalPrice - list.totalAmount
+    //   this.setTotalPrice(this.dealTotalPrice)
+    //   this.setDiscountPrice(this.dealDiscountPrice)
+    // },
     //下拉状态改变，获取数据
     pullDown(index){
-      console.log(index)
       // this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
       // let orderList = this.dealOrderInfoDetails.orderList[index]
       // this.calcPrice(orderList)

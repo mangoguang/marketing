@@ -4,7 +4,7 @@
       <img src="../../../assets/imgs/backicon.png" alt="">
     </div>
     <div class="personalMsg">
-      <div class="via"></div>
+      <img :src="list.headPortrait" class='via'/>
       <div class="content">
         <div class="name">
           <span>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</span>
@@ -50,7 +50,6 @@ export default {
     })
   },
   created(){
-    // console.log(111111231231,this.propsSex)
     if(this.propsSex === '') {
       this.key = true
       this.key1 =false
@@ -105,10 +104,11 @@ export default {
     color: #fff;
     font-size: 4.266vw;
     .via{
-      background: url('../../../assets/imgs/dealVia.png') no-repeat center;
-      background-size: 100% 100%;
+      // background: url('../../../assets/imgs/dealVia.png') no-repeat center;
+      // background-size: 100% 100%;
       width: 16vw;
       height: 16vw;
+      border-radius:50%;
     }
     .content{
       margin-left: 5.6vw;

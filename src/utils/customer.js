@@ -1,5 +1,5 @@
 // 将日期格式2018-01-01改成2018年01月01日
-let turnDate = (date) => {
+function turnDate(date) {
   if (date) {
     let arr = date.split('-')
     if (arr.length > 1) {

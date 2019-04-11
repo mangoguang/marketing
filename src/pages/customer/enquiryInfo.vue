@@ -21,8 +21,19 @@
         {{item.name}}
       </li>
     </ul> 
+    <!-- 订单信息-->
     <order-info v-show="dealTabStatus[0].status" :list='list' />
-    <!-- <EnquiryOrderInfo/> -->
+    <!-- 客户信息-->
+    <div v-show="dealTabStatus[1].status">
+      <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
+      <div v-else>
+        <newDescript />
+        <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
+      </div>
+    </div>
+    <!-- 意向信息-->
+    <intentionMsg v-show="dealTabStatus[2].status"/>
+    <!-- <EnquiryOrderInfo v-show="dealTabStatus[1].status"/> -->
     <!-- <div class="line"></div> -->
     <!-- <orderInfoDetails/> -->
   </div>
@@ -30,18 +41,23 @@
 
 <script>
 import dealHeader from '../../components/customer/dealCustomer/dealHeader'
+import newDescript from '../../components/customer/newCustomerInfo/newDescript'
 import OrderInfo from '../../components/customer/dealCustomer/orderInfo'
+import CustomerMsg from '../../components/customer/customerShare/customerMsg'
+import intentionMsg from '../../components/customer/customerShare/intentionMsg'
+import btn from "../../components/btn";
 import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../js";
 import EnquiryOrderInfo from "../../components/customer/enquiryOrder/enquiryOrderInfo";
 import orderInfoDetails from "../../components/customer/dealCustomer/orderInfoDetails";
 import {explainType} from '../../utils/customer'
 export default {
-  components: { EnquiryOrderInfo, orderInfoDetails, dealHeader, OrderInfo },
+  components: { EnquiryOrderInfo, orderInfoDetails, dealHeader, OrderInfo, CustomerMsg, newDescript, btn, intentionMsg },
   data() {
     return {
       list: {},
-      type: []
+      type: [],
+      editStatus: false
     };
   },
   computed: {
@@ -83,6 +99,14 @@ export default {
       })
       return arr
     },
+    //编辑按钮
+    editMsg(val) {
+      this.editStatus = val
+    },
+    //保存资料
+    saveMsg() {
+      this.editStatus = false
+    },
     //切换顶部导航
     clickTab(index) {
       this.setDealTabStatus(mango.btnList(['订单信息', '客户信息', '意向信息'], index))
@@ -99,6 +123,8 @@ export default {
   width: 100vw;
   min-height: 100vh;
   background: #f8f8f8;
+  box-sizing:border-box;
+  padding-bottom:4vw;
   .infoNav {
     width: 100%;
     justify-content: space-around;
@@ -152,6 +178,15 @@ export default {
   // }
   .line {
     margin-bottom: 2vw;
+  }
+  .theBtn {
+    background:rgba(0,122,255,1);
+    border: .13vw solid rgba(0,93,194,1);
+    width: 80%;
+    margin:0 auto;
+    // position: absolute;
+    // bottom:0;
+    // left:10vw;
   }
 }
 
