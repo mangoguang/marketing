@@ -41,18 +41,27 @@ export default {
   },
   created(){
     this.getProvinceArr();
+    this.getCityArr();
+    this.getCountyArr();
   },
   methods:{
     provinceChange(picker,values){
         if(this.key){
+          this.provinceName=values[0];
           this.getProvinceArr();
         }
     },
     cityChange(picker,values){
-
+      if(this.key){
+          this.cityName=values[0];
+          this.getCityArr();
+      }
     },
     countyChange(picker,values){
-
+      if(this.key){
+          this.countyName=values[0];
+          this.getCountyArr();
+      }
     },
     getProvinceArr(){
       indexModel.getArea('DR_STATE').then(res => {
@@ -60,6 +69,7 @@ export default {
         if(res.code===0){
           this.provinceArr=res.data;
           let temp=this.filterName(this.provinceArr);
+          console.log(temp);
           temp.unshift('请选择省');
           this.provinceSlots=[
             {
@@ -72,16 +82,33 @@ export default {
     },
     getCityArr(){
       indexModel.getArea('DR_CITY').then(res => {
+        console.log(res);
         if(res.code===0){
           this.cityArr=res.data;
-          
+          let temp=this.filterName(this.cityArr);
+          temp.unshift('请选择市');
+          this.citySlots=[
+            {
+              values:temp,
+              className:'citySlot'
+            }
+          ]
         }
       })
     },
     getCountyArr(){
       indexModel.getArea('DR_COUNTY').then(res => {
+        console.log(res);
         if(res.code===0){
           this.countyArr=res.data;
+          let temp=this.filterName(this.countyArr);
+          temp.unshift('请选择区/县');
+          this.countySlots=[
+            {
+              values:temp,
+              className:'countySlot'
+            }
+          ]
         }
       })
     },
@@ -90,9 +117,11 @@ export default {
       this.key=true;
     },
     filterName(arr){
-      return arr.filter(function(item,index,array){
-        return item.name;
-      }) 
+      var newArr=[];
+      arr.forEach(function(item,index){
+        newArr.push(item.name);
+      });
+      return newArr;
     }
   }
 
@@ -155,5 +184,11 @@ export default {
       height: 3.06vw;
     }
   }
+}
+.mint-popup{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  
 }
 </style>
