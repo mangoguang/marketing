@@ -20,7 +20,9 @@ export default {
   props:['options','name'],
   data(){
     return{
-     
+     province:'',
+     city:'',
+     county:''
     }
   },
   methods:{

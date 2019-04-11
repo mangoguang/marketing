@@ -1,21 +1,43 @@
 <template>
   <div class="inputBox">
-      <label>
+      <label @click="openDatePicker">
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
-          <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          <input  type="text" :value="value" ref='dateInput' readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
+      <mt-datetime-picker
+        v-model="pickerVisible"
+        type="date"
+        year-format="{value} 年"
+        month-format="{value} 月"
+        date-format="{value} 日"
+        @confirm="handleConfirm"
+        ref="date">
+      </mt-datetime-picker>
    </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import { DatetimePicker } from 'mint-ui';
+Vue.component(DatetimePicker.name, DatetimePicker);
+import mango from '../../js/'
 export default {
   props:['value','label','placeholder','showIcon','required'],
   data(){
     return{
-
+      pickerVisible:new Date()
+    }
+  },
+  methods:{
+    handleConfirm(){
+      let day=mango.indexTimeB(this.pickerVisible)[0];
+      this.$refs.dateInput.value=day;
+    },
+    openDatePicker(){
+      this.$refs.date.open();
     }
   }
  

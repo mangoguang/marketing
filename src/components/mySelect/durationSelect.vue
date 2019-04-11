@@ -1,22 +1,50 @@
 <template>
   <div class="inputBox">
-      <label>
+      <label @click="openTimePicker">
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
-          <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          <input  type="text" :value="value" readonly ref='duration' :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
+      <mt-datetime-picker
+        v-model="pickerVisible"
+        type="time"
+        hourFormat="{value} 小时"
+        minuteFormat="{value} 分钟"
+        @confirm="handleConfirm"
+        ref='time'>
+      </mt-datetime-picker>
    </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import { DatetimePicker } from 'mint-ui';
+Vue.component(DatetimePicker.name, DatetimePicker);
 export default {
   props:['value','label','placeholder','showIcon','required'],
   data(){
     return{
-
+      pickerVisible:''
     }
+  },
+  methods:{
+    handleConfirm(){
+      if(this.pickerVisible){
+        let durationAttr=this.pickerVisible.split(':');
+        let hour= parseInt(durationAttr[0])<=0?'':parseInt(durationAttr[0])+"小时";
+        let minute=parseInt(durationAttr[1])<=0?'':parseInt(durationAttr[1])+"分钟";
+        let duration=hour+minute;
+        this.$refs.duration.value=duration;
+      }else{
+        this.$refs.duration.value='';
+      }
+    },
+    openTimePicker(){
+      this.$refs.time.open();
+    }
+   
   }
  
 }
