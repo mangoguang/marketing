@@ -1,17 +1,18 @@
 <template>
   <div class="orderInfo">
-    <personalLevel />
+    <personalLevel :list='list'/>
     <ul>
       <div class="topBar">
         <span>订单号</span>
         <span>订单状态</span>
       </div>
-      <li v-for="(item,index) in dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
+      <li v-for="(item,index) in list.orderList" :key="index"  @click="pullDown(index)">
         <hr v-if="index !== 0"> 
         <div class="orderList">
           <span>{{index + 1}}</span>
           <span>订单号{{item.orderNo}}</span>
-          <span>{{item.orderStatus}}</span>
+          <!-- <span>{{ explainType(type, item.status) }}</span> -->
+          <span>{{item.status}}</span>
           <span >
             <img src="../../../assets/imgs/rightside.png" alt="" :class="{'pullDown':`${rotate}` == index}">
           </span>
@@ -30,9 +31,11 @@ import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import OrderInfoDetails from './orderInfoDetails'
 import personalLevel from './personalLevel'
-
+import mango from '../../../js'
+import {explainType} from '../../../utils/customer'
 export default {
   name:'dealOrderInfoDetails',
+  props: ['id'],
   components:{OrderInfoDetails,personalLevel},
   data(){
     return{
@@ -40,7 +43,9 @@ export default {
       status:false,
       i:-1,
       dealTotalPrice: 0,
-      dealDiscountPrice: 0
+      dealDiscountPrice: 0,
+      list: {},
+      type: []
     }
   },
   computed: {
@@ -50,12 +55,34 @@ export default {
       discountPrice: state => state.dealOrderInfoDetails.discountPrice
     })
   },
+  created() {
+    this.getData()
+    this.getStatus()
+  },
   methods:{
     ...mapMutations([
       'setOrderInfoDetails',
       'setTotalPrice',
       'setDiscountPrice'
     ]),
+    getData() {
+      //从父级传id过来请求
+      mango.getAjax('/v3/app/customer/details', {
+        type: 'order',
+        customerId: this.id
+      }).then(res => {
+        if(res.data) {
+          this.list = res.data
+        }
+      })
+    },
+    getStatus() {
+      this.getType('FS_ORDER_STATUS')
+      setTimeout(() => {
+        this.type = this._type
+        // console.log(a)
+      }, 100);
+    },
     calcPrice(list) {
       this.dealTotalPrice = 0
       this.dealDiscountPrice = 0
@@ -70,23 +97,23 @@ export default {
     },
     //下拉状态改变，获取数据
     pullDown(index){
-      this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
-      let orderList = this.dealOrderInfoDetails.orderList[index]
-      this.calcPrice(orderList)
-      if(this.status){
-        if(this.rotate == index){
-          this.i = -1
-          this.status = false
-          this.rotate = -1
-        }else{
-          this.i = index
-          this.rotate = index  
-        }
-      }else{
-        this.status = true
-        this.rotate = index
-        this.i = index
-      }
+      // this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
+      // let orderList = this.dealOrderInfoDetails.orderList[index]
+      // this.calcPrice(orderList)
+      // if(this.status){
+      //   if(this.rotate == index){
+      //     this.i = -1
+      //     this.status = false
+      //     this.rotate = -1
+      //   }else{
+      //     this.i = index
+      //     this.rotate = index  
+      //   }
+      // }else{
+      //   this.status = true
+      //   this.rotate = index
+      //   this.i = index
+      // }
     }
   }
 }
@@ -110,7 +137,7 @@ export default {
       align-items: center;
     }
     border-top:1px solid #e1e1e1;
-    margin-top: 13.46vw;
+    // margin-top: 13.46vw;
     font-size: 3.73vw;
     border-bottom: 1px solid #e1e1e1;
     .orderList:nth-child(1){

@@ -9,7 +9,7 @@ let turnDate = (date) => {
     }
   }
 }
-export {turnDate}
+export { turnDate }
 
 
 // 将日期格式2018年01月01日改成2018-01-01
@@ -22,7 +22,7 @@ let returnDate = (date) => {
     }
   }
 }
-export {returnDate}
+export { returnDate }
 
 // 过滤无用参数，传type值时，为客户需求参数，否则为客户描述参数
 let turnParams = (obj, type) => {
@@ -35,7 +35,7 @@ let turnParams = (obj, type) => {
   }
   return temp
 }
-export {turnParams}
+export { turnParams }
 
 let filterObj = (obj) => {
   let temp = {}
@@ -46,19 +46,19 @@ let filterObj = (obj) => {
   }
   return temp
 }
-export {filterObj}
+export { filterObj }
 
 //深度拷贝
 function deepclone(origin, target) {
   var target = target || {},
-      toStr = Object.prototype.toString,
-      arrStr = "[object Array]";
-  for(var prop in origin) {
-    if(origin.hasOwnProperty(prop)) {
-      if(origin[prop] !== 'null' && typeof(origin[prop]) == 'object') {
-        target[prop] = (toStr.call(origin[prop]) == arrStr)? [] : {}
+    toStr = Object.prototype.toString,
+    arrStr = "[object Array]";
+  for (var prop in origin) {
+    if (origin.hasOwnProperty(prop)) {
+      if (origin[prop] !== 'null' && typeof (origin[prop]) == 'object') {
+        target[prop] = (toStr.call(origin[prop]) == arrStr) ? [] : {}
         deepclone(origin[prop], target[prop])
-      }else {
+      } else {
         target[prop] = origin[prop]
       }
     }
@@ -66,4 +66,14 @@ function deepclone(origin, target) {
   return target
 }
 
-export {deepclone}
+export { deepclone }
+
+function explainType(arr, type) {
+  let len = arr.length
+  for (var i = 0; i < len; i++) {
+    if (arr[i].code === type) {
+      return arr[i].name
+    }
+  }
+}
+export { explainType }

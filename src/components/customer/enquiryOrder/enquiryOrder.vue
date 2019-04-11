@@ -163,7 +163,8 @@ export default {
       "setOrderScroll",
       "setIsSelectStatus",
       "setOrderTotalPrice",
-      "setOrderDiscountPrice"
+      "setOrderDiscountPrice",
+      'setDealTabStatus'
     ]),
     //下拉刷新
     loadBottom() {
@@ -290,18 +291,19 @@ export default {
     },
     //点击进入详情页面
     orderInfoIn(accntId) {
-      mango.getAjax('/v3/app/customer/details',{ 
-        type: 'order',
-        customerId: accntId
-        })
-        .then(res => {
-          if (res) {
-            console.log(res)
-            // this.setOrderInfoDetails(res.data);
-            // this.calcPrice(this.orderInfoDetails);
-          }
-        });
-      this.$router.push({ path: "/enquiryInfo" });
+      // mango.getAjax('/v3/app/customer/details',{ 
+      //   type: 'order',
+      //   customerId: accntId
+      //   })
+      //   .then(res => {
+      //     if (res) {
+      //       console.log(res)
+      //       // this.setOrderInfoDetails(res.data);
+      //       // this.calcPrice(this.orderInfoDetails);
+      //     }
+      //   });
+      this.setDealTabStatus(mango.btnList(['订单信息', '客户信息', '意向信息'], 0))
+      this.$router.push({ path: "/enquiryInfo",query: {id: accntId} });
     }
   }
 };

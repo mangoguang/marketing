@@ -3,68 +3,31 @@
     <div class="content">
       <div class="total-money">
         <p>订单总金额</p>
-        <p class="money">￥<span class="strong">{{ Math.round(dealOrderInfoDetails.totalAmount) }}</span></p>
+        <p class="money">￥<span class="strong">{{ Math.round(list.total) }}</span></p>
       </div>
       <div class="numberOfOrder">
         <p>客户订单数</p>
-        <p class="strong">{{ dealOrderInfoDetails.orderCount }}</p>
+        <p class="strong">{{ count }}</p>
       </div>
     </div>
-    <!-- <div class="assessLevel">
-      <span class="text">评定级别</span>
-      <div class="level" 
-        v-for="(item,index) in level" :key="index"
-        :class="{'active':active == index + 1}"
-        @click="selectLevel(index)">
-        <span>{{item}}</span>
-      </div>
-    </div> -->
   </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Vuex, { mapMutations, mapState } from 'vuex'
-import mango from '../../../js'
-
 export default {
+  props: ['list'],
   data() {
     return{
-      level:['高','中','低'],
-      active:-1,
-      key:true
+      count: ''
     }
   },
-  computed: {
-    ...mapState({
-      dealOrderInfoDetails: state => state.dealOrderInfoDetails.dealOrderInfoDetails
-    })
-  },
   watch:{
-    //监听变化，当传入的值变化的时候，改变active的值。
-  //  dealOrderInfoDetails(){
-  //    this.active = this.dealOrderInfoDetails.level
-  //  }
-  },
-  created(){
-    //获取本地缓存信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    list() {
+      this.count = this.list.orderList.length
+    }
   },
   methods:{
-    // selectLevel(index) {
-    //   this.active = index + 1
-    //   mango.getAjax(this, 'level/update', {
-    //     customerId:this.dealOrderInfoDetails.customerId,
-    //     level:this.active
-    //   }, 'v2','post')
-    //   .then((res) => {
-    //     if (res) {
-    //      console.log('更新评级',res.status)   
-    //     }
-    //   })
-    // }
+   
   }
 }
 </script>
