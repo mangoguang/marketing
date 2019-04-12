@@ -18,7 +18,7 @@
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
         <span :style="timeColor">{{turnDate(info.storeDate) || Time}}</span>
       </li>
-      <li is="shopSelect"  @shopChange="shopChange"></li>
+      <li is="shopSelect" @shopChange="shopChange"></li>
       <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
         <span>{{shopName}}</span>
       </li> -->

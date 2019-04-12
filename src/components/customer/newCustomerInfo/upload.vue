@@ -145,9 +145,9 @@ export default {
       z-index: 99;
     }
     .content {
-      position: absolute;
-      left: 20%;
-      top: 0;
+      // position: absolute;
+      // left: 20%;
+      // top: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
