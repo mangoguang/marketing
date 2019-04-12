@@ -55,6 +55,7 @@ Vue.component(Loadmore.name, Loadmore)
 import Vuex, { mapMutations, mapState } from "vuex"
 Vue.use(Vuex)
 import mango from '../../js'
+import {btnList} from '../../utils/gallery'
 export default {
   components:{TopBar},
   name: 'customerList',
@@ -103,7 +104,9 @@ export default {
       "setCustomerTabStatus",
       "setCustomerList",
       "setAllLoaded",
-      'setBtn'
+      'setBtn',
+      'initShopList',
+      'getShopVal'
     ]),
     handleScroll(e) {
       let top = e.target.scrollTop
@@ -141,8 +144,13 @@ export default {
       this.setCustomerTabStatus(mango.btnList(['客户信息', '意向信息'], 0))
       // this.setCustomerTabStatus(mango.btnList(['客户描述', '新建需求', '需求信息'], 0))
     },
+    //门店vuex清空。恢复第一个
     newCustomer() {
       this.setBtn([])
+      let shops = localStorage.getItem('shops')
+      let shopsList = btnList(JSON.parse(shops),0)
+      this.initShopList(shopsList)
+      this.getShopVal()
       this.$router.push({path: './newCustomer'})
     }
   }
