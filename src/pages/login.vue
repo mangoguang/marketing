@@ -161,6 +161,7 @@ export default {
       indexModel.getUserInfo().then(res => {
         res = res.data
         if (res) {
+          let typename = this.getName(res.positionList)
           let ajaxData = {
             account: res.account,
             tenantId: res.tenantId,
@@ -168,13 +169,25 @@ export default {
             name: res.username,
             phone: res.phone,
             sex: res.sex,
-            type:res.type
+            type:res.type,
+            typename: typename
           }
+          let shops = JSON.stringify(res.shopList)
+          localStorage.setItem("shops", shops);
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
           this.$root.ajaxData = ajaxData
           this.$router.push({ path: "/" })
         }
       })
+    },
+    getName(arr) {
+      let name;
+      arr.map(item => {
+        if(item.typeName === '经销商老板') {
+          name = 'boss'
+        }
+      })
+      return name
     },
     setAccountMsg(uname, upwd) {
       let string = `{"name":" ${uname}", "pwd": "${upwd}"}`;
@@ -230,7 +243,7 @@ export default {
           }else {
             //账号密码正确，跳转页面。
             res = res.data.data
-            let shops = JSON.stringify(res.shops)
+            let shops = JSON.stringify(res.shopList)
             _this.$store.commit('setPersonMsg',res)
             let shopsArr = `${shops}`
             let ajaxData = `{

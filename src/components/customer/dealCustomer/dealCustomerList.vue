@@ -27,7 +27,6 @@ import mango from "../../../js";
 import TopBar from '../topBar'
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
-
 export default {
   name: "dealCustomerList",
   props: ["changeResultTit"],
@@ -201,7 +200,7 @@ export default {
       this.parmas.limit = limit
       this.parmas.sd = startTime
       this.parmas.ed = endTime
-      mango.getAjax('/v3/app/customer/list', this.parmas).then((res) => {
+      mango.getAjax('/v3/app/customer/list', this.parmas).then(res => {
         if (res) {
           this.allLoaded = false
           this.allPage = Math.ceil(res.data.total / 10);

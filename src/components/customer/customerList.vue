@@ -51,7 +51,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { Loadmore } from 'mint-ui'
 import TopBar from './topBar'
-
 Vue.component(Loadmore.name, Loadmore)
 import Vuex, { mapMutations, mapState } from "vuex"
 Vue.use(Vuex)
