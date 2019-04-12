@@ -7,7 +7,7 @@
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
-      <mt-popup v-model="popupVisible" position="bottom">
+       <mt-popup v-model="popupVisible" position="bottom">
         <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" value-key='name'>
           <div class="btn-group">
               <div @click="cancel">取消</div>
@@ -42,7 +42,7 @@ export default {
     }
   },
   mounted(){
-    this.getStyle();
+    this.getColor();
   },
   methods:{
     onValuesChange(picker,values){
@@ -59,8 +59,8 @@ export default {
       this.$emit('update',this.arr[0].name,this.arr[0].code);
       this.popupVisible=false;
     },
-    getStyle(){
-      indexModel.getArea('DR_APARTMENT_TYPE').then(res => {
+    getColor(){
+      indexModel.getArea('DR_COLOR_PRE').then(res => {
         console.log(res);
         if(res.code===0){
           this.slots[0].values=res.data;

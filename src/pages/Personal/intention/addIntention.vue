@@ -14,13 +14,13 @@
          <store-select v-bind="formInfo.store" v-model="form.store" :showIcon="selectIcon"/>
         </li>
         <li>
-          <date-select v-bind="formInfo.time" v-model="form.time" :showIcon="selectIcon"/>
+          <date-select v-bind="formInfo.time" v-model="form.time" @update="updateTime" :showIcon="selectIcon"/>
         </li>
         <li>
-          <duration-select v-bind="formInfo.duration" v-model="form.duration" :showIcon="selectIcon"/>
+          <duration-select v-bind="formInfo.duration" v-model="form.duration" @update="updateDuration" :showIcon="selectIcon"/>
         </li>
         <li>
-          <source-select v-bind="formInfo.source" v-model="form.source" :showIcon="selectIcon"/>
+          <source-select v-bind="formInfo.source" v-model="form.source" @update="updateSource" :showIcon="selectIcon"/>
         </li>
       </ul>
        <ul class="list">
@@ -34,13 +34,13 @@
           <yan-input v-bind="formInfo.elevator" v-model="form.elevator"/>
         </li>
         <li>
-          <reason-select v-bind="formInfo.reason" v-model="form.reason" :showIcon="selectIcon"/>
+          <reason-select v-bind="formInfo.reason" v-model="form.reason" @update="updateReason" :showIcon="selectIcon"/>
         </li>
         <li>
-          <style-select v-bind="formInfo.style" v-model="form.style" :showIcon="selectIcon"/>
+          <style-select v-bind="formInfo.style" v-model="form.style" @update="updateStyle" :showIcon="selectIcon"/>
         </li>
         <li>
-          <progress-select v-bind="formInfo.progress" v-model="form.progress" :showIcon="selectIcon"/>
+          <progress-select v-bind="formInfo.progress" v-model="form.progress" @update="updateProgress" :showIcon="selectIcon"/>
         </li>
       </ul>
       <ul class="list">
@@ -48,16 +48,19 @@
           <yan-input v-bind="formInfo.goods" v-model="form.goods"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.color" v-model="form.color"/>
+          <color-select v-bind="formInfo.color" v-model="form.color" @update="updateColor" :showIcon="selectIcon"/>
         </li>
         <li>
           <yan-input v-bind="formInfo.budget" v-model="form.budget"/>
+        </li>
+        <li>
+          <date-select v-bind="formInfo.deliver" v-model="form.deliver" @update="updateDeliver" :showIcon="selectIcon"/>
         </li>
          <li>
           <yan-input v-bind="formInfo.paid" v-model="form.paid"/>
         </li>
         <li>
-          <discount-select v-bind="formInfo.discount" v-model="form.discount" :showIcon="selectIcon"/>
+          <yan-input v-bind="formInfo.discount" v-model="form.discount"/>
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.remark"></yan-textarea>
@@ -100,8 +103,8 @@ import sourceSelect from '../../../components/mySelect/sourceSelect'
 import addressSelect from '../../../components/mySelect/addressSelect'
 import reasonSelect from '../../../components/mySelect/reasonSelect'
 import styleSelect from '../../../components/mySelect/styleSelect'
+import colorSelect from '../../../components/mySelect/colorSelect'
 import progressSelect from '../../../components/mySelect/progressSelect'
-import discountSelect from '../../../components/mySelect/discountSelect'
 import classifySelect from '../../../components/mySelect/classifySelect'
 import upload from '../../../components/upload/filesUpload'
 import recordPannel from '../../../components/pannel/recordPannel'
@@ -122,14 +125,22 @@ export default {
         address:'',
         house:'',
         elevator:'',
+        reason:'',
+        style:'',
         progress:'',
         goods:'',
         color:'',
         budget:'',
+        deliver:'',
         paid:'',
         discount:'',
         remark:''
       },
+      reasonCode:'',
+      sourceCode:'',
+      styleCode:'',
+      colorCode:'',
+      progressCode:'',
       classify:'',
       urgency:'',
       selectIcon:true,
@@ -168,12 +179,12 @@ export default {
      reasonSelect,
      styleSelect,
      progressSelect,
-     discountSelect,
      classifySelect,
      recordPannel,
      orderInfo,
      yanLayerPrompt,
-     yanLayerMsg
+     yanLayerMsg,
+     colorSelect
   },
   computed:{
     ...mapState('addIntention',[
@@ -213,6 +224,43 @@ export default {
    },
    confirm(){
      console.log("取消");
+   },
+   //选择更新进店日期
+   updateTime(value,anotherVal){
+     this.$set(this.form,'time',anotherVal);
+   },
+   //选择更新留店时长
+   updateDuration(value){
+     this.$set(this.form,'duration',value);
+   },
+   //选择更新购买原因
+   updateReason(name,code){
+     this.$set(this.form,'reason',name);
+     this.reasonCode=code;
+   },
+   //选择更新客户来源
+   updateSource(name,code){
+     this.$set(this.form,'source',name);
+     this.sourceCode=code;
+   },
+   //选择更新装修风格
+   updateStyle(name,code){
+     this.$set(this.form,'style',name);
+     this.styleCode=code;
+   },
+   //选择更新装修进度
+   updateProgress(name,code){
+     this.$set(this.form,'progress',name);
+     this.progressCode=code;
+   },
+   //选择更新颜色偏好
+   updateColor(name,code){
+     this.$set(this.form,'color',name);
+     this.colorCode=code;
+   },
+   //选择更新需求日期
+   updateDeliver(value,anotherVal){
+     this.$set(this.form,'deliver',anotherVal);
    }
   }
 };

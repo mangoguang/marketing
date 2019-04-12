@@ -273,6 +273,11 @@ class IndexModel extends Request {
   getArea(type){
     return mango.getAjax('/v2/app/reference',{type:type})
   }
+  //获取个人信息
+  getPersonalData(){
+    return mango.getAjax('/v1/app/userinfo');
+  }
+ 
 }
 
 export { IndexModel }

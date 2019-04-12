@@ -3,16 +3,16 @@
       <mybanner :title="title" style="background:#fff"></mybanner>
       <ul class="list">
         <li>
-          <area-select v-bind="formInfo.areaInfo" v-model="form.area" :showIcon="selectIcon" class="li_border"/>
+          <area-select v-bind="formInfo.areaInfo" v-model="area" @update="updateArea" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
           <yan-input v-bind="formInfo.addressInfo" v-model="form.address" :showIcon="inputIcon" class="li_border"/>
         </li>
         <li>
-          <house-select v-bind="formInfo.houseInfo" v-model="form.house" :showIcon="selectIcon" class="li_border"/>
+          <house-select v-bind="formInfo.houseInfo" v-model="house" @update="updateHouse" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <elevator-select v-bind="formInfo.elevatorInfo" v-model="form.elevator" :showIcon="selectIcon"/>
+          <elevator-select v-bind="formInfo.elevatorInfo" v-model="elevator" @update="updateElevator" :showIcon="selectIcon"/>
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark"/>
@@ -38,10 +38,12 @@ export default {
       form:{
         address:'',
         remark:'',
-        area:'',
         house:'',
         elevator:''
       },
+      elevator:'',
+      area:'',
+      house:'',
       selectIcon:true,
       inputIcon:false
     
@@ -72,6 +74,20 @@ export default {
   methods:{
    jump(){
      this.$router.push({path:'/address'})
+   },
+   updateArea(cityname,citycode){
+     this.area=cityname;
+     this.$set(this.form,'province',citycode.split("-")[0]);
+     this.$set(this.form,'city',citycode.split("-")[1]);
+     this.$set(this.form,'district',citycode.split("-")[2]);
+   },
+   updateElevator(name,value){
+     this.elevator=name;
+     this.$set(this.form,'elevator',value);
+   },
+   updateHouse(name,value){
+     this.house=name;
+     this.$set(this.form,'house',value);
    }
       
   }

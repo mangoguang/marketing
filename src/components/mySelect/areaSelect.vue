@@ -2,15 +2,19 @@
   <div class="inputBox">
       <label @click="selectArea">
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
-          <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          <input  type="text" :value="value" :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
-       <mt-popup v-model="popupVisible" position="bottom">
-        <mt-picker :slots="provinceSlots" @change="provinceChange"></mt-picker>
-        <mt-picker :slots="citySlots" @change="cityChange"></mt-picker>
-        <mt-picker :slots="countySlots" @change="countyChange"></mt-picker>
+      <mt-popup v-model="popupVisible" position="bottom">
+        <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" value-key="name">
+            <div class="btn-group">
+              <div @click="cancel">取消</div>
+             <!--  <div>请选择省-市-区/县</div> -->
+              <div @click="update">确定</div>
+            </div>
+          </mt-picker>
       </mt-popup>
    </div>
 </template>
@@ -19,7 +23,6 @@
 import Vue from 'vue'
 import { Picker } from 'mint-ui';
 Vue.component(Picker.name, Picker);
-import mango from '../../js/'
 import {IndexModel} from '../../utils'
 const indexModel=new IndexModel()
 export default {
@@ -27,129 +30,104 @@ export default {
   data(){
     return{
       popupVisible:false,
-      provinceArr:[],
-      cityArr:[],
-      countyArr:[],
-      provinceSlots:[],
-      citySlots:[],
-      countySlots:[],
-      provinceName:'',
       cityName:'',
-      countyName:'',
-      key:false
+      cityCode:'',
+      key:false,
+      slots:[
+        {
+          flex: 1,
+          values: ['请选择省'],
+          className: 'slot1',
+          textAlign: 'center'
+        }, {
+          divider: true,
+          content: '',
+          className: 'slot2'
+        }, {
+          flex: 1,
+          values: ['请选择市'],
+          className: 'slot3',
+          textAlign: 'center'
+        },
+        {
+          divider: true,
+          content: '',
+          className: 'slot4'
+        }, {
+          flex: 1,
+          values: ['请选择区/县'],
+          className: 'slot5',
+          textAlign: 'center'
+        }
+      ],
+      pickerArr:[]
     }
   },
-  created(){
+  mounted(){
     this.getProvinceArr();
-    this.getCityArr();
-    this.getCountyArr();
   },
   methods:{
-    provinceChange(picker,values){
-        if(this.key){
-          this.provinceName=values[0];
-          if(values[0]==='请选择市'){
-            return;
+    onValuesChange(picker,values){
+      let that=this;
+      
+      if(that.key){
+        let id=values[0].id;
+        //根据省id获取市
+        indexModel.getArea('DR_CITY').then(res => {
+          if(res.code===0){
+          picker.setSlotValues(1,that.getReference(id,res.data));
           }
-          let id=this.getAreaCode(this.provinceArr,values[0]);
-          let arr=this.getReference(id,this.cityArr);
-          let temp=this.filterName(arr);
-          temp.unshift('请选择市');
-          this.citySlots=[{
-            values:temp,
-            className:'citySlot'
-          }];
-          
-        }
-    },
-    cityChange(picker,values){
-      if(this.key){
-          this.cityName=values[0];
-          if(values[0]==='请选择区/县'){
-            return;
+        });
+        //根据市id获取区县
+        indexModel.getArea('DR_COUNTY').then(res => {
+          if(res.code===0){
+            let cityId=values[1].id;
+            picker.setSlotValues(2,that.getReference(cityId,res.data));
           }
-          let id=this.getAreaCode(this.cityArr,values[0]);
-          let arr=this.getReference(id,this.countyArr);
-          let temp=this.filterName(arr);
-          temp.unshift('请选择区/县');
-          this.countySlots=[{
-            values:temp,
-            className:'countySlot'
-          }];
+        });
+        that.pickerArr=picker.getValues();
+    
       }
+  
     },
-    countyChange(picker,values){
-      if(this.key){
-          this.countyName=values[0];
-          //this.getCountyArr();
-      }
+    cancel(){
+      let that=this;
+      that.popupVisible=false;
+    },
+    update(){
+      let that=this;
+      let cityName=`${that.pickerArr[0].name} ${that.pickerArr[1].name} ${that.pickerArr[2].name}`;
+      //console.log(cityName);
+      let cityCode=`${that.pickerArr[0].code}-${that.pickerArr[1].code}-${that.pickerArr[2].code}`;
+      that.$emit('update',cityName,cityCode);
+      that.popupVisible=false;
     },
     getProvinceArr(){
       indexModel.getArea('DR_STATE').then(res => {
-        console.log(res);
         if(res.code===0){
-          this.provinceArr=res.data;
-          let temp=this.filterName(this.provinceArr);
-          console.log(temp);
-          temp.unshift('请选择省');
-          this.provinceSlots=[
-            {
-              values:temp,
-              className:'provinceSlot'
+          let arr=res.data;
+          this.slots[0].values=arr;
+          let id=this.slots[0].values[0].id;
+          //根据省id获取市
+          indexModel.getArea('DR_CITY').then(res => {
+            if(res.code===0){
+            this.slots[2].values=this.getReference(id,res.data)
             }
-          ]
+          });
+          //根据市id获取区县
+          indexModel.getArea('DR_COUNTY').then(res => {
+            if(res.code===0){
+              let cityId=this.slots[2].values[1].id;
+              this.slots[4].values=this.getReference(cityId,res.data)
+            }
+          });
         }
       })
-    },
-    getCityArr(){
-      indexModel.getArea('DR_CITY').then(res => {
-        console.log(res);
-        if(res.code===0){
-          this.cityArr=res.data;
-          let temp=this.filterName(this.cityArr);
-          temp.unshift('请选择市');
-          this.citySlots=[
-            {
-              values:temp,
-              className:'citySlot'
-            }
-          ]
-        }
-      })
-    },
-    getCountyArr(){
-      indexModel.getArea('DR_COUNTY').then(res => {
-        console.log(res);
-        if(res.code===0){
-          this.countyArr=res.data;
-          let temp=this.filterName(this.countyArr);
-          temp.unshift('请选择区/县');
-          this.countySlots=[
-            {
-              values:temp,
-              className:'countySlot'
-            }
-          ]
-        }
-      })
-    },
+    }, 
     selectArea(){
-      this.popupVisible=true;
-      this.key=true;
-    },
-    filterName(arr){
-      var newArr=[];
-      arr.forEach(function(item,index){
-        newArr.push(item.name);
-      });
-      return newArr;
-    },
-    getAreaCode(arr,name){
-      var newArr=arr.filter(function(item,index,array){
-        return (item.name===name);
-      });
-      console.log(newArr);
-      return newArr[0].id;
+      let that=this;
+      that.popupVisible=true;
+      that.key=true;
     },
     getReference(id,arr){
       var newArr=arr.filter(function(item,index,array){
@@ -219,18 +197,16 @@ export default {
     }
   }
 }
-.mint-popup{
+.btn-group{
   display: flex;
+  align-items: center;
+  justify-content: space-around;
   flex-direction: row;
-  justify-content: center;
-  .picker{
-    flex:1;
-    .picker-slot-wrapper{
-      .picker-slot{
-        font-size: 3.2vw;
-      }
-    }
-    
+  //padding:0 4.266vw;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
   }
 }
 </style>

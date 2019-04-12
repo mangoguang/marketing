@@ -144,9 +144,9 @@ export var router = new VueRouter({
     name: '/aboutUs',
     component: resolve => require(['../pages/aboutUs'],resolve)
   },{
-    path: '/safe',
-    name: '/safe',
-    component: resolve => require(['../pages/safe'],resolve)
+    path: '/personalData',
+    name: '/personalData',
+    component: resolve => require(['../pages/personalData'],resolve)
   },
   {
     path: '/feedback',

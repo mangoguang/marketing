@@ -2,7 +2,7 @@
   <div class="header" :style="{'height':`${height}vw`,'marginTop':`${marginTop}vw`}">
     <div class="compile">编辑</div>
     <div class="personalMsg">
-      <div class="via"></div>
+      <div class="via" @click="go"></div>
       <div class="content">
         <div class="name">
           <span>{{'导购员张三' || ajaxData.name}}</span>
@@ -53,6 +53,9 @@ export default {
       }else {
         this.height = '49.26'
       }
+    },
+    go(){
+      this.$router.push({path:'/personalData'});
     }
   }
 }
