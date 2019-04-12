@@ -291,7 +291,7 @@ header{
       text-align: center;
     }
     button:first-child{
-      padding-left: 0;
+      // padding-left: 0;
       color: #fff;
       // font-size: 4.8vw;
     }
@@ -312,11 +312,14 @@ header{
     ul{
       display: flex;
       margin-top: 3.26vw;
-      justify-content: center;
+      // justify-content: space-around;
       margin-bottom: 3.26vw;
+      width: 100%;
+      box-sizing: border-box;
       li {
         margin-left: 7.73vw;
         text-align: center;
+        box-sizing: border-box;
       }
     }
     &>div{
