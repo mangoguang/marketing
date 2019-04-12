@@ -117,7 +117,8 @@ export default {
        "setTabStatus",
        'setDealScroll',
        'setDealLength',
-       'setIsSelectStatus'
+       'setIsSelectStatus',
+       'setCustomerTabStatus'
        ]),
     //初始化高度
     // initScrollTop() {
@@ -288,9 +289,9 @@ export default {
     //详细订单信息
     getDetails(index) {
       let id = this.dealCustomerList.records[index].accntId
-      // this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], 0))
-      this.setTabStatus(mango.btnList(['订单信息', '需求信息'], 0))
-      this.$router.push({path: "/dealDetails"})
+      this.setCustomerTabStatus(mango.btnList(['客户信息', '意向信息'], 0))
+      // this.$router.push({path: "/dealDetails"})
+      this.$router.push({path:'/customerInfo',query: {id: id}})
       // mango.getAjax(this,"customerinfo",{
       //   customerId: id,
       //   account: this.ajaxData.account

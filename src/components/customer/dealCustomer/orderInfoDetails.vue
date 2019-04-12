@@ -7,7 +7,7 @@
         <div class="product-details">
           <div class="details">
             <span>{{ item.goodsName || 1}}</span>
-            <p>{{ item.goodsSpec }}</p>
+            <p>{{ item.specification }}</p>
           </div>
           <div class="price">
             <!-- <p>￥{{ Math.round(item.price) }}</p> -->
