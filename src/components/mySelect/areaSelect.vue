@@ -48,19 +48,40 @@ export default {
     provinceChange(picker,values){
         if(this.key){
           this.provinceName=values[0];
-          this.getProvinceArr();
+          if(values[0]==='请选择市'){
+            return;
+          }
+          let id=this.getAreaCode(this.provinceArr,values[0]);
+          let arr=this.getReference(id,this.cityArr);
+          let temp=this.filterName(arr);
+          temp.unshift('请选择市');
+          this.citySlots=[{
+            values:temp,
+            className:'citySlot'
+          }];
+          
         }
     },
     cityChange(picker,values){
       if(this.key){
           this.cityName=values[0];
-          this.getCityArr();
+          if(values[0]==='请选择区/县'){
+            return;
+          }
+          let id=this.getAreaCode(this.cityArr,values[0]);
+          let arr=this.getReference(id,this.countyArr);
+          let temp=this.filterName(arr);
+          temp.unshift('请选择区/县');
+          this.countySlots=[{
+            values:temp,
+            className:'countySlot'
+          }];
       }
     },
     countyChange(picker,values){
       if(this.key){
           this.countyName=values[0];
-          this.getCountyArr();
+          //this.getCountyArr();
       }
     },
     getProvinceArr(){
@@ -120,6 +141,19 @@ export default {
       var newArr=[];
       arr.forEach(function(item,index){
         newArr.push(item.name);
+      });
+      return newArr;
+    },
+    getAreaCode(arr,name){
+      var newArr=arr.filter(function(item,index,array){
+        return (item.name===name);
+      });
+      console.log(newArr);
+      return newArr[0].id;
+    },
+    getReference(id,arr){
+      var newArr=arr.filter(function(item,index,array){
+        return (item.parent===id);
       });
       return newArr;
     }
@@ -189,6 +223,14 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  
+  .picker{
+    flex:1;
+    .picker-slot-wrapper{
+      .picker-slot{
+        font-size: 3.2vw;
+      }
+    }
+    
+  }
 }
 </style>
