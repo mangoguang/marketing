@@ -25,7 +25,7 @@
       </ul>
        <ul class="list">
         <li>
-          <address-select v-bind="formInfo.address" v-model="form.address" :showIcon="selectIcon"/>
+          <address-select v-bind="formInfo.address" v-model="form.address" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
          <li>
           <yan-input v-bind="formInfo.house" v-model="form.house"/>
@@ -60,7 +60,8 @@
           <yan-input v-bind="formInfo.paid" v-model="form.paid"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.discount" v-model="form.discount"/>
+          <discount-select v-bind="formInfo.discount" v-model="form.discount" @update="updateDiscount" :showIcon="selectIcon"/>
+          <!-- <yan-input v-bind="formInfo.discount" v-model="form.discount"/> -->
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.remark"></yan-textarea>
@@ -105,6 +106,7 @@ import reasonSelect from '../../../components/mySelect/reasonSelect'
 import styleSelect from '../../../components/mySelect/styleSelect'
 import colorSelect from '../../../components/mySelect/colorSelect'
 import progressSelect from '../../../components/mySelect/progressSelect'
+import discountSelect from '../../../components/mySelect/discountSelect'
 import classifySelect from '../../../components/mySelect/classifySelect'
 import upload from '../../../components/upload/filesUpload'
 import recordPannel from '../../../components/pannel/recordPannel'
@@ -161,7 +163,10 @@ export default {
           title:'战败原因：',
           value:''
         }
-      ]
+      ],
+      customerId:'',
+      addressId:'',
+      path:''
     }
   },
   components:{
@@ -184,7 +189,25 @@ export default {
      orderInfo,
      yanLayerPrompt,
      yanLayerMsg,
-     colorSelect
+     colorSelect,
+     discountSelect
+  },
+  watch:{
+    $route(to,from){
+      if(from.name==='selectAddress'){
+        let obj=this.$store.state.addressList.find((item) => {
+          return item.id=this.$route.query.addressId;
+        })
+        //console.dir(obj);
+        let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
+        let elevator=obj.elevator?'有':'无';
+        this.$set(this.form,'address',address);
+        this.$set(this.form,'house',obj.apartmentType);
+        this.$set(this.form,'elevator',elevator);
+
+      }
+      
+    }
   },
   computed:{
     ...mapState('addIntention',[
@@ -194,7 +217,8 @@ export default {
     ])
   },
   created(){
-   
+   this.customerId=this.$route.params.customerId;
+   this.path=this.$route.path;
   },
   
   mounted(){
@@ -261,7 +285,22 @@ export default {
    //选择更新需求日期
    updateDeliver(value,anotherVal){
      this.$set(this.form,'deliver',anotherVal);
+   },
+   //选择更新折扣
+   updateDiscount(arr){
+     console.log(arr);
+     let discount=arr.join('.')+"折"
+     this.$set(this.form,'discount',discount);
    }
+  },
+  beforeRouteEnter(to,from,next){
+    console.log(to);
+    console.log(from);
+    if(from.name==='selectAddress'){
+      to.meta.keepAlive=true;
+      
+    }
+    next();
   }
 };
 </script>

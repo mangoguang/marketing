@@ -27,7 +27,7 @@
         </div>
       </li>
     </ul>
-    <ul class="list" style="border-top:1px solid #ccc">
+    <ul class="list info" style="border-top:1px solid #ccc">
       <li>
         <span>手机</span>
         <div class="cell">
@@ -41,7 +41,7 @@
           </div>
       </li>
        <li>
-        <span style="align-self:flex-start;">所属门店</span>
+        <span style="align-self:flex-start;">所属门店：</span>
         <div class="cell" style="flex-direction: column;">
           <span v-for="(item,index) in shopList" :key="index">{{item.name}}</span>
         </div>
@@ -75,6 +75,7 @@ export default {
   methods:{
     getUserInfo(){
       indexModel.getUserInfo().then(res => {
+        console.log(res);
         if(res.code===0){
           this.headPortrait=res.data.headPortrait;
           this.username=res.data.username;
@@ -128,13 +129,23 @@ export default {
           }
         }
       }
-
     }
     li:last-child{
-      border:none;
-      
+        border:none;
     }
   }
+  .info{
+       li:last-child{
+        flex-direction: column;
+      
+        .cell{
+          width:100%;
+          justify-content: flex-start;
+          box-sizing:border-box;
+          text-align: left;
+        }
+      }
+    }
 }
 
 </style>

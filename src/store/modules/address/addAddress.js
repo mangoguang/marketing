@@ -9,7 +9,7 @@ const state = {
       label:'详细地址',
       placeholder:'请填写详细地址'
     },
-    houseInfo:{
+    apartmentType:{
       label:'户型大小',
       placeholder:'请选择户型大小'
     },
@@ -29,7 +29,7 @@ const state = {
 }
 
 const mutations = {
-  
+  updateTitle:(state, str) => { state.title=str}
 }
 
 const actions = {

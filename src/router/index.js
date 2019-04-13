@@ -159,18 +159,18 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/Personal/imgPreview'],resolve)
   },
   {
-    path: '/address',
-    name: '/address',
+    path: '/address/:customerId',
+    name: 'address',
     component: resolve => require(['../pages/Personal/address/address'],resolve)
   },
   {
-    path: '/addAddress',
-    name: '/addAddress',
+    path: '/addAddress/:customerId',
+    name: 'addAddress',
     component: resolve => require(['../pages/Personal/address/addAddress'],resolve)
   },
   {
-    path: '/selectAddress',
-    name: '/selectAddress',
+    path: '/selectAddress/:customerId',
+    name: 'selectAddress',
     component: resolve => require(['../pages/Personal/address/selectAddress'],resolve)
   },
   {
@@ -189,9 +189,12 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/Personal/intention/followRecord'],resolve)
   },
   {
-    path: '/intention',
-    name: '/intention',
-    component: resolve => require(['../pages/Personal/intention/addIntention'],resolve)
+    path: '/intention/:customerId',
+    name: 'intention',
+    component: resolve => require(['../pages/Personal/intention/addIntention'],resolve),
+    meta:{
+      keepAlive:true
+    }
   },
   //金管家模块-我的收藏
   {

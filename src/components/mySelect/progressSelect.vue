@@ -47,7 +47,7 @@ export default {
   methods:{
     onValuesChange(picker,values){
       this.arr=picker.getValues();
-      console.log(this.arr);
+      //console.log(this.arr);
     },
     open(){
       this.popupVisible=true;

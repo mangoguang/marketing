@@ -273,10 +273,23 @@ class IndexModel extends Request {
   getArea(type){
     return mango.getAjax('/v2/app/reference',{type:type})
   }
-  //获取个人信息
-  getPersonalData(){
-    return mango.getAjax('/v1/app/userinfo');
+  //获取地址列表
+  getAddressList(id){
+    return mango.getAjax('/v2/app/address/list',{customerId:id})
   }
+  //更新地址
+  updateAddress(obj){
+    return mango.getAjax('/v2/app/address/list',obj,'post')
+  }
+  //保存反馈信息
+  feedback(obj){
+    return mango.getAjax('/v2/app/feedback',obj,'post')
+  }
+  //保存反馈信息
+  getProduct(key){
+    return mango.getAjax('/v2/app/feedback',{key:key})
+  }
+  
  
 }
 

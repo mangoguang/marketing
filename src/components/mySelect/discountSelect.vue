@@ -23,8 +23,6 @@ import Vue from 'vue'
 import { Popup, Picker } from 'mint-ui';
 Vue.component(Picker.name, Picker);
 Vue.component(Popup.name, Popup);
-import {IndexModel} from '../../utils'
-const indexModel=new IndexModel()
 export default {
   props:['value','label','placeholder','showIcon','required'],
   data(){
@@ -32,11 +30,26 @@ export default {
       popupVisible:false,
       slots:[
         {
-          flex: 1,
-          values: [{name:'是',value:true},{name:'否',value:false}],
+          flex: 0.2,
+          values: ['6','7','8','9'],
           className: 'slot1',
           textAlign: 'center'
+        }, {
+          divider: true,
+          content: '.',
+          className: 'slot2'
+        }, {
+          flex: 0.2,
+          values: ['1','2','3','4','5','6','7','8','9'],
+          className: 'slot3',
+          textAlign: 'center'
+        },{
+          divider: true,
+          content: '折',
+          className: 'slot2'
         }
+        
+        
       ],
       arr:[]
     }
@@ -49,12 +62,8 @@ export default {
       this.popupVisible=false;
     },
     update(){
-      
-    },
-    getDiscount(){
-      IndexModel.getArea('').then(res => {
-        console.log(res);
-      })
+      this.$emit('update',this.arr);
+      this.popupVisible=false;
     },
     open(){
       this.popupVisible=true;

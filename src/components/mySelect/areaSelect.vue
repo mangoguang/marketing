@@ -2,7 +2,7 @@
   <div class="inputBox">
       <label @click="selectArea">
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
-          <input  type="text" :value="value" :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          <input  type="text" :value="value" :readonly='readonly'  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
@@ -26,7 +26,7 @@ Vue.component(Picker.name, Picker);
 import {IndexModel} from '../../utils'
 const indexModel=new IndexModel()
 export default {
-  props:['value','label','placeholder','showIcon','required'],
+  props:['value','label','placeholder','showIcon','required','readonly'],
   data(){
     return{
       popupVisible:false,
@@ -96,9 +96,16 @@ export default {
     },
     update(){
       let that=this;
-      let cityName=`${that.pickerArr[0].name} ${that.pickerArr[1].name} ${that.pickerArr[2].name}`;
-      //console.log(cityName);
-      let cityCode=`${that.pickerArr[0].code}-${that.pickerArr[1].code}-${that.pickerArr[2].code}`;
+      let cityName;
+      let cityCode;
+      if(that.pickerArr.length>0){
+        cityName=`${that.pickerArr[0].name} ${that.pickerArr[1].name} ${that.pickerArr[2].name}`;
+        cityCode=`${that.pickerArr[0].code}-${that.pickerArr[1].code}-${that.pickerArr[2].code}`;
+      }else{
+        cityName=`${that.slots[0].values[0].name} ${that.slots[2].values[0].name} ${that.slots[4].values[0].name}`;
+        cityCode=`${that.slots[0].values[0].code}-${that.slots[2].values[0].code}-${that.slots[4].values[0].code}`;
+      }
+    
       that.$emit('update',cityName,cityCode);
       that.popupVisible=false;
     },
