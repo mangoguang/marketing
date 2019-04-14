@@ -2,7 +2,7 @@
   <div class="customerDescript">
     <ul>
       <li is="customerLi" :leftText="'头像'" :icon="true" >
-        <unLoadVia class="upload" :select='true'/>
+        <unLoadVia class="upload" :select='select'/>
         <!--select表示直接选择照片-->
       </li>
       <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>

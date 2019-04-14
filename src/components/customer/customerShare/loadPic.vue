@@ -9,7 +9,16 @@
       <button type="button" id="button2" @click="cancle">取消</button>
       <button type="button" id="button3" @click="turnBack">还原</button>
     </div>
-
+    <div class="hasPic" v-show="hasImgStatus">
+      <div id="has_header">
+        <div id="backicon" @click="backTo"></div>
+        <div class="has_text">编辑头像</div>
+        <div class="more" @click="loadMore"></div>
+      </div>
+      <div id="has_Img">
+        <img :src="headerImage" alt="">
+      </div>
+    </div>
     <div @click="changeImg">
       <div >
         <input type="file" id="change" accept="image" @change="change" ref="file">
@@ -35,11 +44,14 @@ export default {
       cropper: "",
       croppable: false,
       panel: false, //遮罩层
-      url: ""
+      url: "",
+      hasImgStatus: false,
+      selectStatus: ''
     };
   },
   mounted() {
     //初始化这个裁剪框
+    this.selectStatus = this.select
     var self = this;
     var image = document.getElementById("image");
     this.cropper = new Cropper(image, {
@@ -70,15 +82,27 @@ export default {
       }
       return url;
     },
+    //头部点击出现上传
+    loadMore() {
+      this.selectStatus = true
+      this.$refs.file.click()
+    },
+    //头部后退
+    backTo() {
+      this.hasImgStatus = false 
+    },
+    //判断是否出现上传
     changeImg(e) {
-      if(!this.select) {
-         e.preventDefault();
+      if(!this.selectStatus) {
+        e.preventDefault();
+        this.hasImgStatus = true
       }
     },
     //上传图片
     change(e) {
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
+      this.hasImgStatus = false
       this.panel = true;
       this.picValue = files[0];
       this.url = this.getObjectURL(this.picValue);
@@ -86,11 +110,12 @@ export default {
       if (this.cropper) {
         this.cropper.replace(this.url);
       }
-      this.panel = true;
     },
     //确定
     crop() {
       this.panel = false;
+      //出现编辑头像顶部条
+      this.selectStatus = false
       var croppedCanvas;
       var roundedCanvas;
       if (!this.croppable) {
@@ -109,9 +134,11 @@ export default {
     },
     //取消
     cancle() {
-      // this.cropper.clear()
       this.$refs.file.value = "";
       this.panel = false;
+      if(this.headerImage) {
+        this.selectStatus = false
+      }
     },
     //还原
     turnBack() {
@@ -141,11 +168,52 @@ export default {
 };
 </script>
  
-<style>
+<style >
 * {
   margin: 0;
   padding: 0;
 }
+.hasPic {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  background: #000;
+  z-index: 99;
+  overflow: hidden;
+}
+#has_header {
+  display: flex;
+  justify-content: space-between;
+  padding: 9vw 4.26vw;
+  color: #fff;
+  font-size: 5.06vw;
+  font-weight: bold;
+  align-items: center;
+}
+#backicon {
+  background: url(../../../assets/imgs/backicon.png) no-repeat center;
+  background-size: 100% 100%;
+  width: 2.66vw;
+  height: 4.66vw;
+}
+.more {
+  background: url(../../../assets/imgs/loadmore.png) no-repeat center;
+  background-size: 100% 100%;
+  width: 4.26vw;
+  height: 4.06vw;
+}
+#has_Img{
+  width: 100vw;
+  height: 100vw;
+}
+#has_Img img{
+  width: 100%;
+  height: 100%;
+}
+
 #change {
   display: none;
   /* opacity: 0; */
