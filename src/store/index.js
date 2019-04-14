@@ -39,6 +39,7 @@ import intentionProduct from './modules/intention/intentionProduct'
 import searchProduct from './modules/intention/searchProduct'
 import followRecord from './modules/intention/followRecord'
 import addIntention from './modules/intention/addIntention'
+import work from './modules/work/'
 export default new Vuex.Store({
   modules: {
     common,
@@ -79,6 +80,7 @@ export default new Vuex.Store({
     intentionProduct,
     searchProduct,
     followRecord,
-    addIntention
+    addIntention,
+    work
   }
 })

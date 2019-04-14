@@ -262,6 +262,14 @@ class IndexModel extends Request {
   getSalesData(obj) {
     // return mango.getAjax('v1/app/userinfo', obj)
   }
+
+  /* 
+    工作模块 
+  */
+  //获取个人日报
+  getDailyReport(obj) {
+    return mango.getAjax('/v3/app/daily', obj)
+  }
   
   /* 
     客户管理模块
