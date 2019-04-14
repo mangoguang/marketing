@@ -10,7 +10,7 @@
           <span>客户描述</span>
         </div>
       </li>
-      <new-descript/>
+      <new-descript :select='true'/>
     </ul>
     <ul>
       <li @click="controlDemand">

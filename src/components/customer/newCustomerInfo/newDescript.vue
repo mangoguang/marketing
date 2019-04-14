@@ -1,8 +1,9 @@
 <template>
   <div class="customerDescript">
     <ul>
-      <li is="customerLi" :leftText="'头像'" :icon="true">
-        <img src="" alt="">
+      <li is="customerLi" :leftText="'头像'" :icon="true" >
+        <unLoadVia class="upload" :select='true'/>
+        <!--select表示直接选择照片-->
       </li>
       <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>
         <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name">
@@ -75,6 +76,7 @@
         <!-- <div class="switchBox"><mt-switch v-model="urgency"></mt-switch></div> -->
       <!-- </li> -->
     </ul>
+    
     <!-- <div class="btnBox">
       <big-btn :text="'下一步'" @click.native="saveCustomerInfo"></big-btn>
     </div> -->
@@ -116,6 +118,7 @@ Vue.component(Popup.name, Popup)
 Vue.component(Switch.name, Switch)
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
+import unLoadVia from '../customerShare/loadPic'
 import sexSelect from '../../select/sexSelect'
 import ageSelect from '../../select/ageSelect'
 import sourceSelect from '../../select/sourceSelect'
@@ -127,7 +130,7 @@ import variable from '../../../js/variable'
 import {turnParams} from '../../../utils/customer'
 export default {
   name:'customerDescript',
-  props: ['btns'],
+  props: ['btns', 'select'],
   components: {
     customerLi,
     bigBtn,
@@ -136,10 +139,12 @@ export default {
     leaveStoreSelect,
     addressSelect,
     areaSelect,
-    ageSelect
+    ageSelect,
+    unLoadVia
   },
   data(){
     return{
+      ImgStatus: false,
       importantBtns: mango.btnList(['高', '中', '低'],0),
       // importantBtns: mango.btnList(['高', '中', '低'], 0),
       // slots: [],
@@ -159,7 +164,9 @@ export default {
       countyName: '',
       parentBtns: [],
       urgency:false,
-      color: 'color: #999'
+      color: 'color: #999',
+      headerImage: '',
+      selectImg:''
     }
   },
   watch: {
@@ -218,6 +225,8 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     this.parentBtns = this.btns
+    //上传图片的状态
+    this.selectImg = this.select
   },
   mounted() {
     this.setNewCustomerInfo({})
@@ -237,6 +246,21 @@ export default {
       'setLeaveStoreVal',
       'setAgeVal'
     ]),
+    //选择头像
+    toImg() {
+      this.ImgStatus = true
+      // console.log(123)
+    },
+    //后退
+    goback() {
+      this.ImgStatus = false
+      this.selectImg = false
+    },
+    //上传图片
+    changImg () {
+      this.selectImg = true
+      this.$refs.clickImg.changImage()
+    },
     //选择地址
     toNewAdress() {
       this.$router.push({path: '/newAddress'})
@@ -502,6 +526,7 @@ export default {
 @import "../../../assets/common.scss";
 .customerDescript{
   background: $bgCol;
+ 
   &>li{
     padding: 0 5vw;
   }
@@ -538,7 +563,7 @@ export default {
     img {
       width: 14.66vw;
       height: 14.66vw;
-      border: 1px solid #e1e1e1;
+      // border: 1px solid #e1e1e1;
       margin-left: 10vw;
     }
   }
