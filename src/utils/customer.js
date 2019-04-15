@@ -95,10 +95,10 @@ export {changeFormData}
 //获取选项
 function setSlot(type) {
   let arr = []
-  type.forEach((item,index) => {
-    arr[index] = item.name
-  });
-  return arr
+    type.forEach((item,index) => {
+      arr[index] = item.name
+    });
+    return arr
 }
 export {setSlot}
 //根据val获取对应的code
@@ -120,5 +120,6 @@ function getVal(code,typeList) {
       val = item.name
     }
   })
+  return val
 }
 export {getVal}

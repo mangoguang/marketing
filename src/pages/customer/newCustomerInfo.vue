@@ -22,7 +22,7 @@
           <img src="../../assets/imgs/newPullDown.png" :class="{changSide:isShowDemand}">
         </div>
       </li>
-      <new-demand v-show="isShowDemand"/>
+      <new-demand v-show="isShowDemand" :fromName='fromName'/>
     </ul>
     <ul class="dealUl">
       <li @click="controlDaal">
@@ -34,7 +34,7 @@
           <img src="../../assets/imgs/newPullDown.png"  :class="{changSide:isShowDeal}">
         </div>
       </li>
-      <new-record v-show="isShowDeal"/>
+      <new-record v-show="isShowDeal" :fromName='fromName'/>
     </ul>
     <!-- <new-descript v-show="this.btns[0].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
     <!-- <new-demand v-show="this.btns[1].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->

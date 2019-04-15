@@ -20,7 +20,9 @@
 </template>
 
 <script>
-
+import { IndexModel } from "../../utils/index";
+const indexModel = new IndexModel();
+import {setSlot,getCode} from '../../utils/customer'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from "vuex"
@@ -40,7 +42,8 @@ export default {
       slots: [{values: []}],
       popupVisible: false,
       key: false,
-      color: "color: #999"
+      color: "color: #999",
+      typeList: []
     }
   },
   computed:{
@@ -48,19 +51,22 @@ export default {
       sourceVal: state => state.select.sourceVal
     })
   },
-  mounted() {
+  created() {
     this.init()
     // this.setSourceVal(this.slots[0].values[0])
     // this.$refs.sourcePicker.setSlotValue(0, this.val)
   },
   methods:{
     ...mapMutations(["setSourceVal"]),
+    //获取slot列表值
     init() {
-      this.getType('REASON_PURCHASE')
-      setTimeout(() => {
-        let arr = this.setSlot(this._type)
-        this.slots[0].values = arr
-      },200)
+      indexModel.getType('DR_SOURCE_CHANNEL').then(res => {
+        if(res.data && res.data.length) {
+          this.typeList = res.data
+          let arr = setSlot(this.typeList)
+          this.slots[0].values = arr
+        }
+      })
     },
     selectSource() {
       // this.$refs.sourcePicker.setSlotValue(0, this.sourceVal)
@@ -75,40 +81,12 @@ export default {
     },
     onValuesChange(picker, values) {
       if(this.key) {
-        let code = this.getCode(values[0],this._type)
+        let code = getCode(values[0],this.typeList)
         this.$emit('codeChange', code)
         this.$emit('sourceChange', values[0])
       }else {
         this.key = true
       }
- 
-    },
-    //获取选项
-    setSlot(type) {
-      let arr = []
-      type.forEach((item,index) => {
-        arr[index] = item.name
-      });
-      return arr
-    },
-    //根据val获取对应的code
-    getCode(val,typeList) {
-      let code;
-      typeList.forEach((item,index) => {
-        if(item.name === val) {
-          code = item.code
-        }
-      })
-      return code
-    },
-    //根据code获取对应的val
-    getVal(code,typeList) {
-      let val;
-      typeList.forEach((item,index) => {
-        if(item.code === code) {
-          val = item.name
-        }
-      })
     }
   }
   }

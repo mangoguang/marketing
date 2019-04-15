@@ -18,7 +18,8 @@ export default {
   components: {banner,chooseLi},
   data(){
     return {
-      list: []
+      list: [],
+      shop: []
     }
   },
   computed: {
@@ -28,7 +29,7 @@ export default {
   },
   created() {
     let shops = localStorage.getItem('shops')
-    this.list = JSON.parse(shops)
+    this.shop = JSON.parse(shops)
     this.isInit()
   },
   methods: {
@@ -41,7 +42,8 @@ export default {
     },
     //初始化选择第一个
     init(i) {
-      this.list = btnList(this.list, i)
+      // console.log(this.shop[i].id)
+      this.list = btnList(this.shop, i)
       this.initShopList(this.list)
       this.getShopVal()
     },

@@ -316,10 +316,10 @@ export default {
         followDate: ''
       }
       let parmas = {
-        'phone': '15013999052',
-        'opportunity.shopId': '1108926117386739714',
-        'opportunity.arrivalDate': '2019-04-01',
-        'opportunity.source': 'Natural'
+        // 'phone': '15013999052',
+        // 'opportunity.shopId': '1108926117386739714',
+        // 'opportunity.arrivalDate': '2019-04-01',
+        // 'opportunity.source': 'Natural'
       }
       this.setNewCustomerInfo(parmas)
       // if(this.$route.query.phone) {

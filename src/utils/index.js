@@ -290,6 +290,12 @@ class IndexModel extends Request {
     return mango.getAjax('/v2/app/feedback',{key:key})
   }
   
+  //获取参考系
+  getType(type) {
+    return mango.getAjax('/v2/app/reference',{
+      type: type
+    })
+  }
  
 }
 
