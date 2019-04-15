@@ -2,15 +2,16 @@
     <div class="address">
       <mybanner :title="title" style="background:#fff;"></mybanner>
       <div class="list">
-        <div class="noRecord">
+        <div class="noRecord" v-if='!hasRecord'>
           <p>暂无地址</p>
           <p>请添加地址哦~</p>
           <img src="../../../assets/imgs/arrow-down.png" alt="">
         </div>
-       <customer-address v-for="(item,index) in list" :key="index" :index="index" @edit="edit" @del="del">
+       <customer-address v-for="(item,index) in addressList" :key="index" :index="index" @edit="edit" @del="del" v-else>
           <div class="address_li">
-            <h1>三居室&nbsp;&nbsp;&nbsp;&nbsp;电梯房</h1>
-            <p>广东省东莞市厚街镇 双岗上环工业区 艾慕工业园</p>
+            <h1 v-if="item.elevator">{{item.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;有电梯</h1>
+            <h1 v-else>{{item.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;无电梯</h1>
+            <p>{{item.province}}{{item.city}}{{item.district}}{{item.address}}</p>
           </div>
         </customer-address> 
       </div>
@@ -25,11 +26,12 @@ import Btn from '../../../components/personal/Btn'
 import customerAddress from '../../../components/mySwipe/customerAddress'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
-
+import { IndexModel } from '../../../utils' 
+const indexModel = new IndexModel()
 export default {
   data () {
     return {
-      list:[1,2,3,4]
+      hasRecord:true
     }
   },
   components:{
@@ -39,27 +41,42 @@ export default {
   },
   computed:{
     ...mapState('address',[
-      'title'
+      'title',
+      'addressList'
     ])
   }, 
   created(){
-   
+   this.getAddressList();
   },
   
   mounted(){
-    
+   
   },
   methods:{
    ...mapMutations('address',['updateAddress','delAddress']),
    jump(){
-     this.$router.push({path:'/addAddress'});
+     this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId}});
    },
    edit(i){
      console.log(i);
    },
    del(i){
      console.log(i);
-   }
+   },
+    getAddressList(){
+      let id=this.$route.params.customerId;
+      indexModel.getAddressList(id).then(res => {
+        console.log(res);
+        if(res.code===0){
+          if(res.data.length>0){
+            this.updateAddress(res.data);
+            this.hasRecord=true;
+          }else{
+            this.hasRecord=false;
+          }
+        }
+      })
+    }
   }
 };
 </script>

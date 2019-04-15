@@ -1,3 +1,4 @@
+import mango from '../js'
 exports.install = (Vue, options) => {
   Vue.prototype.phoneSize =  () => {
     let u = navigator.userAgent;
@@ -21,4 +22,11 @@ exports.install = (Vue, options) => {
       let ajaxData = localStorage.getItem('ajaxData')
       return JSON.parse(ajaxData)
    };
+   Vue.prototype.getType = (type) => {
+     mango.getAjax('/v2/app/reference', {
+       type: type
+     }).then(res => {
+        Vue.prototype._type = res.data
+     })
+   }
 };

@@ -8,39 +8,39 @@
       </title-bar>
       <ul class="list">
         <li>
-          <intention-select v-bind="formInfo.intention" v-model="form.intention" :showIcon="selectIcon"/>
+          <intention-select v-bind="formInfo.intention" :value="form.intention" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
         <li>
-         <store-select v-bind="formInfo.store" v-model="form.store" :showIcon="selectIcon"/>
+         <store-select v-bind="formInfo.store" :value="form.store" :showIcon="selectIcon"/>
         </li>
         <li>
-          <date-select v-bind="formInfo.time" v-model="form.time" :showIcon="selectIcon"/>
+          <date-select v-bind="formInfo.time" :value="form.time" @update="updateTime" :showIcon="selectIcon"/>
         </li>
         <li>
-          <duration-select v-bind="formInfo.duration" v-model="form.duration" :showIcon="selectIcon"/>
+          <duration-select v-bind="formInfo.duration" :value="form.duration" @update="updateDuration" :showIcon="selectIcon"/>
         </li>
         <li>
-          <source-select v-bind="formInfo.source" v-model="form.source" :showIcon="selectIcon"/>
+          <source-select v-bind="formInfo.source" :value="form.source" @update="updateSource" :showIcon="selectIcon"/>
         </li>
       </ul>
        <ul class="list">
         <li>
-          <address-select v-bind="formInfo.address" v-model="form.address" :showIcon="selectIcon"/>
+          <address-select v-bind="formInfo.address" :value="form.address" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.house" v-model="form.house"/>
+          <yan-input v-bind="formInfo.house" :value="form.house"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.elevator" v-model="form.elevator"/>
+          <yan-input v-bind="formInfo.elevator" :value="form.elevator"/>
         </li>
         <li>
-          <reason-select v-bind="formInfo.reason" v-model="form.reason" :showIcon="selectIcon"/>
+          <reason-select v-bind="formInfo.reason" :value="form.reason" @update="updateReason" :showIcon="selectIcon"/>
         </li>
         <li>
-          <style-select v-bind="formInfo.style" v-model="form.style" :showIcon="selectIcon"/>
+          <style-select v-bind="formInfo.style" :value="form.style" @update="updateStyle" :showIcon="selectIcon"/>
         </li>
         <li>
-          <progress-select v-bind="formInfo.progress" v-model="form.progress" :showIcon="selectIcon"/>
+          <progress-select v-bind="formInfo.progress" :value="form.progress" @update="updateProgress" :showIcon="selectIcon"/>
         </li>
       </ul>
       <ul class="list">
@@ -48,16 +48,20 @@
           <yan-input v-bind="formInfo.goods" v-model="form.goods"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.color" v-model="form.color"/>
+          <color-select v-bind="formInfo.color" :value="form.color" @update="updateColor" :showIcon="selectIcon"/>
         </li>
         <li>
           <yan-input v-bind="formInfo.budget" v-model="form.budget"/>
+        </li>
+        <li>
+          <date-select v-bind="formInfo.deliver" :value="form.deliver" @update="updateDeliver" :showIcon="selectIcon"/>
         </li>
          <li>
           <yan-input v-bind="formInfo.paid" v-model="form.paid"/>
         </li>
         <li>
-          <discount-select v-bind="formInfo.discount" v-model="form.discount" :showIcon="selectIcon"/>
+          <discount-select v-bind="formInfo.discount" :value="form.discount" @update="updateDiscount" :showIcon="selectIcon"/>
+          <!-- <yan-input v-bind="formInfo.discount" v-model="form.discount"/> -->
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.remark"></yan-textarea>
@@ -100,6 +104,7 @@ import sourceSelect from '../../../components/mySelect/sourceSelect'
 import addressSelect from '../../../components/mySelect/addressSelect'
 import reasonSelect from '../../../components/mySelect/reasonSelect'
 import styleSelect from '../../../components/mySelect/styleSelect'
+import colorSelect from '../../../components/mySelect/colorSelect'
 import progressSelect from '../../../components/mySelect/progressSelect'
 import discountSelect from '../../../components/mySelect/discountSelect'
 import classifySelect from '../../../components/mySelect/classifySelect'
@@ -114,22 +119,30 @@ export default {
   data () {
     return {
       form:{
-        intention:'DR-1103床垫',
-        store:'红星美凯龙',
+        intention:'',
+        store:'',
         time:'',
         duration:'',
         source:'',
         address:'',
         house:'',
         elevator:'',
+        reason:'',
+        style:'',
         progress:'',
         goods:'',
         color:'',
         budget:'',
+        deliver:'',
         paid:'',
         discount:'',
         remark:''
       },
+      reasonCode:'',
+      sourceCode:'',
+      styleCode:'',
+      colorCode:'',
+      progressCode:'',
       classify:'',
       urgency:'',
       selectIcon:true,
@@ -150,7 +163,10 @@ export default {
           title:'战败原因：',
           value:''
         }
-      ]
+      ],
+      customerId:'',
+      addressId:'',
+      path:''
     }
   },
   components:{
@@ -168,12 +184,33 @@ export default {
      reasonSelect,
      styleSelect,
      progressSelect,
-     discountSelect,
      classifySelect,
      recordPannel,
      orderInfo,
      yanLayerPrompt,
-     yanLayerMsg
+     yanLayerMsg,
+     colorSelect,
+     discountSelect
+  },
+  watch:{
+    $route(to,from){
+      if(from.name==='selectAddress'){
+        let obj=this.$store.state.addressList.find((item) => {
+          return item.id=this.$route.query.addressId;
+        })
+        //console.dir(obj);
+        let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
+        let elevator=obj.elevator?'有':'无';
+        this.$set(this.form,'address',address);
+        this.$set(this.form,'house',obj.apartmentType);
+        this.$set(this.form,'elevator',elevator);
+        this.addressId=this.$route.query.addressId;
+      }
+      if(from.name==='intentionProduct'){
+        this.form.intention=this.$store.state.checkedList[0].crmId;
+      }
+      
+    }
   },
   computed:{
     ...mapState('addIntention',[
@@ -183,9 +220,12 @@ export default {
     ])
   },
   created(){
-   
+   this.customerId=this.$route.params.customerId;
+   this.path=this.$route.path;
   },
-  
+  activated(){
+
+  },
   mounted(){
 
   },
@@ -194,12 +234,12 @@ export default {
      this.$router.push({path:'/address'})
    },
    updateClassify(option){
-    console.log(option);
+    //console.log(option);
     this.classify=option;
     console.log("选择"+this.classify);
    },
    updateUrgency(option){
-    console.log(option);
+    //console.log(option);
     this.urgency=option;
     console.log("选择"+this.urgency);
    },
@@ -213,7 +253,76 @@ export default {
    },
    confirm(){
      console.log("取消");
+   },
+   //选择更新进店日期
+   updateTime(value,anotherVal){
+     //this.$set(this.form,'time',anotherVal);
+     this.form.time=anotherVal;
+   },
+   //选择更新留店时长
+   updateDuration(value){
+    // this.$set(this.form,'duration',value);
+    this.form.duration=value;
+   },
+   //选择更新购买原因
+   updateReason(name,code){
+     //this.$set(this.form,'reason',name);
+     this.form.reason=name;
+     this.reasonCode=code;
+   },
+   //选择更新客户来源
+   updateSource(name,code){
+     //this.$set(this.form,'source',name);
+     this.form.source=name;
+     this.sourceCode=code;
+   },
+   //选择更新装修风格
+   updateStyle(name,code){
+     //this.$set(this.form,'style',name);
+     this.form.style=name;
+     this.styleCode=code;
+   },
+   //选择更新装修进度
+   updateProgress(name,code){
+     //this.$set(this.form,'progress',name);
+     this.form.progress=name;
+     this.progressCode=code;
+   },
+   //选择更新颜色偏好
+   updateColor(name,code){
+     //this.$set(this.form,'color',name);
+     this.form.color=name;
+     this.colorCode=code;
+   },
+   //选择更新需求日期
+   updateDeliver(value,anotherVal){
+     //this.$set(this.form,'deliver',anotherVal);
+     this.form.deliver=anotherVal;
+   },
+   //选择更新折扣
+   updateDiscount(arr){
+     console.log(arr);
+     let discount=arr.join('.')+"折"
+     //this.$set(this.form,'discount',discount);
+     this.form.discount=discount;
    }
+  },
+  beforeRouteEnter(to,from,next){
+    console.log(to);
+    console.log(from);
+    if(from.name==='selectAddress'){
+      to.meta.keepAlive=true;
+      next();
+    }
+    if(from.name==='searchProduct'){
+      to.meta.keepAlive=true;
+      next();
+    }
+    if(from.name==='intentionProduct'){
+      to.meta.keepAlive=true;
+       next();
+    }
+    next();
   }
 };
 </script>

@@ -2,12 +2,12 @@
   <div class="orderInfoDetails">
     <div class="product-wrapper">
       <div class="product" 
-        v-for="(item,index) in orderInfoDetails.orderItemList " :key="index">
+        v-for="(item,index) in list.orderItemList " :key="index">
         <!-- <div class="product-photo">产品图</div> -->
         <div class="product-details">
           <div class="details">
             <span>{{ item.goodsName || 1}}</span>
-            <p>{{ item.goodsSpec }}</p>
+            <p>{{ item.specification }}</p>
           </div>
           <div class="price">
             <!-- <p>￥{{ Math.round(item.price) }}</p> -->
@@ -17,15 +17,15 @@
       </div>
       <div class="total-amount">
         <span>订单总额</span>
-        <span>￥{{Math.round(total)}}</span>
+        <span>￥{{Math.round(list.fullTotal)}}</span>
       </div>
       <div class="discount">
         <span>折扣金额</span>
-        <span>￥{{ Math.round(discount)}}</span>
+        <span>￥{{ Math.round(list.fullTotal - list.total)}}</span>
       </div>
       <div class="payment">
         <p>实付款</p>
-        <span>￥{{Math.round(orderInfoDetails.totalAmount)}}</span>
+        <span>￥{{Math.round(list.total)}}</span>
       </div>
     </div>
     <div class="orderInfo">
@@ -43,43 +43,43 @@
         <li>
           <div>
             <span>客户姓名:</span>
-            <p>{{ `*${orderInfoDetails.username ? orderInfoDetails.username.slice(1, 5) : ''}` }}</p>
+            <p>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>客户电话:</span>
-            <p>{{ `******${orderInfoDetails.phone ? orderInfoDetails.phone.slice(6, 11) : ''}` }}</p>
+            <p>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单号:</span>
-            <p>{{ orderInfoDetails.orderNo }}</p>
+            <p>{{ list.orderNo }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单创建日期:</span>
-            <p>{{ orderInfoDetails.recordTime }}</p>
+            <p>{{ list.submitTime }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单下单日期:</span>
-            <p>{{ orderInfoDetails.orderTime }}</p>
+            <p>{{ list.orderTime }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单需求日期:</span>
-            <p>{{ orderInfoDetails.demandTime }}</p>
+            <p>{{ list.demandTime }}</p>
           </div>
         </li>
         <li> 
           <div>
             <span>送货地址:</span>
-            <p>{{ `******${orderInfoDetails.address ? orderInfoDetails.address.slice(6, 50) : ''}` }}</p>
+            <p>{{ `******${address ? address.slice(6, 50) : ''}` }}</p>
           </div>
         </li>
       </ul>
@@ -91,54 +91,65 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations, mapState } from 'vuex'
-
+import mango from '../../../js'
 export default {
+  props: ['list'],
   data(){
     return{
-      total: '',
-      discount: ''
+      address: ''
     } 
   },
-  destroyed() {
-    this.setTotalPrice(0)
-    this.setDiscountPrice(0)
-    this.setOrderTotalPrice(0)
-    this.setOrderTotalPrice(0)
-  },
-  computed: {
-      ...mapState({
-        orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
-        totalPrice: state => state.dealOrderInfoDetails.totalPrice,
-        discountPrice: state => state.dealOrderInfoDetails.discountPrice,
-        orderTotalPrice: state => state.orderInfoDetails.orderTotalPrice,
-        orderDiscountPrice: state => state.orderInfoDetails.orderDiscountPrice
-      })
-    },
-  watch: {
-    totalPrice() {
-      this.total = this.totalPrice
-    },
-    discountPrice() {
-      this.discount = this.discountPrice
-    },
-    orderTotalPrice() {
-      this.total = this.orderTotalPrice
-    },
-    orderDiscountPrice() {
-      this.discount = this.orderDiscountPrice
-    }
-  },
+  // destroyed() {
+  //   this.setTotalPrice(0)
+  //   this.setDiscountPrice(0)
+  //   this.setOrderTotalPrice(0)
+  //   this.setOrderTotalPrice(0)
+  // },
+  // computed: {
+  //     ...mapState({
+  //       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
+  //       totalPrice: state => state.dealOrderInfoDetails.totalPrice,
+  //       discountPrice: state => state.dealOrderInfoDetails.discountPrice,
+  //       orderTotalPrice: state => state.orderInfoDetails.orderTotalPrice,
+  //       orderDiscountPrice: state => state.orderInfoDetails.orderDiscountPrice
+  //     })
+  //   },
+  // watch: {
+  //   totalPrice() {
+  //     this.total = this.totalPrice
+  //   },
+  //   discountPrice() {
+  //     this.discount = this.discountPrice
+  //   },
+  //   orderTotalPrice() {
+  //     this.total = this.orderTotalPrice
+  //   },
+  //   orderDiscountPrice() {
+  //     this.discount = this.orderDiscountPrice
+  //   }
+  // },
   created() {
+    this.getAddress()
     // this.calcPrice()
     // console.log(144, this.orderTotalPrice, this.orderDiscountPrice)
   },
   methods: {
-    ...mapMutations([
-      'setTotalPrice', 
-      'setDiscountPrice',
-      'setOrderTotalPrice',
-      'setOrderDiscountPrice'
-    ])
+    // ...mapMutations([
+    //   'setTotalPrice', 
+    //   'setDiscountPrice',
+    //   'setOrderTotalPrice',
+    //   'setOrderDiscountPrice'
+    // ])
+    getAddress() {
+      let id = this.list.addressId
+      mango.getAjax('/v2/app/address', {
+        addressId: id
+      }).then(res => {
+        if(res.data) {
+          this.address = res.data.country + res.data.province + res.data.city + res.data.address + res.data.housingEstate
+        }
+      })
+    }
   }
 }
 </script>

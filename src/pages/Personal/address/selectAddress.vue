@@ -2,12 +2,18 @@
     <div class="address">
       <mybanner :title="title" style="background:#fff;"></mybanner>
       <div class="address-box">
-        <my-select :options="options" name="1" @change="updateVal" @edit="edit" >
+        <my-select :options="addressList" name="1" @change="updateVal" @edit="edit" v-if='hasRecord'>
           <template slot-scope="props">
-              <span>{{props.info.room}}&nbsp;&nbsp;&nbsp;&nbsp;{{props.info.elevator}}</span>
-              <p>{{props.info.address}}</p>
+              <span v-if="props.info.elevator">{{props.info.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;有电梯</span>
+              <span v-else>{{props.info.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;无电梯</span>
+              <p>{{props.info.province}}{{props.info.city}}{{props.info.district}}{{props.info.address}}</p>
           </template>
         </my-select>
+        <div class="noRecord"  v-else>
+          <p>暂无地址</p>
+          <p>请添加地址哦~</p>
+          <img src="../../../assets/imgs/arrow-down.png" alt="">
+        </div>
       </div>
       <btn text='添加新地址' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
     </div>
@@ -20,31 +26,12 @@ import Btn from '../../../components/personal/Btn'
 import mySelect from '../../../components/mySelect/select'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
-
+import { IndexModel } from '../../../utils'
+const indexModel=new IndexModel()
 export default {
   data () {
     return {
-      options:[
-        {
-          id:1,
-          room:"三居室1",
-          elevator:'电梯房1',
-          address:'广东省东莞市厚街镇双岗上环工业区艾慕工业园'
-          
-        },
-        {
-          id:2,
-          room:"三居室2",
-          elevator:'电梯房2',
-          address:'广东省东莞市厚街镇双岗上环工业区艾慕工业园'
-        },
-        {
-          id:3,
-          room:"三居室3",
-          elevator:'电梯房3',
-          address:'广东省东莞市厚街镇双岗上环工业区艾慕工业园'
-        }
-      ]
+      fromPath:''
     }
   },
   components:{
@@ -54,30 +41,56 @@ export default {
   },
   computed:{
     ...mapState('selectAddress',[
-      'title'
-    ])
+      'title',
+      'hasRecord',
+      'path'
+    ]),
+   ...mapState({
+     addressList:state => state.addressList
+   })
   }, 
   created(){
-   
+   this.getAddressList();
   },
   
   mounted(){
     
   },
   methods:{
-   ...mapMutations('selectAddress',['updateAddress']),
+   ...mapMutations(['updateAddress']),
+   ...mapMutations('selectAddress',['updateHasRecord','updatePath']),
    jump(){
-     this.$router.push({path:'/addAddress'});
+     this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId}});
    },
    //获取选择项
-   updateVal(option){
-     console.log(option);
+   updateVal(id){
+     console.log(id);
+     setTimeout(() => {
+       this.$router.push({path:this.$route.query.redirect,query:{addressId:id}})
+     },100)
+     
    },
    //获取编辑的id
    edit(id){
      console.log(id);
-   }
+   },
+   //获取地址
+   getAddressList(){
+      let id=this.$route.params.customerId;
+      indexModel.getAddressList(id).then(res => {
+        console.log(res);
+         if(res.code===0){
+           if(res.data.length>0){
+             this.updateAddress(res.data);
+             this.updateHasRecord(true);
+           }else{
+             this.updateHasRecord(false);
+           }
+         }
+      })
+    }
   }
+  
 };
 </script>
 
@@ -98,6 +111,17 @@ export default {
     p{
       color:#363636;
       font-size: 3.2vw;
+    }
+    .noRecord{
+      text-align: center;
+      font-size:2.933vw;
+      color:#909090;
+      line-height: 6.4vw;
+      padding-top:14.133vw;
+      img{
+        width:4vw;
+        margin-top:4vw;
+      }
     }
    }
  }

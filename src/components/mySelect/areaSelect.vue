@@ -2,15 +2,19 @@
   <div class="inputBox">
       <label @click="selectArea">
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
-          <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          <input  type="text" :value="value" :readonly='readonly'  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
-       <mt-popup v-model="popupVisible" position="bottom">
-        <mt-picker :slots="provinceSlots" @change="provinceChange"></mt-picker>
-        <mt-picker :slots="citySlots" @change="cityChange"></mt-picker>
-        <mt-picker :slots="countySlots" @change="countyChange"></mt-picker>
+      <mt-popup v-model="popupVisible" position="bottom">
+        <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" value-key="name">
+            <div class="btn-group">
+              <div @click="cancel">取消</div>
+             <!--  <div>请选择省-市-区/县</div> -->
+              <div @click="update">确定</div>
+            </div>
+          </mt-picker>
       </mt-popup>
    </div>
 </template>
@@ -19,80 +23,124 @@
 import Vue from 'vue'
 import { Picker } from 'mint-ui';
 Vue.component(Picker.name, Picker);
-import mango from '../../js/'
 import {IndexModel} from '../../utils'
 const indexModel=new IndexModel()
 export default {
-  props:['value','label','placeholder','showIcon','required'],
+  props:['value','label','placeholder','showIcon','required','readonly'],
   data(){
     return{
       popupVisible:false,
-      provinceArr:[],
-      cityArr:[],
-      countyArr:[],
-      provinceSlots:[],
-      citySlots:[],
-      countySlots:[],
-      provinceName:'',
       cityName:'',
-      countyName:'',
-      key:false
+      cityCode:'',
+      key:false,
+      slots:[
+        {
+          flex: 1,
+          values: ['请选择省'],
+          className: 'slot1',
+          textAlign: 'center'
+        }, {
+          divider: true,
+          content: '',
+          className: 'slot2'
+        }, {
+          flex: 1,
+          values: ['请选择市'],
+          className: 'slot3',
+          textAlign: 'center'
+        },
+        {
+          divider: true,
+          content: '',
+          className: 'slot4'
+        }, {
+          flex: 1,
+          values: ['请选择区/县'],
+          className: 'slot5',
+          textAlign: 'center'
+        }
+      ],
+      pickerArr:[]
     }
   },
-  created(){
+  mounted(){
     this.getProvinceArr();
   },
   methods:{
-    provinceChange(picker,values){
-        if(this.key){
-          this.getProvinceArr();
-        }
+    onValuesChange(picker,values){
+      let that=this;
+      
+      if(that.key){
+        let id=values[0].id;
+        //根据省id获取市
+        indexModel.getArea('DR_CITY').then(res => {
+          if(res.code===0){
+          picker.setSlotValues(1,that.getReference(id,res.data));
+          }
+        });
+        //根据市id获取区县
+        indexModel.getArea('DR_COUNTY').then(res => {
+          if(res.code===0){
+            let cityId=values[1].id;
+            picker.setSlotValues(2,that.getReference(cityId,res.data));
+          }
+        });
+        that.pickerArr=picker.getValues();
+    
+      }
+  
     },
-    cityChange(picker,values){
-
+    cancel(){
+      let that=this;
+      that.popupVisible=false;
     },
-    countyChange(picker,values){
-
+    update(){
+      let that=this;
+      let cityName;
+      let cityCode;
+      if(that.pickerArr.length>0){
+        cityName=`${that.pickerArr[0].name} ${that.pickerArr[1].name} ${that.pickerArr[2].name}`;
+        cityCode=`${that.pickerArr[0].code}-${that.pickerArr[1].code}-${that.pickerArr[2].code}`;
+      }else{
+        cityName=`${that.slots[0].values[0].name} ${that.slots[2].values[0].name} ${that.slots[4].values[0].name}`;
+        cityCode=`${that.slots[0].values[0].code}-${that.slots[2].values[0].code}-${that.slots[4].values[0].code}`;
+      }
+    
+      that.$emit('update',cityName,cityCode);
+      that.popupVisible=false;
     },
     getProvinceArr(){
       indexModel.getArea('DR_STATE').then(res => {
-        console.log(res);
         if(res.code===0){
-          this.provinceArr=res.data;
-          let temp=this.filterName(this.provinceArr);
-          temp.unshift('请选择省');
-          this.provinceSlots=[
-            {
-              values:temp,
-              className:'provinceSlot'
+          let arr=res.data;
+          this.slots[0].values=arr;
+          let id=this.slots[0].values[0].id;
+          //根据省id获取市
+          indexModel.getArea('DR_CITY').then(res => {
+            if(res.code===0){
+            this.slots[2].values=this.getReference(id,res.data)
             }
-          ]
+          });
+          //根据市id获取区县
+          indexModel.getArea('DR_COUNTY').then(res => {
+            if(res.code===0){
+              let cityId=this.slots[2].values[1].id;
+              this.slots[4].values=this.getReference(cityId,res.data)
+            }
+          });
         }
       })
-    },
-    getCityArr(){
-      indexModel.getArea('DR_CITY').then(res => {
-        if(res.code===0){
-          this.cityArr=res.data;
-          
-        }
-      })
-    },
-    getCountyArr(){
-      indexModel.getArea('DR_COUNTY').then(res => {
-        if(res.code===0){
-          this.countyArr=res.data;
-        }
-      })
-    },
+    }, 
     selectArea(){
-      this.popupVisible=true;
-      this.key=true;
+      let that=this;
+      that.popupVisible=true;
+      that.key=true;
     },
-    filterName(arr){
-      return arr.filter(function(item,index,array){
-        return item.name;
-      }) 
+    getReference(id,arr){
+      var newArr=arr.filter(function(item,index,array){
+        return (item.parent===id);
+      });
+      return newArr;
     }
   }
 
@@ -154,6 +202,18 @@ export default {
       width: 1.86vw;
       height: 3.06vw;
     }
+  }
+}
+.btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
   }
 }
 </style>

@@ -260,7 +260,7 @@ class IndexModel extends Request {
   */
   //获取总体销售额
   getSalesData(obj) {
-    // return mango.getAjax('v1/app/userinfo', obj)
+    // return mango.getAjax('/v1/app/userinfo', obj)
   }
 
   /* 
@@ -285,6 +285,23 @@ class IndexModel extends Request {
   getArea(type){
     return mango.getAjax('/v2/app/reference',{type:type})
   }
+  //获取地址列表
+  getAddressList(id){
+    return mango.getAjax('/v2/app/address/list',{customerId:id})
+  }
+  //更新地址
+  updateAddress(obj){
+    return mango.getAjax('/v2/app/address/update',obj,'post')
+  }
+  //保存反馈信息
+  feedback(obj){
+    return mango.getAjax('/v2/app/feedback',obj,'post')
+  }
+  //保存反馈信息
+  getProduct(key){
+    return mango.getAjax('/v2/app/product',{key:key})
+  }
+ 
 }
 
 export { IndexModel }

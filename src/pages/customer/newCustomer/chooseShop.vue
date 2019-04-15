@@ -1,7 +1,7 @@
 <template>
   <div class="chooseShop">
     <banner :title='"所属门店"'/>
-    <ul>
+    <ul class="shopList">
       <chooseLi v-for="(item,index) in list" :key="index" 
         :list='item'
         @click.native='chooseShop(index)'/>
@@ -59,8 +59,13 @@ export default {
 
 <style lang="scss" scoped>
 .chooseShop {
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  overflow: hidden;
   ul {
    margin-top: 16vw;
+   overflow: scroll;
   }
 }
 </style>

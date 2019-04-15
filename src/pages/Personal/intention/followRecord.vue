@@ -8,12 +8,12 @@
           <follow-select v-bind="formInfo.follow" v-model="form.follow" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <date-select v-bind="formInfo.time" v-model="form.time" :showIcon="selectIcon"/>
+          <date-select v-bind="formInfo.time" v-model="form.time" @update="updateTime" :showIcon="selectIcon"/>
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.report" v-model="form.report"/>
       <div class="next">
-         <date-select v-bind="formInfo.nextTime" v-model="form.time" :showIcon="selectIcon"/>
+         <date-select v-bind="formInfo.nextTime" v-model="form.nextTime"  @update="updateNextTime" :showIcon="selectIcon"/>
       </div>
       <yan-textarea v-bind="formInfo.plan" v-model="form.plan"/>
       <p class="title">附件图片</p>
@@ -72,6 +72,14 @@ export default {
   methods:{
    update(){
      this.$router.push({path:'/intention'})
+   },
+   //选择更新跟进时间
+   updateTime(value,anotherVal){
+     this.$set(this.form,'time',anotherVal);
+   },
+   //选择更新下次跟进
+   updateNextTime(value,anotherVal){
+     this.$set(this.form,'nextTime',anotherVal);
    }
       
   }

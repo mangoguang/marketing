@@ -8,7 +8,12 @@
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
       <mt-popup v-model="popupVisible" position="bottom">
-        <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true"></mt-picker>
+        <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" value-key='name'>
+          <div class="btn-group">
+              <div @click="cancel">取消</div>
+              <div @click="update">确定</div>
+            </div>
+        </mt-picker>
       </mt-popup>
    </div>
 </template>
@@ -26,20 +31,30 @@ export default {
       slots:[
         {
           flex: 1,
-          values: ['是','否'],
+          values: [{name:'有',value:true},{name:'无',value:false}],
           className: 'slot1',
           textAlign: 'center'
         }
-      ]
+      ],
+      arr:[]
+
     }
   },
   methods:{
     onValuesChange(picker,values){
-      console.log(picker);
-      console.log(values);
+      //console.log(picker);
+      //console.log(values);
+      this.arr=picker.getValues();
     },
     openElevatorSelect(){
       this.popupVisible=true;
+    },
+    cancel(){
+      this.popupVisible=false;
+    },
+    update(){
+      this.$emit('update',this.arr[0].name,this.arr[0].value);
+      this.popupVisible=false;
     }
   }
  
@@ -100,6 +115,18 @@ export default {
       width: 1.86vw;
       height: 3.06vw;
     }
+  }
+}
+.btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
   }
 }
 </style>

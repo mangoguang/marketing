@@ -55,7 +55,7 @@ export default {
       let type = this.radioVal === '客户手机'? 'phone' : 'wechat'
       let testPhoneNum = variable.testPhone(this.phone)
       if(testPhoneNum) {
-        mango.getAjax('v3/app/customer/check', {
+        mango.getAjax('/v3/app/customer/check', {
           value: this.phone,
           type: type
         }).then((res) => {

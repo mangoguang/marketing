@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  props:['value','label','placeholder','showIcon','required','path','id'],
+  props:['value','label','placeholder','showIcon','required','url','id'],
   data(){
     return{
 
@@ -20,7 +20,7 @@ export default {
   },
   methods:{
     jump(){
-     this.$router.push({path:'/searchProduct'})
+     this.$router.push({name:'searchProduct',params:{customerId:this.id},query:{redirect:this.url}})
     }
   }
  

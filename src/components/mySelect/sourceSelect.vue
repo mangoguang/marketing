@@ -1,22 +1,75 @@
 <template>
   <div class="inputBox">
-      <label>
+      <label @click="open">
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
           <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
+       <mt-popup v-model="popupVisible" position="bottom">
+        <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" value-key='name'>
+          <div class="btn-group">
+              <div @click="cancel">取消</div>
+              <div @click="update">确定</div>
+            </div>
+        </mt-picker>
+      </mt-popup>
    </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import { Popup, Picker } from 'mint-ui';
+Vue.component(Picker.name, Picker);
+Vue.component(Popup.name, Popup);
+import {IndexModel} from '../../utils'
+const indexModel=new IndexModel()
 export default {
   props:['value','label','placeholder','showIcon','required'],
   data(){
     return{
-
+      popupVisible:false,
+      slots:[
+        {
+          flex: 1,
+          values: ['请选择'],
+          className: 'slot1',
+          textAlign: 'center'
+        }
+      ],
+      arr:[]
     }
+  },
+  mounted(){
+    this.getSource();
+  },
+  methods:{
+    onValuesChange(picker,values){
+      //console.log(picker);
+      //console.log(values);
+      this.arr=picker.getValues();
+      //console.log(this.arr);
+    },
+    open(){
+      this.popupVisible=true;
+    },
+    cancel(){
+      this.popupVisible=false;
+    },
+    update(){
+      this.$emit('update',this.arr[0].name,this.arr[0].code);
+      this.popupVisible=false;
+    },
+    getSource(){
+      indexModel.getArea('DR_ACCT_SOUCE').then(res => {
+        console.log(res);
+        if(res.code===0){
+          this.slots[0].values=res.data;
+        }
+      })
+    }
+  
   }
  
 }
@@ -75,6 +128,18 @@ export default {
     img{
       width: 1.86vw;
       height: 3.06vw;
+    }
+  }
+   .btn-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    //padding:0 4.266vw;
+    div{
+      //flex:1;
+      color:#26a2ff;
+      font-size: 16px;
     }
   }
 }

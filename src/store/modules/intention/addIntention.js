@@ -62,6 +62,10 @@ const state = {
       label:'预算金额',
       placeholder:'请填写预算金额'
     },
+    deliver:{
+      label:'需求日期',
+      placeholder:'请填写需求日期'
+    },
     paid:{
       label:'已交定金',
       placeholder:'请填写已交金额'
