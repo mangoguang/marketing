@@ -34,7 +34,7 @@ export default {
       }
       ],
       sheetVisible:false,
-      picVal:[],
+      //picVal:[],
       index:1,
       startX:0,//记录触碰到屏幕的手指信息
       //record:0,//记录每次触摸时上一次的偏移距离
@@ -52,17 +52,25 @@ export default {
      mybanner
   },
   created(){
-    this.picVal=JSON.parse(this.$route.query.picVal);
-    this.path=this.$route.params.path;
-    this.len=this.picVal.length;
-    this.title=this.index+"/"+this.len;
+    //this.picVal=JSON.parse(this.$route.query.picVal);
+   // this.path=this.$route.params.path;
+    //this.len=this.picVal.length;
+    //this.title=this.index+"/"+this.len;
   },
-  
+  computed:{
+    ...mapState({
+      picVal:state => state.picVal,
+      filesList:state => state.Files
+    })
+  },
   mounted(){
     this.deviceW=document.body.clientWidth;
     //this.maxLeft=-50;
+    this.len=this.picVal.length;
+    this.title=this.index+"/"+this.len;
   },
   methods:{
+     ...mapMutations(['delFiles','delPicVal','setFiles','setPicVal']),
     openAction(){
       this.sheetVisible=true;
     },
@@ -73,8 +81,14 @@ export default {
     del(){
       if(this.picVal.length>0){
         var list=this.picVal;
+        var fileList=this.filesList;
         list.splice(this.index-1,1);
-        this.picVal=list;
+        fileList.splice(this.index-1,1);
+        //this.picVal=list;
+        this.setPicVal(list);
+        this.setFiles(fileList);
+        console.log(this.picVal);
+        console.log(this.filesList);
         if(this.index>1){
           this.index--;
           this.swipe=this.swipe-this.deviceW;

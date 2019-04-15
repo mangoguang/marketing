@@ -36,13 +36,22 @@ export default {
       }
       ],
       sheetVisible:false,
-      picVal:[]
+      picVal:[],
+      FilesList:[]
+    }
+  },
+  watch:{
+    $route(to,from){
+      if(from.name==='imgPreview'){
+        this.picVal=this.$store.state.picVal;
+      }
     }
   },
   mounted(){
    this.picVal=window.picVal||[];
   },
   methods:{
+    ...mapMutations(['delFiles','delPicVal','setFiles','setPicVal']),
     openAction(){
       this.sheetVisible=true;
     },
@@ -60,15 +69,28 @@ export default {
         _this.$refs.upload.value='';
         return;
       }
+      let imgSize=3*1024*1024;
      files.map((item,index) => {
         if(/^image/.test(item.type)){
-            let reader=new FileReader();
-            reader.readAsDataURL(item);
-            reader.onloadend=function(){
-             _this.picVal.push({name:item.name,url:this.result});
+            if(item.size>imgSize){
+              Toast({
+                message: `每张图片不能超过3M`,
+                position: 'middle',
+                duration: 2000
+              })
+              return;
+            }else{
+              let reader=new FileReader();
+              reader.readAsDataURL(item);
+              reader.onloadend=function(){
+               _this.picVal.push({name:item.name,url:this.result});
+               _this.FilesList.push(item);
+              }
             }
           }
       });
+      this.setFiles(this.FilesList);
+      this.setPicVal(this.picVal);
     },
     getCamera(){
       this.$refs.upload.setAttribute("capture",'camera');
@@ -93,7 +115,8 @@ export default {
       return this.picVal;
     },
     preview(){
-      this.$router.push({path:'/previewImg',query:{picVal:JSON.stringify(this.picVal)}});
+     // this.$router.push({path:'/previewImg',query:{picVal:JSON.stringify(this.picVal)}});
+     this.$router.push({path:'/previewImg'});
     }
   },
   destroyed(){
