@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
+import state from './globalState'
+import mutations from './globalMutations'
 import common from './modules/common'
 import customer from './modules/customer'
 import select from './modules/components/select'
@@ -37,7 +39,11 @@ import addAddress from './modules/address/addAddress'
 import selectAddress from './modules/address/selectAddress'
 import intentionProduct from './modules/intention/intentionProduct'
 import searchProduct from './modules/intention/searchProduct'
+import followRecord from './modules/intention/followRecord'
+import addIntention from './modules/intention/addIntention'
 export default new Vuex.Store({
+  state,
+  mutations,
   modules: {
     common,
     customer,
@@ -75,6 +81,8 @@ export default new Vuex.Store({
     addAddress,
     selectAddress,
     intentionProduct,
-    searchProduct
+    searchProduct,
+    followRecord,
+    addIntention
   }
 })

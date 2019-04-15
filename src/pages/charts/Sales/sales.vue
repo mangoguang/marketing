@@ -6,7 +6,6 @@
     <div class="barBox">
       <chartsTit :text="'整体销售额对比'">
         <h6>单位：万元</h6>
-        <span>123</span>
       </chartsTit>
       <div v-show="!salesShow" :style="{height: `100vw`}" ref="salesContainer"></div>
       <noData v-show="salesShow"></noData>
@@ -79,6 +78,7 @@ export default {
     // console.log('本地存储的shops:', JSON.parse(shops))
   },
   mounted(){
+    console.log('参数', this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
     this.getSalesData(this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
     this.getAreaSalesData(this.endTime)
   },
@@ -156,7 +156,7 @@ export default {
     // ajax请求
     getSalesData(cityName, date, level) {
       let _this = this
-      mango.getAjax(this, 'sales', {
+      mango.getAjax('/v1/app/report/sales', {
         cityLevel: level,
         // cityName: '苏州市',
         cityName: cityName,
@@ -177,7 +177,7 @@ export default {
     },
     getAreaSalesData(time) {
       let _this = this
-      mango.getAjax(this, 'area/sales', {
+      mango.getAjax('/v1/app/report/area/sales', {
         date: time,
         tenantId: this.ajaxData.tenantId
       }).then((res) => {

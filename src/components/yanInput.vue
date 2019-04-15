@@ -1,20 +1,18 @@
 <template>
   <div class="inputBox">
-  <div>
       <label>
           <span>{{label}}</span>
-          <input :id="id" type="text" :value="value" :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          <input :id="id" type="text" :value="value" :style="color" :readonly='readonly' :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../assets/imgs/rightside.png" alt="">
       </div>
-    </div>
    </div>
 </template>
 
 <script>
 export default {
-  props:['id','value','label','placeholder','showIcon'],
+  props:['id','value','label','placeholder','showIcon','readonly','color'],
   data(){
     return{
 
@@ -30,12 +28,13 @@ export default {
   color:#363636;
   height:12vw;
   line-height: 12vw;
-  //padding-left:4.266vw;
+  padding-right:4.266vw;
   display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   label{
+    width:100%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -43,6 +42,7 @@ export default {
       display: inline-block;
       width:22.4vw;
     }
+    
     
   }
   input:-moz-input-placeholder{
@@ -64,10 +64,11 @@ export default {
   input{
     color:#363636;
     font-size: 4vw;
+    flex: 1;
   }
   .icon-right{
     margin-left:2.133vw;
-    padding-right:4.266vw;
+    //padding-right:4.266vw;
     img{
       width: 1.86vw;
       height: 3.06vw;

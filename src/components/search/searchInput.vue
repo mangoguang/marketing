@@ -3,6 +3,7 @@
       <label>
           <span class="search-icon"></span>
           <input type="text" :value="value"  @input="$emit('input',$event.target.value)">
+          
       </label>
    </div>
 </template>

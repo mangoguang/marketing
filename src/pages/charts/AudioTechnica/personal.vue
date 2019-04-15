@@ -51,15 +51,15 @@ export default {
     switch (this.$route.query.type) {
       case 'getIn': 
         this.title = `${this.title}进店数`
-        this.getPersonalData('store/number/people') // 获取个人数据
+        this.getPersonalData('/v1/app/report/store/number/people') // 获取个人数据
         break
       case 'achieveRatio':
         this.title = `${this.title}成交率`
-        this.getPersonalData('people/turnover/ratio') // 获取个人数据
+        this.getPersonalData('/v1/app/report/people/turnover/ratio') // 获取个人数据
         break
       default:
         this.title = `${this.title}客单值`
-        this.getPersonalData('people/guest/order') // 获取个人数据
+        this.getPersonalData('/v1/app/report/people/guest/order') // 获取个人数据
         break
     }
   },
@@ -71,7 +71,7 @@ export default {
     getPersonalData(url) {
        mango.loading('open')
       let _this = this
-      mango.getAjax(this, url, {
+      mango.getAjax(url, {
         tenantId: this.ajaxData.tenantId,
         date: '2018-08',
         shopId: this.$route.query.shopId

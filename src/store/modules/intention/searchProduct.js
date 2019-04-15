@@ -1,19 +1,6 @@
 const state = {
  title:'选择产品',
- list:[
-   {
-     id:1,
-     item:'BCK1-001'
-   },
-   {
-    id:2,
-    item:'BCK1-002'
-  },
-  {
-    id:3,
-    item:'BCK1-003'
-  }
- ]
+ list:[]
 }
 
 const mutations = {

@@ -263,6 +263,34 @@ class IndexModel extends Request {
     // return mango.getAjax('/v1/app/userinfo', obj)
   }
   
+  /* 
+    客户管理模块
+  */
+  getCusotmerList(obj) {
+    return mango.getAjax('/v3/app/customer/list', obj)
+  }
+  //获取参考系
+  getArea(type){
+    return mango.getAjax('/v2/app/reference',{type:type})
+  }
+  //获取地址列表
+  getAddressList(id){
+    return mango.getAjax('/v2/app/address/list',{customerId:id})
+  }
+  //更新地址
+  updateAddress(obj){
+    return mango.getAjax('/v2/app/address/list',obj,'post')
+  }
+  //保存反馈信息
+  feedback(obj){
+    return mango.getAjax('/v2/app/feedback',obj,'post')
+  }
+  //保存反馈信息
+  getProduct(key){
+    return mango.getAjax('/v2/app/feedback',{key:key})
+  }
+  
+ 
 }
 
 export { IndexModel }

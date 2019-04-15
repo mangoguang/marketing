@@ -5,9 +5,9 @@
       <textarea name="" id=""  placeholder="请描述你的反馈意见，我们将不断改进" maxlength="250" v-model="remark"></textarea>
       <span>{{remark.length}}/250</span>
     </div>
-    <upload ref="upload" path="this.path"/>
+    <upload ref="upload" path="this.path" picLen='3'/>
     <div class="form">
-      <yan-input v-bind="contactObj" v-model="contact" :showIcon="false"/>
+      <yan-input v-bind="contactObj" v-model="phone" :showIcon="false"/>
     </div>
     <btn text="提交" @click.native="submit"/>
     <message-box :type="messageBox.type" :btnNum='messageBox.btnNum' v-if="messageBox.showMessageBox">
@@ -59,7 +59,7 @@ export default {
        this.updateRemark(val)
       }
     },
-    contact:{
+    phone:{
       get(){
         return this.$store.state.feedback.contact
       },

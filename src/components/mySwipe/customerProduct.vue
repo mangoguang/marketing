@@ -15,7 +15,6 @@
     <div class="yan-del" ref="yanDel" @click="del(index)">删除</div>
   </div>
 </template>
-
 <script>
 export default {
   props:['index','num'],

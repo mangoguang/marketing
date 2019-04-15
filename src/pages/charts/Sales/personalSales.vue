@@ -83,7 +83,7 @@ export default {
   methods:{
     getPersonalSalesData(date) {
       let _this = this
-      mango.getAjax(this, 'shop/sales', {
+      mango.getAjax('/v1/app/report/shop/sales', {
         date: date,
         tenantId: this.ajaxData.tenantId,
         shopId: this.$route.query.shopId

@@ -97,7 +97,7 @@ export default {
       categoryData: {},
       type: this.$route.query.type,
       typeName: this.$route.query.type === 'brand' ? '品牌' : '品类',
-      port: this.$route.query.type === 'brand' ? 'brand/proportion' : 'category/proportion',
+      port: this.$route.query.type === 'brand' ? '/v1/app/report/brand/proportion' : '/v1/app/report/category/proportion',
       title:'',
       endTime: mango.getLocalTime('end'),
       key1:false,
@@ -199,7 +199,7 @@ export default {
        this.i += 1
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, this.port, {
+      mango.getAjax(this.port, {
         tenantId: this.ajaxData.tenantId,
         date: date,
         type: 'sum'
@@ -232,7 +232,7 @@ export default {
     getCategoryData(date) {
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, this.port, {
+      mango.getAjax(this.port, {
         tenantId: this.ajaxData.tenantId,
         date: date,
         type: 'count'

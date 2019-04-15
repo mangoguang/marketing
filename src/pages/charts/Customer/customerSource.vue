@@ -159,7 +159,7 @@ export default {
     getcustomerSourceData(date, city, level) {
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'customer/source', {
+      mango.getAjax('/v1/app/report/customer/source', {
         cityLevel: level,
         cityName: city,
         // cityName: '苏州市',
@@ -201,7 +201,7 @@ export default {
       this.i += 1
       mango.loading('open')
       let _this = this
-      mango.getAjax(this, 'customer/source/shop', {
+      mango.getAjax('/v1/app/report/customer/source/shop', {
         date: date,
         tenantId: this.ajaxData.tenantId       
       }).then((res) => {

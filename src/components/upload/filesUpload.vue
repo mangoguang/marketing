@@ -5,12 +5,12 @@
           <img :src="imgs.url" alt="">
         </li>
       </ul>
-      <div class="upload" v-if="picVal.length<3" @click.stop="openAction">
+      <div class="upload" v-if="picVal.length<picLen" @click.stop="openAction">
           <img src="../../assets/imgs/upload.png" alt="">
           <span>添加图片</span>
           <input type="file" ref="upload" name="" id=""  accept="image/*" @change="upload">
       </div>
-      <span class="count">{{picVal.length}}/3</span>
+      <span class="count">{{picVal.length}}/{{picLen}}</span>
       <mt-actionsheet :actions="actions" v-model="sheetVisible"></mt-actionsheet>
     </div>
 </template>
@@ -21,7 +21,7 @@ import { Actionsheet, Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 Vue.component(Actionsheet.name, Actionsheet);
 export default {
-  props:['path'],
+  props:['path','picLen'],
   data () {
     let that=this;
     return {
@@ -51,9 +51,9 @@ export default {
       let files = e.target.files;
       files=Array.prototype.slice.call(files);
       if (!files.length) return;
-      if(files.length+this.picVal.length>3){
+      if(files.length+this.picVal.length>this.picLen){
         Toast({
-          message: '只能上传3张图片',
+          message: `只能上传${this.picLen}张图片`,
           position: 'middle',
           duration: 2000
         })
@@ -105,14 +105,17 @@ export default {
 <style lang="scss" scoped>
   .uploadBox{
     padding:2.666vw 4.266vw;
+    padding-top:0;
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-wrap:wrap;
     position: relative;
     .upload_list{
       display: flex;
       flex-direction: row;
       align-items: center;
+      flex-wrap:wrap; 
       li{
         width:20vw;
         height:20vw;
@@ -123,6 +126,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content:center;
+        margin-top:2.666vw;
         img{
           width:100%;
           height: auto;
@@ -140,6 +144,7 @@ export default {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      margin-top:2.666vw;
       img{
         width: 5.333vw;
         margin-bottom: 2.133vw;

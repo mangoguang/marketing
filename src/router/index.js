@@ -144,9 +144,9 @@ export var router = new VueRouter({
     name: '/aboutUs',
     component: resolve => require(['../pages/aboutUs'],resolve)
   },{
-    path: '/safe',
-    name: '/safe',
-    component: resolve => require(['../pages/safe'],resolve)
+    path: '/personalData',
+    name: '/personalData',
+    component: resolve => require(['../pages/personalData'],resolve)
   },
   {
     path: '/feedback',
@@ -159,18 +159,18 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/Personal/imgPreview'],resolve)
   },
   {
-    path: '/address',
-    name: '/address',
+    path: '/address/:customerId',
+    name: 'address',
     component: resolve => require(['../pages/Personal/address/address'],resolve)
   },
   {
-    path: '/addAddress',
-    name: '/addAddress',
+    path: '/addAddress/:customerId',
+    name: 'addAddress',
     component: resolve => require(['../pages/Personal/address/addAddress'],resolve)
   },
   {
-    path: '/selectAddress',
-    name: '/selectAddress',
+    path: '/selectAddress/:customerId',
+    name: 'selectAddress',
     component: resolve => require(['../pages/Personal/address/selectAddress'],resolve)
   },
   {
@@ -182,6 +182,19 @@ export var router = new VueRouter({
     path: '/searchProduct',
     name: '/searchProduct',
     component: resolve => require(['../pages/Personal/intention/searchProduct'],resolve)
+  },
+  {
+    path: '/followRecord',
+    name: '/followRecord',
+    component: resolve => require(['../pages/Personal/intention/followRecord'],resolve)
+  },
+  {
+    path: '/intention/:customerId',
+    name: 'intention',
+    component: resolve => require(['../pages/Personal/intention/addIntention'],resolve),
+    meta:{
+      keepAlive:true
+    }
   },
   //金管家模块-我的收藏
   {
@@ -269,7 +282,7 @@ export var router = new VueRouter({
     name: 'home',
     component: resolve => require(['../pages/home/index'],resolve)
   },
-  /***报表模块***/
+  /***工作模块***/
   {
     path: '/',
     name: 'work',

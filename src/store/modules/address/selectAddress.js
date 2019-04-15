@@ -1,10 +1,12 @@
 const state = {
- title:'选择地址',
- addressList:[]
+  title:'选择地址',
+  hasRecord:true,
+  path:''
 }
 
 const mutations = {
-  updateAddress:(state, array) => {state.addressList=array}
+  updateHasRecord:(state,boolean) => {state.hasRecord=boolean},
+  updatePath:(state,str) => {state.path=str}
 }
 
 const actions = {
