@@ -2,7 +2,7 @@
   <div class="yan-searchList">
      <label class="yan-label" v-for="(item,index) in options" :key="index">
        <slot :info="item"></slot>
-       <input type="radio" :name='name' :value="item.id" @change="updateVal" class="yan-radio">
+       <input type="checkbox" :name='name' :value="item.id" v-model='checkList' @change="updateVal" class="yan-radio">
        <span></span>
      </label>
   </div>
@@ -12,12 +12,12 @@ export default {
   props:['options','name'],
   data(){
     return{
-
+      checkList:[]
     }
   },
   methods:{
     updateVal(ev){
-      this.$emit('change',ev.target.value);
+      this.$emit('change',this.checkList);
     }
   }
  

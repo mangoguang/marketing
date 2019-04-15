@@ -58,7 +58,6 @@ export default {
           parentElement.dataset.type=0;
         }
         
-
       }
     },
     end(e){
@@ -93,6 +92,7 @@ export default {
       this.$emit('add',index);
     },
     del(index){
+      this.restSlide();
       this.$emit('del',index);
     }
   }

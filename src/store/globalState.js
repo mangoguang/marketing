@@ -19,6 +19,10 @@ export default {
       updateBy: "",
       updateName: ""
     }
-  ]
+  ],
+  //搜索获得产品列表
+  searchProductList:[],
+  //选中产品列表
+  checkedList:[]
   
 }

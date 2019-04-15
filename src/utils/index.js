@@ -279,7 +279,7 @@ class IndexModel extends Request {
   }
   //更新地址
   updateAddress(obj){
-    return mango.getAjax('/v2/app/address/list',obj,'post')
+    return mango.getAjax('/v2/app/address/update',obj,'post')
   }
   //保存反馈信息
   feedback(obj){
@@ -287,9 +287,8 @@ class IndexModel extends Request {
   }
   //保存反馈信息
   getProduct(key){
-    return mango.getAjax('/v2/app/feedback',{key:key})
+    return mango.getAjax('/v2/app/product',{key:key})
   }
-  
  
 }
 

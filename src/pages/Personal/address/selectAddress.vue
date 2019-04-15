@@ -64,6 +64,7 @@ export default {
    },
    //获取选择项
    updateVal(id){
+     console.log(id);
      setTimeout(() => {
        this.$router.push({path:this.$route.query.redirect,query:{addressId:id}})
      },100)
