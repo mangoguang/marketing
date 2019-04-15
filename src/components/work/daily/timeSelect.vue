@@ -38,30 +38,77 @@ export default {
   },
   mounted() {
     this.ajaxData = JSON.parse(localStorage.getItem('ajaxData'))
+    console.log(this.getWeek())
   },
   created(){
   },
   methods: {
     selectTime(index) {
+      // 按钮状态更改
       this.timeBtns.forEach((element, i) => {
         element.status = index === i
       })
-      this.getDailyData()
-      // 更改数据
-      this.$emit('changeDailyData', {
-        number: '100',
-        title: 'mangoguang'
-      })
-    },
-    getDailyData() {
-      mango.getAjax('v2/app/address', {
-        addressId: '1112612691244748801'
-      }).then((res) => {
-        console.log('获取数据', res)
-      })
+      // 选择时间区间
+      let dateInterVal = this.computeDateInterval(index)
+      this.$emit('changeDateInterVal', dateInterVal)
     },
     getTimeInterval(obj) {
-      // this.$refs.startDatePick.open()
+      this.$refs.startDatePick.open()
+    },
+    computeDateInterval(i) {
+      let date = new Date()
+      const [day, week, month, year] = [date.getDate(), date.getDay(), date.getMonth() + 1, date.getFullYear()]
+      switch(i) {
+        case 0:
+          return `${year}-${month}-${day}`
+          break
+        case 1:
+          return {
+            startDate: `${year}-${month}-${day}`,
+            endDate: `${year}-${month}-${day}`
+          }
+          break
+        case 2:
+          return {
+            startDate: `${year}-${month}-01`,
+            endDate: `${year}-${month}-31`
+          }
+          break
+        default:
+          return {
+            startDate: `${year}-01-01`,
+            endDate: `${year}-12-31`
+          }
+      }
+    },
+    getWeek() {
+      let date = new Date()
+      // const [day, week, month, year] = [date.getDate(), date.getDay(), date.getMonth() + 1, date.getFullYear()]
+      // console.log(date.get)
+      // 起止日期数组    
+      var startStop = new Array()
+      // 获取当前时间
+      var currentDate = date
+      // 返回date是一周中的某一天
+      var week = currentDate.getDay()
+      // 返回date是一个月中的某一天
+      var month = currentDate.getDate()
+
+      // 一天的毫秒数
+      var millisecond = 1000 * 60 * 60 * 24
+      // 减去的天数    
+      var minusDay = week != 0 ? week - 1 : 6
+      // alert(minusDay)
+      //本周 周一
+      var monday = new Date(currentDate.getTime() - (minusDay * millisecond))
+      // 本周 周日
+      var sunday = new Date(monday.getTime() + (6 * millisecond))
+      // 添加本周时间
+      startStop.push(monday) // 本周起始时间
+      // 添加本周最后一天时间
+      startStop.push(sunday) // 本周终止时间
+      // 返回
+      return startStop
     }
   }
 }

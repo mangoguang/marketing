@@ -64,6 +64,7 @@ export default {
    },
    //获取选择项
    updateVal(id){
+     console.log(id);
      setTimeout(() => {
        this.$router.push({path:this.$route.query.redirect,query:{addressId:id}})
      },100)
@@ -78,14 +79,14 @@ export default {
       let id=this.$route.params.customerId;
       indexModel.getAddressList(id).then(res => {
         console.log(res);
-        // if(res.code===0){
-        //   if(res.data.length>0){
-        //     this.updateAddress(res.data);
-        //     this.updateHasRecord(true);
-        //   }else{
-        //     this.updateHasRecord(false);
-        //   }
-        // }
+         if(res.code===0){
+           if(res.data.length>0){
+             this.updateAddress(res.data);
+             this.updateHasRecord(true);
+           }else{
+             this.updateHasRecord(false);
+           }
+         }
       })
     }
   }

@@ -174,13 +174,13 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/Personal/address/selectAddress'],resolve)
   },
   {
-    path: '/intentionProduct',
-    name: '/intentionProduct',
+    path: '/intentionProduct/:customerId',
+    name: 'intentionProduct',
     component: resolve => require(['../pages/Personal/intention/intentionProduct'],resolve)
   },
   {
-    path: '/searchProduct',
-    name: '/searchProduct',
+    path: '/searchProduct/:customerId',
+    name: 'searchProduct',
     component: resolve => require(['../pages/Personal/intention/searchProduct'],resolve)
   },
   {
@@ -292,6 +292,11 @@ export var router = new VueRouter({
     path: '/dailyReport',
     name: 'dailyReport',
     component: resolve => require(['../pages/work/dailyReport'],resolve)
+  },
+  {
+    path: '/orderSearch',
+    name: 'orderSearch',
+    component: resolve => require(['../pages/work/orderSearch'],resolve)
   },
   //app二期迭代
   {

@@ -16,6 +16,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import store from "./store";
 import refreshToken from './utils/token/refreshToken.js'
+const Bus = new Vue()
 
 export default {
   name: "app",
@@ -24,6 +25,7 @@ export default {
   // components:{mybanner},
   data() {
     return {
+      Bus,
       height: window.innerHeight,
       padding: "",
       myStyle: [

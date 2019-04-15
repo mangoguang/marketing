@@ -1,22 +1,32 @@
 <template>
   <div class="inputBox">
-      <label>
+      <label @click="open">
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
           <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
+     
    </div>
 </template>
 
 <script>
+
+import { IndexModel } from '../../utils'
+const indexModel=new IndexModel()
 export default {
   props:['value','label','placeholder','showIcon','required'],
   data(){
     return{
-
+      
     }
+  },
+  mounted(){
+   
+  },
+  methods:{
+   
   }
  
 }
@@ -75,6 +85,18 @@ export default {
     img{
       width: 1.86vw;
       height: 3.06vw;
+    }
+  }
+  .btn-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    //padding:0 4.266vw;
+    div{
+      //flex:1;
+      color:#26a2ff;
+      font-size: 16px;
     }
   }
 }

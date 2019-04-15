@@ -31,7 +31,6 @@ export default {
           
         } 
       } else {
-        console.log('error')
         this.top = '20px';
       }
     }

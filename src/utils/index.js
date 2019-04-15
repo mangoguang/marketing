@@ -262,6 +262,18 @@ class IndexModel extends Request {
   getSalesData(obj) {
     // return mango.getAjax('/v1/app/userinfo', obj)
   }
+
+  /* 
+    工作模块 
+  */
+  //获取个人日报
+  getDailyReport(obj) {
+    return mango.getAjax('/v3/app/daily', obj)
+  }
+  //获取单日总结安排
+  getCurDayData(obj) {
+    return mango.getAjax('/v3/app/summarize/list', obj)
+  }
   
   /* 
     客户管理模块
@@ -279,7 +291,7 @@ class IndexModel extends Request {
   }
   //更新地址
   updateAddress(obj){
-    return mango.getAjax('/v2/app/address/list',obj,'post')
+    return mango.getAjax('/v2/app/address/update',obj,'post')
   }
   //保存反馈信息
   feedback(obj){
@@ -287,7 +299,7 @@ class IndexModel extends Request {
   }
   //保存反馈信息
   getProduct(key){
-    return mango.getAjax('/v2/app/feedback',{key:key})
+    return mango.getAjax('/v2/app/product',{key:key})
   }
   
   //获取参考系

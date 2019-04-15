@@ -4,8 +4,8 @@
         <button type="button" @click="update">保存</button>
       </mybanner>
       <div class="list">
-        <customer-product v-for="(item,index) in list" :key="index" :index="index" :num="item.num" @edit="edit" @add="add" @cut="cut">
-          {{item.item}}
+        <customer-product v-for="(item,index) in checkedList" :key="index" :index="index" :num="item.quantity"  @add="add(index)" @cut="cut(index)" @del="del(index)">
+          {{item.crmId}}
         </customer-product>
       </div>
       <btn text='添加意向产品' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
@@ -19,10 +19,13 @@ import Btn from '../../../components/personal/Btn'
 import customerProduct from '../../../components/mySwipe/customerProduct'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
+import questionVue from '../../msManage/question.vue';
 
 export default {
   data () {
     return {
+      path:'',
+      id:''
     }
   },
   components:{
@@ -32,36 +35,33 @@ export default {
   },
   computed:{
     ...mapState('intentionProduct',[
-      'title',
-      'list'
-    ])
+      'title'
+    ]),
+    ...mapState(['checkedList'])
   }, 
   created(){
+   this.path=this.$route.query.redirect;
+   this.id=this.$route.params.customerId;
+  },
+  mounted(){
    
   },
-  
-  mounted(){
-    
-  },
   methods:{
-   ...mapMutations('intentionProduct',['updateList','delList']),
+   ...mapMutations(['addGoodsNum','cutGoodsNum','delGoods']),
    update(){
-
+     this.$router.replace({path:this.path});
    },
    jump(){
-     this.$router.push({path:'/searchProduct'});
-   },
-   edit(i){
-     console.log(i);
+     this.$router.replace({name:'searchProduct',params:{customerId:this.id},query:{redirect:this.path}})
    },
    del(i){
-     console.log(i);
+    this.delGoods(i);
    },
    add(i){
-     console.log(i);
+    this.addGoodsNum(i);
    },
    cut(i){
-     console.log(i);
+     this.cutGoodsNum(i);
    }
   }
 };

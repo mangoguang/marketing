@@ -3,9 +3,9 @@
       <mybanner :title="title" style="background:#fff;border:none">
         <button type="button" @click="update">确定</button>
       </mybanner>
-      <search-input v-model="key" @input="search"></search-input>
+      <search-input v-model.trim="key" @input="search"></search-input>
       <div class="list">
-       <search-list :options="list" name="1" @change="updateVal" v-if="hasRecord">
+       <search-list :options="searchProductList" name="1" @change="updateVal" v-if="hasRecord">
          <template slot-scope="props">
            <span class="item">{{props.info.goodsName}}</span>
          </template>
@@ -21,6 +21,7 @@ import searchInput from '../../../components/search/searchInput'
 import searchList from '../../../components/search/searchList'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
+import mango from '../../../js'
 import { IndexModel } from '../../../utils'
 import { Debounce } from '../../../utils/public'
 const indexModel=new IndexModel()
@@ -28,7 +29,10 @@ export default {
   data () {
     return {
       key:'',
-      hasRecord:false
+      hasRecord:false,
+      productList:[],
+      id:'',
+      url:''
     }
   },
   components:{
@@ -38,47 +42,65 @@ export default {
   },
   computed:{
     ...mapState('searchProduct',[
-      'title',
-      'list'
-    ])
+      'title'
+    ]),
+    ...mapState(['searchProductList','checkedList'])
   }, 
   created(){
-   
+   this.id=this.$route.params.customerId;
+   this.url=this.$route.query.redirect;
   },
   
   mounted(){
     
   },
   methods:{
-   ...mapMutations('searchProduct',['updateList']),
+   ...mapMutations(['updateSearchProductList','updateCheckedList']),
    update(){
-     this.$router.push({path:'/intentionProduct'});
+     if(this.productList.length>0){
+       let list=[];
+        this.productList.forEach((itemId,i) => {
+          let id=itemId;
+          list.push(this.filterArr(id));
+        });  
+    
+      this.updateCheckedList(list);
+      this.$router.replace({name:'intentionProduct',params:{customerId:this.id},query:{redirect:this.url}});
+     }else{
+       mango.tip('至少选择一种产品');
+     }
+     
    },
-   updateVal(option){
-     console.log(option);
+   updateVal(checkList){
+     //console.log(checkList);
+     this.productList=checkList;
    },
    search(){
     var that=this;
-    Debounce(function(){
-       //console.log('q')
-       console.log(new Date());
-        indexModel.getProduct(that.key).then(res => {
-          console.log(res);
-          console.log(new Date())
+      Debounce(function(){
+       if(that.key!==''){
+          indexModel.getProduct(that.key).then(res => {
           if(res.code===0){
             if(res.data.length>0){
-              that.updateList(res.data);
+              that.updateSearchProductList(res.data);
               that.hasRecord=true;
             }else{
               that.hasRecord=false;
-            }
-            
+            }  
           }
-
         })
-     },2000)()
-     
+       }
+      },300)()
     
+   },
+   filterArr(id){
+    let obj;
+    this.searchProductList.map((item,index) => {
+      if(item.id===id){
+        obj=Object.assign({},item,{quantity:1});
+      }
+    })
+    return obj;
    }
   }
 };

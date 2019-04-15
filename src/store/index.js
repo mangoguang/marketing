@@ -42,6 +42,7 @@ import searchProduct from './modules/intention/searchProduct'
 import followRecord from './modules/intention/followRecord'
 import addIntention from './modules/intention/addIntention'
 import loadImgUrl from './modules/picture/index'
+import work from './modules/work'
 export default new Vuex.Store({
   state,
   mutations,
@@ -85,6 +86,7 @@ export default new Vuex.Store({
     searchProduct,
     followRecord,
     addIntention,
-    loadImgUrl
+    loadImgUrl,
+    work
   }
 })
