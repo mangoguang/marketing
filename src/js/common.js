@@ -38,7 +38,7 @@ export default class Common {
         return 0
       }
     }
-  }
+  } 
   // 使用冒泡排序法，对对象多个关联数组进行排序
   sortArrs(obj) {
     let [series, newSeries, yAxisData, idsData] = [obj.series, [], obj.yAxisData, obj.idsData]

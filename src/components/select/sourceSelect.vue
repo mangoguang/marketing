@@ -37,7 +37,7 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['异业带单', '主动营销引流', '活动引流', '设计公司带单', '合作伙伴带单', '自然进店', '拦截客户', '渠道引流', '老客带单', '老客复购']}],
+      slots: [{values: []}],
       popupVisible: false,
       key: false,
       color: "color: #999"
@@ -49,11 +49,19 @@ export default {
     })
   },
   mounted() {
+    this.init()
     // this.setSourceVal(this.slots[0].values[0])
     // this.$refs.sourcePicker.setSlotValue(0, this.val)
   },
   methods:{
     ...mapMutations(["setSourceVal"]),
+    init() {
+      this.getType('REASON_PURCHASE')
+      setTimeout(() => {
+        let arr = this.setSlot(this._type)
+        this.slots[0].values = arr
+      },200)
+    },
     selectSource() {
       // this.$refs.sourcePicker.setSlotValue(0, this.sourceVal)
       // this.popupVisible = true
@@ -67,11 +75,40 @@ export default {
     },
     onValuesChange(picker, values) {
       if(this.key) {
+        let code = this.getCode(values[0],this._type)
+        this.$emit('codeChange', code)
         this.$emit('sourceChange', values[0])
       }else {
         this.key = true
       }
  
+    },
+    //获取选项
+    setSlot(type) {
+      let arr = []
+      type.forEach((item,index) => {
+        arr[index] = item.name
+      });
+      return arr
+    },
+    //根据val获取对应的code
+    getCode(val,typeList) {
+      let code;
+      typeList.forEach((item,index) => {
+        if(item.name === val) {
+          code = item.code
+        }
+      })
+      return code
+    },
+    //根据code获取对应的val
+    getVal(code,typeList) {
+      let val;
+      typeList.forEach((item,index) => {
+        if(item.code === code) {
+          val = item.name
+        }
+      })
     }
   }
   }

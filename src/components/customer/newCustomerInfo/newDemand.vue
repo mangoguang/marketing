@@ -9,7 +9,7 @@
         <span :style="timeColor">{{turnDate(newCustomerInfo.storeDate) || '请选择进店日期'}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
-      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
+      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       <li is="customerLi" :leftText="'客户地址'" :icon='true'>
          <span style="color: #999">请选择客户地址</span>
       </li>
@@ -197,6 +197,10 @@ export default {
       this.newCustomerInfo.source = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
+    //
+    codeChange(val) {
+      console.log(123,val)
+    },
     //选择折扣
     discountChange(val) {
       this.setDiscountVal(val)
@@ -204,11 +208,11 @@ export default {
     },
     //选择意向
     intentionVal(val) {
-      console.log(val)
+      // console.log(val)
     },
     //是否紧急
     urgentVal(val) {
-      console.log(val)
+      // console.log(val)
     },
     // getShopName() {
     //   let shopName = []
@@ -292,18 +296,18 @@ export default {
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
-      console.log('选择的装修进度', values)
+      // console.log('选择的装修进度', values)
       // this.newCustomerInfo.progress = values[0]
-    //  if(this.proto == 'shopId') {
-    //     this.shopName = values[0]
-    //     if(this.shopName) {
-    //       this.getShopID(this.shopName)
-    //       this.newCustomerInfo.shopId = this.shopId
-    //     }
-    //     // else {
-    //     //   this.newCustomerInfo.shopId = ''
-    //     // }
-    //   }else
+      //  if(this.proto == 'shopId') {
+      //     this.shopName = values[0]
+      //     if(this.shopName) {
+      //       this.getShopID(this.shopName)
+      //       this.newCustomerInfo.shopId = this.shopId
+      //     }
+      //     // else {
+      //     //   this.newCustomerInfo.shopId = ''
+      //     // }
+      //   }else
        if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {
