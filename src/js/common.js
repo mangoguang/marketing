@@ -115,7 +115,7 @@ export default class Common {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    console.log('生成的sign字符串', str, token)
+    // console.log('生成的sign字符串', str, token)
     return sha1.hex(str + token)
   }
   getAjax(path, params,type) {

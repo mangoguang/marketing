@@ -184,6 +184,9 @@ export default {
       this.parmas.limit = limit;
       this.parmas.sd = startTime;
       this.parmas.ed = endTime;
+      this.parmas.sort = ''
+      this.parmas.u = ''
+      this.parmas.l = ''
       mango.getAjax("/v3/app/customer/list", this.parmas).then(res => {
         if (res) {
           this.allLoaded = false;
