@@ -44,27 +44,16 @@ export default {
   },
   methods: {
     selectTime(index) {
+      // 按钮状态更改
       this.timeBtns.forEach((element, i) => {
         element.status = index === i
       })
-      // this.getDailyData()
-      console.log(this.computeDateInterval(index))
-      // 更改数据
-      this.$emit('changeDailyData', {
-        number: '100',
-        title: 'mangoguang'
-      })
-    },
-    getDailyData() {
-      indexModel.getDailyReport({
-        startDate: '2019-04-01',
-        endDate: '2019-04-01'
-      }).then((res) => {
-        console.log('个人日报', res)
-      })
+      // 选择时间区间
+      let dateInterVal = this.computeDateInterval(index)
+      this.$emit('changeDateInterVal', dateInterVal)
     },
     getTimeInterval(obj) {
-      // this.$refs.startDatePick.open()
+      this.$refs.startDatePick.open()
     },
     computeDateInterval(i) {
       let date = new Date()

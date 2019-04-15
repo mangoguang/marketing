@@ -7,7 +7,6 @@
   </div>
 </template>
 
-
 <script>
 import DailyUl from '../daily/dailyUl'
 import H3 from '../dailyReport/h3'
@@ -26,6 +25,9 @@ export default {
     return{
 
     }
+  },
+  watch: {
+
   },
   created() {
   

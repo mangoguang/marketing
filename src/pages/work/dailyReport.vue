@@ -4,7 +4,7 @@
       <button class="newDailyReport">+</button>
     </banner>
     <!-- 日历组件 -->
-    <myDatePicker @getCurDay="getCurDay" />
+    <myDatePicker @getCurDay="getCurDay" :planList="planList" />
     <!-- 当日数据 -->
     <CurReport
     :list="dailyList"
@@ -27,6 +27,8 @@ import banner from '../../components/banner'
 import CurReport from '../../components/work/dailyReport/curReport'
 import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
+import { IndexModel } from "../../utils/"
+const indexModel = new IndexModel()
 export default {
   name: 'dailyReporxt',
   components:{
@@ -39,44 +41,37 @@ export default {
   props:[],
   data(){
     return{
-      dailyList: [
-        {
-          number: 5,
-          title: '接待客户'
-        }, {
-          number: 3,
-          title: '新增意向'
-        }, {
-          number: 2,
-          title: '游客数'
-        }, {
-          number: 6,
-          title: '跟进客户'
-        }, {
-          number: 1,
-          title: '成交客户'
-        }, {
-          number: 12800,
-          title: '成交金额'
-        }, {
-          number: 6000,
-          title: '客单值'
-        }, {
-          number: '20%',
-          title: '成交率'
-        }
-      ],
+      dailyList: {
+        "cus": 3,   //接待客户数
+        "cusBusiness": 2,    //成交客户数
+        "guestSingleValue": 52439,    //客单值
+        "opp": 3,     //新增意向数
+        "tourist": 1,    //游客数
+        "trackRecord": 2,   //跟进客户
+        "turnoverRatio": 1, // 成交率
+        "volumeBusiness": 157318   //成交金额
+      },
       curDay: null,
+      curDate: null,
       dailySummaryTextarea: '',
-      dailyPlanTextarea: ''
+      dailyPlanTextarea: '',
+      planList: []
     }
+  },
+  computed: {
+
   },
   mounted() {
     console.log('日报：', this)
+    this.curDay = this.getToday()
+    this.getCurDayData()
+    this.getDailyData()
   },
   methods:{
     getCurDay(curDay) {
       this.curDay = curDay
+      this.curDate = curDay.split(/年|月|日/)
+      this.getDailyData()
     },
     changeDailySummaryTextarea(str) {
       console.log('文本与内容，', str)
@@ -84,6 +79,40 @@ export default {
     },
     changeDailyPlanTextarea(str) {
       console.log('明日目标：', str)
+    },
+    getToday() {
+      let date = new Date()
+      return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`
+    },
+    getCurDayData() {
+      indexModel.getCurDayData({
+        date: '2019-04'
+      }).then((res) => {
+        res = res.data
+        if (res) {
+          console.log('当日总结安排', res, this.curDay)
+          this.dailySummaryTextarea = res.summarize
+          this.dailyPlanTextarea = res.plan
+          // 遍历一个月内有哪些天有总结
+          this.planList = res.map((item) => {
+            if (item) {
+              let date = item.createTime
+              return parseInt(date.split(' ')[0].split('-')[2])
+            }
+          })
+        }
+      })
+    },
+    getDailyData() {
+      indexModel.getDailyReport({
+        startDate: '2019-04-01',
+        endDate: '2019-04-01'
+      }).then((res) => {
+        if (res.data) {
+          // 更改数据
+          this.dailyList = res.data
+        }
+      })
     }
   }
 }

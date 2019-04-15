@@ -290,6 +290,11 @@ export var router = new VueRouter({
     name: 'dailyReport',
     component: resolve => require(['../pages/work/dailyReport'],resolve)
   },
+  {
+    path: '/orderSearch',
+    name: 'orderSearch',
+    component: resolve => require(['../pages/work/orderSearch'],resolve)
+  },
   //app二期迭代
   {
     path: '/chooseShop',

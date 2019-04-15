@@ -7,6 +7,11 @@ import { mapState } from 'vuex';
 export default {
   name: 'textArea',
   props: ['text'],
+  watch: {
+    text() {
+      console.log('successss111', this.text)
+    }
+  },
   methods: {
     changeTextarea(event) {
       this.$emit('changeTextarea', event.target.value)

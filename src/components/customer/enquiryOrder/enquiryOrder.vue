@@ -183,7 +183,8 @@ export default {
       this.parmas.limit = limit;
       this.parmas.sd = startTime;
       this.parmas.ed = endTime;
-      mango.getAjax("v3/app/customer/list", this.parmas).then(res => {
+      console.log(this.parmas)
+      mango.getAjax("/v3/app/customer/list", this.parmas).then(res => {
         if (res) {
           this.allLoaded = false;
           this.allPage = Math.ceil(res.data.total / 10);

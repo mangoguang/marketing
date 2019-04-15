@@ -1,7 +1,7 @@
 <template>
   <div class="daily">
     <TimeSelect
-    @changeDailyData="changeDailyData" />
+    @changeDateInterVal="changeDateInterVal" />
     <DailyUl
     :list="dailyList" />
   </div>
@@ -10,39 +10,35 @@
 <script>
 import TimeSelect from './timeSelect'
 import DailyUl from './dailyUl'
+import { IndexModel } from "../../../utils/";
+import { mapState } from 'vuex';
+const indexModel = new IndexModel();
 export default {
   name: 'daily',
   props: [],
   components: {TimeSelect, DailyUl},
   data() {
     return{
-      dailyList: [
-        {
-          number: 5,
-          title: '接待客户'
-        }, {
-          number: 3,
-          title: '新增意向'
-        }, {
-          number: 2,
-          title: '游客数'
-        }, {
-          number: 6,
-          title: '跟进客户'
-        }, {
-          number: 1,
-          title: '成交客户'
-        }, {
-          number: 12800,
-          title: '成交金额'
-        }, {
-          number: 6000,
-          title: '客单值'
-        }, {
-          number: '20%',
-          title: '成交率'
-        }
-      ]
+      dailyList: {
+        "cus": 3,   //接待客户数
+        "cusBusiness": 2,    //成交客户数
+        "guestSingleValue": 52439,    //客单值
+        "opp": 3,     //新增意向数
+        "tourist": 1,    //游客数
+        "trackRecord": 2,   //跟进客户
+        "turnoverRatio": 1, // 成交率
+        "volumeBusiness": 157318   //成交金额
+      }
+    }
+  },
+  computed: {
+    ...mapState({
+      dateInterVal: state => state.common.dateInterVal
+    })
+  },
+  watch: {
+    dateInterVal(val) {
+      this.getDailyData()
     }
   },
   mounted(){
@@ -52,8 +48,19 @@ export default {
 
   },
   methods:{
-    changeDailyData(obj) {
-      this.dailyList = [obj]
+    changeDateInterVal(obj) {
+      this.getDailyData()
+    },
+    getDailyData() {
+      indexModel.getDailyReport({
+        startDate: '2019-04-01',
+        endDate: '2019-04-01'
+      }).then((res) => {
+        if (res.data) {
+          // 更改数据
+          this.dailyList = res.data
+        }
+      })
     }
   }
 }

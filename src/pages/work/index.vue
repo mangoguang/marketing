@@ -15,8 +15,8 @@ import WorkHeader from '../../components/work/header'
 import Footer from '../../components/Footer'
 import WorkModules from '../../components/work/workModules/'
 import Daily from '../../components/work/daily/'
-import { IndexModel } from "../../utils/";
-const indexModel = new IndexModel();
+import { IndexModel } from "../../utils/"
+const indexModel = new IndexModel()
 
 export default {
   name: 'work',
@@ -63,9 +63,10 @@ export default {
         
     //   }
     // })
+    
   },
   methods:{
-     
+
   }
 }
 </script>

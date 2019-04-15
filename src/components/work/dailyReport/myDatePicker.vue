@@ -26,9 +26,10 @@
           v-if="item - getBeginDay > 0 && item - getBeginDay <= curDay"
           :class="{
             'now-day': `${year}-${month}-${item - getBeginDay}` === curDate,
-            'active-day': `${year}-${month}-${item - getBeginDay}` === `${year}-${month}-${day}`
+            'active-day': `${year}-${month}-${item - getBeginDay}` === `${year}-${month}-${day}`,
+            'summary': planList.includes(index)
           }"
-          @click="changeCurDay(item - getBeginDay)">{{item - getBeginDay}}</span>
+          @click="planList.includes(index) ? changeCurDay(item - getBeginDay) : noSummary()">{{item - getBeginDay}}</span>
           <!-- <span
           v-if="item - getBeginDay > curDay"
           class="other-day">{{item - getBeginDay - curDay}}</span> -->
@@ -40,14 +41,14 @@
 
 
 <script>
-
+import mango from '../../../js/'
 
 export default {
   name: 'myDatePicker',
   components:{
 
   },
-  props:[],
+  props:['planList'],
   data(){
     return{
       year: null,
@@ -100,6 +101,9 @@ export default {
       } else {
         this.month ++
       }
+    },
+    noSummary() {
+      mango.tip('当日无总结！')
     }
   }
 }
@@ -156,19 +160,33 @@ export default {
       width: 14.28%;
       text-align: center;
       cursor: pointer;
-      padding: 1vw 0;
+      padding: 1vw 0 4.4vw 0;
       span{
+        position: relative;
         display: block;
-        width: 100%;
-        height: 100%;
+        width: 8vw;
+        height: 8vw;
         font-size: 14px;
-        line-height: 2em;
-        padding-bottom: 2.4vw;
+        line-height: 8vw;
+        margin: auto;
+      }
+      span:after{
+        content: '';
+        display: block;
+        width: 2.4vw;
+        height: 2.4vw;
+        margin: auto;
+        background: url('../../../assets/imgs/no.png') no-repeat;
+        background-size: 2.4vw 2.4vw;
+        background-position: bottom center;
+        padding: 1vw 0;
+      }
+      span.summary:after{
         background: url('../../../assets/imgs/yes.png') no-repeat;
         background-size: 2.4vw 2.4vw;
         background-position: bottom center;
       }
-      span.now-day{
+      span.now-day:after{
         background: url('../../../assets/imgs/now.png') no-repeat;
         background-size: 2.4vw 2.4vw;
         background-position: bottom center;
@@ -179,7 +197,10 @@ export default {
     color: #ccc;
   }
   span.active-day{
-    box-sizing: border-box;
+    background: #007fff;
+    border-radius: 4vw;
+    color: #fff;
+    // box-sizing: border-box;
     // border: 2px solid #007fff;
     // height: 46px;
   }
