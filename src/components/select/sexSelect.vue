@@ -45,19 +45,30 @@ export default {
   },
   computed:{
     ...mapState({
-      sexVal: state => state.select.sexVal
+      sexVal: state => state.select.sexVal,
+      newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
-  mounted() {
-
+  created() {
+    this.init()
   },
   methods:{
-    ...mapMutations(["setSexVal"]),
-    selectSex() {
-      if(this.sexVal === '' || this.sexVal ==='未知') {
-        this.setSexVal(this.slots[0].values[0])
-      }else {
+    ...mapMutations(["setSexVal", 'setNewCustomerInfo']),
+    init() {
+      if(this.newCustomerInfo.sex) {
         this.color = 'color: #363636'
+        let sex;
+        sex = this.newCustomerInfo.sex === 'Mr.'? '男' : '女'
+        this.setSexVal(sex)
+      }
+    },
+    selectSex() {
+      this.color = 'color: #363636'
+      if(this.sexVal === '') {
+        this.setSexVal(this.slots[0].values[0])
+        this.newCustomerInfo.sex = 'Mr.'
+        this.setNewCustomerInfo(this.newCustomerInfo)
+      }else {
         this.$refs.sexPicker.setSlotValue(0, this.sexVal)
       }
       this.popupVisible = true

@@ -38,7 +38,7 @@ export default class Common {
         return 0
       }
     }
-  }
+  } 
   // 使用冒泡排序法，对对象多个关联数组进行排序
   sortArrs(obj) {
     let [series, newSeries, yAxisData, idsData] = [obj.series, [], obj.yAxisData, obj.idsData]
@@ -115,7 +115,7 @@ export default class Common {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    console.log('生成的sign字符串', str, token)
+    // console.log('生成的sign字符串', str, token)
     return sha1.hex(str + token)
   }
   getAjax(path, params,type) {

@@ -301,6 +301,13 @@ class IndexModel extends Request {
   getProduct(key){
     return mango.getAjax('/v2/app/product',{key:key})
   }
+  
+  //获取参考系
+  getType(type) {
+    return mango.getAjax('/v2/app/reference',{
+      type: type
+    })
+  }
  
 }
 

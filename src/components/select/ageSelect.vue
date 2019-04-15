@@ -2,7 +2,7 @@
   <li class="ageSelect">
     <ul>
       <li is="customerLi" :leftText="'客户年龄'" :icon="true" @click.native="selectAge">
-        <span :style="color">{{ ageVal? ageVal + '岁' :'请选择客户年龄'}}</span>
+        <span :style="color">{{ ageVal? ageVal:'请选择客户年龄'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
@@ -39,19 +39,30 @@ export default {
   },
   computed: {
     ...mapState({
-      ageVal: state => state.select.ageVal
+      ageVal: state => state.select.ageVal,
+      newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
-  mounted() {
+  created() {
     this.getSlotVal();
+    this.init()
   },
   methods: {
-    ...mapMutations(["setAgeVal"]),
+    ...mapMutations(["setAgeVal",'setNewCustomerInfo']),
+    init() {
+      //初始化年龄问题
+      if(this.newCustomerInfo.age) {
+        this.color = 'color: #363636'
+        this.setAgeVal(this.newCustomerInfo.age)
+      }
+    },
     selectAge() {
+      this.color = "color: #363636";
       if (this.ageVal === "") {
         this.setAgeVal(this.slots[0].values[0]);
+        this.newCustomerInfo.age = this.ageVal
+        this.setNewCustomerInfo(this.newCustomerInfo)
       } else {
-        this.color = "color: #363636";
         this.$refs.agePicker.setSlotValue(0, this.ageVal);
       }
       this.popupVisible = true;
