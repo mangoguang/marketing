@@ -7,65 +7,26 @@
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
-      <mt-popup v-model="popupVisible" position="bottom">
-        <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" value-key='name'>
-          <div class="btn-group">
-              <div @click="cancel">取消</div>
-              <div @click="update">确定</div>
-            </div>
-        </mt-picker>
-      </mt-popup>
+     
    </div>
 </template>
 
 <script>
-import Vue from 'vue'
-import { Popup, Picker } from 'mint-ui';
-Vue.component(Picker.name, Picker);
-Vue.component(Popup.name, Popup);
+
 import { IndexModel } from '../../utils'
 const indexModel=new IndexModel()
 export default {
   props:['value','label','placeholder','showIcon','required'],
   data(){
     return{
-       popupVisible:false,
-      slots:[
-        {
-          flex: 1,
-          values: ['请选择'],
-          className: 'slot1',
-          textAlign: 'center'
-        }
-      ],
-      arr:[]
+      
     }
   },
   mounted(){
-    this.getStore();
+   
   },
   methods:{
-    onValuesChange(picker,values){
-      this.arr=picker.getValues();
-    },
-    cancel(){
-      this.popupVisible=false;
-    },
-    update(){
-      this.$emit('update',this.arr);
-      this.popupVisible=false;
-    },
-    open(){
-      this.popupVisible=true;
-    },
-    getStore(){
-      indexModel.getArea('').then(res => {
-        console.log(res);
-        if(res.code===0){
-          this.slots[0].values=res.data;
-        }
-      })
-    }
+   
   }
  
 }
