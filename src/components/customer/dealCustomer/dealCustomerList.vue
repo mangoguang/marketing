@@ -27,7 +27,6 @@ import mango from "../../../js";
 import TopBar from '../topBar'
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
-
 export default {
   name: "dealCustomerList",
   props: ["changeResultTit"],
@@ -117,7 +116,8 @@ export default {
        "setTabStatus",
        'setDealScroll',
        'setDealLength',
-       'setIsSelectStatus'
+       'setIsSelectStatus',
+       'setCustomerTabStatus'
        ]),
     //初始化高度
     // initScrollTop() {
@@ -200,7 +200,7 @@ export default {
       this.parmas.limit = limit
       this.parmas.sd = startTime
       this.parmas.ed = endTime
-      mango.getAjax('v3/app/customer/list', this.parmas).then((res) => {
+      mango.getAjax('/v3/app/customer/list', this.parmas).then(res => {
         if (res) {
           this.allLoaded = false
           this.allPage = Math.ceil(res.data.total / 10);
@@ -288,26 +288,27 @@ export default {
     //详细订单信息
     getDetails(index) {
       let id = this.dealCustomerList.records[index].accntId
-      // this.setTabStatus(mango.btnList(['订单信息', '需求信息', '个人评级'], 0))
-      this.setTabStatus(mango.btnList(['订单信息', '需求信息'], 0))
-      mango.getAjax(this,"customerinfo",{
-        customerId: id,
-        account: this.ajaxData.account
-        },"v2")
-        .then(res => {
-          if (res) {
-            this.setDealOrderInfoDetails(res.data);
-            // console.log(res.data.orderList[0].address)
-            this.address = res.data.orderList[0].address
-            this.$router.push({ path: "/dealDetails" ,
-            query: {
-              username: this.dealCustomerList.records[index].username,
-              address:this.address,
-              phone:this.dealCustomerList.records[index].phone
-            }
-          });
-          }
-        });
+      this.setCustomerTabStatus(mango.btnList(['客户信息', '意向信息'], 0))
+      // this.$router.push({path: "/dealDetails"})
+      this.$router.push({path:'/customerInfo',query: {id: id}})
+      // mango.getAjax(this,"customerinfo",{
+      //   customerId: id,
+      //   account: this.ajaxData.account
+      //   },"v2")
+      //   .then(res => {
+      //     if (res) {
+      //       this.setDealOrderInfoDetails(res.data);
+      //       // console.log(res.data.orderList[0].address)
+      //       this.address = res.data.orderList[0].address
+      //       this.$router.push({ path: "/dealDetails" ,
+      //       query: {
+      //         username: this.dealCustomerList.records[index].username,
+      //         address:this.address,
+      //         phone:this.dealCustomerList.records[index].phone
+      //       }
+      //     });
+      //     }
+      //   });
     }
   }
 };

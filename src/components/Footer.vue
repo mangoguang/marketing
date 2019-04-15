@@ -7,17 +7,17 @@
           <p class="iconCharP">首页</p>
         </router-link>
       </li>
-      <!-- <li id="2" @click="isDeal">
-        <div v-show="chartActive">
+      <li id="2" v-if="status">
+         <router-link to="/ReportForms" @click.native="changeActive">
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
-        </div>
-        <div v-show="!chartActive">
+         </router-link>
+        <!-- <div v-show="!chartActive">
           <div class="charActive"></div>
           <p class="charPActive">报表</p>
-        </div>
-      </li> -->
-      <li id="3">
+        </div> -->
+      </li>
+      <li id="3" v-else>
         <router-link to="/Customer" @click.native="changeActive">
           <div class="iconSalary"></div>
           <p class="iconCharP">客户</p>
@@ -47,8 +47,7 @@ export default {
   data() {
     return {
       padding: "",
-      ajaxData: [],
-      shops: []
+      status: false
     };
   },
   computed: {
@@ -60,9 +59,7 @@ export default {
     this.isIPhoneX();
   },
   created() {
-    //获取本地缓存信息
-    let ajaxData = localStorage.getItem("ajaxData");
-    this.ajaxData = JSON.parse(ajaxData);
+    // this.isDeal()
   },
   methods: {
     ...mapMutations(["setChartActive"]),
@@ -70,12 +67,10 @@ export default {
       this.setChartActive(true);
     },
     isDeal() {
-      if(this.ajaxData.type === 3) {
-        this.setChartActive(false)
-        this.$router.push({path: "/ReportForms"})
+      if(this._localAjax().typename === 'boss') {
+        this.status = true
       }else {
-        alert('暂无权限')
-        this.setChartActive(true)
+        this.status = false
       }
     },
     touchend(e) {
@@ -142,17 +137,16 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
-        background-size: 2100%;
-        background-position: -77.8vw -20.8vw;
+        background: url(../assets/imgs/customer.png)no-repeat center;
+        background-size: 100% 100%;
       }
       .iconMsg {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
-        background-size: 2100%;
-        background-position: -63.7vw -20.8vw;
+        background: url(../assets/imgs/unwork.png) no-repeat center;
+        background-size: 100% 100%;
+        // background-position: -63.7vw -20.8vw;
       }
       .iconPerson {
         width: 6.6vw;
@@ -193,17 +187,15 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
-        background-size: 2100%;
-        background-position: -71vw -20.8vw;
+        background: url(../assets/imgs/customer1.png)no-repeat center;
+        background-size: 100% 100%;
       }
       .router-link-exact-active .iconMsg {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
-        background-size: 2100%;
-        background-position: -56.2vw -20.8vw;
+        background: url(../assets/imgs/work.png) no-repeat center;
+        background-size: 100% 100%;
       }
       .router-link-exact-active .iconPerson {
         width: 6.6vw;

@@ -1,7 +1,7 @@
 <template>
   <li class="leaveStoreSelect">
     <ul>
-      <li is="customerLi" :leftText="'留店时长'" :start='start? "*": ""' :icon="true" @click.native="selectLeaveStore">
+      <li is="customerLi" :leftText="text? text:'留店时长'" :start='start? "*": ""' :icon="true" @click.native="selectLeaveStore">
         <span :style="color">{{ leaveStore || '请选择客户留店时长'}}</span>
       </li>
       <!-- 选择插件 -->
@@ -38,7 +38,7 @@ import customerLi from "../customer/customerLi";
 export default {
   name: "leaveStoreSelect",
   components: { customerLi },
-  props: ['start'],
+  props: ['start', 'text'],
   data() {
     return {
       hourSlots: [],

@@ -71,7 +71,7 @@ export default {
   },
   created() {
     this.msg = this.$route.query.list;
-    this.pageUrl = baseUrl + "/web/marketing/#/productDetails?id=" + this.msg.id
+    this.pageUrl = baseUrl + "/web/marketing/#/productDetails?id=" + this.msg.id + '&musi=1'
   },
   watch: {
     imgUrl() {

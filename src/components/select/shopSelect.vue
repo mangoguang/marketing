@@ -39,41 +39,34 @@ export default {
       slots: [{values: []}],
       popupVisible: false,
       key: false,
-      shop: [],
       shopName: '',
       val: ''
     }
   },
   computed:{
     ...mapState({
-      shopVal: state => state.select.shopVal,
-      shopList: state => state.chooseShop.shopList,
       shopVal: state => state.chooseShop.shopVal
     })
   },
   mounted() {
-    let shops = localStorage.getItem('shops')
-    this.shops = btnList(JSON.parse(shops), 0)
-    this.initShopList(this.shops)
-    // this.getShopName()
     this.hasList()
   },
   methods:{
     ...mapMutations(["setShopVal", 'initShopList']),
     hasList() {
-      this.val =  this.shopVal? this.shopVal : (this.shopList && this.shopList.length? this.shopList[0].name: '')
+      // this.val =  this.shopVal? this.shopVal : (this.shopList && this.shopList.length? this.shopList[0].name: '')
+      this.val = this.shopVal
     },
-    getShopName() {
-      let shopName = []
-      if(this.shops) {
-        this.shops.forEach((item, index) => {
-        shopName.push(item.name)
-        this.slots[0].values = shopName
-      });
-      }
-    },
+    // getShopName() {
+    //   let shopName = []
+    //   if(this.shops) {
+    //     this.shops.forEach((item, index) => {
+    //     shopName.push(item.name)
+    //     this.slots[0].values = shopName
+    //   });
+    //   }
+    // },
     selectShop() {
-      console.log(123)
       this.$router.push({
         path: '/chooseShop'
       })
@@ -83,14 +76,14 @@ export default {
       //   this.$refs.sourcePicker.setSlotValue(0, this.shopVal)
       // }
       // this.popupVisible = true
-    },
-    onValuesChange(picker, values) {
-      if(this.key) {
-        this.$emit('shopChange', values[0])
-      }else {
-        this.key = true
-      }
     }
+    // onValuesChange(picker, values) {
+    //   if(this.key) {
+    //     this.$emit('shopChange', values[0])
+    //   }else {
+    //     this.key = true
+    //   }
+    // }
   }
   }
 

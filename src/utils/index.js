@@ -260,7 +260,7 @@ class IndexModel extends Request {
   */
   //获取总体销售额
   getSalesData(obj) {
-    // return mango.getAjax('v1/app/userinfo', obj)
+    // return mango.getAjax('/v1/app/userinfo', obj)
   }
   
   /* 

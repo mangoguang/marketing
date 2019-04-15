@@ -183,6 +183,7 @@ export default {
             parmas.u = ''
             parmas.sd = ''
             parmas.ed = ''
+            parmas.l = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(parmas)
             // console.log('全部', this.customerAjaxParams)
@@ -192,6 +193,7 @@ export default {
             parmas.u = ''
             parmas.sd = ''
             parmas.ed = ''
+            parmas.l = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(parmas)
             // console.log('紧急降序', this.customerAjaxParams)
@@ -201,6 +203,7 @@ export default {
             parmas.u = ''
             parmas.sd = ''
             parmas.ed = ''
+            parmas.l = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(parmas)
             // console.log('级别降序', this.customerAjaxParams)
@@ -210,6 +213,7 @@ export default {
             parmas.u = ''
             parmas.sd = ''
             parmas.ed = ''
+            parmas.l = ''
             this.setAllLoaded(false)
             this.setCustomerAjaxParams(parmas)
             // console.log('级别降序', this.customerAjaxParams)
@@ -229,7 +233,7 @@ export default {
       this.customerAjaxParams.page = 1
       this.setAllLoaded(false)
       this.setCustomerAjaxParams(this.customerAjaxParams)
-      mango.getAjax('v3/app/customer/list', this.customerAjaxParams).then((res) => {
+      mango.getAjax('/v3/app/customer/list', this.customerAjaxParams).then((res) => {
         if (res) {
           this.setCustomerList(res.data)
         }
@@ -287,7 +291,7 @@ header{
       text-align: center;
     }
     button:first-child{
-      padding-left: 0;
+      // padding-left: 0;
       color: #fff;
       // font-size: 4.8vw;
     }
@@ -308,11 +312,14 @@ header{
     ul{
       display: flex;
       margin-top: 3.26vw;
-      justify-content: center;
+      // justify-content: space-around;
       margin-bottom: 3.26vw;
+      width: 100%;
+      box-sizing: border-box;
       li {
         margin-left: 7.73vw;
         text-align: center;
+        box-sizing: border-box;
       }
     }
     &>div{

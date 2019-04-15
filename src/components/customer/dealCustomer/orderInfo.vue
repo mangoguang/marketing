@@ -1,23 +1,23 @@
 <template>
   <div class="orderInfo">
-    <personalLevel />
+    <personalLevel :list='list'/>
     <ul>
       <div class="topBar">
         <span>订单号</span>
         <span>订单状态</span>
       </div>
-      <li v-for="(item,index) in dealOrderInfoDetails.orderList" :key="index"  @click="pullDown(index)">
+      <li v-for="(item,index) in list.orderList" :key="index"  @click="pullDown(index)">
         <hr v-if="index !== 0"> 
         <div class="orderList">
           <span>{{index + 1}}</span>
           <span>订单号{{item.orderNo}}</span>
-          <span>{{item.orderStatus}}</span>
+          <span>{{item.status}}</span>
           <span >
             <img src="../../../assets/imgs/rightside.png" alt="" :class="{'pullDown':`${rotate}` == index}">
           </span>
         </div>
         <div class="setLine" v-show="i == index"> 
-        <OrderInfoDetails />
+          <OrderInfoDetails :list='list.orderList[index]'/>
         </div>
       </li>
     </ul>                    
@@ -30,9 +30,10 @@ import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import OrderInfoDetails from './orderInfoDetails'
 import personalLevel from './personalLevel'
-
+import mango from '../../../js'
 export default {
   name:'dealOrderInfoDetails',
+  props: ['list'],
   components:{OrderInfoDetails,personalLevel},
   data(){
     return{
@@ -51,28 +52,28 @@ export default {
     })
   },
   methods:{
-    ...mapMutations([
-      'setOrderInfoDetails',
-      'setTotalPrice',
-      'setDiscountPrice'
-    ]),
-    calcPrice(list) {
-      this.dealTotalPrice = 0
-      this.dealDiscountPrice = 0
-      let itemList = list.orderItemList
-      let priceArr = []
-      itemList.forEach((item, index) => {
-        this.dealTotalPrice += item.price * item.quantity
-      });
-      this.dealDiscountPrice = this.dealTotalPrice - list.totalAmount
-      this.setTotalPrice(this.dealTotalPrice)
-      this.setDiscountPrice(this.dealDiscountPrice)
-    },
+    // ...mapMutations([
+    //   'setOrderInfoDetails',
+    //   'setTotalPrice',
+    //   'setDiscountPrice'
+    // ]),
+    // calcPrice(list) {
+    //   this.dealTotalPrice = 0
+    //   this.dealDiscountPrice = 0
+    //   let itemList = list.orderItemList
+    //   let priceArr = []
+    //   itemList.forEach((item, index) => {
+    //     this.dealTotalPrice += item.price * item.quantity
+    //   });
+    //   this.dealDiscountPrice = this.dealTotalPrice - list.totalAmount
+    //   this.setTotalPrice(this.dealTotalPrice)
+    //   this.setDiscountPrice(this.dealDiscountPrice)
+    // },
     //下拉状态改变，获取数据
     pullDown(index){
-      this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
-      let orderList = this.dealOrderInfoDetails.orderList[index]
-      this.calcPrice(orderList)
+      // this.setOrderInfoDetails(this.dealOrderInfoDetails.orderList[index]) 
+      // let orderList = this.dealOrderInfoDetails.orderList[index]
+      // this.calcPrice(orderList)
       if(this.status){
         if(this.rotate == index){
           this.i = -1
@@ -110,7 +111,7 @@ export default {
       align-items: center;
     }
     border-top:1px solid #e1e1e1;
-    margin-top: 13.46vw;
+    // margin-top: 13.46vw;
     font-size: 3.73vw;
     border-bottom: 1px solid #e1e1e1;
     .orderList:nth-child(1){
@@ -128,10 +129,12 @@ export default {
         flex: 0.1;
       }
       span:nth-child(2){
-        flex: 1
+        flex: 0.86;
       }
       span:nth-child(3){
         font-size: 4vw;
+        flex: 0.4;
+        text-align: right;
       }
       span:nth-child(4){
         padding: 0 4.26vw;

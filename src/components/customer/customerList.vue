@@ -51,11 +51,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { Loadmore } from 'mint-ui'
 import TopBar from './topBar'
-
 Vue.component(Loadmore.name, Loadmore)
 import Vuex, { mapMutations, mapState } from "vuex"
 Vue.use(Vuex)
 import mango from '../../js'
+import {btnList} from '../../utils/gallery'
 export default {
   components:{TopBar},
   name: 'customerList',
@@ -104,7 +104,9 @@ export default {
       "setCustomerTabStatus",
       "setCustomerList",
       "setAllLoaded",
-      'setBtn'
+      'setBtn',
+      'initShopList',
+      'getShopVal'
     ]),
     handleScroll(e) {
       let top = e.target.scrollTop
@@ -113,7 +115,7 @@ export default {
     loadBottom() {
       // console.log('接口参数：', this.customerAjaxParams, this.customerList)
       this.customerAjaxParams.page ++
-      mango.getAjax('v3/app/customer/list', this.customerAjaxParams).then((res) => {
+      mango.getAjax('/v3/app/customer/list', this.customerAjaxParams).then((res) => {
         this.$refs.loadmore.onBottomLoaded()
         res = res.data
         if (res) {
@@ -138,12 +140,17 @@ export default {
       // }, 2500)
     },
     toCustomerInfo(id) {
-      this.$router.push(`/customerInfo/${id}`)
-      this.setCustomerTabStatus(mango.btnList(['客户描述', '需求信息'], 0))
+      this.$router.push({path:'/customerInfo',query: {id: id}})
+      this.setCustomerTabStatus(mango.btnList(['客户信息', '意向信息'], 0))
       // this.setCustomerTabStatus(mango.btnList(['客户描述', '新建需求', '需求信息'], 0))
     },
+    //门店vuex清空。恢复第一个
     newCustomer() {
       this.setBtn([])
+      let shops = localStorage.getItem('shops')
+      let shopsList = btnList(JSON.parse(shops),0)
+      this.initShopList(shopsList)
+      this.getShopVal()
       this.$router.push({path: './newCustomer'})
     }
   }

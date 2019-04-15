@@ -1,90 +1,103 @@
 <template>
   <div class="customerInfo">
-    <deal-header
-    :propsName="name"
-    :propsSex="sex"
-    :propsPhone="phone" />
-    <ul class="infoNav customerInfoBtns">
+    <deal-header :list='list'/>
+    <ul class="infoNav">
       <li
         v-for="(item, index) in customerTabStatus"
         :key="`customerInfoBtn${index}`"
-        :class="{on: customerTabStatus[index].status}"
+        :class="{active: customerTabStatus[index].status}"
         @click="infoSelect(index)"
       >{{item.name}}</li>
     </ul>
-    <customer-descript v-show="customerTabStatus[0].status" @setInfo="setInfo" />
-    <!-- <customer-demand v-show="customerTabStatus[1].status"/> -->
-    <trackRecord v-show="customerTabStatus[1].status"/>
-    <!-- <records v-show="this.btns[2].status"/> -->
+    <!-- 客户信息-->
+    <div v-show="customerTabStatus[0].status">
+      <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
+      <div v-else>
+        <newDescript :select='false'/>
+        <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
+      </div>
+    </div>
+    <!-- 意向信息-->
+    <intentionMsg v-show="customerTabStatus[1].status" :list='list.opportunityList'/>
   </div>
 </template>
 
 <script>
 import { mapMutations, mapState } from "vuex"
+import btn from "../../components/btn";
 import dealHeader from '../../components/customer/dealCustomer/dealHeader'
-import customerDemand from '../../components/customer/customerInfo/customerDemand'
 import customerDescript from '../../components/customer/customerInfo/customerDescript'
-import trackRecord from '../../components/customer/dealCustomer/trackRecord'
-// import records from '../../components/customer/customerInfo/records'
+import newDescript from '../../components/customer/newCustomerInfo/newDescript'
+import intentionMsg from '../../components/customer/customerShare/intentionMsg'
+import CustomerMsg from '../../components/customer/customerShare/customerMsg'
 import mango from '../../js'
 export default {
   name:'customerInfo',
-  components:{dealHeader, customerDemand, customerDescript, trackRecord},
+  components:{
+    btn,
+    dealHeader, 
+    customerDescript,
+    newDescript,
+    intentionMsg,
+    customerDescript,
+    CustomerMsg
+  },
   data(){
     return{
-      // btns: mango.btnList(['客户描述', '需求信息'], 0),
-      btns: mango.btnList(['客户描述', '需求信息'], 0),
-      name: '',
-      phone: '',
-      sex: '',
-      ajaxData: {}
+      btns: mango.btnList(['客户信息', '意向信息'], 0),
+      list: [],
+      editStatus: false
     }
   },
   computed: {
     ...mapState({
-      customerInfoBtns: state => state.customer.customerInfoBtns,
       customerTabStatus: state => state.tabStatus.customerTabStatus
     })
   },
   created() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
-  },
-  mounted() {
-    if (this.customerInfoBtns[0]) {
-      this.btns = this.customerInfoBtns
-    }
-  },
-  destroyed() {
-    this.setCustomerInfoBtns(this.btns)
+    this.getData()
   },
   methods: {
-    ...mapMutations(["setCustomerInfoBtns", "setCustomerTabStatus",'setDealOrderInfoDetails']),
+    ...mapMutations(["setCustomerInfoBtns", "setCustomerTabStatus"]),
     infoSelect(index) {
-      this.setCustomerTabStatus(mango.btnList(['客户描述', '需求信息'], index))
-      // this.setCustomerTabStatus(mango.btnList(['客户描述', '新增需求', '需求信息'], index))
-      if(index === 2) {
-        let id = this.$route.params.id
-        mango.getAjax(this, 'customerById',{
-          id: id,
-          account: this.ajaxData.account
-        },'v2').then((res) => {
-          res = res.data
-          if (res) {
-            this.setDealOrderInfoDetails(res)
-          }
-        })
-      }
+      this.setCustomerTabStatus(mango.btnList(['客户信息', '意向信息'], index))
     },
-    setInfo(obj) {
-      this.name = obj.name
-      this.phone = obj.phone
-      this.sex = obj.sex
+    getData() {
+      mango.getAjax('/v3/app/customer/details', {
+        type: 'order',
+        customerId: this.$route.query.id
+      }).then(res => {
+        if(res.data) {
+          this.list = res.data
+        }
+      })
+    },
+     //编辑按钮
+    editMsg(val) {
+      this.editStatus = val
+    },
+      //保存资料
+    saveMsg() {
+      this.editStatus = false
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
+.customerInfo{
+  padding-bottom:4vw;
+  box-sizing: border-box; 
+  .active {
+    background: #f8f8f8;
+    color: #007aff;
+    font-weight: bold;
+  }
+  .theBtn {
+    background:rgba(0,122,255,1);
+    border: .13vw solid rgba(0,93,194,1);
+    width: 80%;
+    margin:0 auto;
+  }
+}
 </style>
