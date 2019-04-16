@@ -30,6 +30,9 @@ import yanInput from "../../components/yanInput"
 import messageBox from '../../components/msManage/yanMessageBox'
 import upload from '../../components/upload/filesUpload'
 import { mapState, mapMutations } from 'vuex'
+import mango from '../../js'
+import { IndexModel } from '../../utils'
+const indexModel=new IndexModel()
 export default {
   data () {
     return {
@@ -51,6 +54,7 @@ export default {
   },
   computed:{
     ...mapState('feedback',['title','contactObj','messageBox','imgList']),
+    ...mapState(['Files']),
     remark:{
       get(){
         return this.$store.state.feedback.remark
@@ -71,18 +75,45 @@ export default {
   methods:{
     ...mapMutations('feedback',['setMessageBox','updateRemark','updateContact','updateImgList']),
     submit(){
-      let imgList=this.$refs.upload.isUpload();
-      this.getImgs(imgList);
-      this.messageTip.showMessageBox=true;
-      this.setMessageBox(this.messageTip);
+      //let imgList=this.$refs.upload.isUpload();
+      //this.getImgs(imgList);
+      if(this.valid()){
+          let form=new FormData();
+          form.append('phone',this.phone);
+          form.append('feedbackInfo',this.remark);
+          for(let i=0;i<this.Files.length;i++){
+            form.append('dataFile[]',this.Files[i]);
+          }
+          indexModel.feedback(form).then(res => {
+            if(res.code===0){
+              this.messageTip.showMessageBox=true;
+              this.messageTip.tip=res.msg;
+              this.setMessageBox(this.messageTip);
+            }
+          })
+      }
+    
+     
     },
     cancel(){
       this.messageTip.showMessageBox=false;
       this.setMessageBox(this.messageTip);
     },
     getImgs(array){
-      console.log(array);
+     console.log(array);
       this.updateImgList(array);
+    },
+    valid(){
+      if(this.remark==''){
+          mango.tip('反馈信息不能为空');
+          return false;
+      }
+      let reg='';
+      if(!reg.test(this.phone)){
+        mango.tip('请输入正确的手机号码');
+        return false;
+      }
+      return true;
     }
 
   }

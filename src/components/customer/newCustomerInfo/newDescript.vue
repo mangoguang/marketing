@@ -13,7 +13,7 @@
         <span>{{newCustomerInfo.sex == 1 ? '男' : '女'}}</span>
       </li> -->
        <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
-        <span :style="color">{{turnDate(newCustomerInfo.birthday) || '请选择客户生日'}}</span>
+        <span :style="newCustomerInfo.birthday?'color: #363636':color ">{{turnDate(newCustomerInfo.birthday) || '请选择客户生日'}}</span>
       </li>
       <!-- <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
         <span>{{turnDate(newCustomerInfo.storeDate)}}</span>
@@ -23,13 +23,13 @@
         <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话">
       </li>
       <li is="customerLi" :leftText="'客户微信'">
-        <input v-model="newCustomerInfo.wxchat" type="text" placeholder="请填写客户微信号">
+        <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号">
       </li>
       <li is="customerLi" :leftText="'客户 QQ'">
         <input v-model="newCustomerInfo.qq" type="text" placeholder="请填写客户 QQ">
       </li>
       <li is="customerLi" :leftText="'客户职业'">
-        <input v-model="newCustomerInfo.work" type="text" placeholder="请填写客户职业">
+        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业">
       </li>
       <!-- <li is="areaSelect" @areaChange="areaChange"></li> -->
        <li is="customerLi" :leftText="'客户地址'" :icon="true" @click.native='toNewAdress'>
@@ -127,10 +127,10 @@ import addressSelect from '../../select/addressSelect'
 import areaSelect from '../../select/areaSelect'
 import mango from '../../../js'
 import variable from '../../../js/variable'
-import {turnParams} from '../../../utils/customer'
+import {turnParams,changeFormData} from '../../../utils/customer'
 export default {
   name:'customerDescript',
-  props: ['btns', 'select'],
+  props: ['btns', 'select', 'fromName'],
   components: {
     customerLi,
     bigBtn,
@@ -164,30 +164,14 @@ export default {
       countyName: '',
       parentBtns: [],
       urgency:false,
-      color: 'color: #999',
-      headerImage: '',
-      selectImg:''
+      color: 'color: #999'
     }
   },
   watch: {
-    'provinceName': function() {
-      // this.getCity(this.searchCode(this.province, this.provinceName))
-      // console.log('省份改变了：', this.provinceName)
-    },
-    'cityName': function() {
-      // this.getCity(this.searchCode(this.city, this.cityName))
-      // this.customerInfo[this.proto] = `${this.provinceName} ${this.cityName} ${this.areaName}`
-      // console.log('城市改变了：', this.cityName)
-    },
-    'countyName': function() {
-      // this.customerInfo[this.proto] = 
-      // console.log('地区改变了：', this.countyName)
-    },
-    urgency() {
-      if(this.urgency){
-        this.newCustomerInfo.urgency = 1
-      }else{
-        this.newCustomerInfo.urgency = 9
+    //初始进来的时候初始化数据
+    fromName() {
+      if(this.fromName === 'NewCustomer') {
+        this.setInitData()
       }
     }
   },
@@ -198,44 +182,18 @@ export default {
       ageVal: state => state.select.ageVal,
       areaVal: state => state.select.areaVal,
       sourceVal: state => state.select.sourceVal,
-      leaveStoreVal: state => state.select.leaveStoreVal
-    }),
-    'provinceNames': function() {
-      let arr = this.province.map(item => {
-        let str = item.name
-        return str.slice(0, 4)
-      })
-      return arr
-    },
-    'cityNames': function() {
-      let arr = this.city.map(item => {
-        return item.name
-      })
-      return arr
-    },
-    'countyNames': function() {
-      let arr = this.county.map(item => {
-        return item.name
-      })
-      return arr
-    }
+      leaveStoreVal: state => state.select.leaveStoreVal,
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl
+    })
   },
   created() {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     this.parentBtns = this.btns
-    //上传图片的状态
-    this.selectImg = this.select
   },
   mounted() {
-    this.setNewCustomerInfo({})
-    this.newCustomerInfo.phone = this.$route.query.phone
-    this.$set(this.newCustomerInfo, 'birthday', '')
-    this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(this.today)[1])
-    console.log('000111', this.newCustomerInfo)
-    // this.turnDate('2018-01-01')
-    // this.returnDate('1992年04月27日')
+    // this.$set(this.newCustomerInfo, 'birthday', '')
   },
   methods: {
     ...mapMutations([
@@ -246,21 +204,6 @@ export default {
       'setLeaveStoreVal',
       'setAgeVal'
     ]),
-    //选择头像
-    toImg() {
-      this.ImgStatus = true
-      // console.log(123)
-    },
-    //后退
-    goback() {
-      this.ImgStatus = false
-      this.selectImg = false
-    },
-    //上传图片
-    changImg () {
-      this.selectImg = true
-      this.$refs.clickImg.changImage()
-    },
     //选择地址
     toNewAdress() {
       this.$router.push({path: '/newAddress'})
@@ -332,12 +275,7 @@ export default {
     },
     sexChange(val) {
       // console.log('sex改变了：', val)
-      if(val === '') {
-        val = 0
-        this.newCustomerInfo.sex = val
-      } else {
-        this.newCustomerInfo.sex = val === '男' ? 1 : 2
-      }
+      this.newCustomerInfo.sex = val === '男' ? 'Mr.' : 'Ms.'
       this.setSexVal(val)
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
@@ -363,17 +301,6 @@ export default {
       // console.log('addresschange')
       // this.newCustomerInfo.leaveStore = val
     },
-    // onValuesChange(picker, values) {
-    //   // 选择地区
-    //   if (this.proto === 'area') {
-
-    //   } else if (this.proto === 'sex') {
-    //     this.newCustomerInfo[this.proto] = values[0] === '男' ? 1 : 2
-    //   } else {
-    //     this.newCustomerInfo[this.proto] = values[0]
-    //   }
-    //   // this.popupVisible = false
-    // },
     checkForm() {
       if (this.username) {
         
@@ -383,17 +310,27 @@ export default {
     },
     //设置默认值
     setInitData() {
-      if(this.urgency){
-        this.newCustomerInfo.urgency = 1
-      }else{
-        this.newCustomerInfo.urgency = 9
+      this.setNewCustomerInfo({})
+      this.setAgeVal('')
+      let record = {
+        followDate: ''
       }
-      // if(!this.newCustomerInfo.source) {
-      //   this.newCustomerInfo.source = '自然进店'
+      let parmas = {
+        // 'phone': '15013999052',
+        // 'opportunity.shopId': '1108926117386739714',
+        // 'opportunity.arrivalDate': '2019-04-01',
+        // 'opportunity.source': 'Natural'
+      }
+      this.setNewCustomerInfo(parmas)
+      // if(this.$route.query.phone) {
+      //   this.newCustomerInfo.phone = this.$route.query.phone
+      // }else if(this.$route.query.wechat) {
+      //   this.newCustomerInfo.weChat = this.$route.query.wechat
       // }
-      if(!this.newCustomerInfo.important) {
-        this.$set(this.newCustomerInfo, 'important', 1)
-      }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
+      // this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(this.today)[1])
+      // if(!this.newCustomerInfo.important) {
+      //   this.$set(this.newCustomerInfo, 'important', 1)
+      // }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
       // if(!this.newCustomerInfo.storeDate) {
       //   this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
       // } //如果没有选进店时间。默认选择今天
@@ -432,91 +369,6 @@ export default {
           return date
         }
       }
-    },
-    getProvince() {
-      // return new Promise((resolve, reject) => {
-        mango.getAjax(this, 'province', {},'v3').then((res) => {
-          res = res.data
-          if (res) {
-            this.province = res
-            this.areaList = [{
-              values: this.provinceNames,
-              className: 'slot1'
-            }]
-          }
-          // resolve(res)
-        })
-      // })
-    },
-    getCity(province) {
-      if (mango.key) {
-        mango.key = false
-        // return new Promise((resolve, reject) => {
-          mango.getAjax(this, 'city', {
-            province: province
-          },'v3').then((res) => {
-            mango.key = true
-            res = res.data
-            if (res) {
-              this.city = res
-              this.slots = [{
-                values: this.provinceNames,
-                className: 'slot1'
-              }, {
-                values: this.cityNames,
-                className: 'slot2'
-              }]
-            }
-            // resolve(res)
-          })
-        // })
-      }
-    },
-    getCounty(city) {
-      // console.log(mango.key)
-      return new Promise((resolve, reject) => {
-        mango.getAjax(this, 'area', {
-          city: city
-        },'v3').then((res) => {
-          res = res.data
-          if (res) {
-            this.county = res
-            this.slots = [{
-              values: this.provinceNames,
-              className: 'slot1'
-            }, {
-              values: this.cityNames,
-              className: 'slot2'
-            }, {
-              values: this.countyNames,
-              className: 'slot3'
-            }]
-          }
-          resolve(res)
-        })
-      })
-    },
-    setAreaData(province, city, county) {
-      this.areaList = [
-        {
-          values: province,
-          className: 'slot1'
-        }, {
-          values: city,
-          className: 'slot2'
-        }, {
-          values: county,
-          className: 'slot3'
-        }
-      ]
-    },
-    // 根据省名/城市名/地区名匹配对应的行政代码。
-    searchCode(arr, name) {
-      for (let i = 0; i < arr.length; i ++) {
-        if (arr[i].name.indexOf(name) !== -1) {
-          return arr[i].code
-        }
-      }
     }
   }
 }
@@ -533,7 +385,7 @@ export default {
   li{
     // display: flex;
     // direction: row;
-    color: $fontCol;
+    color: $fontCol ;
     line-height: 3em;
     // padding-left: 4vw;
     div{

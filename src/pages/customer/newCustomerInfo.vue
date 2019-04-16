@@ -10,7 +10,7 @@
           <span>客户描述</span>
         </div>
       </li>
-      <new-descript :select='true'/>
+      <new-descript :select='true' :fromName='fromName'/>
     </ul>
     <ul>
       <li @click="controlDemand">
@@ -22,7 +22,7 @@
           <img src="../../assets/imgs/newPullDown.png" :class="{changSide:isShowDemand}">
         </div>
       </li>
-      <new-demand v-show="isShowDemand"/>
+      <new-demand v-show="isShowDemand" :fromName='fromName'/>
     </ul>
     <ul class="dealUl">
       <li @click="controlDaal">
@@ -34,7 +34,7 @@
           <img src="../../assets/imgs/newPullDown.png"  :class="{changSide:isShowDeal}">
         </div>
       </li>
-      <new-record v-show="isShowDeal"/>
+      <new-record v-show="isShowDeal" :fromName='fromName'/>
     </ul>
     <!-- <new-descript v-show="this.btns[0].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
     <!-- <new-demand v-show="this.btns[1].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
@@ -67,8 +67,19 @@ export default {
       topTitle: ['客户描述', '意向信息', '跟进情况'],
       isShowDemand: false,
       isShowDeal: false,
-      shops: []
+      shops: [],
+      fromName: ''
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.fromName = from.name
+      if(from.name === 'chooseShop') {
+        vm.isShowDemand = true
+      }else {
+        vm.setUpLoadUrl('')
+      }
+    })
   },
   computed: {
     ...mapState({
@@ -94,6 +105,7 @@ export default {
     this.setSourceVal('')
     this.setLeaveStoreVal('')
     this.setShopVal('')
+    this.setAgeVal('')
   },
   methods: {
     ...mapMutations([
@@ -103,7 +115,9 @@ export default {
       'setSourceVal',
       'setLeaveStoreVal',
       'setEnterStoreVal',
-      'setShopVal'
+      'setShopVal',
+      'setAgeVal',
+      'setUpLoadUrl'
     ]),
     //控制下面两个模块的显示隐藏
     controlDemand() {
@@ -126,48 +140,41 @@ export default {
     },
     //保存客户信息，新建客户	
     creatNewCustomer() {
-      this.getShopID(this.shopVal)
-      let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
-      if(testPhoneNum) {
-        if(this.newCustomerInfo.shopId) {
-          this.setInitData()
-          mango.getAjax(this, 'customer/update', {
-            account: this.ajaxData.account,   //登录账户
-            tenantId: this.ajaxData.tenantId,
-            ...this.updateParams(this.newCustomerInfo)
-            },'v2', 'post').then((res) => {
-              if (res.status) {
-                MessageBox.alert('保存成功！').then(action => {
-                  this.$router.go(-1)
-              })
-            }
-          })
-        }else {
-          mango.tip('请选择门店')
-        }
-      } else {
-        mango.tip('请填写正确的手机号码')
-      }
+      
+      mango.getAjax('/v3/app/customer/update', this.newCustomerInfo,'post').then(res => {
+        console.log(res)
+      })
+      // this.getShopID(this.shopVal)
+      // let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
+      // if(testPhoneNum) {
+      //   if(this.newCustomerInfo.shopId) {
+      //     this.setInitData()
+      //     mango.getAjax(this, 'customer/update', {
+      //       account: this.ajaxData.account,   //登录账户
+      //       tenantId: this.ajaxData.tenantId,
+      //       ...this.updateParams(this.newCustomerInfo)
+      //       },'v2', 'post').then((res) => {
+      //         if (res.status) {
+      //           MessageBox.alert('保存成功！').then(action => {
+      //             this.$router.go(-1)
+      //         })
+      //       }
+      //     })
+      //   }else {
+      //     mango.tip('请选择门店')
+      //   }
+      // } else {
+      //   mango.tip('请填写正确的手机号码')
+      // }
     },
     //初始化数据
     setInitData() {
       this.newCustomerInfo.sex = this.sexVal === ''? 0 : this.sexVal ==='男'? 1:2
       this.newCustomerInfo.leaveStore = this.leaveStoreVal
-      if(!this.newCustomerInfo.username || this.newCustomerInfo.username === '') {
-        this.newCustomerInfo.username = '无名氏'
-      }
       if(!this.newCustomerInfo.source) {
         this.newCustomerInfo.source = '自然进店'
       }
-      if(!this.newCustomerInfo.important) {
-        this.$set(this.newCustomerInfo, 'important', 1)
-      }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
-      if(!this.newCustomerInfo.followPlan && !this.newCustomerInfo.followSituation && !this.newCustomerInfo.followTime && this.newCustomerInfo.percent === 50) {
-        this.newCustomerInfo.percent = ''
-      }else{
-        this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-        this.newCustomerInfo.followTime = this.newCustomerInfo.followTime || mango.indexTimeB(new Date())[1]
-      }
+     
     },
     //获取参数
      updateParams(obj) {

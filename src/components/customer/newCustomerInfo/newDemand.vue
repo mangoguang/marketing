@@ -4,12 +4,12 @@
       <li is="customerLi" :leftText="'意向产品'" :start="'*'">
         <input v-model="newCustomerInfo.intention" placeholder="请填写意向产品" type="text">
       </li>
-      <li is="shopSelect"  @shopChange="shopChange"></li>
+      <li is="shopSelect" ></li>
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
         <span :style="timeColor">{{turnDate(newCustomerInfo.storeDate) || '请选择进店日期'}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
-      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange"></li>
+      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       <li is="customerLi" :leftText="'客户地址'" :icon='true'>
          <span style="color: #999">请选择客户地址</span>
       </li>
@@ -102,7 +102,7 @@ import mango from '../../../js'
 import {turnParams} from '../../../utils/customer'
 export default {
   name:'newDemand',
-  props: ['btns'],
+  props: ['btns', 'fromName'],
   components: {
     customerLi,
     bigBtn,
@@ -139,7 +139,8 @@ export default {
       color: 'color: #999',
       styleColor: 'color: #999',
       proColor: 'color: #999',
-      Color: 'color: #999'
+      Color: 'color: #999',
+      shops:''
    }
   },
   computed: {
@@ -147,23 +148,54 @@ export default {
       newCustomerInfo: state => state.customer.newCustomerInfo,
       shopVal: state => state.select.shopVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
-      discountVal: state => state.select.discountVal
+      discountVal: state => state.select.discountVal,
+       shopList: state => state.chooseShop.shopList
     })
   },
-  created() {
-    //获取本地缓存信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+  watch: {
+    //初始进来的时候初始化数据
+    fromName() {
+      if(this.fromName === 'NewCustomer') {
+        this.setInitData()
+      }
+    }
   },
   mounted() {
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
+    let val = this.getShopVal()
+    this.getShopId(val)
     // this.getShopName()
     // console.log('客户信息：：', this.customerInfo)
     // this.getDemand()
   },
   methods: {
     ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal']),
-    shopChange(val) {
-      this.setShopVal(val)
+    setInitData() {
+      
+    },
+    //获取门店的值
+    getShopVal() {
+      let val
+      if(this.shopList && this.shopList.length) {
+        this.shopList.forEach((item, index) => {
+          if(item.status) {
+            val = item.name
+          }
+        })
+      }
+      return val
+    },
+    //获取门店id
+    getShopId(name) {
+      if(this.shops && this.shops.length) {
+        this.shops.forEach((item, index) => {
+          if(item.name === name) {
+            this.shopId = item.id
+          }
+      });
+      }
+      console.log(this.shopId)
     },
     //选择门店
     leaveStoreChange(val) {
@@ -197,6 +229,10 @@ export default {
       this.newCustomerInfo.source = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
+    //客户来源的code
+    codeChange(val) {
+      // console.log(123,val)
+    },
     //选择折扣
     discountChange(val) {
       this.setDiscountVal(val)
@@ -204,11 +240,11 @@ export default {
     },
     //选择意向
     intentionVal(val) {
-      console.log(val)
+      // console.log(val)
     },
     //是否紧急
     urgentVal(val) {
-      console.log(val)
+      // console.log(val)
     },
     // getShopName() {
     //   let shopName = []
@@ -292,18 +328,18 @@ export default {
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
-      console.log('选择的装修进度', values)
+      // console.log('选择的装修进度', values)
       // this.newCustomerInfo.progress = values[0]
-    //  if(this.proto == 'shopId') {
-    //     this.shopName = values[0]
-    //     if(this.shopName) {
-    //       this.getShopID(this.shopName)
-    //       this.newCustomerInfo.shopId = this.shopId
-    //     }
-    //     // else {
-    //     //   this.newCustomerInfo.shopId = ''
-    //     // }
-    //   }else
+      //  if(this.proto == 'shopId') {
+      //     this.shopName = values[0]
+      //     if(this.shopName) {
+      //       this.getShopID(this.shopName)
+      //       this.newCustomerInfo.shopId = this.shopId
+      //     }
+      //     // else {
+      //     //   this.newCustomerInfo.shopId = ''
+      //     // }
+      //   }else
        if(this.proto == 'roomNum') {
         this.roomNum = values[0]
         if(this.roomNum === '5及以上') {

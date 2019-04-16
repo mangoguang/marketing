@@ -20,7 +20,9 @@
 </template>
 
 <script>
-
+import { IndexModel } from "../../utils/index";
+const indexModel = new IndexModel();
+import {setSlot,getCode} from '../../utils/customer'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from "vuex"
@@ -37,10 +39,11 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['异业带单', '主动营销引流', '活动引流', '设计公司带单', '合作伙伴带单', '自然进店', '拦截客户', '渠道引流', '老客带单', '老客复购']}],
+      slots: [{values: []}],
       popupVisible: false,
       key: false,
-      color: "color: #999"
+      color: "color: #999",
+      typeList: []
     }
   },
   computed:{
@@ -48,12 +51,23 @@ export default {
       sourceVal: state => state.select.sourceVal
     })
   },
-  mounted() {
+  created() {
+    this.init()
     // this.setSourceVal(this.slots[0].values[0])
     // this.$refs.sourcePicker.setSlotValue(0, this.val)
   },
   methods:{
     ...mapMutations(["setSourceVal"]),
+    //获取slot列表值
+    init() {
+      indexModel.getType('DR_SOURCE_CHANNEL').then(res => {
+        if(res.data && res.data.length) {
+          this.typeList = res.data
+          let arr = setSlot(this.typeList)
+          this.slots[0].values = arr
+        }
+      })
+    },
     selectSource() {
       // this.$refs.sourcePicker.setSlotValue(0, this.sourceVal)
       // this.popupVisible = true
@@ -67,11 +81,12 @@ export default {
     },
     onValuesChange(picker, values) {
       if(this.key) {
+        let code = getCode(values[0],this.typeList)
+        this.$emit('codeChange', code)
         this.$emit('sourceChange', values[0])
       }else {
         this.key = true
       }
- 
     }
   }
   }

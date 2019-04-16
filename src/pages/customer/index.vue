@@ -1,7 +1,7 @@
 <template>
   <div class="customer">
     <!-- 头部 -->
-    <Header>
+    <Header @changeResultTit='changHead'>
       <span v-show="headerStatus[1].status">{{orderResultTit}}</span>
       <span v-show="headerStatus[2].status">{{dealResultTit}}</span>
     </Header>
@@ -61,34 +61,6 @@ export default {
     // this.test()
   },
   methods: {
-    test() {
-      let token = this._localAjax().token
-      console.log(token)
-      let obj = {
-          type: 'New',   //New:意向客户，Approved：成交客户，Closed：战败客户
-          key:'',     //搜索关键字，电话或名字
-          sort:'',      //u：紧急排序，l：意向分类排序
-          sd: '2018-11-12',          //跟进日期
-          ed: '2018-11-26',
-          u: '' ,    //1：紧急，0不紧急
-          l:'',     //
-          page: 1,   //页数
-          limit: 10,    //每页条数
-          token: token
-      }
-      // indexModel.getCustomerList(obj).then(res => {
-      //   console.log(res)
-      // })
-      axios.get('http://10.11.8.7/v3/app/customer/list', {
-        params: obj
-      })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    },
     checkLogin() {
       let ajaxData = localStorage.getItem("ajaxData");
       // console.log(Date.parse(new Date()) - timeLong)
@@ -113,6 +85,14 @@ export default {
     },
     changeDealResultTit(str) {
       this.dealResultTit = str;
+    },
+    //头部搜索改变slot的值
+    changHead(val) {
+      if(this.headerStatus[1].status) {
+        this.orderResultTit = val
+      }else if(this.headerStatus[2].status){
+        this.dealResultTit = val
+      }
     }
   }
 };

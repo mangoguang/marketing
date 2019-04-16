@@ -33,6 +33,7 @@
 </template>
  
 <script>
+import {mapState,mapMutations} from 'vuex'
 import Cropper from "cropperjs";
 export default {
   props: ['select'],
@@ -46,8 +47,14 @@ export default {
       panel: false, //遮罩层
       url: "",
       hasImgStatus: false,
-      selectStatus: ''
+      selectStatus: '',
+      imageData:''
     };
+  },
+  computed: {
+    ...mapState({
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl
+    })
   },
   mounted() {
     //初始化这个裁剪框
@@ -65,8 +72,15 @@ export default {
         self.croppable = true;
       }
     });
+
+     if(this.upLoadUrl) {
+      this.headerImage = this.upLoadUrl
+      this.selectStatus = false
+      // this.hasImgStatus = true
+    }
   },
   methods: {
+    ...mapMutations(['setUpLoadUrl']),
     //截取图片 blob地址
     getObjectURL(file) {
       var url = null;
@@ -90,6 +104,7 @@ export default {
     //头部后退
     backTo() {
       this.hasImgStatus = false 
+      this.selectStatus = false
     },
     //判断是否出现上传
     changeImg(e) {
@@ -127,10 +142,10 @@ export default {
       // Round
       roundedCanvas = this.getRoundedCanvas(croppedCanvas);
       this.headerImage = roundedCanvas.toDataURL();
+      this.setUpLoadUrl(this.headerImage)
       // console.log(this.headerImage)
-      this.$refs.file.value = "";
       //上传图片
-      this.postImg();
+      this.$refs.file.value = "";
     },
     //取消
     cancle() {
@@ -160,9 +175,6 @@ export default {
       context.fill();
 
       return canvas;
-    },
-    postImg() {
-      //这边写图片的上传
     }
   }
 };

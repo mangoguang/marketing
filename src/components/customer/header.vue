@@ -72,6 +72,7 @@ import { deepclone } from "../../utils/customer";
 Vue.use(Vuex)
 export default {
   name: 'customerHeader',
+  props: ['changeResultTit'],
   data () {
     return {
       top: '',
@@ -134,7 +135,9 @@ export default {
       'setHeaderStatus',
       'setAllLoaded',
       'setRightTimeSelect',
-      'setRightHeadTitle'
+      'setRightHeadTitle',
+      'setOrderList',
+      'setDealCustomerList'
     ]),
     //搜索
     search(event) {
@@ -241,13 +244,42 @@ export default {
     },
     // 根据手机或名字搜索客户
     searchCustomer() {
-      this.$router.push({
-        path:'/searchResult',
-        query:{
-          status:this.headerStatus,
-          key:this.searchKey
+       mango.changeBtnStatus(this.customerClassifyList, 0)
+      let type = this.getType()
+       let parmas = {
+        type: type,
+        key: this.searchKey
+      }
+      // this.setCustomerAjaxParams(parmas)
+       mango.getAjax('/v3/app/customer/list', parmas).then((res) => {
+        if (res.data) {
+          if(type === 'New') {
+            this.setCustomerList(res.data)
+          }else if(type === 'Approved') {
+            this.setOrderList(res.data)
+            this.$emit(
+              "changeResultTit",
+              `全部客户 (${
+                res.data.total == null ? "0" : res.data.total
+              })`
+            );
+          }else {
+            this.setDealCustomerList(res.data)
+            this.$emit(
+              "changeResultTit",
+              `全部客户 (${
+                res.data.total == null ? "0" : res.data.total
+              })`
+            );
+          }
         }
       })
+    },
+    //获得当前的头部导航栏状态
+    getType() {
+      let type;
+      type = this.headerStatus[0].status? 'New' : this.headerStatus[1].status? 'Approved' : 'Closed'
+      return type;
     },
     isIPhoneX : function(fn){
       var u = navigator.userAgent;

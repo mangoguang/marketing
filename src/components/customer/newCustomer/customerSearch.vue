@@ -66,7 +66,7 @@ export default {
               this.$router.push({path: `/customerInfo/${res.customerId}`})
             }
           } else {
-            this.$router.push({path: `/newCustomerInfo/0?phone=${this.phone}`})
+            this.$router.push({path: `/newCustomerInfo/0?${type}=${this.phone}`})
           }
         })
       }else {

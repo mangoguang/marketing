@@ -4,6 +4,8 @@ export default {
   //搜索获得产品列表
   searchProductList:[],
   //选中产品列表
-  checkedList:[]
+  checkedList:[],
+  Files:[],
+  picVal:[]
   
 }

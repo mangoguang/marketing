@@ -44,7 +44,7 @@ export default {
           this.$router.push({path: '/dailyReport'})
           break
         case 2:
-          this.$router.push({path: '/searchResult'})
+          this.$router.push({path: '/orderSearch'})
           break
         default:
           return

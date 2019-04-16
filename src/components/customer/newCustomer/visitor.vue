@@ -110,8 +110,6 @@ export default {
   },
   created() {
     //获取本地缓存信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
     this.Time = this.turnDate(mango.indexTimeB(this.today)[1])
@@ -120,7 +118,8 @@ export default {
      ...mapState({
       sexVal: state => state.select.sexVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
-      shopVal: state => state.select.shopVal
+      shopVal: state => state.select.shopVal,
+      shopList: state => state.chooseShop.shopList
     })
   },
   destroyed(){
@@ -134,6 +133,10 @@ export default {
       'setLeaveStoreVal',
       'setShopVal'
     ]),
+    initData() {
+      let val = this.getShopVal()
+      this.getShopID(val)
+    },
     shopChange(val) {
       this.setShopVal(val)
     },
@@ -156,14 +159,25 @@ export default {
     //   this.getShopID(this.shopName)
     //   this.$set(this.info, 'shopId', this.shopId)
     // },
+    getShopVal() {
+      let val
+      if(this.shopList && this.shopList.length) {
+        this.shopList.forEach((item, index) => {
+          if(item.status) {
+            val = item.name
+          }
+        })
+      }
+      return val
+    },
     getShopID(name) {
-      if(this.shops) {
+      if(this.shops && this.shop.length) {
         this.shops.forEach((item, index) => {
           if(item.name === name) {
             this.shopId = item.id
           }
       });
-      this.$set(this.info, 'shopId', this.shopId)
+      // this.$set(this.info, 'shopId', this.shopId)
       }
     },
     sexChange(val) {
@@ -186,8 +200,6 @@ export default {
       }
       this.getShopID(this.shopVal)
       let [params, tempObj] = [{
-        account: this.ajaxData.account,   //登录账户
-        tenantId: this.ajaxData.tenantId,
         'details.username': this.info.username,
         'details.sex': this.info.sex? this.info.sex : 0,
         'details.leaveStore': this.info.leaveStore,

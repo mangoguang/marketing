@@ -77,3 +77,49 @@ function explainType(arr, type) {
   }
 }
 export { explainType }
+
+//base64转化成formdata
+function changeFormData(url) {
+  let bytes = window.atob(url.split(",")[1]);
+  let temp = new ArrayBuffer(bytes.length);
+  let ia = new Uint8Array(temp);
+  for (var i = 0; i < bytes.length; i++) {
+    ia[i] = bytes.charCodeAt(i);
+  }
+  //Blob对象
+  return new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
+}
+
+export {changeFormData}
+
+//获取选项
+function setSlot(type) {
+  let arr = []
+    type.forEach((item,index) => {
+      arr[index] = item.name
+    });
+    return arr
+}
+export {setSlot}
+//根据val获取对应的code
+function getCode(val,typeList) {
+  let code;
+  typeList.forEach((item,index) => {
+    if(item.name === val) {
+      code = item.code
+    }
+  })
+  return code
+}
+export {getCode}
+//根据code获取对应的val
+function getVal(code,typeList) {
+  let val;
+  typeList.forEach((item,index) => {
+    if(item.code === code) {
+      val = item.name
+    }
+  })
+  return val
+}
+export {getVal}
