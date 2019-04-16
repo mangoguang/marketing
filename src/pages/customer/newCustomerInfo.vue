@@ -107,6 +107,9 @@ export default {
     this.setShopVal('')
     this.setAgeVal('')
     this.setBuyReason('')
+    this.setStylePref('')
+    this.setProgress('')
+    this.setColorPref('')
   },
   methods: {
     ...mapMutations([
@@ -119,7 +122,10 @@ export default {
       'setShopVal',
       'setAgeVal',
       'setUpLoadUrl',
-      'setBuyReason'
+      'setBuyReason',
+      'setStylePref',
+      'setProgress',
+      'setColorPref'
     ]),
     //控制下面两个模块的显示隐藏
     controlDemand() {

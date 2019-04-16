@@ -94,26 +94,15 @@ export default {
     },
     selectLeaveStore() {
       this.color = "color: #363636";
-     
-      // if(!this.leaveStoreVal === "") {
-      //   this.$refs.hourPicker.setSlotValue(0, '1 小时');
-      // }
-      // if (this.leaveStoreVal === "") {
-      //   this.setLeaveStoreVal(this.slots[1].values[0]);
-      // } else {
-      //   let a = this.$refs.leaveStorePicker.getValues()
-      //   console.log('a',a)
-      //   this.$refs.leaveStorePicker.setSlotValue(0, this.leaveStoreVal);
-      // }
+      if (this.leaveStoreVal === "") {
+        this.leaveStore = this.hour + this.min 
+        this.setLeaveStoreVal(this.leaveStore);
+        this.$emit('leaveStoreChange', this.leaveStoreVal)
+      } else {
+        this.$refs.hourPicker.setSlotValue(0, this.hour);
+        this.$refs.minPicker.setSlotValue(0, this.min);
+      }
       this.popupVisible = true;
-    },
-    onValuesChange(picker, values) {
-      // console.log(values)
-      // if (this.key) {
-      //   this.$emit("leaveStoreChange", values);
-      // } else {
-      //   this.key = true;
-      // }
     },
     //设置slot
     getSlots() {
