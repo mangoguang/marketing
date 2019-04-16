@@ -50,7 +50,12 @@ export default {
       //console.log(this.arr);
     },
     open(){
-      this.popupVisible=true;
+      if(this.showIcon){
+        this.popupVisible=true;
+      }else{
+        return;
+      }
+      
     },
     cancel(){
       this.popupVisible=false;

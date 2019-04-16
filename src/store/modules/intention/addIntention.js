@@ -93,7 +93,7 @@ const state = {
 }
 
 const mutations = {
-  
+  updateTitle:(state,str) => {state.title=str}
 }
 
 const actions = {

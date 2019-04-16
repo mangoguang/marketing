@@ -1,12 +1,13 @@
 <template>
     <div class="addAdress">
       <mybanner :title="title" style="background:#fff">
-        <button type="button" @click="update" v-if="false">保存</button>
-        <button type="button" @click="close" style="color:#FF3B30">意向关闭</button>
+        <button type="button" @click="update" v-if="status==0">保存</button>
+        <button type="button" @click="close" style="color:#FF3B30" v-if='status==1'>意向关闭</button>
+        <button type="button" @click="lose" style="color:#FF3B30" v-if='status==2'>战败原因</button>
       </mybanner>
       <title-bar :text="titleModule.info">
-        <button type="button">修改</button>
-         <button type="button">保存</button>
+        <button type="button" @click='modify' v-if="status==1&&updateOrModify">修改</button>
+         <button type="button" @click='updateForm' v-if="status==1&&!updateOrModify">保存</button>
       </title-bar>
       <ul class="list">
         <li>
@@ -71,17 +72,17 @@
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="classify" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
       </div>
-      <div v-show="true">
+      <div v-if='record'>
          <title-bar :text="titleModule.report">
-           <button type="button">添加记录</button>
+           <button type="button" v-show="status==1">添加记录</button>
          </title-bar>
-         <record-pannel/>
+         <record-pannel />
       </div>
-      <div v-show="true">
+      <div v-if="status==3">
         <title-bar :text="titleModule.order"/>
         <order-info class="order"/>
       </div>
-      <upload />
+      <upload v-if="status==0" ref="upload" path="this.path" picLen='5'/>
       <p class="last">到底啦</p>
       <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
         <span slot='update'>确定</span>
@@ -111,7 +112,7 @@ import colorSelect from '../../../components/mySelect/colorSelect'
 import progressSelect from '../../../components/mySelect/progressSelect'
 import discountSelect from '../../../components/mySelect/discountSelect'
 import classifySelect from '../../../components/mySelect/classifySelect'
-import upload from '../../../components/upload/filesUpload'
+import Upload from '../../../components/upload/filesUpload'
 import recordPannel from '../../../components/pannel/recordPannel'
 import orderInfo from '../../../components/pannel/orderInfo'
 import yanLayerPrompt from '../../../components/myLayer/yanLayerPrompt'
@@ -148,11 +149,14 @@ export default {
       progressCode:'',
       classify:'',
       urgency:'',
-      selectIcon:false,
-      readonly:true,
+      selectIcon:true,
+      readonly:false,
       failReason:'',
       isPrompt:false,
       isMsg:false,
+      status:'',
+      updateOrModify:true,
+      record:false,
       list:[
         {
           title:'创建时间：',
@@ -177,7 +181,7 @@ export default {
      yanInput,
      yanTextarea,
      dateSelect,
-     upload,
+     Upload,
      titleBar,
      intentionSelect,
      storeSelect,
@@ -216,7 +220,7 @@ export default {
       }
       if(from.name==='intentionProduct'){
         this.form.intention=this.$store.state.checkedList[0].crmId;
-      }
+      } 
       
     }
   },
@@ -228,8 +232,27 @@ export default {
     ])
   },
   created(){
-   this.customerId=this.$route.params.customerId;
-   this.path=this.$route.path;
+    console.log('jinsss');
+    this.customerId=this.$route.params.customerId;  
+    this.path=this.$route.path;
+    this.status=this.$route.params.status;
+      if(this.status==1){
+        this.updateTitle('意向详情');
+        this.record=true;
+        this.selectIcon=false;
+        this.readonly=true;
+      }
+      if(this.status==2){
+        this.updateTitle('意向详情');
+        this.record=true;
+        this.selectIcon=false;
+        this.readonly=true;
+      }
+      if(this.status==3){
+        this.updateTitle('意向详情');
+        this.selectIcon=false;
+        this.readonly=false;
+      }
   },
   activated(){
     
@@ -238,8 +261,19 @@ export default {
 
   },
   methods:{
+    ...mapMutations('addIntention',['updateTitle']),
+    updateForm(){},
+    modify(){
+      this.selectIcon=true;
+      this.readonly=false;
+      this.updateOrModify=false;
+      
+    },
+    lose(){
+      this.isMsg=true;
+    },
     close(){
-
+      this.isPrompt=true;
     },
     openStore(){
       this.$router.push({path:'/address'})
@@ -256,15 +290,20 @@ export default {
     console.log("选择"+this.urgency);
    },
    layerUpdate(){
-     console.log("确定");
-     console.log(this.failReason);
+     //console.log("确定");
+     //console.log(this.failReason);
+     this.$router.push({name:'intention',params:{customerId:this.customerId}});
+     this.$router.push({name:'intention',params:{customerId:this.customerId,status:2}});
+     this.isPrompt=false;
    },
    layerCancel(){
-     console.log("取消");
-     console.log(this.failReason);
+     //console.log("取消");
+     //console.log(this.failReason);
+     this.isPrompt=false;
    },
    confirm(){
-     console.log("取消");
+     //console.log("取消");
+     this.isMsg=false;
    },
    //选择更新进店日期
    updateTime(value,anotherVal){
@@ -336,12 +375,9 @@ export default {
       to.meta.keepAlive=true;
        next();
     }
+    to.meta.keepAlive=false;
     next();
-  }/* , 
-  beforeRouteLeave(to, from, next) {
-    from.meta.keepAlive = false;
-    next();
-  } */
+  } 
 };
 </script>
 
