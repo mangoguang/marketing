@@ -3,7 +3,7 @@
     <div class="yan-select" v-for="(item,index) in options" :key="index">
       <label class="yan-radio-label">
         <div class="yan-radio-icon">
-          <input type="radio" :name="name" class="yan-radio" @change="updataVal" :value="item.id">
+          <input type="radio" :name="name" class="yan-radio" @change="updataVal" :value="item.addressId">
           <span></span>
         </div>
         <div class="yan-select-content">

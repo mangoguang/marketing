@@ -11,7 +11,7 @@
           <intention-select v-bind="formInfo.intention" :value="form.intention" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
         <li>
-         <store-select v-bind="formInfo.store" :value="form.store" :showIcon="selectIcon"/>
+         <store-select v-bind="formInfo.store" :value="form.store" @click="openStore" :showIcon="selectIcon"/>
         </li>
         <li>
           <date-select v-bind="formInfo.time" :value="form.time" @update="updateTime" :showIcon="selectIcon"/>
@@ -79,6 +79,7 @@
         <title-bar :text="titleModule.order"/>
         <order-info class="order"/>
       </div>
+      <upload />
       <p class="last">到底啦</p>
       <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
         <span slot='update'>确定</span>
@@ -230,9 +231,12 @@ export default {
 
   },
   methods:{
-   update(){
-     this.$router.push({path:'/address'})
-   },
+    openStore(){
+      this.$router.push({path:'/address'})
+    },
+    update(){
+      this.$router.push({name:'address',params:{customerId:this.customerId},query:{redirect:this.path}})
+    },
    updateClassify(option){
     //console.log(option);
     this.classify=option;
