@@ -10,7 +10,7 @@
           <slot :info="item"></slot>
         </div>
       </label>
-      <div class="yan-edit" @click="edit(item.id)">编辑</div>
+      <div class="yan-edit" @click="edit(item.addressId)">编辑</div>
     </div>
   </div>
 </template>

@@ -195,11 +195,16 @@ export default {
   },
   watch:{
     $route(to,from){
+      console.log(from);
       if(from.name==='selectAddress'){
-        let obj=this.$store.state.addressList.find((item) => {
-          return item.id=this.$route.query.addressId;
+        let obj={};
+        this.$store.state.addressList.map((item,index) => {
+          console.log(item);
+          if(item.addressId===this.$route.query.addressId){
+            console.log('进来了');
+            obj=Object.assign({},item);
+          }
         })
-        //console.dir(obj);
         let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
         let elevator=obj.elevator?'有':'无';
         this.$set(this.form,'address',address);
@@ -225,7 +230,7 @@ export default {
    this.path=this.$route.path;
   },
   activated(){
-
+    
   },
   mounted(){
 
@@ -238,12 +243,10 @@ export default {
       this.$router.push({name:'address',params:{customerId:this.customerId},query:{redirect:this.path}})
     },
    updateClassify(option){
-    //console.log(option);
     this.classify=option;
     console.log("选择"+this.classify);
    },
    updateUrgency(option){
-    //console.log(option);
     this.urgency=option;
     console.log("选择"+this.urgency);
    },
@@ -260,55 +263,57 @@ export default {
    },
    //选择更新进店日期
    updateTime(value,anotherVal){
-     //this.$set(this.form,'time',anotherVal);
      this.form.time=anotherVal;
    },
    //选择更新留店时长
    updateDuration(value){
-    // this.$set(this.form,'duration',value);
     this.form.duration=value;
    },
    //选择更新购买原因
    updateReason(name,code){
-     //this.$set(this.form,'reason',name);
      this.form.reason=name;
      this.reasonCode=code;
    },
    //选择更新客户来源
    updateSource(name,code){
-     //this.$set(this.form,'source',name);
      this.form.source=name;
      this.sourceCode=code;
    },
    //选择更新装修风格
    updateStyle(name,code){
-     //this.$set(this.form,'style',name);
      this.form.style=name;
      this.styleCode=code;
    },
    //选择更新装修进度
    updateProgress(name,code){
-     //this.$set(this.form,'progress',name);
      this.form.progress=name;
      this.progressCode=code;
    },
    //选择更新颜色偏好
    updateColor(name,code){
-     //this.$set(this.form,'color',name);
      this.form.color=name;
      this.colorCode=code;
    },
    //选择更新需求日期
    updateDeliver(value,anotherVal){
-     //this.$set(this.form,'deliver',anotherVal);
      this.form.deliver=anotherVal;
    },
    //选择更新折扣
    updateDiscount(arr){
      console.log(arr);
      let discount=arr.join('.')+"折"
-     //this.$set(this.form,'discount',discount);
      this.form.discount=discount;
+   },
+   //地址公共函数
+   updateAddressView(){
+    let obj=this.$store.state.addressList.find((item) => {
+      return item.id=this.$route.query.addressId;
+    })
+    let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
+    let elevator=obj.elevator?'有':'无';
+    this.$set(this.form,'address',address);
+    this.$set(this.form,'house',obj.apartmentType);
+    this.$set(this.form,'elevator',elevator);
    }
   },
   beforeRouteEnter(to,from,next){
@@ -327,7 +332,11 @@ export default {
        next();
     }
     next();
-  }
+  }/* , 
+  beforeRouteLeave(to, from, next) {
+    from.meta.keepAlive = false;
+    next();
+  } */
 };
 </script>
 
@@ -381,8 +390,7 @@ export default {
   .order{
     border-top:1px solid #ccc;
     border-bottom:1px solid #ccc;
-    background: #fff;
-    
+    background: #fff;  
   }
 
  }

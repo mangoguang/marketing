@@ -75,6 +75,11 @@ export default {
   },
   created(){
    this.$set(this.form,'customerId',this.$route.params.customerId);
+   if(this.$route.query.addressId){
+      this.form.id=this.$route.query.addressId;
+      this.getAddress(this.form.id);
+   }
+  
   },
   
   mounted(){
@@ -82,6 +87,23 @@ export default {
   },
   methods:{
     ...mapMutations('addAddress',['updateTitle']),
+    getAddress(id){
+      indexModel.getAddress(id).then(res => {
+        if(res.code===0){
+          this.form.address=res.data.address;
+          this.form.remark=res.data.remark;
+          this.form.apartmentType=res.data.apartmentType;
+          this.form.elevator=res.data.elevator?'true':'false';
+          this.form.country=res.data.country;
+          this.form.province=res.data.province;
+          this.form.city=res.data.city;
+          this.form.district=res.data.district;
+          this.elevator=res.data.elevator?'是':'否';
+          this.area=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}`;
+          this.apartmentType=res.data.apartmentTypeName;
+        }
+      })
+    },
    jump(){
     this.updateAddress();
    },
@@ -101,10 +123,12 @@ export default {
    },
    updateAddress(){
      if(this.valid()){
+       console.log(':::', this.form);
         indexModel.updateAddress(this.form).then(res => {
           if(res.code===0){
             mango.tip(res.msg);
-            this.$router.push({name:'address',params:{customerId:this.$route.params.customerId}})
+            this.$router.back(-1);
+            //this.$router.push({name:'address',params:{customerId:this.$route.params.customerId}})
           }
         })
      }

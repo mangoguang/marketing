@@ -21,8 +21,9 @@
     </template>
   </message-box>
   
-  <form id="form" style="display:none" enctype="multipart/form-data" method='post'></form>
-  
+<iframe id="iframe_display" name="iframe_display" style="display: none;"></iframe>
+<form action="" enctype="multipart/form-data" target="iframe_display"></form>
+  <!-- <input type="file" name='dataFile'> -->
   </div>
 </template>
 
@@ -81,21 +82,20 @@ export default {
       //let imgList=this.$refs.upload.isUpload();
       //this.getImgs(imgList);
       if(this.valid()){
-          //let form=document.getElementById("form");  
+          let form=document.getElementById("form");  
       
-          //console.log(form);
-         // form.action=indexModel.feedback();
-          let f=new FormData();
+         
+         //form.action=indexModel.feedback();
+          let f=new FormData('form');
           f.append('phone',this.phone);
           console.log(f.get('phone'));
           f.append('feedbackInfo',this.remark);
           console.log(f.get('feedbackInfo'));
-          for(let i=0;i<this.Files.length;i++){
+           for(let i=0;i<this.Files.length;i++){
             f.append('dataFile[]',this.Files[i]);
-          }
-          console.log(f.get('dataFile[]'));
-          console.log(f);
-          //form.submit();
+          }  
+         
+          
            indexModel.feedback(f).then(res => {
             if(res.code===0){
               this.messageTip.tip=res.msg;
