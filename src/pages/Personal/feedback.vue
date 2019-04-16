@@ -20,6 +20,9 @@
         <button type="button" @click="cancel">确定</button>
     </template>
   </message-box>
+  
+  <form id="form" style="display:none" enctype="multipart/form-data" method='post'></form>
+  
   </div>
 </template>
 
@@ -78,19 +81,33 @@ export default {
       //let imgList=this.$refs.upload.isUpload();
       //this.getImgs(imgList);
       if(this.valid()){
-          let form=new FormData();
-          form.append('phone',this.phone);
-          form.append('feedbackInfo',this.remark);
+          //let form=document.getElementById("form");  
+      
+          //console.log(form);
+         // form.action=indexModel.feedback();
+          let f=new FormData();
+          f.append('phone',this.phone);
+          console.log(f.get('phone'));
+          f.append('feedbackInfo',this.remark);
+          console.log(f.get('feedbackInfo'));
           for(let i=0;i<this.Files.length;i++){
-            form.append('dataFile[]',this.Files[i]);
+            f.append('dataFile[]',this.Files[i]);
           }
-          indexModel.feedback(form).then(res => {
+          console.log(f.get('dataFile[]'));
+          console.log(f);
+          //form.submit();
+           indexModel.feedback(f).then(res => {
             if(res.code===0){
-              this.messageTip.showMessageBox=true;
               this.messageTip.tip=res.msg;
+              this.messageTip.showMessageBox=true;
+              this.setMessageBox(this.messageTip);
+            }else{
+              this.messageTip.tip=res.msg;
+              this.messageTip.type=false;
+              this.messageTip.showMessageBox=true;
               this.setMessageBox(this.messageTip);
             }
-          })
+          }) 
       }
     
      
@@ -108,7 +125,7 @@ export default {
           mango.tip('反馈信息不能为空');
           return false;
       }
-      let reg='';
+      let reg=/^1[34578]\d{9}$/;
       if(!reg.test(this.phone)){
         mango.tip('请输入正确的手机号码');
         return false;
