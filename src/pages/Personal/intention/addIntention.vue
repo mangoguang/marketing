@@ -1,10 +1,12 @@
 <template>
     <div class="addAdress">
       <mybanner :title="title" style="background:#fff">
-        <button type="button" @click="update">保存</button>
+        <button type="button" @click="update" v-if="false">保存</button>
+        <button type="button" @click="close" style="color:#FF3B30">意向关闭</button>
       </mybanner>
       <title-bar :text="titleModule.info">
         <button type="button">修改</button>
+         <button type="button">保存</button>
       </title-bar>
       <ul class="list">
         <li>
@@ -28,10 +30,10 @@
           <address-select v-bind="formInfo.address" :value="form.address" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.house" :value="form.house"/>
+          <yan-input v-bind="formInfo.house" :value="form.house" :readonly='readonly'/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.elevator" :value="form.elevator"/>
+          <yan-input v-bind="formInfo.elevator" :value="form.elevator" :readonly='readonly'/>
         </li>
         <li>
           <reason-select v-bind="formInfo.reason" :value="form.reason" @update="updateReason" :showIcon="selectIcon"/>
@@ -45,26 +47,26 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model="form.goods"/>
+          <yan-input v-bind="formInfo.goods" v-model="form.goods" :readonly='readonly'/>
         </li>
         <li>
           <color-select v-bind="formInfo.color" :value="form.color" @update="updateColor" :showIcon="selectIcon"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.budget" v-model="form.budget"/>
+          <yan-input v-bind="formInfo.budget" v-model="form.budget" :readonly='readonly'/>
         </li>
         <li>
           <date-select v-bind="formInfo.deliver" :value="form.deliver" @update="updateDeliver" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.paid" v-model="form.paid"/>
+          <yan-input v-bind="formInfo.paid" v-model="form.paid" :readonly='readonly'/>
         </li>
         <li>
           <discount-select v-bind="formInfo.discount" :value="form.discount" @update="updateDiscount" :showIcon="selectIcon"/>
           <!-- <yan-input v-bind="formInfo.discount" v-model="form.discount"/> -->
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark"></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :readonly='readonly'></yan-textarea>
       <div class="select">
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="classify" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
@@ -146,8 +148,8 @@ export default {
       progressCode:'',
       classify:'',
       urgency:'',
-      selectIcon:true,
-      inputIcon:false,
+      selectIcon:false,
+      readonly:true,
       failReason:'',
       isPrompt:false,
       isMsg:false,
@@ -236,6 +238,9 @@ export default {
 
   },
   methods:{
+    close(){
+
+    },
     openStore(){
       this.$router.push({path:'/address'})
     },

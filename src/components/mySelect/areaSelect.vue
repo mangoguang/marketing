@@ -133,8 +133,14 @@ export default {
     }, 
     selectArea(){
       let that=this;
-      that.popupVisible=true;
-      that.key=true;
+      if(this.showIcon){
+        that.popupVisible=true;
+        that.key=true;
+      }else{
+        that.popupVisible=false;
+        that.key=false;
+      }
+     
     },
     getReference(id,arr){
       var newArr=arr.filter(function(item,index,array){
