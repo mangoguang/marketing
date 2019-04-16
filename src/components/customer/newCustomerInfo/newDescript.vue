@@ -18,7 +18,7 @@
       <!-- <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
         <span>{{turnDate(newCustomerInfo.storeDate)}}</span>
       </li> -->
-      <li is="ageSelect" :ageVal="newCustomerInfo.age"  @ageChange="ageChange"></li>
+      <li is="ageSelect"   @ageChange="ageChange"></li>
       <li is="customerLi" :leftText="'客户电话'">
         <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话">
       </li>

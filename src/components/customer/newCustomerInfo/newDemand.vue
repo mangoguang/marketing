@@ -8,7 +8,7 @@
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || day}}</span>
       </li>
-      <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.residentTime" @leaveStoreChange="leaveStoreChange"></li>
+      <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       <li is="customerLi" :leftText="'客户地址'" :icon='true'>
          <span style="color: #999">请选择客户地址</span>
@@ -19,9 +19,12 @@
        <li is="customerLi" :leftText="'有无电梯'">
         <input v-model="newCustomerInfo.lift" type="text" placeholder="请先选客户地址">
       </li>
-       <li is="customerLi" :leftText="'购买原因'" :icon="true" @click.native="selectBuyReason">
+
+      <li is="buyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
+      
+       <!-- <li is="customerLi" :leftText="'购买原因'" :icon="true" @click.native="selectBuyReason">
         <span :style="color">{{newCustomerInfo.buyReason || '请选择购买原因'}}</span>
-      </li>
+      </li> -->
        <li is="customerLi" :leftText="'装修风格'" :icon="true" @click.native="selectStylePref">
         <span :style="styleColor">{{newCustomerInfo.stylePref || '请填写风格偏好'}}</span>
       </li>
@@ -95,6 +98,7 @@ import customerLi from '../../../components/customer/customerLi'
 import bigBtn from '../../../components/customer/bigBtn'
 import shopSelect from '../../select/shopSelect'
 import sourceSelect from '../../select/sourceSelect'
+import buyReason from '../../select/buyReason'
 import discountSelect from '../../select/discountSelect'
 import intentionSelect from '../../select/intentionSelect'
 import urgentSelect from '../../select/urgentSelect'
@@ -111,7 +115,8 @@ export default {
     sourceSelect,
     discountSelect,
     urgentSelect,
-    intentionSelect
+    intentionSelect,
+    buyReason
   },
   data(){
     return{
@@ -150,7 +155,7 @@ export default {
       shopVal: state => state.select.shopVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
       discountVal: state => state.select.discountVal,
-       shopList: state => state.chooseShop.shopList
+      shopList: state => state.chooseShop.shopList
     })
   },
   watch: {
@@ -158,23 +163,28 @@ export default {
     fromName() {
       if(this.fromName === 'NewCustomer') {
         this.setInitData()
+      }else {
+        if(this.newCustomerInfo.arrivalDate) {
+          this.timeColor = 'color: #363636'
+        }
       }
+      //获取shopid
+      let val = this.getShopVal()
+      this.getShopId(val)
     }
   },
   mounted() {
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
-    let val = this.getShopVal()
-    this.getShopId(val)
+    //获取默认进店时间
     this.day = mango.indexTimeB(this.today)[0]
-    // this.getShopName()
-    // console.log('客户信息：：', this.customerInfo)
-    // this.getDemand()
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal']),
+    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason']),
     setInitData() {
-      
+      this.newCustomerInfo.arrivalDate = this.day
+      this.setNewCustomerInfo(this.newCustomerInfo)
+      this.setBuyReason('')
     },
     //获取门店的值
     getShopVal() {
@@ -197,13 +207,15 @@ export default {
           }
       });
       }
-      console.log(this.shopId)
+      this.newCustomerInfo.shopId = this.shopId
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
-    //选择门店
+    //选择留店时长
     leaveStoreChange(val) {
       // console.log('sex改变了：', val)
-      this.setLeaveStoreVal(val)
+      this.setBuyReason(val)
       this.newCustomerInfo.residentTime = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //打开日期选择插件
     selectStoreDate() {
@@ -235,6 +247,17 @@ export default {
     codeChange(val) {
       // console.log(123,val)
     },
+    //选择购买原因
+    buyReasonChange(val) {
+      // console.log('sex改变了：', val)
+      this.setBuyReason(val)
+      this.newCustomerInfo.buyReason = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //购买原因code
+    brCodeChange(val) {
+      console.log(val)
+    },
     //选择折扣
     discountChange(val) {
       this.setDiscountVal(val)
@@ -248,30 +271,6 @@ export default {
     urgentVal(val) {
       // console.log(val)
     },
-    // getShopName() {
-    //   let shopName = []
-    //   if(this.shops) {
-    //     this.shops.forEach((item, index) => {
-    //     shopName.push(item.name)
-    //     this.shopNameList[0].values = shopName
-    //   });
-    //   }
-    //   this.shopName = this.shopNameList[0].values[0]
-    //   this.getShopID(this.shopName)
-    //   this.$set(this.newCustomerInfo, 'shopId', this.shopId)
-    // },
-    // getShopID(name) {
-    //   if(this.shops) {
-    //     this.shops.forEach((item, index) => {
-    //       if(item.name === name) {
-    //         this.shopId = item.id
-    //       }
-    //   });
-    //   }
-    // },
-    // setDemand() {
-    //   this.setNewCustomerInfo(this.newCustomerInfo)
-    // },
     setOptions(data, dataList) {
       if(!this.newCustomerInfo[`${data}`]) {
         this.newCustomerInfo[`${data}`] = dataList[0].values[0]
@@ -279,13 +278,6 @@ export default {
         this.$refs.Picker.setSlotValue(0, this.newCustomerInfo[`${data}`])
       }
     },
-    // selectShopId() {
-    //   this.slots = this.shopNameList
-    //   this.proto = 'shopId'
-    //   // 设置性别选择插件的初始值
-    //   this.$refs.Picker.setSlotValue(0, this.shopName)
-    //   this.popupVisible = true
-    // },
     selectProgress() {
       this.proColor = 'color: #363636'
       this.slots = this.progressList

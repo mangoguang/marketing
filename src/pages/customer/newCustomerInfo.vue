@@ -106,6 +106,7 @@ export default {
     this.setLeaveStoreVal('')
     this.setShopVal('')
     this.setAgeVal('')
+    this.setBuyReason('')
   },
   methods: {
     ...mapMutations([
@@ -117,7 +118,8 @@ export default {
       'setEnterStoreVal',
       'setShopVal',
       'setAgeVal',
-      'setUpLoadUrl'
+      'setUpLoadUrl',
+      'setBuyReason'
     ]),
     //控制下面两个模块的显示隐藏
     controlDemand() {

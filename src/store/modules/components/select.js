@@ -11,7 +11,8 @@ const state = {
   ageVal: '',
   discountVal: '',
   followVal: '',
-  followTiming: ''
+  followTiming: '',
+  buyReason: ''
 }
 
 const mutations = {
@@ -27,7 +28,8 @@ const mutations = {
   setAgeVal: (state, str) => state.ageVal = str,
   setDiscountVal: (state, str) => state.discountVal = str,
   setFollowVal: (state, str) => state.followVal = str,
-  setFollowTiming: (state, str) => state.followTiming = str
+  setFollowTiming: (state, str) => state.followTiming = str,
+  setBuyReason: (state, str) => state.buyReason = str
 }
 
 const actions = {
