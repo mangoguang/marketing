@@ -6,7 +6,7 @@
       </li>
       <li is="shopSelect" ></li>
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
-        <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || day}}</span>
+        <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
@@ -77,7 +77,7 @@ import urgentSelect from '../../select/urgentSelect'
 import mango from '../../../js'
 export default {
   name:'newDemand',
-  props: ['btns', 'fromName'],
+  props: ['btns', 'fromName', 'changeCode'],
   components: {
     customerLi,
     bigBtn,
@@ -94,24 +94,6 @@ export default {
   },
   data(){
     return{
-      popupVisible: false,
-      slots: [],
-      progressList: [{values: ['前期设计', '主体拆改', '水电改造', '木工', '贴砖', '刷墙面漆', '厨卫吊顶', '橱柜安装', '木门安装', '地板安装', '铺贴壁纸', '开关插座安装', '灯具安装', '五金洁具安装', '窗帘杆安装', '拓荒保洁', '家具进场', '家电安装', '家居配饰', '装修完成']}],
-      buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
-      roomNumList: [{values: [1, 2, 3, 4, '5及以上']}],
-      colorPrefList: [{values :['暖色', '冷色']}],
-      stylePrefList: [{values: ['中式风格', '自然风格', '古典风格', '现代简约风格', '乡村田园风格', '现代中式风格', '地中海风格', '欧式风格', '混合型风格']}],
-      shopNameList: [{values: []}],
-      pickerShow: {
-        progress: false,
-        buyReason: false,
-        roomNum: false,
-        colorPref: false,
-        stylePref: false
-      },
-      proto: '',
-      roomNum: '',
-      shopName: '',
       shopId: '',
       timeColor: 'color: #999',
       today: new Date(),
@@ -120,7 +102,8 @@ export default {
       proColor: 'color: #999',
       Color: 'color: #999',
       shops:'',
-      day: ''
+      day: '',
+      codeList: {}
    }
   },
   computed: {
@@ -151,7 +134,7 @@ export default {
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
     //获取默认进店时间
-    this.day = mango.indexTimeB(this.today)[0]
+    this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
     ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref']),
@@ -221,7 +204,8 @@ export default {
     },
     //客户来源的code
     codeChange(val) {
-      // console.log(123,val)
+      this.codeList.sourceCode = val
+      this.changeCode(this.codeList)
     },
     //选择购买原因
     buyReasonChange(val) {
@@ -232,7 +216,8 @@ export default {
     },
     //购买原因code
     brCodeChange(val) {
-      console.log(val)
+      this.codeList.brCode = val
+      this.changeCode(this.codeList)
     },
      //选择装修风格
     stylePrefChange(val) {
@@ -243,7 +228,8 @@ export default {
     },
     //装修风格code
     spCodeChange(val) {
-      console.log(val)
+      this.codeList.spCode = val
+      this.changeCode(this.codeList)
     },
      //选择装修进度
     progressChange(val) {
@@ -254,7 +240,8 @@ export default {
     },
     //装修进度code
     pgCodeChange(val) {
-      console.log(val)
+      this.codeList.pgCode = val
+      this.changeCode(this.codeList)
     },
      //选择颜色偏好
     colorChange(val) {
@@ -265,7 +252,8 @@ export default {
     },
     //颜色偏好code
     colorCodeChange(val) {
-      console.log(val)
+      this.codeList.colorCode = val
+      this.changeCode(this.codeList)
     },
     //选择折扣
     discountChange(val) {

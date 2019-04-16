@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import {mapState,mapMutations} from 'vuex'
 export default {
   data() {
     return {
@@ -41,7 +42,13 @@ export default {
       fil: ''
     };
   },
+  computed: {
+    ...mapState({
+      newCustomerInfo: state => state.customer.newCustomerInfo
+    })
+  },
   methods: {
+    ...mapMutations(['setNewCustomerInfo']),
     //添加图片
     addImg(event) {
       let inputDOM = this.$refs.inputer;
@@ -65,10 +72,7 @@ export default {
           this.fil[i].name + "?" + new Date().getTime() + i,
           this.fil[i]
         );
-        this.submit(this.fil[i])
-        this.$nextTick(() => {
-          console.log(111,this.imgdata)
-        })
+       this.submit(this.fil[i])
       }
     },
     //创建url预览图片
@@ -96,8 +100,9 @@ export default {
         var reader = new FileReader();
         // 图片文件转换为base64
         reader.readAsDataURL(file);
-        reader.onload = function(){
-          this.imgdata = this.result
+        reader.onload = (e) => {
+          this.imgUrl = e.target.result
+          this.changeFormData(this.imgUrl)
         };
       }
     },
@@ -114,6 +119,8 @@ export default {
       //FormData对象
       let imgUrl = this.formData
       imgUrl.append("dataFile", blob, Date.now() + ".jpg");
+      this.newCustomerInfo.dataFile = imgUrl
+      this.setNewCustomerInfo(this.newCustomerInfo)
     }
   }
 };

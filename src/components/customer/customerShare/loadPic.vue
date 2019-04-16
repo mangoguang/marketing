@@ -138,7 +138,7 @@ export default {
       }
       // Crop
       croppedCanvas = this.cropper.getCroppedCanvas();
-      // console.log(this.cropper)
+      // console.log(111,croppedCanvas)
       // Round
       roundedCanvas = this.getRoundedCanvas(croppedCanvas);
       this.headerImage = roundedCanvas.toDataURL();

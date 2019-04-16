@@ -1,11 +1,11 @@
 <template>
   <div>
     <ul class="newRecord">
-      <li is="followSelect" @followWayChange="followWayChange"></li>
+      <li is="followSelect" @followWayChange="followWayChange" ></li>
       <li class="timeLi" is="customerLi" :start="'*'" :leftText="'跟进时间'" :icon="true" @click.native="selectFollowTime">
         <span>{{turnDate(newCustomerInfo.followDate || setDay)}}</span>
       </li>
-      <li is="leaveStoreSelect" :start="true" :text='"跟进时长"' @leaveStoreChange="leaveStoreChange"></li>
+      <li is="leaveStoreSelect" :start="true" :text='"跟进时长"' :type='true' @leaveStoreChange2="leaveStoreChange2"></li>
       
       <li class="noPadding">
         <remark :title="'跟进情况'">
@@ -116,6 +116,7 @@ export default {
       this.newCustomerInfo.followDate = mango.indexTimeB(this.today)[1]
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.setFollowVal('')
+      this.setFollowTiming('')
     },
     selectTime() {
       this.$refs.DatePicker.open()
@@ -130,7 +131,6 @@ export default {
     //下次跟进日期
     setTime(value) {
       this.$set(this.newCustomerInfo, 'nextDate', mango.indexTimeB(value)[1])
-      // this.newCustomerInfo.followTime = mango.indexTimeB(value)[0]
     },
       //转变日期格式
     turnDate(date) {
@@ -150,7 +150,7 @@ export default {
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //跟进时长
-    leaveStoreChange(val) {
+    leaveStoreChange2(val) {
       this.setFollowTiming(val)
       this.newCustomerInfo.residentTime2 = val
       this.setNewCustomerInfo(this.newCustomerInfo)
@@ -159,23 +159,6 @@ export default {
     //   this.btns[1].status = true
     //   this.btns[2].status = false
     //   this.$emit('changeBtnsStatus', this.btns)  
-    // },
-    // saveTalksRecord() {
-    //   this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-    //   if (!this.newCustomerInfo.important) {
-    //     this.newCustomerInfo.important = 1
-    //   }
-    //   mango.getAjax(this, 'customer/update', {
-    //     account: this.ajaxData.account,   //登录账户
-    //     tenantId: this.ajaxData.tenantId,
-    //     ...this.updateParams(this.newCustomerInfo)
-    //   },'v2', 'post').then((res) => {
-    //     if (res.status) {
-    //       MessageBox.alert('保存成功！').then(action => {
-    //         this.$router.go(-1)
-    //       })
-    //     }
-    //   })
     // },
     // updateParams(obj) {
     //   let tempObj = {}

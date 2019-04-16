@@ -301,32 +301,16 @@ export default {
       // console.log('addresschange')
       // this.newCustomerInfo.leaveStore = val
     },
-    checkForm() {
-      if (this.username) {
-        
-      } else {
-        console.log('客户姓名未填写')
-      }
-    },
     //设置默认值
     setInitData() {
       this.setNewCustomerInfo({})
       this.setAgeVal('')
-      let record = {
-        followDate: ''
+      this.setNewCustomerInfo(this.newCustomerInfo)
+      if(this.$route.query.phone) {
+        this.newCustomerInfo.phone = this.$route.query.phone
+      }else if(this.$route.query.wechat) {
+        this.newCustomerInfo.weChat = this.$route.query.wechat
       }
-      let parmas = {
-        // 'phone': '15013999052',
-        // 'opportunity.shopId': '1108926117386739714',
-        // 'opportunity.arrivalDate': '2019-04-01',
-        // 'opportunity.source': 'Natural'
-      }
-      this.setNewCustomerInfo(parmas)
-      // if(this.$route.query.phone) {
-      //   this.newCustomerInfo.phone = this.$route.query.phone
-      // }else if(this.$route.query.wechat) {
-      //   this.newCustomerInfo.weChat = this.$route.query.wechat
-      // }
       // this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(this.today)[1])
       // if(!this.newCustomerInfo.important) {
       //   this.$set(this.newCustomerInfo, 'important', 1)

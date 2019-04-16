@@ -57,9 +57,9 @@ export default {
     ...mapMutations(["setFollowVal"]),
     //获取slot列表值
     init() {
-      if(this.newCustomerInfo && this.newCustomerInfo.source) {
+      if(this.newCustomerInfo && this.newCustomerInfo.source2) {
         this.color = 'color: #363636'
-        this.setFollowVal(this.newCustomerInfo.source)
+        this.setFollowVal(this.newCustomerInfo.source2)
         this.key = false
       }
     },
