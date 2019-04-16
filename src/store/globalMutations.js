@@ -11,5 +11,10 @@ export default {
         }
         
     },
-    delGoods:(state,index) => {state.checkedList.splice(index,1)}
+    delGoods:(state,index) => {state.checkedList.splice(index,1)},
+    delFiles:(state,index) => {state.Files.splice(index,1)},
+    delPicVal:(state,index) => {state.picVal.splice(index,1)},
+    setFiles:(state,array) => {state.Files = array},
+    setPicVal:(state,array) => {state.picVal = array}
+
 }

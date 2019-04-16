@@ -1,17 +1,19 @@
 <template>
     <div class="addAdress">
       <mybanner :title="title" style="background:#fff">
-        <button type="button" @click="update">保存</button>
+        <button type="button" @click="update" v-if="false">保存</button>
+        <button type="button" @click="close" style="color:#FF3B30">意向关闭</button>
       </mybanner>
       <title-bar :text="titleModule.info">
         <button type="button">修改</button>
+         <button type="button">保存</button>
       </title-bar>
       <ul class="list">
         <li>
           <intention-select v-bind="formInfo.intention" :value="form.intention" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
         <li>
-         <store-select v-bind="formInfo.store" :value="form.store" :showIcon="selectIcon"/>
+         <store-select v-bind="formInfo.store" :value="form.store" @click="openStore" :showIcon="selectIcon"/>
         </li>
         <li>
           <date-select v-bind="formInfo.time" :value="form.time" @update="updateTime" :showIcon="selectIcon"/>
@@ -28,10 +30,10 @@
           <address-select v-bind="formInfo.address" :value="form.address" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.house" :value="form.house"/>
+          <yan-input v-bind="formInfo.house" :value="form.house" :readonly='readonly'/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.elevator" :value="form.elevator"/>
+          <yan-input v-bind="formInfo.elevator" :value="form.elevator" :readonly='readonly'/>
         </li>
         <li>
           <reason-select v-bind="formInfo.reason" :value="form.reason" @update="updateReason" :showIcon="selectIcon"/>
@@ -45,26 +47,26 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model="form.goods"/>
+          <yan-input v-bind="formInfo.goods" v-model="form.goods" :readonly='readonly'/>
         </li>
         <li>
           <color-select v-bind="formInfo.color" :value="form.color" @update="updateColor" :showIcon="selectIcon"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.budget" v-model="form.budget"/>
+          <yan-input v-bind="formInfo.budget" v-model="form.budget" :readonly='readonly'/>
         </li>
         <li>
           <date-select v-bind="formInfo.deliver" :value="form.deliver" @update="updateDeliver" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.paid" v-model="form.paid"/>
+          <yan-input v-bind="formInfo.paid" v-model="form.paid" :readonly='readonly'/>
         </li>
         <li>
           <discount-select v-bind="formInfo.discount" :value="form.discount" @update="updateDiscount" :showIcon="selectIcon"/>
           <!-- <yan-input v-bind="formInfo.discount" v-model="form.discount"/> -->
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark"></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :readonly='readonly'></yan-textarea>
       <div class="select">
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="classify" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
@@ -79,6 +81,7 @@
         <title-bar :text="titleModule.order"/>
         <order-info class="order"/>
       </div>
+      <upload />
       <p class="last">到底啦</p>
       <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
         <span slot='update'>确定</span>
@@ -145,8 +148,8 @@ export default {
       progressCode:'',
       classify:'',
       urgency:'',
-      selectIcon:true,
-      inputIcon:false,
+      selectIcon:false,
+      readonly:true,
       failReason:'',
       isPrompt:false,
       isMsg:false,
@@ -194,11 +197,16 @@ export default {
   },
   watch:{
     $route(to,from){
+      console.log(from);
       if(from.name==='selectAddress'){
-        let obj=this.$store.state.addressList.find((item) => {
-          return item.id=this.$route.query.addressId;
+        let obj={};
+        this.$store.state.addressList.map((item,index) => {
+          console.log(item);
+          if(item.addressId===this.$route.query.addressId){
+            console.log('进来了');
+            obj=Object.assign({},item);
+          }
         })
-        //console.dir(obj);
         let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
         let elevator=obj.elevator?'有':'无';
         this.$set(this.form,'address',address);
@@ -224,22 +232,26 @@ export default {
    this.path=this.$route.path;
   },
   activated(){
-
+    
   },
   mounted(){
 
   },
   methods:{
-   update(){
-     this.$router.push({path:'/address'})
-   },
+    close(){
+
+    },
+    openStore(){
+      this.$router.push({path:'/address'})
+    },
+    update(){
+      this.$router.push({name:'address',params:{customerId:this.customerId},query:{redirect:this.path}})
+    },
    updateClassify(option){
-    //console.log(option);
     this.classify=option;
     console.log("选择"+this.classify);
    },
    updateUrgency(option){
-    //console.log(option);
     this.urgency=option;
     console.log("选择"+this.urgency);
    },
@@ -256,55 +268,57 @@ export default {
    },
    //选择更新进店日期
    updateTime(value,anotherVal){
-     //this.$set(this.form,'time',anotherVal);
      this.form.time=anotherVal;
    },
    //选择更新留店时长
    updateDuration(value){
-    // this.$set(this.form,'duration',value);
     this.form.duration=value;
    },
    //选择更新购买原因
    updateReason(name,code){
-     //this.$set(this.form,'reason',name);
      this.form.reason=name;
      this.reasonCode=code;
    },
    //选择更新客户来源
    updateSource(name,code){
-     //this.$set(this.form,'source',name);
      this.form.source=name;
      this.sourceCode=code;
    },
    //选择更新装修风格
    updateStyle(name,code){
-     //this.$set(this.form,'style',name);
      this.form.style=name;
      this.styleCode=code;
    },
    //选择更新装修进度
    updateProgress(name,code){
-     //this.$set(this.form,'progress',name);
      this.form.progress=name;
      this.progressCode=code;
    },
    //选择更新颜色偏好
    updateColor(name,code){
-     //this.$set(this.form,'color',name);
      this.form.color=name;
      this.colorCode=code;
    },
    //选择更新需求日期
    updateDeliver(value,anotherVal){
-     //this.$set(this.form,'deliver',anotherVal);
      this.form.deliver=anotherVal;
    },
    //选择更新折扣
    updateDiscount(arr){
      console.log(arr);
      let discount=arr.join('.')+"折"
-     //this.$set(this.form,'discount',discount);
      this.form.discount=discount;
+   },
+   //地址公共函数
+   updateAddressView(){
+    let obj=this.$store.state.addressList.find((item) => {
+      return item.id=this.$route.query.addressId;
+    })
+    let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
+    let elevator=obj.elevator?'有':'无';
+    this.$set(this.form,'address',address);
+    this.$set(this.form,'house',obj.apartmentType);
+    this.$set(this.form,'elevator',elevator);
    }
   },
   beforeRouteEnter(to,from,next){
@@ -323,7 +337,11 @@ export default {
        next();
     }
     next();
-  }
+  }/* , 
+  beforeRouteLeave(to, from, next) {
+    from.meta.keepAlive = false;
+    next();
+  } */
 };
 </script>
 
@@ -377,8 +395,7 @@ export default {
   .order{
     border-top:1px solid #ccc;
     border-bottom:1px solid #ccc;
-    background: #fff;
-    
+    background: #fff;  
   }
 
  }

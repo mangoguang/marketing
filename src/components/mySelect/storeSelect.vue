@@ -1,6 +1,6 @@
 <template>
   <div class="inputBox">
-      <label @click="open">
+      <label>
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
           <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>

@@ -61,7 +61,7 @@ export default {
     },
     getStyle(){
       indexModel.getArea('DR_APARTMENT_TYPE').then(res => {
-        console.log(res);
+        //console.log(res);
         if(res.code===0){
           this.slots[0].values=res.data;
         }

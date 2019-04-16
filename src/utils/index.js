@@ -289,13 +289,23 @@ class IndexModel extends Request {
   getAddressList(id){
     return mango.getAjax('/v2/app/address/list',{customerId:id})
   }
+  //获取地址详情
+  getAddress(id){
+    return mango.getAjax('/v2/app/address',{addressId:id})
+  }
+
   //更新地址
   updateAddress(obj){
     return mango.getAjax('/v2/app/address/update',obj,'post')
   }
+  //更新地址状态
+  updateAddressStatus(obj){
+    return mango.getAjax('/v2/app/address/status',obj,'post')
+  }
   //保存反馈信息
   feedback(obj){
-    return mango.getAjax('/v2/app/feedback',obj,'post')
+    return mango.getFormAjax('/v2/app/feedback',obj,'post')
+    //return mango.port+'/v2/app/feedback';
   }
   //保存反馈信息
   getProduct(key){
