@@ -97,13 +97,13 @@ export default {
     //设置slot
     getSlots() {
       this.hourSlots = this.getTimes(24, '小时', 'slot1')
-      this.minuteSlots = this.getTimes(60, '分钟', 'slot2')
+      this.minuteSlots = this.getTimes(60, '分', 'slot2')
     },
     //获取0-24 0-60
     getTimes(num, time, className) {
       let arr = [];
       for (var i = 0; i < num; i++) {
-        arr[i] = i + ' ' + time;
+        arr[i] = i + time;
       }
        let obj = [{
         values: arr,

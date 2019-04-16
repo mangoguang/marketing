@@ -6,9 +6,9 @@
       </li>
       <li is="shopSelect" ></li>
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
-        <span :style="timeColor">{{turnDate(newCustomerInfo.storeDate) || '请选择进店日期'}}</span>
+        <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || day}}</span>
       </li>
-      <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
+      <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.residentTime" @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       <li is="customerLi" :leftText="'客户地址'" :icon='true'>
          <span style="color: #999">请选择客户地址</span>
@@ -140,7 +140,8 @@ export default {
       styleColor: 'color: #999',
       proColor: 'color: #999',
       Color: 'color: #999',
-      shops:''
+      shops:'',
+      day: ''
    }
   },
   computed: {
@@ -165,6 +166,7 @@ export default {
     this.shops = JSON.parse(shops)
     let val = this.getShopVal()
     this.getShopId(val)
+    this.day = mango.indexTimeB(this.today)[0]
     // this.getShopName()
     // console.log('客户信息：：', this.customerInfo)
     // this.getDemand()
@@ -201,7 +203,7 @@ export default {
     leaveStoreChange(val) {
       // console.log('sex改变了：', val)
       this.setLeaveStoreVal(val)
-      this.newCustomerInfo.leaveStore = val
+      this.newCustomerInfo.residentTime = val
     },
     //打开日期选择插件
     selectStoreDate() {
@@ -210,7 +212,7 @@ export default {
     //选择日期
     setStoreDate(value) {
       this.timeColor = 'color: #363636'
-      this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(value)[1])
+      this.$set(this.newCustomerInfo, 'arrivalDate', mango.indexTimeB(value)[1])
     },
     //转变日期格式
     turnDate(date) {
