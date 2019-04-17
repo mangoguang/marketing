@@ -66,7 +66,12 @@ export default {
       this.popupVisible=false;
     },
     open(){
-      this.popupVisible=true;
+      if(this.showIcon){
+        this.popupVisible=true;
+      }else{
+        return;
+      }
+      
     }
   }
  

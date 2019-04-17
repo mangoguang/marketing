@@ -20,7 +20,12 @@ export default {
   },
   methods:{
     jump(){
-     this.$router.push({name:'selectAddress',params:{customerId:this.id},query:{redirect:this.url}})
+      if(this.showIcon){
+        this.$router.push({name:'selectAddress',params:{customerId:this.id},query:{redirect:this.url}})
+      }else{
+        return;
+      }
+     
     }
   }
  

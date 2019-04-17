@@ -1,6 +1,6 @@
 <template>
     <div class="uploadBox">
-      <ul class="upload_list">
+      <ul class="upload_list" ref='upload_list'>
         <li v-for="(imgs,index) in picVal" :key="index" @click="preview">
           <img :src="imgs.url" alt="">
         </li>
@@ -68,6 +68,9 @@ export default {
         })
         _this.$refs.upload.value='';
         return;
+      }
+      if(files.length+this.picVal.length>=4){
+        this.$refs.upload_list.style='width:100%;justify-content: space-between;'
       }
       let imgSize=3*1024*1024;
      files.map((item,index) => {
@@ -139,6 +142,7 @@ export default {
       flex-direction: row;
       align-items: center;
       flex-wrap:wrap; 
+      justify-content: space-between;
       li{
         width:20vw;
         height:20vw;

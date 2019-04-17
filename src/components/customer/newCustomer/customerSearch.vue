@@ -62,8 +62,11 @@ export default {
           res = res.data
           if (res) {
             this.existStatus = true
+              console.log(this.btnStatus)
+
             if(this.btnStatus) {
-              this.$router.push({path: `/customerInfo/${res.customerId}`})
+              console.log(this.btnStatus)
+              // this.$router.push({path: `/customerInfo/${res.customerId}`})
             }
           } else {
             this.$router.push({path: `/newCustomerInfo/0?${type}=${this.phone}`})
@@ -82,6 +85,9 @@ export default {
     btnSelect(val) {
       this.existStatus = false
       this.btnStatus = val
+      if(val) {
+        console.log(123)
+      }
     }
   }
 }

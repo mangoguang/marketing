@@ -11,15 +11,7 @@
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
 
-      <!-- <li >
-        <address-select :label='"客户地址"' v-bind="formInfo.address" :value="form.address"  :placeholder='"请选择地址"' :id="123" :url="path" :showIcon="true" class="address"/>
-      </li>
-         <li>
-          <yan-input :value="form.house" :readonly='true'/>
-        </li>
-        <li>
-          <yan-input :value="form.elevator" :readonly='true'/>
-        </li> -->
+      
 
 
 
@@ -78,8 +70,6 @@ import { Picker, Popup } from 'mint-ui'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
-import addressSelect from '../../mySelect/addressSelect'
-import yanInput from '../../yanInput'
 
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
@@ -108,9 +98,7 @@ export default {
     BuyReason,
     StylePref,
     progressSelect,
-    colorSelect,
-    addressSelect,
-    yanInput
+    colorSelect
   },
   data(){
     return{
@@ -123,29 +111,8 @@ export default {
       Color: 'color: #999',
       shops:'',
       day: '',
-      codeList: {},
-      path: '',
-      form: {
-        address: ''
-      }
+      codeList: {}
    }
-  },
-  beforeRouteEnter(to,from,next){
-    console.log(to);
-    console.log(from);
-    if(from.name==='selectAddress'){
-      to.meta.keepAlive=true;
-      next();
-    }
-    if(from.name==='searchProduct'){
-      to.meta.keepAlive=true;
-      next();
-    }
-    if(from.name==='intentionProduct'){
-      to.meta.keepAlive=true;
-       next();
-    }
-    next();
   },
   computed: {
     ...mapState({
@@ -170,29 +137,6 @@ export default {
       //获取shopid
       let val = this.getShopVal()
       this.getShopId(val)
-    },
-     $route(to,from){
-      console.log(from);
-      if(from.name==='selectAddress'){
-        let obj={};
-        this.$store.state.addressList.map((item,index) => {
-          console.log(item);
-          if(item.addressId===this.$route.query.addressId){
-            console.log('进来了');
-            obj=Object.assign({},item);
-          }
-        })
-        let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
-        let elevator=obj.elevator?'有':'无';
-        this.$set(this.form,'address',address);
-        this.$set(this.form,'house',obj.apartmentType);
-        this.$set(this.form,'elevator',elevator);
-        this.addressId=this.$route.query.addressId;
-      }
-      if(from.name==='intentionProduct'){
-        this.form.intention=this.$store.state.checkedList[0].crmId;
-      }
-      
     }
   },
   mounted() {

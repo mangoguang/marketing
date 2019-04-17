@@ -39,7 +39,12 @@ export default {
       this.$emit('update',day,anotherDay);
     },
     openDatePicker(){
-      this.$refs.date.open();
+      if(this.showIcon){
+        this.$refs.date.open();
+      }else{
+        return;
+      }
+      
     }
   }
  
