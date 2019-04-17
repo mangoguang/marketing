@@ -1,20 +1,6 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
-import qs from 'qs' 
-import Vue from 'vue'
 import { Indicator, Toast } from 'mint-ui'
-//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-/* axios.defaults.transformRequest = [function (data) {
-    let ret = ''
-    for (let it in data) {
-      ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-    }
-    return ret
-}] */
-
-//Vue.prototype.$http=axios;
-
-/* const instance=axios.create(config) */
 export default class Common {
   constructor() {
     // this.port = 'http://172.16.10.107'
@@ -212,37 +198,25 @@ export default class Common {
     })
   }
  
-  getFormAjax(path, params,type) {
+  getFormAjax(path, data,keys) {
     let _this = this
     let token = JSON.parse(localStorage.getItem('token'))
     return new Promise((resolve, reject) => {
-      let thatType = type == 'post' ? 'post' : 'get'
+      //let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
-      let sign = this.getSign(params, token.access_token)
+      let sign = this.getFormSign(data, token.access_token,keys)
       // 显示加载动画，并在10秒后隐藏
       this.loading('open')
       let loadingTimeOut = setTimeout(function() {
         _this.loading('close')
         clearTimeout(loadingTimeOut)
       }, 10000)
-      const instance=axios.create({
-         //withCredentials: true
-         
-       }) 
-       instance({
-        method: thatType,
-        async: false,
+      
+       axios({
+        method: 'post',
+        //async: false,
         url: url,
-        params:params,
-       /*  transformRequest:[function (data) {
-          let ret = ''
-          for (let it in data) {
-            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-          }
-          return ret
-        }], */
-        /* contentType:false,
-        processData:false, */
+        data:data,
          headers: {
           'Content-Type':'multipart/form-data',
           "Authorization": `Bearer ${token.access_token}`,
@@ -257,25 +231,7 @@ export default class Common {
           resolve(false)
         }
       })
-      /* let config={
-        'Content-Type':false,
-        "Authorization": `Bearer ${token.access_token}`,
-        'sign': sign
-      }
-      axios.post(url,params,config).then(res => {
-        _this.loading('close')
-          if (res.data) {
-            resolve(res.data)
-          } else {
-            resolve(false)
-          }
-      }) */
-      axios.interceptors.request.use(function(config){
-        console.log(config);
-        return config;
-      }, function(error){
-        return Promise.reject(error);
-      });
+      
     }) 
     
   }

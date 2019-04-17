@@ -188,9 +188,22 @@ export var router = new VueRouter({
     name: '/followRecord',
     component: resolve => require(['../pages/Personal/intention/followRecord'],resolve)
   },
-  {
+ /*  {
     path: '/intention/:customerId/:status',//status说明：0代表新增，1代表跟进,2代表战败，3代表成交
     name: 'intention',
+    component: resolve => require(['../pages/Personal/intention/addIntention'],resolve),
+    meta:{
+      keepAlive:true
+    }
+  }, */
+  {
+    path: '/intention/:opportunityId/:status',//status说明：1代表新增，2代表跟进,3代表战败，4代表成交
+    name: 'intention',
+    component: resolve => require(['../pages/Personal/intention/intention'],resolve)
+  },
+  {
+    path: '/addintention/:customerId/:opportunityId',
+    name: 'addintention',
     component: resolve => require(['../pages/Personal/intention/addIntention'],resolve),
     meta:{
       keepAlive:true
