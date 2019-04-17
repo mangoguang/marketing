@@ -10,9 +10,24 @@
       </li>
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
-      <li is="customerLi" :leftText="'客户地址'" :icon='true'>
-         <span style="color: #999">请选择客户地址</span>
+
+      <!-- <li >
+        <address-select :label='"客户地址"' v-bind="formInfo.address" :value="form.address"  :placeholder='"请选择地址"' :id="123" :url="path" :showIcon="true" class="address"/>
       </li>
+         <li>
+          <yan-input :value="form.house" :readonly='true'/>
+        </li>
+        <li>
+          <yan-input :value="form.elevator" :readonly='true'/>
+        </li> -->
+
+
+
+      <!-- <li is="customerLi" :leftText="'客户地址'" :icon='true'>
+         <span style="color: #999">请选择客户地址</span>
+      </li> -->
+
+
       <li is="customerLi" :leftText="'户型大小'">
         <input v-model="newCustomerInfo.apartmentType" type="text" placeholder="请先选客户地址">
       </li>
@@ -63,8 +78,11 @@ import { Picker, Popup } from 'mint-ui'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
-import customerLi from '../../../components/customer/customerLi'
-import bigBtn from '../../../components/customer/bigBtn'
+import addressSelect from '../../mySelect/addressSelect'
+import yanInput from '../../yanInput'
+
+import customerLi from '../customerLi'
+import bigBtn from '../bigBtn'
 import shopSelect from '../../select/shopSelect'
 import sourceSelect from '../../select/sourceSelect'
 import BuyReason from '../../select/buyReason'
@@ -90,7 +108,9 @@ export default {
     BuyReason,
     StylePref,
     progressSelect,
-    colorSelect
+    colorSelect,
+    addressSelect,
+    yanInput
   },
   data(){
     return{
@@ -103,8 +123,29 @@ export default {
       Color: 'color: #999',
       shops:'',
       day: '',
-      codeList: {}
+      codeList: {},
+      path: '',
+      form: {
+        address: ''
+      }
    }
+  },
+  beforeRouteEnter(to,from,next){
+    console.log(to);
+    console.log(from);
+    if(from.name==='selectAddress'){
+      to.meta.keepAlive=true;
+      next();
+    }
+    if(from.name==='searchProduct'){
+      to.meta.keepAlive=true;
+      next();
+    }
+    if(from.name==='intentionProduct'){
+      to.meta.keepAlive=true;
+       next();
+    }
+    next();
   },
   computed: {
     ...mapState({
@@ -112,7 +153,8 @@ export default {
       shopVal: state => state.select.shopVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
       discountVal: state => state.select.discountVal,
-      shopList: state => state.chooseShop.shopList
+      shopList: state => state.chooseShop.shopList,
+      formInfo: state => state.addIntention.formInfo
     })
   },
   watch: {
@@ -128,9 +170,34 @@ export default {
       //获取shopid
       let val = this.getShopVal()
       this.getShopId(val)
+    },
+     $route(to,from){
+      console.log(from);
+      if(from.name==='selectAddress'){
+        let obj={};
+        this.$store.state.addressList.map((item,index) => {
+          console.log(item);
+          if(item.addressId===this.$route.query.addressId){
+            console.log('进来了');
+            obj=Object.assign({},item);
+          }
+        })
+        let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
+        let elevator=obj.elevator?'有':'无';
+        this.$set(this.form,'address',address);
+        this.$set(this.form,'house',obj.apartmentType);
+        this.$set(this.form,'elevator',elevator);
+        this.addressId=this.$route.query.addressId;
+      }
+      if(from.name==='intentionProduct'){
+        this.form.intention=this.$store.state.checkedList[0].crmId;
+      }
+      
     }
   },
   mounted() {
+    this.path = this.$route.path
+
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
     //获取默认进店时间
@@ -279,6 +346,23 @@ export default {
 @import "../../../assets/common.scss";
 .newDemand{
   background: #f8f8f8;
+  .address {
+    background: #fff;
+    width: 100vw;
+    font-size: $fontSize;
+    color: $fontCol;
+    box-sizing: border-box;
+    padding: 0 5vw;
+    border-bottom: 1px #ccc solid;
+    min-height:11.3vw
+  }
+  input{
+    color:#363636;
+    font-size: 3.2vw;
+  }
+  // input::-webkit-input-placeholder{
+  //   color:red;
+  // }
   li{
     display: flex;
     h3{
