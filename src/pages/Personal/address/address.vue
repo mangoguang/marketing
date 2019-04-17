@@ -7,7 +7,7 @@
           <p>请添加地址哦~</p>
           <img src="../../../assets/imgs/arrow-down.png" alt="">
         </div>
-       <customer-address v-for="(item,index) in addressList" :key="index" :index="index" @edit="edit" @del="del" v-else>
+       <customer-address v-for="(item,index) in addressList" :key="index" :index='index' :id="item.addressId" @edit="edit" @del="del" v-else>
           <div class="address_li">
             <h1 v-if="item.elevator">{{item.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;有电梯</h1>
             <h1 v-else>{{item.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;无电梯</h1>
@@ -26,6 +26,7 @@ import Btn from '../../../components/personal/Btn'
 import customerAddress from '../../../components/mySwipe/customerAddress'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
+import mango from '../../../js'
 import { IndexModel } from '../../../utils' 
 const indexModel = new IndexModel()
 export default {
@@ -57,12 +58,31 @@ export default {
    jump(){
      this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId}});
    },
-   edit(i){
-     console.log(i);
+   edit(index,id){
+     console.log(id);
+     this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId},query:{addressId:id}});
+
    },
-   del(i){
-     console.log(i);
-   },
+   del(index,id){
+     console.log(id);
+     let obj={
+       addressId:id,
+       customerId:this.$route.params.customerId,
+       status:'N'
+     }
+     indexModel.updateAddressStatus(obj).then(res => {
+       if(res.code===0){
+          mango.tip(res.msg);
+          this.delAddress(index);
+          let listItems=document.querySelectorAll('.yan-swipe-left');
+          for (let i=0;i<listItems.length;i++) {
+            listItems[i].style="transform:translateX(0px)";
+          }
+       }else{
+         mango.tip(res.msg);
+       }
+     });
+    },
     getAddressList(){
       let id=this.$route.params.customerId;
       indexModel.getAddressList(id).then(res => {

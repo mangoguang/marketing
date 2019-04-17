@@ -42,7 +42,12 @@ export default {
       }
     },
     openTimePicker(){
-      this.$refs.time.open();
+      if(this.showIcon){
+         this.$refs.time.open();
+      }else{
+        return;
+      }
+     
     }
    
   }

@@ -6,70 +6,42 @@
       </li>
       <li is="shopSelect" ></li>
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
-        <span :style="timeColor">{{turnDate(newCustomerInfo.storeDate) || '请选择进店日期'}}</span>
+        <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
-      <li is="leaveStoreSelect" :start="true" :leaveStoreVal="newCustomerInfo.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
+      <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       <li is="customerLi" :leftText="'客户地址'" :icon='true'>
          <span style="color: #999">请选择客户地址</span>
       </li>
       <li is="customerLi" :leftText="'户型大小'">
-        <input v-model="newCustomerInfo.home" type="text" placeholder="请先选客户地址">
+        <input v-model="newCustomerInfo.apartmentType" type="text" placeholder="请先选客户地址">
       </li>
        <li is="customerLi" :leftText="'有无电梯'">
-        <input v-model="newCustomerInfo.lift" type="text" placeholder="请先选客户地址">
+        <input v-model="newCustomerInfo.elevator" type="text" placeholder="请先选客户地址">
       </li>
-       <li is="customerLi" :leftText="'购买原因'" :icon="true" @click.native="selectBuyReason">
-        <span :style="color">{{newCustomerInfo.buyReason || '请选择购买原因'}}</span>
-      </li>
-       <li is="customerLi" :leftText="'装修风格'" :icon="true" @click.native="selectStylePref">
-        <span :style="styleColor">{{newCustomerInfo.stylePref || '请填写风格偏好'}}</span>
-      </li>
-      <li is="customerLi" :leftText="'装修进度'" :icon="true" @click.native="selectProgress">
-        <span :style="proColor">{{newCustomerInfo.progress || '请选择装修进度'}}</span>
-      </li>
+      <li is="BuyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
+      <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
+      <li is="progressSelect"  @progressChange="progressChange" @pgCodeChange='pgCodeChange'></li>
       <li is="customerLi" :leftText="'竞品产品'">
-        <input v-model="newCustomerInfo.aproduct" type="text" placeholder="请填写竞品产品">
+        <input v-model="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品">
       </li>
-       <li is="customerLi" :leftText="'颜色偏好'" :icon="true" @click.native="selectColorPref">
-        <span :style="Color">{{newCustomerInfo.colorPref || '请填写颜色偏好'}}</span>
-      </li>
+      <li is="colorSelect"  @colorChange="colorChange" @colorCodeChange='colorCodeChange'></li>
       <li is="customerLi" :leftText="'预算金额'">
-        <input v-model="newCustomerInfo.pay" type="number" placeholder="请填写预算金额">
+        <input v-model="newCustomerInfo.budget" type="number" placeholder="请填写预算金额">
       </li>
       <li is="customerLi" :leftText="'已交定金'">
-        <input v-model="newCustomerInfo.pay" type="number" placeholder="请填写已交金额">
+        <input v-model="newCustomerInfo.depositPaid" type="number" placeholder="请填写已交金额">
       </li>
-      <li is="discountSelect" :discountVal="newCustomerInfo.discount" @discountChange="discountChange"></li>
-      <!-- <li is="customerLi" :leftText="'房间数量'" :icon="true" @click.native="selectRoomNum">
-        <span >{{roomNum || '请填写房间数量'}}</span>
-      </li> -->
-      <!-- <li is="customerLi" :leftText="'所属门店'" :icon="true" @click.native="selectShopId">
-        <span>{{shopName}}</span>
-      </li> -->
-      <!-- <li is="customerLi" :leftText="'房间数量'">
-        <input v-model="newCustomerInfo.roomNum" placeholder="请填写房间数量" type="number">
-      </li> -->
+
+      <li is="discountSelect" @discountChange="discountChange"></li>
       <li class="textarea">
         <h3>备注信息</h3>
-        <textarea v-model="newCustomerInfo.remark" placeholder="添加备注信息"></textarea>
+        <textarea v-model="newCustomerInfo.remark2" placeholder="添加备注信息"></textarea>
       </li>
       <intentionSelect :intentionVal='intentionVal'/>
       <urgentSelect :urgentVal='urgentVal'/>
-      <!-- <li>
-        <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
-        <big-btn :text="'下一步'" @click.native="nextModule"></big-btn>
-      </li> -->
     </ul>
     <div class="mintComponent">
-      <mt-popup 
-      position="bottom"
-      v-model="popupVisible">
-        <mt-picker
-        :slots="slots"
-        @change="onValuesChange"
-        ref="Picker"></mt-picker>
-      </mt-popup>
        <mt-datetime-picker
         ref="datePicker"
         type="date"
@@ -95,14 +67,17 @@ import customerLi from '../../../components/customer/customerLi'
 import bigBtn from '../../../components/customer/bigBtn'
 import shopSelect from '../../select/shopSelect'
 import sourceSelect from '../../select/sourceSelect'
+import BuyReason from '../../select/buyReason'
+import StylePref from '../../select/stylePref'
+import colorSelect from '../../select/colorSelect'
+import progressSelect from '../../select/progressSelect'
 import discountSelect from '../../select/discountSelect'
 import intentionSelect from '../../select/intentionSelect'
 import urgentSelect from '../../select/urgentSelect'
 import mango from '../../../js'
-import {turnParams} from '../../../utils/customer'
 export default {
   name:'newDemand',
-  props: ['btns', 'fromName'],
+  props: ['btns', 'fromName', 'changeCode'],
   components: {
     customerLi,
     bigBtn,
@@ -111,28 +86,14 @@ export default {
     sourceSelect,
     discountSelect,
     urgentSelect,
-    intentionSelect
+    intentionSelect,
+    BuyReason,
+    StylePref,
+    progressSelect,
+    colorSelect
   },
   data(){
     return{
-      popupVisible: false,
-      slots: [],
-      progressList: [{values: ['前期设计', '主体拆改', '水电改造', '木工', '贴砖', '刷墙面漆', '厨卫吊顶', '橱柜安装', '木门安装', '地板安装', '铺贴壁纸', '开关插座安装', '灯具安装', '五金洁具安装', '窗帘杆安装', '拓荒保洁', '家具进场', '家电安装', '家居配饰', '装修完成']}],
-      buyReasonList: [{values: ['旧床换新', '新房购置', '婚房购置']}],
-      roomNumList: [{values: [1, 2, 3, 4, '5及以上']}],
-      colorPrefList: [{values :['暖色', '冷色']}],
-      stylePrefList: [{values: ['中式风格', '自然风格', '古典风格', '现代简约风格', '乡村田园风格', '现代中式风格', '地中海风格', '欧式风格', '混合型风格']}],
-      shopNameList: [{values: []}],
-      pickerShow: {
-        progress: false,
-        buyReason: false,
-        roomNum: false,
-        colorPref: false,
-        stylePref: false
-      },
-      proto: '',
-      roomNum: '',
-      shopName: '',
       shopId: '',
       timeColor: 'color: #999',
       today: new Date(),
@@ -140,7 +101,9 @@ export default {
       styleColor: 'color: #999',
       proColor: 'color: #999',
       Color: 'color: #999',
-      shops:''
+      shops:'',
+      day: '',
+      codeList: {}
    }
   },
   computed: {
@@ -149,7 +112,7 @@ export default {
       shopVal: state => state.select.shopVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
       discountVal: state => state.select.discountVal,
-       shopList: state => state.chooseShop.shopList
+      shopList: state => state.chooseShop.shopList
     })
   },
   watch: {
@@ -157,22 +120,30 @@ export default {
     fromName() {
       if(this.fromName === 'NewCustomer') {
         this.setInitData()
+      }else {
+        if(this.newCustomerInfo.arrivalDate) {
+          this.timeColor = 'color: #363636'
+        }
       }
+      //获取shopid
+      let val = this.getShopVal()
+      this.getShopId(val)
     }
   },
   mounted() {
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
-    let val = this.getShopVal()
-    this.getShopId(val)
-    // this.getShopName()
-    // console.log('客户信息：：', this.customerInfo)
-    // this.getDemand()
+    //获取默认进店时间
+    this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal']),
+    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref']),
     setInitData() {
-      
+      this.newCustomerInfo.arrivalDate = this.day
+      this.setNewCustomerInfo(this.newCustomerInfo)
+      this.setBuyReason('')
+      this.setLeaveStoreVal('')
+      this.setDiscountVal('')
     },
     //获取门店的值
     getShopVal() {
@@ -195,13 +166,15 @@ export default {
           }
       });
       }
-      console.log(this.shopId)
+      this.newCustomerInfo.shopId = this.shopId
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
-    //选择门店
+    //选择留店时长
     leaveStoreChange(val) {
       // console.log('sex改变了：', val)
       this.setLeaveStoreVal(val)
-      this.newCustomerInfo.leaveStore = val
+      this.newCustomerInfo.residentTime = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //打开日期选择插件
     selectStoreDate() {
@@ -210,7 +183,7 @@ export default {
     //选择日期
     setStoreDate(value) {
       this.timeColor = 'color: #363636'
-      this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(value)[1])
+      this.$set(this.newCustomerInfo, 'arrivalDate', mango.indexTimeB(value)[1])
     },
     //转变日期格式
     turnDate(date) {
@@ -231,138 +204,73 @@ export default {
     },
     //客户来源的code
     codeChange(val) {
-      // console.log(123,val)
+      this.codeList.sourceCode = val
+      this.changeCode(this.codeList)
+    },
+    //选择购买原因
+    buyReasonChange(val) {
+      // console.log('sex改变了：', val)
+      this.setBuyReason(val)
+      this.newCustomerInfo.buyReason = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //购买原因code
+    brCodeChange(val) {
+      this.codeList.brCode = val
+      this.changeCode(this.codeList)
+    },
+     //选择装修风格
+    stylePrefChange(val) {
+      // console.log('sex改变了：', val)
+      this.setStylePref(val)
+      this.newCustomerInfo.stylePref = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //装修风格code
+    spCodeChange(val) {
+      this.codeList.spCode = val
+      this.changeCode(this.codeList)
+    },
+     //选择装修进度
+    progressChange(val) {
+      // console.log('sex改变了：', val)
+      this.setProgress(val)
+      this.newCustomerInfo.progress = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //装修进度code
+    pgCodeChange(val) {
+      this.codeList.pgCode = val
+      this.changeCode(this.codeList)
+    },
+     //选择颜色偏好
+    colorChange(val) {
+      // console.log('sex改变了：', val)
+      this.setColorPref(val)
+      this.newCustomerInfo.colorPref = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //颜色偏好code
+    colorCodeChange(val) {
+      this.codeList.colorCode = val
+      this.changeCode(this.codeList)
     },
     //选择折扣
     discountChange(val) {
       this.setDiscountVal(val)
-      this.newCustomerInfo.discount = val
+      this.newCustomerInfo.argreeDiscount = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //选择意向
     intentionVal(val) {
-      // console.log(val)
+      this.newCustomerInfo.level = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //是否紧急
     urgentVal(val) {
-      // console.log(val)
-    },
-    // getShopName() {
-    //   let shopName = []
-    //   if(this.shops) {
-    //     this.shops.forEach((item, index) => {
-    //     shopName.push(item.name)
-    //     this.shopNameList[0].values = shopName
-    //   });
-    //   }
-    //   this.shopName = this.shopNameList[0].values[0]
-    //   this.getShopID(this.shopName)
-    //   this.$set(this.newCustomerInfo, 'shopId', this.shopId)
-    // },
-    // getShopID(name) {
-    //   if(this.shops) {
-    //     this.shops.forEach((item, index) => {
-    //       if(item.name === name) {
-    //         this.shopId = item.id
-    //       }
-    //   });
-    //   }
-    // },
-    // setDemand() {
-    //   this.setNewCustomerInfo(this.newCustomerInfo)
-    // },
-    setOptions(data, dataList) {
-      if(!this.newCustomerInfo[`${data}`]) {
-        this.newCustomerInfo[`${data}`] = dataList[0].values[0]
-      }else {
-        this.$refs.Picker.setSlotValue(0, this.newCustomerInfo[`${data}`])
-      }
-    },
-    // selectShopId() {
-    //   this.slots = this.shopNameList
-    //   this.proto = 'shopId'
-    //   // 设置性别选择插件的初始值
-    //   this.$refs.Picker.setSlotValue(0, this.shopName)
-    //   this.popupVisible = true
-    // },
-    selectProgress() {
-      this.proColor = 'color: #363636'
-      this.slots = this.progressList
-      this.proto = 'progress'
-      // 设置性别选择插件的初始值
-      this.setOptions('progress', this.progressList)
-      this.popupVisible = true
-    },
-    selectBuyReason() {
-      this.color = 'color: #363636'
-      this.slots = this.buyReasonList
-      this.proto = 'buyReason'
-      // 设置性别选择插件的初始值
-      this.setOptions('buyReason', this.buyReasonList)
-      this.popupVisible = true
-    },
-    selectRoomNum() {
-      this.slots = this.roomNumList
-      this.proto = 'roomNum'
-      // 设置性别选择插件的初始值
-      if(this.roomNum === '') {
-        this.roomNum = this.roomNumList[0].values[0]
-      }else {
-        this.$refs.Picker.setSlotValue(0, this.roomNum)
-      }
-      this.popupVisible = true
-    },
-    selectColorPref() {
-      this.Color = 'color: #363636'
-      this.slots = this.colorPrefList
-      this.proto = 'colorPref'
-      // 设置性别选择插件的初始值
-      this.setOptions('colorPref', this.colorPrefList)
-      this.popupVisible = true
-    },
-    selectStylePref() {
-      this.styleColor = 'color: #363636'
-      this.slots = this.stylePrefList
-      this.proto = 'stylePref'
-      // 设置性别选择插件的初始值
-      this.setOptions('stylePref', this.stylePrefList)
-      this.popupVisible = true
-    },
-    onValuesChange(picker, values) {
-      // console.log('选择的装修进度', values)
-      // this.newCustomerInfo.progress = values[0]
-      //  if(this.proto == 'shopId') {
-      //     this.shopName = values[0]
-      //     if(this.shopName) {
-      //       this.getShopID(this.shopName)
-      //       this.newCustomerInfo.shopId = this.shopId
-      //     }
-      //     // else {
-      //     //   this.newCustomerInfo.shopId = ''
-      //     // }
-      //   }else
-       if(this.proto == 'roomNum') {
-        this.roomNum = values[0]
-        if(this.roomNum === '5及以上') {
-          this.newCustomerInfo.roomNum = 5
-        }else {
-          this.newCustomerInfo.roomNum = this.roomNum
-        }
-      }else{
-        this.newCustomerInfo[this.proto] = values[0]
-      }
+      this.newCustomerInfo.urgency = val? 'true' : 'false'
+      this.setNewCustomerInfo(this.newCustomerInfo)
     }
-    // preModule() {
-    //   this.setDemand()
-    //   this.btns[0].status = true
-    //   this.btns[1].status = false
-    //   this.$emit('changeBtnsStatus', this.btns)     
-    // },
-    // nextModule() {
-    //   this.setDemand()
-    //   this.btns[1].status = false
-    //   this.btns[2].status = true
-    //   this.$emit('changeBtnsStatus', this.btns)
-    // }
   }
 }
 </script>

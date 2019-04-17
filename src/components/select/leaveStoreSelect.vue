@@ -2,7 +2,7 @@
   <li class="leaveStoreSelect">
     <ul>
       <li is="customerLi" :leftText="text? text:'留店时长'" :start='start? "*": ""' :icon="true" @click.native="selectLeaveStore">
-        <span :style="color">{{ leaveStore || '请选择客户留店时长'}}</span>
+        <span :style="color">{{ type?(followTiming || '请选择跟进时长'): (leaveStoreVal || '请选择客户留店时长')}}</span>
       </li>
       <!-- 选择插件 -->
       <li class="pickerContainer">
@@ -38,13 +38,14 @@ import customerLi from "../customer/customerLi";
 export default {
   name: "leaveStoreSelect",
   components: { customerLi },
-  props: ['start', 'text'],
+  props: ['start', 'text', 'type'],
   data() {
     return {
       hourSlots: [],
       minuteSlots: [],
       popupVisible: false,
-      key: false,
+      key1: false,
+      key2: false,
       color: "color: #999",
       hour: '',
       min: '',
@@ -53,57 +54,96 @@ export default {
   },
   computed: {
     ...mapState({
-      leaveStoreVal: state => state.select.leaveStoreVal
+      leaveStoreVal: state => state.select.leaveStoreVal,
+      followTiming: state => state.select.followTiming,
+      newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
   mounted() {
     this.getSlots();
-    // this.$refs.leaveStorePicker.setSlotValue(0, this.val)
+    this.init()
   },
   methods: {
-    ...mapMutations(["setLeaveStoreVal"]),
+    ...mapMutations(["setLeaveStoreVal",'setFollowTiming']),
+     init() {
+       if(this.type) {
+         if(this.newCustomerInfo && this.newCustomerInfo.residentTime2) {
+            this.color = 'color: #363636'
+            this.setFollowTiming(this.newCustomerInfo.residentTime2)
+            this.key1 = false
+            this.key2 = false
+          }
+       }else {
+         if(this.newCustomerInfo && this.newCustomerInfo.residentTime) {
+            this.color = 'color: #363636'
+            this.setLeaveStoreVal(this.newCustomerInfo.residentTime)
+            this.key1 = false
+            this.key2 = false
+          }
+       }
+      //初始化问题
+      
+    },
     hourChange(picker, values) {
-      this.hour = values[0]
-      this.leaveStore = this.min? this.hour +  this.min : this.hour
-      this.$emit("leaveStoreChange", this.leaveStore);
+      if(this.key1) {
+        this.hour = values[0]
+        this.leaveStore = this.min? this.hour +  this.min : this.hour
+        this.type? this.$emit("leaveStoreChange2", this.leaveStore) : this.$emit("leaveStoreChange", this.leaveStore);
+      }else {
+        this.key1 = true
+      }
+      
     },
     minuteChange(picker, values) {
-      this.min = values[0]
-      this.leaveStore = this.hour? this.hour + this.min : this.min
-      this.$emit("leaveStoreChange", this.leaveStore);
+      if(this.key2) {
+        this.min = values[0]
+        this.leaveStore = this.hour? this.hour + this.min : this.min
+        this.type? this.$emit("leaveStoreChange2", this.leaveStore) : this.$emit("leaveStoreChange", this.leaveStore);
+      }else {
+        this.key2 = true
+      }
     },
     selectLeaveStore() {
-      this.color = "color: #363636";
-      // if(!this.leaveStoreVal === "") {
-      //   this.$refs.hourPicker.setSlotValue(0, '1 小时');
-      // }
-      // if (this.leaveStoreVal === "") {
-      //   this.setLeaveStoreVal(this.slots[1].values[0]);
-      // } else {
-      //   let a = this.$refs.leaveStorePicker.getValues()
-      //   console.log('a',a)
-      //   this.$refs.leaveStorePicker.setSlotValue(0, this.leaveStoreVal);
-      // }
+      if(this.type) {
+        this.followMethod()
+      }else {
+        this.leaveMethod()
+      }
       this.popupVisible = true;
     },
-    onValuesChange(picker, values) {
-      // console.log(values)
-      // if (this.key) {
-      //   this.$emit("leaveStoreChange", values);
-      // } else {
-      //   this.key = true;
-      // }
+    //
+    leaveMethod() {
+      this.color = "color: #363636";
+      if (this.leaveStoreVal === "") {
+        this.leaveStore = this.hour + this.min 
+        this.setLeaveStoreVal(this.leaveStore);
+        this.$emit('leaveStoreChange', this.leaveStoreVal)
+      } else {
+        this.$refs.hourPicker.setSlotValue(0, this.hour);
+        this.$refs.minPicker.setSlotValue(0, this.min);
+      }
+    },
+    followMethod() {
+      this.color = "color: #363636";
+      if (this.followTiming === "") {
+        this.leaveStore = this.hour + this.min 
+        this.setFollowTiming(this.leaveStore);
+        this.$emit('leaveStoreChange2', this.followTiming)
+      } else {
+        this.$refs.hourPicker.setSlotValue(0, this.hour);
+        this.$refs.minPicker.setSlotValue(0, this.min);
+      }
     },
     //设置slot
     getSlots() {
       this.hourSlots = this.getTimes(24, '小时', 'slot1')
-      this.minuteSlots = this.getTimes(60, '分钟', 'slot2')
+      this.minuteSlots = this.getTimes(60, '分', 'slot2')
     },
     //获取0-24 0-60
     getTimes(num, time, className) {
       let arr = [];
       for (var i = 0; i < num; i++) {
-        arr[i] = i + ' ' + time;
+        arr[i] = i + time;
       }
        let obj = [{
         values: arr,

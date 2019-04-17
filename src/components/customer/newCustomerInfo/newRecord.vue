@@ -1,26 +1,26 @@
 <template>
   <div>
     <ul class="newRecord">
-      <li is="followSelect" :ageVal="newCustomerInfo.follow"  @followChange="followChange"></li>
+      <li is="followSelect" @followWayChange="followWayChange" ></li>
       <li class="timeLi" is="customerLi" :start="'*'" :leftText="'跟进时间'" :icon="true" @click.native="selectFollowTime">
-        <span>{{turnDate(newCustomerInfo.followTime || setDay)}}</span>
+        <span>{{turnDate(newCustomerInfo.followDate || setDay)}}</span>
       </li>
-      <li is="leaveStoreSelect" :start="true" :text='"跟进时长"' @leaveStoreChange="leaveStoreChange"></li>
+      <li is="leaveStoreSelect" :start="true" :text='"跟进时长"' :type='true' @leaveStoreChange2="leaveStoreChange2"></li>
       
       <li class="noPadding">
         <remark :title="'跟进情况'">
-          <textarea v-model="newCustomerInfo.followSituation" name="" id="" placeholder="描述一下跟进情况"></textarea>
+          <textarea v-model="newCustomerInfo.situation" name="" id="" placeholder="描述一下跟进情况"></textarea>
         </remark>
       </li>
       <!-- <li>
         <my-range :title="'成交概率'" @changeVal="changeMyRangeVal" />
       </li> -->
       <li class="timeLi top" is="customerLi" :start="'*'" :leftText="'下次跟进'" :icon="true" @click.native="selectTime">
-        <span>{{turnDate(newCustomerInfo.time) || '请选择日期'}}</span>
+        <span>{{turnDate(newCustomerInfo.nextDate) || '请选择日期'}}</span>
       </li>
       <li class="noPadding">
         <remark :title="'下一步计划'">
-          <textarea v-model="newCustomerInfo.followPlan" name="" id="" placeholder="请填写下一步跟进计划"></textarea>
+          <textarea v-model="newCustomerInfo.plan" name="" id="" placeholder="请填写下一步跟进计划"></textarea>
         </remark>
       </li>
     </ul>
@@ -85,6 +85,14 @@ export default {
       setDay: ''
     }
   },
+  watch: {
+      //初始进来的时候初始化数据
+    fromName() {
+      if(this.fromName === 'NewCustomer') {
+        this.setInitData()
+      }
+    }
+  },
   computed: {
     ...mapState({
       newCustomerInfo: state => state.customer.newCustomerInfo,
@@ -97,15 +105,19 @@ export default {
     this.ajaxData = JSON.parse(ajaxData)
     this.setDay = mango.indexTimeB(this.today)[0]
   },
-  mounted() {
-    // this.newCustomerInfo.percent = 50
-  },
   methods: {
     ...mapMutations(["setNewCustomerInfo", 'setFollowVal', 'setFollowTiming']),
     // changeMyRangeVal(val) {
     //   // console.log('mtrange:', val)
     //   this.newCustomerInfo.percent = val
     // },
+    //初始化
+    setInitData() {
+      this.newCustomerInfo.followDate = mango.indexTimeB(this.today)[1]
+      this.setNewCustomerInfo(this.newCustomerInfo)
+      this.setFollowVal('')
+      this.setFollowTiming('')
+    },
     selectTime() {
       this.$refs.DatePicker.open()
     },
@@ -114,12 +126,11 @@ export default {
     },
     //跟进日期
     setFollowTime(value) {
-      this.$set(this.newCustomerInfo, 'followTime', mango.indexTimeB(value)[1])
+      this.$set(this.newCustomerInfo, 'followDate', mango.indexTimeB(value)[1])
     },
     //下次跟进日期
     setTime(value) {
-      this.$set(this.newCustomerInfo, 'time', mango.indexTimeB(value)[1])
-      // this.newCustomerInfo.followTime = mango.indexTimeB(value)[0]
+      this.$set(this.newCustomerInfo, 'nextDate', mango.indexTimeB(value)[1])
     },
       //转变日期格式
     turnDate(date) {
@@ -133,37 +144,21 @@ export default {
       }
     },
     //跟进方式
-    followChange(val) {
+    followWayChange(val) {
       this.setFollowVal(val)
-      this.newCustomerInfo.follow = val
+      this.newCustomerInfo.source2 = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //跟进时长
-    leaveStoreChange(val) {
+    leaveStoreChange2(val) {
       this.setFollowTiming(val)
-      this.newCustomerInfo.followTiming = val
+      this.newCustomerInfo.residentTime2 = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
     }
     // preModule() {
     //   this.btns[1].status = true
     //   this.btns[2].status = false
     //   this.$emit('changeBtnsStatus', this.btns)  
-    // },
-    // saveTalksRecord() {
-    //   this.newCustomerInfo.percent = this.newCustomerInfo.percent + '%'
-    //   if (!this.newCustomerInfo.important) {
-    //     this.newCustomerInfo.important = 1
-    //   }
-    //   mango.getAjax(this, 'customer/update', {
-    //     account: this.ajaxData.account,   //登录账户
-    //     tenantId: this.ajaxData.tenantId,
-    //     ...this.updateParams(this.newCustomerInfo)
-    //   },'v2', 'post').then((res) => {
-    //     if (res.status) {
-    //       MessageBox.alert('保存成功！').then(action => {
-    //         this.$router.go(-1)
-    //       })
-    //     }
-    //   })
     // },
     // updateParams(obj) {
     //   let tempObj = {}

@@ -1,9 +1,9 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
 import { Indicator, Toast } from 'mint-ui'
-/* axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.transformRequest = [function (data) {
+/* axios.defaults.transformRequest = [function (data) {
     let ret = ''
     for (let it in data) {
       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
@@ -141,6 +141,7 @@ export default class Common {
   getAjax(path, params,type) {
     let _this = this
     let token = JSON.parse(localStorage.getItem('token'))
+    // console.log('ajax出token::', token)
     return new Promise((resolve, reject) => {
       let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
@@ -220,12 +221,12 @@ export default class Common {
         clearTimeout(loadingTimeOut)
       }, 10000)
       axios({
+        withCredentials: true,
         method: thatType,
         async: false,
         url: url,
         params: params,
         headers: {
-          'Content-Type':'multipart/form-data',
           "Authorization": `Bearer ${token.access_token}`,
           'sign': sign
         }

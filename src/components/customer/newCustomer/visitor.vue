@@ -11,7 +11,7 @@
       <!-- <li is="customerLi" :leftText="'意向产品'">
         <input v-model="info.demand" placeholder="填写客户意向产品" type="text">
       </li> -->
-      <li is="leaveStoreSelect" :leaveStoreVal="info.leaveStore" @leaveStoreChange="leaveStoreChange"></li>
+      <li is="leaveStoreSelect" :leaveStoreVal="info.residentTime" @leaveStoreChange="leaveStoreChange"></li>
       <!-- <li is="customerLi" :leftText="'留店时间'" :icon="true">
         <span @click="selectTime">{{info.leaveStore || '选择客户留店时间'}}</span>
       </li> -->
@@ -192,7 +192,7 @@ export default {
     leaveStoreChange(val) {
       // console.log('sex改变了：', val)
       this.setLeaveStoreVal(val)
-      this.info.leaveStore = val
+      this.info.residentTime = val
     },
     saveCustomerInfo() {
       if(!this.info.username || this.info.username === '') {
@@ -202,7 +202,7 @@ export default {
       let [params, tempObj] = [{
         'details.username': this.info.username,
         'details.sex': this.info.sex? this.info.sex : 0,
-        'details.leaveStore': this.info.leaveStore,
+        'details.residentTime': this.info.residentTime,
         'demand.intention': this.info.intention,
         'demand.remark': this.info.remark,
         'record.probability': `${this.info.percent}%`,

@@ -84,10 +84,10 @@ export default {
       }
     },
     edit(index){
-      this.$emit('edit',index);
+      this.$emit('edit',index,this.id);
     },
     del(index){
-      this.$emit('del',index);
+      this.$emit('del',index,this.id);
     }
   }
 

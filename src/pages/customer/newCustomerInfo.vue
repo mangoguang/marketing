@@ -10,7 +10,7 @@
           <span>客户描述</span>
         </div>
       </li>
-      <new-descript :select='true' :fromName='fromName'/>
+      <new-descript :select='true' :fromName='fromName' />
     </ul>
     <ul>
       <li @click="controlDemand">
@@ -22,7 +22,7 @@
           <img src="../../assets/imgs/newPullDown.png" :class="{changSide:isShowDemand}">
         </div>
       </li>
-      <new-demand v-show="isShowDemand" :fromName='fromName'/>
+      <new-demand v-show="isShowDemand" :fromName='fromName' :changeCode="change"/>
     </ul>
     <ul class="dealUl">
       <li @click="controlDaal">
@@ -68,7 +68,8 @@ export default {
       isShowDemand: false,
       isShowDeal: false,
       shops: [],
-      fromName: ''
+      fromName: '',
+      codeList: {}
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -106,6 +107,10 @@ export default {
     this.setLeaveStoreVal('')
     this.setShopVal('')
     this.setAgeVal('')
+    this.setBuyReason('')
+    this.setStylePref('')
+    this.setProgress('')
+    this.setColorPref('')
   },
   methods: {
     ...mapMutations([
@@ -117,8 +122,15 @@ export default {
       'setEnterStoreVal',
       'setShopVal',
       'setAgeVal',
-      'setUpLoadUrl'
+      'setUpLoadUrl',
+      'setBuyReason',
+      'setStylePref',
+      'setProgress',
+      'setColorPref'
     ]),
+    change(val) {
+      this.codeList = val
+    },
     //控制下面两个模块的显示隐藏
     controlDemand() {
       this.isShowDemand = !this.isShowDemand
@@ -140,8 +152,9 @@ export default {
     },
     //保存客户信息，新建客户	
     creatNewCustomer() {
-      
-      mango.getAjax('/v3/app/customer/update', this.newCustomerInfo,'post').then(res => {
+      mango.getAjax('/v3/app/customer/update', {
+        ...this.updateParams(this.newCustomerInfo)
+      },'post').then(res => {
         console.log(res)
       })
       // this.getShopID(this.shopVal)
@@ -180,32 +193,50 @@ export default {
      updateParams(obj) {
       let tempObj = {}
       let temp = {
-        account: this.ajaxData.account,   //登录账户
-        tenantId: this.ajaxData.tenantId,
-        'details.username': obj.username,
-        'details.sex': obj.sex,  //性别(1:男,2:女,0:未知)，
-        'details.storeDate': returnDate(obj.storeDate),
-        'details.phone': obj.phone,
-        'details.source': obj.source,
-        'details.province': obj.province,
-        'details.city': obj.city,
-        'details.area': obj.area,
-        'details.address': obj.address,
-        'details.leaveStore': obj.leaveStore,    //留店时间，
-        'details.urgency': obj.urgency,   //紧急，1/2/3级，一级最高
-        'details.important': obj.important,  //重要，1/2/3级，一级最高
-        'demand.intention': obj.intention,   //意向产品，
-        'demand.colorPref': obj.colorPref,
-        'demand.stylePref': obj.stylePref,
-        'demand.buyReason': obj.buyReason,
-        'demand.progress': obj.progress,
-        'demand.roomNum': obj.roomNum,
-        'demand.remark': obj.remark,
-        'demand.shopId': obj.shopId,
-        'record.followSituation': obj.followSituation,
-        'record.probability': obj.percent,
-        'record.followTime': obj.followTime,   //默认为今天
-        'record.followPlan': obj.followPlan
+        phone: obj.phone,
+        username: obj.username,
+        sex: obj.sex,  //性别(1:男,2:女,0:未知)，
+        headPortrait: obj.headPortrait,
+        birthday: obj.birthday,
+        age: obj.age,
+        qq:obj.qq,
+        weChat: obj.weChat,
+        duty: obj.duty,
+        remark: obj.remark,
+        
+        'address.province': '广东',
+        'address.city': '惠州市',
+        'address.district': '惠阳区',
+        'address.address': '高档别墅小区888号',
+        'address.apartmentType': 'Villa',   //户型    
+        'address.elevator': true,
+
+        'opportunity.goodsList[0].goodsId': '1-44JIB6',          //意向产品多个
+        'opportunity.goodsList[0].quantity': 2,
+
+        'opportunity.shopId': obj.shopId,
+        'opportunity.arrivalDate':obj.arrivalDate,
+        // 'opportunity.deliverDate': obj.deliverDate,    //需求日期
+        'opportunity.residentTime': obj.residentTime,   //留店时长
+        'opportunity.source': this.codeList.sourceCode || 'Natural',
+        'opportunity.stylePref': this.codeList.spCode,    //风格
+        'opportunity.progress': this.codeList.pgCode,    //进度
+        'opportunity.colorPref': this.codeList.colorCode,    //颜色偏好
+        'opportunity.competingGoods': obj.competingGoods,
+        'opportunity.buyReason': this.codeList.brCode,   //购买原因
+        'opportunity.budget':obj.budget,    //预算
+        'opportunity.depositPaid': obj.depositPaid,     //已缴定金
+        'opportunity.argreeDiscount': parseInt(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
+        'opportunity.remark': obj.remark2,
+        'opportunity.urgency': obj.urgency,   //是否紧急
+        'opportunity.level': obj.level,   //等级
+        'record.source': obj.source2,
+        'record.followDate': obj.followDate,
+        'record.residentTime': obj.residentTime2,   //跟进时长
+        'record.nextDate': obj.nextDate,
+        'record.situation': obj.situation,
+        'record.plan': obj.plan,
+        'record.dataFile': obj.dataFile
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {
@@ -214,14 +245,6 @@ export default {
       }
       return tempObj
     }
-    // infoSelect(index) {
-    //   this.btns.forEach((element, i) => {
-    //     element.status = i === index
-    //   })
-    // },
-    // changeBtnsStatus(arr) {
-    //   this.btns = arr
-    // }
   }
 }
 </script>

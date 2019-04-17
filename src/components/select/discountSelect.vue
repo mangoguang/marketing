@@ -2,7 +2,7 @@
   <li class="discountSelect">
     <ul>
       <li is="customerLi" :leftText="'已谈折扣'" :icon="true" @click.native="selectDiscount">
-        <span :style="color">{{ discount || '请选择已谈折扣'}}</span>
+        <span :style="color">{{ discountVal || '请选择已谈折扣'}}</span>
       </li>
       <!-- 选择插件 -->
       <li class="pickerContainer">
@@ -60,11 +60,24 @@ export default {
   },
   computed: {
     ...mapState({
-      discountVal: state => state.select.discountVal
+      discountVal: state => state.select.discountVal,
+      newCustomerInfo: state => state.customer.newCustomerInfo
     })
+  },
+  mounted() {
+    this.init()
   },
   methods: {
     ...mapMutations(["setDiscountVal"]),
+    init() {
+      //初始化问题
+      if(this.newCustomerInfo && this.newCustomerInfo.argreeDiscount) {
+        this.color = 'color: #363636'
+        this.setDiscountVal(this.newCustomerInfo.argreeDiscount)
+        this.key1 = false
+        this.key2 = false
+      }
+    },
     firChange(picker, values) {
       if(this.key1) {
         this.firstCount = values[0]
@@ -85,6 +98,14 @@ export default {
     },
     selectDiscount() {
       this.color = "color: #363636";
+      if (this.discountVal === "") {
+        this.discount = this.firstCount + this.secondCount + '折'
+        this.setDiscountVal(this.discount);
+        this.$emit('discountChange', this.discountVal)
+      } else {
+        this.$refs.firPicker.setSlotValue(0, this.firstCount);
+        this.$refs.secPicker.setSlotValue(0, this.secondCount);
+      }
       this.popupVisible = true;
     }
   }
