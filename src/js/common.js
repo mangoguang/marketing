@@ -1,8 +1,8 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
+import Vue from 'vue'
 import { Indicator, Toast } from 'mint-ui'
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
+//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 /* axios.defaults.transformRequest = [function (data) {
     let ret = ''
     for (let it in data) {
@@ -10,6 +10,26 @@ axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded'
     }
     return ret
 }] */
+axios.interceptors.request.use(function(config){
+  console.log(config);
+  return config;
+}, function(error){
+  return Promise.reject(error);
+});
+//Vue.prototype.$http=axios;
+let config={
+    transformRequest:[function (data) {
+      let ret = ''
+      for (let it in data) {
+        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+      }
+      return ret
+    }],
+    headers:{
+      'Content-Type':'multipart/form-data'
+    }
+}
+const instance=axios.create(config)
 export default class Common {
   constructor() {
     // this.port = 'http://172.16.10.107'
@@ -175,13 +195,23 @@ export default class Common {
         _this.loading('close')
         clearTimeout(loadingTimeOut)
       }, 10000)
-      axios({
-        withCredentials: true,
+      const instance=axios.create({
+         withCredentials: true
+       }) 
+       instance({
         method: thatType,
         async: false,
         url: url,
         params: params,
+        transformRequest:[function (data) {
+          let ret = ''
+          for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
         headers: {
+          'Content-Type':'multipart/form-data',
           "Authorization": `Bearer ${token.access_token}`,
           'sign': sign
         }

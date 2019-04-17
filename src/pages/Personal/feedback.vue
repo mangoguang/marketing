@@ -86,15 +86,19 @@ export default {
       
          
          //form.action=indexModel.feedback();
-          let f=new FormData('form');
+          /*  let f=new FormData('form');
           f.append('phone',this.phone);
           console.log(f.get('phone'));
           f.append('feedbackInfo',this.remark);
           console.log(f.get('feedbackInfo'));
            for(let i=0;i<this.Files.length;i++){
-            f.append('dataFile[]',this.Files[i]);
-          }  
-         
+            f.append('dataFile',this.Files[i]);
+          }  */
+          let f={
+            phone:this.phone,
+            feedbackInfo:this.remark,
+            dataFile:this.Files
+          } 
           
            indexModel.feedback(f).then(res => {
             if(res.code===0){
