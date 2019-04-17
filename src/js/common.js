@@ -123,7 +123,19 @@ export default class Common {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    // console.log('生成的sign字符串', str, token)
+    console.log('生成的sign字符串', str, token)
+    return sha1.hex(str + token)
+  }
+  getFormSign(obj, token, keys) {
+    let str = ''
+    keys = keys.sort()
+    for (let i= 0; i < keys.length; i++) {
+      if (obj.get(keys[i]) || (obj.get(keys[i]) === 0 || obj.get(keys[i]) === '0')) {
+        str = str === '' ? `${keys[i]}=${obj.get(keys[i])}` : `${str}&${keys[i]}=${obj.get(keys[i])}`
+      }
+    }
+    // let [phone, feedbackInfo] = [obj.get('phone'), obj.get('feedbackInfo')]
+    console.log('生成的sign字符串', str, token)
     return sha1.hex(str + token)
   }
   getAjax(path, params,type) {
@@ -160,6 +172,39 @@ export default class Common {
     })
   }
 
+  getFormdataAjax(path, data, keys) {
+    let _this = this
+    let token = JSON.parse(localStorage.getItem('token'))
+    return new Promise((resolve, reject) => {
+      let url = `${this.port}${path}`
+      let sign = this.getFormSign(data, token.access_token, keys)
+      // 显示加载动画，并在10秒后隐藏
+      this.loading('open')
+      let loadingTimeOut = setTimeout(function() {
+        _this.loading('close')
+        clearTimeout(loadingTimeOut)
+      }, 10000)
+      axios({
+        method: 'post',
+        // async: false,
+        url: url,
+        data: data,
+        headers: {
+          "Authorization": `Bearer ${token.access_token}`,
+          'sign': sign,
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then((res) => {
+        _this.loading('close')
+        if (res.data) {
+          resolve(res.data)
+        } else {
+          resolve(false)
+        }
+      })
+    })
+  }
  
   getFormAjax(path, params,type) {
     let _this = this

@@ -22,6 +22,13 @@
   </message-box>
   
   <form id="form" style="display:none" enctype="multipart/form-data" method='post'></form>
+  <form id="myForm" action="http://10.11.8.7/v2/app/feedback" ref="myForm" method="post">
+    <input type="text" name="feedbackInfo" value="我要反馈信息！">
+    <input type="text" name="phone" value="18824864356">
+    <input type="file" name="dataFile">
+    <br/><br/><br/>
+    <button type="button" @click="setMsg">提交</button>
+  </form>
   
   </div>
 </template>
@@ -77,6 +84,17 @@ export default {
   },
   methods:{
     ...mapMutations('feedback',['setMessageBox','updateRemark','updateContact','updateImgList']),
+    setMsg() {
+      let ref = this.$refs.myForm
+      let dom = document.getElementById('myForm')
+      let formdata = new FormData(ref)
+      console.log('获取手机：', formdata.getAll('phone'))
+
+      console.log('表单信息：', formdata.get('phone'))
+      mango.getFormdataAjax('/v2/app/feedback', formdata, ['phone', 'feedbackInfo']).then((res) => {
+        console.log('保存反馈：', res)
+      })
+    },
     submit(){
       //let imgList=this.$refs.upload.isUpload();
       //this.getImgs(imgList);
@@ -96,18 +114,18 @@ export default {
           console.log(f.get('dataFile[]'));
           console.log(f);
           //form.submit();
-           indexModel.feedback(f).then(res => {
-            if(res.code===0){
-              this.messageTip.tip=res.msg;
-              this.messageTip.showMessageBox=true;
-              this.setMessageBox(this.messageTip);
-            }else{
-              this.messageTip.tip=res.msg;
-              this.messageTip.type=false;
-              this.messageTip.showMessageBox=true;
-              this.setMessageBox(this.messageTip);
-            }
-          }) 
+          //  indexModel.feedback(f).then(res => {
+          //   if(res.code===0){
+          //     this.messageTip.tip=res.msg;
+          //     this.messageTip.showMessageBox=true;
+          //     this.setMessageBox(this.messageTip);
+          //   }else{
+          //     this.messageTip.tip=res.msg;
+          //     this.messageTip.type=false;
+          //     this.messageTip.showMessageBox=true;
+          //     this.setMessageBox(this.messageTip);
+          //   }
+          // }) 
       }
     
      
