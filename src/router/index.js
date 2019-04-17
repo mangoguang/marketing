@@ -185,7 +185,7 @@ export var router = new VueRouter({
   },
   {
     path: '/followRecord',
-    name: '/followRecord',
+    name: 'followRecord',
     component: resolve => require(['../pages/Personal/intention/followRecord'],resolve)
   },
  /*  {
@@ -197,7 +197,7 @@ export var router = new VueRouter({
     }
   }, */
   {
-    path: '/intention/:opportunityId/:status',//status说明：1代表新增，2代表跟进,3代表战败，4代表成交
+    path: '/intention/:opportunityId',
     name: 'intention',
     component: resolve => require(['../pages/Personal/intention/intention'],resolve)
   },

@@ -322,6 +322,18 @@ class IndexModel extends Request {
   updateOpportunity(obj){
     return mango.getAjax('/v3/app/opportunity/update',obj,'post')
   }
+  //获取意向详情
+  getOpportunity(id){
+    return mango.getAjax('/v3/app/opportunity',{opportunityId:id})
+  }
+  //关闭意向
+  closeOpportunity(obj){
+    return mango.getAjax('/v3/app/opportunity',obj,'post')
+  }
+  //新建跟踪记录
+  updateTrackrecord(obj,key){
+    return mango.getFormAjax('/v3/app/trackrecord/update',obj,key)
+  }
  
 }
 

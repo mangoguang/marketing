@@ -86,9 +86,6 @@
         <span slot='update'>确定</span>
         <span slot='cancel'>取消</span>
       </yan-layer-prompt>
-      <yan-layer-msg v-if="isMsg" @confirm="confirm" :info="list">
-        <span slot='confirm'>确定</span>
-      </yan-layer-msg>
     </div>
 </template>
 
@@ -113,7 +110,6 @@ import classifySelect from '../../../components/mySelect/classifySelect'
 import recordPannel from '../../../components/pannel/recordPannel'
 import orderInfo from '../../../components/pannel/orderInfo'
 import yanLayerPrompt from '../../../components/myLayer/yanLayerPrompt'
-import yanLayerMsg from '../../../components/myLayer/yanLayerMsg'
 import { Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 export default {
@@ -152,20 +148,6 @@ export default {
       isPrompt:false,
       isMsg:false,
       isModify:false,
-      list:[
-        {
-          title:'创建时间：',
-          value:''
-        },
-        {
-          title:'战败时间：',
-          value:''
-        },
-        {
-          title:'战败原因：',
-          value:''
-        }
-      ],
       customerId:'',
       oppId:'',
       addressId:'',
@@ -192,7 +174,6 @@ export default {
      recordPannel,
      orderInfo,
      yanLayerPrompt,
-     yanLayerMsg,
      colorSelect,
      discountSelect
   },

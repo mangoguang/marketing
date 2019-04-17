@@ -73,8 +73,8 @@ const state = {
       label:'备注信息',
       placeholder:'添加备注信息'
     },
-    classify:["A","B","C"],
-    urgency:['是','否']
+    classify:[],
+    urgency:[]
   },
   titleModule:{
     info:'意向信息',
@@ -88,6 +88,8 @@ const state = {
 }
 
 const mutations = {
+  setClassify:(state,array) => state.classify=array,
+  setUrgency:(state,array) => state.urgency=array
 }
 
 const actions = {

@@ -1,82 +1,82 @@
 <template>
     <div class="addAdress">
       <mybanner :title="title" style="background:#fff">
-        <button type="button" @click="close" v-if="status==2" style="color:#FF3B30">意向关闭</button>
-         <button type="button" @click="close" v-if="status==3" style="color:#FF3B30">战败原因</button>
+        <button type="button" @click="close" v-if="this.form.status==='New'" style="color:#FF3B30">意向关闭</button>
+         <button type="button" @click="closeReason" v-if="this.form.status==='Approved'" style="color:#FF3B30">战败原因</button>
       </mybanner>
       <title-bar :text="titleModule.info">
-        <button type="button" v-if="status==2" @click="modify">修改</button>
+        <button type="button" v-if="this.form.status==='New'" @click="modify">修改</button>
          
       </title-bar>
       <ul class="list">
         <li>
-          <intention-select v-bind="formInfo.intention" :value="form.intention" :id="customerId" :url="path" :showIcon="selectIcon"/>
+          <intention-select v-bind="formInfo.intention" :value="goodsValue"  :showIcon="selectIcon"/>
         </li>
         <li>
-         <store-select v-bind="formInfo.store" :value="form.store"  :showIcon="selectIcon"/>
+         <store-select v-bind="formInfo.store" :value="form.shopId"  :showIcon="selectIcon"/>
         </li>
         <li>
-          <date-select v-bind="formInfo.time" :value="form.time" @update="updateTime" :showIcon="selectIcon"/>
+          <date-select v-bind="formInfo.time" :value="form.arrivalDate"  :showIcon="selectIcon"/>
         </li>
         <li>
-          <duration-select v-bind="formInfo.duration" :value="form.duration" @update="updateDuration" :showIcon="selectIcon"/>
+          <duration-select v-bind="formInfo.duration" :value="form.residentTime"  :showIcon="selectIcon"/>
         </li>
         <li>
-          <source-select v-bind="formInfo.source" :value="form.source" @update="updateSource" :showIcon="selectIcon"/>
+          <source-select v-bind="formInfo.source" :value="form.sourceName"  :showIcon="selectIcon"/>
         </li>
       </ul>
        <ul class="list">
         <li>
-          <address-select v-bind="formInfo.address" :value="form.address" :id="customerId" :url="path" :showIcon="selectIcon"/>
+          <address-select v-bind="formInfo.address" :value="address"  :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.house" :value="form.house" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.house" :value="apartmentTypeName" :readonly='readonly'/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.elevator" :value="form.elevator" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.elevator" :value="elevator" :readonly='readonly'/>
         </li>
         <li>
-          <reason-select v-bind="formInfo.reason" :value="form.reason" @update="updateReason" :showIcon="selectIcon"/>
+          <reason-select v-bind="formInfo.reason" :value="form.buyReasonName"  :showIcon="selectIcon"/>
         </li>
         <li>
-          <style-select v-bind="formInfo.style" :value="form.style" @update="updateStyle" :showIcon="selectIcon"/>
+          <style-select v-bind="formInfo.style" :value="form.stylePrefName"  :showIcon="selectIcon"/>
         </li>
         <li>
-          <progress-select v-bind="formInfo.progress" :value="form.progress" @update="updateProgress" :showIcon="selectIcon"/>
+          <progress-select v-bind="formInfo.progress" :value="form.progressName" :showIcon="selectIcon"/>
         </li>
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model="form.goods" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/>
         </li>
         <li>
-          <color-select v-bind="formInfo.color" :value="form.color" @update="updateColor" :showIcon="selectIcon"/>
+          <color-select v-bind="formInfo.color" :value="form.colorPrefName" :showIcon="selectIcon"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.budget" v-model="form.budget" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.budget" :value="budget" :readonly='readonly'/>
         </li>
         <li>
-          <date-select v-bind="formInfo.deliver" :value="form.deliver" @update="updateDeliver" :showIcon="selectIcon"/>
+          <date-select v-bind="formInfo.deliver" :value="form.deliverDate"  :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.paid" v-model="form.paid" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.paid" :value="depositPaid" :readonly='readonly'/>
         </li>
         <li>
-          <discount-select v-bind="formInfo.discount" :value="form.discount" @update="updateDiscount" :showIcon="selectIcon"/>
+          <discount-select v-bind="formInfo.discount" :value="argreeDiscount"  :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark" :readonly='readonly'></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :readonly='readonly' :value="form.remark"></yan-textarea>
       <div class="select">
-        <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="classify" :options="formInfo.classify"/>
-        <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
+        <classify-select style="margin-bottom:2.666vw" label="意向分类"  name="classify" :checked="form.level" :options="formInfo.classify"/>
+        <classify-select label="是否紧急"  name="urgency" :checked="urgency" :options="formInfo.urgency"/>
       </div>
       <div>
          <title-bar :text="titleModule.report">
-           <button type="button" v-if="status==2">添加记录</button>
+           <button type="button" v-if="this.form.status==='New'" @click="addRecord">添加记录</button>
          </title-bar>
-         <record-pannel/>
+         <record-pannel :recordList="form.recordList"/>
       </div>
-      <div v-show="status==4">
+      <div v-if="this.form.status==='Closed'">
         <title-bar :text="titleModule.order"/>
         <order-info class="order"/>
       </div>
@@ -115,42 +115,41 @@ import yanLayerPrompt from '../../../components/myLayer/yanLayerPrompt'
 import yanLayerMsg from '../../../components/myLayer/yanLayerMsg'
 import { Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
+import mango from '../../../js'
+import { IndexModel } from '../../../utils'
+const indexModel=new IndexModel()
 export default {
   data () {
     return {
       form:{
-        intention:'',
-        store:'',
-        time:'',
-        duration:'',
-        source:'',
-        address:'',
-        house:'',
-        elevator:'',
-        reason:'',
-        style:'',
-        progress:'',
-        goods:'',
-        color:'',
-        budget:'',
-        deliver:'',
-        paid:'',
-        discount:'',
-        remark:''
+        goodsList:[],
+        shopId:'',
+        arrivalDate:'',
+        residentTime:'',
+        sourceName:'',
+        buyReasonName:'',
+        stylePrefName:'',
+        progressName:'',
+        competingGoods:'',
+        colorPrefName:'',
+        deliverDate:'',
+        remark:'',
+        level:''
       },
-      reasonCode:'',
-      sourceCode:'',
-      styleCode:'',
-      colorCode:'',
-      progressCode:'',
-      classify:'',
-      urgency:'',
       selectIcon:false,
       readonly:true,
       failReason:'',
       isPrompt:false,
       isMsg:false,
-      isModify:false,
+      oppId:'',
+      goodsValue:'',
+      address:'',
+      apartmentTypeName:'',
+      elevator:'',
+      argreeDiscount:'',
+      urgency:'',
+      budget:'',
+      depositPaid:'',
       list:[
         {
           title:'创建时间：',
@@ -165,12 +164,7 @@ export default {
           value:''
         }
       ],
-      customerId:'',
-      oppId:'',
-      addressId:'',
-      path:'',
-      status:'',
-      shopId:''
+      customerId:''
     }
   },
   components:{
@@ -195,90 +189,105 @@ export default {
      colorSelect,
      discountSelect
   },
-  watch:{
-    $route(to,from){
-    console.log('进来了');
-      if(to.params.status==2){
-        //this.$router.go(0);
-        this.status=2;
-      }
-      if(to.params.status==3){
-        //this.$router.go(0);
-        this.status=3;
-      }
-      if(to.params.status==4){
-        //this.$router.go(0);
-        this.status=4;
-      }
-      
-    }
-  },
   computed:{
     ...mapState('intention',[
       'title',
       'formInfo',
       'titleModule'
-    ]),
-    ...mapState(['checkedList'])
+    ])
   },
   created(){
-   this.customerId=this.$route.params.customerId;
-  },
-  activated(){
-    
+   //this.customerId=this.$route.params.customerId;
+   this.getOpportunity();
   },
   mounted(){
 
   },
   methods:{
-    ...mapMutations('addIntention',['updateTitle']),
-    ...mapMutations(['updateAddress','setCheckedList']),
+    ...mapMutations('intention',['setClassify','setUrgency']),
+    getOpportunity(){
+      let id=this.$route.params.opportunityId;
+      indexModel.getOpportunity(id).then(res => {
+        if(res.code===0){
+          //this.form=res.data;
+          this.oppId=res.data.oppId;
+          if(res.data.goodsList.length>0){
+            this.goodsValue=res.data.goodsList[0].goodsName;
+          }
+          this.form.shopId=res.data.shopId;
+          this.form.arrivalDate=res.data.arrivalDate;
+          this.form.residentTime=res.data.residentTime;
+          this.form.sourceName=res.data.sourceName;
+          this.form.buyReasonName=res.data.buyReasonName===''?'未收集':res.data.buyReasonName;
+          this.form.stylePrefName=res.data.stylePrefName===''?'未收集':res.data.stylePrefName;
+          this.form.progressName=res.data.progressName===''?'未收集':res.data.progressName;
+          this.form.competingGoods=res.data.competingGoods===''?'未收集':res.data.competingGoods;
+          this.form.colorPrefName=res.data.colorPrefName===''?'未收集':res.data.colorPrefName;
+          this.form.deliverDate=res.data.deliverDate===''?'未收集':res.data.deliverDate;
+          this.form.remark=res.data.remark===''?'未备注':res.data.remark;
+          this.depositPaid=res.data.depositPaid;
+          this.argreeDiscount=res.data.argreeDiscount;
+          this.form.level=res.data.level;
+          this.setClassify([res.data.level]);
+          if(res.data.urgency){
+            this.urgency="是";
+            this.setUrgency(['是']);
+          }else{
+            this.urgency="否";
+            this.setUrgency(['否']);
+          }
+          this.list=[
+            {
+              title:'创建时间：',
+              value:res.data.createTime
+            },
+            {
+              title:'战败时间：',
+              value:res.data.closeTime
+            },
+            {
+              title:'战败原因：',
+              value:res.data.closeReason
+            }
+          ]
+
+        }
+        
+      })
+    },
     modify(){
-      this.isModify=true;
-     
+      this.$router.push({name:'addIntention',params:{customerId:this.customerId,opportunityId:this.oppId}});
     },
     close(){
-
+      this.isPrompt=true;
     },
-    update(){
-
-      //this.$router.push({name:'address',params:{customerId:this.customerId},query:{redirect:this.path}})
+    closeReason(){
+      this.isMsg=true;
     },
-   updateClassify(option){
-    this.classify=option;
-    console.log("选择"+this.classify);
-   },
-   updateUrgency(option){
-    this.urgency=option;
-    console.log("选择"+this.urgency);
-   },
    layerUpdate(){
-     console.log("确定");
-     console.log(this.failReason);
+     //console.log("确定");
+     //console.log(this.failReason);
+     let obj={
+        opportunityId:this.oppId,
+        closeReason:this.failReason
+      }
+      indexModel.closeOpportunity(obj).then(res => {
+        mango.tip(res.msg);
+      })
    },
    layerCancel(){
-     console.log("取消");
-     console.log(this.failReason);
+      this.isPrompt=false;
+     //console.log("取消");
+     //console.log(this.failReason);
    },
    confirm(){
-     console.log("取消");
+    this.isMsg=false;
+   },
+   addRecord(){
+     this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
    }
+
  
-  },
-  beforeRouteEnter(to,from,next){
-   if(to.params.status==2){
-      next();
-   }
-   if(to.params.status==3){
-      next();
-   }
-   if(to.params.status==4){
-      next();
-   }
-   
-  }, 
-  beforeRouteUpdate(to, from, next) {
-      next();
   }
 };
 </script>
