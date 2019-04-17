@@ -1,5 +1,6 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
+import qs from 'qs' 
 import Vue from 'vue'
 import { Indicator, Toast } from 'mint-ui'
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -10,26 +11,10 @@ import { Indicator, Toast } from 'mint-ui'
     }
     return ret
 }] */
-axios.interceptors.request.use(function(config){
-  console.log(config);
-  return config;
-}, function(error){
-  return Promise.reject(error);
-});
+
 //Vue.prototype.$http=axios;
-let config={
-    transformRequest:[function (data) {
-      let ret = ''
-      for (let it in data) {
-        ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-      }
-      return ret
-    }],
-    headers:{
-      'Content-Type':'multipart/form-data'
-    }
-}
-const instance=axios.create(config)
+
+/* const instance=axios.create(config) */
 export default class Common {
   constructor() {
     // this.port = 'http://172.16.10.107'
@@ -196,25 +181,28 @@ export default class Common {
         clearTimeout(loadingTimeOut)
       }, 10000)
       const instance=axios.create({
-         withCredentials: true
+         //withCredentials: true
+         
        }) 
        instance({
         method: thatType,
         async: false,
         url: url,
-        params: params,
-        transformRequest:[function (data) {
+        params:params,
+       /*  transformRequest:[function (data) {
           let ret = ''
           for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
-        }],
-        headers: {
+        }], */
+        /* contentType:false,
+        processData:false, */
+         headers: {
           'Content-Type':'multipart/form-data',
           "Authorization": `Bearer ${token.access_token}`,
           'sign': sign
-        }
+        } 
       })
       .then((res) => {
         _this.loading('close')
@@ -224,7 +212,27 @@ export default class Common {
           resolve(false)
         }
       })
-    })
+      /* let config={
+        'Content-Type':false,
+        "Authorization": `Bearer ${token.access_token}`,
+        'sign': sign
+      }
+      axios.post(url,params,config).then(res => {
+        _this.loading('close')
+          if (res.data) {
+            resolve(res.data)
+          } else {
+            resolve(false)
+          }
+      }) */
+      axios.interceptors.request.use(function(config){
+        console.log(config);
+        return config;
+      }, function(error){
+        return Promise.reject(error);
+      });
+    }) 
+    
   }
   // getAjax(_vue, port, params, pathVersion,type) {
   //   let _this = this

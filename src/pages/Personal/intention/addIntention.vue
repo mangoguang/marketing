@@ -222,7 +222,7 @@ export default {
         this.form.intention=this.$store.state.checkedList[0].crmId;
       } 
       if(from.name==='intention'&&to.name==='intention'){
-        this.$router.go(0);
+        //this.$router.go(0);
       }
       
     }
