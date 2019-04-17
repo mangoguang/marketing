@@ -55,6 +55,7 @@ export default {
       let inputDOM = this.$refs.inputer;
       // 通过DOM取文件数据
       this.fil = inputDOM.files;
+      console.log('文件：', this.fil)
       let oldLen = this.imgLen;
       let len = this.fil.length + oldLen;
       if (len > 5) {
@@ -92,10 +93,31 @@ export default {
       }
       return url;
     },
+    //删除图片
     delImg(key,i) {
-      console.log(11,this.imgs[key])
       this.$delete(this.imgs, key);
+      let formdata = this.newCustomerInfo.dataFile
+      //获取删除后的formdata
+      let temp = this.getArr(i,formdata.getAll('dataFile'))
+      formdata.delete('dataFile')
+      temp.forEach(item => {
+        formdata.append('dataFile', item)
+      });
+      this.newCustomerInfo.dataFile = formdata
+      this.setNewCustomerInfo(this.newCustomerInfo)
       this.imgLen--;
+    },
+    //
+    getArr(i,arr) {
+      let newArr = []
+      if(i === 0) {
+        newArr = arr.slice(1)
+      }else if(i === 1) {
+        newArr = [...arr.slice(0,1),...arr.slice(2)]
+      }else {
+        newArr = [...arr.slice(0,i),...arr.slice(i + 1)]
+      }
+      return newArr
     },
     //图片转位base64
     submit(file) {
@@ -104,6 +126,7 @@ export default {
         // 图片文件转换为base64
         reader.readAsDataURL(file);
         reader.onload = (e) => {
+          // console.log('事件原对象：', e)
           this.imgUrl = e.target.result
           this.changeFormData(this.imgUrl)
         };

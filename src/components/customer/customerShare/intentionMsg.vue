@@ -29,7 +29,7 @@ export default {
       // })
     },
     newCustomer() {
-      this.$router.push({path:`/intention/${this.$route.query.id}/${0}`})
+      this.$router.push({path:`/intention/${this.$route.query.id}/${1}`})
       // this.$router.push({
       //   path:'/intention',
       //   params: {

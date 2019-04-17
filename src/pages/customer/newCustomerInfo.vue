@@ -159,28 +159,31 @@ export default {
       // indexModel.getType('DR_APARTMENT_TYPE').then(res => {
       //   console.log(res)
       // })
-      if(!this.newCustomerInfo.sex) {
-        MessageBox.alert('性别不能为空')
-      }else if(!this.newCustomerInfo.username) {
-        MessageBox.alert('姓名不能为空')
-      }
+      // if(!this.newCustomerInfo.sex) {
+      //   MessageBox.alert('性别不能为空')
+      // }else if(!this.newCustomerInfo.username) {
+      //   MessageBox.alert('姓名不能为空')
+      // }
       // let ref = this.$refs.myForm
       // let formdata = new FormData(ref)
 
       let formdata = this.newCustomerInfo.dataFile
-      let obj = this.updateParams(this.newCustomerInfo)
-      let arr = []
-      for(var key in obj) {
-        formdata.append(key,obj[key])
-        arr.push(key)
-      }
-      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
-        if(res.status) {
-          MessageBox.alert('保存成功！').then(action => {
-            this.$router.go(-1)
-          })
-        }
-      })
+      console.log(111, formdata.getAll('dataFile'))
+      
+
+      // let obj = this.updateParams(this.newCustomerInfo)
+      // let arr = []
+      // for(var key in obj) {
+      //   formdata.append(key,obj[key])
+      //   arr.push(key)
+      // }
+      // mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+      //   if(res.status) {
+      //     MessageBox.alert('保存成功！').then(action => {
+      //       this.$router.go(-1)
+      //     })
+      //   }
+      // })
     },
     //初始化数据
     setInitData() {
