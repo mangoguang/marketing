@@ -4,6 +4,7 @@
     <ul class="load_box">
       <div v-if="imgLen>=5 ? false : true" class="addFile">
         <input
+          name='dataFile'
           type="file"
           class="upload"
           @change="addImg"
@@ -16,9 +17,9 @@
           <p>添加图片</p>
         </div>
       </div>
-      <li v-for="(value, key) in imgs" :key="key">
+      <li v-for="(value, key, i) in imgs" :key="key">
         <img :src="getObjectURL(value)">
-        <a class="close" @click="delImg(key)">
+        <a class="close" @click="delImg(key,i)">
           <img src="../../../assets/imgs/egg_delete.png" alt="">
         </a>
       </li>
@@ -74,6 +75,7 @@ export default {
         );
        this.submit(this.fil[i])
       }
+      // this.saveData()
     },
     //创建url预览图片
     getObjectURL(file) {
@@ -90,7 +92,8 @@ export default {
       }
       return url;
     },
-    delImg(key) {
+    delImg(key,i) {
+      console.log(11,this.imgs[key])
       this.$delete(this.imgs, key);
       this.imgLen--;
     },
@@ -119,8 +122,10 @@ export default {
       //FormData对象
       let imgUrl = this.formData
       imgUrl.append("dataFile", blob, Date.now() + ".jpg");
-      this.newCustomerInfo.dataFile = imgUrl
-      this.setNewCustomerInfo(this.newCustomerInfo)
+      if(imgUrl.getAll('dataFile') && imgUrl.getAll('dataFile')[0]) {
+        this.newCustomerInfo.dataFile = imgUrl
+        this.setNewCustomerInfo(this.newCustomerInfo)
+      }
     }
   }
 };
