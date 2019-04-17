@@ -271,7 +271,7 @@ class IndexModel extends Request {
     return mango.getAjax('/v3/app/daily', obj)
   }
   //获取单日总结安排
-  getCurDayData(obj) {
+  getCurMonthData(obj) {
     return mango.getAjax('/v3/app/summarize/list', obj)
   }
   
