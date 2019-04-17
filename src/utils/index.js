@@ -318,6 +318,10 @@ class IndexModel extends Request {
       type: type
     })
   }
+  //保存游客
+  getVisitor(obj,type) {
+    return mango.getAjax('/v3/app/customer/tourist', obj,type)
+  }
  
 }
 

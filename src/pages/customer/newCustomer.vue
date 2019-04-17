@@ -11,7 +11,7 @@
       >{{item.name}}</li>
     </ul>
     <customer-search v-show="btnlist[0].status" />
-    <visitor v-show="btnlist[1].status" />
+    <visitor v-show="btnlist[1].status" :fromName='fromName'/>
   </div>
 </template>
 
@@ -40,8 +40,14 @@ export default {
   },
   data() {
     return {
-      btnlist: ''
+      btnlist: '',
+      fromName: ''
     };
+  },
+  beforeRouteEnter(to,from,next) {
+    next(vm => {
+      vm.fromName = from.name
+    })
   },
   computed: {
     ...mapState({
