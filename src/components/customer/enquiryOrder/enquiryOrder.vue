@@ -306,7 +306,7 @@ export default {
       //     }
       //   });
       this.setDealTabStatus(mango.btnList(['订单信息', '客户信息', '意向信息'], 0))
-      this.$router.push({ path: "/enquiryInfo",query: {id: accntId} });
+      this.$router.push({ path: "/enquiryInfo",query: {id: accntId,status:2} });
     }
   }
 };
