@@ -305,7 +305,7 @@ export default {
     },
     sexChange(val) {
       // console.log('sex改变了：', val)
-      this.newCustomerInfo.sex = val === '男' ? 'Mr.' :  this.newCustomerInfo.sex === '女'? 'Ms.' : 'Unknown'
+      this.newCustomerInfo.sex = val === '男' ? 'Mr.' :  (val === '女'? 'Ms.' : 'Unknown')
       this.setSexVal(val)
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
@@ -335,6 +335,7 @@ export default {
     setInitData() {
       this.setNewCustomerInfo({})
       this.setAgeVal('')
+      this.setSexVal('')
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.newCustomerInfo.dataFiles = new FormData()
       if(this.$route.query.phone) {

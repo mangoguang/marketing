@@ -58,7 +58,7 @@ export default {
       if(this.newCustomerInfo.sex) {
         this.color = 'color: #363636'
         let sex;
-        sex = this.newCustomerInfo.sex === 'Mr.'? '男' : this.newCustomerInfo.sex ==='Ms.'? '女' : '未知'
+        sex = this.newCustomerInfo.sex === 'Mr.'? '男' : (this.newCustomerInfo.sex ==='Ms.'? '女' : '未知')
         this.setSexVal(sex)
       }
     },
