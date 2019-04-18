@@ -38,7 +38,8 @@ export default {
       if(this.list[index].status) {
         return
       }
-      this.init(index)
+      this.init(index);
+      
     },
     //初始化选择第一个
     init(i) {
@@ -46,6 +47,7 @@ export default {
       this.list = btnList(this.shop, i)
       this.initShopList(this.list)
       this.getShopVal()
+      localStorage.setItem('shopIndex',i);
     },
     //判断vuex中是否已经有数据
     isInit() {

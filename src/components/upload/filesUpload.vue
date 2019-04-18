@@ -21,7 +21,7 @@ import { Actionsheet, Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 Vue.component(Actionsheet.name, Actionsheet);
 export default {
-  props:['path','picLen'],
+  props:['path','picLen','clear'],
   data () {
     let that=this;
     return {
@@ -45,11 +45,20 @@ export default {
       if(from.name==='imgPreview'){
         this.picVal=this.$store.state.picVal;
       }
+    },
+    clear:function(newVal,oldValue){
+      console.log(newVal);
+      if(newVal){
+        this.picVal=[];
+        this.FilesList=[];
+      }
     }
   },
   mounted(){
-   this.picVal=window.picVal||[];
+   this.picVal=this.$store.state.picVal;
   },
+ 
+   
   methods:{
     ...mapMutations(['delFiles','delPicVal','setFiles','setPicVal']),
     openAction(){
@@ -121,9 +130,6 @@ export default {
      // this.$router.push({path:'/previewImg',query:{picVal:JSON.stringify(this.picVal)}});
      this.$router.push({path:'/previewImg'});
     }
-  },
-  destroyed(){
-    window.picVal=[];
   }
 };
 </script>

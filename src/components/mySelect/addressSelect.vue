@@ -36,7 +36,7 @@ export default {
 .inputBox{
   font-size: 4vw;
   color:#363636;
-  height:12vw;
+  max-height:12vw;
   line-height: 12vw;
   padding-right:4.266vw;
   display:flex;

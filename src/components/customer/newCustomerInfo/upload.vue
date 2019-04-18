@@ -4,6 +4,7 @@
     <ul class="load_box">
       <div v-if="imgLen>=5 ? false : true" class="addFile">
         <input
+          name='record.dataFile'
           type="file"
           class="upload"
           @change="addImg"
@@ -16,9 +17,9 @@
           <p>添加图片</p>
         </div>
       </div>
-      <li v-for="(value, key) in imgs" :key="key">
+      <li v-for="(value, key, i) in imgs" :key="key">
         <img :src="getObjectURL(value)">
-        <a class="close" @click="delImg(key)">
+        <a class="close" @click="delImg(key,i)">
           <img src="../../../assets/imgs/egg_delete.png" alt="">
         </a>
       </li>
@@ -54,6 +55,7 @@ export default {
       let inputDOM = this.$refs.inputer;
       // 通过DOM取文件数据
       this.fil = inputDOM.files;
+      // console.log('文件：', this.fil)
       let oldLen = this.imgLen;
       let len = this.fil.length + oldLen;
       if (len > 5) {
@@ -74,6 +76,7 @@ export default {
         );
        this.submit(this.fil[i])
       }
+      // this.saveData()
     },
     //创建url预览图片
     getObjectURL(file) {
@@ -90,9 +93,31 @@ export default {
       }
       return url;
     },
-    delImg(key) {
+    //删除图片
+    delImg(key,i) {
       this.$delete(this.imgs, key);
+      let formdata = this.newCustomerInfo.dataFiles
+      //获取删除后的formdata
+      let temp = this.getArr(i,formdata.getAll('record.dataFile'))
+      formdata.delete('record.dataFile')
+      temp.forEach(item => {
+        formdata.append('record.dataFile', item)
+      });
+      this.newCustomerInfo.dataFiles = formdata
+      this.setNewCustomerInfo(this.newCustomerInfo)
       this.imgLen--;
+    },
+    //
+    getArr(i,arr) {
+      let newArr = []
+      if(i === 0) {
+        newArr = arr.slice(1)
+      }else if(i === 1) {
+        newArr = [...arr.slice(0,1),...arr.slice(2)]
+      }else {
+        newArr = [...arr.slice(0,i),...arr.slice(i + 1)]
+      }
+      return newArr
     },
     //图片转位base64
     submit(file) {
@@ -101,6 +126,7 @@ export default {
         // 图片文件转换为base64
         reader.readAsDataURL(file);
         reader.onload = (e) => {
+          // console.log('事件原对象：', e)
           this.imgUrl = e.target.result
           this.changeFormData(this.imgUrl)
         };
@@ -117,10 +143,12 @@ export default {
       //Blob对象
       let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
       //FormData对象
-      let imgUrl = this.formData
-      imgUrl.append("dataFile", blob, Date.now() + ".jpg");
-      this.newCustomerInfo.dataFile = imgUrl
-      this.setNewCustomerInfo(this.newCustomerInfo)
+      let imgUrl = this.newCustomerInfo.dataFiles
+      imgUrl.append("record.dataFile", blob, Date.now() + ".jpg");
+      if(imgUrl.getAll('record.dataFile') && imgUrl.getAll('record.dataFile')[0]) {
+        // this.newCustomerInfo.dataFiles = imgUrl
+        this.setNewCustomerInfo(this.newCustomerInfo)
+      }
     }
   }
 };

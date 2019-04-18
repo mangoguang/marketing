@@ -66,7 +66,7 @@ export default {
     },
     getStyle(){
       indexModel.getArea('DR_STYLE_PRE').then(res => {
-        console.log(res);
+        //console.log(res);
         if(res.code===0){
           this.slots[0].values=res.data;
         }

@@ -1,7 +1,7 @@
 <template>
   <li class="sourceSelect">
     <ul>
-      <li is="customerLi" :leftText="'所属门店'" :start='"*"' :icon="true" @click.native="selectShop">
+      <li is="customerLi" :leftText="'所属门店'" :start='start' :icon="true" @click.native="selectShop">
         <!-- <span>{{shopVal || '请选择门店'}}</span> -->
         <span>{{ val }}</span>
       </li>
@@ -33,6 +33,7 @@ import customerLi from '../customer/customerLi'
 
 export default {
   name: 'shopSelect',
+  props: ['start'],
   components:{customerLi},
   data() {
     return {

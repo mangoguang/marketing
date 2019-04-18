@@ -6,35 +6,35 @@
         <span>下次跟进时间</span>
       </div>
       <div class="yan-follow-box">
-        <div class="yan-follow-item" :class="{'yan-item-on':isOn}">
+        <div class="yan-follow-item" :class="{'yan-item-on':isOn}" v-for="(item,index) in recordList" :key="index">
           <div class="yan-follow-th">
-            <span>2018-10-18</span>
-            <span>电话沟通</span>
+            <span>{{item.followDate}}</span>
+            <span>{{item.source}}</span>
             <div>
-             <span>2018-10-18</span>
+             <span>{{item.nextDate}}</span>
              <img src="../../assets/imgs/arrowDown.png" alt="" class="arrow" :class="{'yan-arrow-on':isRotate}" @click="open">
             </div>
           </div>
           <div class="collapse">
             <ul class="list">
               <li>
-                <yan-input label="跟进方式" readonly />
+                <yan-input label="跟进方式" readonly :value="item.source"/>
               </li>
               <li>
-                <yan-input label="跟进时间" readonly />
+                <yan-input label="跟进时间" readonly :value="item.followDate"/>
               </li>
               <li>
-                <yan-input label="跟进时长" readonly />
+                <yan-input label="跟进时长" readonly :value="residentTime"/>
               </li>
             </ul>
-            <yan-textarea label="跟进情况" readonly />
-            <yanInput label="下次跟进" readonly class="next"/>
-            <yan-textarea label="下一步计划" readonly />
+            <yan-textarea label="跟进情况" readonly :value="item.situation"/>
+            <yanInput label="下次跟进" readonly class="next" :value="item.nextDate"/>
+            <yan-textarea label="下一步计划" readonly :value="item.plan"/>
             <p class="title">附件图片</p>
             <div class="img-box">
-               <ul class="img-list">
-                <li>
-                  <img src="" alt="">
+               <ul class="img-list" >
+                <li v-for="(itemUrl,uIndex) in item.imgUrl" :key="uIndex">
+                  <img :src="itemUrl.url" alt="">
                 </li>
               </ul>
               <span>1/5</span>
@@ -51,6 +51,7 @@ import yanInput from '../yanInput'
 import yanTextarea from '../yanTextarea'
 import upload from '../upload/filesUpload'
 export default {
+  props:['recordList'],
   data () {
     return {
       isOn:false,

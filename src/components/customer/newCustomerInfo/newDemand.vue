@@ -10,9 +10,16 @@
       </li>
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
-      <li is="customerLi" :leftText="'客户地址'" :icon='true'>
+
+      
+
+
+
+      <!-- <li is="customerLi" :leftText="'客户地址'" :icon='true'>
          <span style="color: #999">请选择客户地址</span>
-      </li>
+      </li> -->
+
+
       <li is="customerLi" :leftText="'户型大小'">
         <input v-model="newCustomerInfo.apartmentType" type="text" placeholder="请先选客户地址">
       </li>
@@ -63,8 +70,9 @@ import { Picker, Popup } from 'mint-ui'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
-import customerLi from '../../../components/customer/customerLi'
-import bigBtn from '../../../components/customer/bigBtn'
+
+import customerLi from '../customerLi'
+import bigBtn from '../bigBtn'
 import shopSelect from '../../select/shopSelect'
 import sourceSelect from '../../select/sourceSelect'
 import BuyReason from '../../select/buyReason'
@@ -112,7 +120,8 @@ export default {
       shopVal: state => state.select.shopVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
       discountVal: state => state.select.discountVal,
-      shopList: state => state.chooseShop.shopList
+      shopList: state => state.chooseShop.shopList,
+      formInfo: state => state.addIntention.formInfo
     })
   },
   watch: {
@@ -279,6 +288,23 @@ export default {
 @import "../../../assets/common.scss";
 .newDemand{
   background: #f8f8f8;
+  .address {
+    background: #fff;
+    width: 100vw;
+    font-size: $fontSize;
+    color: $fontCol;
+    box-sizing: border-box;
+    padding: 0 5vw;
+    border-bottom: 1px #ccc solid;
+    min-height:11.3vw
+  }
+  input{
+    color:#363636;
+    font-size: 3.2vw;
+  }
+  // input::-webkit-input-placeholder{
+  //   color:red;
+  // }
   li{
     display: flex;
     h3{

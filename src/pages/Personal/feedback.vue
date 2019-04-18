@@ -5,7 +5,7 @@
       <textarea name="" id=""  placeholder="请描述你的反馈意见，我们将不断改进" maxlength="250" v-model="remark"></textarea>
       <span>{{remark.length}}/250</span>
     </div>
-    <upload ref="upload" path="this.path" picLen='3'/>
+    <upload ref="upload" path="this.path" picLen='3' :clear="isClear"/>
     <div class="form">
       <yan-input v-bind="contactObj" v-model="phone" :showIcon="false"/>
     </div>
@@ -20,16 +20,6 @@
         <button type="button" @click="cancel">确定</button>
     </template>
   </message-box>
-  
-  <form id="form" style="display:none" enctype="multipart/form-data" method='post'></form>
-  <form id="myForm" action="http://10.11.8.7/v2/app/feedback" ref="myForm" method="post">
-    <input type="text" name="feedbackInfo" value="我要反馈信息！">
-    <input type="text" name="phone" value="18824864356">
-    <input type="file" name="dataFile">
-    <br/><br/><br/>
-    <button type="button" @click="setMsg">提交</button>
-  </form>
-  
   </div>
 </template>
 
@@ -52,7 +42,8 @@ export default {
         type:true,
         tip:'提交成功！感谢您的反馈~'
       },
-      path:'/feedback'
+      path:'/feedback',
+      isClear:false
     }
   },
   components:{
@@ -63,7 +54,7 @@ export default {
       upload
   },
   computed:{
-    ...mapState('feedback',['title','contactObj','messageBox','imgList']),
+    ...mapState('feedback',['title','contactObj','messageBox']),
     ...mapState(['Files']),
     remark:{
       get(){
@@ -84,45 +75,37 @@ export default {
   },
   methods:{
     ...mapMutations('feedback',['setMessageBox','updateRemark','updateContact','updateImgList']),
-    setMsg() {
-      let ref = this.$refs.myForm
-      let dom = document.getElementById('myForm')
-      let formdata = new FormData(ref)
-      console.log('获取手机：', formdata.getAll('phone'))
-
-      console.log('表单信息：', formdata.get('phone'))
-      mango.getFormdataAjax('/v2/app/feedback', formdata, ['phone', 'feedbackInfo']).then((res) => {
-        console.log('保存反馈：', res)
-      })
-    },
+    ...mapMutations(['setFiles','setPicVal']),
     submit(){
-      //let imgList=this.$refs.upload.isUpload();
-      //this.getImgs(imgList);
-      if(this.valid()){
-          let form=document.getElementById("form");  
-      
-         
-         //form.action=indexModel.feedback();
-          let f=new FormData('form');
+      if(this.valid()){ 
+           let f=new FormData();
           f.append('phone',this.phone);
           console.log(f.get('phone'));
           f.append('feedbackInfo',this.remark);
           console.log(f.get('feedbackInfo'));
            for(let i=0;i<this.Files.length;i++){
-            f.append('dataFile[]',this.Files[i]);
-          }  
-         
-          
-           indexModel.feedback(f).then(res => {
+            f.append('dataFile',this.Files[i]);
+          }
+           indexModel.feedback(f,['phone','feedbackInfo']).then(res => {
             if(res.code===0){
               this.messageTip.tip=res.msg;
               this.messageTip.showMessageBox=true;
               this.setMessageBox(this.messageTip);
+              this.setFiles([]);
+              this.setPicVal([]);
+              this.updateRemark('');
+              this.updateContact('');
+              this.isClear=true;
             }else{
               this.messageTip.tip=res.msg;
               this.messageTip.type=false;
               this.messageTip.showMessageBox=true;
               this.setMessageBox(this.messageTip);
+              this.setFiles([]);
+              this.setPicVal([]);
+              this.updateRemark('');
+              this.updateContact('');
+              this.isClear=true;
             }
           }) 
       }

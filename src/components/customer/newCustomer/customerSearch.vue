@@ -36,7 +36,7 @@ export default {
       }],
       chooseVal: '请输入客户手机号',
       existStatus: false,
-      btnStatus: '',
+      cusId: '',
       tipsVal: '手机号码已存在，'
     }
   },
@@ -62,11 +62,9 @@ export default {
           res = res.data
           if (res) {
             this.existStatus = true
-            if(this.btnStatus) {
-              this.$router.push({path: `/customerInfo/${res.customerId}`})
-            }
+            this.cusId = res.customerId
           } else {
-            this.$router.push({path: `/newCustomerInfo/0?${type}=${this.phone}`})
+            this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}`})
           }
         })
       }else {
@@ -80,8 +78,12 @@ export default {
     },
     //提示框的值
     btnSelect(val) {
+      if(val) {
+        this.$router.push({path: '/customerInfo',query: {
+          id:this.cusId
+        }})
+      }
       this.existStatus = false
-      this.btnStatus = val
     }
   }
 }
