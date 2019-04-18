@@ -10,7 +10,7 @@
           <span>客户描述</span>
         </div>
       </li>
-      <new-descript :select='true' :fromName='fromName' />
+      <new-descript :select='true' :fromName='fromName' :areaType='false'/>
     </ul>
     <!-- <ul>
       <li @click="controlDemand">

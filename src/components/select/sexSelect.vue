@@ -60,7 +60,7 @@ export default {
         let sex;
         sex = this.newCustomerInfo.sex === 'Mr.'? '男' : (this.newCustomerInfo.sex ==='Ms.'? '女' : '未知')
         this.setSexVal(sex)
-      }
+      } 
     },
     selectSex() {
       this.color = 'color: #363636'

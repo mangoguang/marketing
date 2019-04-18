@@ -27,7 +27,7 @@
     <div v-show="dealTabStatus[1].status">
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else>
-        <newDescript :select='this.list.headPortrait? false : true' :list='list'/>
+        <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true'/>
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
@@ -113,8 +113,10 @@ export default {
     saveMsg() {
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
+        return
       }else if(!this.newCustomerInfo.username) {
         MessageBox.alert('姓名不能为空')
+        return
       }
       let testPhone = variable.testPhone(this.newCustomerInfo.phone)
       if(testPhone) {

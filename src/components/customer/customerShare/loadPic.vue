@@ -51,6 +51,11 @@ export default {
       imageData:''
     };
   },
+  watch: {
+    customerImage() {
+      this.headerImage = this.customerImage
+    }
+  },
   computed: {
     ...mapState({
       upLoadUrl: state => state.loadImgUrl.upLoadUrl

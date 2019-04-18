@@ -25,10 +25,17 @@
       <li is="customerLi" :leftText="'客户职业'">
         <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业">
       </li>
-      <li is="areaSelect" @areaChange="areaChange"></li>
-       <li is="customerLi" :leftText="'客户地址'"  >
-        <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址">
-      </li>
+      <template v-if="areaType">
+        <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="toAddress">
+          <span>地址管理</span>
+        </li>
+      </template>
+      <template v-else>
+        <li is="areaSelect" @areaChange="areaChange"></li>
+        <li is="customerLi" :leftText="'客户地址'"  >
+          <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址">
+        </li>
+      </template>
       <li class="textarea">
         <h3>客户描述</h3>
         <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧"></textarea>
@@ -74,7 +81,7 @@ import variable from '../../../js/variable'
 import {turnParams,changeFormData} from '../../../utils/customer'
 export default {
   name:'customerDescript',
-  props: ['btns', 'select', 'fromName', 'list'],
+  props: ['btns', 'select', 'fromName', 'list', 'areaType'],
   components: {
     customerLi,
     bigBtn,
@@ -106,6 +113,9 @@ export default {
       if(this.fromName === 'NewCustomer') {
         this.setInitData()
       }
+    },
+    list() {
+      this.hasList()
     }
   },
   computed: {
@@ -148,17 +158,19 @@ export default {
       }
       this.$set(this.newCustomerInfo, 'username',this.list.username)
       //设置性别选框
-      this.newCustomerInfo.sex = this.list.sex
-      if(this.newCustomerInfo.sex) {
-        this.setSexVal(this.list.sex)
+      // this.newCustomerInfo.sex = this.list.sex
+      if(this.list.sex) {
+        this.$set(this.newCustomerInfo, 'sex',this.list.sex)
+        let sex = this.list.sex === 'Ms.'? '女' : this.list.sex ==='Mr.'? '男' : '未知'
+        this.setSexVal(sex)
       }
       //设置日期组件初始日期
       this.$set(this.newCustomerInfo, 'birthday',this.list.birthday)
       this.today = this.list.birthday
       this.newCustomerInfo.duty = this.list.duty
       //设置年龄选框
-      this.newCustomerInfo.age = this.list.age
-       if(this.newCustomerInfo.age) {
+       if(this.list.age) {
+        this.newCustomerInfo.age = this.list.age
         this.setAgeVal(this.list.age)
       }
       this.newCustomerInfo.phone = this.list.phone
@@ -191,6 +203,15 @@ export default {
       this.newCustomerInfo.city = val.cityCode
       this.newCustomerInfo.area = val.countyCode
       this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //
+    toAddress() {
+      this.$router.push({
+        name: 'selectAddress',
+        parmas: {
+          customerId: this.$route.query.id
+        }
+      })
     },
     sexChange(val) {
       // console.log('sex改变了：', val)
