@@ -140,8 +140,6 @@ export default {
     }
   },
   mounted() {
-    this.path = this.$route.path
-
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
     //获取默认进店时间

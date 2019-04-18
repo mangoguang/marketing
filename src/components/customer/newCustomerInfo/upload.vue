@@ -4,7 +4,7 @@
     <ul class="load_box">
       <div v-if="imgLen>=5 ? false : true" class="addFile">
         <input
-          name='dataFile'
+          name='record.dataFile'
           type="file"
           class="upload"
           @change="addImg"
@@ -55,7 +55,7 @@ export default {
       let inputDOM = this.$refs.inputer;
       // 通过DOM取文件数据
       this.fil = inputDOM.files;
-      console.log('文件：', this.fil)
+      // console.log('文件：', this.fil)
       let oldLen = this.imgLen;
       let len = this.fil.length + oldLen;
       if (len > 5) {
@@ -96,14 +96,14 @@ export default {
     //删除图片
     delImg(key,i) {
       this.$delete(this.imgs, key);
-      let formdata = this.newCustomerInfo.dataFile
+      let formdata = this.newCustomerInfo.dataFiles
       //获取删除后的formdata
-      let temp = this.getArr(i,formdata.getAll('dataFile'))
-      formdata.delete('dataFile')
+      let temp = this.getArr(i,formdata.getAll('record.dataFile'))
+      formdata.delete('record.dataFile')
       temp.forEach(item => {
-        formdata.append('dataFile', item)
+        formdata.append('record.dataFile', item)
       });
-      this.newCustomerInfo.dataFile = formdata
+      this.newCustomerInfo.dataFiles = formdata
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.imgLen--;
     },
@@ -143,10 +143,10 @@ export default {
       //Blob对象
       let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
       //FormData对象
-      let imgUrl = this.formData
-      imgUrl.append("dataFile", blob, Date.now() + ".jpg");
-      if(imgUrl.getAll('dataFile') && imgUrl.getAll('dataFile')[0]) {
-        this.newCustomerInfo.dataFile = imgUrl
+      let imgUrl = this.newCustomerInfo.dataFiles
+      imgUrl.append("record.dataFile", blob, Date.now() + ".jpg");
+      if(imgUrl.getAll('record.dataFile') && imgUrl.getAll('record.dataFile')[0]) {
+        // this.newCustomerInfo.dataFiles = imgUrl
         this.setNewCustomerInfo(this.newCustomerInfo)
       }
     }

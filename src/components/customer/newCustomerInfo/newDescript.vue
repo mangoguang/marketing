@@ -306,6 +306,7 @@ export default {
       this.setNewCustomerInfo({})
       this.setAgeVal('')
       this.setNewCustomerInfo(this.newCustomerInfo)
+      this.newCustomerInfo.dataFiles = new FormData()
       if(this.$route.query.phone) {
         this.newCustomerInfo.phone = this.$route.query.phone
       }else if(this.$route.query.wechat) {
