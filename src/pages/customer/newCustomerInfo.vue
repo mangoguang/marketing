@@ -174,8 +174,16 @@ export default {
       this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
+        return
       }else if(!this.newCustomerInfo.username) {
         MessageBox.alert('姓名不能为空')
+        return
+      }else if(!this.newCustomerInfo.province) {
+        MessageBox.alert('请选择地区')
+        return
+      }else if(!this.newCustomerInfo.address) {
+        MessageBox.alert('请填写客户地址')
+        return
       }
       // // let ref = this.$refs.myForm
       // // let formdata = new FormData(ref)
@@ -214,19 +222,19 @@ export default {
         duty: obj.duty,
         remark: obj.remark,
         
-        'address.province': '190',
-        'address.city': '128',
-        // 'address.district': '惠阳区',
-        'address.address': '高档别墅小区888号',
+        'address.province': obj.province,
+        'address.city': obj.city,
+        'address.district': obj.area,
+        'address.address': obj.address
         // 'address.apartmentType': '1livingRoom2bedRoom',   //户型    
         // 'address.elevator': true,
 
         // 'opportunity.goodsList[0].goodsId': '1-44JIB6',          //意向产品多个
         // 'opportunity.goodsList[0].quantity': 2,
 
-        'opportunity.shopId': this.shops[0].id,
-        'opportunity.arrivalDate':mango.indexTimeB(new Date())[1],
-        'opportunity.source': this.codeList.sourceCode || 'Natural'
+        // 'opportunity.shopId': this.shops[0].id
+        // 'opportunity.arrivalDate':mango.indexTimeB(new Date())[1]
+        // 'opportunity.source': this.codeList.sourceCode || 'Natural'
         // 'opportunity.residentTime': obj.residentTime,   //留店时长
         // 'opportunity.stylePref': this.codeList.spCode,    //风格
         // 'opportunity.progress': this.codeList.pgCode,    //进度

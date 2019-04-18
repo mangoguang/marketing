@@ -322,6 +322,13 @@ class IndexModel extends Request {
       type: type
     })
   }
+  //获取省市区
+  getCity(type, code) {
+    return mango.getAjax('/v1/api/public/address',{
+      type: type,
+      parentCode: code
+    })
+  }
   //新建客户
   newCustomer(obj,type) {
     return mango.getAjax('/v3/app/customer/update',obj,type)

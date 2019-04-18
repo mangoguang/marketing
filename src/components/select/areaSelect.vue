@@ -31,7 +31,8 @@
 </template>
 
 <script>
-
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuex, { mapMutations, mapState } from "vuex"
@@ -59,7 +60,9 @@ export default {
       provinceName: '',
       cityName: '',
       countyName: '',
-      key: false
+      key: false,
+      cityKey: false,
+      areaKey: false
     }
   },
   computed:{
@@ -74,7 +77,6 @@ export default {
   },
   mounted() {
     this.getProvince()
-    // this.$refs.areaPicker.setSlotValue(0, this.val == 1 ? '男' : '女')
   },
   methods:{
     ...mapMutations(["setAreaVal"]),
@@ -85,96 +87,134 @@ export default {
     provinceChange(picker, values) {
       if (this.key) {
         this.provinceName = values[0]
-        this.getCity(this.getAreaCode(values[0], this.provinces))
+        this.getCity(this.getAreaCode(values[0], this.provinces)[0])
+
         this.citySlots = []
         this.countySlots = []
+      }else {
+        this.key = true
       }
-      // console.log('省份；', values, this.provinceName, this.cityName)
     },
     cityChange(picker, values) {
-      if (this.key) {
+      if (this.cityKey) {
+        // console.log('city')
         this.cityName = values[0]
-        this.getCounty(this.getAreaCode(values[0], this.citys))
+        this.getCounty(this.getAreaCode(values[0], this.citys)[0])
         this.countySlots = []
+      }else {
+        this.cityKey = true
       }
-      console.log('城市：', values, this.provinceName, this.cityName)
     },
     countyChange(picker, values) {
-      if (this.key) {
+      if (this.areaKey) {
+        // console.log('area')
         this.countyName = values[0]
-        // this.getCounty(this.getAreaCode(values[0], this.citys))
+        // this.getCounty(this.getAreaCode(values[0], this.citys)[0])
         // console.log('县区', values, this.provinces)
         let obj = {
           provinceName: this.provinceName,
-          provinceCode: this.getAreaCode(this.provinceName, this.provinces),
+          provinceCode: this.getAreaCode(this.provinceName, this.provinces)[1],
           cityName: this.cityName,
-          cityCode: this.getAreaCode(this.cityName, this.citys),
+          cityCode: this.getAreaCode(this.cityName, this.citys)[1],
           countyName: this.countyName,
-          countyCode: this.getAreaCode(this.countyName, this.countys)
+          countyCode: this.getAreaCode(this.countyName, this.countys)[1]
         }
         this.$emit('areaChange', obj)
         this.setAreaVal(obj)
+      }else {
+        this.areaKey = true
       }
     },
     // 根据省名/城市名/地区名匹配对应的行政代码。
     searchCode(arr, name) {
       for (let i = 0; i < arr.length; i ++) {
         if (arr[i].name.indexOf(name) !== -1) {
-          return arr[i].code
+          return arr[i].id
         }
       }
     },
     getProvince() {
-      mango.getAjax(this, 'province', {},'v3').then((res) => {
-        res = res.data
-        // this.getCity(res[0].code)
-        this.provinces = res
-        let temp = this.filtrateName(res)
-        temp.unshift('请选择省份')
-        if (res) {
+      indexModel.getCity('DR_STATE').then(res => {
+        if(res.data) {
+          this.getCity(res.data[0].id)
+          this.provinces = res.data
+          let temp = this.filtrateName(res.data)
+          temp.unshift('请选择省份')
           this.provinceSlots = [{
             values: temp,
             className: 'provinceSlot'
           }]
         }
       })
+      // mango.getAjax(this, 'province', {},'v3').then((res) => {
+      //   res = res.data
+      //   // this.getCity(res[0].id)
+      //   this.provinces = res
+      //   let temp = this.filtrateName(res)
+      //   temp.unshift('请选择省份')
+      //   if (res) {
+      //     this.provinceSlots = [{
+      //       values: temp,
+      //       className: 'provinceSlot'
+      //     }]
+      //   }
+      // })
     },
     getCity(province) {
-      // return new Promise((resolve, reject) => {
-        mango.getAjax(this, 'city', {
-          province: province
-        },'v3').then((res) => {
-          res = res.data
-          if (res) {
-            this.citys = res
-            let temp = this.filtrateName(res)
-            temp.unshift('请选择市')
-            this.citySlots = [{
+      // console.log('city: provinceCode',province)
+      indexModel.getCity('DR_CITY',province).then(res => {
+        if(res.data) {
+          this.citys = res.data
+          let temp = this.filtrateName(res.data)
+           temp.unshift('请选择市')
+           this.citySlots = [{
               values: temp,
               className: 'citySlot'
             }]
-          }
-          // resolve(res)
-        })
-      // })
+        }
+      })
+        // mango.getAjax('/v1/api/public/address', {
+        //   type: 'DR_CITY',
+        //   parentCode: province
+        // }).then((res) => {
+        //   res = res.data
+        //   if (res) {
+        //     this.citys = res
+        //     let temp = this.filtrateName(res)
+        //     temp.unshift('请选择市')
+        //     this.citySlots = [{
+        //       values: temp,
+        //       className: 'citySlot'
+        //     }]
+        //   }
+        // })
     },
     getCounty(city) {
-      // return new Promise((resolve, reject) => {
-        mango.getAjax(this, 'area', {
-          city: city
-        },'v3').then((res) => {
-          res = res.data
-          if (res) {
-            this.countys = res
-            let temp = this.filtrateName(res)
-            temp.unshift('请选择区县')
-            this.countySlots = [{
+      indexModel.getCity('DR_COUNTY',city).then(res => {
+        if(res.data) {
+          this.countys = res.data
+          let temp = this.filtrateName(res.data)
+           temp.unshift('请选择区县')
+           this.countySlots = [{
               values: temp,
               className: 'countySlot'
             }]
-          }
-        })
-      // })
+        }
+      })
+        // mango.getAjax(this, 'area', {
+        //   city: city
+        // },'v3').then((res) => {
+        //   res = res.data
+        //   if (res) {
+        //     this.countys = res
+        //     let temp = this.filtrateName(res)
+        //     temp.unshift('请选择区县')
+        //     this.countySlots = [{
+        //       values: temp,
+        //       className: 'countySlot'
+        //     }]
+        //   }
+        // })
     },
     filtrateName(arr) {
       return arr.map((item) => {
@@ -189,7 +229,7 @@ export default {
         }
       }
       if (arr[index]) {
-        return arr[index].code
+        return [arr[index].id,arr[index].code]
       } else {
         return false
       }

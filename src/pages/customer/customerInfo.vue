@@ -86,9 +86,18 @@ export default {
     saveMsg() {
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
+        return
       }else if(!this.newCustomerInfo.username) {
         MessageBox.alert('姓名不能为空')
+        return
+      }else if(!this.newCustomerInfo.province) {
+        MessageBox.alert('请选择地区')
+        return
+      }else if(!this.newCustomerInfo.address) {
+        MessageBox.alert('请填写客户地址')
+        return
       }
+
       let testPhone = variable.testPhone(this.newCustomerInfo.phone)
       if(testPhone) {
         this.saveData()
