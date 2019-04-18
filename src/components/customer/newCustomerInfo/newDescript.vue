@@ -2,7 +2,7 @@
   <div class="customerDescript">
     <ul>
       <li is="customerLi" :leftText="'头像'" :icon="true" >
-        <unLoadVia class="upload" :select='select'/>
+        <unLoadVia class="upload" :select='select' :customerImage='customerImage'/>
         <!--select表示直接选择照片-->
       </li>
       <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>
@@ -163,7 +163,8 @@ export default {
       county: [],
       countyName: '',
       urgency:false,
-      color: 'color: #999'
+      color: 'color: #999',
+      customerImage: ''
     }
   },
   watch: {
@@ -190,7 +191,7 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
   },
-  mounted() {
+  created() {
     this.hasList()
   },
   methods: {
@@ -207,13 +208,26 @@ export default {
       if(!this.list) {
         return
       }
+      this.newCustomerInfo.dataFiles = new FormData()
+      //设置头像
+      if(this.list.headPortrait) {
+        this.customerImage = this.list.headPortrait
+      }
       this.$set(this.newCustomerInfo, 'username',this.list.username)
-      // this.newCustomerInfo.username = this.list.username
+      //设置性别选框
       this.newCustomerInfo.sex = this.list.sex
-      this.newCustomerInfo.birthday = this.list.birthday
+      if(this.newCustomerInfo.sex) {
+        this.setSexVal(this.list.sex)
+      }
+      //设置日期组件初始日期
+      this.$set(this.newCustomerInfo, 'birthday',this.list.birthday)
       this.today = this.list.birthday
       this.newCustomerInfo.duty = this.list.duty
+      //设置年龄选框
       this.newCustomerInfo.age = this.list.age
+       if(this.newCustomerInfo.age) {
+        this.setAgeVal(this.list.age)
+      }
       this.newCustomerInfo.phone = this.list.phone
       this.newCustomerInfo.weChat = this.list.weChat
       this.newCustomerInfo.qq = this.list.qq
@@ -279,6 +293,7 @@ export default {
     setStoreDate1(value) {
       // this.newCustomerInfo.storeDate = mango.indexTimeB(value)[0]
       this.$set(this.newCustomerInfo,'birthday',mango.indexTimeB(value)[1])
+      this.setNewCustomerInfo(this.newCustomerInfo)
       // console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.storeDate)
     },
     areaChange(val) {

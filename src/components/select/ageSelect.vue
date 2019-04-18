@@ -43,6 +43,11 @@ export default {
       newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
+  // watch: {
+  //   newCustomerInfo() {
+  //     this.init()
+  //   }
+  // },
   created() {
     this.getSlotVal();
     this.init()

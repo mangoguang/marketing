@@ -208,7 +208,6 @@ export default {
         phone: obj.phone,
         username: obj.username,
         sex: obj.sex, 
-        headPortrait: obj.headPortrait,
         birthday: obj.birthday,
         age: obj.age,
         qq:obj.qq,

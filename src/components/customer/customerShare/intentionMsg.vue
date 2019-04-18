@@ -18,13 +18,11 @@ export default {
   methods: {
     //0代表新增，1代表跟进,2代表战败，3代表成交       //未完成//传参数
     toIntentionDetails(index) {
-      this.$router.push({path:`/intention/${this.list[index].oppId}/${this.$route.query.status}`})
+      this.$router.push({path:`/intention/${this.list[index].oppId}`})
       // this.$router.push({
       //   path:'/intention',
       //   params: {
-      //     customerId: this.$route.query.id,
-      //     // oppId: this.list[index].oppId,
-      //     status: 0
+      //     opportunityId: this.$route.query.id
       //   }
       // })
     },

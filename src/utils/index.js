@@ -326,6 +326,17 @@ class IndexModel extends Request {
   getVisitor(obj,type) {
     return mango.getAjax('/v3/app/customer/tourist', obj,type)
   }
+  //编辑客户信息
+  updataCustomer(obj) {
+    return mango.getAjax('/v3/app/customer/update',obj,'post')
+  }
+  //获取客户详情
+  getCustomerDetails(id) {
+    return mango.getAjax('/v3/app/customer/details',{
+      type: 'order',
+      customerId:id
+    })
+  }
   //更新意向
   updateOpportunity(obj){
     return mango.getAjax('/v3/app/opportunity/update',obj,'post')
