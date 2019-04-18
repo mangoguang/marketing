@@ -9,7 +9,6 @@
       <div v-if="!isRecord">
         <title-bar :text="titleModule.info">
           <button type="button" v-if="this.form.status==='New'" @click="modify">修改</button>
-      
         </title-bar>
         <ul class="list">
           <li>
@@ -229,8 +228,7 @@ export default {
           if(res.data.status==="Approved"){
             if(res.data.orderList.length>0){
               this.form.orderList=res.data.orderList;
-            }
-            
+            }  
           }
           this.form.status=res.data.status;
           this.form.shopName=res.data.shopId===''?'未收集':this.getShopName(res.data.shopId);
@@ -250,7 +248,7 @@ export default {
           this.form.level=res.data.level;
           this.setClassify([res.data.level]);
           this.form.recordList=res.data.recordList;
-          if(res.data.urgency){
+          if(res.data.urgency==='Y'){
             this.urgency="是";
             this.setUrgency(['是']);
           }else{
@@ -272,8 +270,6 @@ export default {
             }
           ];
           let addressId=res.data.addressId===''?'未收集':this.getAddress(res.data.addressId);
-          
-
         }
         
       })
@@ -335,7 +331,7 @@ export default {
           if(res.code===0){
             this.address=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}${res.data.address}`;
             this.apartmentTypeName=res.data.apartmentTypeName;
-            this.elevator=res.data.elevator?'有电梯':'无电梯';
+            this.elevator=res.data.elevator==='Y'?'有电梯':'无电梯';
           }
     })
    },

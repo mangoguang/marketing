@@ -77,7 +77,9 @@ export default {
    this.$set(this.form,'customerId',this.$route.params.customerId);
    if(this.$route.query.addressId){
       this.form.id=this.$route.query.addressId;
+      this.updateTitle('编辑地址');
       this.getAddress(this.form.id);
+
    }
   
   },
@@ -93,12 +95,12 @@ export default {
           this.form.address=res.data.address;
           this.form.remark=res.data.remark;
           this.form.apartmentType=res.data.apartmentType;
-          this.form.elevator=res.data.elevator?'true':'false';
+          this.form.elevator=res.data.elevator==='Y'?'Y':'';
           this.form.country=res.data.country;
           this.form.province=res.data.province;
           this.form.city=res.data.city;
           this.form.district=res.data.district;
-          this.elevator=res.data.elevator?'是':'否';
+          this.elevator=res.data.elevator==='Y'?'是':'否';
           this.area=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}`;
           this.apartmentType=res.data.apartmentTypeName;
         }

@@ -67,7 +67,7 @@ export default {
       this.popupVisible=false;
     },
     getSource(){
-      indexModel.getArea('DR_ACCT_SOUCE').then(res => {
+      indexModel.getArea('DR_SOURCE_CHANNEL').then(res => {
         //console.log(res);
         if(res.code===0){
           this.slots[0].values=res.data;

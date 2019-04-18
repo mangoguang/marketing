@@ -331,8 +331,8 @@ class IndexModel extends Request {
     return mango.getAjax('/v3/app/customer/tourist', obj,type)
   }
   //更新意向
-  updateOpportunity(obj){
-    return mango.getAjax('/v3/app/opportunity/update',obj,'post')
+  updateOpportunity(obj,key){
+    return mango.getFormAjax('/v3/app/opportunity/update',obj,key)
   }
 
   //获取意向详情
