@@ -75,17 +75,14 @@ export default {
       index: 1,
       day: 10
     }]
-    console.log(arr.map(item => item.day))
   },
   mounted() {
-    console.log('日报：', this)
     this.curDay = this.getToday()
     let date = new Date()
     const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
     this.curNum = parseInt(date.getDate() - 1)
     // 获取当月数据
     this.getCurMonthData(this.getCurMonth())
-    console.log(123456789900, this.curDate)
     this.getDailyData({
         startDate: `${year}-${month}-${day}`,
         endDate: `${year}-${month}-${day}`
@@ -100,7 +97,6 @@ export default {
       this.curDate = curDay.split(/年|月|日/)
       this.curNum = this.curDate[2]
       // 显示选择日期的当日总结和明日计划
-      console.log('当月数据：', this.curMonthData)
       this.setSumAndPlan(this.curMonthData)
       this.getDailyData({
         startDate: `${this.curDate[0]}-${this.curDate[1]}-${this.curDate[2]}`,
@@ -122,7 +118,6 @@ export default {
     },
     // 明日目标及重点工作安排子组件触发更改文本
     changeDailyPlanTextarea(str) {
-      console.log('明日目标：', str)
     },
     // 获取当天日期字符串，格式如：2019年04月17日
     getToday() {
@@ -157,7 +152,6 @@ export default {
       const index = this.planList.indexOf(num)
       if (index >= 0) {
         this.dailySummaryTextarea = res[index].summarize
-        console.log(99000999, res[index].plan)
         this.dailyPlanTextarea = res[index].plan
       }
     },
@@ -171,7 +165,6 @@ export default {
     },
     // 跳转新建计划页面
     newPlan() {
-      console.log()
       if (this.dailySummaryTextarea === '' && this.dailyPlanTextarea === '') {
         this.$router.push({path: '/newPlan'})
       } else  {

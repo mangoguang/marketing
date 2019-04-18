@@ -42,7 +42,13 @@ export default {
     }
   },
   mounted(){
-
+    let date = new Date()
+    const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    this.curDay = `${year}-${month}-${day}`
+    this.getDailyData({
+      startDate: this.curDay,
+      endDate: this.curDay
+    })
   },
   created(){
 
