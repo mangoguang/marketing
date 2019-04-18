@@ -305,7 +305,7 @@ export default {
     },
     sexChange(val) {
       // console.log('sex改变了：', val)
-      this.newCustomerInfo.sex = val === '男' ? 'Mr.' : 'Ms.'
+      this.newCustomerInfo.sex = val === '男' ? 'Mr.' :  this.newCustomerInfo.sex === '女'? 'Ms.' : 'Unknown'
       this.setSexVal(val)
       this.setNewCustomerInfo(this.newCustomerInfo)
     },

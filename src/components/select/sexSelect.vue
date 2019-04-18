@@ -37,7 +37,7 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['男', '女']}],
+      slots: [{values: ['男', '女','未知']}],
       popupVisible: false,
       key: false,
       color: 'color: #999'
@@ -58,7 +58,7 @@ export default {
       if(this.newCustomerInfo.sex) {
         this.color = 'color: #363636'
         let sex;
-        sex = this.newCustomerInfo.sex === 'Mr.'? '男' : '女'
+        sex = this.newCustomerInfo.sex === 'Mr.'? '男' : this.newCustomerInfo.sex ==='Ms.'? '女' : '未知'
         this.setSexVal(sex)
       }
     },

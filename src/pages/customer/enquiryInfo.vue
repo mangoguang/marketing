@@ -27,7 +27,7 @@
     <div v-show="dealTabStatus[1].status">
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else>
-        <newDescript />
+        <newDescript :select='this.list.headPortrait? false : true' :list='list'/>
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
@@ -40,6 +40,10 @@
 </template>
 
 <script>
+import { MessageBox } from 'mint-ui'
+import {IndexModel} from '../../utils/index'
+import variable from '../../js/variable'
+const indexModel = new IndexModel()
 import dealHeader from '../../components/customer/dealCustomer/dealHeader'
 import newDescript from '../../components/customer/newCustomerInfo/newDescript'
 import OrderInfo from '../../components/customer/dealCustomer/orderInfo'
@@ -63,21 +67,23 @@ export default {
   computed: {
     ...mapState({
       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
-      dealTabStatus: state => state.tabStatus.dealTabStatus
+      dealTabStatus: state => state.tabStatus.dealTabStatus,
+      newCustomerInfo: state => state.customer.newCustomerInfo,
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl
     })
   },
   created() {
     this.getStatus()
     this.getData()
   },
+  destroyed() {
+    this.setUpLoadUrl('')
+  },
   methods: {
-    ...mapMutations(['setDealTabStatus']),
+    ...mapMutations(['setDealTabStatus','setUpLoadUrl']),
     getData() {
       //从父级传id过来请求
-      mango.getAjax('/v3/app/customer/details', {
-        type: 'order',
-        customerId: this.$route.query.id
-      }).then(res => {
+      indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
           let arr = this.changeStatus(this.list.orderList)
@@ -103,9 +109,74 @@ export default {
     editMsg(val) {
       this.editStatus = val
     },
-    //保存资料
+      //保存资料
     saveMsg() {
-      this.editStatus = false
+      if(!this.newCustomerInfo.sex) {
+        MessageBox.alert('性别不能为空')
+      }else if(!this.newCustomerInfo.username) {
+        MessageBox.alert('姓名不能为空')
+      }
+      let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+      if(testPhone) {
+        this.saveData()
+      }else {
+        MessageBox.alert('请填写正确手机号码')
+      }
+    },
+    //
+    saveData() {
+      let formdata = this.newCustomerInfo.dataFiles
+      if(this.upLoadUrl) {
+        this.changeFormData(this.upLoadUrl)
+      }
+      let obj = this.updateParams(this.newCustomerInfo)
+      let arr = []
+      for(var key in obj) {
+        formdata.append(key,obj[key])
+        arr.push(key)
+      }
+      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+        if(res.status) {
+          this.editStatus = false
+          this.getData()
+        }
+      })
+    },
+      //base64转成formdata形式上传
+    changeFormData(url) {
+      let bytes = window.atob(url.split(",")[1]);
+      let temp = new ArrayBuffer(bytes.length);
+      let ia = new Uint8Array(temp);
+      for (var i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i);
+      }
+      //Blob对象
+      let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
+      //FormData对象
+      let formdata = this.newCustomerInfo.dataFiles
+      formdata.append("dataFile", blob, Date.now() + ".jpg");
+    },
+     //获取参数
+     updateParams(obj) {
+      let tempObj = {}
+      let temp = {
+        phone: obj.phone,
+        username: obj.username,
+        sex: obj.sex, 
+        birthday: obj.birthday,
+        age: obj.age,
+        qq:obj.qq,
+        weChat: obj.weChat,
+        duty: obj.duty,
+        remark: obj.remark,
+        customerId: this.$route.query.id
+      }
+      for (let key in temp) {
+        if (temp[key] || temp[key] === 0) {
+          tempObj[key] = temp[key]
+        }
+      }
+      return tempObj
     },
     //切换顶部导航
     clickTab(index) {

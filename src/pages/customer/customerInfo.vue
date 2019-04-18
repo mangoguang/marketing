@@ -95,7 +95,6 @@ export default {
       }else {
         MessageBox.alert('请填写正确手机号码')
       }
-      
     },
     //
     saveData() {
@@ -115,7 +114,6 @@ export default {
           this.getData()
         }
       })
-     
     },
       //base64转成formdata形式上传
     changeFormData(url) {
