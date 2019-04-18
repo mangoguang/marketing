@@ -3,6 +3,7 @@
     <my-banner :title="'新建客户信息'">
       <div class="save" @click="creatNewCustomer">保存</div>
     </my-banner>
+    <!-- <form action="" ref="myForm"> -->
     <ul>
       <li>
         <div class="title">
@@ -36,6 +37,7 @@
       </li>
       <new-record v-show="isShowDeal" :fromName='fromName'/>
     </ul>
+    <!-- </form> -->
     <!-- <new-descript v-show="this.btns[0].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
     <!-- <new-demand v-show="this.btns[1].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
     <!-- <new-record v-show="this.btns[2].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
@@ -54,6 +56,8 @@ import newRecord from '../../components/customer/newCustomerInfo/newRecord'
 import mango from '../../js'
 import variable from '../../js/variable'
 import {returnDate} from '../../utils/customer'
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel() 
 
 export default {
   name:'newCustomerInfo',
@@ -90,12 +94,11 @@ export default {
       enterStoreVal: state => state.select.enterStoreVal,
       sourceVal: state => state.select.sourceVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
-      shopVal: state => state.select.shopVal
+      shopVal: state => state.select.shopVal,
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl
     })
   },
   mounted() {
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
   },
@@ -111,6 +114,7 @@ export default {
     this.setStylePref('')
     this.setProgress('')
     this.setColorPref('')
+    this.setUpLoadUrl('')
   },
   methods: {
     ...mapMutations([
@@ -150,44 +154,52 @@ export default {
       this.$set(this.newCustomerInfo, 'shopId', shopId)
       }
     },
+    //base64转成formdata形式上传
+    changeFormData(url) {
+      let bytes = window.atob(url.split(",")[1]);
+      let temp = new ArrayBuffer(bytes.length);
+      let ia = new Uint8Array(temp);
+      for (var i = 0; i < bytes.length; i++) {
+        ia[i] = bytes.charCodeAt(i);
+      }
+      //Blob对象
+      let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
+      //FormData对象
+      let formdata = this.newCustomerInfo.dataFiles
+      formdata.append("dataFile", blob, Date.now() + ".jpg");
+    },
     //保存客户信息，新建客户	
     creatNewCustomer() {
-      mango.getAjax('/v3/app/customer/update', {
-        ...this.updateParams(this.newCustomerInfo)
-      },'post').then(res => {
-        console.log(res)
+      //头像的formdata
+      // !this.newCustomerInfo.dataFiles? this.newCustomerInfo.dataFiles = new FormData() : ''
+      this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
+      if(!this.newCustomerInfo.sex) {
+        MessageBox.alert('性别不能为空')
+      }else if(!this.newCustomerInfo.username) {
+        MessageBox.alert('姓名不能为空')
+      }
+      // // let ref = this.$refs.myForm
+      // // let formdata = new FormData(ref)
+
+      let formdata = this.newCustomerInfo.dataFiles
+    
+      let obj = this.updateParams(this.newCustomerInfo)
+      let arr = []
+      for(var key in obj) {
+        formdata.append(key,obj[key])
+        arr.push(key)
+      }
+      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+        if(res.status) {
+          MessageBox.alert('保存成功！').then(action => {
+            this.$router.go(-1)
+          })
+        }
       })
-      // this.getShopID(this.shopVal)
-      // let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
-      // if(testPhoneNum) {
-      //   if(this.newCustomerInfo.shopId) {
-      //     this.setInitData()
-      //     mango.getAjax(this, 'customer/update', {
-      //       account: this.ajaxData.account,   //登录账户
-      //       tenantId: this.ajaxData.tenantId,
-      //       ...this.updateParams(this.newCustomerInfo)
-      //       },'v2', 'post').then((res) => {
-      //         if (res.status) {
-      //           MessageBox.alert('保存成功！').then(action => {
-      //             this.$router.go(-1)
-      //         })
-      //       }
-      //     })
-      //   }else {
-      //     mango.tip('请选择门店')
-      //   }
-      // } else {
-      //   mango.tip('请填写正确的手机号码')
-      // }
     },
     //初始化数据
     setInitData() {
-      this.newCustomerInfo.sex = this.sexVal === ''? 0 : this.sexVal ==='男'? 1:2
       this.newCustomerInfo.leaveStore = this.leaveStoreVal
-      if(!this.newCustomerInfo.source) {
-        this.newCustomerInfo.source = '自然进店'
-      }
-     
     },
     //获取参数
      updateParams(obj) {
@@ -195,7 +207,7 @@ export default {
       let temp = {
         phone: obj.phone,
         username: obj.username,
-        sex: obj.sex,  //性别(1:男,2:女,0:未知)，
+        sex: obj.sex, 
         headPortrait: obj.headPortrait,
         birthday: obj.birthday,
         age: obj.age,
@@ -204,11 +216,11 @@ export default {
         duty: obj.duty,
         remark: obj.remark,
         
-        'address.province': '广东',
-        'address.city': '惠州市',
-        'address.district': '惠阳区',
+        'address.province': '190',
+        'address.city': '128',
+        // 'address.district': '惠阳区',
         'address.address': '高档别墅小区888号',
-        'address.apartmentType': 'Villa',   //户型    
+        'address.apartmentType': '1livingRoom2bedRoom',   //户型    
         'address.elevator': true,
 
         'opportunity.goodsList[0].goodsId': '1-44JIB6',          //意向产品多个
@@ -235,8 +247,7 @@ export default {
         'record.residentTime': obj.residentTime2,   //跟进时长
         'record.nextDate': obj.nextDate,
         'record.situation': obj.situation,
-        'record.plan': obj.plan,
-        'record.dataFile': obj.dataFile
+        'record.plan': obj.plan
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

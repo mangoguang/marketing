@@ -6,7 +6,7 @@
         :key="`urgencyBtns${index}`"
         :class="{on: item.status}">
         <button 
-        @touchend="urgencySelect(index)">{{item.name}}</button>
+        @click="urgencySelect(index)">{{item.name}}</button>
       </li>
     </ul>
   </div>

@@ -114,7 +114,7 @@ export default class Common {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    console.log('生成的sign字符串', str, token)
+    // console.log('生成的sign字符串', str, token)
     return sha1.hex(str + token)
   }
   getFormSign(obj, token, keys) {
@@ -126,8 +126,8 @@ export default class Common {
       }
     }
     // let [phone, feedbackInfo] = [obj.get('phone'), obj.get('feedbackInfo')]
-    console.log('生成的sign字符串', str, token)
-    return sha1.hex(str + token)
+    console.log('生成的sign字符串', `${str}:${token}`)
+    return sha1.hex(`${str}${token}`)
   }
   getAjax(path, params,type) {
     let _this = this

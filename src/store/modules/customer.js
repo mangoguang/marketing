@@ -14,7 +14,8 @@ const state = {
   newCustomerInfo: {},
   customerDemand: {},
   customerInfoBtns: [],
-  allLoaded: false
+  allLoaded: false,
+  visitorInfo: {}
 }
 
 const mutations = {
@@ -23,7 +24,8 @@ const mutations = {
   setNewCustomerInfo: (state, obj) => state.newCustomerInfo = obj,
   setCustomerDemand: (state, obj) => state.customerDemand = obj,
   setCustomerInfoBtns: (state, arr) => state.customerInfoBtns = arr,
-  setAllLoaded: (state, boolean) => state.allLoaded = boolean
+  setAllLoaded: (state, boolean) => state.allLoaded = boolean,
+  setVisitorInfo: (state, obj) => state.visitorInfo = obj
 }
 
 const actions = {

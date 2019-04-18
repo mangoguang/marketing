@@ -21,7 +21,7 @@
     </div>
     <div @click="changeImg">
       <div >
-        <input type="file" id="change" accept="image" @change="change" ref="file">
+        <input type="file" id="change" accept="image" @change="change" ref="file" name='dataFile'>
         <label for="change">
           <div class="show">
             <div class="picture" :style="'backgroundImage:url('+headerImage+')'"></div>
@@ -36,7 +36,7 @@
 import {mapState,mapMutations} from 'vuex'
 import Cropper from "cropperjs";
 export default {
-  props: ['select'],
+  props: ['select','customerImage'],
   components: {},
   data() {
     return {
