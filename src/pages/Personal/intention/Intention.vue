@@ -13,7 +13,7 @@
           <intention-select v-bind="formInfo.intention" :value="goodsValue"  :showIcon="selectIcon"/>
         </li>
         <li>
-         <store-select v-bind="formInfo.store" :value="form.shopId"  :showIcon="selectIcon"/>
+         <store-select v-bind="formInfo.store" :value="form.shopName"  :showIcon="selectIcon"/>
         </li>
         <li>
           <date-select v-bind="formInfo.time" :value="form.arrivalDate"  :showIcon="selectIcon"/>
@@ -123,7 +123,7 @@ export default {
     return {
       form:{
         goodsList:[],
-        shopId:'',
+        shopName:'',
         arrivalDate:'',
         residentTime:'',
         sourceName:'',
@@ -134,7 +134,9 @@ export default {
         colorPrefName:'',
         deliverDate:'',
         remark:'',
-        level:''
+        level:'',
+        status:'',
+        recordList:[]
       },
       selectIcon:false,
       readonly:true,
@@ -199,6 +201,7 @@ export default {
   created(){
    //this.customerId=this.$route.params.customerId;
    this.getOpportunity();
+  
   },
   mounted(){
 
@@ -214,21 +217,24 @@ export default {
           if(res.data.goodsList.length>0){
             this.goodsValue=res.data.goodsList[0].goodsName;
           }
-          this.form.shopId=res.data.shopId;
+          this.form.status=res.data.status;
+          this.form.shopName=res.data.shopId===''?'未收集':this.getShopName(res.data.shopId);
           this.form.arrivalDate=res.data.arrivalDate;
           this.form.residentTime=res.data.residentTime;
           this.form.sourceName=res.data.sourceName;
-          this.form.buyReasonName=res.data.buyReasonName===''?'未收集':res.data.buyReasonName;
-          this.form.stylePrefName=res.data.stylePrefName===''?'未收集':res.data.stylePrefName;
-          this.form.progressName=res.data.progressName===''?'未收集':res.data.progressName;
-          this.form.competingGoods=res.data.competingGoods===''?'未收集':res.data.competingGoods;
-          this.form.colorPrefName=res.data.colorPrefName===''?'未收集':res.data.colorPrefName;
-          this.form.deliverDate=res.data.deliverDate===''?'未收集':res.data.deliverDate;
-          this.form.remark=res.data.remark===''?'未备注':res.data.remark;
+          this.form.buyReasonName=res.data.buyReasonName==''?'未收集':res.data.buyReasonName;
+          this.form.stylePrefName=res.data.stylePrefName==''?'未收集':res.data.stylePrefName;
+          this.form.progressName=res.data.progressName==''?'未收集':res.data.progressName;
+          this.form.competingGoods=res.data.competingGoods==''?'未收集':res.data.competingGoods;
+          this.form.colorPrefName=res.data.colorPrefName==''?'未收集':res.data.colorPrefName;
+          this.form.deliverDate=res.data.deliverDate==''?'未收集':res.data.deliverDate;
+          this.form.remark=res.data.remark==''?'未备注':res.data.remark;
+          this.budget=res.data.budget;
           this.depositPaid=res.data.depositPaid;
           this.argreeDiscount=res.data.argreeDiscount;
           this.form.level=res.data.level;
           this.setClassify([res.data.level]);
+          this.form.recordList=res.data.recordList;
           if(res.data.urgency){
             this.urgency="是";
             this.setUrgency(['是']);
@@ -249,7 +255,9 @@ export default {
               title:'战败原因：',
               value:res.data.closeReason
             }
-          ]
+          ];
+          let addressId=res.data.addressId===''?'未收集':this.getAddress(res.data.addressId);
+          
 
         }
         
@@ -285,6 +293,28 @@ export default {
    },
    addRecord(){
      this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
+   },
+   getAddress(id){
+     indexModel.getAddress(id).then(res => {
+          if(res.code===0){
+            this.address=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}${res.data.address}`;
+            this.apartmentTypeName=res.data.apartmentTypeName;
+            this.elevator=res.data.elevator?'有电梯':'无电梯';
+          }
+    })
+   },
+   getShopName(id){
+     let list=JSON.parse(localStorage.getItem('shops'));
+     console.log(list)
+    let name;
+     list.map((item,index) => {
+       console.log(item);
+       if(item.crmId==id){
+         return name=item.name;
+       } 
+     })
+     //console.log(name);    
+    
    }
 
  

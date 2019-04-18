@@ -3,13 +3,11 @@ const state = {
   formInfo:{
     follow:{
       label:'跟进方式',
-      placeholder:'请选择跟进方式',
-      required:true
+      placeholder:'请选择跟进方式'
     },
     time:{
       label:'跟进时间',
-      placeholder:'请选择日期',
-      required:true
+      placeholder:'请选择日期'
     },
     duration:{
       label:'跟进时长',
@@ -21,8 +19,7 @@ const state = {
     },
     nextTime:{
       label:'下次跟进',
-      placeholder:'请选择日期',
-      required:true
+      placeholder:'请选择日期'
     },
     plan:{
       label:'下一步计划',
