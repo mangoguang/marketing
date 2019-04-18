@@ -1,7 +1,7 @@
 <template>
   <li class="module">
     <div :style="{
-      background: `url(../../../../static/images/work/${obj.icon}.png)`,
+      background: `url(./static/images/work/${obj.icon}.png)`,
       backgroundSize: '100%'
     }"></div>
     <h3>{{obj.title}}</h3>

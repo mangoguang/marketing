@@ -5,7 +5,7 @@
       </mybanner>
       <ul class="list">
         <li>
-          <follow-select v-bind="formInfo.follow" v-model="form.follow" :showIcon="selectIcon" class="li_border"/>
+          <follow-select v-bind="formInfo.follow" v-model="form.follow" @update="updateFollow" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
           <date-select v-bind="formInfo.time" v-model="form.time" @update="updateTime" :showIcon="selectIcon" class="li_border"/>
@@ -77,6 +77,7 @@ export default {
    this.oppId=this.$route.query.oppId;
   },
   methods:{
+    ...mapMutations(['setFiles','setPicVal']),
     valid(){
       if(this.form.oppId===''){
         mango.tip('意向ID不能为空');
@@ -86,14 +87,14 @@ export default {
         mango.tip('请选择跟进方式');
         return false;
       }
-      if(this.form.follow===''){
+      if(this.form.nextTime===''){
         mango.tip('请选择跟进时间');
         return false;
       }
       return true;
     },
    update(){
-      if(this.valid){
+      if(this.valid()){
         let formData=new FormData();
         formData.append('opportunity.oppId',this.oppId);
         formData.append('record.source',this.form.follow);
@@ -129,7 +130,6 @@ export default {
           };
         })
       }
-
      
    },
    //选择更新跟进时间
@@ -141,10 +141,22 @@ export default {
      this.$set(this.form,'nextTime',anotherVal);
    },
    //选择更新留店时长
-   updateResidentTime(arr){
-    //this.form.residentTime=value;
+   updateResidentTime(value){
+    console.log(value);
+    this.form.residentTime=value;
+   },
+   //选择跟进
+   updateFollow(arr){
+     //console.log(arr);
+    this.form.follow=arr[0];
    }
       
+  },
+  beforeRouteLeave(to,from,next){
+    console.log(this);
+    this.setFiles([]);
+    this.setPicVal([]);
+    next();
   }
 };
 </script>

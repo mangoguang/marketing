@@ -56,6 +56,7 @@ export default {
 
 <style lang="scss" scoped>
   .workModules{
+    margin-top: 16vw;
     display: flex;
     justify-content: space-around;
     padding: 4vw 4.8vw;
