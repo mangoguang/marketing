@@ -311,6 +311,11 @@ export var router = new VueRouter({
     name: 'orderSearch',
     component: resolve => require(['../pages/work/orderSearch'],resolve)
   },
+  {
+    path: '/newPlan',
+    name: 'newPlan',
+    component: resolve => require(['../pages/work/newPlan'],resolve)
+  },
   //app二期迭代
   {
     path: '/chooseShop',

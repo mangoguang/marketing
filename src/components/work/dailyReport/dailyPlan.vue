@@ -1,7 +1,7 @@
 <template>
   <div class="dailyPlan">
     <H3>明日目标及重点工作安排</H3>
-    <Textarea @changeTextarea="changeTextarea"></Textarea>
+    <Textarea @changeTextarea="changeTextarea" :text="text" :disabled="disabled"></Textarea>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
     H3,
     Textarea
   },
-  props:['list', 'curDay'],
+  props:['list', 'curDay', 'text', 'disabled'],
   data(){
     return{
 

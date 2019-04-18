@@ -40,6 +40,9 @@ export default {
 
 <style lang="scss" scoped>
   .workHeader{
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 16vw;
     background: url('../../../static/images/work/bg.png') no-repeat;

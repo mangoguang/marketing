@@ -38,7 +38,7 @@ export default {
   },
   watch: {
     dateInterVal(val) {
-      this.getDailyData()
+      this.getDailyData(val)
     }
   },
   mounted(){
@@ -49,13 +49,11 @@ export default {
   },
   methods:{
     changeDateInterVal(obj) {
-      this.getDailyData()
+      this.getDailyData(obj)
     },
-    getDailyData() {
-      indexModel.getDailyReport({
-        startDate: '2019-04-01',
-        endDate: '2019-04-01'
-      }).then((res) => {
+    getDailyData(obj) {
+      // console.log(111)
+      indexModel.getDailyReport(obj).then((res) => {
         if (res.data) {
           // 更改数据
           this.dailyList = res.data

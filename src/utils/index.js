@@ -274,6 +274,10 @@ class IndexModel extends Request {
   getCurMonthData(obj) {
     return mango.getAjax('/v3/app/summarize/list', obj)
   }
+  //保存总结与计划
+  savePlan(obj) {
+    return mango.getAjax('/v3/app/summarize/update', obj)
+  }
   
   /* 
     客户管理模块
