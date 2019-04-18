@@ -112,6 +112,8 @@ export default {
         if(res.status) {
           this.editStatus = false
           this.getData()
+        }else {
+          MessageBox.alert(res.msg)
         }
       })
     },
