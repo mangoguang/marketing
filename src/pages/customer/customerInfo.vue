@@ -13,7 +13,7 @@
     <div v-show="customerTabStatus[0].status">
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else>
-        <newDescript :select='false'/>
+        <newDescript :select='false' :list='list' />
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
@@ -51,7 +51,8 @@ export default {
   },
   computed: {
     ...mapState({
-      customerTabStatus: state => state.tabStatus.customerTabStatus
+      customerTabStatus: state => state.tabStatus.customerTabStatus,
+      newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
   created() {
@@ -69,6 +70,7 @@ export default {
       }).then(res => {
         if(res.data) {
           this.list = res.data
+          console.log(this.list)
         }
       })
     },
@@ -78,7 +80,8 @@ export default {
     },
       //保存资料
     saveMsg() {
-      this.editStatus = false
+      console.log(this.newCustomerInfo)
+      // this.editStatus = false
     }
   }
 }

@@ -36,7 +36,7 @@
 import {mapState,mapMutations} from 'vuex'
 import Cropper from "cropperjs";
 export default {
-  props: ['select','hasImage'],
+  props: ['select','customerImage'],
   components: {},
   data() {
     return {

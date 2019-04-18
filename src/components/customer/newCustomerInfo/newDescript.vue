@@ -130,7 +130,7 @@ import variable from '../../../js/variable'
 import {turnParams,changeFormData} from '../../../utils/customer'
 export default {
   name:'customerDescript',
-  props: ['btns', 'select', 'fromName'],
+  props: ['btns', 'select', 'fromName', 'list'],
   components: {
     customerLi,
     bigBtn,
@@ -162,7 +162,6 @@ export default {
       cityName: '',
       county: [],
       countyName: '',
-      parentBtns: [],
       urgency:false,
       color: 'color: #999'
     }
@@ -190,10 +189,9 @@ export default {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    this.parentBtns = this.btns
   },
   mounted() {
-    // this.$set(this.newCustomerInfo, 'birthday', '')
+    this.hasList()
   },
   methods: {
     ...mapMutations([
@@ -204,6 +202,23 @@ export default {
       'setLeaveStoreVal',
       'setAgeVal'
     ]),
+    //编辑资料
+    hasList() {
+      if(!this.list) {
+        return
+      }
+      this.$set(this.newCustomerInfo, 'username',this.list.username)
+      // this.newCustomerInfo.username = this.list.username
+      this.newCustomerInfo.sex = this.list.sex
+      this.newCustomerInfo.birthday = this.list.birthday
+      this.today = this.list.birthday
+      this.newCustomerInfo.duty = this.list.duty
+      this.newCustomerInfo.age = this.list.age
+      this.newCustomerInfo.phone = this.list.phone
+      this.newCustomerInfo.weChat = this.list.weChat
+      this.newCustomerInfo.qq = this.list.qq
+      this.newCustomerInfo.remark = this.list.remark
+    },
     //选择地址
     toNewAdress() {
       this.$router.push({path: '/newAddress'})
@@ -320,19 +335,6 @@ export default {
       //   this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
       // } //如果没有选进店时间。默认选择今天
      
-    },
-    saveCustomerInfo() {
-      let testPhoneNum = variable.testPhone(this.newCustomerInfo.phone)
-      if(testPhoneNum) {
-        let [obj, id] = [this.newCustomerInfo, this.$route.params.id]
-        this.setInitData()
-        this.setNewCustomerInfo(obj)
-        this.parentBtns[0].status = false
-        this.parentBtns[1].status = true
-        this.$emit('changeBtnsStatus', this.parentBtns)
-      }else {
-        mango.tip('请填写正确的手机号码')
-      }
     },
     // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {
