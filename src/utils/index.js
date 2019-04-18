@@ -338,7 +338,7 @@ class IndexModel extends Request {
 
   //关闭意向
   closeOpportunity(obj){
-    return mango.getAjax('/v3/app/opportunity',obj,'post')
+    return mango.getAjax('/v3/app/opportunity/close',obj,'post')
   }
 
   //新建跟踪记录

@@ -89,7 +89,8 @@ const state = {
 
 const mutations = {
   setClassify:(state,array) => state.formInfo.classify=array,
-  setUrgency:(state,array) => state.formInfo.urgency=array
+  setUrgency:(state,array) => state.formInfo.urgency=array,
+  setTitle:(state,str) => state.title=str 
 }
 
 const actions = {

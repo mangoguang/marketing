@@ -44,6 +44,11 @@
             </div>
           </div>
         </div>
+        <div class="yan-follow-item" v-if="recordList.length<=0">
+          <div class="yan-follow-th" style="justify-content:center">
+            暂无记录
+          </div>
+        </div>
       </div>
     </div>
 </template>
