@@ -3,6 +3,7 @@
     <H3>当日总结</H3>
     <Textarea
     :text="text"
+    :disabled="disabled"
     @changeTextarea="changeTextarea"></Textarea>
   </div>
 </template>
@@ -20,7 +21,7 @@ export default {
     H3,
     Textarea
   },
-  props:['list', 'curDay', 'text'],
+  props:['list', 'curDay', 'text', 'disabled'],
   data(){
     return{
 

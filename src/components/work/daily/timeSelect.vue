@@ -19,7 +19,8 @@
 import mango from '../../../js'
 import TimeInterval from '../../common/timeInterval'
 import Vuex, { mapState } from "vuex"
-import { IndexModel } from "../../../utils/index";
+import { IndexModel } from "../../../utils/index"
+import weekDate from '../../../utils/weekDate'
 const indexModel = new IndexModel();
 export default {
   name: 'timeSelect',
@@ -27,6 +28,7 @@ export default {
   components: {TimeInterval},
   data() {
     return{
+      btnIndex: 0,
       timeBtns: mango.btnList(['今日', '本周', '本月', '本年'], 0),
       ajaxData: {}
     }
@@ -38,16 +40,26 @@ export default {
   },
   mounted() {
     this.ajaxData = JSON.parse(localStorage.getItem('ajaxData'))
-    console.log(this.getWeek())
   },
   created(){
   },
   methods: {
     selectTime(index) {
+      if (index === this.btnIndex) {
+        return
+      }
+      // console.log('按钮状态', index, this.timeBtns)
       // 按钮状态更改
-      this.timeBtns.forEach((element, i) => {
-        element.status = index === i
-      })
+      let  btns = this.timeBtns
+      for (let i = 0; i < btns.length; i++) {
+        btns[i].status = index === i
+        if (index === i) {
+          this.btnIndex = i
+        }
+      }
+      // this.timeBtns.forEach((element, i) => {
+      //   element.status = index === i
+      // })
       // 选择时间区间
       let dateInterVal = this.computeDateInterval(index)
       this.$emit('changeDateInterVal', dateInterVal)
@@ -60,55 +72,30 @@ export default {
       const [day, week, month, year] = [date.getDate(), date.getDay(), date.getMonth() + 1, date.getFullYear()]
       switch(i) {
         case 0:
-          return `${year}-${month}-${day}`
-          break
-        case 1:
+          // 本日
           return {
             startDate: `${year}-${month}-${day}`,
             endDate: `${year}-${month}-${day}`
           }
           break
+        case 1:
+          // 本周
+          return weekDate
+          break
         case 2:
+          // 本月
           return {
             startDate: `${year}-${month}-01`,
             endDate: `${year}-${month}-31`
           }
           break
         default:
+          // 本年
           return {
             startDate: `${year}-01-01`,
             endDate: `${year}-12-31`
           }
       }
-    },
-    getWeek() {
-      let date = new Date()
-      // const [day, week, month, year] = [date.getDate(), date.getDay(), date.getMonth() + 1, date.getFullYear()]
-      // console.log(date.get)
-      // 起止日期数组    
-      var startStop = new Array()
-      // 获取当前时间
-      var currentDate = date
-      // 返回date是一周中的某一天
-      var week = currentDate.getDay()
-      // 返回date是一个月中的某一天
-      var month = currentDate.getDate()
-
-      // 一天的毫秒数
-      var millisecond = 1000 * 60 * 60 * 24
-      // 减去的天数    
-      var minusDay = week != 0 ? week - 1 : 6
-      // alert(minusDay)
-      //本周 周一
-      var monday = new Date(currentDate.getTime() - (minusDay * millisecond))
-      // 本周 周日
-      var sunday = new Date(monday.getTime() + (6 * millisecond))
-      // 添加本周时间
-      startStop.push(monday) // 本周起始时间
-      // 添加本周最后一天时间
-      startStop.push(sunday) // 本周终止时间
-      // 返回
-      return startStop
     }
   }
 }

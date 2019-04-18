@@ -1,7 +1,7 @@
 <template>
   <div class="dailyReport">
     <banner :title='"日报"' class="header">
-      <button class="newDailyReport">+</button>
+      <button @click="newPlan" class="newDailyReport">+</button>
     </banner>
     <!-- 日历组件 -->
     <myDatePicker @getCurDay="getCurDay" :planList="planList" />
@@ -12,10 +12,12 @@
     <!-- 当日总结 -->
     <DailySummary
     :text="dailySummaryTextarea"
+    :disabled="'disabled'"
     @changeDailySummaryTextarea="changeDailySummaryTextarea" />
     <!-- 明日目标及重点工作安排 -->
     <DailyPlan
     :text="dailyPlanTextarea"
+    :disabled="'disabled'"
     @changeDailyPlanTextarea="changeDailyPlanTextarea" />
   </div>
 </template>
@@ -28,6 +30,8 @@ import CurReport from '../../components/work/dailyReport/curReport'
 import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
 import { IndexModel } from "../../utils/"
+import mango from "../../js"
+import { mapMutations } from 'vuex';
 const indexModel = new IndexModel()
 export default {
   name: 'dailyReporxt',
@@ -64,20 +68,44 @@ export default {
 
   },
   created() {
-    // 获取当月数据
-    this.getCurMonthData(this.getCurMonth())
+    let arr = [{
+      index: 0,
+      day: 4
+    }, {
+      index: 1,
+      day: 10
+    }]
+    console.log(arr.map(item => item.day))
   },
   mounted() {
     console.log('日报：', this)
     this.curDay = this.getToday()
-    this.getDailyData()
+    let date = new Date()
+    const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    this.curNum = parseInt(date.getDate() - 1)
+    // 获取当月数据
+    this.getCurMonthData(this.getCurMonth())
+    console.log(123456789900, this.curDate)
+    this.getDailyData({
+        startDate: `${year}-${month}-${day}`,
+        endDate: `${year}-${month}-${day}`
+      })
   },
   methods:{
     getCurDay(curDay) {
+      if (this.curDay === curDay) {
+        return
+      }
       this.curDay = curDay
       this.curDate = curDay.split(/年|月|日/)
       this.curNum = this.curDate[2]
-      this.getDailyData()
+      // 显示选择日期的当日总结和明日计划
+      console.log('当月数据：', this.curMonthData)
+      this.setSumAndPlan(this.curMonthData)
+      this.getDailyData({
+        startDate: `${this.curDate[0]}-${this.curDate[1]}-${this.curDate[2]}`,
+        endDate: `${this.curDate[0]}-${this.curDate[1]}-${this.curDate[2]}`
+      })
     },
     // 获取当前月份
     getCurMonth() {
@@ -103,7 +131,6 @@ export default {
     },
     // 获取选择日期的数据
     getCurMonthData(month) {
-      console.log(112233, month)
       indexModel.getCurMonthData({
         date: month
       }).then((res) => {
@@ -111,8 +138,8 @@ export default {
         if (res) {
           this.curMonthData = res
           if (this.curNum) {
-            this.dailySummaryTextarea = res[parseInt(this.curNum) + 1].summarize
-            this.dailyPlanTextarea = res[parseInt(this.curNum) + 1].plan
+            // 显示选择日期的当日总结和明日计划
+            this.setSumAndPlan(res)
           }
           // 遍历一个月内有哪些天有总结
           this.planList = res.map((item) => {
@@ -124,16 +151,33 @@ export default {
         }
       })
     },
-    getDailyData() {
-      indexModel.getDailyReport({
-        startDate: '2019-04-01',
-        endDate: '2019-04-01'
-      }).then((res) => {
+    // 显示选择日期的当日总结和明日计划
+    setSumAndPlan(res) {
+      const num = parseInt(this.curNum)
+      const index = this.planList.indexOf(num)
+      if (index >= 0) {
+        this.dailySummaryTextarea = res[index].summarize
+        console.log(99000999, res[index].plan)
+        this.dailyPlanTextarea = res[index].plan
+      }
+    },
+    getDailyData(data) {
+      indexModel.getDailyReport(data).then((res) => {
         if (res.data) {
           // 更改数据
           this.dailyList = res.data
         }
       })
+    },
+    // 跳转新建计划页面
+    newPlan() {
+      console.log()
+      if (this.dailySummaryTextarea === '' && this.dailyPlanTextarea === '') {
+        this.$router.push({path: '/newPlan'})
+      } else  {
+        mango.tip('当日已提交日报，请勿重复提交！')
+        return
+      }
     }
   }
 }
