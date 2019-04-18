@@ -68,7 +68,7 @@ export default {
     },
     getSource(){
       indexModel.getArea('DR_ACCT_SOUCE').then(res => {
-        console.log(res);
+        //console.log(res);
         if(res.code===0){
           this.slots[0].values=res.data;
         }

@@ -33,6 +33,7 @@ import yanInput from '../yanInput'
 import yanTextarea from '../yanTextarea'
 import upload from '../upload/filesUpload'
 export default {
+  props:['recordList'],
   data () {
     return {
     }

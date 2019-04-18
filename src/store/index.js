@@ -41,6 +41,7 @@ import intentionProduct from './modules/intention/intentionProduct'
 import searchProduct from './modules/intention/searchProduct'
 import followRecord from './modules/intention/followRecord'
 import addIntention from './modules/intention/addIntention'
+import intention from './modules/intention/intention'
 import loadImgUrl from './modules/picture/index'
 import work from './modules/work'
 export default new Vuex.Store({
@@ -87,6 +88,7 @@ export default new Vuex.Store({
     followRecord,
     addIntention,
     loadImgUrl,
-    work
+    work,
+    intention
   }
 })

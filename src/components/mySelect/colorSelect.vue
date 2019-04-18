@@ -66,7 +66,7 @@ export default {
     },
     getColor(){
       indexModel.getArea('DR_COLOR_PRE').then(res => {
-        console.log(res);
+        //console.log(res);
         if(res.code===0){
           this.slots[0].values=res.data;
         }

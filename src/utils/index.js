@@ -303,8 +303,8 @@ class IndexModel extends Request {
     return mango.getAjax('/v2/app/address/status',obj,'post')
   }
   //保存反馈信息
-  feedback(obj){
-    return mango.getFormAjax('/v2/app/feedback',obj,'post')
+  feedback(obj,key){
+    return mango.getFormAjax('/v2/app/feedback',obj,key)
     //return mango.port+'/v2/app/feedback';
   }
   //保存反馈信息
@@ -325,6 +325,25 @@ class IndexModel extends Request {
   //保存游客
   getVisitor(obj,type) {
     return mango.getAjax('/v3/app/customer/tourist', obj,type)
+  }
+  //更新意向
+  updateOpportunity(obj){
+    return mango.getAjax('/v3/app/opportunity/update',obj,'post')
+  }
+
+  //获取意向详情
+  getOpportunity(id){
+    return mango.getAjax('/v3/app/opportunity',{opportunityId:id})
+  }
+
+  //关闭意向
+  closeOpportunity(obj){
+    return mango.getAjax('/v3/app/opportunity',obj,'post')
+  }
+
+  //新建跟踪记录
+  updateTrackrecord(obj,key){
+    return mango.getFormAjax('/v3/app/trackrecord/update',obj,key)
   }
  
 }

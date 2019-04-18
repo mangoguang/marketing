@@ -1,15 +1,6 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
 import { Indicator, Toast } from 'mint-ui'
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
-/* axios.defaults.transformRequest = [function (data) {
-    let ret = ''
-    for (let it in data) {
-      ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-    }
-    return ret
-}] */
 export default class Common {
   constructor() {
     // this.port = 'http://172.16.10.107'
@@ -207,29 +198,30 @@ export default class Common {
     })
   }
  
-  getFormAjax(path, params,type) {
+  getFormAjax(path, data,keys) {
     let _this = this
     let token = JSON.parse(localStorage.getItem('token'))
     return new Promise((resolve, reject) => {
-      let thatType = type == 'post' ? 'post' : 'get'
+      //let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
-      let sign = this.getSign(params, token.access_token)
+      let sign = this.getFormSign(data, token.access_token,keys)
       // 显示加载动画，并在10秒后隐藏
       this.loading('open')
       let loadingTimeOut = setTimeout(function() {
         _this.loading('close')
         clearTimeout(loadingTimeOut)
       }, 10000)
-      axios({
-        withCredentials: true,
-        method: thatType,
-        async: false,
+      
+       axios({
+        method: 'post',
+        //async: false,
         url: url,
-        params: params,
-        headers: {
+        data:data,
+         headers: {
+          'Content-Type':'multipart/form-data',
           "Authorization": `Bearer ${token.access_token}`,
           'sign': sign
-        }
+        } 
       })
       .then((res) => {
         _this.loading('close')
@@ -239,7 +231,9 @@ export default class Common {
           resolve(false)
         }
       })
-    })
+      
+    }) 
+    
   }
   // getAjax(_vue, port, params, pathVersion,type) {
   //   let _this = this

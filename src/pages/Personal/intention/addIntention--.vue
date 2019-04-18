@@ -1,20 +1,20 @@
 <template>
     <div class="addAdress">
       <mybanner :title="title" style="background:#fff">
-        <button type="button" @click="update" v-if="status==1">保存</button>
-        <button type="button" @click="close" v-if="status==2" style="color:#FF3B30">意向关闭</button>
-         <button type="button" @click="close" v-if="status==3" style="color:#FF3B30">战败原因</button>
+        <button type="button" @click="update" v-if="status==0">保存</button>
+        <button type="button" @click="close" style="color:#FF3B30" v-if='status==1'>意向关闭</button>
+        <button type="button" @click="lose" style="color:#FF3B30" v-if='status==2'>战败原因</button>
       </mybanner>
       <title-bar :text="titleModule.info">
-        <button type="button" v-if="status==2" v-show="!isModify" @click="modify">修改</button>
-         <button type="button" v-if="status==2" v-show="isModify" @click="submit">保存</button>
+        <button type="button" @click='modify' v-if="status==1&&updateOrModify">修改</button>
+         <button type="button" @click='updateForm' v-if="status==1&&!updateOrModify">保存</button>
       </title-bar>
       <ul class="list">
         <li>
           <intention-select v-bind="formInfo.intention" :value="form.intention" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
-        <li @click="openStore">
-         <store-select v-bind="formInfo.store" :value="form.store"  :showIcon="selectIcon"/>
+        <li>
+         <store-select v-bind="formInfo.store" :value="form.store" @click="openStore" :showIcon="selectIcon"/>
         </li>
         <li>
           <date-select v-bind="formInfo.time" :value="form.time" @update="updateTime" :showIcon="selectIcon"/>
@@ -64,6 +64,7 @@
         </li>
         <li>
           <discount-select v-bind="formInfo.discount" :value="form.discount" @update="updateDiscount" :showIcon="selectIcon"/>
+          <!-- <yan-input v-bind="formInfo.discount" v-model="form.discount"/> -->
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.remark" :readonly='readonly'></yan-textarea>
@@ -71,13 +72,13 @@
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="classify" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
       </div>
-      <div v-show="status!==1">
+      <div v-if='record'>
          <title-bar :text="titleModule.report">
-           <button type="button" v-if="status==2">添加记录</button>
+           <button type="button" v-show="status==1">添加记录</button>
          </title-bar>
-         <record-pannel/>
+         <record-pannel />
       </div>
-      <div v-show="status==4">
+      <div v-if="status==3">
         <title-bar :text="titleModule.order"/>
         <order-info class="order"/>
       </div>
@@ -86,6 +87,9 @@
         <span slot='update'>确定</span>
         <span slot='cancel'>取消</span>
       </yan-layer-prompt>
+      <yan-layer-msg v-if="isMsg" @confirm="confirm" :info="list">
+        <span slot='confirm'>确定</span>
+      </yan-layer-msg>
     </div>
 </template>
 
@@ -110,6 +114,7 @@ import classifySelect from '../../../components/mySelect/classifySelect'
 import recordPannel from '../../../components/pannel/recordPannel'
 import orderInfo from '../../../components/pannel/orderInfo'
 import yanLayerPrompt from '../../../components/myLayer/yanLayerPrompt'
+import yanLayerMsg from '../../../components/myLayer/yanLayerMsg'
 import { Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 export default {
@@ -147,13 +152,26 @@ export default {
       failReason:'',
       isPrompt:false,
       isMsg:false,
-      isModify:false,
-      customerId:'',
-      oppId:'',
-      addressId:'',
-      path:'',
       status:'',
-      shopId:''
+      updateOrModify:true,
+      record:false,
+      list:[
+        {
+          title:'创建时间：',
+          value:''
+        },
+        {
+          title:'战败时间：',
+          value:''
+        },
+        {
+          title:'战败原因：',
+          value:''
+        }
+      ],
+      customerId:'',
+      addressId:'',
+      path:''
     }
   },
   components:{
@@ -174,89 +192,36 @@ export default {
      recordPannel,
      orderInfo,
      yanLayerPrompt,
+     yanLayerMsg,
      colorSelect,
      discountSelect
   },
   watch:{
+    
     $route(to,from){
-      console.log(from);
-      if(to.params.status==1){
-        this.selectIcon=true;
-        this.readonly=false;
-        this.updateTitle('新建意向');
-        this.status=1;
-        this.isModify=false;
-        this.path=this.$route.path;
-        /* this.updateAddress([]);
-        this.setCheckedList([]); */
-      }
-      if(to.params.status==2){
-        this.updateTitle('意向详情');
-        this.status=2;
-        this.path=this.$route.path;
-        if(this.isModify){
-          this.isModify=true;
-          this.selectIcon=true;
-          this.readonly=false;
-        }else{
-          this.isModify=false;
-          this.selectIcon=false;
-          this.readonly=true;
+        console.log(555666666);
+        if(from.name==='selectAddress'){
+          console.log("是selectAddress");
+          let obj={};
+          console.log(this);
+          this.addressList.map((item,index) => {
+            console.log(333,item);
+            if(item.addressId===this.$route.query.addressId){
+              console.log('进来了');
+              obj=Object.assign({},item);
+            }
+          })
+          let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
+          let elevator=obj.elevator?'有':'无';
+          this.$set(this.form,'address',address);
+          this.$set(this.form,'house',obj.apartmentType);
+          this.$set(this.form,'elevator',elevator);
+          this.addressId=this.$route.query.addressId;
         }
-       /*  this.updateAddress([]);
-        this.setCheckedList([]); */
+        if(from.name==='intentionProduct'){
+          this.form.intention=this.$store.state.checkedList[0].crmId;
+        }   
       }
-      if(to.params.status==3){
-        this.selectIcon=false;
-        this.readonly=true;
-        this.updateTitle('意向详情');
-        this.status=3;
-        this.isModify=false;
-        this.path=this.$route.path;
-        /* this.updateAddress([]);
-        this.setCheckedList([]); */
-      }
-      if(to.params.status==4){
-        this.selectIcon=false;
-        this.readonly=true;
-        this.updateTitle('意向详情');
-        this.status=4;
-        this.isModify=false;
-        this.path=this.$route.path;
-        /* this.updateAddress([]);
-        this.setCheckedList([]); */
-      }
-      if(from.name==='selectAddress'){
-        let obj={};
-        this.$store.state.addressList.map((item,index) => {
-          console.log(item);
-          if(item.addressId===this.$route.query.addressId){
-            console.log('进来了');
-            obj=Object.assign({},item);
-          }
-        })
-        let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
-        let elevator=obj.elevator?'有':'无';
-        this.$set(this.form,'address',address);
-        this.$set(this.form,'house',obj.apartmentType);
-        this.$set(this.form,'elevator',elevator);
-        this.addressId=this.$route.query.addressId;
-      }
-      if(from.name==='intentionProduct'){
-        this.form.intention=this.$store.state.checkedList[0].crmId;
-      }
-      if(from.name==='chooseShop'){
-        let shops=JSON.parse(localStorage.getItem('shops'));
-        let shopIndex=localStorage.getItem('shopIndex');
-        shops.map((item,index) => {
-          if(shopIndex==index){
-            this.shopId=item.id;
-            this.form.store=item.name;
-          }
-        })
-      }
-      
-    }
   },
   computed:{
     ...mapState('addIntention',[
@@ -264,58 +229,58 @@ export default {
       'formInfo',
       'titleModule'
     ]),
-    ...mapState(['checkedList'])
+    ...mapState({
+     addressList:state => state.addressList
+   })
   },
   created(){
-   this.customerId=this.$route.params.customerId;
+    console.log('created');
+    console.log(this.addressList.length);
+    this.customerId=this.$route.params.customerId;  
+    this.path=this.$route.path;
+     this.status=this.$route.params.status;
+      if(this.status==1){
+        this.updateTitle('意向详情');
+        this.record=true;
+        this.selectIcon=false;
+        this.readonly=true;
+      }
+      if(this.status==2){
+        this.updateTitle('意向详情');
+        this.record=true;
+        this.selectIcon=false;
+        this.readonly=true;
+      }
+      if(this.status==3){
+        this.updateTitle('意向详情');
+        this.selectIcon=false;
+        this.readonly=false;
+      } 
   },
   activated(){
-    
+    console.log('activated');
   },
   mounted(){
-
+  console.log('mounted');
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
-    ...mapMutations(['updateAddress','setCheckedList']),
-    valid(){
-      if(this.customerId==''){
-        mango.tip('客户ID不能为空');
-        return false;
-      }
-      if(this.checkedList.length<=0){
-        mango.tip('意向产品不能为空');
-        return false;
-      }
-      if(this.addressId==''){
-        mango.tip('地址ID不能为空');
-        return false;
-      }
-      
-
-    },
+    updateForm(){},
     modify(){
-      this.isModify=true;
       this.selectIcon=true;
       this.readonly=false;
+      this.updateOrModify=false;    
     },
-    submit(){
-      this.isModify=false;
-      this.selectIcon=false;
-      this.readonly=true;
+    lose(){
+      this.isMsg=true;
     },
     close(){
-
+      this.isPrompt=true;
     },
     openStore(){
-      if(!this.isModify){
-       return;
-      }
-       this.$router.push({name:'chooseShop'});
-      
+      this.$router.push({path:'/address'})
     },
     update(){
-
       //this.$router.push({name:'address',params:{customerId:this.customerId},query:{redirect:this.path}})
     },
    updateClassify(option){
@@ -327,15 +292,20 @@ export default {
     console.log("选择"+this.urgency);
    },
    layerUpdate(){
-     console.log("确定");
-     console.log(this.failReason);
+     //console.log("确定");
+     //console.log(this.failReason);
+     this.$router.push({name:'intention',params:{customerId:this.customerId}});
+     this.$router.push({name:'intention',params:{customerId:this.customerId,status:2}});
+     this.isPrompt=false;
    },
    layerCancel(){
-     console.log("取消");
-     console.log(this.failReason);
+     //console.log("取消");
+     //console.log(this.failReason);
+     this.isPrompt=false;
    },
    confirm(){
-     console.log("取消");
+     //console.log("取消");
+     this.isMsg=false;
    },
    //选择更新进店日期
    updateTime(value,anotherVal){
@@ -379,24 +349,16 @@ export default {
      console.log(arr);
      let discount=arr.join('.')+"折"
      this.form.discount=discount;
-   },
-   //地址公共函数
-   updateAddressView(){
-    let obj=this.$store.state.addressList.find((item) => {
-      return item.id=this.$route.query.addressId;
-    })
-    let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
-    let elevator=obj.elevator?'有':'无';
-    this.$set(this.form,'address',address);
-    this.$set(this.form,'house',obj.apartmentType);
-    this.$set(this.form,'elevator',elevator);
    }
   },
   beforeRouteEnter(to,from,next){
     console.log(to);
     console.log(from);
     if(from.name==='selectAddress'){
-      to.meta.keepAlive=true;
+      //console.log('eee');
+      to.meta['keepAlive']=true;
+      //console.log(to.meta);
+      console.log(to);
       next();
     }
     if(from.name==='searchProduct'){
@@ -407,56 +369,40 @@ export default {
       to.meta.keepAlive=true;
        next();
     }
+    to.meta.keepAlive=false;
     next();
-  }, 
-  beforeRouteUpdate(to, from, next) {
-    if(to.params.status==1){
-        this.selectIcon=true;
-        this.readonly=false;
-        this.updateTitle('新建意向');
-        this.status=1;
-        this.isModify=false;
-        this.path=this.$route.path;
-      }
-      if(to.params.status==2){
-        this.updateTitle('意向详情');
-        this.status=2;
-        if(this.isModify){
-          this.isModify=true;
-          this.selectIcon=true;
-          this.readonly=false;
-        }else{
-          this.isModify=false;
-          this.selectIcon=false;
-          this.readonly=true;
-        }
-         this.path=this.$route.path;
-        
-      }
-      if(to.params.status==3){
-        this.selectIcon=false;
-        this.readonly=true;
-        this.updateTitle('意向详情');
-        this.status=3;
-        this.isModify=false;
-        this.path=this.$route.path;
-        
-      }
-      if(to.params.status==4){
-        this.selectIcon=false;
-        this.readonly=true;
-        this.updateTitle('意向详情');
-        this.status=4;
-        this.isModify=false;
-        this.path=this.$route.path;
-       
-      }
-      next();
   },
-   beforeRouteLeave(to, from, next){
-    
-    next();
-   }
+  beforeRouteUpdate(to,from,next){
+     console.log("更新");
+     
+      if(from.name==='selectAddress'){
+          console.log("是selectAddress");
+          let obj={};
+          console.log(this);
+          this.addressList.map((item,index) => {
+            console.log(333,item);
+            if(item.addressId===this.$route.query.addressId){
+              console.log('进来了');
+              obj=Object.assign({},item);
+            }
+          })
+          let address=`${obj.province}${obj.city}${obj.district}${obj.address}`;
+          let elevator=obj.elevator?'有':'无';
+          this.$set(this.form,'address',address);
+          this.$set(this.form,'house',obj.apartmentType);
+          this.$set(this.form,'elevator',elevator);
+          this.addressId=this.$route.query.addressId;
+        }
+        if(from.name==='intentionProduct'){
+          this.form.intention=this.$store.state.checkedList[0].crmId;
+        }   
+     next();
+  },
+  beforeRouteLeave(to,from,next){
+     console.log("离开");
+     this.$destroy();
+     next();
+  }
 };
 </script>
 
