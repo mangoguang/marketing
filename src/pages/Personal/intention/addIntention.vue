@@ -46,19 +46,19 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model="form.competingGoods" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly'/>
         </li>
         <li>
           <color-select v-bind="formInfo.color" :value="colorPrefName" @update="updateColor" :showIcon="selectIcon"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.budget" v-model="form.budget" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.budget" v-model.trim="form.budget" :readonly='readonly'/>
         </li>
         <li>
           <date-select v-bind="formInfo.deliver" :value="form.deliverDate" @update="updateDeliver" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.paid" v-model="form.depositPaid" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly'/>
         </li>
         <li>
           <discount-select v-bind="formInfo.discount" :value="form.argreeDiscount" @update="updateDiscount" :showIcon="selectIcon"/>
@@ -73,7 +73,7 @@
          <title-bar :text="titleModule.report">
            <button type="button" >添加记录</button>
          </title-bar>
-         <record-pannel/>
+         <record-pannel :recordList="form.recordList"/>
       </div>
       <p class="last">到底啦</p>
       <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
@@ -150,7 +150,7 @@ export default {
       customerId:'',
       path:'',
       status:'',
-      urgency:''
+      urgency:'否'
     }
   },
   components:{
@@ -200,14 +200,17 @@ export default {
         
       }
       if(from.name==='intentionProduct'){
-        this.goodsValue=this.$store.state.checkedList[0].crmId;
-        this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
-          let obj={};
-          obj.goodsId=item.crmId;
-          obj.goodsName=item.goodsName;
-          obj.quantity=item.quantity;
-          return obj;
-        });
+        if(this.$store.state.checkedList.length>0){
+          this.goodsValue=this.$store.state.checkedList[0].crmId+this.$store.state.checkedList[0].goodsName;
+          this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
+            let obj={};
+            obj.goodsId=item.crmId;
+            obj.goodsName=item.goodsName;
+            obj.quantity=item.quantity;
+            return obj;
+          });
+        }
+        
         
       }
       if(from.name==='chooseShop'){
@@ -232,25 +235,28 @@ export default {
     ...mapState(['checkedList'])
   },
   created(){
+    this.customerId=this.$route.params.customerId;
+    this.path=this.$route.fullPath;
     if(this.$route.query.oppId){
+      this.updateTitle('意向详情');
       this.form.oppId=this.$route.query.oppId;
-      this.getOpportunity(this.form.id);
+      this.getOpportunity(this.form.oppId);
     }
     
   },
   activated(){
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
-    if(this.$route.query.oppId){
+    /* if(this.$route.query.oppId){
       this.form.oppId=this.$route.query.oppId;
-    }
+    } */
   },
   mounted(){
 
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
-    ...mapMutations(['updateAddress','setCheckedList','updateCheckedList']),
+    ...mapMutations(['updateAddress','setCheckedList','updateSearchProductList']),
     listen(){
       if(this.form.address===''){
         mango.tip('请先选择地址');
@@ -270,28 +276,27 @@ export default {
              return obj;
            })
             this.setCheckedList(list);
-            this.form.goodsList=res.data.goodsList;
-
-            
+            this.form.goodsList=res.data.goodsList;       
           }
           this.status=res.data.status;
-          this.shopName=res.data.shopId===''?'未收集':this.getShopName(res.data.shopId);
+          console.log(4444,res.data.shopId);
+          this.shopName=res.data.shopId===''?'':this.getShopName(res.data.shopId);
           this.form.shopId=res.data.shopId;
           this.form.arrivalDate=res.data.arrivalDate;
           this.form.residentTime=res.data.residentTime;
           this.sourceName=res.data.sourceName;
           this.form.source=res.data.source;
-          this.buyReasonName=res.data.buyReasonName==''?'未收集':res.data.buyReasonName;
+          this.buyReasonName=res.data.buyReasonName==''?'':res.data.buyReasonName;
           this.form.buyReason=res.data.buyReason;
-          this.stylePrefName=res.data.stylePrefName==''?'未收集':res.data.stylePrefName;
+          this.stylePrefName=res.data.stylePrefName==''?'':res.data.stylePrefName;
           this.form.stylePref=res.data.stylePref;
-          this.progressName=res.data.progressName==''?'未收集':res.data.progressName;
+          this.progressName=res.data.progressName==''?'':res.data.progressName;
           this.form.progress=res.data.progress;
-          this.form.competingGoods=res.data.competingGoods==''?'未收集':res.data.competingGoods;
-          this.colorPrefName=res.data.colorPrefName==''?'未收集':res.data.colorPrefName;
+          this.form.competingGoods=res.data.competingGoods==''?'':res.data.competingGoods;
+          this.colorPrefName=res.data.colorPrefName==''?'':res.data.colorPrefName;
           this.form.colorPref=res.data.colorPref;
-          this.form.deliverDate=res.data.deliverDate==''?'未收集':res.data.deliverDate;
-          this.form.remark=res.data.remark==''?'未备注':res.data.remark;
+          this.form.deliverDate=res.data.deliverDate==''?'':res.data.deliverDate;
+          this.form.remark=res.data.remark==''?'':res.data.remark;
           this.form.budget=res.data.budget;
           this.form.depositPaid=res.data.depositPaid;
           this.form.argreeDiscount=res.data.argreeDiscount;
@@ -304,9 +309,11 @@ export default {
             this.urgency="否";
             this.form.urgency=res.data.urgency?'true':'false';
           }
-          let address=res.data.addressId===''?'未收集':this.getAddress(res.data.addressId);
+          let address=res.data.addressId===''?'':this.getAddress(res.data.addressId);
           this.address=address;
           this.form.addressId=res.data.addressId;
+        }else{
+            mango.tip(res.msg);
         }
         
       })
@@ -317,20 +324,25 @@ export default {
             this.address=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}${res.data.address}`;
             this.apartmentType=res.data.apartmentTypeName;
             this.elevator=res.data.elevator==='Y'?'有电梯':'无电梯';
+          }else{
+            mango.tip(res.msg);
           }
     })
    },
    getShopName(id){
-     let list=JSON.parse(localStorage.getItem('shops'));
-     console.log(list)
-      let name;
-     list.map((item,index) => {
-       console.log(item);
-       if(item.crmId==id){
+    let shops=localStorage.getItem('shops');
+    //console.log(shops);
+    let list=JSON.parse(shops);
+    //console.log(list)
+    let name;
+    list.map((item,index) => {
+       //console.log(item);
+       if(item.id===id){
          return name=item.name;
        } 
      })
-     //console.log(name);
+     //console.log(arr);
+     return name;
    },
     valid(){
       if(this.customerId===''){
@@ -345,7 +357,7 @@ export default {
         mango.tip('门店不能为空');
         return false;
       }
-      var reg=/\d{1,}\.{0,1}\d{0,}/;
+      var reg=/^\d{1,}\.{0,1}\d{0,}$/;
       if(this.form.budget!==''&&!reg.test(this.form.budget)){
         mango.tip('预算金额必须为数字');
         return false;
@@ -410,10 +422,12 @@ export default {
           }
         }
         console.log(lastKey);
-
         indexModel.updateOpportunity(form,[...lastKey]).then(res => {
             if(res.code===0){
               mango.tip(res.msg);
+              this.setCheckedList([]);
+              this.updateSearchProductList([]);
+              this.$router.go(0);
             }else{
               mango.tip(res.msg);
             }
@@ -421,16 +435,37 @@ export default {
         
      }
     },
+    layerUpdate(){
+      if(this.failReason===''){
+       mango.tip('战败原因不能为空');
+       return;
+      }else{
+        let obj={
+          opportunityId:this.form.oppId,
+          closeReason:this.failReason
+        }
+        indexModel.closeOpportunity(obj).then(res => {
+          if(res.code===0){
+            mango.tip(res.msg);
+            this.isPrompt=false;
+            this.$router.replace({name:'intention',params:{opportunityId:this.form.oppId}});
+          }else{
+            mango.tip(res.msg);
+            this.isPrompt=true;
+          }
+          
+        })
+      }
+    },
+    layerCancel(){
+      this.isPrompt=false;
+    },
     close(){
-
+      this.isPrompt=true;
     },
     openStore(){
        this.$router.push({name:'chooseShop'});
       
-    },
-    update(){
-     
-      //this.$router.push({name:'address',params:{customerId:this.customerId},query:{redirect:this.path}})
     },
    updateClassify(option){
     this.form.level=option;
@@ -445,24 +480,20 @@ export default {
     }
     console.log("选择"+this.urgency);
    },
-   layerUpdate(){
-     console.log("确定");
-     console.log(this.failReason);
-   },
-   layerCancel(){
-     console.log("取消");
-     console.log(this.failReason);
-   },
-   confirm(){
-     console.log("取消");
-   },
    //选择更新进店日期
    updateTime(value,anotherVal){
      this.form.arrivalDate=anotherVal;
    },
    //选择更新留店时长
    updateDuration(value){
+     console.log(value);
+     if(!value){
+       this.form.residentTime='0分钟';
+       return;
+     }
     this.form.residentTime=value;
+     
+    
    },
    //选择更新购买原因
    updateReason(name,code){

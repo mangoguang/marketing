@@ -6,7 +6,7 @@
           <area-select v-bind="formInfo.areaInfo" v-model="area" readonly @update="updateArea" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.addressInfo" v-model="form.address" :showIcon="inputIcon" class="li_border"/>
+          <yan-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border"/>
         </li>
         <li>
           <house-select v-bind="formInfo.apartmentType" v-model="apartmentType" @update="updateApartmentType" :showIcon="selectIcon" class="li_border"/>
@@ -103,6 +103,8 @@ export default {
           this.elevator=res.data.elevator==='Y'?'是':'否';
           this.area=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}`;
           this.apartmentType=res.data.apartmentTypeName;
+        }else{
+          mango.tip(res.msg);
         }
       })
     },
@@ -131,6 +133,8 @@ export default {
             mango.tip(res.msg);
             this.$router.back(-1);
             //this.$router.push({name:'address',params:{customerId:this.$route.params.customerId}})
+          }else{
+            mango.tip(res.msg);
           }
         })
      }

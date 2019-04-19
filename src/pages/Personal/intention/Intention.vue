@@ -6,7 +6,7 @@
         <button type="button" @click="close" v-if="this.form.status==='New'&&!isRecord" style="color:#FF3B30">意向关闭</button>
          <button type="button" @click="closeReason" v-if="this.form.status==='Closed'" style="color:#FF3B30">战败原因</button>
       </mybanner>
-      <div v-if="!isRecord">
+      <div>
         <title-bar :text="titleModule.info">
           <button type="button" v-if="this.form.status==='New'" @click="modify">修改</button>
         </title-bar>
@@ -91,7 +91,7 @@
           <span slot='confirm'>确定</span>
         </yan-layer-msg>
       </div>
-      <new-record  v-else/>
+      
     </div>
 </template>
 
@@ -207,7 +207,6 @@ export default {
     ])
   },
   created(){
-   //this.customerId=this.$route.params.customerId;
    this.getOpportunity();
   
   },
@@ -219,9 +218,11 @@ export default {
     getOpportunity(){
       let id=this.$route.params.opportunityId;
       indexModel.getOpportunity(id).then(res => {
+        console.log(res.data);
         if(res.code===0){
           //this.form=res.data;
           this.oppId=res.data.oppId;
+          this.customerId=res.data.customerId;
           if(res.data.goodsList.length>0){
             this.goodsValue=res.data.goodsList[0].goodsName;
           }
@@ -246,8 +247,12 @@ export default {
           this.depositPaid=res.data.depositPaid;
           this.argreeDiscount=res.data.argreeDiscount;
           this.form.level=res.data.level;
-          this.setClassify([res.data.level]);
-          this.form.recordList=res.data.recordList;
+          if(res.data.level){
+             this.setClassify([res.data.level])
+          }
+          if(res.data.recordList.length>0){
+            this.form.recordList=res.data.recordList;
+          }
           if(res.data.urgency==='Y'){
             this.urgency="是";
             this.setUrgency(['是']);
@@ -270,13 +275,14 @@ export default {
             }
           ];
           let addressId=res.data.addressId===''?'未收集':this.getAddress(res.data.addressId);
+        }else{
+            mango.tip(res.msg);
         }
         
       })
     },
     modify(){
-      this.$router.push({name:'addIntention',params:{customerId:this.customerId,opportunityId:this.oppId}});
-      
+      this.$router.push({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId}});
     },
     close(){
       this.isPrompt=true;
@@ -318,9 +324,9 @@ export default {
     this.isMsg=false;
    },
    addRecord(){
-     //this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
-     this.isRecord=true;
-     this.setTitle('新增跟进记录');
+     this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
+     //this.isRecord=true;
+     //this.setTitle('新增跟进记录');
    },
    sumitRecord(){
     this.isRecord=false;
@@ -332,20 +338,22 @@ export default {
             this.address=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}${res.data.address}`;
             this.apartmentTypeName=res.data.apartmentTypeName;
             this.elevator=res.data.elevator==='Y'?'有电梯':'无电梯';
+          }else{
+            mango.tip(res.msg);
           }
     })
    },
    getShopName(id){
      let list=JSON.parse(localStorage.getItem('shops'));
-     console.log(list)
+     //console.log(list)
     let name;
      list.map((item,index) => {
        console.log(item);
-       if(item.crmId==id){
+       if(item.id===id){
          return name=item.name;
        } 
      })
-     //console.log(name);    
+    return name;    
     
    }
 

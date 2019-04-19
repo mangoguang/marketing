@@ -174,12 +174,12 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/Personal/address/selectAddress'],resolve)
   },
   {
-    path: '/intentionProduct/:customerId',
+    path: '/intentionProduct',
     name: 'intentionProduct',
     component: resolve => require(['../pages/Personal/intention/intentionProduct'],resolve)
   },
   {
-    path: '/searchProduct/:customerId',
+    path: '/searchProduct',
     name: 'searchProduct',
     component: resolve => require(['../pages/Personal/intention/searchProduct'],resolve)
   },

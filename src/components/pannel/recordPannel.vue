@@ -33,10 +33,10 @@
             <yanInput label="下次跟进" readonly class="next" :value="item.nextDate"/>
             <yan-textarea label="下一步计划" readonly value="未收集" v-if="item.plan===''"/>
              <yan-textarea label="下一步计划" readonly :value="item.plan" v-else/>
-            <p class="title">附件图片</p>
-            <div class="img-box">
+            <p class="title" v-if="item.imgUrl.length>0">附件图片</p>
+            <div class="img-box" v-if="item.imgUrl.length>0">
                <ul class="img-list" >
-                <li v-for="(itemUrl,uIndex) in JSON.parse(item.imgUrl)" :key="uIndex">
+                <li v-for="(itemUrl,uIndex) in JSON.parse(item.imgUrl)" :key="uIndex" >
                   <img :src="itemUrl.url" alt="">
                 </li>
               </ul>
@@ -64,7 +64,6 @@ export default {
     return {
       isOn:false,
       openIndex:''
-     
     }
   },
   components:{
@@ -73,12 +72,16 @@ export default {
      upload
   },
   computed:{
+   
+   
   },
   created(){
    
   },
   
   mounted(){
+    
+    
   },
   methods:{
     open(i){
