@@ -1,7 +1,9 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'" :start="'*'">
+      <li is="customerLi" :leftText="'意向产品'" :start="'*'" @click.native='addIntention'>
+        <!-- <YanintentionSelect /> -->
+
         <input v-model="newCustomerInfo.intention" placeholder="请填写意向产品" type="text">
       </li>
       <li is="shopSelect" ></li>
@@ -66,6 +68,7 @@ Vue.component(Popup.name, Popup)
 
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
+import YanintentionSelect from '../../mySelect/intentionSelect'
 import shopSelect from '../../select/shopSelect'
 import sourceSelect from '../../select/sourceSelect'
 import BuyReason from '../../select/buyReason'
@@ -95,7 +98,8 @@ export default {
     progressSelect,
     colorSelect,
     houseType,
-    elevatorSelect
+    elevatorSelect,
+    YanintentionSelect
   },
   data(){
     return{
@@ -150,6 +154,17 @@ export default {
       this.setBuyReason('')
       this.setLeaveStoreVal('')
       this.setDiscountVal('')
+    },
+    addIntention() {
+      this.$router.push({
+        name:'searchProduct',
+        params:{
+          customerId:''
+          },
+        query:{
+            redirect:''
+          }
+        })
     },
     //获取门店的值
     getShopVal() {

@@ -69,7 +69,10 @@ export var router = new VueRouter({
   {
     path: '/customerInfo',
     name: '/CustomerInfo',
-    component: resolve => require(['../pages/customer/customerInfo'],resolve)
+    component: resolve => require(['../pages/customer/customerInfo'],resolve),
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/newCustomerInfo',
