@@ -57,7 +57,7 @@ export default {
   methods:{
    ...mapMutations(['updateSearchProductList','updateCheckedList']),
    update(){
-     if(this.productList.length>0){
+     if(this.productList.length>0||this.checkedList.length>0){
        let list=[];
         this.productList.forEach((itemId,i) => {
           let id=itemId;
@@ -65,7 +65,7 @@ export default {
         });  
     
       this.updateCheckedList(list);
-      this.$router.replace({name:'intentionProduct',params:{customerId:this.id},query:{redirect:this.url}});
+      this.$router.replace({name:'intentionProduct',query:{redirect:this.url}});
      }else{
        mango.tip('至少选择一种产品');
      }

@@ -158,11 +158,12 @@ export default {
     addIntention() {
       this.$router.push({
         name:'searchProduct',
-        params:{
-          customerId:''
-          },
+        // params:{
+        //   customerId:''
+        //   },
+ 
         query:{
-            redirect:''
+            redirect: this.$route.path
           }
         })
     },

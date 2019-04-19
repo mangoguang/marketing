@@ -14,11 +14,11 @@
           <duration-select v-bind="formInfo.duration" v-model="form.residentTime"  @update="updateResidentTime" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.report" v-model="form.report"/>
+      <yan-textarea v-bind="formInfo.report" v-model.trim="form.report"/>
       <div class="next">
          <date-select v-bind="formInfo.nextTime" v-model="form.nextTime"  @update="updateNextTime" :showIcon="selectIcon"/>
       </div>
-      <yan-textarea v-bind="formInfo.plan" v-model="form.plan"/>
+      <yan-textarea v-bind="formInfo.plan" v-model.trim="form.plan"/>
       <p class="title">附件图片</p>
       <upload picLen='5' :clear="isClear"/>
     </div>
@@ -87,9 +87,29 @@ export default {
         mango.tip('请选择跟进方式');
         return false;
       }
-      if(this.form.nextTime===''){
+      if(this.form.time===''){
         mango.tip('请选择跟进时间');
         return false;
+      }
+      if(this.form.residentTime===''){
+        mango.tip('请选择跟进时长');
+        return false;
+      }
+      if(this.form.report===''){
+        mango.tip('请填写本次跟进情况');
+        return false;
+      }
+      if(this.form.nextTime===''){
+        mango.tip('请选择下次跟进时间');
+        return false;
+      }
+      if(this.form.plan===''){
+        mango.tip('请填写下一步跟进计划');
+        return false;
+      }
+      if(!mango.compareTimeStamp(this.form.time,this.form.nextTime)){
+          mango.tip('下次跟进时间不能小于等于当前跟进时间');
+          return false;
       }
       return true;
     },
@@ -114,6 +134,7 @@ export default {
             this.isClear=true;
             this.form.follow='';
             this.form.time='';
+            this.form.residentTime='';
             this.form.nextTime='';
             this.form.report='';
             this.form.plan='';
@@ -124,6 +145,7 @@ export default {
             this.isClear=true;
             this.form.follow='';
             this.form.time='';
+            this.form.residentTime='';
             this.form.nextTime='';
             this.form.report='';
             this.form.plan='';
@@ -143,7 +165,12 @@ export default {
    //选择更新留店时长
    updateResidentTime(value){
     console.log(value);
-    this.form.residentTime=value;
+    if(!value){
+      this.form.residentTime='0分钟';
+    }else{
+       this.form.residentTime=value;
+    }
+   
    },
    //选择跟进
    updateFollow(arr){

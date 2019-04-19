@@ -82,6 +82,7 @@ export default {
         indexModel.getArea('DR_COUNTY').then(res => {
           if(res.code===0){
             let cityId=values[1].id;
+            console.log('city:',cityId)
             picker.setSlotValues(2,that.getReference(cityId,res.data));
           }
         });
@@ -124,7 +125,7 @@ export default {
           //根据市id获取区县
           indexModel.getArea('DR_COUNTY').then(res => {
             if(res.code===0){
-              let cityId=this.slots[2].values[1].id;
+              let cityId=this.slots[2].values[0].id;
               this.slots[4].values=this.getReference(cityId,res.data)
             }
           });

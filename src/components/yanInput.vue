@@ -2,7 +2,8 @@
   <div class="inputBox">
       <label>
           <span>{{label}}</span>
-          <input :id="id" type="text" :value="value" :style="color" :readonly='readonly' :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          <input :id="id" type="text" :value="value" :style="color" 
+          :readonly='readonly' :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../assets/imgs/rightside.png" alt="">
