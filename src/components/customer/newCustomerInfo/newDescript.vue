@@ -144,7 +144,8 @@ export default {
       'setAreaVal',
       'setSourceVal',
       'setLeaveStoreVal',
-      'setAgeVal'
+      'setAgeVal',
+       'setUpLoadUrl'
     ]),
     //编辑资料
     hasList() {
@@ -244,6 +245,7 @@ export default {
       this.setNewCustomerInfo({})
       this.setAgeVal('')
       this.setSexVal('')
+      this.setUpLoadUrl('')
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.newCustomerInfo.dataFiles = new FormData()
       if(this.$route.query.phone) {

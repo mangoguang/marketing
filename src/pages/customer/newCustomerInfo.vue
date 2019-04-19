@@ -113,7 +113,7 @@ export default {
     this.setStylePref('')
     this.setProgress('')
     this.setColorPref('')
-    this.setUpLoadUrl('')
+    // this.setUpLoadUrl('')
     this.setHouseType('')
     this.setElevatorVal('')
   },

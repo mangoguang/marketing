@@ -76,6 +76,8 @@ export default {
     next(vm => {
       if(from.name === 'selectAddress') {
         vm.editStatus = true
+      }else {
+        vm.setUpLoadUrl('')
       }
     })
   },
