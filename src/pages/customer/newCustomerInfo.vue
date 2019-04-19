@@ -76,9 +76,10 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
+    console.log(from.name)
     next(vm => {
       vm.fromName = from.name
-      if(from.name === 'chooseShop') {
+      if(from.name === 'chooseShop' || from.name === 'searchProduct' || from.name === 'intentionProduct') {
         vm.isShowDemand = true
       }else {
         vm.setUpLoadUrl('')
@@ -174,7 +175,6 @@ export default {
     //保存客户信息，新建客户	
     creatNewCustomer() {
       //头像的formdata
-      // !this.newCustomerInfo.dataFiles? this.newCustomerInfo.dataFiles = new FormData() : ''
       this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
@@ -215,6 +215,13 @@ export default {
     //获取参数
      updateParams(obj) {
       let tempObj = {}
+      let newArr = obj.productArr
+      if(obj.productArr && obj.productArr.length) {
+         newArr.forEach((item, index) => {
+          this.$set(tempObj, `opportunity.goodsList[${index}].goodsId`,item.id)
+          this.$set(tempObj, `opportunity.goodsList[${index}].quantity`,item.quantity)
+        })
+      }
       let temp = {
         phone: obj.phone,
         username: obj.username,
@@ -225,17 +232,12 @@ export default {
         weChat: obj.weChat,
         duty: obj.duty,
         remark: obj.remark,
-        
         'address.province': obj.province,
         'address.city': obj.city,
         'address.district': obj.area,
         'address.address': obj.address,
         'address.apartmentType': this.codeList.htCode,   //户型    
         'address.elevator': obj.elevator,
-
-        // 'opportunity.goodsList[0].goodsId': '1-44JIB6',          //意向产品多个
-        // 'opportunity.goodsList[0].quantity': 2,
-
         'opportunity.shopId': this.shops[0].id,
         'opportunity.arrivalDate':mango.indexTimeB(new Date())[1],
         'opportunity.source': this.codeList.sourceCode || 'Natural',
