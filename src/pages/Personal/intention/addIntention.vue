@@ -402,11 +402,6 @@ export default {
         'opportunity.argreeDiscount','opportunity.remark','opportunity.urgency','opportunity.level'];
         let key=[...Akey,...Bkey];
         let lastKey=[];
-        /* for(let i=0;i<Bkey.length;i++){
-          
-            console.log(Bkey[i],form.get(Bkey[i]))
-          
-        } */
         for(let i=0;i<key.length;i++){
           if(form.get(key[i])!==''){
             lastKey.push(key[i]);
