@@ -33,7 +33,7 @@ export default {
       slots:[
         {
           flex: 1,
-          values: ['请选择'],
+          values: ['微信沟通','到店沟通','电话沟通'],
           className: 'slot1',
           textAlign: 'center'
         }
@@ -42,12 +42,11 @@ export default {
     }
   },
   mounted(){
-    this.getSource();
   },
   methods:{
     onValuesChange(picker,values){
       this.arr=picker.getValues();
-      console.log(this.arr);
+      //console.log(this.arr);
     },
     open(){
       this.popupVisible=true;
@@ -58,15 +57,8 @@ export default {
     update(){
       this.$emit('update',this.arr);
       this.popupVisible=false;
-    },
-    getSource(){
-      indexModel.getArea('DR_SOURCE_CHANNEL').then(res => {
-        //console.log(res);
-        if(res.code===0){
-          this.slots[0].values=res.data;
-        }
-      })
     }
+   
   }
  
 }

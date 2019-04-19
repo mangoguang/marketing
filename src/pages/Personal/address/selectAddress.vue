@@ -74,6 +74,7 @@ export default {
    edit(id){
      console.log(id);
      let customerId=this.$route.params.customerId;
+     console.log('customerId',customerId);
      let addressId=id;
      //let redirect=this.$route.query.redirect;
      this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});

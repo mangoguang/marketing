@@ -6,39 +6,47 @@
         <span>下次跟进时间</span>
       </div>
       <div class="yan-follow-box">
-        <div class="yan-follow-item" :class="{'yan-item-on':isOn}" v-for="(item,index) in recordList" :key="index">
+        <div class="yan-follow-item" :class="openIndex===index?'yan-item-on':''" v-for="(item,index) in recordList" :key="index">
           <div class="yan-follow-th">
             <span>{{item.followDate}}</span>
-            <span>{{item.source}}</span>
+            <span >{{item.source}}</span>
             <div>
              <span>{{item.nextDate}}</span>
-             <img src="../../assets/imgs/arrowDown.png" alt="" class="arrow" :class="{'yan-arrow-on':isRotate}" @click="open">
+             <img src="../../assets/imgs/arrowDown.png" alt="" class="arrow" :class="openIndex===index&&isOn?'yan-arrow-on':''" @click="open(index)">
             </div>
           </div>
           <div class="collapse">
             <ul class="list">
               <li>
-                <yan-input label="跟进方式" readonly :value="item.source"/>
+                <yan-input label="跟进方式" readonly :value="item.source" />
               </li>
               <li>
                 <yan-input label="跟进时间" readonly :value="item.followDate"/>
               </li>
               <li>
-                <yan-input label="跟进时长" readonly :value="residentTime"/>
+                <yan-input label="跟进时长" readonly value="未收集" v-if="item.residentTime===''"/>
+                <yan-input label="跟进时长" readonly :value="item.residentTime" v-else/>
               </li>
             </ul>
-            <yan-textarea label="跟进情况" readonly :value="item.situation"/>
+            <yan-textarea label="跟进情况" readonly value="未收集" v-if="item.situation===''"/>
+            <yan-textarea label="跟进情况" readonly :value="item.situation" v-else/>
             <yanInput label="下次跟进" readonly class="next" :value="item.nextDate"/>
-            <yan-textarea label="下一步计划" readonly :value="item.plan"/>
-            <p class="title">附件图片</p>
-            <div class="img-box">
+            <yan-textarea label="下一步计划" readonly value="未收集" v-if="item.plan===''"/>
+             <yan-textarea label="下一步计划" readonly :value="item.plan" v-else/>
+            <p class="title" v-if="item.imgUrl.length>0">附件图片</p>
+            <div class="img-box" v-if="item.imgUrl.length>0">
                <ul class="img-list" >
-                <li v-for="(itemUrl,uIndex) in item.imgUrl" :key="uIndex">
+                <li v-for="(itemUrl,uIndex) in JSON.parse(item.imgUrl)" :key="uIndex" >
                   <img :src="itemUrl.url" alt="">
                 </li>
               </ul>
-              <span>1/5</span>
+              <span>{{JSON.parse(item.imgUrl).length}}/5</span>
             </div>
+          </div>
+        </div>
+        <div class="yan-follow-item" v-if="recordList.length<=0">
+          <div class="yan-follow-th" style="justify-content:center">
+            暂无记录
           </div>
         </div>
       </div>
@@ -55,7 +63,7 @@ export default {
   data () {
     return {
       isOn:false,
-      isRotate:false
+      openIndex:''
     }
   },
   components:{
@@ -64,18 +72,27 @@ export default {
      upload
   },
   computed:{
+   
+   
   },
   created(){
    
   },
   
   mounted(){
-
+    
+    
   },
   methods:{
-    open(){
-      this.isRotate=!this.isRotate;
-      this.isOn=!this.isOn;
+    open(i){
+      if(this.openIndex===i&&this.isOn){
+        this.openIndex='';
+        this.isOn=false;
+      }else{
+        this.openIndex=i;
+        this.isOn=true;
+      }
+     
     }
       
   }
@@ -137,6 +154,8 @@ export default {
            border-bottom: 1px solid #ccc;
            li{
              border-bottom: 1px solid #ccc;
+          
+             
            }
            :last-child{
              border:none;
@@ -167,6 +186,7 @@ export default {
            flex-direction: row;
            align-items: center;
            flex-wrap: wrap;
+           margin-bottom: 5vw;
            li{
               width:20vw;
               height:20vw;
@@ -178,6 +198,8 @@ export default {
               border-radius: 1.066vw;
               border:1px solid #ccc;
               margin-top:2.666vw;
+              margin-right: 1.333vw;
+             margin-bottom: 1.333vw;
               img{
                 width:100%;
                 height:auto;

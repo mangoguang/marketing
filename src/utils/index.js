@@ -322,6 +322,13 @@ class IndexModel extends Request {
       type: type
     })
   }
+  //获取省市区
+  getCity(type, code) {
+    return mango.getAjax('/v1/api/public/address',{
+      type: type,
+      parentCode: code
+    })
+  }
   //新建客户
   newCustomer(obj,type) {
     return mango.getAjax('/v3/app/customer/update',obj,type)
@@ -330,9 +337,20 @@ class IndexModel extends Request {
   getVisitor(obj,type) {
     return mango.getAjax('/v3/app/customer/tourist', obj,type)
   }
+  //编辑客户信息
+  updataCustomer(obj) {
+    return mango.getAjax('/v3/app/customer/update',obj,'post')
+  }
+  //获取客户详情
+  getCustomerDetails(id) {
+    return mango.getAjax('/v3/app/customer/details',{
+      type: 'order',
+      customerId:id
+    })
+  }
   //更新意向
-  updateOpportunity(obj){
-    return mango.getAjax('/v3/app/opportunity/update',obj,'post')
+  updateOpportunity(obj,key){
+    return mango.getFormAjax('/v3/app/opportunity/update',obj,key)
   }
 
   //获取意向详情
@@ -342,7 +360,7 @@ class IndexModel extends Request {
 
   //关闭意向
   closeOpportunity(obj){
-    return mango.getAjax('/v3/app/opportunity',obj,'post')
+    return mango.getAjax('/v3/app/opportunity/close',obj,'post')
   }
 
   //新建跟踪记录

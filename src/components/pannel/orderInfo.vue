@@ -1,28 +1,22 @@
 <template>
-      <ul class="orderList">
+      <ul class="orderList" >
         <li>
-          <yan-input label="订单编号" readonly value="209328525575" color="font-weight:bold;color:#55A5FD"/>
+          <yan-input label="订单编号" readonly :value="orderList[0].orderNo" color="font-weight:bold;color:#55A5FD"/>
         </li>
         <li>
-          <yan-input label="订单产品" readonly value="BCK-001"/>
+          <yan-input label="订单产品" readonly :value="orderList[0].orderItemList[0].goodsName"/>
         </li>
         <li>
-          <yan-input label="下单时间" readonly value="2019.03.14 19:30"/>
+          <yan-input label="下单时间" readonly :value="orderList[0].orderTime"/>
         </li>
         <li>
-          <yan-input label="需求日期" readonly value="2019.06.14"/>
+          <yan-input label="需求日期" readonly :value="orderList[0].demandTime"/>
         </li>
          <li>
-          <yan-input label="订单折扣" readonly value="8折"/>
+          <yan-input label="订单折扣" readonly :value="orderList[0].discount"/>
         </li>
         <li>
-          <yan-input label="成交金额" readonly value="9999.00"/>
-        </li>
-        <li>
-          <yan-input label="定金总额" readonly value="1000.00"/>
-        </li>
-        <li>
-          <yan-input label="待收金额" readonly value="8999.00"/>
+          <yan-input label="成交金额" readonly :value="orderList[0].total"/>
         </li>
       </ul>
 </template>
@@ -33,7 +27,7 @@ import yanInput from '../yanInput'
 import yanTextarea from '../yanTextarea'
 import upload from '../upload/filesUpload'
 export default {
-  props:['recordList'],
+  props:['orderList'],
   data () {
     return {
     }

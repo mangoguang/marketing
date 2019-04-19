@@ -31,7 +31,7 @@ export default {
       slots:[
         {
           flex: 1,
-          values: [{name:'有',value:"true"},{name:'无',value:'false'}],
+          values: [{name:'有',value:"Y"},{name:'无',value:''}],
           className: 'slot1',
           textAlign: 'center'
         }

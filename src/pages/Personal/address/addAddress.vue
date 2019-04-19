@@ -6,7 +6,7 @@
           <area-select v-bind="formInfo.areaInfo" v-model="area" readonly @update="updateArea" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.addressInfo" v-model="form.address" :showIcon="inputIcon" class="li_border"/>
+          <yan-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border"/>
         </li>
         <li>
           <house-select v-bind="formInfo.apartmentType" v-model="apartmentType" @update="updateApartmentType" :showIcon="selectIcon" class="li_border"/>
@@ -77,7 +77,9 @@ export default {
    this.$set(this.form,'customerId',this.$route.params.customerId);
    if(this.$route.query.addressId){
       this.form.id=this.$route.query.addressId;
+      this.updateTitle('编辑地址');
       this.getAddress(this.form.id);
+
    }
   
   },
@@ -93,14 +95,16 @@ export default {
           this.form.address=res.data.address;
           this.form.remark=res.data.remark;
           this.form.apartmentType=res.data.apartmentType;
-          this.form.elevator=res.data.elevator?'true':'false';
+          this.form.elevator=res.data.elevator==='Y'?'Y':'';
           this.form.country=res.data.country;
           this.form.province=res.data.province;
           this.form.city=res.data.city;
           this.form.district=res.data.district;
-          this.elevator=res.data.elevator?'是':'否';
+          this.elevator=res.data.elevator==='Y'?'是':'否';
           this.area=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}`;
           this.apartmentType=res.data.apartmentTypeName;
+        }else{
+          mango.tip(res.msg);
         }
       })
     },
@@ -129,6 +133,8 @@ export default {
             mango.tip(res.msg);
             this.$router.back(-1);
             //this.$router.push({name:'address',params:{customerId:this.$route.params.customerId}})
+          }else{
+            mango.tip(res.msg);
           }
         })
      }
