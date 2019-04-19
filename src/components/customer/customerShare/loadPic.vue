@@ -82,6 +82,7 @@ export default {
     });
 
      if(this.upLoadUrl) {
+       console.log('hasurl')
       this.headerImage = this.upLoadUrl
       this.selectStatus = false
       // this.hasImgStatus = true

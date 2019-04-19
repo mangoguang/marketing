@@ -1,7 +1,9 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'" :start="'*'">
+      <li is="customerLi" :leftText="'意向产品'" :start="'*'" @click.native='addIntention'>
+        <!-- <YanintentionSelect /> -->
+
         <input v-model="newCustomerInfo.intention" placeholder="请填写意向产品" type="text">
       </li>
       <li is="shopSelect" ></li>
@@ -9,23 +11,16 @@
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
-      <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
+      <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
 
-      
-
-
-
-      <!-- <li is="customerLi" :leftText="'客户地址'" :icon='true'>
-         <span style="color: #999">请选择客户地址</span>
-      </li> -->
-
-
-      <li is="customerLi" :leftText="'户型大小'">
-        <input v-model="newCustomerInfo.apartmentType" type="text" placeholder="请先选客户地址">
+      <li is='customerLi' :leftText='"客户地区"'>
+        <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
       </li>
-       <li is="customerLi" :leftText="'有无电梯'">
-        <input v-model="newCustomerInfo.elevator" type="text" placeholder="请先选客户地址">
+       <li is='customerLi' :leftText='"客户地址"'>
+        <span>{{newCustomerInfo.address || '请输入客户地址'}}</span>
       </li>
+      <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
+      <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
       <li is="BuyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
       <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
       <li is="progressSelect"  @progressChange="progressChange" @pgCodeChange='pgCodeChange'></li>
@@ -73,6 +68,7 @@ Vue.component(Popup.name, Popup)
 
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
+import YanintentionSelect from '../../mySelect/intentionSelect'
 import shopSelect from '../../select/shopSelect'
 import sourceSelect from '../../select/sourceSelect'
 import BuyReason from '../../select/buyReason'
@@ -82,6 +78,8 @@ import progressSelect from '../../select/progressSelect'
 import discountSelect from '../../select/discountSelect'
 import intentionSelect from '../../select/intentionSelect'
 import urgentSelect from '../../select/urgentSelect'
+import houseType from '../../select/houseType'
+import elevatorSelect from '../../select/elevatorSelect'
 import mango from '../../../js'
 export default {
   name:'newDemand',
@@ -98,7 +96,10 @@ export default {
     BuyReason,
     StylePref,
     progressSelect,
-    colorSelect
+    colorSelect,
+    houseType,
+    elevatorSelect,
+    YanintentionSelect
   },
   data(){
     return{
@@ -146,13 +147,25 @@ export default {
     this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref']),
+    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
     setInitData() {
       this.newCustomerInfo.arrivalDate = this.day
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.setBuyReason('')
       this.setLeaveStoreVal('')
       this.setDiscountVal('')
+    },
+    addIntention() {
+      this.$router.push({
+        name:'searchProduct',
+        // params:{
+        //   customerId:''
+        //   },
+ 
+        query:{
+            redirect: this.$route.path
+          }
+        })
     },
     //获取门店的值
     getShopVal() {
@@ -227,6 +240,24 @@ export default {
     brCodeChange(val) {
       this.codeList.brCode = val
       this.changeCode(this.codeList)
+    },
+     //户型大小
+    houseTypeChange(val) {
+      this.setHouseType(val)
+      this.newCustomerInfo.apartmentType = val
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //户型的code
+    htCodeChange(val) {
+      this.codeList.htCode = val
+      this.changeCode(this.codeList)
+    },
+    //电梯选择
+    elevatorChange(val) {
+      // console.log('age改变了：', val)
+      this.setElevatorVal(val)
+      this.newCustomerInfo.elevator = val === '有'? 'Y' : 'N'
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
      //选择装修风格
     stylePrefChange(val) {

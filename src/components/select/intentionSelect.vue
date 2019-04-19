@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import {mapState,mapMutations} from 'vuex'
 import mango from '../../js'
 export default {
   props: ['intentionVal'],
@@ -24,7 +25,25 @@ export default {
       val: ''
     }
   },
+  created() {
+    this.init()
+  },
+  computed:{
+    ...mapState({
+      newCustomerInfo: state => state.customer.newCustomerInfo
+    })
+  },
+  created() {
+    this.init()
+  },
   methods: {
+    //初始化问题
+     init() {
+      if(this.newCustomerInfo.level) {
+        let i = this.newCustomerInfo.level === 'A'? 0 : this.newCustomerInfo.level === 'B'? 1 : 2
+        mango.changeBtnStatus(this.keyBtns, i)
+      }
+    },
      // 选择
     keySelect(i) {
       if(this.keyBtns[i].status) {

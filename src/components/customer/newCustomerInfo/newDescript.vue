@@ -144,7 +144,8 @@ export default {
       'setAreaVal',
       'setSourceVal',
       'setLeaveStoreVal',
-      'setAgeVal'
+      'setAgeVal',
+       'setUpLoadUrl'
     ]),
     //编辑资料
     hasList() {
@@ -199,19 +200,17 @@ export default {
     },
     areaChange(val) {
       // console.log('选择的地区：', val)
+      this.$set(this.newCustomerInfo,'provinceName',val.provinceName)
+      this.$set(this.newCustomerInfo,'cityName',val.cityName)
+      this.$set(this.newCustomerInfo,'countryName',val.countryName)
       this.newCustomerInfo.province = val.provinceCode
       this.newCustomerInfo.city = val.cityCode
       this.newCustomerInfo.area = val.countyCode
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
-    //
+    //跳转到地址管理页面
     toAddress() {
-      this.$router.push({
-        name: 'selectAddress',
-        parmas: {
-          customerId: this.$route.query.id
-        }
-      })
+      this.$router.push({path:`/selectAddress/${this.$route.query.id}`})
     },
     sexChange(val) {
       // console.log('sex改变了：', val)
@@ -246,6 +245,7 @@ export default {
       this.setNewCustomerInfo({})
       this.setAgeVal('')
       this.setSexVal('')
+      this.setUpLoadUrl('')
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.newCustomerInfo.dataFiles = new FormData()
       if(this.$route.query.phone) {
