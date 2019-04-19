@@ -4,7 +4,8 @@
     <!-- <input @click="showCityList" type="input" v-model="cityMsg.cityName"> -->
     <h5>
       地区
-      <span>{{'城市1' || cityMsg.cityName}} 
+      <!-- <span>{{'城市1' || cityMsg.cityName}}  -->
+      <span>{{cityMsg.cityName}} 
         <img src="../../assets/imgs/back.png" alt="" class="cityChoose" :style="{transform:`${rotate}`}">
       </span>
      
@@ -17,7 +18,7 @@
         @click.stop="changeCity($event)"
         :title="city.level"
         :class="{on: statusList[index]}"
-        >{{`城市${index + 1}` || cityMsg.cityName}}</li>
+        >{{cityMsg.cityName}}</li>
     </ul>
   </li>
 </template>

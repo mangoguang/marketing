@@ -53,7 +53,10 @@ export default {
   },
   mounted() {
     let date = new Date()
-    const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    let [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    if (month < 10) {
+      month = `0${month}`
+    }
     this.curDay = `${year}-${month}-${day}`
     // 获取当日数据
     this.getDailyData({
@@ -83,7 +86,7 @@ export default {
         mango.tip('总结与计划不能同时为空！')
         return
       }
-      indexModel.getCurMonthData({
+      indexModel.savePlan({
         summarize: this.dailySummaryTextarea,
         plan: this.dailyPlanTextarea,
         date: this.curDay         //获取当前日期

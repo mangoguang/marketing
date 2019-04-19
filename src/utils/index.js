@@ -276,7 +276,7 @@ class IndexModel extends Request {
   }
   //保存总结与计划
   savePlan(obj) {
-    return mango.getAjax('/v3/app/summarize/update', obj)
+    return mango.getAjax('/v3/app/summarize/update', obj, 'post')
   }
   
   /* 

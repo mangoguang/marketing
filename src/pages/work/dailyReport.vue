@@ -84,9 +84,10 @@ export default {
     // 获取当月数据
     this.getCurMonthData(this.getCurMonth())
     this.getDailyData({
-        startDate: `${year}-${month}-${day}`,
-        endDate: `${year}-${month}-${day}`
-      })
+      startDate: `${year}-${month}-${day}`,
+      endDate: `${year}-${month}-${day}`
+    })
+    // this.setSumAndPlan(this.curMonthData)
   },
   methods:{
     getCurDay(curDay) {
@@ -148,6 +149,7 @@ export default {
     },
     // 显示选择日期的当日总结和明日计划
     setSumAndPlan(res) {
+      console.log('今天是几号 ？', this.curNum)
       const num = parseInt(this.curNum)
       const index = this.planList.indexOf(num)
       if (index >= 0) {
