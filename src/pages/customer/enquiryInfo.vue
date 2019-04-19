@@ -72,6 +72,13 @@ export default {
       upLoadUrl: state => state.loadImgUrl.upLoadUrl
     })
   },
+  beforeRouteEnter(to,from,next) {
+    next(vm => {
+      if(from.name === 'selectAddress') {
+        vm.editStatus = true
+      }
+    })
+  },
   created() {
     this.getStatus()
     this.getData()

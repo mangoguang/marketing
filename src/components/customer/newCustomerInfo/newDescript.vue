@@ -204,14 +204,9 @@ export default {
       this.newCustomerInfo.area = val.countyCode
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
-    //
+    //跳转到地址管理页面
     toAddress() {
-      this.$router.push({
-        name: 'selectAddress',
-        parmas: {
-          customerId: this.$route.query.id
-        }
-      })
+      this.$router.push({path:`/selectAddress/${this.$route.query.id}`})
     },
     sexChange(val) {
       // console.log('sex改变了：', val)
