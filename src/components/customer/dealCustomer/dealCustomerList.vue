@@ -350,13 +350,13 @@ export default {
       padding-left: 4.266vw;
       .name {
         color: #363636;
-        flex: 0.5;
+        flex: 0.45;
       }
       .phone {
-        flex: 0.4;
+        flex: 0.5;
       }
       .date {
-        flex: 0.5;
+        flex: 0.4;
         color: #363636;
       }
       // span:nth-child(4) {

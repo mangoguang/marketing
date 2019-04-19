@@ -109,6 +109,7 @@ export default {
       width: 16vw;
       height: 16vw;
       border-radius:50%;
+      background: rgba(255, 255, 255, 0.1)
     }
     .content{
       margin-left: 5.6vw;

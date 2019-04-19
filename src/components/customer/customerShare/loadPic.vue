@@ -51,6 +51,11 @@ export default {
       imageData:''
     };
   },
+  watch: {
+    customerImage() {
+      this.headerImage = this.customerImage
+    }
+  },
   computed: {
     ...mapState({
       upLoadUrl: state => state.loadImgUrl.upLoadUrl
@@ -59,6 +64,9 @@ export default {
   mounted() {
     //初始化这个裁剪框
     this.selectStatus = this.select
+    if(this.customerImage) {
+      this.headerImage = this.customerImage
+    }
     var self = this;
     var image = document.getElementById("image");
     this.cropper = new Cropper(image, {
