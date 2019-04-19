@@ -150,7 +150,8 @@ export default {
       customerId:'',
       path:'',
       status:'',
-      urgency:'否'
+      urgency:'否',
+      redirect:''
     }
   },
   components:{
@@ -176,6 +177,12 @@ export default {
   watch:{
     $route(to,from){
       console.log(from);
+      if(from.name==='/CustomerInfo'){
+        this.redirect=from.path;
+      }
+      if(from.name==='/enquiryInfo'){
+        this.redirect=from.path;
+      }
       if(from.name==='selectAddress'){
         let obj={};
         if(this.$route.query.addressId){
@@ -427,7 +434,7 @@ export default {
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              this.$router.go(0);
+              this.$router.push({path:this.redirect,query:{id:this.customerId}})
             }else{
               mango.tip(res.msg);
             }
@@ -538,15 +545,12 @@ export default {
     console.log(from);
     if(from.name==='selectAddress'){
       to.meta.keepAlive=true;
-      next();
     }
     if(from.name==='searchProduct'){
       to.meta.keepAlive=true;
-      next();
     }
     if(from.name==='intentionProduct'){
-      to.meta.keepAlive=true;
-       next();
+      to.meta.keepAlive=true; 
     }
     next();
   }

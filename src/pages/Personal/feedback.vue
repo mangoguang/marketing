@@ -43,7 +43,7 @@ export default {
         tip:'提交成功！感谢您的反馈~'
       },
       path:'/feedback',
-      isClear:false
+      isClear:true
     }
   },
   components:{
@@ -91,21 +91,20 @@ export default {
               this.messageTip.tip=res.msg;
               this.messageTip.showMessageBox=true;
               this.setMessageBox(this.messageTip);
-              this.setFiles([]);
-              this.setPicVal([]);
               this.updateRemark('');
               this.updateContact('');
-              this.isClear=true;
+              this.setFiles([]);
+              this.setPicVal([]);
             }else{
               this.messageTip.tip=res.msg;
               this.messageTip.type=false;
               this.messageTip.showMessageBox=true;
               this.setMessageBox(this.messageTip);
-              this.setFiles([]);
-              this.setPicVal([]);
               this.updateRemark('');
               this.updateContact('');
-              this.isClear=true;
+              this.setFiles([]);
+              this.setPicVal([]);
+               
             }
           }) 
       }
@@ -115,6 +114,9 @@ export default {
     cancel(){
       this.messageTip.showMessageBox=false;
       this.setMessageBox(this.messageTip);
+      if(this.messageTip.type){
+         this.$router.go(-1);
+      }
     },
     getImgs(array){
      console.log(array);
