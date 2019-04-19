@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import {mapState,mapMutations} from 'vuex'
 import mango from '../../js'
 export default {
   props: ['urgentVal'],
@@ -22,7 +23,22 @@ export default {
       val: ''
     }
   },
+  computed:{
+    ...mapState({
+      newCustomerInfo: state => state.customer.newCustomerInfo
+    })
+  },
+  created() {
+    this.init()
+  },
   methods: {
+    //初始化问题
+     init() {
+      if(this.newCustomerInfo.urgency === 'false' || this.newCustomerInfo.urgency === 'true') {
+        let i = this.newCustomerInfo.urgency  === 'false'? 1 : 0
+        mango.changeBtnStatus(this.urgencyBtns, i)
+      }
+    },
     // 紧急程度选择
     urgencySelect(i) {
       if(this.urgencyBtns[i].status) {

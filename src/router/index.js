@@ -69,7 +69,11 @@ export var router = new VueRouter({
   {
     path: '/customerInfo',
     name: '/CustomerInfo',
-    component: resolve => require(['../pages/customer/customerInfo'],resolve)
+    component: resolve => require(['../pages/customer/customerInfo'],resolve),
+    meta: {        
+      isUseCache: false,  // 这个字段的意思稍后再说      
+      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
+    }
   },
   {
     path: '/newCustomerInfo',
@@ -109,7 +113,11 @@ export var router = new VueRouter({
   {
     path: '/enquiryInfo',
     name: '/enquiryInfo',
-    component: resolve => require(['../pages/customer/enquiryInfo'],resolve)
+    component: resolve => require(['../pages/customer/enquiryInfo'],resolve),
+    meta: {        
+      isUseCache: false,  // 这个字段的意思稍后再说      
+      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
+    }
   },
   {
     path: '/searchResult',
@@ -174,12 +182,12 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/Personal/address/selectAddress'],resolve)
   },
   {
-    path: '/intentionProduct',
+    path: '/intentionProduct/:customerId',
     name: 'intentionProduct',
     component: resolve => require(['../pages/Personal/intention/intentionProduct'],resolve)
   },
   {
-    path: '/searchProduct',
+    path: '/searchProduct/:customerId',
     name: 'searchProduct',
     component: resolve => require(['../pages/Personal/intention/searchProduct'],resolve)
   },
@@ -188,13 +196,21 @@ export var router = new VueRouter({
     name: 'followRecord',
     component: resolve => require(['../pages/Personal/intention/followRecord'],resolve)
   },
+ /*  {
+    path: '/intention/:customerId/:status',//status说明：0代表新增，1代表跟进,2代表战败，3代表成交
+    name: 'intention',
+    component: resolve => require(['../pages/Personal/intention/addIntention'],resolve),
+    meta:{
+      keepAlive:true
+    }
+  }, */
   {
     path: '/intention/:opportunityId',
     name: 'intention',
     component: resolve => require(['../pages/Personal/intention/intention'],resolve)
   },
   {
-    path: '/addintention/:customerId',
+    path: '/addintention/:customerId/:opportunityId',
     name: 'addintention',
     component: resolve => require(['../pages/Personal/intention/addIntention'],resolve),
     meta:{

@@ -2,7 +2,7 @@
   <li class="areaSelect">
     <ul>
       <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
-        <span>{{areaVal && areaVal.provinceName != '' ? `${areaVal.provinceName} ${areaVal.cityName} ${areaVal.countyName}` : '请选择客户地区'}}</span>
+        <span>{{areaVal && areaVal.provinceName != '' ? `${areaVal.provinceName} ${areaVal.cityName} ${areaVal.countryName}` : '请选择客户地区'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li class="pickerContainer">
@@ -59,7 +59,7 @@ export default {
       countys: [],
       provinceName: '',
       cityName: '',
-      countyName: '',
+      countryName: '',
       key: false,
       cityKey: false,
       areaKey: false
@@ -67,19 +67,28 @@ export default {
   },
   computed:{
     ...mapState({
-      areaVal: state => state.select.areaVal
+      areaVal: state => state.select.areaVal,
+      newCustomerInfo: state => state.customer.newCustomerInfo
     })
-  },
-  created() {
-    //获取本地缓存信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
   },
   mounted() {
     this.getProvince()
+    this.init()
   },
   methods:{
     ...mapMutations(["setAreaVal"]),
+    init() {
+      if(!this.newCustomerInfo.provinceName) {
+        return
+      } 
+      this.color = 'color: #363636'
+      let obj = {
+        provinceName: this.newCustomerInfo.provinceName,
+        cityName: this.newCustomerInfo.cityName,
+        countryName: this.newCustomerInfo.countryName
+      }
+      this.setAreaVal(obj)
+    },
     selectArea() {
       this.popupVisible = true
       this.key = true
@@ -108,7 +117,7 @@ export default {
     countyChange(picker, values) {
       if (this.areaKey) {
         // console.log('area')
-        this.countyName = values[0]
+        this.countryName = values[0]
         // this.getCounty(this.getAreaCode(values[0], this.citys)[0])
         // console.log('县区', values, this.provinces)
         let obj = {
@@ -116,8 +125,8 @@ export default {
           provinceCode: this.getAreaCode(this.provinceName, this.provinces)[1],
           cityName: this.cityName,
           cityCode: this.getAreaCode(this.cityName, this.citys)[1],
-          countyName: this.countyName,
-          countyCode: this.getAreaCode(this.countyName, this.countys)[1]
+          countryName: this.countryName,
+          countyCode: this.getAreaCode(this.countryName, this.countys)[1]
         }
         this.$emit('areaChange', obj)
         this.setAreaVal(obj)

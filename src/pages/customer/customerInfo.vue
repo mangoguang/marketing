@@ -50,6 +50,8 @@ export default {
     next(vm => {
       if(from.name === 'selectAddress') {
         vm.editStatus = true
+      }else {
+        vm.setUpLoadUrl('')
       }
     })
   },
@@ -67,9 +69,6 @@ export default {
       upLoadUrl: state => state.loadImgUrl.upLoadUrl
     })
   },
-  created() {
-    this.getData()
-  },
   destroyed() {
     this.setUpLoadUrl('')
   },
@@ -82,6 +81,7 @@ export default {
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
+          console.log('list')
         }
       })
     },
@@ -162,7 +162,27 @@ export default {
         }
       }
       return tempObj
-    }
+    }  
+  },
+  //
+  activated() {
+    // isUseCache为false时才重新刷新获取数据
+    if(!this.$route.meta.isUseCache){   
+      this.editStatus = false
+      this.getData()
+      this.$route.meta.customerUseCache = false;  
+    } 
+  },
+    //
+  beforeRouteLeave (to, from, next) { 
+  // /Customer       
+    if (to.name === 'selectAddress') {
+      this.$route.meta.isUseCache = true; 
+    }else {
+      this.$route.meta.isUseCache = false; 
+      this.setUpLoadUrl('')
+    }        
+    next();
   }
 }
 </script>
