@@ -15,7 +15,9 @@ const state = {
   buyReason: '',
   stylePref: '',
   progress:'',
-  colorPref:''
+  colorPref:'',
+  houseType: '',
+  elevatorVal:''
 }
 
 const mutations = {
@@ -35,7 +37,9 @@ const mutations = {
   setBuyReason: (state, str) => state.buyReason = str,
   setStylePref: (state, str) => state.stylePref = str,
   setProgress: (state, str) => state.progress = str,
-  setColorPref: (state, str) => state.colorPref = str
+  setColorPref: (state, str) => state.colorPref = str,
+  setHouseType: (state, str) => state.houseType = str,
+  setElevatorVal: (state, str) => state.elevatorVal = str
 }
 
 const actions = {

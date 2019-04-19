@@ -114,6 +114,8 @@ export default {
     this.setProgress('')
     this.setColorPref('')
     this.setUpLoadUrl('')
+    this.setHouseType('')
+    this.setElevatorVal('')
   },
   methods: {
     ...mapMutations([
@@ -129,7 +131,9 @@ export default {
       'setBuyReason',
       'setStylePref',
       'setProgress',
-      'setColorPref'
+      'setColorPref',
+      'setHouseType',
+      'setElevatorVal'
     ]),
     change(val) {
       this.codeList = val
@@ -226,8 +230,8 @@ export default {
         'address.city': obj.city,
         'address.district': obj.area,
         'address.address': obj.address,
-        // 'address.apartmentType': '1livingRoom2bedRoom',   //户型    
-        // 'address.elevator': true,
+        'address.apartmentType': this.codeList.htCode,   //户型    
+        'address.elevator': obj.elevator,
 
         // 'opportunity.goodsList[0].goodsId': '1-44JIB6',          //意向产品多个
         // 'opportunity.goodsList[0].quantity': 2,
