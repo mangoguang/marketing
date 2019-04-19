@@ -24,16 +24,18 @@ export default {
   },
   computed: {
     ...mapState({
-      shopList: state => state.chooseShop.shopList
+      shopList: state => state.chooseShop.shopList,
+      descriptShopList: state => state.chooseShop.descriptShopList
     })
   },
   created() {
     let shops = localStorage.getItem('shops')
     this.shop = JSON.parse(shops)
     this.isInit()
+    // console.log(this.$route.query.type)
   },
   methods: {
-    ...mapMutations(['initShopList', 'getShopVal']),
+    ...mapMutations(['initShopList', 'getShopVal','initDescriptShopList','getDescriptShopVal']),
     chooseShop(index) {
       if(this.list[index].status) {
         return
@@ -45,14 +47,29 @@ export default {
     init(i) {
       // console.log(this.shop[i].id)
       this.list = btnList(this.shop, i)
-      this.initShopList(this.list)
-      this.getShopVal()
-      localStorage.setItem('shopIndex',i);
+      if(this.$route.query.type === 'descript') {
+        this.initDescriptShopList(this.list)
+        this.getDescriptShopVal()
+        localStorage.setItem('descriptShopIndex',i);
+      }else {
+        this.initShopList(this.list)
+        this.getShopVal()
+        localStorage.setItem('shopIndex',i);
+      }
     },
     //判断vuex中是否已经有数据
     isInit() {
-      if(this.shopList && this.shopList.length) {
-        this.list = this.shopList
+      if(this.$route.query.type === 'descript') {
+        this.setInitData(this.descriptShopList)
+      }else {
+        this.setInitData(this.shopList)
+      }
+     
+    },
+    //设置初始
+    setInitData(list) {
+      if(list && list.length) {
+        this.list = list
       }else {
         this.init(0)
       }

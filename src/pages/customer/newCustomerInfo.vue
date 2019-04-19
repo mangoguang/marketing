@@ -76,7 +76,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    console.log(from.name)
+    // console.log(from.name)
     next(vm => {
       vm.fromName = from.name
       if(from.name === 'chooseShop' || from.name === 'searchProduct' || from.name === 'intentionProduct') {
@@ -117,6 +117,7 @@ export default {
     // this.setUpLoadUrl('')
     this.setHouseType('')
     this.setElevatorVal('')
+    this.setCheckedList([])
   },
   methods: {
     ...mapMutations([
@@ -134,7 +135,8 @@ export default {
       'setProgress',
       'setColorPref',
       'setHouseType',
-      'setElevatorVal'
+      'setElevatorVal',
+      'setCheckedList'
     ]),
     change(val) {
       this.codeList = val
@@ -145,18 +147,6 @@ export default {
     },
     controlDaal() {
       this.isShowDeal = !this.isShowDeal
-    },
-    //获得shopId
-    getShopID(name) {
-      let shopId
-      if(this.shops) {
-        this.shops.forEach((item, index) => {
-          if(item.name === name) {
-            shopId = item.id
-          }
-      });
-      this.$set(this.newCustomerInfo, 'shopId', shopId)
-      }
     },
     //base64转成formdata形式上传
     changeFormData(url) {
@@ -195,6 +185,7 @@ export default {
       let formdata = this.newCustomerInfo.dataFiles
     
       let obj = this.updateParams(this.newCustomerInfo)
+      console.log(obj)
       let arr = []
       for(var key in obj) {
         formdata.append(key,obj[key])
@@ -232,13 +223,14 @@ export default {
         weChat: obj.weChat,
         duty: obj.duty,
         remark: obj.remark,
+        "orgId": obj.orgId,
         'address.province': obj.province,
         'address.city': obj.city,
         'address.district': obj.area,
         'address.address': obj.address,
         'address.apartmentType': this.codeList.htCode,   //户型    
         'address.elevator': obj.elevator,
-        'opportunity.shopId': this.shops[0].id,
+        'opportunity.shopId': obj.shopId,
         'opportunity.arrivalDate':mango.indexTimeB(new Date())[1],
         'opportunity.source': this.codeList.sourceCode || 'Natural',
         'opportunity.residentTime': obj.residentTime,   //留店时长

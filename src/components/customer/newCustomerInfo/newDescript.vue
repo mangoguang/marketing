@@ -35,6 +35,7 @@
         <li is="customerLi" :leftText="'客户地址'"  >
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址">
         </li>
+        <li is="shopSelect" :type='"descript"'></li>
       </template>
       <li class="textarea">
         <h3>客户描述</h3>
@@ -78,6 +79,7 @@ import addressSelect from '../../select/addressSelect'
 import areaSelect from '../../select/areaSelect'
 import mango from '../../../js'
 import variable from '../../../js/variable'
+import shopSelect from '../../select/shopSelect'
 import {turnParams,changeFormData} from '../../../utils/customer'
 export default {
   name:'customerDescript',
@@ -91,7 +93,8 @@ export default {
     addressSelect,
     areaSelect,
     ageSelect,
-    unLoadVia
+    unLoadVia,
+    shopSelect
   },
   data(){
     return{
@@ -104,7 +107,9 @@ export default {
       county: [],
       countyName: '',
       color: 'color: #999',
-      customerImage: ''
+      customerImage: '',
+      shop: '',
+      shopId: ''
     }
   },
   watch: {
@@ -113,6 +118,8 @@ export default {
       if(this.fromName === 'NewCustomer') {
         this.setInitData()
       }
+      let val = this.getShopVal()
+      this.getShopId(val)
     },
     list() {
       this.hasList()
@@ -126,13 +133,14 @@ export default {
       areaVal: state => state.select.areaVal,
       sourceVal: state => state.select.sourceVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
-      upLoadUrl: state => state.loadImgUrl.upLoadUrl
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl,
+      descriptShopList: state => state.chooseShop.descriptShopList
     })
   },
-  created() {
+  mounted() {
     //获取本地缓存信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
   },
   created() {
     this.hasList()
@@ -178,6 +186,30 @@ export default {
       this.newCustomerInfo.weChat = this.list.weChat
       this.newCustomerInfo.qq = this.list.qq
       this.newCustomerInfo.remark = this.list.remark
+    },
+    //获取门店的值
+    getShopVal() {
+      let val
+      if(this.descriptShopList && this.descriptShopList.length) {
+        this.descriptShopList.forEach((item, index) => {
+          if(item.status) {
+            val = item.name
+          }
+        })
+      }
+      return val
+    },
+    //获取门店id
+    getShopId(name) {
+      if(this.shops && this.shops.length) {
+        this.shops.forEach((item, index) => {
+          if(item.name === name) {
+            this.shopId = item.id
+          }
+      });
+      }
+      this.newCustomerInfo.orgId = this.shopId
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
     selectStoreDate() {
       this.$refs.datePicker1.open()

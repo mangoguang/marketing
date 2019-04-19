@@ -33,7 +33,7 @@ import customerLi from '../customer/customerLi'
 
 export default {
   name: 'shopSelect',
-  props: ['start'],
+  props: ['start','type'],
   components:{customerLi},
   data() {
     return {
@@ -46,7 +46,8 @@ export default {
   },
   computed:{
     ...mapState({
-      shopVal: state => state.chooseShop.shopVal
+      shopVal: state => state.chooseShop.shopVal,
+      descriptShopVal: state => state.chooseShop.descriptShopVal
     })
   },
   mounted() {
@@ -56,7 +57,11 @@ export default {
     ...mapMutations(["setShopVal", 'initShopList']),
     hasList() {
       // this.val =  this.shopVal? this.shopVal : (this.shopList && this.shopList.length? this.shopList[0].name: '')
-      this.val = this.shopVal
+      if(this.type === 'descript') {
+        this.val = this.descriptShopVal
+      }else {
+        this.val = this.shopVal
+      }
     },
     // getShopName() {
     //   let shopName = []
@@ -69,7 +74,10 @@ export default {
     // },
     selectShop() {
       this.$router.push({
-        path: '/chooseShop'
+        path: '/chooseShop',
+        query: {
+          type: this.type
+        }
       })
       // if(this.shopVal === '') {
       //   this.setShopVal(this.slots[0].values[0])
