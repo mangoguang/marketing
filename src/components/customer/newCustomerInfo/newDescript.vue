@@ -199,7 +199,8 @@ export default {
     },
     areaChange(val) {
       // console.log('选择的地区：', val)
-      this.newCustomerInfo.province = val.provinceCode
+      this.$set(this.newCustomerInfo,'provinceName',val.provinceName + ' ' + val.cityName + ' ' + val.countyName)
+      // this.newCustomerInfo.province = val.provinceCode
       this.newCustomerInfo.city = val.cityCode
       this.newCustomerInfo.area = val.countyCode
       this.setNewCustomerInfo(this.newCustomerInfo)

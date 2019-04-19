@@ -11,9 +11,12 @@
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" :sourceVal="newCustomerInfo.source" @sourceChange="sourceChange" @codeChange='codeChange'></li>
 
-      
-
-
+      <li is='customerLi' :leftText='"客户地区"'>
+        <span>{{newCustomerInfo.provinceName || '请选择客户地区'}}</span>
+      </li>
+       <li is='customerLi' :leftText='"客户地址"'>
+        <span>{{newCustomerInfo.address || '请输入客户地址'}}</span>
+      </li>
 
       <!-- <li is="customerLi" :leftText="'客户地址'" :icon='true'>
          <span style="color: #999">请选择客户地址</span>

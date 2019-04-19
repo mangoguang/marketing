@@ -82,6 +82,7 @@ export default {
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
+          console.log('list')
         }
       })
     },
