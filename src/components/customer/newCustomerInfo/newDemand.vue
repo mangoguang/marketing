@@ -79,6 +79,7 @@ import urgentSelect from '../../select/urgentSelect'
 import houseType from '../../select/houseType'
 import elevatorSelect from '../../select/elevatorSelect'
 import mango from '../../../js'
+import {btnList} from '../../../utils/gallery'
 export default {
   name:'newDemand',
   props: ['btns', 'fromName', 'changeCode'],
@@ -146,10 +147,14 @@ export default {
     this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
-    ...mapMutations(['setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
+    ...mapMutations(['initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
     setInitData() {
       this.newCustomerInfo.arrivalDate = this.day
       this.setNewCustomerInfo(this.newCustomerInfo)
+      //初始化门店的值
+      let shopsList = btnList(this.shops,0)
+      this.initShopList(shopsList)
+      this.getShopVal()
       this.setBuyReason('')
       this.setLeaveStoreVal('')
       this.setDiscountVal('')

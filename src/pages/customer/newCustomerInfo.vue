@@ -56,6 +56,7 @@ import mango from '../../js'
 import variable from '../../js/variable'
 import {returnDate} from '../../utils/customer'
 import {IndexModel} from '../../utils/index'
+import {btnList} from '../../utils/gallery'
 const indexModel = new IndexModel() 
 
 export default {
@@ -76,7 +77,6 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    // console.log(from.name)
     next(vm => {
       vm.fromName = from.name
       if(from.name === 'chooseShop' || from.name === 'searchProduct' || from.name === 'intentionProduct') {
@@ -118,6 +118,9 @@ export default {
     this.setHouseType('')
     this.setElevatorVal('')
     this.setCheckedList([])
+    // this.initShopList([])
+    // this.initDescriptShopList([])
+
   },
   methods: {
     ...mapMutations([
@@ -136,7 +139,10 @@ export default {
       'setColorPref',
       'setHouseType',
       'setElevatorVal',
-      'setCheckedList'
+      'setCheckedList',
+      'initShopList',
+      'initDescriptShopList',
+      'getShopVal'
     ]),
     change(val) {
       this.codeList = val

@@ -50,11 +50,19 @@ export default {
       descriptShopVal: state => state.chooseShop.descriptShopVal
     })
   },
+  watch: {
+    shopVal() {
+      this.hasList()
+    },
+    descriptShopVal() {
+      this.hasList()
+    }
+  },
   mounted() {
     this.hasList()
   },
   methods:{
-    ...mapMutations(["setShopVal", 'initShopList']),
+    ...mapMutations(['getShopVal']),
     hasList() {
       // this.val =  this.shopVal? this.shopVal : (this.shopList && this.shopList.length? this.shopList[0].name: '')
       if(this.type === 'descript') {

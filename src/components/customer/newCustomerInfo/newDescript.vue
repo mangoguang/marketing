@@ -81,6 +81,7 @@ import mango from '../../../js'
 import variable from '../../../js/variable'
 import shopSelect from '../../select/shopSelect'
 import {turnParams,changeFormData} from '../../../utils/customer'
+import {btnList} from '../../../utils/gallery'
 export default {
   name:'customerDescript',
   props: ['btns', 'select', 'fromName', 'list', 'areaType'],
@@ -153,7 +154,9 @@ export default {
       'setSourceVal',
       'setLeaveStoreVal',
       'setAgeVal',
-       'setUpLoadUrl'
+      'setUpLoadUrl',
+      'initDescriptShopList',
+      'getDescriptShopVal'
     ]),
     //编辑资料
     hasList() {
@@ -275,6 +278,11 @@ export default {
     //设置默认值
     setInitData() {
       this.setNewCustomerInfo({})
+      //初始化门店的值
+      let shopsList = btnList(this.shops,0)
+      this.initDescriptShopList(shopsList)
+      this.getDescriptShopVal()
+
       this.setAgeVal('')
       this.setSexVal('')
       this.setUpLoadUrl('')
@@ -285,13 +293,6 @@ export default {
       }else if(this.$route.query.wechat) {
         this.newCustomerInfo.weChat = this.$route.query.wechat
       }
-      // this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(this.today)[1])
-      // if(!this.newCustomerInfo.important) {
-      //   this.$set(this.newCustomerInfo, 'important', 1)
-      // }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
-      // if(!this.newCustomerInfo.storeDate) {
-      //   this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
-      // } //如果没有选进店时间。默认选择今天
      
     },
     // 将日期格式2018-01-01改成2018年01月01日
