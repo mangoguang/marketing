@@ -4,7 +4,7 @@
     <collect-btn class="collentBtn" 
         :collection='collection'
         v-on:touchend.native='changeCollectBtn'
-        :style="{top: top}"
+        :style="{'top': top}"
         />
     <div class="titleBar">
       <div class="title">{{ articleDetails.title }}</div>
@@ -128,5 +128,6 @@ export default {
       font-size: 3.73vw;
     }
   }
+    
 }
 </style>

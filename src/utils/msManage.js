@@ -123,7 +123,7 @@ export {changeGalleryStyle}
 function changeVedioStyle(html){
   var newContent= html.replace(/<embed[^>]*>/gi,function(match,capture){
   // var match = match.replace(/width=\"(.*)\"/gi, 'wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
-  var match = match.replace(/width=\"(.*)\"/gi, 'wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
+  var match = match.replace(/width=\"(.*)\"/gi, 'autostart=false wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
   return match;
   });
   return newContent;
