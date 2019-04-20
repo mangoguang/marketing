@@ -1,9 +1,9 @@
 <template>
   <div class="newPlan">
     <my-banner :title="'今日日报'">
-      <button
-      @click="save"
-      class="save">保存</button>
+    <button
+    @click="save"
+    class="save">保存</button>
     </my-banner>
     <!-- 当日数据 -->
     <CurReport
@@ -31,6 +31,7 @@ import mango from "../../js"
 import { IndexModel } from "../../utils/"
 const indexModel = new IndexModel()
 export default {
+  name: 'newPlan',
   components: {
     myBanner,
     CurReport,
@@ -52,9 +53,12 @@ export default {
   },
   mounted() {
     let date = new Date()
-    const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    let [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+    if (month < 10) {
+      month = `0${month}`
+    }
     this.curDay = `${year}-${month}-${day}`
-    // 获取当月数据
+    // 获取当日数据
     this.getDailyData({
       startDate: this.curDay,
       endDate: this.curDay
@@ -78,14 +82,19 @@ export default {
       this.dailyPlanTextarea = str
     },
     save() {
-      indexModel.getCurMonthData({
-      summarize: this.dailySummaryTextarea,
-      plan: this.dailyPlanTextarea,
-      date: this.curDay         //获取当前日期
+      if (this.dailySummaryTextarea === '' && this.dailyPlanTextarea === '') {
+        mango.tip('总结与计划不能同时为空！')
+        return
+      }
+      indexModel.savePlan({
+        summarize: this.dailySummaryTextarea,
+        plan: this.dailyPlanTextarea,
+        date: this.curDay         //获取当前日期
       }).then((res) => {
         if (res) {
           if (res.status) {
             mango.tip('保存成功！')
+            this.$router.back(-1)
           }
         }
       })

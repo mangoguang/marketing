@@ -103,7 +103,10 @@ export default {
       }
     },
     noSummary() {
-      mango.tip('当日无总结！')
+      if (`${this.year}-${this.month}-${this.day}` === this.curDate) {
+        this.$router.push({path: '/newPlan'})
+      }
+      mango.tip(`当日无总结！${this.curDate}::${this.year}-${this.month}-${this.day}`)
     }
   }
 }

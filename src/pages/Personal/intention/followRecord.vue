@@ -138,6 +138,7 @@ export default {
             this.form.nextTime='';
             this.form.report='';
             this.form.plan='';
+            this.$router.back(-1);
           }else{
             mango.tip(res.msg);
             this.setFiles([]);

@@ -282,7 +282,8 @@ export default {
       })
     },
     modify(){
-      this.$router.push({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId}});
+      console.log(this.customerId);
+      this.$router.replace({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId}});
     },
     close(){
       this.isPrompt=true;
@@ -305,7 +306,7 @@ export default {
         if(res.code===0){
           mango.tip(res.msg);
           this.isPrompt=false;
-          this.$router.go(0);
+          this.$router.go(-1);
         }else{
           mango.tip(res.msg);
           this.isPrompt=true;

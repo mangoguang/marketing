@@ -41,7 +41,7 @@
           </div>
       </li>
        <li>
-        <span style="align-self:flex-start;">所属门店：</span>
+        <span style="align-self:flex-start;">所属门店</span>
         <div class="cell" style="flex-direction: column;">
           <span v-for="(item,index) in shopList" :key="index">{{item.name}}</span>
         </div>
