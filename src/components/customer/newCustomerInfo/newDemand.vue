@@ -1,12 +1,10 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'" :start="'*'" @click.native='addIntention'>
-        <!-- <YanintentionSelect /> -->
-
-        <input v-model="newCustomerInfo.intention" placeholder="请填写意向产品" type="text">
+      <li is="customerLi" :leftText="'意向产品'" :icon='true' :start="'*'" @click.native='addIntention'>
+        <span>{{checkedList && checkedList.length? checkedList[0].goodsName: '请选择意向产品'}}</span>
       </li>
-      <li is="shopSelect" ></li>
+      <li is="shopSelect" :start='"*"' :type='"demand"'></li>
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
@@ -81,6 +79,7 @@ import urgentSelect from '../../select/urgentSelect'
 import houseType from '../../select/houseType'
 import elevatorSelect from '../../select/elevatorSelect'
 import mango from '../../../js'
+import {btnList} from '../../../utils/gallery'
 export default {
   name:'newDemand',
   props: ['btns', 'fromName', 'changeCode'],
@@ -122,7 +121,7 @@ export default {
       leaveStoreVal: state => state.select.leaveStoreVal,
       discountVal: state => state.select.discountVal,
       shopList: state => state.chooseShop.shopList,
-      formInfo: state => state.addIntention.formInfo
+      checkedList: state => state.checkedList
     })
   },
   watch: {
@@ -131,6 +130,7 @@ export default {
       if(this.fromName === 'NewCustomer') {
         this.setInitData()
       }else {
+        this.setIntentionProduct()
         if(this.newCustomerInfo.arrivalDate) {
           this.timeColor = 'color: #363636'
         }
@@ -147,25 +147,43 @@ export default {
     this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
+    ...mapMutations(['initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
     setInitData() {
       this.newCustomerInfo.arrivalDate = this.day
       this.setNewCustomerInfo(this.newCustomerInfo)
+      //初始化门店的值
+      let shopsList = btnList(this.shops,0)
+      this.initShopList(shopsList)
+      this.getShopVal()
       this.setBuyReason('')
       this.setLeaveStoreVal('')
       this.setDiscountVal('')
+      this.setCheckedList([])
     },
+    //跳转到选择意向产品页面
     addIntention() {
       this.$router.push({
         name:'searchProduct',
-        // params:{
-        //   customerId:''
-        //   },
- 
         query:{
             redirect: this.$route.path
           }
         })
+    },
+    // 保存意向产品
+    setIntentionProduct() {
+      if(this.checkedList && this.checkedList.length) {
+        let arr = this.checkedList
+        let newArr = []
+        arr.map((item, index) => {
+          let obj = {
+            id: item.crmId,
+            quantity: item.quantity
+          }
+          newArr.push(obj)
+        })
+        this.newCustomerInfo.productArr = newArr
+        this.setNewCustomerInfo(this.newCustomerInfo)
+      }
     },
     //获取门店的值
     getShopVal() {

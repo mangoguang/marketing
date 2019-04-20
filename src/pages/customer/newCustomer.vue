@@ -23,6 +23,7 @@
 // import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../js";
 import {mapState,mapMutations} from 'vuex'
+import {btnList} from '../../utils/gallery'
 // 组件
 import myBanner from '../../components/banner'
 import customerSearch from '../../components/customer/newCustomer/customerSearch'
@@ -44,14 +45,26 @@ export default {
       fromName: ''
     };
   },
+  //从新建回游客的时候初始化门店
   beforeRouteEnter(to,from,next) {
     next(vm => {
       vm.fromName = from.name
+      if(from.name === '/NewCustomerInfo') {
+        vm.initShop()
+      }
     })
+  },
+  //去新建的时候初始化门店
+  beforeRouteLeave(to,from,next) {
+    if(to.name === '/NewCustomerInfo') {
+        this.initShop()
+      }
+    next()
   },
   computed: {
     ...mapState({
-      btn: state => state.chooseShop.btn
+      btn: state => state.chooseShop.btn,
+      shopVal: state => state.chooseShop.shopVal
     })
   },
   created() {
@@ -64,12 +77,19 @@ export default {
   },
   mounted() {},
   methods: {
-    ...mapMutations(['setBtn']),
+    ...mapMutations(['setBtn','initShopList','getShopVal']),
     customerSelect(index) {
       this.btnlist.forEach((element, i) => {
         element.status = index === i
       })
       this.setBtn(this.btnlist)
+    },
+    initShop() {
+      let shops = JSON.parse(localStorage.getItem('shops'))
+      let shopsList = btnList(shops,0)
+      this.initShopList(shopsList)
+      this.getShopVal()
+      // console.log(123,this.shopVal)
     }
   }
 };
