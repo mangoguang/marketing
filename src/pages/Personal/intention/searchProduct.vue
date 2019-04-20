@@ -129,6 +129,8 @@ export default {
       .item{
         color:#363636;
         font-size:4vw;
+        max-width:80vw;
+        word-break: break-all;
       }
       .no-record{
           font-size: 2.4vw;
