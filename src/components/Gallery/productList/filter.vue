@@ -247,7 +247,7 @@ export default {
       overflow: scroll;
       padding-bottom: 22vw;
       dl {
-        padding:0 4.4vw;
+        padding:0 4.4vw; 
         dt {
           color: #999;
           font-size: 3.73vw;
@@ -255,12 +255,16 @@ export default {
         dd {
           background: #f8f8f8;
           border-radius: 1.6vw;
-          width: 20vw;
+          // width: 20vw;
           text-align: center;
           margin-bottom: 2.66vw;
           color: #666;
           display: inline-block;
           margin-right: 2.66vw;
+          padding: 1vw 4vw;
+          // line-height: 2em;
+          // height: 4em;
+
         }
       }
       .price {
