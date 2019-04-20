@@ -110,6 +110,7 @@ export default {
       button{
         font-size: 15px;
         color: #363636;
+        padding: 0 2vw;
       }
       button.on{
         position: relative;

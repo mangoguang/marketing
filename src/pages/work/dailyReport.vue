@@ -4,7 +4,7 @@
       <button @click="newPlan" class="newDailyReport">+</button>
     </banner>
     <!-- 日历组件 -->
-    <myDatePicker @getCurDay="getCurDay" :planList="planList" />
+    <myDatePicker @getCurDay="getCurDay" :curMonthData="curMonthData" />
     <!-- 当日数据 -->
     <CurReport
     :list="dailyList"
@@ -61,7 +61,8 @@ export default {
       curMonthData: [],
       dailySummaryTextarea: '',
       dailyPlanTextarea: '',
-      planList: []
+      planList: [],
+      dailyList: []
     }
   },
   computed: {
@@ -80,7 +81,7 @@ export default {
     this.curDay = this.getToday()
     let date = new Date()
     const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-    this.curNum = parseInt(date.getDate() - 1)
+    this.curNum = parseInt(date.getDate())
     // 获取当月数据
     this.getCurMonthData(this.getCurMonth())
     this.getDailyData({
@@ -138,7 +139,7 @@ export default {
             this.setSumAndPlan(res)
           }
           // 遍历一个月内有哪些天有总结
-          this.planList = res.map((item) => {
+          this.dailyList = res.map((item) => {
             if (item) {
               let date = item.createTime
               return parseInt(date.split(' ')[0].split('-')[2])
@@ -149,9 +150,16 @@ export default {
     },
     // 显示选择日期的当日总结和明日计划
     setSumAndPlan(res) {
-      console.log('今天是几号 ？', this.curNum)
+      // 获取当前选择的日期数的整数值
       const num = parseInt(this.curNum)
-      const index = this.planList.indexOf(num)
+      let arr = []
+      if (res) {
+        // 获取res数组里面的日期。
+        arr = res.map(element => parseInt(element.createTime.substr(8, 2)))
+      } else {
+        return
+      }
+      const index = arr.indexOf(num)
       if (index >= 0) {
         this.dailySummaryTextarea = res[index].summarize
         this.dailyPlanTextarea = res[index].plan

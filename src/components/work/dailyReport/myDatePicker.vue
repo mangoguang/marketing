@@ -27,9 +27,10 @@
           :class="{
             'now-day': `${year}-${month}-${item - getBeginDay}` === curDate,
             'active-day': `${year}-${month}-${item - getBeginDay}` === `${year}-${month}-${day}`,
-            'summary': planList.includes(index)
+            'summary': dailyList.includes(index),
+            'future-day': `${year}-${month}-${item - getBeginDay}` > curDate
           }"
-          @click="planList.includes(index) ? changeCurDay(item - getBeginDay) : noSummary()">{{item - getBeginDay}}</span>
+          @click="dailyList.indexOf(index) >= 0 ? changeCurDay(item - getBeginDay) : noSummary(item - getBeginDay)">{{item - getBeginDay}}</span>
           <!-- <span
           v-if="item - getBeginDay > curDay"
           class="other-day">{{item - getBeginDay - curDay}}</span> -->
@@ -48,20 +49,30 @@ export default {
   components:{
 
   },
-  props:['planList'],
+  props:['curMonthData'],
   data(){
     return{
       year: null,
       month: null,
       day: null,
-      curDate: null
+      curDate: null,
+      dailyList: []
+    }
+  },
+  watch: {
+    curMonthData(val) {
+      if (val.length) {
+        console.log('success!!!', val)
+        this.dailyList = val.map(element => parseInt(element.createTime.substr(8, 2)))
+        console.log(7890, this.dailyList)
+      }
     }
   },
   created() {
     this.getDate()
   },
   mounted() {
-
+    
   },
   computed: {
     getBeginDay() {
@@ -102,11 +113,12 @@ export default {
         this.month ++
       }
     },
-    noSummary() {
-      if (`${this.year}-${this.month}-${this.day}` === this.curDate) {
+    noSummary(curDay) {
+      if (`${this.year}-${this.month}-${this.day}` === `${this.year}-${this.month}-${curDay}`) {
         this.$router.push({path: '/newPlan'})
+      } else {
+        mango.tip(`当日无总结！${curDay}::${this.year}-${this.month}-${this.day}`)
       }
-      mango.tip(`当日无总结！${this.curDate}::${this.year}-${this.month}-${this.day}`)
     }
   }
 }
@@ -193,6 +205,9 @@ export default {
         background: url('../../../assets/imgs/now.png') no-repeat;
         background-size: 2.4vw 2.4vw;
         background-position: bottom center;
+      }
+      span.future-day:after{
+        background: none;
       }
     }
   }
