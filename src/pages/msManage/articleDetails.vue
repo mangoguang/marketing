@@ -18,7 +18,7 @@
 <script>
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
-import {removeItem, addItem, b64DecodeUnicode, changeImgStyle} from '../../utils/msManage'
+import {removeItem, addItem, b64DecodeUnicode, changeImgStyle, changeVedioStyle} from '../../utils/msManage'
 import Banner from '../../components/banner'
 import CollectBtn from '../../components/msManage/eggCollectBtn'
 export default {
@@ -49,6 +49,7 @@ export default {
         if(res.data.remark) {
           let temp = res.data.remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+          this.myhtml = changeVedioStyle(this.myhtml)
         }
         this.collection = res.data.collect
       })
