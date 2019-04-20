@@ -24,6 +24,16 @@ class IndexModel extends Request {
       }
     })
   }
+  //知识库
+  //获取首页轮播图
+  getIndexSlider(classify) {
+    return this.getData({
+      url: '/api/train/repository/v1/adverts',
+      params: {
+        classify: classify
+      }
+    })
+  }
   // 获取首页一级分类列表
   getCategory1List(classify) {
     return this.getData({
@@ -367,6 +377,7 @@ class IndexModel extends Request {
   updateTrackrecord(obj,key){
     return mango.getFormAjax('/v3/app/trackrecord/update',obj,key)
   }
+
  
 }
 

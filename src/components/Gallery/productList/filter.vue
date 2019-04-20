@@ -256,6 +256,7 @@ export default {
           background: #f8f8f8;
           border-radius: 1.6vw;
           // width: 20vw;
+          padding: 1vw 4vw;
           text-align: center;
           margin-bottom: 2.66vw;
           color: #666;

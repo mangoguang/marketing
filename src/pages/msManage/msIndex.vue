@@ -3,13 +3,15 @@
     <banner :title="title"/>
     <Search :origin="origin" :type='"msIndex"' class="search"/>
     <MSlider :list='list' class="slider"/>
-    <category-list />
+    <category-list :classify='$route.query.classify'/>
     <TopArt />
     <!-- <Footer/> -->
   </div>
 </template>
 
 <script>
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import axios from 'axios'
 import eggShare from "../../components/myApi/eggShare";
 import eggScan from "../../components/myApi/eggScan";
@@ -32,6 +34,16 @@ export default {
   },
   created() {
     this.title = (this.$route.query.classify === 1)? '慕思金管家' : '学院'
+    this.getImgList()
+  },
+  methods: {
+    //获取首页轮播图
+    getImgList() {
+      let classify = this.$route.query.classify
+      indexModel.getIndexSlider(classify).then(res => {
+        console.log(res)
+      })
+    }
   }
 };
 </script>
