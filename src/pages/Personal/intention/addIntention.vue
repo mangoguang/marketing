@@ -208,7 +208,7 @@ export default {
       }
       if(from.name==='intentionProduct'){
         if(this.$store.state.checkedList.length>0){
-          this.goodsValue=this.$store.state.checkedList[0].crmId+this.$store.state.checkedList[0].goodsName;
+          this.goodsValue=this.$store.state.checkedList[0].goodsName;
           this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
             let obj={};
             obj.goodsId=item.crmId;
@@ -248,6 +248,8 @@ export default {
       this.updateTitle('意向详情');
       this.form.oppId=this.$route.query.oppId;
       this.getOpportunity(this.form.oppId);
+    }else{
+      this.updateTitle('新建意向');
     }
     
   },
@@ -566,6 +568,7 @@ export default {
       to.meta.keepAlive=true; 
       next();
     }
+    to.meta.keepAlive=false; 
     next();
   }
 };

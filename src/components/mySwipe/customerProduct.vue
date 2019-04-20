@@ -123,8 +123,10 @@ export default {
       border-bottom:1px solid#E1E1E1;
       padding:2.666vw 0;
       .yan-box-value{
-        padding-right: 16.8vw;
+        padding-right: 10vw;
         flex:1;
+        word-break: break-all;
+        text-align:justify;
       }
      
       .yan-edit{
