@@ -63,7 +63,8 @@ export default {
       editStatus: false,
       shops: '',
       shpoId:'',
-      index: ''
+      index: '',
+      phone:''
     }
   },
   computed: {
@@ -86,6 +87,7 @@ export default {
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
+          this.phone = this.list.phone
           this.getShopName(this.list.orgId)
         }
       })
@@ -103,15 +105,32 @@ export default {
         MessageBox.alert('姓名不能为空')
         return
       }
-
-      let testPhone = variable.testPhone(this.newCustomerInfo.phone)
-      if(testPhone) {
-        this.saveData()
+      if(this.phone === this.newCustomerInfo.phone) {
+          this.saveData()
       }else {
-        MessageBox.alert('请填写正确手机号码')
+        let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+        if(testPhone) {
+          this.checkPhone()
+        }else {
+          MessageBox.alert('请填写正确手机号码')
+        }
       }
+      
     },
-    //
+    //验证手机
+    checkPhone() {
+      mango.getAjax('/v3/app/customer/check', {
+        value: this.newCustomerInfo.phone,
+        type: 'phone'
+      }).then((res) => {
+        if(res.status) {
+          MessageBox.alert('该手机号码已存在')
+        }else {
+          this.saveData()
+        }
+      })
+    },
+    //保存数据
     saveData() {
       let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
@@ -160,7 +179,7 @@ export default {
         duty: obj.duty,
         remark: obj.remark,
         customerId: this.$route.query.id,
-        orgId: obj.orgId
+        orgId: obj.orgId || this.list.orgId
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

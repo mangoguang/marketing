@@ -13,7 +13,9 @@
           <!-- <span v-show='key1'>{{`***${address ? address.slice(3, 50) : ''}`}}</span> -->
         </div>
         <div class="phoneNumber">
-          <span>{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</span>
+          <a :href="`tel:${list.phone}`">{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</a>
+          <!-- <a :href="`tel:*****${list.phone ? list.phone.slice(5, 11) : ''}`"></a> -->
+          <!-- <span>{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</span> -->
           <div class="phone-icon">
             <!-- <a href="tel:1599999999"> -->
               <img src="../../../assets/imgs/call.png" alt="电话">
@@ -133,4 +135,8 @@ export default {
     }
   }
 }
+a {  
+  text-decoration:none;
+   outline: none;
+   color:#fff }
 </style>
