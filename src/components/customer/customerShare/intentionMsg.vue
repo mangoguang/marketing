@@ -31,6 +31,9 @@ export default {
         name:'addintention',
         params: {
           customerId: this.$route.query.id
+        },
+        query:{
+          url:this.$route.fullPath
         }
       })
     }

@@ -151,7 +151,7 @@ export default {
       path:'',
       status:'',
       urgency:'否',
-      redirect:''
+      url:''
     }
   },
   components:{
@@ -177,12 +177,6 @@ export default {
   watch:{
     $route(to,from){
       console.log(from);
-      if(from.name==='/CustomerInfo'){
-        this.redirect=from.path;
-      }
-      if(from.name==='/enquiryInfo'){
-        this.redirect=from.path;
-      }
       if(from.name==='selectAddress'){
         let obj={};
         if(this.$route.query.addressId){
@@ -207,6 +201,7 @@ export default {
         
       }
       if(from.name==='intentionProduct'){
+        console.log('进来intentionProduct');
         if(this.$store.state.checkedList.length>0){
           this.goodsValue=this.$store.state.checkedList[0].goodsName;
           this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
@@ -216,6 +211,9 @@ export default {
             obj.quantity=item.quantity;
             return obj;
           });
+        }else{
+          this.goodsValue='';
+          this.form.goodsList=[];
         }
         
         
@@ -244,21 +242,26 @@ export default {
   created(){
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
+    this.url=this.$route.query.url;
     if(this.$route.query.oppId){
       this.updateTitle('意向详情');
       this.form.oppId=this.$route.query.oppId;
       this.getOpportunity(this.form.oppId);
+      
     }else{
       this.updateTitle('新建意向');
+      this.setCheckedList([]);
     }
     
   },
   activated(){
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
-    /* if(this.$route.query.oppId){
-      this.form.oppId=this.$route.query.oppId;
-    } */
+    if(this.$store.state.checkedList.length<=0){
+      this.goodsValue='';
+      this.form.goodsList=[];
+    }
+    
   },
   mounted(){
 
@@ -291,6 +294,9 @@ export default {
            })
             this.setCheckedList(list);
             this.form.goodsList=res.data.goodsList;       
+          }else{
+             this.setCheckedList([]);
+             this.form.goodsList=[];
           }
           this.status=res.data.status;
           console.log(4444,res.data.shopId);
@@ -437,22 +443,16 @@ export default {
         }
         console.log(lastKey);
         indexModel.updateOpportunity(form,[...lastKey]).then(res => {
-            if(res.code===0){
+            if(res.code==0){
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              //this.$router.push({path:this.redirect,query:{id:this.customerId}});
-              if(this.oppId){
-                 this.$router.go(-2);
-              }else{
-                 this.$router.go(-1);
-              }
-             
+              this.$router.push({path:this.url});
+              this.$destroy();
             }else{
               mango.tip(res.msg);
             }
         })
-        
      }
     },
     layerUpdate(){
@@ -468,7 +468,7 @@ export default {
           if(res.code===0){
             mango.tip(res.msg);
             this.isPrompt=false;
-            this.$router.replace({name:'intention',params:{opportunityId:this.form.oppId}});
+            this.$router.push({name:'intention',params:{opportunityId:this.form.oppId}});
           }else{
             mango.tip(res.msg);
             this.isPrompt=true;
@@ -554,8 +554,8 @@ export default {
    }
   },
   beforeRouteEnter(to,from,next){
-    console.log(to);
-    console.log(from);
+    console.log("进来addIntention",to);
+   // console.log(from);
     if(from.name==='selectAddress'){
       to.meta.keepAlive=true;
       next();
@@ -568,7 +568,33 @@ export default {
       to.meta.keepAlive=true; 
       next();
     }
-    to.meta.keepAlive=false; 
+    if(from.name==='intention'){
+      to.meta.keepAlive=false; 
+      next();
+    }
+    if(from.name==='/enquiryInfo'){
+      to.meta.keepAlive=false; 
+      next();
+    }
+    if(from.name==='/CustomerInfo'){
+      to.meta.keepAlive=false; 
+      
+      next();
+    }
+    //to.meta.keepAlive=false;
+   next();
+  },
+  beforeRouteLeave(to,from,next){
+    console.log(to);
+   console.log(from);
+    if(to.name==='/enquiryInfo'){
+      this.$destroy();
+      next();
+    }
+    if(to.name==='/CustomerInfo'){
+     this.$destroy();
+      next();
+    }
     next();
   }
 };

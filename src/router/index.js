@@ -206,7 +206,8 @@ export var router = new VueRouter({
     name: 'addintention',
     component: resolve => require(['../pages/Personal/intention/addIntention'],resolve),
     meta:{
-      keepAlive:true
+      keepAlive:true,
+      isUseCache: false
     }
   },
   //金管家模块-我的收藏

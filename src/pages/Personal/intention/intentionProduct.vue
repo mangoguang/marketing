@@ -47,8 +47,10 @@ export default {
    
   },
   methods:{
-   ...mapMutations(['addGoodsNum','cutGoodsNum','delGoods']),
+   ...mapMutations(['addGoodsNum','cutGoodsNum','delGoods','setCheckedList']),
    update(){
+     let arr=this.$store.state.checkedList;
+     this.setCheckedList(arr);
      this.$router.replace({path:this.path});
    },
    jump(){

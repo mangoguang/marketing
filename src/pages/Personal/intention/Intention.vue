@@ -80,7 +80,8 @@
         </div>
         <div v-if="this.form.status==='Approved'">
           <title-bar :text="titleModule.order"/>
-          <order-info class="order" :orderList="form.orderList"/>
+
+          <order-info class="order" :orderList="item" v-for="(item,index) in form.orderList" :key="index"/>
         </div>
         <p class="last">到底啦</p>
         <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
@@ -173,7 +174,8 @@ export default {
         }
       ],
       customerId:'',
-      isRecord:false
+      isRecord:false,
+      UpdateRedirect:''
     }
   },
   components:{
@@ -205,6 +207,19 @@ export default {
       'formInfo',
       'titleModule'
     ])
+  },
+  watch:{
+    $route(to,from){
+      if(from.name==='/CustomerInfo'){
+        console.log('/CustomerInfo');
+        this.UpdateRedirect=from.fullPath;
+
+      }
+      if(from.name==='/enquiryInfo'){
+         console.log('/enquiryInfo');
+        this.UpdateRedirect=from.fullPath;
+      } 
+    }
   },
   created(){
    this.getOpportunity();
@@ -283,7 +298,7 @@ export default {
     },
     modify(){
       console.log(this.customerId);
-      this.$router.replace({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId}});
+      this.$router.push({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
     },
     close(){
       this.isPrompt=true;
@@ -359,6 +374,25 @@ export default {
    }
 
  
+  },
+  beforeRouteEnter(to,from,next){
+    if(from.name==='/CustomerInfo'){
+      console.log('/CustomerInfo');
+      let path=from.fullPath;
+      next(vm => {
+        vm.UpdateRedirect=path;
+        console.log('456')
+      });
+    }
+    if(from.name==='/enquiryInfo'){
+      console.log('/enquiryInfo');
+      let path=from.fullPath;
+      next(vm => {
+         vm.UpdateRedirect=path;
+         console.log('1234')
+      });
+    } 
+    next();
   }
 };
 </script>
