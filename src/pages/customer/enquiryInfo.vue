@@ -65,7 +65,8 @@ export default {
       editStatus: false,
       shops: '',
       shpoId:'',
-      index: ''
+      index: '',
+      phone: ''
     };
   },
   computed: {
@@ -103,6 +104,7 @@ export default {
           let arr = this.changeStatus(this.list.orderList)
           this.list.orderList = arr
           this.getShopName(this.list.orgId)
+          this.phone = res.data.phone
         }
       })
     },
@@ -133,12 +135,29 @@ export default {
         MessageBox.alert('姓名不能为空')
         return
       }
-      let testPhone = variable.testPhone(this.newCustomerInfo.phone)
-      if(testPhone) {
+      if(this.phone === this.newCustomerInfo.phone) {
         this.saveData()
       }else {
-        MessageBox.alert('请填写正确手机号码')
+        let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+        if(testPhone) {
+          this.checkPhone()
+        }else {
+          MessageBox.alert('请填写正确手机号码')
+        }
       }
+    },
+     //验证手机
+    checkPhone() {
+      mango.getAjax('/v3/app/customer/check', {
+        value: this.newCustomerInfo.phone,
+        type: 'phone'
+      }).then((res) => {
+        if(res.status) {
+          MessageBox.alert('该手机号码已存在')
+        }else {
+          this.saveData()
+        }
+      })
     },
     //
     saveData() {
@@ -187,7 +206,7 @@ export default {
         duty: obj.duty,
         remark: obj.remark,
         customerId: this.$route.query.id,
-        orgId: obj.orgId
+        orgId: obj.orgId || this.list.orgId
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {
