@@ -27,7 +27,7 @@
     <div v-show="dealTabStatus[1].status">
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else>
-        <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true'/>
+        <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
@@ -55,13 +55,17 @@ import mango from "../../js";
 import EnquiryOrderInfo from "../../components/customer/enquiryOrder/enquiryOrderInfo";
 import orderInfoDetails from "../../components/customer/dealCustomer/orderInfoDetails";
 import {explainType} from '../../utils/customer'
+import {btnList} from '../../utils/gallery'
 export default {
   components: { EnquiryOrderInfo, orderInfoDetails, dealHeader, OrderInfo, CustomerMsg, newDescript, btn, intentionMsg },
   data() {
     return {
       list: {},
       type: [],
-      editStatus: false
+      editStatus: false,
+      shops: '',
+      shpoId:'',
+      index: ''
     };
   },
   computed: {
@@ -69,7 +73,8 @@ export default {
       orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails,
       dealTabStatus: state => state.tabStatus.dealTabStatus,
       newCustomerInfo: state => state.customer.newCustomerInfo,
-      upLoadUrl: state => state.loadImgUrl.upLoadUrl
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl,
+      descriptShopVal: state => state.chooseShop.descriptShopVal
     })
   },
   beforeRouteEnter(to,from,next) {
@@ -89,7 +94,7 @@ export default {
     this.setUpLoadUrl('')
   },
   methods: {
-    ...mapMutations(['setDealTabStatus','setUpLoadUrl']),
+    ...mapMutations(['getDescriptShopVal','initDescriptShopList','setDealTabStatus','setUpLoadUrl','setNewCustomerInfo']),
     getData() {
       //从父级传id过来请求
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
@@ -97,6 +102,7 @@ export default {
           this.list = res.data
           let arr = this.changeStatus(this.list.orderList)
           this.list.orderList = arr
+          this.getShopName(this.list.orgId)
         }
       })
     },
@@ -180,7 +186,8 @@ export default {
         weChat: obj.weChat,
         duty: obj.duty,
         remark: obj.remark,
-        customerId: this.$route.query.id
+        customerId: this.$route.query.id,
+        orgId: obj.orgId
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {
@@ -195,13 +202,40 @@ export default {
     },
     goBack() {
       this.$router.back(-1);
-    }
+    },
+      //获取门店id
+    getShopId(name) {
+      if(this.shops && this.shops.length) {
+        this.shops.forEach((item, index) => {
+          if(item.name === name) {
+            this.shopId = item.crmId
+          }
+      });
+      }
+      this.$set(this.newCustomerInfo,'orgId',this.shopId)
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+     //获取门店index
+    getShopName(id) {
+      if(this.shops && this.shops.length) {
+        this.shops.forEach((item,index) => {
+          if(item.crmId === id) {
+            this.index = index
+          }
+        })
+      }
+      let shopsList = btnList(this.shops,this.index)
+      this.initDescriptShopList(shopsList)
+      this.getDescriptShopVal()
+    }  
   },
    //
   activated() {
     // isUseCache为false时才重新刷新获取数据
     if(!this.$route.meta.isUseCache){   
       this.editStatus = false
+      let shops = localStorage.getItem('shops')
+      this.shops = JSON.parse(shops)
       this.getData()
       this.$route.meta.customerUseCache = false;  
     } 
@@ -209,13 +243,24 @@ export default {
     //
   beforeRouteLeave (to, from, next) { 
   // /Customer       
-    if (to.name === 'selectAddress') {
+    if (to.name === 'selectAddress'|| to.name === 'chooseShop') {
       this.$route.meta.isUseCache = true; 
     }else {
       this.$route.meta.isUseCache = false; 
       this.setUpLoadUrl('')
     }        
     next();
+  },
+  beforeRouteEnter (to, from, next) { 
+    next(vm => {
+      if (from.name === 'chooseShop'){
+        let shops = localStorage.getItem('shops')
+        vm.shops = JSON.parse(shops)
+        if(vm.descriptShopVal) {
+          vm.getShopId(vm.descriptShopVal)
+        }
+      } 
+    });
   }
 };
 </script>

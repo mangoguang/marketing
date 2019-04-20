@@ -144,7 +144,7 @@ export default {
       this.setCustomerTabStatus(mango.btnList(['客户信息', '意向信息'], 0))
       // this.setCustomerTabStatus(mango.btnList(['客户描述', '新建需求', '需求信息'], 0))
     },
-    //门店vuex清空。恢复第一个
+    //门店vuex清空。恢复第一个.游客！
     newCustomer() {
       this.setBtn([])
       let shops = localStorage.getItem('shops')

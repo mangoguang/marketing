@@ -13,7 +13,7 @@
     <div v-show="customerTabStatus[0].status">
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else>
-        <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true'/>
+        <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
@@ -35,6 +35,7 @@ import newDescript from '../../components/customer/newCustomerInfo/newDescript'
 import intentionMsg from '../../components/customer/customerShare/intentionMsg'
 import CustomerMsg from '../../components/customer/customerShare/customerMsg'
 import mango from '../../js'
+import {btnList} from '../../utils/gallery'
 export default {
   name:'customerInfo',
   components:{
@@ -59,21 +60,26 @@ export default {
     return{
       btns: mango.btnList(['客户信息', '意向信息'], 0),
       list: [],
-      editStatus: false
+      editStatus: false,
+      shops: '',
+      shpoId:'',
+      index: '',
+      phone:''
     }
   },
   computed: {
     ...mapState({
       customerTabStatus: state => state.tabStatus.customerTabStatus,
       newCustomerInfo: state => state.customer.newCustomerInfo,
-      upLoadUrl: state => state.loadImgUrl.upLoadUrl
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl,
+      descriptShopVal: state => state.chooseShop.descriptShopVal
     })
   },
   destroyed() {
     this.setUpLoadUrl('')
   },
   methods: {
-    ...mapMutations(["setCustomerInfoBtns", "setCustomerTabStatus",'setUpLoadUrl']),
+    ...mapMutations(['setNewCustomerInfo',"setCustomerInfoBtns", "setCustomerTabStatus",'setUpLoadUrl','initDescriptShopList','getDescriptShopVal']),
     infoSelect(index) {
       this.setCustomerTabStatus(mango.btnList(['客户信息', '意向信息'], index))
     },
@@ -81,7 +87,8 @@ export default {
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
-          console.log('list')
+          this.phone = this.list.phone
+          this.getShopName(this.list.orgId)
         }
       })
     },
@@ -98,15 +105,32 @@ export default {
         MessageBox.alert('姓名不能为空')
         return
       }
-
-      let testPhone = variable.testPhone(this.newCustomerInfo.phone)
-      if(testPhone) {
-        this.saveData()
+      if(this.phone === this.newCustomerInfo.phone) {
+          this.saveData()
       }else {
-        MessageBox.alert('请填写正确手机号码')
+        let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+        if(testPhone) {
+          this.checkPhone()
+        }else {
+          MessageBox.alert('请填写正确手机号码')
+        }
       }
+      
     },
-    //
+    //验证手机
+    checkPhone() {
+      mango.getAjax('/v3/app/customer/check', {
+        value: this.newCustomerInfo.phone,
+        type: 'phone'
+      }).then((res) => {
+        if(res.status) {
+          MessageBox.alert('该手机号码已存在')
+        }else {
+          this.saveData()
+        }
+      })
+    },
+    //保存数据
     saveData() {
       let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
@@ -154,7 +178,8 @@ export default {
         weChat: obj.weChat,
         duty: obj.duty,
         remark: obj.remark,
-        customerId: this.$route.query.id
+        customerId: this.$route.query.id,
+        orgId: obj.orgId || this.list.orgId
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {
@@ -162,13 +187,40 @@ export default {
         }
       }
       return tempObj
-    }  
+    },
+    //获取门店id
+    getShopId(name) {
+      if(this.shops && this.shops.length) {
+        this.shops.forEach((item, index) => {
+          if(item.name === name) {
+            this.shopId = item.crmId
+          }
+      });
+      }
+      this.$set(this.newCustomerInfo,'orgId',this.shopId)
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    //获取门店index
+    getShopName(id) {
+      if(this.shops && this.shops.length) {
+        this.shops.forEach((item,index) => {
+          if(item.crmId === id) {
+            this.index = index
+          }
+        })
+      }
+      let shopsList = btnList(this.shops,this.index)
+      this.initDescriptShopList(shopsList)
+      this.getDescriptShopVal()
+    } 
   },
   //
   activated() {
     // isUseCache为false时才重新刷新获取数据
-    if(!this.$route.meta.isUseCache){   
+    if(!this.$route.meta.isUseCache){  
       this.editStatus = false
+      let shops = localStorage.getItem('shops')
+      this.shops = JSON.parse(shops)
       this.getData()
       this.$route.meta.customerUseCache = false;  
     } 
@@ -176,13 +228,24 @@ export default {
     //
   beforeRouteLeave (to, from, next) { 
   // /Customer       
-    if (to.name === 'selectAddress') {
+    if (to.name === 'selectAddress' || to.name === 'chooseShop'){
       this.$route.meta.isUseCache = true; 
     }else {
       this.$route.meta.isUseCache = false; 
       this.setUpLoadUrl('')
     }        
     next();
+  },
+   beforeRouteEnter (to, from, next) { 
+    next(vm => {
+      let shops = localStorage.getItem('shops')
+      if (from.name === 'chooseShop'){
+        vm.shops = JSON.parse(shops)
+        if(vm.descriptShopVal) {
+          vm.getShopId(vm.descriptShopVal)
+        }
+      }
+    });
   }
 }
 </script>

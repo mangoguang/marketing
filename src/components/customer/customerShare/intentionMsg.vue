@@ -16,7 +16,6 @@ export default {
   props: ['list'],
   components: { intentionLi },
   methods: {
-    //0代表新增，1代表跟进,2代表战败，3代表成交       //未完成//传参数
     toIntentionDetails(index) {
       // this.$router.push({path:`/intention/${this.list[index].oppId}`})
       this.$router.push({
@@ -31,8 +30,7 @@ export default {
       this.$router.push({
         name:'addintention',
         params: {
-          customerId: this.$route.query.id ,
-          opportunityId: ''
+          customerId: this.$route.query.id
         }
       })
     }

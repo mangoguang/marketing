@@ -71,7 +71,7 @@
       </div>
       <div v-if="status==='New'">
          <title-bar :text="titleModule.report">
-           <button type="button" >添加记录</button>
+           <button type="button" @click="addRecord">添加记录</button>
          </title-bar>
          <record-pannel :recordList="form.recordList"/>
       </div>
@@ -150,7 +150,8 @@ export default {
       customerId:'',
       path:'',
       status:'',
-      urgency:'否'
+      urgency:'否',
+      redirect:''
     }
   },
   components:{
@@ -176,6 +177,12 @@ export default {
   watch:{
     $route(to,from){
       console.log(from);
+      if(from.name==='/CustomerInfo'){
+        this.redirect=from.path;
+      }
+      if(from.name==='/enquiryInfo'){
+        this.redirect=from.path;
+      }
       if(from.name==='selectAddress'){
         let obj={};
         if(this.$route.query.addressId){
@@ -201,7 +208,7 @@ export default {
       }
       if(from.name==='intentionProduct'){
         if(this.$store.state.checkedList.length>0){
-          this.goodsValue=this.$store.state.checkedList[0].crmId+this.$store.state.checkedList[0].goodsName;
+          this.goodsValue=this.$store.state.checkedList[0].goodsName;
           this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
             let obj={};
             obj.goodsId=item.crmId;
@@ -241,6 +248,8 @@ export default {
       this.updateTitle('意向详情');
       this.form.oppId=this.$route.query.oppId;
       this.getOpportunity(this.form.oppId);
+    }else{
+      this.updateTitle('新建意向');
     }
     
   },
@@ -257,6 +266,11 @@ export default {
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
     ...mapMutations(['updateAddress','setCheckedList','updateSearchProductList']),
+    addRecord(){
+     this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
+     //this.isRecord=true;
+     //this.setTitle('新增跟进记录');
+   },
     listen(){
       if(this.form.address===''){
         mango.tip('请先选择地址');
@@ -427,7 +441,13 @@ export default {
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              this.$router.go(0);
+              //this.$router.push({path:this.redirect,query:{id:this.customerId}});
+              if(this.oppId){
+                 this.$router.go(-2);
+              }else{
+                 this.$router.go(-1);
+              }
+             
             }else{
               mango.tip(res.msg);
             }
@@ -545,9 +565,10 @@ export default {
       next();
     }
     if(from.name==='intentionProduct'){
-      to.meta.keepAlive=true;
-       next();
+      to.meta.keepAlive=true; 
+      next();
     }
+    to.meta.keepAlive=false; 
     next();
   }
 };

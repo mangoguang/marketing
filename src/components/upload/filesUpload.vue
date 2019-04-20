@@ -37,7 +37,8 @@ export default {
       ],
       sheetVisible:false,
       picVal:[],
-      FilesList:[]
+      FilesList:[],
+      isClear:false
     }
   },
   watch:{
@@ -46,19 +47,17 @@ export default {
         this.picVal=this.$store.state.picVal;
       }
     },
-    clear:function(newVal,oldValue){
+    isClear:function(newVal,oldValue){
       console.log(newVal);
       if(newVal){
-        this.picVal=[];
-        this.FilesList=[];
+          this.picVal=[];
+          this.FilesList=[];
       }
     }
   },
   mounted(){
    this.picVal=this.$store.state.picVal;
   },
- 
-   
   methods:{
     ...mapMutations(['delFiles','delPicVal','setFiles','setPicVal']),
     openAction(){

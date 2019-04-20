@@ -66,7 +66,7 @@ export default {
    updateVal(id){
      console.log(222,id);
      setTimeout(() => {
-       this.$router.push({path:this.$route.query.redirect,query:{addressId:id}})
+       this.$router.replace({path:this.$route.query.redirect,query:{addressId:id}})
      },100)
      
    },

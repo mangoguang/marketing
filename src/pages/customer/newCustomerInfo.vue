@@ -56,6 +56,7 @@ import mango from '../../js'
 import variable from '../../js/variable'
 import {returnDate} from '../../utils/customer'
 import {IndexModel} from '../../utils/index'
+import {btnList} from '../../utils/gallery'
 const indexModel = new IndexModel() 
 
 export default {
@@ -78,7 +79,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.fromName = from.name
-      if(from.name === 'chooseShop') {
+      if(from.name === 'chooseShop' || from.name === 'searchProduct' || from.name === 'intentionProduct') {
         vm.isShowDemand = true
       }else {
         vm.setUpLoadUrl('')
@@ -116,6 +117,10 @@ export default {
     // this.setUpLoadUrl('')
     this.setHouseType('')
     this.setElevatorVal('')
+    this.setCheckedList([])
+    // this.initShopList([])
+    // this.initDescriptShopList([])
+
   },
   methods: {
     ...mapMutations([
@@ -133,7 +138,11 @@ export default {
       'setProgress',
       'setColorPref',
       'setHouseType',
-      'setElevatorVal'
+      'setElevatorVal',
+      'setCheckedList',
+      'initShopList',
+      'initDescriptShopList',
+      'getShopVal'
     ]),
     change(val) {
       this.codeList = val
@@ -144,18 +153,6 @@ export default {
     },
     controlDaal() {
       this.isShowDeal = !this.isShowDeal
-    },
-    //获得shopId
-    getShopID(name) {
-      let shopId
-      if(this.shops) {
-        this.shops.forEach((item, index) => {
-          if(item.name === name) {
-            shopId = item.id
-          }
-      });
-      this.$set(this.newCustomerInfo, 'shopId', shopId)
-      }
     },
     //base64转成formdata形式上传
     changeFormData(url) {
@@ -174,7 +171,6 @@ export default {
     //保存客户信息，新建客户	
     creatNewCustomer() {
       //头像的formdata
-      // !this.newCustomerInfo.dataFiles? this.newCustomerInfo.dataFiles = new FormData() : ''
       this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
@@ -195,6 +191,7 @@ export default {
       let formdata = this.newCustomerInfo.dataFiles
     
       let obj = this.updateParams(this.newCustomerInfo)
+      console.log(obj)
       let arr = []
       for(var key in obj) {
         formdata.append(key,obj[key])
@@ -215,6 +212,13 @@ export default {
     //获取参数
      updateParams(obj) {
       let tempObj = {}
+      let newArr = obj.productArr
+      if(obj.productArr && obj.productArr.length) {
+         newArr.forEach((item, index) => {
+          this.$set(tempObj, `opportunity.goodsList[${index}].goodsId`,item.id)
+          this.$set(tempObj, `opportunity.goodsList[${index}].quantity`,item.quantity)
+        })
+      }
       let temp = {
         phone: obj.phone,
         username: obj.username,
@@ -225,18 +229,14 @@ export default {
         weChat: obj.weChat,
         duty: obj.duty,
         remark: obj.remark,
-        
+        "orgId": obj.orgId,
         'address.province': obj.province,
         'address.city': obj.city,
         'address.district': obj.area,
         'address.address': obj.address,
         'address.apartmentType': this.codeList.htCode,   //户型    
         'address.elevator': obj.elevator,
-
-        // 'opportunity.goodsList[0].goodsId': '1-44JIB6',          //意向产品多个
-        // 'opportunity.goodsList[0].quantity': 2,
-
-        'opportunity.shopId': this.shops[0].id,
+        'opportunity.shopId': obj.shopId,
         'opportunity.arrivalDate':mango.indexTimeB(new Date())[1],
         'opportunity.source': this.codeList.sourceCode || 'Natural',
         'opportunity.residentTime': obj.residentTime,   //留店时长

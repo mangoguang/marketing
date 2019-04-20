@@ -5,7 +5,7 @@
       </mybanner>
       <div class="list">
         <customer-product v-for="(item,index) in checkedList" :key="index" :index="index" :num="item.quantity"  @add="add(index)" @cut="cut(index)" @del="del(index)">
-          {{item.crmId}}
+          {{item.goodsName}}
         </customer-product>
       </div>
       <btn text='添加意向产品' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>

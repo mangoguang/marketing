@@ -2,6 +2,8 @@ export default {
   state: {
     shopList: [],
     shopVal: '',
+    descriptShopList: [],
+    descriptShopVal: '',
     btn: []
   },
   mutations: {
@@ -10,6 +12,14 @@ export default {
       state.shopList.forEach(item => {
         if(item.status) {
           state.shopVal = item.name
+        }
+      });
+    },
+    initDescriptShopList: (state,arr) => state.descriptShopList = arr,
+    getDescriptShopVal(state, str) {
+      state.descriptShopList.forEach(item => {
+        if(item.status) {
+          state.descriptShopVal = item.name
         }
       });
     },

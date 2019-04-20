@@ -36,6 +36,7 @@
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址">
         </li>
       </template>
+      <li is="shopSelect" :type='"descript"'></li>
       <li class="textarea">
         <h3>客户描述</h3>
         <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧"></textarea>
@@ -78,7 +79,9 @@ import addressSelect from '../../select/addressSelect'
 import areaSelect from '../../select/areaSelect'
 import mango from '../../../js'
 import variable from '../../../js/variable'
+import shopSelect from '../../select/shopSelect'
 import {turnParams,changeFormData} from '../../../utils/customer'
+import {btnList} from '../../../utils/gallery'
 export default {
   name:'customerDescript',
   props: ['btns', 'select', 'fromName', 'list', 'areaType'],
@@ -91,7 +94,8 @@ export default {
     addressSelect,
     areaSelect,
     ageSelect,
-    unLoadVia
+    unLoadVia,
+    shopSelect
   },
   data(){
     return{
@@ -104,7 +108,9 @@ export default {
       county: [],
       countyName: '',
       color: 'color: #999',
-      customerImage: ''
+      customerImage: '',
+      shop: '',
+      shopId: ''
     }
   },
   watch: {
@@ -113,6 +119,8 @@ export default {
       if(this.fromName === 'NewCustomer') {
         this.setInitData()
       }
+      let val = this.getShopVal()
+      this.getShopId(val)
     },
     list() {
       this.hasList()
@@ -126,13 +134,14 @@ export default {
       areaVal: state => state.select.areaVal,
       sourceVal: state => state.select.sourceVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
-      upLoadUrl: state => state.loadImgUrl.upLoadUrl
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl,
+      descriptShopList: state => state.chooseShop.descriptShopList
     })
   },
-  created() {
+  mounted() {
     //获取本地缓存信息
-    let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
   },
   created() {
     this.hasList()
@@ -145,7 +154,9 @@ export default {
       'setSourceVal',
       'setLeaveStoreVal',
       'setAgeVal',
-       'setUpLoadUrl'
+      'setUpLoadUrl',
+      'initDescriptShopList',
+      'getDescriptShopVal'
     ]),
     //编辑资料
     hasList() {
@@ -178,6 +189,31 @@ export default {
       this.newCustomerInfo.weChat = this.list.weChat
       this.newCustomerInfo.qq = this.list.qq
       this.newCustomerInfo.remark = this.list.remark
+    },
+    //获取门店的值
+    getShopVal() {
+      let val
+      if(this.descriptShopList && this.descriptShopList.length) {
+        this.descriptShopList.forEach((item, index) => {
+          if(item.status) {
+            val = item.name
+          }
+        })
+      }
+      return val
+    },
+    //获取门店id
+    getShopId(name) {
+      if(this.shops && this.shops.length) {
+        this.shops.forEach((item, index) => {
+          if(item.name === name) {
+            this.shopId = item.crmId
+          }
+      });
+      }
+      console.log(123,this.shopId)
+      this.newCustomerInfo.orgId = this.shopId
+      this.setNewCustomerInfo(this.newCustomerInfo)
     },
     selectStoreDate() {
       this.$refs.datePicker1.open()
@@ -243,6 +279,11 @@ export default {
     //设置默认值
     setInitData() {
       this.setNewCustomerInfo({})
+      //初始化门店的值
+      let shopsList = btnList(this.shops,0)
+      this.initDescriptShopList(shopsList)
+      this.getDescriptShopVal()
+
       this.setAgeVal('')
       this.setSexVal('')
       this.setUpLoadUrl('')
@@ -253,13 +294,6 @@ export default {
       }else if(this.$route.query.wechat) {
         this.newCustomerInfo.weChat = this.$route.query.wechat
       }
-      // this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(this.today)[1])
-      // if(!this.newCustomerInfo.important) {
-      //   this.$set(this.newCustomerInfo, 'important', 1)
-      // }         //关键程度默认选择1，但是没有点击的时候不会保存数据。
-      // if(!this.newCustomerInfo.storeDate) {
-      //   this.$set(this.newCustomerInfo, 'storeDate', mango.indexTimeB(new Date())[1])
-      // } //如果没有选进店时间。默认选择今天
      
     },
     // 将日期格式2018-01-01改成2018年01月01日
