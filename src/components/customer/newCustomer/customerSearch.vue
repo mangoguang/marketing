@@ -70,7 +70,6 @@ export default {
       }else {
         mango.tip('请填写正确的手机号码')
       }
-      
     },
     //单选框的值
     changeVal(val) {

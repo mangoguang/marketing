@@ -35,8 +35,8 @@
         <li is="customerLi" :leftText="'客户地址'"  >
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址">
         </li>
-        <li is="shopSelect" :type='"descript"'></li>
       </template>
+      <li is="shopSelect" :type='"descript"'></li>
       <li class="textarea">
         <h3>客户描述</h3>
         <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧"></textarea>
@@ -207,10 +207,11 @@ export default {
       if(this.shops && this.shops.length) {
         this.shops.forEach((item, index) => {
           if(item.name === name) {
-            this.shopId = item.id
+            this.shopId = item.crmId
           }
       });
       }
+      console.log(123,this.shopId)
       this.newCustomerInfo.orgId = this.shopId
       this.setNewCustomerInfo(this.newCustomerInfo)
     },

@@ -29,6 +29,10 @@
         <span>{{ list.remark }}</span>
         <span class='unspan' v-show='!list.remark'>未收集</span>
       </li>
+      <li is="customerLi" :leftText="'所属门店'">
+        <span>{{ getShopId(list.orgId) }}</span>
+        <span class='unspan' v-show='!list.orgId'>未收集</span>
+      </li>
     </ul>
     <btn @click.native="edit()" :text="'编辑资料'" class="myBtn"></btn>
   </div>
@@ -42,14 +46,29 @@ export default {
   components: {customerLi, btn},
   data() {
     return {
+      shops: ''
     }
   },
   mounted() {
+    let shops = localStorage.getItem('shops')
+    this.shops = JSON.parse(shops)
   },
   methods: {
    edit() {
      this.editMsg(true)
    },
+    //获取门店
+    getShopId(id) {
+      let name
+      if(this.shops && this.shops.length) {
+        this.shops.forEach((item, index) => {
+          if(item.crmId === id) {
+             name = item.name
+          }
+      });
+      }
+      return name
+    },
    //转化日期
   turnDate(date) {
     if (date) {
@@ -87,9 +106,10 @@ export default {
     background:rgba(0,122,255,1);
     border: .13vw solid rgba(0,93,194,1);
     width: 80%;
-    position: absolute;
-    bottom:10vw;
-    left:10vw;
+    margin-left: 10%;
+    // position: absolute;
+    // bottom:10vw;
+    // left:10vw;
   }
 }
 </style>

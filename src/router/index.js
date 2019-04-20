@@ -305,10 +305,10 @@ export var router = new VueRouter({
   {
     path: '/dailyReport',
     name: 'dailyReport',
-    component: resolve => require(['../pages/work/dailyReport'],resolve),
-    meta: {
-      keepAlive: true // 需要被缓存
-    }
+    component: resolve => require(['../pages/work/dailyReport'],resolve)
+    // meta: {
+    //   keepAlive: true // 需要被缓存
+    // }
   },
   {
     path: '/orderSearch',
@@ -318,10 +318,10 @@ export var router = new VueRouter({
   {
     path: '/newPlan',
     name: 'newPlan',
-    component: resolve => require(['../pages/work/newPlan'],resolve),
-    meta: {
-      keepAlive: true // 需要被缓存
-    }
+    component: resolve => require(['../pages/work/newPlan'],resolve)
+    // meta: {
+    //   keepAlive: true // 需要被缓存
+    // }
   },
   //app二期迭代
   {
