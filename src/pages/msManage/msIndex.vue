@@ -41,7 +41,9 @@ export default {
     getImgList() {
       let classify = this.$route.query.classify
       indexModel.getIndexSlider(classify).then(res => {
-        console.log(res)
+        if(res.data && res.data.length) {
+          this.list = res.data
+        }
       })
     }
   }
