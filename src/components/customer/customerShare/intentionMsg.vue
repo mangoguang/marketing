@@ -31,8 +31,7 @@ export default {
       this.$router.push({
         name:'addintention',
         params: {
-          customerId: this.$route.query.id ,
-          opportunityId: ''
+          customerId: this.$route.query.id
         }
       })
     }

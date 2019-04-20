@@ -71,7 +71,7 @@
       </div>
       <div v-if="status==='New'">
          <title-bar :text="titleModule.report">
-           <button type="button" >添加记录</button>
+           <button type="button" @click="addRecord">添加记录</button>
          </title-bar>
          <record-pannel :recordList="form.recordList"/>
       </div>
@@ -264,6 +264,11 @@ export default {
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
     ...mapMutations(['updateAddress','setCheckedList','updateSearchProductList']),
+    addRecord(){
+     this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
+     //this.isRecord=true;
+     //this.setTitle('新增跟进记录');
+   },
     listen(){
       if(this.form.address===''){
         mango.tip('请先选择地址');
@@ -434,7 +439,13 @@ export default {
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              this.$router.push({path:this.redirect,query:{id:this.customerId}})
+              //this.$router.push({path:this.redirect,query:{id:this.customerId}});
+              if(this.oppId){
+                 this.$router.go(-2);
+              }else{
+                 this.$router.go(-1);
+              }
+             
             }else{
               mango.tip(res.msg);
             }
@@ -545,12 +556,15 @@ export default {
     console.log(from);
     if(from.name==='selectAddress'){
       to.meta.keepAlive=true;
+      next();
     }
     if(from.name==='searchProduct'){
       to.meta.keepAlive=true;
+      next();
     }
     if(from.name==='intentionProduct'){
       to.meta.keepAlive=true; 
+      next();
     }
     next();
   }
