@@ -240,6 +240,7 @@ export default {
     ...mapState(['checkedList'])
   },
   created(){
+    console.log("回退进了created");
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
     this.url=this.$route.query.url;
@@ -280,6 +281,7 @@ export default {
       }
     },
     getOpportunity(id){
+      console.log("发了请求");
       indexModel.getOpportunity(id).then(res => {
         if(res.code===0){
           if(res.data.goodsList.length>0){
@@ -588,11 +590,11 @@ export default {
     console.log(to);
    console.log(from);
     if(to.name==='/enquiryInfo'){
-      this.$destroy();
+      //this.$destroy();
       next();
     }
     if(to.name==='/CustomerInfo'){
-     this.$destroy();
+     //this.$destroy();
       next();
     }
     next();
