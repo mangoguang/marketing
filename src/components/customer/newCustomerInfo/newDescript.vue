@@ -207,7 +207,7 @@ export default {
       if(this.shops && this.shops.length) {
         this.shops.forEach((item, index) => {
           if(item.name === name) {
-            this.shopId = item.id
+            this.shopId = item.crmId
           }
       });
       }
