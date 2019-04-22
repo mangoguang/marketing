@@ -1,7 +1,7 @@
 <template>
   <mt-swipe class="wrapper" :auto="auto" @change="handleChange" >
     <mt-swipe-item 
-      :style="{backgroundImage:'url('+ item.imgUrl + ')',backgroundSize: '100% 100%'}"
+      :style="{'backgroundImage':'url('+ item.imgUrl + ')','backgroundSize': '100% 100%','width':'100%','height': '100%'}"
       v-for='(item,index) in list' :key='index'
       :data-type="index">
     </mt-swipe-item>

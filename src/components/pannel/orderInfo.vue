@@ -1,22 +1,22 @@
 <template>
       <ul class="orderList" >
         <li>
-          <yan-input label="订单编号" readonly :value="orderList[0].orderNo" color="font-weight:bold;color:#55A5FD"/>
+          <yan-input label="订单编号" readonly :value="orderList.orderNo" color="font-weight:bold;color:#55A5FD"/>
         </li>
         <li>
-          <yan-input label="订单产品" readonly :value="orderList[0].orderItemList[0].goodsName"/>
+          <yan-input label="订单产品" readonly :value="orderList.orderItemList[0].goodsName"/>
         </li>
         <li>
-          <yan-input label="下单时间" readonly :value="orderList[0].orderTime"/>
+          <yan-input label="下单时间" readonly :value="orderList.orderTime"/>
         </li>
         <li>
-          <yan-input label="需求日期" readonly :value="orderList[0].demandTime"/>
+          <yan-input label="需求日期" readonly :value="orderList.demandTime"/>
         </li>
          <li>
-          <yan-input label="订单折扣" readonly :value="orderList[0].discount"/>
+          <yan-input label="订单折扣" readonly :value="orderList.discount"/>
         </li>
         <li>
-          <yan-input label="成交金额" readonly :value="orderList[0].total"/>
+          <yan-input label="成交金额" readonly :value="orderList.total"/>
         </li>
       </ul>
 </template>

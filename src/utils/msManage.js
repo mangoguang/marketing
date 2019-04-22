@@ -119,6 +119,17 @@ function changeGalleryStyle(html){
 
 export {changeGalleryStyle}
 
+//正则匹配html中的vedio，把img中alt换成style样式 //alt
+function changeVedioStyle(html){
+  var newContent= html.replace(/<embed[^>]*>/gi,function(match,capture){
+  // var match = match.replace(/width=\"(.*)\"/gi, 'wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
+  var match = match.replace(/width=\"(.*)\"/gi, 'autostart=false wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
+  return match;
+  });
+  return newContent;
+}
+
+export {changeVedioStyle}
 
 //超出缓存5天的自动清除 （1000*60*60*24）
 function compareTime(type) {

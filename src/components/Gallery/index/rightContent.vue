@@ -121,6 +121,8 @@ export default {
       indexModel.brandIntroduce(brand).then(res => {
         if(res.data) {
           this.imgUrl = res.data.imgUrl
+        }else {
+          this.imgUrl = ''
         }
       })
     },

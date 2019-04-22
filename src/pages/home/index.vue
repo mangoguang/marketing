@@ -24,7 +24,11 @@ export default {
     return {
       marginTop: '',
       list: [{
-        imgUrl: './static/images/bed0.png'
+        imgUrl: './static/images/homeBanner.png'
+      },{
+        imgUrl: './static/images/homeBanner2.jpeg'
+      },{
+        imgUrl: './static/images/homeBanner3.jpeg'
       }],
       cateList: [{
         name: '图库',
