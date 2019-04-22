@@ -6,39 +6,58 @@
           v-model="searchKey" 
           type="search" 
           placeholder="请输入姓名或电话"
+          @change="inputChange"
           @keyup.enter="search">
     <!-- <button @click="searchCustomer">搜索</button> -->
     </form>
-    <!-- 订单列表 -->
-    <EnquiryOrder @changeResultTit="changeOrderResultTit" class="CustomerList"/>
+    <div class="orderContainer">
+      <InfoHeader
+      @select="select"
+      :count="orderData.total" />
+      <!-- 订单列表 -->
+      <order-list></order-list>
+    </div>
+    <!-- <EnquiryOrder @changeResultTit="changeOrderResultTit" class="CustomerList"/> -->
   </div>
 </template>
 
 
 <script>
-import Vuex, { mapMutations } from "vuex";
+import Vuex, { mapMutations, mapState, mapGetters } from "vuex";
 import EnquiryOrder from "../../components/customer/enquiryOrder/enquiryOrder";
 import myBanner from '../../components/banner'
+import InfoHeader from '../../components/work/orderSearch/infoHeader'
+import OrderList from '../../components/work/orderSearch/orderList'
+import { Loadmore } from "mint-ui";
 import mango from "../../js";
 export default {
   components: {
     EnquiryOrder,
-    myBanner
+    myBanner,
+    InfoHeader,
+    OrderList
   },
+  props: ['myStyle'],
   data() {
     return {
       searchKey: ''
     };
   },
   computed: {
-
+    ...mapState({
+      orderData: state => state.work.orderData
+    })
   },
   created() {
     this.checkLogin();
   },
+  mounted() {
+    this.setOrderData([])
+
+  },
   methods: {
     ...mapMutations([
-      "setOrderList"
+      "setOrderData"
     ]),
     checkLogin() {
       let ajaxData = localStorage.getItem("ajaxData");
@@ -60,20 +79,26 @@ export default {
       this.orderResultTit = str;
     },
     search() {
-      console.log('搜索订单')
+      let str = this.searchKey.replace(/\s+/g, "")
+      console.log(111, str)
       let params = {
-        key: this.searchKey,
+        key: str,
         page: 1,
-        limit: 30,
-        type: "Approved"
+        limit: 30
       }
-      mango.getAjax("/v3/app/customer/list", params).then(res => {
+      mango.getAjax("/v3/app/order/list", params).then(res => {
         res = res.data
         if (res) {
           console.log('请求 的订单', res.records)
-          this.setOrderList(res)
+          this.setOrderData(res)
         }
       })
+    },
+    inputChange(event) {
+      console.log('inputchange:', event.target.value)
+    },
+    select() {
+      alert('success')
     }
   }
 };
@@ -82,23 +107,40 @@ export default {
 <style lang="scss">
 .orderSearch {
   position: relative;
-  height: 100vh;
+  // height: 100vh;
   width: 100vw;
   box-sizing: border-box;
   // overflow: scroll;
   background-color: #fff;
   overflow: hidden;
+  .orderContainer{
+    // height: 100vh;
+    margin-top: 48vw;
+    .infoHeader{
+      position: fixed;
+      width: 100%;
+      box-sizing: border-box;
+      top: 35.466vw;
+      left: 0;
+    }
+  }
   div.CustomerList{
     margin-top: 14.81vw;
     padding-top: 1px;
   }
   .searchForm{
-    padding-top: 21.466vw;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    padding-top: 25.466vw;
+    padding-bottom: 2vw;
+    background: #fff;
     input{
       display: block;
       width: 80vw;
       height: 8vw;
-      margin: 0 auto;
+      margin-left: 10vw;
       background: url('../../assets/imgs/egg_search.png') no-repeat, #f7f7f7;
       background-size: 4vw 4vw;
       background-position: 4vw center;
