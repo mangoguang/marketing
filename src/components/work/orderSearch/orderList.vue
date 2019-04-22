@@ -1,6 +1,6 @@
 <template>
   <div class="orderList">
-    <TopBar :topBarTitle="topbar" />
+    <!-- <TopBar :topBarTitle="topbar" /> -->
     <OrderCentent
     :list="orderArr" />
   </div>

@@ -1,23 +1,25 @@
 <template>
   <div class="orderSearch">
-    <my-banner :title="'订单查询'" />
-    <form class="searchForm" action='' @submit.prevent>
-      <input ref="inpComp" class="input"
-          v-model="searchKey" 
-          type="search" 
-          placeholder="请输入姓名或电话"
-          @change="inputChange"
-          @keyup.enter="search">
-    <!-- <button @click="searchCustomer">搜索</button> -->
-    </form>
-    <div class="orderContainer">
+    <div class="orderSearchHeader">
+      <my-banner :title="'订单查询'" />
+      <form class="searchForm" action='' @submit.prevent>
+        <input ref="inpComp" class="input"
+            v-model="searchKey" 
+            type="search" 
+            placeholder="请输入姓名或电话"
+            @change="inputChange"
+            @keyup.enter="search">
+      <!-- <button @click="searchCustomer">搜索</button> -->
+      </form>
       <InfoHeader
       @select="select"
       :count="orderData.total" />
-      <!-- 订单列表 -->
-      <order-list></order-list>
+      <TopBar :topBarTitle="topbar" />
     </div>
+    <!-- 订单列表 -->
+    <order-list></order-list>
     <!-- <EnquiryOrder @changeResultTit="changeOrderResultTit" class="CustomerList"/> -->
+    <OrderSearchRightContainer />
   </div>
 </template>
 
@@ -28,6 +30,8 @@ import EnquiryOrder from "../../components/customer/enquiryOrder/enquiryOrder";
 import myBanner from '../../components/banner'
 import InfoHeader from '../../components/work/orderSearch/infoHeader'
 import OrderList from '../../components/work/orderSearch/orderList'
+import TopBar from "../../components/customer/topBar";
+import OrderSearchRightContainer from '../../components/work/orderSearchRightContainer'
 import { Loadmore } from "mint-ui";
 import mango from "../../js";
 export default {
@@ -35,17 +39,26 @@ export default {
     EnquiryOrder,
     myBanner,
     InfoHeader,
-    OrderList
+    OrderList,
+    TopBar,
+    OrderSearchRightContainer
   },
   props: ['myStyle'],
   data() {
     return {
-      searchKey: ''
+      searchKey: '',
+      topbar: {
+        leftTitle: "客户信息",
+        centerTitle: "订单交期",
+        rightTitle: "订单状态"
+      }
     };
   },
   computed: {
     ...mapState({
-      orderData: state => state.work.orderData
+      orderData: state => state.work.orderData,
+      orderSearchParam: state => state.work.orderSearchParam,
+      rightContainerStatus: state => state.rightContainer.rightContainerStatus
     })
   },
   created() {
@@ -53,11 +66,12 @@ export default {
   },
   mounted() {
     this.setOrderData([])
-
   },
   methods: {
     ...mapMutations([
-      "setOrderData"
+      "setOrderData",
+      'setOrderSearchParam',
+      'setRightContainerStatus'
     ]),
     checkLogin() {
       let ajaxData = localStorage.getItem("ajaxData");
@@ -80,13 +94,28 @@ export default {
     },
     search() {
       let str = this.searchKey.replace(/\s+/g, "")
-      console.log(111, str)
       let params = {
         key: str,
         page: 1,
         limit: 30
       }
-      mango.getAjax("/v3/app/order/list", params).then(res => {
+      this.setOrderSearchParam(params)
+      this.getOrderData(params)
+    },
+    inputChange(event) {
+      let val = event.target.value
+      val = val.replace(/\s+/g, "")
+      if (val === '') {
+        let params = {
+          page: 1,
+          limit: 30
+        }
+        this.setOrderSearchParam(params)
+        this.getOrderData(params)
+      }
+    },
+    getOrderData(obj) {
+      mango.getAjax("/v3/app/order/list", obj).then(res => {
         res = res.data
         if (res) {
           console.log('请求 的订单', res.records)
@@ -94,11 +123,8 @@ export default {
         }
       })
     },
-    inputChange(event) {
-      console.log('inputchange:', event.target.value)
-    },
     select() {
-      alert('success')
+      this.setRightContainerStatus(true)
     }
   }
 };
@@ -107,21 +133,23 @@ export default {
 <style lang="scss">
 .orderSearch {
   position: relative;
-  // height: 100vh;
   width: 100vw;
   box-sizing: border-box;
-  // overflow: scroll;
   background-color: #fff;
   overflow: hidden;
-  .orderContainer{
-    // height: 100vh;
-    margin-top: 48vw;
+  margin-top: -5.86vw;
+  .orderSearchHeader{
+    position: fixed;
+    z-index: 99;
+    padding-top: 21.466vw;
+    width: 100vw;
+    background: #fff;
     .infoHeader{
-      position: fixed;
-      width: 100%;
-      box-sizing: border-box;
-      top: 35.466vw;
-      left: 0;
+      padding: 4vw 4.8vw;
+    }
+    .topBar{
+      position: relative;
+      margin-top: 0;
     }
   }
   div.CustomerList{
@@ -129,13 +157,9 @@ export default {
     padding-top: 1px;
   }
   .searchForm{
-    position: fixed;
     width: 100vw;
-    top: 0;
-    left: 0;
-    padding-top: 25.466vw;
-    padding-bottom: 2vw;
     background: #fff;
+    padding-top: 4vw;
     input{
       display: block;
       width: 80vw;

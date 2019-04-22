@@ -33,7 +33,8 @@ export default {
     margin: 0;
     padding: 0 4.8vw;
     color: #666;
-    top: 6vw;
+    // top: 6vw;
+    // z-index: 10;
     line-height: 6vw;
     background: #fff;
     li:last-child{
