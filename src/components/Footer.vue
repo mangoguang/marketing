@@ -102,7 +102,7 @@ export default {
     width: 6.6vw;
     height: 6.6vw;
     margin-bottom: 1.33vw;
-    background: url(../assets/imgs/icon1.png);
+    background: url(../../static/images/icon.png);
     background-size: 2100%;
     background-position: -14.2vw -20.8vw;
   }
@@ -121,7 +121,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -7.6vw -20.8vw;
       }
@@ -129,7 +129,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -21.4vw -20.8vw;
       }
@@ -152,7 +152,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -49.7vw -20.8vw;
       }
@@ -166,7 +166,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -0.4vw -20.8vw;
       }
@@ -174,7 +174,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -14.2vw -20.8vw;
       }
@@ -201,7 +201,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -42.6vw -20.8vw;
       }

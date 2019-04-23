@@ -3,7 +3,7 @@
     <ul class="newRecord">
       <li is="followSelect" @followWayChange="followWayChange" ></li>
       <li class="timeLi" is="customerLi" :start="'*'" :leftText="'跟进时间'" :icon="true" @click.native="selectFollowTime">
-        <span>{{turnDate(newCustomerInfo.followDate || setDay)}}</span>
+        <span>{{turnDate(newCustomerInfo.followDate || '请选择日期')}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true" :text='"跟进时长"' :type='true' @leaveStoreChange2="leaveStoreChange2"></li>
       

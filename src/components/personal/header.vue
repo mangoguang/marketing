@@ -64,7 +64,7 @@ export default {
 <style lang="scss" scoped>
 .header{
   width: 100vw;
-  // height: 46.26vw;
+  height: 46.26vw;
   background: url('../../assets/imgs/viaBg.png') no-repeat center;
   background-size: 100% 100%;
   position: relative;

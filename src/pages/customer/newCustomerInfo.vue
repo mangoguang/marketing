@@ -170,6 +170,7 @@ export default {
     },
     //保存客户信息，新建客户	
     creatNewCustomer() {
+      // this.hasFollowData()
       //头像的formdata
       this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
       if(!this.newCustomerInfo.sex) {
@@ -187,11 +188,11 @@ export default {
       }
       // // let ref = this.$refs.myForm
       // // let formdata = new FormData(ref)
-
+      
       let formdata = this.newCustomerInfo.dataFiles
     
       let obj = this.updateParams(this.newCustomerInfo)
-      console.log(obj)
+      // console.log(obj)
       let arr = []
       for(var key in obj) {
         formdata.append(key,obj[key])
@@ -208,6 +209,13 @@ export default {
     //初始化数据
     setInitData() {
       this.newCustomerInfo.leaveStore = this.leaveStoreVal
+    },
+    //判断跟进模块有没有数据
+    hasFollowData() {
+      let obj = this.newCustomerInfo
+      for(var key in obj) {
+       
+      }
     },
     //获取参数
      updateParams(obj) {
