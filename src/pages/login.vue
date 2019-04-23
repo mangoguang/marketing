@@ -140,7 +140,8 @@ export default {
         }
       axios({
         method: 'post',
-        url: 'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
+        //url: 'http://10.11.8.7/oauth/token',
+        url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
         transformRequest: [function(data) {
           let ret = ''
@@ -175,6 +176,51 @@ export default {
             this.getUserInfo()
           }
       })
+
+      // indexModel.getToken(account,md5(pwd)).then(res => {
+      //   mango.loading('close')
+      //   let data = res.data
+      //   if(data) {
+      //     // 将账号信息添加到对象
+      //     Object.assign(data, {
+      //       account,
+      //       pwd
+      //     })
+      //     // 转成字符串
+      //     let str = JSON.stringify(data)
+      //     // 存储到本地
+      //     localStorage.setItem('token', str)
+      //     this.$root.token = data
+      //     clearInterval(this.$root.tokenTime)
+      //     this.$root.tokenTime = setInterval(() => {
+      //       refreshToken.call(this)
+      //     }, 7000000)
+      //     // 登陆成功跳转页面
+      //     this.getUserInfo()
+      //   }
+      // })
+      // .then((res) => {
+      //     mango.loading('close')
+      //     let data = res.data
+      //     if(data) {
+      //       // 将账号信息添加到对象
+      //       Object.assign(data, {
+      //         account,
+      //         pwd
+      //       })
+      //       // 转成字符串
+      //       let str = JSON.stringify(data)
+      //       // 存储到本地
+      //       localStorage.setItem('token', str)
+      //       this.$root.token = data
+      //       clearInterval(this.$root.tokenTime)
+      //       this.$root.tokenTime = setInterval(() => {
+      //         refreshToken.call(this)
+      //       }, 7000000)
+      //       // 登陆成功跳转页面
+      //       this.getUserInfo()
+      //     }
+      // })
 
       // indexModel.getToken(account,md5(pwd)).then(res => {
       //   mango.loading('close')
