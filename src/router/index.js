@@ -316,6 +316,11 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/work/orderSearch'],resolve)
   },
   {
+    path: '/orderDetail/:orderId',
+    name: 'orderDetail',
+    component: resolve => require(['../pages/work/orderDetail'],resolve)
+  },
+  {
     path: '/newPlan',
     name: 'newPlan',
     component: resolve => require(['../pages/work/newPlan'],resolve)

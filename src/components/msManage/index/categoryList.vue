@@ -7,18 +7,20 @@
       :bgColor="bgColor[index]"
       @click.native="toArt(index)"
     />
-    <router-link :to="{
-      name:'/question',
-      query:{id: 4,name:'常见问题',type:1}}">
-      <li class="question">
-        <div class="icon">
-          <img src="../../../assets/imgs/ms-policy.png" alt>
-        </div>
-        <div class="text">
-          <p>常见问题</p>
-        </div>
-      </li>
-    </router-link>
+    <template v-if="classify === 1"> 
+      <router-link :to="{
+        name:'/question',
+        query:{id: 4,name:'常见问题',type:1}}">
+        <li class="question">
+          <div class="icon">
+            <img src="../../../assets/imgs/ms-policy.png" alt>
+          </div>
+          <div class="text">
+            <p>常见问题</p>
+          </div>
+        </li>
+      </router-link>
+    </template>
   </ul>
 </template>
 
@@ -28,6 +30,7 @@ const indexModel = new IndexModel();
 import Category from "./category";
 export default {
   components: { Category },
+  props: ['classify'],
   data() {
     return {
       list: [],
@@ -36,6 +39,7 @@ export default {
   },
   mounted() {
     this.getData();
+    console.log(123,this.classify)
   },
   methods: {
     //获取首页一级列表接口
