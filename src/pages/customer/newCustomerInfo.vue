@@ -191,7 +191,7 @@ export default {
       let formdata = this.newCustomerInfo.dataFiles
     
       let obj = this.updateParams(this.newCustomerInfo)
-      console.log(obj)
+      // console.log(obj)
       let arr = []
       for(var key in obj) {
         formdata.append(key,obj[key])
