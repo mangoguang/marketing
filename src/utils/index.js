@@ -288,6 +288,10 @@ class IndexModel extends Request {
   savePlan(obj) {
     return mango.getAjax('/v3/app/summarize/update', obj, 'post')
   }
+  //获取订单列表
+  getOrderList(obj) {
+    return mango.getAjax('/v3/app/order/list', obj)
+  }
   
   /* 
     客户管理模块

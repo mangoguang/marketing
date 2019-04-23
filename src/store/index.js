@@ -43,7 +43,7 @@ import followRecord from './modules/intention/followRecord'
 import addIntention from './modules/intention/addIntention'
 import intention from './modules/intention/intention'
 import loadImgUrl from './modules/picture/index'
-import work from './modules/work'
+import work from './modules/work/index'
 export default new Vuex.Store({
   state,
   mutations,

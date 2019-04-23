@@ -59,7 +59,7 @@ export default {
     this.isIPhoneX();
   },
   created() {
-    // this.isDeal()
+    this.isDeal()
   },
   methods: {
     ...mapMutations(["setChartActive"]),
