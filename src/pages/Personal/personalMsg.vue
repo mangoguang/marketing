@@ -40,7 +40,7 @@ export default {
         '关于我','组织架构','功勋榜','日报','我的收藏'
       ] */
       ListItem: [
-        '我的收藏','意见反馈','账户安全','关于我们','日报'
+        '我的收藏','意见反馈','账户安全','关于我们'
       ],
       key: true
     }
@@ -117,7 +117,8 @@ export default {
         this.$router.push({path: '/aboutUs'});
         break;
         case 4 :
-        this.$router.push({path: '/dailyPaper'});
+        console.log('4');
+        //this.$router.push({path: '/dailyPaper'});
         break;
         default:
         return
