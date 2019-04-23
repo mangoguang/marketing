@@ -3,7 +3,7 @@
     <div class="compile">编辑</div>
     <div class="personalMsg">
       <div class="via" @click="go"></div>
-      <div class="content">
+      <div class="personal-content">
         <div class="name">
           <span>{{'导购员张三' || ajaxData.name}}</span>
           <span>|</span>
@@ -64,7 +64,7 @@ export default {
 <style lang="scss" scoped>
 .header{
   width: 100vw;
-  // height: 46.26vw;
+  height: 46.26vw;
   background: url('../../assets/imgs/viaBg.png') no-repeat center;
   background-size: 100% 100%;
   position: relative;
@@ -90,7 +90,7 @@ export default {
       width: 16vw;
       height: 16vw;
     }
-    .content{
+    .personal-content{
       margin-left: 5.6vw;
       .phoneNumber{
         display: flex;

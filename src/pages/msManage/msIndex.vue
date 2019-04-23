@@ -27,7 +27,7 @@ export default {
     return {
       origin: true,
       list: [{
-        imgUrl: './static/images/bed0.png'
+        imgUrl: './static/images/home/banner.png'
       }],
       title: ''
     };
@@ -60,6 +60,6 @@ export default {
 }
 .slider {
   width: 100vw!important;
-  height: 37.33vw!important;
+  height: 47.2vw!important;
 }
 </style>
