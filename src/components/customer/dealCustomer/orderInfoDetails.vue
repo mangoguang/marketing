@@ -6,7 +6,7 @@
         <!-- <div class="product-photo">产品图</div> -->
         <div class="product-details">
           <div class="details">
-            <span>{{ item.goodsName || 1}}</span>
+            <span>{{ item.goodsName}}</span>
             <p>{{ item.specification }}</p>
           </div>
           <div class="price">
@@ -99,6 +99,13 @@ export default {
       address: ''
     } 
   },
+  watch: {
+    list() {
+      if(this.list) {
+        this.getAddress()
+      }
+    }
+  },
   // destroyed() {
   //   this.setTotalPrice(0)
   //   this.setDiscountPrice(0)
@@ -129,7 +136,9 @@ export default {
   //   }
   // },
   created() {
-    this.getAddress()
+    // if(this.list) {
+    //   this.getAddress()
+    // }
     // this.calcPrice()
     // console.log(144, this.orderTotalPrice, this.orderDiscountPrice)
   },
@@ -141,6 +150,7 @@ export default {
     //   'setOrderDiscountPrice'
     // ])
     getAddress() {
+      // console.log(111,this.list.addressId)
       let id = this.list.addressId
       mango.getAjax('/v2/app/address', {
         addressId: id

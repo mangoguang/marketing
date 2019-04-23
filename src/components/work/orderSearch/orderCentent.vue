@@ -90,7 +90,7 @@ export default {
       this.$refs.loadmore.onBottomLoaded()
     },
     toOrderDetail(orderId) {
-      this.$router.push({path: `/orderDetail/${orderId}`})
+      this.$router.push({path:'/orderDetail',query: {orderId:orderId}})
     }
   }
 }

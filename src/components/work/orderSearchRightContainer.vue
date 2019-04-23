@@ -75,6 +75,7 @@ export default {
       dateType: '',
       orderSearchBtns: [],
       orderStatusList: [],
+      orderStatus: {},
       ajaxData:[],
       marginTop:'',
       orderSelectParam: {}
@@ -123,7 +124,7 @@ export default {
       'setRightContainerStatus',
       'setCustomerAjaxParams',
       'setAllLoaded',
-      'setCustomerList'  
+      'setCustomerList'
     ]),
     // 初始化起始日期
     initStartDateVal() {
@@ -140,23 +141,37 @@ export default {
     //重置
     resizeCustomerList() {
       mango.changeBtnStatus(this.orderSearchBtns, '')
-      this.$set(this.customerAjaxParams,'i','')
-      this.$set(this.customerAjaxParams,'u','')
-      this.$set(this.customerAjaxParams, 'sd', '')
-      this.$set(this.customerAjaxParams, 'ed', '')
-      this.$set(this.customerAjaxParams, 'l', '')
+      let params = {
+        page: 1,
+        limit: 30
+      }
+      this.setOrderSearchParam(params)
+      this.getOrderList(params)
       this.setRightContainerStatus('hideRightContainer')
     },
     // 隐藏右侧边栏
     hideRightContainer() {
+      let params = {
+        page: 1,
+        limit: 30,
+        status: this.orderStatus.code,
+        startTime: this.startDateVal, //交期时间（需求时间）
+        endTime: this.endDateVal
+      }
+      // 提交请求参数到vuex
+      this.setOrderSearchParam(params)
+      this.getOrderList(params)
       this.setRightContainerStatus('hideRightContainer')
     },
     hideRightBar() {
       this.setRightContainerStatus('hideRightContainer')
     },
-    // 紧急程度选择
+    // 订单状态选择
     orderSearchSelect(i) {
-      console.log(this.orderStatusList[i].name, this.orderStatusList[i].code)
+      this.orderStatus = {
+        name: this.orderStatusList[i].name,
+        code: this.orderStatusList[i].code
+      }
       mango.changeBtnStatus(this.orderSearchBtns, i)
     },
     // 选择时间
@@ -207,6 +222,14 @@ export default {
           this.orderStatusList = res
           const arr = res.map(item => item.name)
           this.orderSearchBtns = mango.btnList(arr)
+        }
+      })
+    },
+    getOrderList(obj) {
+      indexModel.getOrderList(obj).then((res) => {
+        res = res.data
+        if (res) {
+          this.setOrderData(res)
         }
       })
     }

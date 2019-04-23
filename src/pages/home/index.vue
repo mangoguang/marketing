@@ -95,7 +95,7 @@ export default {
 .home {
   .slider {
     width: 100vw!important;
-    height: 37.33vw!important;
+    height: 47.2vw!important;
   }
   .cateList {
     padding: 4vw 6.6vw;

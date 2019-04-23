@@ -316,7 +316,7 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/work/orderSearch'],resolve)
   },
   {
-    path: '/orderDetail/:orderId',
+    path: '/orderDetail',
     name: 'orderDetail',
     component: resolve => require(['../pages/work/orderDetail'],resolve)
   },
