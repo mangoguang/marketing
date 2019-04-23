@@ -18,7 +18,7 @@
         @click.stop="changeCity($event)"
         :title="city.level"
         :class="{on: statusList[index]}"
-        >{{cityMsg.cityName}}</li>
+        >{{city.name}}</li>
     </ul>
   </li>
 </template>
@@ -107,7 +107,6 @@ export default {
       mango.getAjax('/v1/app/report/getCityLevel', {
         tenantId: this.ajaxData.tenantId
       }).then((res) => {
-        console.log('获取城市等级接口', res)
         res = res.data
         if (res) {
           // 如果本地存储了城市选择，则选择本地存储，否则选择城市列表第一个城市
@@ -135,6 +134,7 @@ export default {
             }
             return {name: item.empowerCity, level: item.cityLevel}
           })
+          console.log('城市列表', _this.cityList)
         }
       })
     }
