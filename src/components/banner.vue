@@ -102,6 +102,7 @@ export default {
     text-align: right;
     color: #007aff;
     font-weight: bold;
+    z-index: 1000;
   }
 }
 </style>

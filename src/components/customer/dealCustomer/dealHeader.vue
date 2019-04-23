@@ -5,7 +5,7 @@
     </div>
     <div class="personalMsg">
       <img :src="list.headPortrait" class='via'/>
-      <div class="content">
+      <div class="personal-content">
         <div class="name">
           <span>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</span>
           <span>|</span>
@@ -113,7 +113,7 @@ export default {
       border-radius:50%;
       background: rgba(255, 255, 255, 0.1)
     }
-    .content{
+    .personal-content{
       margin-left: 5.6vw;
       .phoneNumber{
         display: flex;
