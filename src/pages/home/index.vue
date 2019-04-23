@@ -33,15 +33,18 @@ export default {
       cateList: [{
         name: '图库',
         link: '/gallery',
-        id: 0
+        id: 0,
+        image: './static/images/home/tuku.png'
       },{
         name: '金管家知识库',
         link: '/msManage',
-        id: 1
+        id: 1,
+        image: './static/images/home/jinguanjia.png'
       },{
         name: '学院知识库',
         link: '/msManage',
-        id: 2
+        id: 2,
+        image: './static/images/home/xueyuan.png'
       }],
       bgColor: []
     }
