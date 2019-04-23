@@ -1,6 +1,6 @@
 <template>
   <li class="category">
-    <div class="icon" :style="{background: bgColor}">
+    <div class="icon" :style="{background: color}">
       <!-- <img src="../../../assets/imgs/ms-policy.png" alt=""> -->
       <img :src="list.image" alt="">
     </div>
@@ -15,8 +15,11 @@ export default {
   props: ['list', 'bgColor'],
   data() {
     return {
-
+      color: ''
     }
+  },
+  mounted() {
+    this.color = this.list && this.list.image? '' : this.bgColor
   }
 }
 </script>

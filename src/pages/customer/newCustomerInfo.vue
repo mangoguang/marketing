@@ -170,41 +170,41 @@ export default {
     },
     //保存客户信息，新建客户	
     creatNewCustomer() {
-      this.hasFollowData()
+      // this.hasFollowData()
       //头像的formdata
-      // this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
-      // if(!this.newCustomerInfo.sex) {
-      //   MessageBox.alert('性别不能为空')
-      //   return
-      // }else if(!this.newCustomerInfo.username) {
-      //   MessageBox.alert('姓名不能为空')
-      //   return
-      // }else if(!this.newCustomerInfo.province) {
-      //   MessageBox.alert('请选择地区')
-      //   return
-      // }else if(!this.newCustomerInfo.address) {
-      //   MessageBox.alert('请填写客户地址')
-      //   return
-      // }
+      this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
+      if(!this.newCustomerInfo.sex) {
+        MessageBox.alert('性别不能为空')
+        return
+      }else if(!this.newCustomerInfo.username) {
+        MessageBox.alert('姓名不能为空')
+        return
+      }else if(!this.newCustomerInfo.province) {
+        MessageBox.alert('请选择地区')
+        return
+      }else if(!this.newCustomerInfo.address) {
+        MessageBox.alert('请填写客户地址')
+        return
+      }
       // // let ref = this.$refs.myForm
       // // let formdata = new FormData(ref)
       
-      // let formdata = this.newCustomerInfo.dataFiles
+      let formdata = this.newCustomerInfo.dataFiles
     
-      // let obj = this.updateParams(this.newCustomerInfo)
-      // // console.log(obj)
-      // let arr = []
-      // for(var key in obj) {
-      //   formdata.append(key,obj[key])
-      //   arr.push(key)
-      // }
-      // mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
-      //   if(res.status) {
-      //     MessageBox.alert('保存成功！').then(action => {
-      //       this.$router.go(-1)
-      //     })
-      //   }
-      // })
+      let obj = this.updateParams(this.newCustomerInfo)
+      // console.log(obj)
+      let arr = []
+      for(var key in obj) {
+        formdata.append(key,obj[key])
+        arr.push(key)
+      }
+      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+        if(res.status) {
+          MessageBox.alert('保存成功！').then(action => {
+            this.$router.go(-1)
+          })
+        }
+      })
     },
     //初始化数据
     setInitData() {
@@ -214,7 +214,7 @@ export default {
     hasFollowData() {
       let obj = this.newCustomerInfo
       for(var key in obj) {
-        console.log(key)
+       
       }
     },
     //获取参数
