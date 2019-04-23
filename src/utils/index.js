@@ -292,7 +292,11 @@ class IndexModel extends Request {
   getOrderList(obj) {
     return mango.getAjax('/v3/app/order/list', obj)
   }
-  
+  getOrderDetails(orderId) {
+    return mango.getAjax('/v3/app/order',{
+      orderId: orderId
+    })
+  }
   /* 
     客户管理模块
   */

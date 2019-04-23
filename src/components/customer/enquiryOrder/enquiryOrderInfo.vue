@@ -4,12 +4,12 @@
     <div class="address">
       <ul>
         <li>
-          收货人：{{ `*${orderInfoDetails.username ? orderInfoDetails.username.slice(1, 10) : ''}` }}
-          <span>{{ `******${orderInfoDetails.phone ? orderInfoDetails.phone.slice(6, 11) : ''}` }}</span>
+          收货人：{{ `*${list.username ? list.username.slice(1, 10) : ''}` }}
+          <span>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</span>
           <div class="phone"></div>
         </li>
-        <li>收获地址：{{ `******${orderInfoDetails.address ? orderInfoDetails.address.slice(6, 50) : ''}` }}</li>
-        <li>需求日期：{{ orderInfoDetails.demandTime }}</li>
+        <li>收获地址：{{ `******${list.address ? list.address.slice(6, 50) : ''}` }}</li>
+        <li>需求日期：{{ turnDate(list.demandTime) }}</li>
       </ul>
     </div>
   </div>
@@ -22,13 +22,28 @@ import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../../js";
 
 export default {
+  props: {
+    list: {
+      type: [Object,Array],
+      default: [],
+      required: false
+    }
+  },
   data() {
     return {};
   },
-  computed: {
-    ...mapState({
-      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails      
-    })
+  methods: {
+      // 将日期格式2018-01-01改成2018年01月01日
+    turnDate(date) {
+      if (date) {
+        let arr = date.split('-')
+        if (arr.length > 1) {
+          return `${arr[0]}年${arr[1]}月${arr[2]}日`
+        } else {
+          return date
+        }
+      }
+    }
   }
 };
 </script>

@@ -6,7 +6,7 @@
         <!-- <div class="product-photo">产品图</div> -->
         <div class="product-details">
           <div class="details">
-            <span>{{ item.goodsName || 1}}</span>
+            <span>{{ item.goodsName}}</span>
             <p>{{ item.specification }}</p>
           </div>
           <div class="price">
