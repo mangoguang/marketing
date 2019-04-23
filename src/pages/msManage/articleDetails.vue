@@ -41,8 +41,8 @@ export default {
     this.isIPhoneX()
   },
   mounted() {
-    var a = document.getElementsByTagName("html")
-    console.log(a)
+    // var a = document.getElementsByTagName("html")
+    // console.log(a)
   },
   methods: {
     //获取文章详情
