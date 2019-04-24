@@ -246,7 +246,7 @@ export default {
     },
     //跳转到地址管理页面
     toAddress() {
-      this.$router.push({path:`/selectAddress/${this.$route.query.id}`})
+      this.$router.push({path:`/address/${this.$route.query.id}`})
     },
     sexChange(val) {
       // console.log('sex改变了：', val)

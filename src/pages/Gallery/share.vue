@@ -4,6 +4,7 @@
     <div class="saveTips" v-show="successSave">保存成功</div>
     <div class="canvas" ref="creatImg">
       <img :src="imgUrl" alt>
+      <!-- <img src="../../assets/imgs/p1.png" alt> -->
       <div class="content">
         <img src="../../assets/imgs/share_bottom.png" alt>
         <div class="msg">
@@ -12,6 +13,9 @@
           <div id="qrcode"></div>
         </div>
       </div>
+    </div>
+    <div>
+      <img :src="test" alt width="200px" height="200px">
     </div>
     <div class="save" @click="saveImg">
       <img src="../../assets/imgs/download.png" alt>
@@ -27,7 +31,7 @@
 </template>
 
 <script>
-import {baseUrl} from '../../Request/request'
+import { baseUrl } from "../../Request/request";
 import axios from "axios";
 import QRCode from "qrcodejs2";
 import html2canvas from "html2canvas";
@@ -61,7 +65,9 @@ export default {
       loadImgUrl: "",
       successSave: false,
       imageData: "",
-      pageUrl: ''
+      pageUrl: "",
+      test: "",
+      changeUrl: ""
     };
   },
   computed: {
@@ -71,41 +77,63 @@ export default {
   },
   created() {
     this.msg = this.$route.query.list;
-    this.pageUrl = baseUrl + "/web/marketing/#/productDetails?id=" + this.msg.id + '&musi=1'
-  },
-  watch: {
-    imgUrl() {
-      console.log(this.imgUrl);
-    }
+    this.pageUrl =
+      "https://mobiletest.derucci.net" +
+      "/web/marketing/#/productDetails?id=" +
+      this.msg.id +
+      "&musi=1";
   },
   mounted() {
     this.getCode();
+    this.changeImg(this.msg.imgUrl)
   },
   methods: {
     //生成二维码
     getCode() {
       let qrcode = new QRCode("qrcode", {
-        width: 48,
-        height: 48, // 高度
+        width: 60,
+        height: 60, // 高度
         text: this.pageUrl,
         colorDark: "#000",
         colorLight: "#fff",
         correctLevel: QRCode.CorrectLevel.L,
-        QRCodeVersion: 8
+        QRCodeVersion: 1
       });
+    },
+    changeImg(url) {
+        var Img = new Image(),
+            dataURL='';
+        Img.setAttribute('crossOrigin', 'anonymous');
+        Img.src=url;
+        // Img.onload=() => { //要先确保图片完整获取到，这是个异步事件
+        //     var canvas = document.createElement("canvas"), //创建canvas元素
+        //         width=Img.width, //确保canvas的尺寸和图片一样
+        //         height=Img.height;
+        //     canvas.width=width;
+        //     canvas.height=height;
+        //     canvas.getContext("2d").drawImage(Img,0,0,width,height); //将图片绘制到canvas中
+        //     // dataURL=canvas.toDataURL('image/jpeg'); //转换图片为dataURL
+        //     console.log(123,dataURL)
+        // };
+
     },
     //点击保存图片
     saveImg() {
       html2canvas(this.$refs.creatImg, {
-        backgroundColor: null
+        backgroundColor: null,
+        useCORS: true,
+        allowTaint: true
       }).then(canvas => {
         this.url = canvas.toDataURL();
-        this.postImage();
+        if (this.url) {
+          this.test = this.url;
+        }
+        // this.postImage();
       });
     },
     //base64转成formdata形式上传
-    changeFormData() {
-      let bytes = window.atob(this.url.split(",")[1]);
+    changeFormData(url) {
+      let bytes = window.atob(url.split(",")[1]);
       let temp = new ArrayBuffer(bytes.length);
       let ia = new Uint8Array(temp);
       for (var i = 0; i < bytes.length; i++) {
@@ -119,9 +147,12 @@ export default {
     },
     //上传图片获取图片地址
     postImage() {
-      this.changeFormData();
-      if (this.imageData) {
-        this.getImgUrl();
+      if (this.url) {
+        this.changeFormData(this.url);
+        if (this.imageData) {
+          // console.log(this.imageData.get('dataFile'))
+          this.getImgUrl();
+        }
       }
     },
     //请求服务器图片路径
@@ -134,7 +165,7 @@ export default {
         })
         .then(res => {
           this.loadImgUrl = res.data.url;
-          this.savePicture();
+          // this.savePicture();
         });
     },
     //保存图片
@@ -198,9 +229,9 @@ export default {
         },
         function(ret, err) {
           if (ret.status) {
-            alert('分享成功');
+            alert("分享成功");
           } else {
-            alert('分享失败');
+            alert("分享失败");
           }
         }
       );
@@ -208,7 +239,7 @@ export default {
     shareQQ(title) {
       var qq = api.require("qq");
       qq.shareNews({
-        url:  this.pageUrl,
+        url: this.pageUrl,
         title: title,
         description: this.msg.remark,
         imgUrl: this.imgUrl,
@@ -220,7 +251,7 @@ export default {
       sinaWeiBo.sendRequest(
         {
           contentType: "web_page",
-          text:  this.pageUrl,
+          text: this.pageUrl,
           media: {
             title: title,
             description: this.msg.remark,
