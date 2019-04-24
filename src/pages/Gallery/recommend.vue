@@ -9,7 +9,7 @@
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import banner from '../../components/banner'
-import { b64DecodeUnicode, changeImgStyle } from '../../utils/msManage'
+import { b64DecodeUnicode, changeImgStyle, changeVedioStyle } from '../../utils/msManage'
 export default {
   components: {banner},
   data() {
@@ -27,6 +27,7 @@ export default {
       indexModel.brandIntroduce(brand).then(res => {
         let temp = res.data.introduce
         this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+        this.myhtml = changeVedioStyle(this.myhtml)
       })
     }
   }

@@ -89,8 +89,8 @@ export default {
     //生成二维码
     getCode() {
       let qrcode = new QRCode("qrcode", {
-        width: 60,
-        height: 60, // 高度
+        width: 56,
+        height: 56, // 高度
         text: this.pageUrl,
         colorDark: "#000",
         colorLight: "#fff",
