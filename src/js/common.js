@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Indicator, Toast } from 'mint-ui'
 export default class Common {
   constructor() {
+    //  this.port = 'http://10.11.8.250'
     // this.port = 'http://172.16.10.107'
     // this.port = "http://10.11.8.7"
      this.port = "https://mobiletest.derucci.net/cd-sys-web"
