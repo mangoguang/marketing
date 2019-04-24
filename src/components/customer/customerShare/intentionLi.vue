@@ -9,7 +9,7 @@
     <div class="content">
       <div class="title">
         <span class="text">{{ list.goodsName }}</span>
-        <span class="category">
+        <span class="category-icon">
           <img :src="`./static/images/${list.level}.png`" alt="">
         </span>
         <span class="urgent" v-show="list.urgency">
@@ -102,7 +102,7 @@ export default {
         display: inline-block;
         width: 45vw;
       }
-      .category {
+      .category-icon {
         img {
           width: 5.26vw;
           height: auto;
