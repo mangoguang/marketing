@@ -57,7 +57,7 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   .top-bar {
-    padding: 2vw 4vw;
+    padding: 0 4vw;
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -4,7 +4,6 @@
     <div class="saveTips" v-show="successSave">保存成功</div>
     <div class="canvas" ref="creatImg">
       <img :src="imgUrl" alt>
-      <!-- <img src="../../assets/imgs/p1.png" alt> -->
       <div class="content">
         <img src="../../assets/imgs/share_bottom.png" alt>
         <div class="msg">
@@ -14,9 +13,9 @@
         </div>
       </div>
     </div>
-    <div>
+    <!-- <div>
       <img :src="test" alt width="200px" height="200px">
-    </div>
+    </div> -->
     <div class="save" @click="saveImg">
       <img src="../../assets/imgs/download.png" alt>
       <span>保存图片</span>
@@ -85,7 +84,6 @@ export default {
   },
   mounted() {
     this.getCode();
-    this.changeImg(this.msg.imgUrl)
   },
   methods: {
     //生成二维码
@@ -100,35 +98,18 @@ export default {
         QRCodeVersion: 1
       });
     },
-    changeImg(url) {
-        var Img = new Image(),
-            dataURL='';
-        Img.setAttribute('crossOrigin', 'anonymous');
-        Img.src=url;
-        // Img.onload=() => { //要先确保图片完整获取到，这是个异步事件
-        //     var canvas = document.createElement("canvas"), //创建canvas元素
-        //         width=Img.width, //确保canvas的尺寸和图片一样
-        //         height=Img.height;
-        //     canvas.width=width;
-        //     canvas.height=height;
-        //     canvas.getContext("2d").drawImage(Img,0,0,width,height); //将图片绘制到canvas中
-        //     // dataURL=canvas.toDataURL('image/jpeg'); //转换图片为dataURL
-        //     console.log(123,dataURL)
-        // };
-
-    },
     //点击保存图片
     saveImg() {
       html2canvas(this.$refs.creatImg, {
-        backgroundColor: null,
-        useCORS: true,
-        allowTaint: true
+        backgroundColor: null
+        // useCORS: true,
+        // allowTaint: true
       }).then(canvas => {
         this.url = canvas.toDataURL();
-        if (this.url) {
-          this.test = this.url;
-        }
-        // this.postImage();
+        // if (this.url) {
+        //   this.test = this.url;
+        // }
+        this.postImage();
       });
     },
     //base64转成formdata形式上传

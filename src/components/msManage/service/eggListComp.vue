@@ -315,7 +315,7 @@ export default {
       align-content: space-between;
       h1 {
         color: #363636;
-        font-size: 5.4vw;
+        font-size: 4.8vw;
         font-weight: bold;
         flex: 0.8;
         line-height: 1.5em;

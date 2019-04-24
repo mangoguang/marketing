@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { b64DecodeUnicode, changeImgStyle } from '../../utils/msManage'
+import { b64DecodeUnicode, changeImgStyle, changeVedioStyle } from '../../utils/msManage'
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import banner from '../../components/banner'
@@ -56,6 +56,7 @@ export default {
           if(res.data.remark) {
             let temp = res.data.remark
             this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+            this.myhtml = changeVedioStyle(this.myhtml)
           }
           this.collection = res.data.collect
         }
