@@ -4,11 +4,14 @@
     <div class="address">
       <ul>
         <li>
-          收货人：{{ `*${list.username ? list.username.slice(1, 10) : ''}` }}
-          <span>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</span>
+          <!-- 收货人：{{ `*${list.username ? list.username.slice(1, 10) : ''}` }} -->
+          收货人：{{ list.username }}
+          <span>{{ list.phone }}</span>
+          <!-- <span>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</span> -->
           <div class="phone"></div>
         </li>
-        <li>收获地址：{{ `******${list.address ? list.address.slice(6, 50) : ''}` }}</li>
+        <li>收获地址：{{ list.address }}</li>
+        <!-- <li>收获地址：{{ `******${list.address ? list.address.slice(6, 50) : ''}` }}</li> -->
         <li>需求日期：{{ turnDate(list.demandTime) }}</li>
       </ul>
     </div>
@@ -29,10 +32,31 @@ export default {
       required: false
     }
   },
+  watch: {
+    list() {
+      if(this.list.addressId) {
+        this.getAddress()
+      }
+    }
+  },
   data() {
-    return {};
+    return {
+      address: ''
+    };
   },
   methods: {
+    //获取地址
+    getAddress() {
+      // console.log(111,this.list.addressId)
+      let id = this.list.addressId
+      mango.getAjax('/v2/app/address', {
+        addressId: id
+      }).then(res => {
+        if(res.data) {
+          this.address = res.data.country + res.data.province + res.data.city + res.data.address + res.data.housingEstate
+        }
+      })
+    },
       // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {
       if (date) {

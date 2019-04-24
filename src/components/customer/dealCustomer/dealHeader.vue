@@ -7,14 +7,15 @@
       <img :src="list.headPortrait" class='via'/>
       <div class="content">
         <div class="name">
-          <span>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</span>
+          <!-- <span>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</span> -->
+          <span>{{ list.username }}</span>
           <span>|</span>
           <span>{{ (list.sex == 'Ms.') ?'女':(list.sex == 'Mr.')? '男' : '未知'}}</span>
           <!-- <span v-show='key1'>{{`***${address ? address.slice(3, 50) : ''}`}}</span> -->
         </div>
         <div class="phoneNumber">
-          <a :href="`tel:${list.phone}`">{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</a>
-          <!-- <a :href="`tel:*****${list.phone ? list.phone.slice(5, 11) : ''}`"></a> -->
+          <a :href="`tel:${list.phone}`">{{ list.phone }}</a>
+          <!-- <a :href="`tel:${list.phone}`">{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</a> -->
           <!-- <span>{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</span> -->
           <div class="phone-icon">
             <!-- <a href="tel:1599999999"> -->

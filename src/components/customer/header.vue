@@ -344,12 +344,12 @@ header{
     ul{
       display: flex;
       margin-top: 3.26vw;
-      // justify-content: space-around;
+      justify-content: space-around;
       margin-bottom: 3.26vw;
       width: 100%;
       box-sizing: border-box;
       li {
-        margin-left: 7.73vw;
+        // margin-left: 7.73vw;
         text-align: center;
         box-sizing: border-box;
       }
