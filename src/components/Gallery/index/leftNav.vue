@@ -74,7 +74,7 @@ export default {
     color: #363636;
     text-align: center;
     background: #f8f8f8;
-    box-shadow:0px 1px 0px 0px rgba(225,225,225,1);
+    // box-shadow:0px 1px 0px 0px rgba(225,225,225,1);
     line-height: 1.5em;
     .wrapper {
       padding: 4vw 3vw;

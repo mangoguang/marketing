@@ -25,18 +25,34 @@ export default {
     return {
       myhtml: "",
       productList: {},
-      marginTop: ""
+      marginTop: "",
+      account: ''
     };
   },
   created() {
-    this.getProductList();
+    this.urlJudge()
     this.isIPhoneX();
   },
   methods: {
-    getProductList() {
-      let id = this.$route.query.id;
-      let account = this._localAjax().account
-      indexModel.productList(id, account).then(res => {
+     // 判断如果参数存在则点燃的取消
+    urlJudge() {
+      let url = window.location.href,
+      obj = {}
+      if(url.indexOf("musi") === -1) {
+       obj = {
+          productId: this.$route.query.id,
+          account:this._localAjax().account
+        }
+        this.getProductList(obj)
+      }else {
+        obj = {
+          productId: this.$route.query.id
+        }
+        this.getProductList(obj)
+      }
+    },
+    getProductList(obj) {
+      indexModel.productList(obj).then(res => {
         if (res.data) {
           let temp = res.data.details;
           this.myhtml = changeGalleryStyle(b64DecodeUnicode(temp));

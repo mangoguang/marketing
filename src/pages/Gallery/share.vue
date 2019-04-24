@@ -76,11 +76,7 @@ export default {
   },
   created() {
     this.msg = this.$route.query.list;
-    this.pageUrl =
-      "https://mobiletest.derucci.net" +
-      "/web/marketing/#/productDetails?id=" +
-      this.msg.id +
-      "&musi=1";
+    this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
   },
   mounted() {
     this.getCode();
@@ -209,11 +205,11 @@ export default {
           contentUrl: this.pageUrl
         },
         function(ret, err) {
-          if (ret.status) {
-            alert("分享成功");
-          } else {
-            alert("分享失败");
-          }
+          // if (ret.status) {
+          //   alert("分享成功");
+          // } else {
+          //   alert("分享失败");
+          // }
         }
       );
     },

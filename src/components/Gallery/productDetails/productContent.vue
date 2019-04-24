@@ -106,7 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  padding: 0 4vw;
+  padding: 2vw 4vw;
   padding-bottom: 4vw;
   box-sizing: border-box;
   height: auto;

@@ -49,7 +49,7 @@
         </form>
       </div>
     </div>
-    <div class="wechatLogin">
+    <div class="wechatLogin" :style="{height: h}">
       <div class="wechatText">
         <hr>
         <span>第三方账号登录</span>
@@ -100,7 +100,8 @@ export default {
       inputValue1: "",
       inputValue2: "",
       nameMsg: "",
-      pwdMsg: ""
+      pwdMsg: "",
+      h: ''
     };
   },
   mounted() {
@@ -115,6 +116,7 @@ export default {
   },
   created() {
     this.getAccountMsg();
+    this.isIPhoneX()
   },
   methods: {
     ...mapMutations(['setPersonMsg']),
@@ -307,20 +309,20 @@ export default {
       var Name = _this.inputValue1
       var Pwd = _this.inputValue2 
       const url = `${mango.port}/app/login.api`
-    axios({
-      method: 'post',
-      url: url,
-      headers: {
-        'UUID': 'e10adc3949ba59abbe56e057f20f883e'
-      },
-      timeout: 10000,
-      params: {
-        // account: '18080028',
-        account:Name,
-        password: md5(Pwd)
-        // access_token: asToken
-      }
-    })
+      axios({
+        method: 'post',
+        url: url,
+        headers: {
+          'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+        },
+        timeout: 10000,
+        params: {
+          // account: '18080028',
+          account:Name,
+          password: md5(Pwd)
+          // access_token: asToken
+        }
+      })
       .then((res) => {
         mango.loading('close')
         let status = res.data.status  
@@ -367,6 +369,17 @@ export default {
           _this.key = true;
         });
       // }
+    },
+     //判断是否iphoneX
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.h = '46vw'
+      }else if(phone === 'iphone') {
+        this.h = ''
+      }else {
+        this.h = ''
+      }
     }
   }
 };
@@ -493,6 +506,10 @@ export default {
   .wechatLogin {
     margin-top: 13.33vw;
     padding: 0 4vw;
+    background: #fff;
+    position: relative;
+    z-index: 999;
+    // height: 60vw;
     .wechatText {
       display: flex;
       justify-content: space-between;
@@ -517,11 +534,13 @@ export default {
   footer {
     background: url(../assets/imgs/login_db.png) no-repeat center;
     background-size: 100% 100%;
-    width: 93.06vw;
+    width: 100vw;
     height: 29.86vw;
     position: fixed;
     bottom: 0;
-    left: 3.5vw;
+    left: 0;
+    background-color: #fff;
+    // z-index: -1;
   }
 }
 </style>

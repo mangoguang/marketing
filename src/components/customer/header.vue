@@ -339,6 +339,7 @@ header{
         font-size: 8vw;
         color: #fff;
         font-weight: bold;
+        margin-left: -3vw;
       } 
     }
     ul{

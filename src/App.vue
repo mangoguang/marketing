@@ -102,6 +102,7 @@ $bgcolor: #31c3b0;
 // }
 #app {
   box-sizing: border-box;
+  background-color: #fff;
 }
 body {
   background: #fff;

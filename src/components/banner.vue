@@ -87,7 +87,7 @@ export default {
   span{
     width: 100%;
     text-align: center;
-    padding-right: 7.86vw;
+    padding-right: 10.4vw;
     font-size: 5.06vw;
     letter-spacing: -1px;
     color: #363636;

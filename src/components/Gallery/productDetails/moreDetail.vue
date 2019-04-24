@@ -68,8 +68,8 @@ export default {
     margin-top: 0vw;
     margin-right: -4vw;
     img {
-      width: 4.26vw;
-      height: 1.06vw;
+      width: 4.86vw;
+      height: 1.6vw;
     }
   }
   .trigon {

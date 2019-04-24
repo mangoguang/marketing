@@ -54,6 +54,7 @@ export default {
 .index {
   max-height: 100vh;
   overflow: scroll;
+  background: #fff;
 }
 .search {
   margin-top: 20vw !important;

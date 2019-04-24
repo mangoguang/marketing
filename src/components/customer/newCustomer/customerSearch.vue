@@ -124,10 +124,13 @@ export default {
     }
     button{
       width: 18.6vw;
-      background: $btnCol;
+      // background: $btnCol;
       border-top-right-radius: 5.8vw;
       border-bottom-right-radius: 5.8vw;
       color: #fff;
+      background:linear-gradient(0deg,rgba(0,122,255,1),rgba(59,154,255,1));
+      box-shadow:0px 2px 0px 0px rgba(255,255,255,0.3);
+      border-radius:0px 44px 44px 0px;
     }
   }
   .tips {

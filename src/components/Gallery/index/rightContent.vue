@@ -174,6 +174,7 @@ export default {
   }
   .m-slider {
     margin-left: 4vw;
+    border-radius: 1.4vw;
   }
 }
 </style>

@@ -228,13 +228,10 @@ class IndexModel extends Request {
     })
   }
   //产品详情
-  productList(id, account) {
+  productList(obj) {
     return this.getData({
       url: '/api/product/v1/product/details',
-      params: {
-        productId: id,
-        account: account
-      }
+      params: obj
     })
   }
   //获取收藏文章/问题/产品接口

@@ -406,6 +406,8 @@ export default {
     margin-left: -3vw;
     box-sizing: border-box;
   }
-  
+  .upload {
+    margin-left: 8vw;
+  }
 }
 </style>
