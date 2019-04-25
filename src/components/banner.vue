@@ -97,11 +97,12 @@ export default {
     right: 0;
     font-size: 14px;
     line-height: 11vw;
-    width: 25vw;
+    //width: 25vw;
     padding: 0 5vw;
     text-align: right;
     color: #007aff;
     font-weight: bold;
+    z-index: 1000;
   }
 }
 </style>

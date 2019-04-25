@@ -20,7 +20,7 @@
       </div>
       <yan-textarea v-bind="formInfo.plan" v-model.trim="form.plan"/>
       <p class="title">附件图片</p>
-      <upload picLen='5' :clear="isClear"/>
+      <upload ref="upload" picLen='5' :clear="isClear" :path="path"/>
     </div>
 </template>
 
@@ -53,7 +53,8 @@ export default {
       },
       selectIcon:true,
       oppId:'',
-      isClear:false
+      isClear:true,
+      path:'/followRecord'
     }
   },
   components:{
@@ -182,8 +183,10 @@ export default {
   },
   beforeRouteLeave(to,from,next){
     console.log(this);
-    this.setFiles([]);
-    this.setPicVal([]);
+    if(to.path!=="/previewImg"){
+      this.setFiles([]);
+      this.setPicVal([]);
+    }
     next();
   }
 };

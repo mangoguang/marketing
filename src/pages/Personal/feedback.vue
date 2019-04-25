@@ -5,7 +5,7 @@
       <textarea name="" id=""  placeholder="请描述你的反馈意见，我们将不断改进" maxlength="250" v-model="remark"></textarea>
       <span>{{remark.length}}/250</span>
     </div>
-    <upload ref="upload" path="this.path" picLen='3' :clear="isClear"/>
+    <upload ref="upload" :path="path" picLen='3' :clear="isClear"/>
     <div class="form">
       <yan-input v-bind="contactObj" v-model="phone" :showIcon="false"/>
     </div>

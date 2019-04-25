@@ -3,7 +3,7 @@
       <mybanner :title="title" style="background:#fff;border:none">
         <button type="button" @click="update">确定</button>
       </mybanner>
-      <search-input v-model.trim="key" @input="search"></search-input>
+      <search-input v-model.trim="key" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <div class="list">
        <search-list :options="searchProductList" name="1" @change="updateVal" v-if="hasRecord">
          <template slot-scope="props">
@@ -32,7 +32,8 @@ export default {
       hasRecord:false,
       productList:[],
       id:'',
-      url:''
+      url:'',
+      top:''
     }
   },
   components:{
@@ -52,10 +53,21 @@ export default {
   },
   
   mounted(){
-    
+      this.isIPhoneX();
   },
   methods:{
    ...mapMutations(['updateSearchProductList','updateCheckedList']),
+   isIPhoneX : function(fn) {
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.top = '6'
+        }else{
+          this.top = '0'
+        } 
+      }
+    },
    update(){
      if(this.productList.length>0||this.checkedList.length>0){
        let list=[];
