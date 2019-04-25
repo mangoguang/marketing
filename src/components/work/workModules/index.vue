@@ -14,6 +14,7 @@
 <script>
 import Module from './module'
 
+
 export default {
   name: 'workModules',
   props: [],

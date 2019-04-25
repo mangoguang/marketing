@@ -124,58 +124,59 @@ export default {
     },
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
     submitForm() {
-      if (this.key) {
-        //如果请求失败，只可以请求一次
-        this.key = false;
-        this.display = "none";
-        this.display1 = "none";
-        this.login(this.inputValue1, this.inputValue2)
-      }
+      // if (this.key) {
+      //如果请求失败，只可以请求一次
+      this.key = false;
+      this.display = "none";
+      this.display1 = "none";
+      this.login(this.inputValue1, this.inputValue2)
+      // }
     },
     login(account, pwd) {
-      let data = {
-          grant_type: 'password',        //固定填 password
-          username: account,   //登录账号
-          password: md5(pwd)    //MD5(密码)
-        }
-      axios({
-        method: 'post',
-        //url: 'http://10.11.8.7/oauth/token',
-        url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
-        data: data,
-        transformRequest: [function(data) {
-          let ret = ''
-          for(let it in data) {
-            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-          }
-          return ret
-        }],
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-      .then((res) => {
-          mango.loading('close')
-          let data = res.data
-          if(data) {
-            // 将账号信息添加到对象
-            Object.assign(data, {
-              account,
-              pwd
-            })
-            // 转成字符串
-            let str = JSON.stringify(data)
-            // 存储到本地
-            localStorage.setItem('token', str)
-            this.$root.token = data
-            clearInterval(this.$root.tokenTime)
-            this.$root.tokenTime = setInterval(() => {
-              refreshToken.call(this)
-            }, 7000000)
-            // 登陆成功跳转页面
-            this.getUserInfo()
-          }
-      })
+      // let data = {
+      //     grant_type: 'password',        //固定填 password
+      //     username: account,   //登录账号
+      //     password: md5(pwd)    //MD5(密码)
+      //   }
+      // axios({
+      //   method: 'post',
+      //   // url: 'http://10.11.8.7/oauth/token',
+      //   url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
+      //   data: data,
+      //   transformRequest: [function(data) {
+      //     let ret = ''
+      //     for(let it in data) {
+      //       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+      //     }
+      //     return ret
+      //   }],
+      //   headers: {
+      //     'Content-Type': 'application/x-www-form-urlencoded'
+      //   }
+      // })
+      // .then((res) => {
+      //     mango.loading('close')
+      //     let data = res.data
+      //     // data.access_token = '111'
+      //     if(data) {
+      //       // 将账号信息添加到对象
+      //       Object.assign(data, {
+      //         account,
+      //         pwd
+      //       })
+      //       // 转成字符串
+      //       let str = JSON.stringify(data)
+      //       // 存储到本地
+      //       localStorage.setItem('token', str)
+      //       this.$root.token = data
+      //       clearInterval(this.$root.tokenTime)
+      //       this.$root.tokenTime = setInterval(() => {
+      //         refreshToken.call(this)
+      //       }, 7000000)
+      //       // 登陆成功跳转页面
+      //       this.getUserInfo()
+      //     }
+      // })
 
       // indexModel.getToken(account,md5(pwd)).then(res => {
       //   mango.loading('close')
@@ -222,28 +223,28 @@ export default {
       //     }
       // })
 
-      // indexModel.getToken(account,md5(pwd)).then(res => {
-      //   mango.loading('close')
-      //   let data = res.data
-      //   if(data) {
-      //     // 将账号信息添加到对象
-      //     Object.assign(data, {
-      //       account,
-      //       pwd
-      //     })
-      //     // 转成字符串
-      //     let str = JSON.stringify(data)
-      //     // 存储到本地
-      //     localStorage.setItem('token', str)
-      //     this.$root.token = data
-      //     clearInterval(this.$root.tokenTime)
-      //     this.$root.tokenTime = setInterval(() => {
-      //       refreshToken.call(this)
-      //     }, 7000000)
-      //     // 登陆成功跳转页面
-      //     this.getUserInfo()
-      //   }
-      // }) 
+      indexModel.getToken(account,md5(pwd)).then(res => {
+        mango.loading('close')
+        let data = res.data
+        if(data) {
+          // 将账号信息添加到对象
+          Object.assign(data, {
+            account,
+            pwd
+          })
+          // 转成字符串
+          let str = JSON.stringify(data)
+          // 存储到本地
+          localStorage.setItem('token', str)
+          this.$root.token = data
+          clearInterval(this.$root.tokenTime)
+          this.$root.tokenTime = setInterval(() => {
+            refreshToken.call(this)
+          }, 7000000)
+          // 登陆成功跳转页面
+          this.getUserInfo()
+        }
+      }) 
     },
     // 获取用户个人信息
     getUserInfo() {
@@ -321,52 +322,51 @@ export default {
         // access_token: asToken
       }
     })
-      .then((res) => {
-        mango.loading('close')
-        let status = res.data.status  
-        if(res.status == 200){   //状态200，请求成功
-          if(status == 0){           //如果为0，账号或密码错误，出现弹框。
-          _this.display = 'block' 
-          _this.key = true
-          
-          }else {
-            //账号密码正确，跳转页面。
-            res = res.data.data
-            let shops = JSON.stringify(res.shopList)
-            _this.$store.commit('setPersonMsg',res)
-            let shopsArr = `${shops}`
-            let ajaxData = `{
-              "account": "${res.account}",
-              "tenantId": "${res.tenantId}",
-              "token": "${res.token}",
-              "uuid": "${res.uuid}",
-              "timestamp": "${Date.parse(new Date())}",
-              "name": "${res.username}",
-              "phone": "${res.mobile}",
-              "sex": "${res.sex}",
-              "type":"${res.type}"
-            }`
-              localStorage.setItem("ajaxData", ajaxData);
-              localStorage.setItem("shops", shopsArr);
-              if (_this.checked) {
-                _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
-              } else {
-                _this.setAccountMsg("", "");
-              }
-              _this.$router.push({ path: "/" });
+    .then((res) => {
+      mango.loading('close')
+      let status = res.data.status  
+      if(res.status == 200){   //状态200，请求成功
+        if(status == 0){           //如果为0，账号或密码错误，出现弹框。
+        _this.display = 'block' 
+        _this.key = true
+        
+        }else {
+          //账号密码正确，跳转页面。
+          res = res.data.data
+          let shops = JSON.stringify(res.shopList)
+          _this.$store.commit('setPersonMsg',res)
+          let shopsArr = `${shops}`
+          let ajaxData = `{
+            "account": "${res.account}",
+            "tenantId": "${res.tenantId}",
+            "token": "${res.token}",
+            "uuid": "${res.uuid}",
+            "timestamp": "${Date.parse(new Date())}",
+            "name": "${res.username}",
+            "phone": "${res.mobile}",
+            "sex": "${res.sex}",
+            "type":"${res.type}"
+          }`
+            localStorage.setItem("ajaxData", ajaxData);
+            localStorage.setItem("shops", shopsArr);
+            if (_this.checked) {
+              _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
+            } else {
+              _this.setAccountMsg("", "");
             }
-          } else {
-            //状态不为200，请求失败
-            console.log(res.status);
+            _this.$router.push({ path: "/" });
           }
-        })
-        .catch(function(error) {
-          mango.loading("close");
-          console.log("返回错误方法：", error);
-          _this.display1 = "block";
-          _this.key = true;
-        });
-      // }
+        } else {
+          //状态不为200，请求失败
+          console.log(res.status);
+        }
+      })
+      .catch(function(error) {
+        mango.loading("close");
+        console.log("返回错误方法：", error);
+        _this.display1 = "block";
+        _this.key = true;
+      })
     }
   }
 };
