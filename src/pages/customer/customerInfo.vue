@@ -227,8 +227,9 @@ export default {
   },
     //
   beforeRouteLeave (to, from, next) { 
-  // /Customer       
-    if (to.name === 'selectAddress' || to.name === 'chooseShop'){
+  // /Customer   
+    // console.log(to.name)    
+    if (to.name === 'address' || to.name === 'chooseShop'){
       this.$route.meta.isUseCache = true; 
     }else {
       this.$route.meta.isUseCache = false; 

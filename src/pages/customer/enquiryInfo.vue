@@ -262,7 +262,7 @@ export default {
     //
   beforeRouteLeave (to, from, next) { 
   // /Customer       
-    if (to.name === 'selectAddress'|| to.name === 'chooseShop') {
+    if (to.name === 'address'|| to.name === 'chooseShop') {
       this.$route.meta.isUseCache = true; 
     }else {
       this.$route.meta.isUseCache = false; 
