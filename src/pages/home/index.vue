@@ -124,6 +124,7 @@ export default {
   width: 100vw;
   height: 100vh;
   overflow: scroll;
+  box-sizing: border-box;
   .banner {
     width: 100%;
     height: 16.66vw;
