@@ -20,7 +20,7 @@
 import {IndexModel} from '../../../utils/index'
 const indexModel = new IndexModel()
 export default {
-  props: ['list'],
+  props: ['list','collectBtn','isChangeLike'],
   data() {
     return {
       like: '',
@@ -30,22 +30,29 @@ export default {
     }
   },
   mounted() {
-    if(this.list.image) {
-      this.img = this.list.image
-    }else if(this.list.imgUrl) {
-      this.img = this.list.imgUrl
-    }
+    this.judgeImg()
     this.setCollect()
     this.account = this._localAjax().account
   },
   watch: {
     list() {
+      this.judgeImg()
       this.setCollect()
     }
   },
   methods: {
+    judgeImg() {
+      if(this.list.image) {
+        this.img = this.list.image
+      }else if(this.list.imgUrl) {
+        this.img = this.list.imgUrl
+      }
+    },
     //点击收藏
     changLike() {
+      if(this.isChangeLike === 'collect') {
+        return
+      }
       if(!this.like) {
         this.collect()
       }else {

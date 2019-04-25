@@ -1,24 +1,18 @@
 <template>
-  <div class="delete">
-    <div class="slider">
+  <div class="container">
+    <div class="list-item"  data-type="0">
       <div
-        class="content"
-        @touchstart="touchStart"
-        @touchmove="touchMove"
-        @touchend="touchEnd"
-        :style="deleteSlider"
+        class="list-box"
+        @touchstart.capture="touchStart"
+        @touchend.capture="touchEnd"
+        @click.prevent="skip"
       >
-        <!-- 插槽中放具体项目中需要内容-->
-        <!-- <div class="slot"> -->
-          <listStyle :list="list" @click.native="toDetails" class="list"/>
-          <div class="remove" ref="remove">
-            <p class="delete" v-show="isDelete" @click.self="deleteBtn">删除</p>
-            <p class="make_sure" v-show="makeSureDelete" @click.self="sureDelete">确认删除</p>
-          </div>
-        <!-- </div> -->
-        
+      <listStyle :list="list" class="list" :isChangeLike='"collect"'/>
       </div>
-      
+      <div class="delete">
+        <p class="delete-icon" v-show="isDelete" @click="deleteBtn">删除</p>
+        <p class="make_sure" v-show='makeSureDelete' @click="sureDelete">确认删除</p>
+      </div>
     </div>
   </div>
 </template>
@@ -29,194 +23,169 @@ import { IndexModel } from "../../../utils/index";
 const indexModel = new IndexModel();
 export default {
   components: { listStyle },
-  props: ["list", 'index', 'cancleCollect'],
+  props: ['list','index','cancleCollect'],
   data() {
     return {
-      isDelete: false,
-      makeSureDelete: false,
-      startX: 0, //触摸位置
-      endX: 0, //结束位置
-      moveX: 0, //滑动时的位置
-      disX: 0, //移动距离
-      deleteSlider: "", //滑动时的效果,使用v-bind:style="deleteSlider"
-      key: true,
-      account: ''
+      startX: 0,
+      endX: 0,
+      isDelete: true,
+      makeSureDelete: false
     };
   },
-  created() {
-    this.account = this._localAjax().account
-  },
   methods: {
-    //跳转详情页面
+    //跳转
+    skip() {
+      if (this.checkSlide()) {
+        this.restSlide();
+      } else {
+        this.toDetails()
+      }
+    },
+     //跳转详情页面
     toDetails() {
-      this.key &&
-        this.$router.push({
-          path: "/productDetails",
-          query: {
-            id: this.list.id
-          }
-        });
+      this.$router.push({
+        path: "/productDetails",
+        query: {
+          id: this.list.id
+        }
+      });
     },
-    test() {
-      console.log('test')
+    //滑动开始
+    touchStart(e) {
+      // 记录初始位置
+      this.startX = e.touches[0].clientX;
     },
-    //删除收藏
+    //滑动结束
+    touchEnd(e) {
+      // 当前滑动的父级元素
+      let parentElement = e.currentTarget.parentElement;
+      // 记录结束位置
+      this.endX = e.changedTouches[0].clientX;
+      // 左滑
+      if (parentElement.dataset.type == 0 && this.startX - this.endX > 30) {
+        this.restSlide();
+        parentElement.dataset.type = 1;
+      }
+      // 右滑
+      if (parentElement.dataset.type == 1 && this.startX - this.endX < -30) {
+        this.restSlide();
+        parentElement.dataset.type = 0;
+      }
+      this.startX = 0;
+      this.endX = 0;
+    },
+    //判断当前是否有滑块处于滑动状态
+    checkSlide() {
+      let listItems = document.querySelectorAll(".list-item");
+      for (let i = 0; i < listItems.length; i++) {
+        if (listItems[i].dataset.type == 1) {
+          return true;
+        }
+      }
+      return false;
+    },
+    //复位滑动状态
+    restSlide() {
+      let listItems = document.querySelectorAll(".list-item");
+      this.isDelete = true
+      this.makeSureDelete = false
+      // 复位
+      for (let i = 0; i < listItems.length; i++) {
+        listItems[i].dataset.type = 0;
+      }
+    },
+     //删除收藏
     deleteBtn() {
       this.isDelete = false
-      // this.deleteSlider = "transform:translateX(0px)";
       this.makeSureDelete = true
-      // if (!this.makeSureDelete) {
-      //   this.isDelete = false;
-      //   this.makeSureDelete = true;
-      // } else {
-      //   this.deleteSlider = "transform:translateX(20px)";
-      //   this.isDelete = false;
-      //   this.makeSureDelete = false;
-      // }
     },
     sureDelete() {
       this.makeSureDelete = false
       this.isDelete = false;
-      this.deleteSlider = "transform:translateX(0px)";
       this.cancleData()
+      this.restSlide();
     },
-    //删除收藏
+     //删除收藏
     cancleData() {
       let obj = {
         type: 3,
         id: this.list.id,
-        account: this.account
+        account: this._localAjax().account
       };
       indexModel.galleryCancelCollect(obj).then(res => {
         if(res.status === 1) {
           this.cancleCollect(this.index)
         }
       });
-    },
-    touchStart(ev) {
-      ev = ev || event;
-      //tounches类数组，等于1时表示此时有只有一只手指在触摸屏幕
-      if (ev.touches.length == 1) {
-        // 记录开始位置
-        this.startX = ev.touches[0].clientX;
-      }
-    },
-    touchMove(ev) {
-      this.key = false;
-      ev = ev || event;
-      //获取删除按钮的宽度，此宽度为滑块左滑的最大距离
-      let wd = this.$refs.remove.offsetWidth + 100;
-      console.log('wd',wd)
-      if (ev.touches.length == 1) {
-        // 滑动时距离浏览器左侧实时距离
-        this.moveX = ev.touches[0].clientX;
-        //起始位置减去 实时的滑动的距离，得到手指实时偏移距离
-        this.disX = this.startX - this.moveX;
-        // console.log(this.disX)
-        // 如果是向右滑动或者不滑动，不改变滑块的位置
-        if (this.disX < 0 || this.disX == 0) {
-          // console.log(this.disX,'this.disx')
-          this.deleteSlider = "transform:translateX(0px)";
-          this.isDelete = false
-          this.makeSureDelete = false
-          // 大于0，表示左滑了，此时滑块开始滑动
-        } else if (this.disX > 0) {
-          //具体滑动距离我取的是 手指偏移距离*5。
-          this.deleteSlider = "transform:translateX(-" + this.disX*6 + "px)";
-          // 最大也只能等于删除按钮宽度
-          if (this.disX * 6 >= wd) {
-            this.deleteSlider = "transform:translateX(-"+ wd+"px)";
-          }
-        }
-      }
-    },
-    touchEnd(ev) {
-      ev = ev || event;
-      let wd = this.$refs.remove.offsetWidth;
-      if (ev.changedTouches.length == 1) {
-        let endX = ev.changedTouches[0].clientX;
-        this.disX = this.startX - endX;
-        //如果距离小于删除按钮一半,强行回到起点
-        if (this.disX * 6 < wd / 2) {
-          // this.makeSureDelete = false;
-          this.deleteSlider = "{transform:translateX(0px);border: 1px solid red}";
-          // this.isDelete = false;
-          // console.log(4,this.disX)
-          setTimeout(() => {
-            this.key = true;
-          }, 300);
-        } else {
-          //大于一半 滑动到最大值
-          this.deleteSlider = "transform:translateX(-" + wd/2 + "px)";
-          this.isDelete = true
-        }
-      }
+      // this.$router.go(0)
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.delete {
+.list-item {
+  position: relative;
+  height: 28.66vw;
+  -webkit-transition: all 0.1s;
+  transition: all 0.1s;
+}
+.list-item[data-type="0"] {
+  transform: translate3d(0, 0, 0);
+}
+.list-item[data-type="1"] {
+  transform: translate3d(-1rem, 0, 0);
+}
+.list-box {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  justify-content: flex-end;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  font-size: 0;
   margin-bottom: 2vw;
-  .slider {
-    width: 100%;
-    height: 26.66vw;
-    position: relative;
-    user-select: none;
-    .content {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      z-index: 90;
-      //    设置过渡动画
-      transition: 0.2s;
-      box-sizing: border-box;
-    }
-    .slot {
-      // display: flex;
-      // overflow: hidden;
-    }
-    .remove {
-      box-sizing: border-box;
-      position: absolute;
-      right: -13.33vw;
-      top: 3vw;
-      height: 26.66vw;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
+}
+.list-item .delete {
+  width: 13.33vw;
+  height: 28.66vw;
+  font-size: 17px;
+  color: #fff;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  right: -20vw;
+  display: flex;
+  align-items: center;
+  .delete-icon {
+    text-align: center;
+    font-size: 4vw;
+    border-radius: 50%;
+    color: #fff;
+    background: #ff3338;
+    width: 13.33vw;
+    line-height: 13.33vw;
+    box-sizing: border-box;
+  }
+   .make_sure {
+      text-align: center;
+      font-size: 4vw;
+      border-radius: 2.66vw;
+      color: #fff;
+      background: #ff3338;
       width: 13.33vw;
-      z-index: 100;
-      .delete {
-        text-align: center;
-        font-size: 4vw;
-        border-radius: 50%;
-        color: #fff;
-        background: #ff3338;
-        width: 13.33vw;
-        line-height: 13.33vw;
-        box-sizing: border-box;
-      }
-      .make_sure {
-        text-align: center;
-        font-size: 4vw;
-        border-radius: 2.66vw;
-        color: #fff;
-        background: #ff3338;
-        width: 13.33vw;
-        height: 13.33vw;
-        padding: 0 2vw;
-        line-height: 1em;
-        padding-top: 2.6vw;
-        box-sizing: border-box;
-      }
+      height: 13.33vw;
+      padding: 0 2vw;
+      line-height: 1em;
+      padding-top: 2.6vw;
+      box-sizing: border-box;
     }
-  }
-  .list {
-    width: 100vw
-  }
+}
+.list {
+  width: 100vw!important;
 }
 </style>

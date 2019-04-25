@@ -25,14 +25,10 @@ export default {
   data() {
     return {
       list: [],
-      ajaxData: {},
+      newList: [],
       allLoaded: false,
       showTips: false
     };
-  },
-  created() {
-    let ajaxData = localStorage.getItem("ajaxData");
-    this.ajaxData = JSON.parse(ajaxData);
   },
   computed: {
     ...mapState({
@@ -97,7 +93,7 @@ export default {
     getParmas(limit) {
       let obj = {
         type: 3,
-        account: this.ajaxData.account,
+        account: this._localAjax().account,
         page: 1,
         limit: limit
       };
