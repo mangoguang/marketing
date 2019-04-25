@@ -9,14 +9,16 @@
         :style="deleteSlider"
       >
         <!-- 插槽中放具体项目中需要内容-->
-        <slot>
-          <listStyle :list="list" @click.native="toDetails"/>
-        </slot>
+        <!-- <div class="slot"> -->
+          <listStyle :list="list" @click.native="toDetails" class="list"/>
+          <div class="remove" ref="remove">
+            <p class="delete" v-show="isDelete" @click.self="deleteBtn">删除</p>
+            <p class="make_sure" v-show="makeSureDelete" @click.self="sureDelete">确认删除</p>
+          </div>
+        <!-- </div> -->
+        
       </div>
-      <div class="remove" ref="remove" @click="deleteBtn">
-        <p class="delete" v-show="isDelete">删除</p>
-        <p class="make_sure" v-show="makeSureDelete">确认删除</p>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -30,7 +32,7 @@ export default {
   props: ["list", 'index', 'cancleCollect'],
   data() {
     return {
-      isDelete: true,
+      isDelete: false,
       makeSureDelete: false,
       startX: 0, //触摸位置
       endX: 0, //结束位置
@@ -55,17 +57,28 @@ export default {
           }
         });
     },
+    test() {
+      console.log('test')
+    },
     //删除收藏
     deleteBtn() {
-      if (!this.makeSureDelete) {
-        this.isDelete = false;
-        this.makeSureDelete = true;
-      } else {
-        this.deleteSlider = "transform:translateX(0px)";
-        this.isDelete = true;
-        this.makeSureDelete = false;
-        this.cancleData()
-      }
+      this.isDelete = false
+      // this.deleteSlider = "transform:translateX(0px)";
+      this.makeSureDelete = true
+      // if (!this.makeSureDelete) {
+      //   this.isDelete = false;
+      //   this.makeSureDelete = true;
+      // } else {
+      //   this.deleteSlider = "transform:translateX(20px)";
+      //   this.isDelete = false;
+      //   this.makeSureDelete = false;
+      // }
+    },
+    sureDelete() {
+      this.makeSureDelete = false
+      this.isDelete = false;
+      this.deleteSlider = "transform:translateX(0px)";
+      this.cancleData()
     },
     //删除收藏
     cancleData() {
@@ -92,7 +105,8 @@ export default {
       this.key = false;
       ev = ev || event;
       //获取删除按钮的宽度，此宽度为滑块左滑的最大距离
-      let wd = this.$refs.remove.offsetWidth;
+      let wd = this.$refs.remove.offsetWidth + 100;
+      console.log('wd',wd)
       if (ev.touches.length == 1) {
         // 滑动时距离浏览器左侧实时距离
         this.moveX = ev.touches[0].clientX;
@@ -101,14 +115,17 @@ export default {
         // console.log(this.disX)
         // 如果是向右滑动或者不滑动，不改变滑块的位置
         if (this.disX < 0 || this.disX == 0) {
+          // console.log(this.disX,'this.disx')
           this.deleteSlider = "transform:translateX(0px)";
+          this.isDelete = false
+          this.makeSureDelete = false
           // 大于0，表示左滑了，此时滑块开始滑动
         } else if (this.disX > 0) {
           //具体滑动距离我取的是 手指偏移距离*5。
-          this.deleteSlider = "transform:translateX(-" + this.disX * 6 + "px)";
+          this.deleteSlider = "transform:translateX(-" + this.disX*6 + "px)";
           // 最大也只能等于删除按钮宽度
-          if (this.disX * 5 >= wd) {
-            this.deleteSlider = "transform:translateX(-" + wd + "px)";
+          if (this.disX * 6 >= wd) {
+            this.deleteSlider = "transform:translateX(-"+ wd+"px)";
           }
         }
       }
@@ -121,15 +138,17 @@ export default {
         this.disX = this.startX - endX;
         //如果距离小于删除按钮一半,强行回到起点
         if (this.disX * 6 < wd / 2) {
-          this.deleteSlider = "transform:translateX(0px)";
-          this.isDelete = true;
-          this.makeSureDelete = false;
+          // this.makeSureDelete = false;
+          this.deleteSlider = "{transform:translateX(0px);border: 1px solid red}";
+          // this.isDelete = false;
+          // console.log(4,this.disX)
           setTimeout(() => {
             this.key = true;
           }, 300);
         } else {
           //大于一半 滑动到最大值
-          this.deleteSlider = "transform:translateX(-" + wd + "px)";
+          this.deleteSlider = "transform:translateX(-" + wd/2 + "px)";
+          this.isDelete = true
         }
       }
     }
@@ -154,16 +173,23 @@ export default {
       z-index: 90;
       //    设置过渡动画
       transition: 0.2s;
+      box-sizing: border-box;
+    }
+    .slot {
+      // display: flex;
+      // overflow: hidden;
     }
     .remove {
       box-sizing: border-box;
       position: absolute;
-      right: 4vw;
+      right: -13.33vw;
       top: 3vw;
       height: 26.66vw;
       display: flex;
+      justify-content: flex-end;
       align-items: center;
-      padding-left: 5vw;
+      width: 13.33vw;
+      z-index: 100;
       .delete {
         text-align: center;
         font-size: 4vw;
@@ -172,6 +198,7 @@ export default {
         background: #ff3338;
         width: 13.33vw;
         line-height: 13.33vw;
+        box-sizing: border-box;
       }
       .make_sure {
         text-align: center;
@@ -187,6 +214,9 @@ export default {
         box-sizing: border-box;
       }
     }
+  }
+  .list {
+    width: 100vw
   }
 }
 </style>

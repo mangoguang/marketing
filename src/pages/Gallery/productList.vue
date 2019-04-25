@@ -32,6 +32,7 @@
           </div>  
         </div>
       </mt-loadmore>
+    <div class="tips" v-show="showTips">已经到底了</div>
     </div>
   </div>
 </template>
@@ -76,7 +77,8 @@ export default {
         limit: 10,
         page: 1
       },
-      allLoaded: false
+      allLoaded: false,
+      showTips: false
     }
   },
   computed: {
@@ -100,6 +102,7 @@ export default {
       if(this.init) {
         this.list = []
         this.allLoaded = false
+        this.showTips = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'st', fliterItem(this.downListVal))
         this.changeParmas()
@@ -109,6 +112,7 @@ export default {
       if(this.init) {
         this.list = []
         this.allLoaded = false
+        this.showTips = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'brand', this.filterVal[0])
         this.changeParmas()
@@ -118,6 +122,7 @@ export default {
       if(this.init) {
         this.list = []
         this.allLoaded = false
+        this.showTips = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'rp', this.getPrice())
         this.changeParmas()
@@ -127,6 +132,7 @@ export default {
       if(this.init) {
         this.list = []
         this.allLoaded = false
+        this.showTips = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'category', this.productNavlistVal)
         this.listenScrollTop()
@@ -139,6 +145,7 @@ export default {
     this.$set(this.obj, 'account', this._localAjax().account)
     this.initBrand()
     this.initGetData()
+    this.showTips = false
   },
   methods: {
     ...mapMutations([
@@ -191,6 +198,7 @@ export default {
     filterData(obj) {
       indexModel.fliterList(obj).then(res => {
         if(res.data) {
+          this.allLoaded = false
           this.init = true
           this.list = this.list.concat(res.data.list)
           this.saveLimit()
@@ -295,6 +303,7 @@ export default {
       let len = (this.list.length)/10 + 1
       if(Math.floor(len) < len) {
         this.allLoaded = true
+        this.showTips = true
       }else {
         // this.getProductLimit(this.productNavlistVal)
         let obj = {'page': len}
@@ -391,5 +400,10 @@ export default {
     padding-bottom: 50vw;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch
+  }
+  .tips {
+    color: #666;
+    text-align: center;
+    // font-size: 4vw;
   }
 </style>

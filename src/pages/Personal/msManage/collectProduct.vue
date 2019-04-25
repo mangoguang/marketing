@@ -1,11 +1,13 @@
 <template>
   <div class="collect" ref="collectScroll">
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="collectLoadMore" :auto-fill="false"> 
-      <SwipeDelete v-for="(item, index) in list" :key="index" 
+      <SwipeDelete v-for="(item, index) in list" :key="index+item" 
         :list="item" 
         :index="index"
-        :cancleCollect='cancleCollect'/>
+        :cancleCollect='cancleCollect'
+        />
     </mt-loadmore>
+    <div class="tips" v-show="showTips">已经到底了</div>
   </div>
 </template>
 
@@ -19,11 +21,13 @@ import { IndexModel } from "../../../utils/index";
 const indexModel = new IndexModel();
 export default {
   components: { SwipeDelete },
+  props: ['name'],
   data() {
     return {
       list: [],
       ajaxData: {},
-      allLoaded: false
+      allLoaded: false,
+      showTips: false
     };
   },
   created() {
@@ -35,6 +39,13 @@ export default {
       collectLimit: (state, num) => state.collectLoadMore.collectLimit,
       collectScorll: (state, num) => state.collectLoadMore.collectScorll
     })
+  },
+  watch: {
+    name() {
+      if(this.name && this.name === '/personalCenter') {
+        this.getData(10)
+      }
+    }
   },
   mounted() {
     this.initData()
@@ -73,8 +84,10 @@ export default {
           let len = (this.list.length)/10 + 1
           if(Math.floor(len) < len) {
             this.allLoaded = true
+            this.showTips = true
           }else {
             this.allLoaded = false
+            this.showTips = false
           }
           this.listenScrollTop()
         }
@@ -116,6 +129,11 @@ export default {
   overflow: scroll;
   -webkit-overflow-scrolling:touch; 
   padding-bottom: 30vw;
+  padding-top: 2vw;
+}
+.tips {
+  color: #666;
+  text-align: center;
 }
 </style>
 
