@@ -52,7 +52,7 @@ export default {
       }],
       cateList: [{
         name: '产品中心',
-        preName: '快速深入了解慕思产品只是，巩固产品认识',
+        preName: '快速深入了解慕思产品知识，巩固产品认识',
         link: '/gallery',
         id: 0,
         image: './static/images/home/tuku1.png'
@@ -64,7 +64,7 @@ export default {
         image: './static/images/home/xueyuan1.png'
       },{
         name: '金管家服务',
-        preName: '为客户提供方便、快捷、可靠的五星级服务/',
+        preName: '为客户提供方便、快捷、可靠的五星级服务',
         link: '/msManage',
         id: 1,
         image: './static/images/home/jinguanjia1.png'
