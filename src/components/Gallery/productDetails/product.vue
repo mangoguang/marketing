@@ -1,8 +1,12 @@
 <template>
   <div class="product">
-    <m-slider :list='imgList' :auto='0' class="productSlider" :myClass='"tukuDetails"'/>
-    <button class="cancle" @click.prevent="backBtn"></button>
-    <more-details class="details"/>
+    <banner :title='"产品详情"' :MoreBtn='true'/>
+    <m-slider class="productSlider" 
+      :list='imgList' :auto='0' 
+      :myClass='"tukuDetails"'
+      :style='{marginTop: marginTop}'/>
+    <!-- <button class="cancle" @click.prevent="backBtn"></button> -->
+    <more-details/>
     <!-- <div class="case"></div> -->
   </div>
 </template>
@@ -10,14 +14,18 @@
 <script>
 import MSlider from '../index/slider'
 import MoreDetails from './moreDetail'
+import banner from '../../banner'
 export default {
   props: ['imgList'],
   components: {
     MSlider,
-    MoreDetails
+    MoreDetails,
+    banner
   },
   data() {
     return {
+      marginTop: '',
+      top: ''
       // imgList: [{
       //   imgUrl: './static/images/bed0.png'
       // },{
@@ -25,9 +33,23 @@ export default {
       // }]
     }
   },
+  created() {
+    this.isIPhoneX()
+  },
   methods: {
     backBtn() {
       this.$router.go(-1)
+    },
+    //判断是否iphoneX
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.marginTop = "22vw";
+        this.top = '-13vw'
+      }else {
+        this.marginTop = '16vw'
+        this.top = '-12vw'
+      }
     }
   }
 }
@@ -36,9 +58,12 @@ export default {
 <style lang='scss' scoped>
 .product {
   position: relative;
+  width: 100vw;
+  box-sizing: border-box;
   .productSlider {
     width:100vw;
     height: 100vw;
+    box-sizing: border-box;
   }
   .cancle {
     background: url(../../../assets/imgs/back.png) no-repeat center;
@@ -48,11 +73,6 @@ export default {
     position: absolute;
     top: 10.26vw;
     left: 4.26vw;
-  }
-  .details {
-    position: absolute;
-    top: 4.26vw;
-    right: 4.26vw;
   }
   .case {
     background: url(../../../assets/imgs/case.png) no-repeat center;
@@ -66,29 +86,4 @@ export default {
 }
 </style>
 
-<style lang="scss">
-.mint-swipe-indicators {
-  right: 70%;
-    .mint-swipe-indicator {
-      background: #363636;
-      opacity: 0.6;
-    }
-    .is-active {
-      background: #363636;
-      width: 3.4vw;
-      border-radius: 36%;
-      opacity: 0.6;
-    }
-  }
-//   .mint-swipe-indicators {
-//   right: -3%;
-//     .mint-swipe-indicator {
-//       background: #fff;
-//       opacity: 0.5;
-//     }
-//     .is-active {
-//       background: #fff;
-//       opacity: 1;
-//     }
-// }
-</style>
+

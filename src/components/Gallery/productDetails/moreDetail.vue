@@ -1,5 +1,5 @@
 <template>
-  <div class="moreDetails">
+  <div class="moreDetails" :style={top:top}>
     <div class="icon_more" @click="changeShow">
       <img src="../../../assets/imgs/more.png" alt>
     </div>
@@ -17,10 +17,23 @@ export default {
   data() {
     return {
       isShow: false,
-      list: ["图库首页", "我的收藏", "扫一扫"]
+      list: ["图库首页", "我的收藏", "扫一扫"],
+      top: ''
     };
   },
+  created() {
+    this.isIPhoneX()
+  },
   methods: {
+    //判断是否iphoneX
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.top = '8vw'
+      }else {
+        this.top = '3vw'
+      }
+    },
     changeShow() {
       this.isShow = !this.isShow;
     },
@@ -63,6 +76,10 @@ export default {
 
 <style lang="scss" scoped>
 .moreDetails {
+  position:fixed;
+  right: 4.266vw;
+  top: 3vw;
+  z-index:100;
   .icon_more {
     padding: 4vw;
     margin-top: 0vw;

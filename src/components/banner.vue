@@ -7,6 +7,7 @@
     </div>
     <span>{{title}}</span>
     <slot></slot>
+    <!-- <more-details class="details"  v-show='MoreBtn'/> -->
   </div>
 </template>
 <!-- </keep-alive> -->
@@ -14,9 +15,11 @@
 <script>
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+// import MoreDetails from './Gallery/productDetails/moreDetail'
 export default {
   name: 'routerLink',
-  props:['title'],
+  props:['title','MoreBtn'],
+  // components: {MoreDetails},
   data () {
     return {
       fix:'',
@@ -63,6 +66,7 @@ export default {
   border-bottom: 1px solid #ccc;
   background: #f8f8f8;
   padding-top: 5vw;
+  // justify-content: space-between;
   .fix{
     position: absolute;
     background: #f8f8f8;
