@@ -292,6 +292,11 @@ export var router = new VueRouter({
     component: resolve => require(['../pages/Gallery/share'],resolve)
   },
   {
+    path: '/preShare',
+    name: 'preShare',
+    component: resolve => require(['../pages/Gallery/preShare'],resolve)
+  },
+  {
     path: '/home',
     name: 'home',
     component: resolve => require(['../pages/home/index'],resolve)

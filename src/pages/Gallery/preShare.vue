@@ -3,16 +3,14 @@
     <Banner :title="'产品分享'"/>
     <div class="saveTips" v-show="successSave">保存成功</div>
     <div class="canvas" ref="creatImg">
-      <img :src="imgUrl" alt>
-      <div class="content">
-        <img src="../../assets/imgs/share_bottom.png" alt>
-        <div class="msg">
-          <p class="title">{{msg.goodsName}}</p>
-          <span class="price">¥{{Math.round(msg.price*100)/100}}</span>
-          <div id="qrcode"></div>
-        </div>
+      <div class="imgBg">
+        <img src="../../assets/imgs/shareBg.png" alt="">
       </div>
+      <div id="qrcode"></div>
     </div>
+    <!-- <div>
+      <img :src="test" alt width="200px" height="200px">
+    </div> -->
     <div class="save" @click="saveImg">
       <img src="../../assets/imgs/download.png" alt>
       <span>保存图片</span>
@@ -82,8 +80,8 @@ export default {
     //生成二维码
     getCode() {
       let qrcode = new QRCode("qrcode", {
-        width: 56,
-        height: 56, // 高度
+        width: 80,
+        height: 80, // 高度
         text: this.pageUrl,
         colorDark: "#000",
         colorLight: "#fff",
@@ -94,11 +92,15 @@ export default {
     //点击保存图片
     saveImg() {
       html2canvas(this.$refs.creatImg, {
-        backgroundColor: null
-        // useCORS: true, // 【重要】开启跨域配置
-        // taintTest: false//是否在渲染前测试图片
+        backgroundColor: null,
+        dpi: window.devicePixelRatio,
+        width: 61.33*2 + 'vw',
+        height: 77.33*2 + 'vw'
       }).then(canvas => {
         this.url = canvas.toDataURL();
+        // if (this.url) {
+        //   this.test = this.url;
+        // }
         this.postImage();
       });
     },
@@ -136,7 +138,9 @@ export default {
         })
         .then(res => {
           this.loadImgUrl = res.data.url;
-          // this.savePicture();
+          if(this.loadImgUrl) {
+            this.savePicture();
+          }
         });
     },
     //保存图片
@@ -275,45 +279,25 @@ export default {
     width: 61.33vw;
     box-sizing: border-box;
     position: relative;
-    img {
-      width: 61.33vw;
-      height: auto;
+    // background: url(../../../static/images/shareBg.png);
+    height:77.33vw;
+    background-size: 100% 100%;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    .imgBg img{
+      width: 100%;
+      height: 100%;
     }
-    .content {
-      margin-top: -10vw;
-      position: relative;
-      height: 21vw;
-      img {
-        width: 100%;
-        height: auto;
-      }
-      .msg {
-        color: #dcbf8a;
-        font-size: 3.2vw;
-        .title {
-          top: 5.3vw;
-          left: 3vw;
-          position: absolute;
-          width: 40.66vw;
-          line-height: 1.2em;
-        }
-        .price {
-          position: absolute;
-          font-weight: bold;
-          font-size: 4vw;
-          top: 12vw;
-          left: 3vw;
-        }
-        #qrcode {
-          position: absolute;
-          right: 2vw;
-          top: 4.3vw;
-          padding: 1vw;
-          // box-sizing: border-box;
-          background: #fff;
-        }
-        /*生成的二维码里面的img标签宽高自适应*/
-      }
+     #qrcode {
+      margin-top: -2vw;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      // padding: 1vw;
+      // box-sizing: border-box;
+      // background: #fff;
     }
   }
   .save {
