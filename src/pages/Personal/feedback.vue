@@ -11,7 +11,7 @@
     </div>
     <btn text="提交" @click.native="submit"/>
     <message-box :type="messageBox.type" :btnNum='messageBox.btnNum' v-if="messageBox.showMessageBox">
-    {{messageBox.tip}}
+    提交成功！感谢您的反馈~
     <template v-slot:btn-group>
         <button type="button" @click="remove">移除</button>
         <button type="button" @click="cancel">取消</button>
