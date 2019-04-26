@@ -486,7 +486,7 @@ export default {
       this.isPrompt=true;
     },
     openStore(){
-       this.$router.push({name:'chooseShop'});
+       this.$router.push({name:'chooseShop',query: {type: 'addintention'}});
       
     },
    updateClassify(option){
