@@ -165,13 +165,25 @@ export default {
     },
     // 紧急程度选择
     urgencySelect(i) {
-      this.paramsObj.u = i? 0 : 1
-       mango.changeBtnStatus(this.urgencyBtns, i)
+      //如果已经选中再点击取消选中状态
+      if(this.urgencyBtns[i].status) {
+        this.paramsObj.u = ''
+        mango.changeBtnStatus(this.urgencyBtns, -1)
+      }else {
+        this.paramsObj.u = i? 0 : 1
+        mango.changeBtnStatus(this.urgencyBtns, i)
+      }
     },
     // 关键程度选择
     keySelect(i) {
-      this.paramsObj.l = i === 0? "A" : i === 1? 'B' : 'C'
-      mango.changeBtnStatus(this.keyBtns, i)
+      if(this.keyBtns[i].status) {
+        this.paramsObj.l = ''
+        mango.changeBtnStatus(this.keyBtns, -1)
+      }else {
+        this.paramsObj.l = i === 0? "A" : i === 1? 'B' : 'C'
+        mango.changeBtnStatus(this.keyBtns, i)
+      }
+      // console.log(this.paramsObj.l)
     },
     // 选择时间
     handleConfirm(date) {
