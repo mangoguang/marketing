@@ -5,7 +5,7 @@
         <img :src="imgUrl" alt="">
       </router-link>
     </div>
-    <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext"/>
+    <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext" :myClass='"tukuHome"'/>
     <div class="classify">
       <ClassifyComp :type='dataList' :auto='2000'/>
     </div>

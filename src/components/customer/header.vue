@@ -10,7 +10,7 @@
           <input ref="inpComp" class="input"
               v-model="searchKey" 
               type="search" 
-              placeholder="请输入姓名或电话"
+              placeholder="请输入姓名或电话或微信号"
               @keypress="search">
         <!-- <button @click="searchCustomer">搜索</button> -->
         </form>

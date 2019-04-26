@@ -195,9 +195,11 @@ export default {
         }
         mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
           if(res.status) {
-              MessageBox.alert('保存成功！').then(action => {
-                this.$router.replace({path: '/newCustomer'})
-              })
+            MessageBox.alert('保存成功！').then(action => {
+              this.$router.replace({path: '/customer'})
+            })
+          }else {
+            MessageBox.alert('保存错误')
           }
         })
       }

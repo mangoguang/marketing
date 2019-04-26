@@ -403,7 +403,7 @@ export default {
     display: block;
   }
   .name{
-    margin-left: -3vw;
+    // margin-left: -3vw;
     box-sizing: border-box;
   }
   .upload {

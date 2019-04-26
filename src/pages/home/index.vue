@@ -3,7 +3,7 @@
     <div class="banner" :style="{'paddingTop':`${marginTop}vw`}">
       <img src="../../../static/images/home/logo.png" alt="">
     </div>
-    <m-slider :list='list' class="slider"/>
+    <m-slider :list='list' class="slider" :myClass='"home"'/>
     <ul class="cateList">
       <router-link 
         :to="{path: item.link,

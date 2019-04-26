@@ -1,6 +1,6 @@
 <template>
   <div class="product">
-    <m-slider :list='imgList' :auto='0' class="productSlider"/>
+    <m-slider :list='imgList' :auto='0' class="productSlider" :myClass='"tukuDetails"'/>
     <button class="cancle" @click.prevent="backBtn"></button>
     <more-details class="details"/>
     <!-- <div class="case"></div> -->

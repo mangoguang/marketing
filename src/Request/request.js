@@ -1,10 +1,10 @@
 import axios from 'axios'
- let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
+//  let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
 //  let baseUrl = 'http://10.11.8.7:8088' //图库接口
 // let baseUrl = 'http://10.11.8.250'
 // let baseUrl = 'http://10.11.8.229'
 // let baseUrl = 'http://172.16.8.216'
-// let baseUrl = 'http://10.11.8.7'
+let baseUrl = 'http://10.11.8.7'
 // let baseUrl = 'http://10.12.0.117'
 // let baseUrl = 'http://172.16.10.107'
 // let baseUrl = 'http://10.11.8.250:8088'

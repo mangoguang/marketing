@@ -4,7 +4,7 @@
       <img src="../../../assets/imgs/backicon.png" alt="">
     </div>
     <div class="personalMsg">
-      <img :src="list.headPortrait" class='via'/>
+      <img :src="list.headPortrait || via" class='via' />
       <div class="personal-content">
         <div class="name">
           <!-- <span>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</span> -->
@@ -44,7 +44,8 @@ export default {
       phone:'',
       address: '',
       key: false,
-      key1: false
+      key1: false,
+      via: './static/images/via.png'
     }
   },
   computed: {

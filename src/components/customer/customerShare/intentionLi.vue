@@ -44,13 +44,18 @@ export default {
       
     }
   },
+  created() {
+    this.turnDate(this.list.closeTime)
+  },
   methods: {
       // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {
       if (date) {
-        let arr = date.split('-')
-        if (arr.length > 1) {
-          return `${arr[0]}年${arr[1]}月${arr[2]}日`
+        // console.log(11,date)
+        let arr = date.split(' ')
+        let newArr = arr[0].split('-')
+        if (newArr.length > 1) {
+          return `${newArr[0]}年${newArr[1]}月${newArr[2]}日`
         } else {
           return date
         }
@@ -87,7 +92,7 @@ export default {
     }
   }
   .content{
-    flex: 0.8;
+    flex: 0.9;
     .title {
       display: flex;
       align-items: center;
@@ -107,6 +112,7 @@ export default {
           width: 5.26vw;
           height: auto;
           margin:0 1vw;
+          border: none;
         }
       }
       .urgent {
