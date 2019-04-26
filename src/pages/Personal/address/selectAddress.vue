@@ -64,7 +64,7 @@ export default {
    },
    //获取选择项
    updateVal(id){
-     console.log(222,id);
+    //  console.log(222,id);
      setTimeout(() => {
        this.$router.replace({path:this.$route.query.redirect,query:{addressId:id}})
      },100)
@@ -72,9 +72,9 @@ export default {
    },
    //获取编辑的id
    edit(id){
-     console.log(id);
+    //  console.log(id);
      let customerId=this.$route.params.customerId;
-     console.log('customerId',customerId);
+    //  console.log('customerId',customerId);
      let addressId=id;
      //let redirect=this.$route.query.redirect;
      this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
@@ -83,7 +83,7 @@ export default {
    getAddressList(){
       let id=this.$route.params.customerId;
       indexModel.getAddressList(id).then(res => {
-        console.log(res);
+        // console.log(res);
          if(res.code===0){
            if(res.data.length>0){
              this.updateAddress(res.data);
