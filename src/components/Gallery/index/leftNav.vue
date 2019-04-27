@@ -5,14 +5,14 @@
       @touchend="toggleNav(index)">
       <div class="wrapper" :class="{leftline_active : item.status}">
         <img src="../../../assets/imgs/hot.png" alt="" class="hot" v-if="index == 0">
-        <span>{{ item.name }}</span>
+        <span>{{ item.aliasBrand }}</span>
       </div>
     </li>
   </ul>
 </template>
 
 <script>
-import {getAjax, btnList} from '../../../utils/gallery'
+import {getAjax, myBtnList} from '../../../utils/gallery'
 import {mapState, mapMutations} from 'vuex'
 import {IndexModel} from '../../../utils/index'
 const indexModel = new IndexModel()
@@ -45,11 +45,11 @@ export default {
       let account = getAjax().account
       indexModel.getBrand(account).then(res => {
         if(res.data) {
-          let hot = {name: '慕思'}
+          let hot = {name: '慕思',aliasBrand: '慕思'}
           let list = res.data.list
           list.unshift(hot)
           this.setInitList(list)
-          this.setLeftNavList(btnList(this.initlist, 0))
+          this.setLeftNavList(myBtnList(this.initlist, 0))
           this.getListVal()
         }
       })
@@ -59,7 +59,7 @@ export default {
       if(this.leftNavList[index].status) {
         return
       }
-      this.setLeftNavList(btnList(this.initlist, index))
+      this.setLeftNavList(myBtnList(this.initlist, index))
       this.getListVal()
     }
   }

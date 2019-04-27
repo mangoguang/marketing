@@ -23,7 +23,7 @@ export default {
       var u = navigator.userAgent;
       var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
       if (isIOS) {
-        console.log('succcess')       
+        // console.log('succcess')       
         if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
           this.fix = 'fix'
           this.top = '6'
@@ -48,11 +48,12 @@ export default {
     background: url('../../../static/images/work/bg.png') no-repeat;
     background-size: 100% 100%;
     h2{
-      font-size: 28px;
+      font-size: 8vw;
       color: #fff;
       line-height: 10vw;
       padding-top: 6vw;
       padding-left: 4.8vw;
+      font-weight:bold;
     }
   }
 </style>

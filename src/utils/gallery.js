@@ -17,6 +17,20 @@ function btnList(names, i) {
 
 export { btnList }
 
+function myBtnList(names, i) {
+  if(names) {
+    return names.map((item, index) => {
+      return {
+        name: item.name,
+        aliasBrand: item.aliasBrand,
+        status: index === i
+      }
+    })
+  }
+}
+
+export { myBtnList }
+
 function fliterItem(str) {
   switch (str) {
     case '综合':

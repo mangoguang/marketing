@@ -2,6 +2,7 @@ import sha1 from 'js-sha1'
 import axios from 'axios'
 import { Indicator, Toast } from 'mint-ui'
 import refreshToken from '../utils/token/refreshToken.js'
+import VueRouter from 'vue-router'
 export default class Common {
   constructor() {
     //  this.port = 'http://10.11.8.250'
@@ -133,9 +134,9 @@ export default class Common {
     console.log('生成的sign字符串', `${str}:${token}`)
     return sha1.hex(`${str}${token}`)
   }
-  getAjax(path, params,type) {
+  getAjax(path, params, type) {
     let _this = this
-    let token = JSON.parse(localStorage.getItem('token'))
+    let token = JSON.parse(localStorage.getItem('token')) || {}
     // console.log('ajax出token::', token)
     return new Promise((resolve, reject) => {
       let thatType = type == 'post' ? 'post' : 'get'

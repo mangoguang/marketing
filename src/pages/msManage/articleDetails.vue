@@ -103,7 +103,7 @@ export default {
 .article {
   padding: 4.26vw;
   text-align: center;
-  padding-top: 22vw;
+  padding-top: 20vw;
   position: relative;
   .collentBtn {
       position: fixed;
@@ -114,10 +114,12 @@ export default {
   .titleBar {
     .title {
       color: #353535;
-      font-size: 4.53vw;
+      font-size: 5.33vw;
       width: 50vw;
       text-align: center;
       margin: 0 auto;
+      font-weight: bold;
+      margin-bottom:1.4vw;
     }
     span {
       color: #909090;

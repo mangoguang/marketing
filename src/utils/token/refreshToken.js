@@ -3,7 +3,7 @@ const indexModel = new IndexModel()
 function refreshToken() {
   return new Promise((resolve, reject) => {
     // 获取本地token
-    let token = JSON.parse(localStorage.getItem('token'))
+    let token = JSON.parse(localStorage.getItem('token')) || {}
     if (!token) {
       toLogin()
     }
@@ -32,15 +32,16 @@ function refreshToken() {
     })
     .catch(error => {
       toLogin()
-      console.log('重新登陆', this, error)
+      console.log('重新登陆', this.$router, error)
     })
   })
 
   function toLogin() {
     // 如果刷新令牌无法使用，则跳转登陆页面重新登录。
     let len = window.history.length
-    console.log('路由长度', len)
     window.history.back(-len)
+    window.history.replaceState(null, '登录', 'http://localhost:8080/#/Login')
+    window.history.go(0)
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <div class="topArt">
     <div class="title">
-      <h1>重点知识</h1>
+      <h1>热门推荐</h1>
     </div>
     <ul>
       <li v-for="(item, index) in list" :key="index" @click.prevent="toArticle(index)" >

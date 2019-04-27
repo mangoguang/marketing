@@ -6,7 +6,7 @@
         <!--select表示直接选择照片-->
       </li>
       <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>
-        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name">
+        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name" maxlength='20'>
       </li>
       <li is="sexSelect" :sexVal="newCustomerInfo.sex"  @sexChange="sexChange" class="sex"></li>
        <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
@@ -19,8 +19,8 @@
       <li is="customerLi" :leftText="'客户微信'">
         <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号">
       </li>
-      <li is="customerLi" :leftText="'客户 QQ'">
-        <input v-model="newCustomerInfo.qq" type="text" placeholder="请填写客户 QQ">
+      <li is="customerLi" :leftText="'客户  QQ'">
+        <input v-model="newCustomerInfo.qq" type="text" placeholder="请填写客户 QQ" maxlength='15'>
       </li>
       <li is="customerLi" :leftText="'客户职业'">
         <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业">

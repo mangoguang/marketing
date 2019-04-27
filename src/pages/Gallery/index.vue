@@ -1,6 +1,6 @@
 <template>
   <div class="index">
-    <banner :title='"图库"'/>
+    <banner :title='"产品中心"'/>
     <div class="top-bar">
       <scan/>
       <Search :origin="true" :type="'gallery'" class="search"/>

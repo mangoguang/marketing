@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" v-if="list.length">
+  <div class="wrapper" v-if="list.length" :style='{height: height}'>
     <ul class="treeList">
       <li v-for="(item, index) in fatherList" :key="index" class="select">
         <span  
@@ -36,7 +36,8 @@ export default {
       addClass: '',
       fatherList: [],
       childList: [],
-      top: ''
+      top: '',
+      height: '20vw'
     }
   },
   created() {
@@ -55,6 +56,7 @@ export default {
     getCategoriesList() {
       let categoryId
       if(this.$route.query.name == '常见问题') {
+        this.height = '10vw'
         indexModel.getQuestionCategoryList().then(res => {
           if(res.data && res.data.length) {
             this.setList(res.data)
@@ -70,7 +72,17 @@ export default {
           }else {
             this.getParmas(categoryId)
           }
+          this.initHeight()
         })
+      }
+    },
+    initHeight() {
+      if(this.fatherList && this.fatherList.length && !this.childList.length) {
+        this.height = '10vw'
+      }else if(this.childList && this.childList.length) {
+        this.height = '22vw'
+      }else {
+        this.height = ''
       }
     },
     //初始进来的时候默认传第一个值/从内容详情返回的时候传store里面打值
@@ -107,9 +119,12 @@ export default {
     getChildList(list, index, i) {
       let arr = []
       if(list[index].subCateList) {
+        this.height = '22vw'      //
         list[index].subCateList.forEach(el => {
           arr.push(el.name)
         });
+      }else {
+        this.height = '10vw'      //
       }
       let listName = mango.btnList(arr, i)
       return listName
@@ -167,16 +182,16 @@ export default {
 
 <style lang="scss" scoped>
 .treeList::-webkit-scrollbar {
-  background-color:#fff;
+  // background-color:#fff;
 }
 .child_treeList::-webkit-scrollbar {
-  background-color:#fff;
+  // background-color:#fff;
 }
 .wrapper {
   min-width: 100vw;
   overflow-x: hidden;
-  position: relative;
-  // height: 25vw;
+  // position: relative;
+  // height: 22vw;
   position: fixed;
   background: #fff;
   z-index: 90;
@@ -192,16 +207,18 @@ export default {
       color: #666;
       padding: 2vw 4vw;
       .child_wrapper {
+        // border:1px solid red;
         overflow-x: hidden;
         display: flex;
         white-space: nowrap;
         background: #e1e1e1;
         width: 100vw;
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
-        // z-index: 99;
+        z-index: 999;
         .child_treeList {
+          // border:1px solid red;
           overflow-x: auto;
           display: flex;
           white-space: nowrap;
