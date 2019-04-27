@@ -127,6 +127,17 @@ export default {
       this.login(this.inputValue1, this.inputValue2)
       // }
     },
+    isIPhoneX() {
+      let phone = this.phoneSize();
+      if (phone === "iphonex") {
+        this.height = "54.4";
+        this.marginTop = "-5.86";
+      } else if (phone === "iphone") {
+        this.height = "49.26";
+      } else {
+        this.height = "49.26";
+      }
+    },
     login(account, pwd) {
       // let data = {
       //     grant_type: 'password',        //固定填 password

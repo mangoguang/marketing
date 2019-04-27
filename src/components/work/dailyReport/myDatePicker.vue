@@ -8,7 +8,7 @@
 
     <div class="date-content">
       <ul class="week-header">
-        <li @click="getHistory">日</li>
+        <li>日</li>
         <li>一</li>
         <li>二</li>
         <li>三</li>

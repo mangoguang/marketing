@@ -17,6 +17,7 @@ export default class Common {
     this.v2path = `${this.port}v2/app/`
     this.apipath = `${this.port}v1/api/public/`
     this.version = 'web'
+    this.key = true
   }
   // 如果输出年份顺序不对，则重新排序
   sortYears(res) {
@@ -40,7 +41,7 @@ export default class Common {
         return 0
       }
     }
-  } 
+  }
   // 使用冒泡排序法，对对象多个关联数组进行排序
   sortArrs(obj) {
     let [series, newSeries, yAxisData, idsData] = [obj.series, [], obj.yAxisData, obj.idsData]
@@ -164,9 +165,7 @@ export default class Common {
       })
       .catch((error) => {
         _this.loading('close')
-        console.log(error.response.status, typeof(error.response.code))
         if (error.response.status === 510) {
-          console.log('非法令牌：：：')
           refreshToken.call(this).then(res => {
             reject(510)
           })

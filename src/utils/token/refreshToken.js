@@ -4,7 +4,9 @@ function refreshToken() {
   return new Promise((resolve, reject) => {
     // 获取本地token
     let token = JSON.parse(localStorage.getItem('token'))
-    if (!token) this.$router.push({path: '/Login'})
+    if (!token) {
+      toLogin()
+    }
     // 刷新token
     indexModel.refreshToken(token.refresh_token).then(res => {
       let data = res.data
@@ -23,12 +25,23 @@ function refreshToken() {
         // this.$root.token = data
       } else {
         // 如果刷新令牌无法使用，则跳转登陆页面重新登录。
-        this.$router.push({path: '/Login'})
+        toLogin()
         // 刷新令牌失效
         resolve(true)
       }
     })
+    .catch(error => {
+      toLogin()
+      console.log('重新登陆', this, error)
+    })
   })
+
+  function toLogin() {
+    // 如果刷新令牌无法使用，则跳转登陆页面重新登录。
+    let len = window.history.length
+    console.log('路由长度', len)
+    window.history.back(-len)
+  }
 }
 
 export default refreshToken
