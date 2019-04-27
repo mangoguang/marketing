@@ -59,7 +59,8 @@ export default {
   // margin-bottom: 20vw;
   .title {
     width: 26.66vw;
-    margin: 0 auto;
+    // margin: 0 auto;
+    margin-left: 2vw;
     h1 {
       color: #363636;
       font-size: 4.8vw;

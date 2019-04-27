@@ -58,7 +58,6 @@ export default {
       this.getDailyData(obj)
     },
     getDailyData(obj) {
-      // console.log(111)
       indexModel.getDailyReport(obj).then((res) => {
         if (res.data) {
           // 更改数据

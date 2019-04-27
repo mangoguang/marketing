@@ -81,6 +81,9 @@ export default {
   font-size: 3.73vw;
   color: #363636;
   // justify-content: space-between;
+  .address {
+    min-height: 20vw;
+  }
   .address-icon {
     background: url("../../../assets/imgs/address.png") no-repeat center;
     background-size: 100% 100%;

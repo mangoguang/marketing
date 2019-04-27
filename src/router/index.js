@@ -1,6 +1,32 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 const index = () => import('../pages/index')
+const ReportForms = () => import('../pages/ReportForms')
+const Login = () => import('../pages/login')
+
+//客户模块
+const Customer = () => import('../pages/customer')
+const customerInfo = () => import('../pages/customer/customerInfo')
+const newCustomerInfo = () => import('../pages/customer/newCustomerInfo')
+const newCustomer = () => import('../pages/customer/newCustomer')
+const dealDetails = () => import('../pages/customer/dealDetails')
+const trackDetails = () => import('../pages/customer/trackDetails')
+const newTrack = () => import('../pages/customer/newTrack')
+const newCustomerDemand = () => import('../pages/customer/newCustomerDemand')
+const changeDemand = () => import('../pages/customer/changeDemand')
+const enquiryInfo = () => import('../pages/customer/enquiryInfo')
+const searchResult = () => import('../pages/customer/searchResult')
+
+//个人模块
+const personalMsg = () => import('../pages/Personal/personalMsg')
+const dailyPaper = () => import('../pages/Personal/dailyPaper')
+const ForgetPwd = () => import('../pages/ForgetPwd')
+const ResetPwd = () => import('../pages/ResetPwd')
+const aboutUs = () => import('../pages/aboutUs')
+const personalData = () => import('../pages/personalData')
+const feedback = () => import('../pages/Personal/feedback')
+
+//图库模块
 const gallery = () => import('../pages/Gallery/index')
 const gSearch = () => import('../pages/Gallery/search')
 const productDetails = () => import('../pages/Gallery/productDetails')
@@ -21,11 +47,11 @@ export var router = new VueRouter({
   },{
     path: '/ReportForms',
     name: 'ReportForms',
-    component: resolve => require(['../pages/ReportForms'], resolve)
+    component: ReportForms
   },{
     path: '/Login',
     name: 'Login',
-    component: resolve => require(['../pages/login'], resolve)
+    component: Login
   }, {
     /***报表模块***/
     path: '/brand',
@@ -72,12 +98,12 @@ export var router = new VueRouter({
   {
     path: '/customer',
     name: '/Customer',
-    component: resolve => require(['../pages/customer'],resolve)
+    component: Customer
   },
   {
     path: '/customerInfo',
     name: '/CustomerInfo',
-    component: resolve => require(['../pages/customer/customerInfo'],resolve),
+    component: customerInfo,
     meta: {        
       isUseCache: false,  // 这个字段的意思稍后再说      
       keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
@@ -86,42 +112,42 @@ export var router = new VueRouter({
   {
     path: '/newCustomerInfo',
     name: '/NewCustomerInfo',
-    component: resolve => require(['../pages/customer/newCustomerInfo'],resolve)
+    component: newCustomerInfo
   },
   {
     path: '/newCustomer',
     name: 'NewCustomer',
-    component: resolve => require(['../pages/customer/newCustomer'], resolve)
+    component: newCustomer
   },
   {
     path: '/dealDetails',
     name: '/dealDetails',
-    component: resolve => require(['../pages/customer/dealDetails'],resolve)
+    component: dealDetails
   },
   {
     path: '/trackDetails',
     name: '/trackDetails',
-    component: resolve => require(['../pages/customer/trackDetails'],resolve)
+    component: trackDetails
   },
   {
     path: '/newTrack',
     name: '/newTrack',
-    component: resolve => require(['../pages/customer/newTrack'],resolve)
+    component: newTrack
   },
   {
     path: '/newCustomerDemand/:customerId',
     name: '/newCustomerDemand',
-    component: resolve => require(['../pages/customer/newCustomerDemand'],resolve)
+    component: newCustomerDemand
   },
   {
     path: '/changeDemand',
     name: '/changeDemand',
-    component: resolve => require(['../pages/customer/changeDemand'],resolve)
+    component: changeDemand
   },
   {
     path: '/enquiryInfo',
     name: '/enquiryInfo',
-    component: resolve => require(['../pages/customer/enquiryInfo'],resolve),
+    component: enquiryInfo,
     meta: {        
       isUseCache: false,  // 这个字段的意思稍后再说      
       keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
@@ -130,7 +156,7 @@ export var router = new VueRouter({
   {
     path: '/searchResult',
     name: '/searchResult',
-    component: resolve => require(['../pages/customer/searchResult'],resolve),
+    component: searchResult,
     meta: {        
       isUseCache: false,  // 这个字段的意思稍后再说      
       keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
@@ -140,79 +166,79 @@ export var router = new VueRouter({
   {
     path: '/personalCenter',
     name: '/personalCenter',
-    component: resolve => require(['../pages/Personal/personalMsg'],resolve)
+    component: personalMsg
   },
   {
     path: '/dailyPaper',
     name: '/dailyPaper',
-    component: resolve => require(['../pages/Personal/dailyPaper'],resolve)
+    component: dailyPaper
   },
   {
     path: '/ForgetPwd',
     name: '/ForgetPwd',
-    component: resolve => require(['../pages/ForgetPwd'],resolve)
+    component: ForgetPwd
   },{
     path: '/ResetPwd',
     name: '/ResetPwd',
-    component: resolve => require(['../pages/ResetPwd'],resolve)
+    component: ResetPwd
   },{
     path: '/aboutUs',
     name: '/aboutUs',
-    component: resolve => require(['../pages/aboutUs'],resolve)
+    component: aboutUs
   },{
     path: '/personalData',
     name: '/personalData',
-    component: resolve => require(['../pages/personalData'],resolve)
+    component: personalData
   },
   {
     path: '/feedback',
     name: '/feedback',
-    component: resolve => require(['../pages/Personal/feedback'],resolve)
+    component: feedback
   },
   {
     path: '/previewImg',
     name: '/previewImg',
-    component: resolve => require(['../pages/Personal/imgPreview'],resolve)
+    component:() => import('../pages/Personal/imgPreview')
   },
   {
     path: '/address/:customerId',
     name: 'address',
-    component: resolve => require(['../pages/Personal/address/address'],resolve)
+    component: () => import('../pages/Personal/address/address')
   },
   {
     path: '/addAddress/:customerId',
     name: 'addAddress',
-    component: resolve => require(['../pages/Personal/address/addAddress'],resolve)
+    component: () => import('../pages/Personal/address/addAddress')
   },
   {
     path: '/selectAddress/:customerId',
     name: 'selectAddress',
-    component: resolve => require(['../pages/Personal/address/selectAddress'],resolve)
+    component: () => import('../pages/Personal/address/selectAddress')
   },
   {
     path: '/intentionProduct',
     name: 'intentionProduct',
-    component: resolve => require(['../pages/Personal/intention/intentionProduct'],resolve)
+    component: () => import('../pages/Personal/intention/intentionProduct')
   },
   {
     path: '/searchProduct',
     name: 'searchProduct',
-    component: resolve => require(['../pages/Personal/intention/searchProduct'],resolve)
+    component: () => import('../pages/Personal/intention/searchProduct')
   },
   {
     path: '/followRecord',
     name: 'followRecord',
-    component: resolve => require(['../pages/Personal/intention/followRecord'],resolve)
+    component: () => import('../pages/Personal/intention/followRecord')
   },
   {
     path: '/intention/:opportunityId',
     name: 'intention',
-    component: resolve => require(['../pages/Personal/intention/intention'],resolve)
+    component: () => import('../pages/Personal/intention/intention')
   },
   {
     path: '/addintention/:customerId',
     name: 'addintention',
-    component: resolve => require(['../pages/Personal/intention/addIntention'],resolve),
+    component: () => import('../pages/Personal/intention/addIntention'),
     meta:{
       keepAlive:true,
       isUseCache: false
@@ -222,46 +248,46 @@ export var router = new VueRouter({
   {
     path: '/collectList',
     name: '/collectList',
-    component: resolve => require(['../pages/Personal/msManage/collect'],resolve)
+    component: () => import('../pages/Personal/msManage/collect')
   },
   //金管家模块
   {
     path: '/msManage',
     name: '/msManage',
-    component: resolve => require(['../pages/msManage/msIndex'],resolve)
+    component: () => import('../pages/msManage/msIndex')
   },
   {
     path: '/policy',
     name: '/policy',
-    component: resolve => require(['../pages/msManage/policy'],resolve)
+    component: () => import('../pages/msManage/policy')
   },
   {
     path: '/story',
     name: '/story',
-    component: resolve => require(['../pages/msManage/story'],resolve)
+    component: () => import('../pages/msManage/story')
   },
   {
     path: '/question',
     name: '/question',
-    component: resolve => require(['../pages/msManage/question'],resolve)
+    component: () => import('../pages/msManage/question')
   },
   //首页搜索
   {
     path: '/search',
     name: '/search',
-    component: resolve => require(['../pages/msManage/search'],resolve)
+    component: () => import('../pages/msManage/search')
   },
   //文章详情
   {
     path: '/articleDetails',
     name: '/articleDetails',
-    component: resolve => require(['../pages/msManage/articleDetails'],resolve)
+    component: () => import('../pages/msManage/articleDetails')
   },
   //常见问题详情
   {
     path: '/questionDetail',
     name: '/questionDetail',
-    component: resolve => require(['../pages/msManage/questionDetail'],resolve)
+    component: () => import('../pages/msManage/questionDetail')
   },
   //营销助手图库主页
   {
@@ -307,18 +333,18 @@ export var router = new VueRouter({
   {
     path: '/home',
     name: 'home',
-    component: resolve => require(['../pages/home/index'],resolve)
+    component: () => import('../pages/home/index')
   },
   /***工作模块***/
   {
     path: '/',
     name: 'work',
-    component: resolve => require(['../pages/work'],resolve)
+    component: () => import('../pages/work')
   },
   {
     path: '/dailyReport',
     name: 'dailyReport',
-    component: resolve => require(['../pages/work/dailyReport'],resolve)
+    component: () => import('../pages/work/dailyReport')
     // meta: {
     //   keepAlive: true // 需要被缓存
     // }
@@ -326,17 +352,17 @@ export var router = new VueRouter({
   {
     path: '/orderSearch',
     name: 'orderSearch',
-    component: resolve => require(['../pages/work/orderSearch'],resolve)
+    component: () => import('../pages/work/orderSearch')
   },
   {
     path: '/orderDetail',
     name: 'orderDetail',
-    component: resolve => require(['../pages/work/orderDetail'],resolve)
+    component: () => import('../pages/work/orderDetail')
   },
   {
     path: '/newPlan',
     name: 'newPlan',
-    component: resolve => require(['../pages/work/newPlan'],resolve)
+    component: () => import('../pages/work/newPlan')
     // meta: {
     //   keepAlive: true // 需要被缓存
     // }
@@ -345,12 +371,12 @@ export var router = new VueRouter({
   {
     path: '/chooseShop',
     name: 'chooseShop',
-    component: resolve => require(['../pages/customer/newCustomer/chooseShop'],resolve)
+    component: () => import('../pages/customer/newCustomer/chooseShop')
   },
   {
     path: '/newAddress',
     name: 'newAddress',
-    component: resolve => require(['../pages/customer/newCustomer/newAddress'],resolve)
+    component: () => import('../pages/customer/newCustomer/newAddress')
   }
 ],
   scrollBehavior (to, from, savedPosition) {

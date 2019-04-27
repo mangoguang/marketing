@@ -83,7 +83,29 @@ export default {
 
 .home {
   .mint-swipe-indicators {
-    right: 40%;
+    right: 36%;
+    .mint-swipe-indicator {
+      background: rgba(255, 255, 255, 0.5);
+      width: 1.33vw;
+      height: 1.33vw;
+    }
+    .is-active {
+      background: #fff;
+      width: 2.66vw;
+      height: 1.33vw;
+      // border-radius: 350%;
+      border-top-left-radius: 30%;
+      border-bottom-left-radius: 30%;
+      border-top-right-radius: 30%;
+      border-bottom-right-radius: 30%;
+      opacity: 1;
+    }
+  }
+}
+
+.msManage {
+  .mint-swipe-indicators {
+    right: 45%;
     .mint-swipe-indicator {
       background: rgba(255, 255, 255, 0.5);
       width: 1.33vw;

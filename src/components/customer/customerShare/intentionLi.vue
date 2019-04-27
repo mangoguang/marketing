@@ -1,11 +1,11 @@
 <template>
   <li class="intentionLi">
-    <span class="icon">
+    <div class="icon">
       <img :src="`./static/images/${list.status}.png`" alt="">
       <p v-show="list.status === 'New'">跟进中</p>
       <p v-show="list.status === 'Approved'">已成交</p>
       <p v-show="list.status === 'Closed'">已战败</p>
-    </span>
+    </div>
     <div class="content">
       <div class="title">
         <span class="text">{{ list.goodsName }}</span>
@@ -76,7 +76,9 @@ export default {
   box-sizing: border-box;
   padding: 0 4vw;
   .icon {
-    flex: 0.2;
+    // flex: 0.2;
+    width: 15vw;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -92,7 +94,9 @@ export default {
     }
   }
   .content{
-    flex: 0.9;
+    width:70vw;
+    height: 100%;
+    // flex: 0.9;
     .title {
       display: flex;
       align-items: center;
@@ -128,7 +132,9 @@ export default {
     color: #909090;
   }
   .details{
-    flex: 0.2;
+    // flex: 0.2;
+    width: 15vw;
+    height: 100%;
     align-items: center;
     display: flex;
     justify-content: space-around;

@@ -2,7 +2,7 @@
   <div class="index">
     <banner :title="title"/>
     <Search :origin="origin" :type='"msIndex"' class="search"/>
-    <MSlider :list='list' class="slider" :myClass='"home"'/>
+    <MSlider :list='list' class="slider" :myClass='"msManage"'/>
     <category-list :classify='$route.query.classify'/>
     <TopArt />
     <!-- <Footer/> -->
