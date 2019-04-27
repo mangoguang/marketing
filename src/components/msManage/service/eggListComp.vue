@@ -297,6 +297,7 @@ export default {
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 44vw;
+  background: #f8f8f8;
   li {
     width: 100vw;
     height: 26.66vw;

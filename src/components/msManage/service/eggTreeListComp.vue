@@ -175,11 +175,11 @@ export default {
 .wrapper {
   min-width: 100vw;
   overflow-x: hidden;
-  position: relative;
-  // height: 25vw;
+  // position: relative;
+  height: 25vw;
   position: fixed;
   background: #fff;
-  z-index: 90;
+  // z-index: 90;
   top: 0;
   left: 0;
   .treeList{
@@ -192,16 +192,18 @@ export default {
       color: #666;
       padding: 2vw 4vw;
       .child_wrapper {
+        // border:1px solid red;
         overflow-x: hidden;
         display: flex;
         white-space: nowrap;
         background: #e1e1e1;
         width: 100vw;
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
-        // z-index: 99;
+        // z-index: 9999;
         .child_treeList {
+          // border:1px solid red;
           overflow-x: auto;
           display: flex;
           white-space: nowrap;

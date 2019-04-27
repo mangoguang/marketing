@@ -90,10 +90,10 @@ export default {
         this.top = '34'
       }else if(phone === 'iphone') {
         this.paddingTop = '14'
-        this.top = '27'
+        this.top = '30'
       }else {
         this.paddingTop = '14'
-        this.top = '27'
+        this.top = '30'
       }
     }
   }
