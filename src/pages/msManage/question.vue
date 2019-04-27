@@ -87,7 +87,7 @@ export default {
       let phone = this.phoneSize()
       if(phone === 'iphonex') {
         this.paddingTop = '20'
-        this.top = '34'
+        this.top = '36'
       }else if(phone === 'iphone') {
         this.paddingTop = '14'
         this.top = '30'
