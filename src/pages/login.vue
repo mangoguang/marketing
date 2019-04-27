@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import {baseUrl} from '../Request/request'
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations } from "vuex";
@@ -139,50 +140,51 @@ export default {
       }
     },
     login(account, pwd) {
-      // let data = {
-      //     grant_type: 'password',        //固定填 password
-      //     username: account,   //登录账号
-      //     password: md5(pwd)    //MD5(密码)
-      //   }
-      // axios({
-      //   method: 'post',
-      //   // url: 'http://10.11.8.7/oauth/token',
-      //   url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
-      //   data: data,
-      //   transformRequest: [function(data) {
-      //     let ret = ''
-      //     for(let it in data) {
-      //       ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-      //     }
-      //     return ret
-      //   }],
-      //   headers: {
-      //     'Content-Type': 'application/x-www-form-urlencoded'
-      //   }
-      // })
-      // .then((res) => {
-      //     mango.loading('close')
-      //     let data = res.data
-      //     // data.access_token = '111'
-      //     if(data) {
-      //       // 将账号信息添加到对象
-      //       Object.assign(data, {
-      //         account,
-      //         pwd
-      //       })
-      //       // 转成字符串
-      //       let str = JSON.stringify(data)
-      //       // 存储到本地
-      //       localStorage.setItem('token', str)
-      //       this.$root.token = data
-      //       clearInterval(this.$root.tokenTime)
-      //       this.$root.tokenTime = setInterval(() => {
-      //         refreshToken.call(this)
-      //       }, 7000000)
-      //       // 登陆成功跳转页面
-      //       this.getUserInfo()
-      //     }
-      // })
+      console.log(111,baseUrl)
+      let data = {
+          grant_type: 'password',        //固定填 password
+          username: account,   //登录账号
+          password: md5(pwd)    //MD5(密码)
+        }
+      axios({
+        method: 'post',
+        // url: 'http://10.11.8.7/oauth/token',
+        url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
+        data: data,
+        transformRequest: [function(data) {
+          let ret = ''
+          for(let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      .then((res) => {
+          mango.loading('close')
+          let data = res.data
+          // data.access_token = '111'
+          if(data) {
+            // 将账号信息添加到对象
+            Object.assign(data, {
+              account,
+              pwd
+            })
+            // 转成字符串
+            let str = JSON.stringify(data)
+            // 存储到本地
+            localStorage.setItem('token', str)
+            this.$root.token = data
+            clearInterval(this.$root.tokenTime)
+            this.$root.tokenTime = setInterval(() => {
+              refreshToken.call(this)
+            }, 7000000)
+            // 登陆成功跳转页面
+            this.getUserInfo()
+          }
+      })
 
       // indexModel.getToken(account,md5(pwd)).then(res => {
       //   mango.loading('close')
@@ -229,29 +231,29 @@ export default {
       //     }
       // })
 
-      indexModel.getToken(account,md5(pwd)).then(res => {
-        mango.loading('close')
-        let data = res.data
-        // data.access_token = '111'
-        if(data) {
-          // 将账号信息添加到对象
-          Object.assign(data, {
-            account,
-            pwd
-          })
-          // 转成字符串
-          let str = JSON.stringify(data)
-          // 存储到本地
-          localStorage.setItem('token', str)
-          this.$root.token = data
-          clearInterval(this.$root.tokenTime)
-          this.$root.tokenTime = setInterval(() => {
-            refreshToken.call(this)
-          }, 7000000)
-          // 登陆成功跳转页面
-          this.getUserInfo()
-        }
-      }) 
+      // indexModel.getToken(account,md5(pwd)).then(res => {
+      //   mango.loading('close')
+      //   let data = res.data
+      //   // data.access_token = '111'
+      //   if(data) {
+      //     // 将账号信息添加到对象
+      //     Object.assign(data, {
+      //       account,
+      //       pwd
+      //     })
+      //     // 转成字符串
+      //     let str = JSON.stringify(data)
+      //     // 存储到本地
+      //     localStorage.setItem('token', str)
+      //     this.$root.token = data
+      //     clearInterval(this.$root.tokenTime)
+      //     this.$root.tokenTime = setInterval(() => {
+      //       refreshToken.call(this)
+      //     }, 7000000)
+      //     // 登陆成功跳转页面
+      //     this.getUserInfo()
+      //   }
+      // }) 
     },
     // 获取用户个人信息
     getUserInfo() {
