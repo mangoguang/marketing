@@ -271,7 +271,7 @@ export default {
     ...mapMutations('addIntention',['updateTitle']),
     ...mapMutations(['updateAddress','setCheckedList','updateSearchProductList']),
     addRecord(){
-     this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
+     this.$router.replace({name:'followRecord',query:{oppId:this.oppId}});
      //this.isRecord=true;
      //this.setTitle('新增跟进记录');
    },
@@ -449,7 +449,8 @@ export default {
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              this.$router.push({path:this.url});
+              // this.$router.push({path:this.url});
+              this.$router.go(-1)
               this.$destroy();
             }else{
               mango.tip(res.msg);
@@ -470,7 +471,7 @@ export default {
           if(res.code===0){
             mango.tip(res.msg);
             this.isPrompt=false;
-            this.$router.push({name:'intention',params:{opportunityId:this.form.oppId}});
+            this.$router.replace({name:'intention',params:{opportunityId:this.form.oppId}});
           }else{
             mango.tip(res.msg);
             this.isPrompt=true;

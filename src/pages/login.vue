@@ -267,7 +267,7 @@ export default {
           localStorage.setItem("shops", shops);
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
           this.$root.ajaxData = ajaxData
-          this.$router.push({ path: "/" })
+          this.$router.replace({ path: "/" })
         }
       })
     },
@@ -301,7 +301,7 @@ export default {
       }
     },
     forgetPwd: function() {
-      this.$router.push({ path: "/ForgetPwd" });
+      this.$router.replace({ path: "/ForgetPwd" });
     },
     //登陆接口
     getApi() {
@@ -355,7 +355,7 @@ export default {
               } else {
                 _this.setAccountMsg("", "");
               }
-              _this.$router.push({ path: "/" });
+              _this.$router.replace({ path: "/" });
             }
           } else {
             //状态不为200，请求失败

@@ -146,7 +146,7 @@ export default {
       let parmas = this.getParmas()
       indexModel.getVisitor(parmas,'post').then(res => {
         if(res.status === 1) {
-          this.$router.push('/Customer')
+          this.$router.replace('/Customer')
         }
       })
     },

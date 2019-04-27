@@ -92,7 +92,7 @@ export default {
     //提示框的值
     btnSelect(val) {
       if(val) {
-        this.$router.push({path: '/customerInfo',query: {
+        this.$router.replace({path: '/customerInfo',query: {
           id:this.cusId
         }})
       }

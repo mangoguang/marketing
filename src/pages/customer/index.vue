@@ -65,14 +65,14 @@ export default {
       let ajaxData = localStorage.getItem("ajaxData");
       // console.log(Date.parse(new Date()) - timeLong)
       if (!ajaxData) {
-        this.$router.push({ path: "./Login" })
+        this.$router.replace({ path: "./Login" })
         return
       } else {
         let timeLong = JSON.parse(ajaxData).timestamp;
         timeLong = Date.parse(new Date()) - JSON.parse(ajaxData).timestamp;
         timeLong = timeLong / (60 * 60 * 24 * 1000);
         if (timeLong > 10) {
-          this.$router.push({ path: "./Login" });
+          this.$router.replace({ path: "./Login" });
           return;
         }
       }

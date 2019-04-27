@@ -2,7 +2,7 @@
   <div class="index">
     <banner :title="title"/>
     <Search :origin="origin" :type='"msIndex"' class="search"/>
-    <MSlider :list='list' class="slider"/>
+    <MSlider :list='list' class="slider" :myClass='"home"'/>
     <category-list :classify='$route.query.classify'/>
     <TopArt />
     <!-- <Footer/> -->
@@ -33,7 +33,7 @@ export default {
     };
   },
   created() {
-    this.title = (this.$route.query.classify == 1)? '慕思金管家' : '学院'
+    this.title = (this.$route.query.classify == 1)? '金管家服务' : '商学院'
     this.getImgList()
   },
   methods: {
