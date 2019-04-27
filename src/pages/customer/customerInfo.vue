@@ -90,6 +90,10 @@ export default {
           this.phone = this.list.phone
           this.getShopName(this.list.orgId)
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getData()
+        }
       })
     },
      //编辑按钮

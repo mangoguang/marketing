@@ -106,6 +106,10 @@ export default {
           this.getShopName(this.list.orgId)
           this.phone = res.data.phone
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getData()
+        }
       })
     },
      //获取status的type数组

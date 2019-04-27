@@ -229,6 +229,10 @@ export default {
           const arr = res.map(item => item.name)
           this.orderSearchBtns = mango.btnList(arr)
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderStatusList()
+        }
       })
     },
     getOrderList(obj) {
@@ -236,6 +240,10 @@ export default {
         res = res.data
         if (res) {
           this.setOrderData(res)
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderList(obj)
         }
       })
     }

@@ -212,7 +212,11 @@ export default {
           }
           this.isExpire(this.baceLimit);
         }
-      });
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderList(page, limit, startTime, endTime)
+        }
+      })
     },
     //加载数据
     loadData() {

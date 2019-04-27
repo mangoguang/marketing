@@ -281,7 +281,6 @@ export default {
       }
     },
     getOpportunity(id){
-      console.log("发了请求");
       indexModel.getOpportunity(id).then(res => {
         if(res.code===0){
           if(res.data.goodsList.length>0){
@@ -338,6 +337,10 @@ export default {
             mango.tip(res.msg);
         }
         
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOpportunity(id)
+        }
       })
     },
     getAddress(id){
@@ -349,7 +352,11 @@ export default {
           }else{
             mango.tip(res.msg);
           }
-    })
+    }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddress(id)
+        }
+      })
    },
    getShopName(id){
     let shops=localStorage.getItem('shops');
@@ -477,6 +484,10 @@ export default {
             this.isPrompt=true;
           }
           
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.layerUpdate()
+          }
         })
       }
     },

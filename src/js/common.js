@@ -211,7 +211,7 @@ export default class Common {
     })
   }
  
-  getFormAjax(path, data,keys) {
+  getFormAjax(path, data, keys) {
     let _this = this
     let token = JSON.parse(localStorage.getItem('token'))
     return new Promise((resolve, reject) => {

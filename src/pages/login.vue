@@ -275,6 +275,10 @@ export default {
           this.$root.ajaxData = ajaxData
           this.$router.replace({ path: "/" })
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getUserInfo()
+        }
       })
     },
     getName(arr) {

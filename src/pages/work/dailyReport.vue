@@ -154,6 +154,10 @@ export default {
           //   return parseInt(date.split(' ')[0].split('-')[2])
           // })
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getCurMonthData(month)
+        }
       })
     },
     // 显示选择日期的当日总结和明日计划
@@ -178,6 +182,10 @@ export default {
         if (res.data) {
           // 更改数据
           this.dailyList = res.data
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getDailyData(data)
         }
       })
     },

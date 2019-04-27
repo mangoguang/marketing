@@ -73,6 +73,10 @@ export default {
           this.setOrderData(res)
           console.log(res)
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderList(obj)
+        }
       })
     },
     loadTop() {

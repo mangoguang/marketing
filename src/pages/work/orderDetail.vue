@@ -53,6 +53,10 @@ export default {
         if(res.data) {
           this.list = res.data
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getData()
+        }
       })
     },
     goBack() {

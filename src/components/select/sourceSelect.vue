@@ -72,6 +72,10 @@ export default {
             this.key = false
           }
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.init()
+        }
       })
     },
     selectSource() {
