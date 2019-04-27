@@ -2,13 +2,13 @@
   <div class="footer" :style="{'padding-bottom':`${padding}vw`}">
     <ul>
       <li id="1">
-        <router-link to="/home" @click.native="changeActive">
+        <router-link to="/home" @click.native="changeActive" replace>
           <div class="iconHome"></div>
           <p class="iconCharP">首页</p>
         </router-link>
       </li>
       <li id="2" v-if="status">
-         <router-link to="/ReportForms" @click.native="changeActive">
+         <router-link to="/ReportForms" @click.native="changeActive" replace>
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
          </router-link>
@@ -18,19 +18,19 @@
         </div> -->
       </li>
       <li id="3" v-else>
-        <router-link to="/Customer" @click.native="changeActive">
+        <router-link to="/Customer" @click.native="changeActive" replace>
           <div class="iconSalary"></div>
           <p class="iconCharP">客户</p>
         </router-link>
       </li>
       <li id="4" >
-        <router-link to="/" @click.native="changeActive">
+        <router-link to="/" @click.native="changeActive" replace>
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>
         </router-link>
       </li>
       <li id="5">
-        <router-link to="/personalCenter" @click.native="changeActive">
+        <router-link to="/personalCenter" @click.native="changeActive" replace>
           <div class="iconPerson"></div>
           <p class="iconCharP">个人</p>
         </router-link>

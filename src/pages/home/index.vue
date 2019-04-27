@@ -44,11 +44,11 @@ export default {
       marginTop: '',
       paddingBottom: '',
       list: [{
-        imgUrl: './static/images/homeBanner.png'
+        imgUrl: './static/images/home/banner.png'
       },{
-        imgUrl: './static/images/homeBanner2.jpeg'
+        imgUrl: './static/images/home/banner.jpg'
       },{
-        imgUrl: './static/images/homeBanner3.jpeg'
+        imgUrl: './static/images/home/homeBanner3.jpg'
       }],
       cateList: [{
         name: '产品中心',

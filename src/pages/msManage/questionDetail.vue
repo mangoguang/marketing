@@ -124,13 +124,14 @@ export default {
       h1 {
         white-space:pre-wrap;
         color: #363636;
-        font-size: 4.8vw;
+        font-size: 5.33vw;
         padding-top: 3vw;
-        padding-bottom: 3vw;
+        padding-bottom: 2vw;
         width: 76%;
         text-align: center;
         width: 55vw;
         margin: 0 auto;
+        font-weight: bold;
       }
     }
     p {
