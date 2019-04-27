@@ -167,10 +167,10 @@ export default {
 
 <style lang="scss" scoped>
 .treeList::-webkit-scrollbar {
-  background-color:#fff;
+  // background-color:#fff;
 }
 .child_treeList::-webkit-scrollbar {
-  background-color:#fff;
+  // background-color:#fff;
 }
 .wrapper {
   min-width: 100vw;

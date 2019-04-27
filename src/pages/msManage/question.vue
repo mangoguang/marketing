@@ -90,10 +90,10 @@ export default {
         this.top = '34'
       }else if(phone === 'iphone') {
         this.paddingTop = '14'
-        this.top = '28'
+        this.top = '27'
       }else {
         this.paddingTop = '14'
-        this.top = '28'
+        this.top = '27'
       }
     }
   }
@@ -138,7 +138,7 @@ export default {
   }
    .questionList1 {
     position: absolute;
-    top: 44vw;
+    top: 41vw;
     left: 0;
   }
    .questionList0 {
