@@ -159,18 +159,19 @@ export default class Common {
       .then((res) => {
         _this.loading('close')
         res = res.data
-        if (res) {
-          if (res.code === 510) {
-            console.log('非法令牌,需要刷新令牌')
-            refreshToken.call(this)
-          }
-          resolve(res)
-        } else {
-          resolve(res)
-        }
+        resolve(res)
       })
-      .catch((error, res) => {
-        console.log('返回错误信息1：', error, error.response)
+      .catch((error) => {
+        _this.loading('close')
+        console.log(error.response.status, typeof(error.response.code))
+        if (error.response.status === 510) {
+          console.log('非法令牌：：：')
+          refreshToken.call(this).then(res => {
+            reject(510)
+          })
+        } else {
+          console.log('otherss')
+        }
       })
     })
   }

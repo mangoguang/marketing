@@ -104,13 +104,6 @@ export default {
     };
   },
   mounted() {
-    // let obj = {
-    //   name: 'guang',
-    //   age: '26',
-    //   work: 'qianduan'
-    // }
-    // mango.getSign(obj)
-    // console.log(mango.getSign1)
     this.$root.author = 'mangoguang'
   },
   created() {
@@ -226,6 +219,7 @@ export default {
       indexModel.getToken(account,md5(pwd)).then(res => {
         mango.loading('close')
         let data = res.data
+        // data.access_token = '111'
         if(data) {
           // 将账号信息添加到对象
           Object.assign(data, {

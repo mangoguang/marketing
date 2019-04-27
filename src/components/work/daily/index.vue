@@ -64,6 +64,10 @@ export default {
           // 更改数据
           this.dailyList = res.data
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getDailyData(this.dateInterVal)
+        }
       })
     }
   }

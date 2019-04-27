@@ -8,7 +8,7 @@
 
     <div class="date-content">
       <ul class="week-header">
-        <li>日</li>
+        <li @click="getHistory">日</li>
         <li>一</li>
         <li>二</li>
         <li>三</li>
@@ -121,7 +121,7 @@ export default {
       if (this.curDate === `${this.year}-${this.month}-${curDay}`) {
         this.$router.push({path: '/newPlan'})
       } else {
-        mango.tip(`当日无总结！${curDay}::${this.year}-${this.month}-${this.day}`)
+        mango.tip(`当日无总结！`)
       }
     },
     dateCompare(date1, date2) {
