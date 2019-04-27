@@ -84,6 +84,10 @@ export default {
           this.account=res.data.account;
           this.shopList=res.data.shopList;
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getUserInfo()
+        }
       })
     }
 

@@ -64,7 +64,6 @@ export default {
 
    },
    del(index,id){
-     console.log(id);
      let obj={
        addressId:id,
        customerId:this.$route.params.customerId,
@@ -81,7 +80,11 @@ export default {
        }else{
          mango.tip(res.msg);
        }
-     });
+     }).catch((reject) => {
+        if (reject === 510) {
+          this.del(index,id)
+        }
+      })
     },
     getAddressList(){
       let id=this.$route.params.customerId;
@@ -94,6 +97,10 @@ export default {
           }else{
             this.hasRecord=false;
           }
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddressList()
         }
       })
     }

@@ -77,7 +77,11 @@ export default {
           if(res.code===0){
           picker.setSlotValues(1,that.getReference(id,res.data));
           }
-        });
+        }).catch((reject) => {
+        if (reject === 510) {
+          this.onValuesChange(picker,values)
+        }
+      })
         //根据市id获取区县
         indexModel.getArea('DR_COUNTY').then(res => {
           if(res.code===0){
@@ -85,7 +89,11 @@ export default {
             console.log('city:',cityId)
             picker.setSlotValues(2,that.getReference(cityId,res.data));
           }
-        });
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.onValuesChange(picker,values)
+          }
+        })
         that.pickerArr=picker.getValues();
     
       }
@@ -129,6 +137,10 @@ export default {
               this.slots[4].values=this.getReference(cityId,res.data)
             }
           });
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getProvinceArr()
         }
       })
     }, 

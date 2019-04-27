@@ -52,5 +52,8 @@ if (mango.version === 'app') {
     components: {
       App
     }
-  })
+    // render(createElement) {
+    //   return createElement(App)
+    // }
+  }).$mount('#app')
 }

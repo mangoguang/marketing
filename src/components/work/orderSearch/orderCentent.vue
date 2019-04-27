@@ -73,6 +73,10 @@ export default {
           this.setOrderData(res)
           console.log(res)
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderList(obj)
+        }
       })
     },
     loadTop() {
@@ -82,10 +86,7 @@ export default {
     //下拉刷新
     loadBottom() {
       this.orderSearchParam.page++
-      this.getOrderList({
-        page: this.orderSearchParam.page,
-        limit: 30
-      })
+      this.getOrderList(this.orderSearchParam)
       // this.allLoaded = true;// 若数据已全部获取完毕
       this.$refs.loadmore.onBottomLoaded()
     },

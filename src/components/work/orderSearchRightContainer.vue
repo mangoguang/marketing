@@ -5,7 +5,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>订单</h3>
+            <h3>起始日期</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>
@@ -168,11 +168,17 @@ export default {
     },
     // 订单状态选择
     orderSearchSelect(i) {
-      this.orderStatus = {
-        name: this.orderStatusList[i].name,
-        code: this.orderStatusList[i].code
+      if (this.orderStatus.code === this.orderStatusList[i].code) {
+        mango.changeBtnStatus(this.orderSearchBtns)
+        this.orderStatus = {}
+      } else {
+        this.orderStatus = {
+          name: this.orderStatusList[i].name,
+          code: this.orderStatusList[i].code
+        }
+        mango.changeBtnStatus(this.orderSearchBtns, i)
       }
-      mango.changeBtnStatus(this.orderSearchBtns, i)
+      console.log(11111111, this.orderStatus)
     },
     // 选择时间
     handleConfirm(date) {
@@ -223,6 +229,10 @@ export default {
           const arr = res.map(item => item.name)
           this.orderSearchBtns = mango.btnList(arr)
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderStatusList()
+        }
       })
     },
     getOrderList(obj) {
@@ -230,6 +240,10 @@ export default {
         res = res.data
         if (res) {
           this.setOrderData(res)
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderList(obj)
         }
       })
     }

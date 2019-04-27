@@ -106,6 +106,10 @@ export default {
         }else{
           mango.tip(res.msg);
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddress(id)
+        }
       })
     },
    jump(){
@@ -135,6 +139,10 @@ export default {
             //this.$router.push({name:'address',params:{customerId:this.$route.params.customerId}})
           }else{
             mango.tip(res.msg);
+          }
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.updateAddress()
           }
         })
      }

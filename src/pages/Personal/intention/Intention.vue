@@ -294,6 +294,10 @@ export default {
             mango.tip(res.msg);
         }
         
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOpportunity()
+        }
       })
     },
     modify(){
@@ -327,6 +331,10 @@ export default {
           this.isPrompt=true;
         }
         
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.layerUpdate()
+        }
       })
      }
      
@@ -357,7 +365,11 @@ export default {
           }else{
             mango.tip(res.msg);
           }
-    })
+    }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddress(id)
+        }
+      })
    },
    getShopName(id){
      let list=JSON.parse(localStorage.getItem('shops'));

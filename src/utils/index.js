@@ -92,7 +92,7 @@ class IndexModel extends Request {
     })
   }
   //问题收藏接口
-   collect(type, id, account) {
+  collect(type, id, account) {
     return this.getData({
       url: '/api/user/collect/v1/collect',
       params: {

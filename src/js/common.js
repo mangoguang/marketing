@@ -1,12 +1,14 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
 import { Indicator, Toast } from 'mint-ui'
+import refreshToken from '../utils/token/refreshToken.js'
+import VueRouter from 'vue-router'
 export default class Common {
   constructor() {
     //  this.port = 'http://10.11.8.250'
     // this.port = 'http://172.16.10.107'
-    // this.port = "http://10.11.8.7"
-     this.port = "https://mobiletest.derucci.net/cd-sys-web"
+    this.port = "http://10.11.8.7"
+    //  this.port = "https://mobiletest.derucci.net/cd-sys-web"
     // this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
@@ -16,6 +18,7 @@ export default class Common {
     this.v2path = `${this.port}v2/app/`
     this.apipath = `${this.port}v1/api/public/`
     this.version = 'web'
+    this.key = true
   }
   // 如果输出年份顺序不对，则重新排序
   sortYears(res) {
@@ -39,7 +42,7 @@ export default class Common {
         return 0
       }
     }
-  } 
+  }
   // 使用冒泡排序法，对对象多个关联数组进行排序
   sortArrs(obj) {
     let [series, newSeries, yAxisData, idsData] = [obj.series, [], obj.yAxisData, obj.idsData]
@@ -131,9 +134,9 @@ export default class Common {
     console.log('生成的sign字符串', `${str}:${token}`)
     return sha1.hex(`${str}${token}`)
   }
-  getAjax(path, params,type) {
+  getAjax(path, params, type) {
     let _this = this
-    let token = JSON.parse(localStorage.getItem('token'))
+    let token = JSON.parse(localStorage.getItem('token')) || {}
     // console.log('ajax出token::', token)
     return new Promise((resolve, reject) => {
       let thatType = type == 'post' ? 'post' : 'get'
@@ -149,6 +152,7 @@ export default class Common {
         method: thatType,
         async: false,
         url: url,
+        contentType: "application/json",
         headers: {
           "Authorization": `Bearer ${token.access_token}`,
           'sign': sign
@@ -157,10 +161,17 @@ export default class Common {
       })
       .then((res) => {
         _this.loading('close')
-        if (res.data) {
-          resolve(res.data)
+        res = res.data
+        resolve(res)
+      })
+      .catch((error) => {
+        _this.loading('close')
+        if (error.response.status === 510) {
+          refreshToken.call(this).then(res => {
+            reject(510)
+          })
         } else {
-          resolve(false)
+          console.log('otherss')
         }
       })
     })
@@ -200,7 +211,7 @@ export default class Common {
     })
   }
  
-  getFormAjax(path, data,keys) {
+  getFormAjax(path, data, keys) {
     let _this = this
     let token = JSON.parse(localStorage.getItem('token'))
     return new Promise((resolve, reject) => {

@@ -100,6 +100,10 @@ export default {
               that.hasRecord=false;
             }  
           }
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.search()
+          }
         })
        }
       },300)()

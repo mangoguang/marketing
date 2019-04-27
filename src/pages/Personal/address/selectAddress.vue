@@ -92,6 +92,10 @@ export default {
              this.updateHasRecord(false);
            }
          }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddressList()
+        }
       })
     }
   }

@@ -26,11 +26,11 @@
           v-if="item - getBeginDay > 0 && item - getBeginDay <= curDay"
           :class="{
             'now-day': `${year}-${month}-${item - getBeginDay}` === curDate,
-            'active-day': `${year}-${month}-${item - getBeginDay}` === `${year}-${month}-${day}`,
-            'summary': dailyList.includes(index),
-            'future-day': `${year}-${month}-${item - getBeginDay}` > curDate
+            'active-day': `${year}-${month}-${item - getBeginDay}` === selectDate,
+            'summary': dateListCompare(`${year}-${month < 10 ? `0${month}` : month}-${item - getBeginDay < 10 ? `0${item - getBeginDay}` : item - getBeginDay}`),
+            'future-day': dateCompare(`${year}-${month}-${item - getBeginDay}`, curDate)
           }"
-          @click="dailyList.indexOf(index) >= 0 ? changeCurDay(item - getBeginDay) : noSummary(item - getBeginDay)">{{item - getBeginDay}}</span>
+          @click="dateListCompare(`${year}-${month < 10 ? `0${month}` : month}-${item - getBeginDay < 10 ? `0${item - getBeginDay}` : item - getBeginDay}`) ? changeCurDay(item - getBeginDay) : noSummary(item - getBeginDay)">{{item - getBeginDay}}</span>
           <!-- <span
           v-if="item - getBeginDay > curDay"
           class="other-day">{{item - getBeginDay - curDay}}</span> -->
@@ -55,16 +55,16 @@ export default {
       year: null,
       month: null,
       day: null,
-      curDate: null,
-      dailyList: []
+      curDate: null, // 当天日期
+      dateList: [], // 当月有总结的日期。
+      selectDate: ''
     }
   },
   watch: {
     curMonthData(val) {
       if (val.length) {
-        console.log('success!!!', val)
-        this.dailyList = val.map(element => parseInt(element.createTime.substr(8, 2)))
-        console.log(7890, this.dailyList)
+        this.dateList = val.map(element => element.createTime)
+        console.log(this.dateList)
       }
     }
   },
@@ -92,9 +92,11 @@ export default {
       this.month = date.getMonth() + 1
       this.day = date.getDate()
       this.curDate = `${this.year}-${this.month}-${this.day}`
+      this.selectDate = `${this.year}-${this.month}-${this.day}`
     },
     changeCurDay(day) {
       this.day = day
+      this.selectDate = `${this.year}-${this.month}-${this.day}`
       this.$emit('getCurDay', `${this.year}年${this.month}月${day}日`)
     },
     prevMonth() {
@@ -104,6 +106,7 @@ export default {
       } else {
         this.month --
       }
+      this.$emit('changeCurMonthData', `${this.year}-${this.month < 10 ? `0${this.month}` : this.month}`)
     },
     nextMonth() {
       if (this.month === 12) {
@@ -112,13 +115,42 @@ export default {
       } else {
         this.month ++
       }
+      this.$emit('changeCurMonthData', `${this.year}-${this.month < 10 ? `0${this.month}` : this.month}`)
     },
     noSummary(curDay) {
-      if (`${this.year}-${this.month}-${this.day}` === `${this.year}-${this.month}-${curDay}`) {
+      if (this.curDate === `${this.year}-${this.month}-${curDay}`) {
         this.$router.push({path: '/newPlan'})
       } else {
-        mango.tip(`当日无总结！${curDay}::${this.year}-${this.month}-${this.day}`)
+        mango.tip(`当日无总结！`)
       }
+    },
+    dateCompare(date1, date2) {
+      let [arr1, arr2] = [date1.split('-'), date2.split('-')]
+      console.log(parseInt(arr1[0]), parseInt(arr2[0]))
+      if (parseInt(arr1[0]) === parseInt(arr2[0])) { // 选择年份小于等于当前年份
+        if (parseInt(arr1[1]) <= parseInt(arr2[1])) {
+          if (parseInt(arr1[1]) === parseInt(arr2[1])) {
+            if (parseInt(arr1[2]) <= parseInt(arr2[2])) {
+              return false
+            } else {
+              return true
+            }
+          } else {
+            return false
+          }
+        } else {
+          return true
+        }
+      } else if (parseInt(arr1[0]) < parseInt(arr2[0])) {
+        return false
+      } else {
+        return true
+      }
+    },
+    dateListCompare(date) {
+      let arr = this.dateList.map(item => item.substr(0, 10))
+      // console.log(arr.includes(date))
+      return arr.includes(date)
     }
   }
 }

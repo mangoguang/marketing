@@ -148,6 +148,10 @@ export default {
         if(res.status === 1) {
           this.$router.replace('/Customer')
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.saveCustomerInfo()
+        }
       })
     },
     //获取参数

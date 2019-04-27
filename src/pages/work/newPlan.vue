@@ -71,6 +71,10 @@ export default {
           // 更改数据
           this.dailyList = res.data
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getDailyData(data)
+        }
       })
     },
     // 当日总结子组件触发更改数据
@@ -96,6 +100,10 @@ export default {
             mango.tip('保存成功！')
             this.$router.back(-1)
           }
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.save()
         }
       })
     }

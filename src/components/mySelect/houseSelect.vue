@@ -65,6 +65,10 @@ export default {
         if(res.code===0){
           this.slots[0].values=res.data;
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getStyle()
+        }
       })
     }
   

@@ -4,7 +4,10 @@
       <button @click="newPlan" class="newDailyReport">+</button>
     </banner>
     <!-- 日历组件 -->
-    <myDatePicker @getCurDay="getCurDay" :curMonthData="curMonthData" />
+    <myDatePicker
+    @getCurDay="getCurDay"
+    :curMonthData="curMonthData"
+    @changeCurMonthData="changeCurMonthData" />
     <!-- 当日数据 -->
     <CurReport
     :list="dailyList"
@@ -105,6 +108,10 @@ export default {
         endDate: `${this.curDate[0]}-${this.curDate[1]}-${this.curDate[2]}`
       })
     },
+    changeCurMonthData(date) {
+      // console.log('当前月份', this.getCurMonth(), date)
+      this.getCurMonthData(date)
+    },
     // 获取当前月份
     getCurMonth() {
       let date = new Date()
@@ -114,6 +121,9 @@ export default {
       }
       return `${year}-${month}`
     },
+    // getSelectMonth() {
+
+    // },
     // 当日总结子组件触发更改数据
     changeDailySummaryTextarea(str) {
       this.dailySummaryTextarea = str
@@ -139,12 +149,14 @@ export default {
             this.setSumAndPlan(res)
           }
           // 遍历一个月内有哪些天有总结
-          this.dailyList = res.map((item) => {
-            if (item) {
-              let date = item.createTime
-              return parseInt(date.split(' ')[0].split('-')[2])
-            }
-          })
+          // this.dailyList = res.map((item) => {
+          //   let date = item.createTime
+          //   return parseInt(date.split(' ')[0].split('-')[2])
+          // })
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getCurMonthData(month)
         }
       })
     },
@@ -170,6 +182,10 @@ export default {
         if (res.data) {
           // 更改数据
           this.dailyList = res.data
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getDailyData(data)
         }
       })
     },
