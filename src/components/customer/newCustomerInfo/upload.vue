@@ -170,6 +170,8 @@ export default {
     margin-right: 25px;
     border: 1px dashed #e1e1e1;
     border-radius: 1.06vw;
+    // margin-top: 4vw;
+    box-sizing: border-box;
     input {
       opacity: 0;
       width: 20vw;
@@ -180,9 +182,6 @@ export default {
       z-index: 99;
     }
     .content {
-      // position: absolute;
-      // left: 20%;
-      // top: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -201,12 +200,15 @@ export default {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    // border: 1px solid red;
     li {
+      border-radius: 1vw;
       width: 20vw;
       height: 20vw;
       display: flex;
       margin-right: 6vw;
       margin-bottom: 4vw;
+      box-sizing: border-box;
       .close {
         margin-left: 1vw;
         img {

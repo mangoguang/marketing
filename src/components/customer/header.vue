@@ -10,7 +10,7 @@
           <input ref="inpComp" class="input"
               v-model="searchKey" 
               type="search" 
-              placeholder="请输入姓名或电话"
+              placeholder="请输入姓名或电话或微信号"
               @keypress="search">
         <!-- <button @click="searchCustomer">搜索</button> -->
         </form>
@@ -339,17 +339,18 @@ header{
         font-size: 8vw;
         color: #fff;
         font-weight: bold;
+        margin-left: -3vw;
       } 
     }
     ul{
       display: flex;
       margin-top: 3.26vw;
-      // justify-content: space-around;
+      justify-content: space-around;
       margin-bottom: 3.26vw;
       width: 100%;
       box-sizing: border-box;
       li {
-        margin-left: 7.73vw;
+        // margin-left: 7.73vw;
         text-align: center;
         box-sizing: border-box;
       }

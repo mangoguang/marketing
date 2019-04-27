@@ -41,8 +41,8 @@ export default {
     text-align: center;
     margin-right: 4vw;
     img {
-      width: 7.13vw;
-      height: 7.13vw;
+      width: 6.13vw;
+      height: 6.13vw;
     }
     p {
       color: #5ac8fa;

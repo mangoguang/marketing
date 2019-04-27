@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div class="search" :style="marginTop">
     <div class="search_box">
       <button class="cancle" @click="cancleBtn"></button>
       <Search class="searchComp" 
@@ -63,6 +63,7 @@ export default {
   components: { Search, SortList, MFilter, MList, WList },
   data() {
     return {
+      marginTop: '',
       searchVal: '',
       matchTxt: false,
       unMatchTxt: true,
@@ -137,6 +138,9 @@ export default {
       initParmas: state => state.searchParmas.initParmas,
       searchScroll: state => state.searchScroll.searchScroll
     })
+  },
+  created() {
+    this.isIPhoneX()
   },
   methods: {
     ...mapMutations([
@@ -256,6 +260,17 @@ export default {
         this.setParmas('page', len)
         this.setParmas('limit', 10)
         this.searchKey(this.obj)
+      }
+    },
+     //判断是否iphoneX
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.marginTop = {marginTop: '-5.86vw'};
+      }else if(phone === 'iphone') {
+        this.marginTop = "";
+      }else {
+        this.marginTop = "";
       }
     }
   }

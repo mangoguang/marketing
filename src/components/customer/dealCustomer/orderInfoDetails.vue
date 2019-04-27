@@ -43,13 +43,15 @@
         <li>
           <div>
             <span>客户姓名:</span>
-            <p>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</p>
+            <p>{{ list.username }}</p>
+            <!-- <p>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</p> -->
           </div>
         </li>
         <li>
           <div>
             <span>客户电话:</span>
-            <p>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</p>
+            <p>{{ list.phone }}</p>
+            <!-- <p>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</p> -->
           </div>
         </li>
         <li>
@@ -79,7 +81,8 @@
         <li> 
           <div>
             <span>送货地址:</span>
-            <p>{{ `******${address ? address.slice(6, 50) : ''}` }}</p>
+            <p>{{ address }}</p>
+            <!-- <p>{{ `******${address ? address.slice(6, 50) : ''}` }}</p> -->
           </div>
         </li>
       </ul>

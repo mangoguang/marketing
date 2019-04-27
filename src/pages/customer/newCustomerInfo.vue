@@ -64,7 +64,6 @@ export default {
   components:{myBanner, newDemand, newDescript, newRecord},
   data(){
     return{
-      // btns: mango.btnList(['客户描述', '客户需求', '洽谈记录'], 0),
       name: '',
       phone: '',
       sex: '',
@@ -114,12 +113,9 @@ export default {
     this.setStylePref('')
     this.setProgress('')
     this.setColorPref('')
-    // this.setUpLoadUrl('')
     this.setHouseType('')
     this.setElevatorVal('')
     this.setCheckedList([])
-    // this.initShopList([])
-    // this.initDescriptShopList([])
 
   },
   methods: {
@@ -170,14 +166,13 @@ export default {
     },
     //保存客户信息，新建客户	
     creatNewCustomer() {
-      // this.hasFollowData()
       //头像的formdata
       this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
         return
       }else if(!this.newCustomerInfo.username) {
-        MessageBox.alert('姓名不能为空')
+        MessageBox.alert('称呼不能为空')
         return
       }else if(!this.newCustomerInfo.province) {
         MessageBox.alert('请选择地区')
@@ -186,41 +181,94 @@ export default {
         MessageBox.alert('请填写客户地址')
         return
       }
+      let result = this.hasFollowData(this.newCustomerInfo)
+      if(!result) {
+        this.whichFollowData(this.newCustomerInfo)
+      }else {
+        let formdata = this.newCustomerInfo.dataFiles
+        let obj = this.updateParams(this.newCustomerInfo)
+        // console.log(obj)
+        let arr = []
+        for(var key in obj) {
+          formdata.append(key,obj[key])
+          arr.push(key)
+        }
+        mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+          if(res.status) {
+            MessageBox.alert('保存成功！').then(action => {
+              this.$router.replace({path: '/customer'})
+            })
+          }else {
+            MessageBox.alert('保存错误')
+          }
+        })
+      }
       // // let ref = this.$refs.myForm
       // // let formdata = new FormData(ref)
       
-      let formdata = this.newCustomerInfo.dataFiles
-    
-      let obj = this.updateParams(this.newCustomerInfo)
-      // console.log(obj)
-      let arr = []
-      for(var key in obj) {
-        formdata.append(key,obj[key])
-        arr.push(key)
-      }
-      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
-        if(res.status) {
-          MessageBox.alert('保存成功！').then(action => {
-            this.$router.go(-1)
-          })
-        }
-      })
+      
     },
     //初始化数据
     setInitData() {
       this.newCustomerInfo.leaveStore = this.leaveStoreVal
     },
     //判断跟进模块有没有数据
-    hasFollowData() {
-      let obj = this.newCustomerInfo
+    hasFollowData(obj) {
+      let count = 0,
+          result;
       for(var key in obj) {
-       
+        if(key === 'source2') {
+          count +=1 
+        }else if(key === 'followDate') {
+          count +=1 
+        }else if(key === 'residentTime2') {
+          count +=1 
+        }else if(key === 'nextDate') {
+          count +=1 
+        }else if(key === 'situation') {
+          count +=1 
+        }else if(key === 'plan') {
+          count +=1 
+        }
+      }
+      if(count === 0) {
+        result = true
+      }else if(count === 6) {
+        result = true
+      }else {
+        result = false
+      }
+      return result
+    },
+    //判断根据情况哪个没有填写
+    whichFollowData(obj) {
+      for(var key in obj) {
+        if(!obj['source2']) {
+          MessageBox.alert('请选择跟进方式')
+          return
+        }else if(!obj['followDate']) {
+          MessageBox.alert('请选择跟进时间')
+          return
+        }else if(!obj['residentTime2']) {
+          MessageBox.alert('请选择跟进时长')
+          return
+        }else if(!obj['nextDate']) {
+          MessageBox.alert('请选择下次跟进日期')
+          return
+        }else if(!obj['situation']) {
+          MessageBox.alert('请描述根据情况')
+          return
+        }else if(!obj['plan']) {
+          MessageBox.alert('请填写下一步跟进计划')
+          return
+        }
       }
     },
     //获取参数
      updateParams(obj) {
       let tempObj = {}
       let newArr = obj.productArr
+      //意向产品名称和数量
       if(obj.productArr && obj.productArr.length) {
          newArr.forEach((item, index) => {
           this.$set(tempObj, `opportunity.goodsList[${index}].goodsId`,item.id)

@@ -300,7 +300,7 @@ export default {
   li {
     width: 100vw;
     height: 26.66vw;
-    box-shadow:0px 2px 6px 0px rgba(136,136,136,0.2);
+    box-shadow:0px 1px 1px 0px rgba(136,136,136,0.1);
     padding: 4.4vw;
     box-sizing: border-box;
     margin-bottom: 2.4vw;
@@ -315,7 +315,7 @@ export default {
       align-content: space-between;
       h1 {
         color: #363636;
-        font-size: 5.4vw;
+        font-size: 4.8vw;
         font-weight: bold;
         flex: 0.8;
         line-height: 1.5em;

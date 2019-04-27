@@ -68,6 +68,8 @@ export default {
     //this.maxLeft=-50;
     this.len=this.picVal.length;
     this.title=this.index+"/"+this.len;
+    console.log(33344,this.picVal);
+    console.log(33344,this.filesList);
   },
   methods:{
      ...mapMutations(['delFiles','delPicVal','setFiles','setPicVal']),

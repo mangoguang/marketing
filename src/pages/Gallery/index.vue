@@ -57,7 +57,7 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   .top-bar {
-    padding: 2vw 4vw;
+    padding: 0 4vw;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -71,13 +71,15 @@ export default {
     border-top: 1px solid #e1e1e1;
     display: flex;
     .nav-left {
-      flex: 0.25;
+      flex: 0.21;
+      width: 21vw;
       height: 100vh;
       overflow: scroll;
       // padding-bottom: 50vw;
     }
     .nav-right {
-      flex: 0.77;
+      flex: 0.79;
+      width: 79vw;
     }
   }
 }

@@ -53,23 +53,37 @@ export default {
     //新建客户时候验证手机/微信号
     toCustomerInfo() {
       let type = this.radioVal === '客户手机'? 'phone' : 'wechat'
+      if(type === 'phone') {
+        this.phoneTest(type)
+      }else {
+        this.sendPhoneTest(type)
+      }
+
+     
+    },
+    //验证手机号
+    phoneTest(type) {
       let testPhoneNum = variable.testPhone(this.phone)
       if(testPhoneNum) {
-        mango.getAjax('/v3/app/customer/check', {
-          value: this.phone,
-          type: type
-        }).then((res) => {
-          res = res.data
-          if (res) {
-            this.existStatus = true
-            this.cusId = res.customerId
-          } else {
-            this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}`})
-          }
-        })
+        this.sendPhoneTest(type)
       }else {
         mango.tip('请填写正确的手机号码')
       }
+    },
+    //请求
+    sendPhoneTest(type) {
+      mango.getAjax('/v3/app/customer/check', {
+        value: this.phone,
+        type: type
+      }).then((res) => {
+        res = res.data
+        if (res) {
+          this.existStatus = true
+          this.cusId = res.customerId
+        } else {
+          this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}`})
+        }
+      })
     },
     //单选框的值
     changeVal(val) {
@@ -124,10 +138,13 @@ export default {
     }
     button{
       width: 18.6vw;
-      background: $btnCol;
+      // background: $btnCol;
       border-top-right-radius: 5.8vw;
       border-bottom-right-radius: 5.8vw;
       color: #fff;
+      background:linear-gradient(0deg,rgba(0,122,255,1),rgba(59,154,255,1));
+      box-shadow:0px 2px 0px 0px rgba(255,255,255,0.3);
+      border-radius:0px 44px 44px 0px;
     }
   }
   .tips {

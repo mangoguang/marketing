@@ -262,6 +262,7 @@ export default {
 
 <style lang="scss" scoped>
 .search {
+  background: #fff;
   .search_box {
     display: flex;
     justify-content: space-between;

@@ -38,16 +38,23 @@ export default {
     border-bottom: 1px solid #ccc;
     padding: 0 5vw;
     background: #fff;
+    box-sizing: border-box;
     span{
       color: $fontCol;
       line-height: 3em;
     }
     strong {
       font-weight: normal;
+      margin-right: -1vw;
+      box-sizing: border-box;
+      display: inline-block;
     }
     span:first-child{
-      margin-right: 5vw;
+      margin-right: 6vw;
     }
+    // span:nth-child(2) {
+    //   margin-left: 1vw;
+    // }
     input{
       flex: 1;
       font-size: $fontSize;

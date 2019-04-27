@@ -91,7 +91,7 @@ export default {
     ul{
       width: 100%;
       .sex {
-        margin-left: -3vw
+        // margin-left: -3vw
       }
     }
   }

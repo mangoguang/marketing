@@ -5,7 +5,7 @@
         <img :src="imgUrl" alt="">
       </router-link>
     </div>
-    <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext"/>
+    <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext" :myClass='"tukuHome"'/>
     <div class="classify">
       <ClassifyComp :type='dataList' :auto='2000'/>
     </div>
@@ -128,19 +128,30 @@ export default {
     },
     //轮播图跳转到活动
     goNext(e) {
-      // var browser = api.require('webBrowser');
-      // browser.open({
-      //     url: 'https://baidu.com'
-      // })
       let dom = e.target
       let className = dom.className.toLowerCase();
       if (className != "mint-swipe-item is-active") {
         return false;
       }
       let index = dom.getAttribute("data-type");
-      console.log(index)
-      // window.location.href="https://baidu.com"
-      // this.$router.push({path: 'https://baidu.com'})
+        //判断操作系统
+        if(api.systemType == 'android'){
+            //Android中的使用方法如下：
+          api.openApp({
+              androidPkg: 'android.intent.action.VIEW',
+              mimeType: 'text/html',
+              url: this.imgSliderList[index].url
+          }, function(ret, err) {
+            if(err) {alert('该图片没有地址')}
+          });
+        }else{
+          //iOS中的使用方法如下：
+          api.openApp({
+              iosUrl: this.imgSliderList[index].url
+          },function(ret, err) {
+            if(err) {alert('该图片没有地址')}
+          });
+        } 
     }
   }
 }
@@ -163,6 +174,7 @@ export default {
   }
   .m-slider {
     margin-left: 4vw;
+    border-radius: 1.4vw;
   }
 }
 </style>

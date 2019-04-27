@@ -1,13 +1,32 @@
 <template>
-  <div class="home" :style="{'marginTop':`${marginTop}vw`}">
-    <m-slider :list='list' class="slider"/>
+  <div class="home" :style="{paddingBottom:`${paddingBottom}vw`}">
+    <div class="banner" :style="{'paddingTop':`${marginTop}vw`}">
+      <img src="../../../static/images/home/logo.png" alt="">
+    </div>
+    <m-slider :list='list' class="slider" :myClass='"home"'/>
     <ul class="cateList">
-      <category  
+      <router-link 
+        :to="{path: item.link,
+              query: {
+                'classify': item.id
+              }}"
+        v-for="(item, index) in cateList"
+        :key="index"
+        tag="li"
+        class="list"
+        :style="{backgroundImage: `url(${item.image})`}"
+      >
+        <div class="title">
+          <div class="Main-title">{{item.name}}</div>
+          <div class="Pre-title">{{item.preName}}</div>
+        </div>
+      </router-link>
+      <!-- <category  
         v-for="(item, index) in cateList"
         :key="index"
         :list="item"
         @click.native="toArt(index)"
-        :bgColor="bgColor[index]"/>
+        :bgColor="bgColor[index]"/> -->
     </ul>
     <Footer />
   </div>
@@ -23,6 +42,7 @@ export default {
   data() {
     return {
       marginTop: '',
+      paddingBottom: '',
       list: [{
         imgUrl: './static/images/homeBanner.png'
       },{
@@ -31,20 +51,23 @@ export default {
         imgUrl: './static/images/homeBanner3.jpeg'
       }],
       cateList: [{
-        name: '图库',
+        name: '产品中心',
+        preName: '快速深入了解慕思产品知识，巩固产品认识',
         link: '/gallery',
         id: 0,
-        image: './static/images/home/tuku.png'
+        image: './static/images/home/tuku1.png'
       },{
-        name: '金管家知识库',
-        link: '/msManage',
-        id: 1,
-        image: './static/images/home/jinguanjia.png'
-      },{
-        name: '学院知识库',
+        name: '商学院',
+        preName: '加快知识和信息的流动，有利于知识共享与交流',
         link: '/msManage',
         id: 2,
-        image: './static/images/home/xueyuan.png'
+        image: './static/images/home/xueyuan1.png'
+      },{
+        name: '金管家服务',
+        preName: '为客户提供方便、快捷、可靠的五星级服务',
+        link: '/msManage',
+        id: 1,
+        image: './static/images/home/jinguanjia1.png'
       }],
       bgColor: []
     }
@@ -88,6 +111,8 @@ export default {
       let phone = this.phoneSize()
       if(phone === 'iphonex') {
         this.marginTop = '-5.86'
+      }else {
+        this.paddingBottom = '14'
       }
     }
   }
@@ -96,14 +121,50 @@ export default {
 
 <style lang="scss" scoped>
 .home {
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
+  box-sizing: border-box;
+  .banner {
+    width: 100%;
+    height: 16.66vw;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    img {
+      width: 13.86vw;
+      height: 9.6vw;
+      margin-bottom: 2vw;
+    }
+  }
   .slider {
     width: 100vw!important;
     height: 47.2vw!important;
   }
   .cateList {
-    padding: 4vw 6.6vw;
-    display: flex;
-    overflow: scroll;
+    // overflow: scroll;
+    box-sizing: border-box;
+    .list {
+      background-size: 100% 100%;
+      width: 97.33vw;
+      height: 40vw;
+      margin: 0 auto;
+      margin-top: 2vw;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    } 
+    .title {
+      text-align: center;
+      color:#fff;
+      .Main-title{
+        font-size: 6.4vw;
+      }
+      .Pre-title {
+        font-size: 3.2vw
+      }
+    }
   }
 }
 </style>

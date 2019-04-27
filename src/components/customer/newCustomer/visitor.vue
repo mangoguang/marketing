@@ -11,7 +11,7 @@
           <textarea v-model="newCustomerInfo.remark" name="" id="" placeholder="描述一下情况吧"></textarea>
         </remark>
       </li>
-      <li class="saveBtn"><big-btn :text="'保存'" @click.native="saveCustomerInfo"></big-btn></li>
+      <li class="saveBtn"><big-btn :text="'保存'" @click.native="saveCustomerInfo" class="myBtn"></big-btn></li>
     </ul>
         <mt-datetime-picker
         ref="datePicker"
@@ -217,4 +217,8 @@ ul{
 .picker{
   width: 100vw;
 }
+ .myBtn {
+    background:rgba(0,122,255,1)!important;
+    border: .13vw solid rgba(0,93,194,1)!important;
+  }
 </style>

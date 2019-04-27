@@ -9,8 +9,10 @@
           @click="getDetails(index)"
         >
           <i :class="`important${item.level}`"></i>
-          <span class="name">{{`*${item.username.slice(1, 5)}`}}</span>
-          <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span>
+          <span class="name">{{item.username}}</span>
+          <!-- <span class="name">{{`*${item.username.slice(1, 5)}`}}</span> -->
+          <!-- <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span> -->
+          <span class="phone">{{item.phone}}</span>
           <span class="date">{{item.followDate}}</span>
         </li>
       </mt-loadmore>

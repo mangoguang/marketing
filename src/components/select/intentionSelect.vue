@@ -8,7 +8,7 @@
         :class="{on: item.status}"
         :key="`keyBtns${index}`">
         <button 
-        @touchend="keySelect(index)">{{item.name}}</button>
+        @click="keySelect(index)">{{item.name}}</button>
       </li>
     </ul>
   </div>

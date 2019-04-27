@@ -26,6 +26,6 @@ export default {
     box-sizing: border-box;
     padding: 0 4.27vw;
     align-items: center;
-    margin-top: -11.8vw;
+    margin-top: -12.6vw;
   }
 </style>

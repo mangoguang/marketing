@@ -8,7 +8,7 @@
         />
     <div class="titleBar">
       <div class="title">{{ articleDetails.title }}</div>
-      <span>{{ articleDetails.createTime }}</span>
+      <!-- <span>{{ articleDetails.createTime }}</span> -->
     </div>
     <div class="content" v-html="myhtml">
     </div>

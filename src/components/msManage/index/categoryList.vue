@@ -7,7 +7,7 @@
       :bgColor="bgColor[index]"
       @click.native="toArt(index)"
     />
-    <template v-if="classify === 1"> 
+    <template v-if="classify == 1"> 
       <router-link :to="{
         name:'/question',
         query:{id: 4,name:'常见问题',type:1}}">

@@ -7,7 +7,7 @@
         <img src="../../../assets/imgs/unlike.png" alt="" v-else>
       </div>
       <div class="share">
-        <router-link :to="{path: '/share', query: {list:list}}">
+        <router-link :to="{path: '/preShare', query: {list:list}}">
           <img src="../../../assets/imgs/share.png" alt="">
         </router-link>
       </div>
@@ -106,7 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  padding: 0 4vw;
+  padding: 2vw 4vw;
   padding-bottom: 4vw;
   box-sizing: border-box;
   height: auto;

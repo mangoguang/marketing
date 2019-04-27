@@ -81,8 +81,8 @@ export default {
     },
     getSlotVal() {
       let arr = [];
-      for (var i = 0; i < 101; i++) {
-        arr[i] = i ;
+      for (var i = 0; i < 91; i++) {
+        arr[i] = i + 10;
       }
       this.slots[0].values = arr;
     }

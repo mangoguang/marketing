@@ -29,7 +29,7 @@
             <div class="img">
               <img :src="el.imgUrl" alt="">
             </div>
-            <p>{{ el.name }}</p>
+            <p class="productName">{{ el.name }}</p>
           </router-link>
         </li>
       </ul>
@@ -92,6 +92,11 @@ export default {
           width: 21.33vw;
           height: 21.33vw;
         }
+      }
+      .productName {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap
       }
     }
     li:nth-child(3n+0) {

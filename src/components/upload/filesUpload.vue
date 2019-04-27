@@ -45,6 +45,7 @@ export default {
     $route(to,from){
       if(from.name==='imgPreview'){
         this.picVal=this.$store.state.picVal;
+        consolelog("进来路由了",this.picVal);
       }
     },
     isClear:function(newVal,oldValue){
