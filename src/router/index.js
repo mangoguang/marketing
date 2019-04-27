@@ -1,5 +1,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+const index = () => import('../pages/index')
+const gallery = () => import('../pages/Gallery/index')
+const gSearch = () => import('../pages/Gallery/search')
+const productDetails = () => import('../pages/Gallery/productDetails')
+const productList = () => import('../pages/Gallery/productList')
+const recommend = () => import('../pages/Gallery/recommend')
+const share = () => import('../pages/Gallery/share')
+const preShare = () => import('../pages/Gallery/preShare')
 
 Vue.use(VueRouter)
 
@@ -9,7 +17,7 @@ export var router = new VueRouter({
   routes: [{
     path: '/index',
     name: 'index',
-    component: resolve => require(['../pages/index'], resolve)
+    component: index
   },{
     path: '/ReportForms',
     name: 'ReportForms',
@@ -259,42 +267,42 @@ export var router = new VueRouter({
   {
     path: '/gallery',
     name: 'index',
-    component: resolve => require(['../pages/Gallery/index'],resolve)
+    component: gallery
   },
   //搜索页
   {
     path: '/gSearch',
     name: 'gSearch',
-    component: resolve => require(['../pages/Gallery/search'],resolve)
+    component: gSearch
   },
   //产品详情
   {
     path: '/productDetails',
     name: 'productDetails',
-    component: resolve => require(['../pages/Gallery/productDetails'],resolve)
+    component: productDetails
   },
   //产品列表
   {
     path: '/productList',
     name: 'productList',
-    component: resolve => require(['../pages/Gallery/productList'],resolve)
+    component: productList
   },
   //介绍页
   {
     path: '/recommend',
     name: 'recommend',
-    component: resolve => require(['../pages/Gallery/recommend'],resolve)
+    component: recommend
   },
   //分享页
   {
     path: '/share',
     name: 'share',
-    component: resolve => require(['../pages/Gallery/share'],resolve)
+    component: share
   },
   {
     path: '/preShare',
     name: 'preShare',
-    component: resolve => require(['../pages/Gallery/preShare'],resolve)
+    component:preShare
   },
   {
     path: '/home',
