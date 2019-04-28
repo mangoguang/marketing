@@ -628,7 +628,7 @@ export default {
   },
   beforeRouteEnter(to,from,next){
    // console.log("进来addIntention",to);
-   // console.log(from);
+   console.log(from);
     if(from.name==='selectAddress'){
       to.meta.keepAlive=true;
       next();
@@ -664,17 +664,17 @@ export default {
    next();
   },
   beforeRouteLeave(to,from,next){
-   // console.log(to);
+   console.log(to.name);
    //console.log(from);
     if(to.name==='/enquiryInfo'){
       this.setCheckedList([]);
-      form.meta.keepAlive=true;
+      from.meta.keepAlive=true;
       to.meta.isUseCache=false;
       next();
     }
     if(to.name==='/CustomerInfo'){
       this.setCheckedList([]);
-      form.meta.keepAlive=true;
+      from.meta.keepAlive=true;
       to.meta.isUseCache=false;
       next();
     }

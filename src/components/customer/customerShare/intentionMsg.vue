@@ -18,7 +18,7 @@ export default {
   methods: {
     toIntentionDetails(index) {
       // this.$router.push({path:`/intention/${this.list[index].oppId}`})
-      this.$router.replace({
+      this.$router.push({
         name:'intention',
         params: {
           opportunityId: this.list[index].oppId
@@ -27,7 +27,7 @@ export default {
     },
     newCustomer() {
       // this.$router.push({path:`/addintention/${this.$route.query.id}`})
-      this.$router.replace({
+      this.$router.push({
         name:'addintention',
         params: {
           customerId: this.$route.query.id
