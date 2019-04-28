@@ -86,6 +86,7 @@ export default {
       this.dailyPlanTextarea = str
     },
     save() {
+      console.log('!!!', this.dailySummaryTextarea, this.dailyPlanTextarea)
       if (this.dailySummaryTextarea === '' && this.dailyPlanTextarea === '') {
         mango.tip('总结与计划不能同时为空！')
         return

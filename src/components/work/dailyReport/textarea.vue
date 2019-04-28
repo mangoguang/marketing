@@ -1,12 +1,16 @@
 <template>
-  <textarea @change="changeTextarea" :value="text" name="" id="" cols="30" rows="10"></textarea>
+  <textarea
+  @change="changeTextarea"
+  :value="text"
+  :maxlength="textMaxLength"
+  rows="10"></textarea>
 </template>
 <script>
 import { mapState } from 'vuex';
 
 export default {
   name: 'textArea',
-  props: ['text'],
+  props: ['text', 'textMaxLength'],
   watch: {
     text() {
       console.log('successss111', this.text)

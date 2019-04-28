@@ -1,10 +1,12 @@
 <template>
   <div class="dailySummary">
     <H3>当日总结</H3>
-    <Textarea
-    :text="text"
+    <textarea
+    v-model="textareaVal"
     :disabled="disabled"
-    @changeTextarea="changeTextarea"></Textarea>
+    maxlength="300"
+    @change="changeTextarea"></textarea>
+    <span>({{textareaVal.length}}/300)</span>
   </div>
 </template>
 
@@ -24,21 +26,23 @@ export default {
   props:['list', 'curDay', 'text', 'disabled'],
   data(){
     return{
-
+      textareaVal: ''
     }
   },
   watch: {
-
+    text() {
+      this.textareaVal = this.text
+    }
   },
   created() {
-  
+    
   },
   mounted() {
 
   },
   methods:{
-    changeTextarea(str) {
-      this.$emit('changeDailySummaryTextarea', str)
+    changeTextarea(e) {
+      this.$emit('changeDailySummaryTextarea', e.target.value)
     }
   }
 }
@@ -52,6 +56,18 @@ export default {
   }
   h3:after{
     background: #ff9500;
+  }
+  textarea{
+    display: block;
+    width: 100%;
+    height: 40vw;
+    box-sizing: border-box;
+    padding: 2vw;
+    color: #666;
+    font-size: 14px;
+  }
+  span{
+    color: #999;
   }
 }
 </style>

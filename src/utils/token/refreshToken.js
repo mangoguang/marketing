@@ -1,5 +1,19 @@
 import {IndexModel} from '../index'
 const indexModel = new IndexModel()
+
+function toLogin() {
+  let url = location.href
+  let index = url.indexOf('#/')
+  let loginUrl = url.substring(0, index + 2) + 'Login'
+  // 如果刷新令牌无法使用，则跳转登陆页面重新登录。
+  let len = window.history.length
+  window.history.back(-len)
+  window.history.replaceState(null, '登录', loginUrl)
+  window.history.go(0)
+}
+
+export {toLogin}
+
 function refreshToken() {
   return new Promise((resolve, reject) => {
     // 获取本地token
@@ -35,14 +49,6 @@ function refreshToken() {
       console.log('重新登陆', this.$router, error)
     })
   })
-
-  function toLogin() {
-    // 如果刷新令牌无法使用，则跳转登陆页面重新登录。
-    let len = window.history.length
-    window.history.back(-len)
-    window.history.replaceState(null, '登录', 'http://localhost:8080/#/Login')
-    window.history.go(0)
-  }
 }
 
 export default refreshToken
