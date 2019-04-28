@@ -45,6 +45,7 @@ export default {
         this.status = true
       }else {
         this.status = false
+        this.marginTop = ''
       }
     },
     backBtn() {

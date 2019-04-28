@@ -6,7 +6,7 @@
         <img src="../../../assets/imgs/like.png" alt="" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="" v-else>
       </div>
-      <div class="share">
+      <div class="share" v-show='status'>
         <router-link :to="{path: '/preShare', query: {list:list}}">
           <img src="../../../assets/imgs/share.png" alt="">
         </router-link>
