@@ -40,7 +40,7 @@ function refreshToken() {
     // 如果刷新令牌无法使用，则跳转登陆页面重新登录。
     let len = window.history.length
     window.history.back(-len)
-    window.history.replaceState(null, '登录', 'https://mobiletest.derucci.net/web/marketing/#/Login')
+    window.history.replaceState(null, '登录', 'https://mobiletest.derucci.net/web/marketing/#/login')
     window.history.go(0)
   }
 }

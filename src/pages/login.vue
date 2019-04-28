@@ -278,6 +278,7 @@ export default {
           this.$router.replace({ path: "/" })
         }
       }).catch((reject) => {
+        // console.log('reject',reject)
         if (reject === 510) {
           this.getUserInfo()
         }
