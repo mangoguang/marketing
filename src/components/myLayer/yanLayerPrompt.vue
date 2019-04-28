@@ -3,7 +3,7 @@
       <div class="yan-layer-box">
         <div class="yan-layer-content">
           <img src="../../assets/imgs/fail.png" alt="">
-          <textarea :placeholder="placeholder" :readonly='readonly' :value="value" @input="$emit('input',$event.target.value)"></textarea>
+          <textarea :placeholder="placeholder"  maxlength="200" :readonly='readonly' :value="value" @input="$emit('input',$event.target.value)"></textarea>
           <div class="yan-btn-group">
               <div class="yan-btn" @click="update">
                 <slot name="update"></slot>

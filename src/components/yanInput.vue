@@ -3,7 +3,8 @@
       <label>
           <span>{{label}}</span>
           <input :id="id" type="text" :value="value" :style="color" 
-          :readonly='readonly' :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+          :readonly='readonly' :placeholder="placeholder" @input="$emit('input',$event.target.value)"
+          :maxlength='maxlength'>
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../assets/imgs/rightside.png" alt="">
@@ -13,7 +14,7 @@
 
 <script>
 export default {
-  props:['id','value','label','placeholder','showIcon','readonly','color'],
+  props:['id','value','label','placeholder','showIcon','readonly','color','maxlength'],
   data(){
     return{
 

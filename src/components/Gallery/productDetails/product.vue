@@ -1,12 +1,12 @@
 <template>
   <div class="product">
-    <banner :title='"产品详情"' :MoreBtn='true'/>
+    <banner :title='"产品详情"' :MoreBtn='true' v-show='status'/>
     <m-slider class="productSlider" 
       :list='imgList' :auto='0' 
       :myClass='"tukuDetails"'
       :style='{marginTop: marginTop}'/>
     <!-- <button class="cancle" @click.prevent="backBtn"></button> -->
-    <more-details/>
+    <more-details  v-show='status'/>
     <!-- <div class="case"></div> -->
   </div>
 </template>
@@ -25,7 +25,8 @@ export default {
   data() {
     return {
       marginTop: '',
-      top: ''
+      top: '',
+      status: true
       // imgList: [{
       //   imgUrl: './static/images/bed0.png'
       // },{
@@ -35,8 +36,17 @@ export default {
   },
   created() {
     this.isIPhoneX()
+    this.urlJudge()
   },
   methods: {
+    urlJudge() {
+      let url = window.location.href
+      if(url.indexOf("musi") === -1) {
+        this.status = true
+      }else {
+        this.status = false
+      }
+    },
     backBtn() {
       this.$router.go(-1)
     },

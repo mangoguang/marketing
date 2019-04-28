@@ -6,7 +6,7 @@
           <area-select v-bind="formInfo.areaInfo" v-model="area" readonly @update="updateArea" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border"/>
+          <yan-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border" :maxlength='200'/>
         </li>
         <li>
           <house-select v-bind="formInfo.apartmentType" v-model="apartmentType" @update="updateApartmentType" :showIcon="selectIcon" class="li_border"/>
@@ -15,7 +15,7 @@
           <elevator-select v-bind="formInfo.elevatorInfo" v-model="elevator" @update="updateElevator" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark"/>
+      <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark" :maxlength='200'/>
       <btn text='保存' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
     </div>
 </template>

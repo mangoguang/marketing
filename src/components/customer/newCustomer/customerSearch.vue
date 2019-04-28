@@ -56,7 +56,11 @@ export default {
       if(type === 'phone') {
         this.phoneTest(type)
       }else {
-        this.sendPhoneTest(type)
+        if(this.phone) {
+          this.sendPhoneTest(type)
+        }else {
+          mango.tip('请输入客户微信号')
+        }
       }
 
      

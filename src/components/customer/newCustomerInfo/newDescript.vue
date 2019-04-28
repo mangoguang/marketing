@@ -23,7 +23,7 @@
         <input v-model="newCustomerInfo.qq" type="text" placeholder="请填写客户 QQ" maxlength='15'>
       </li>
       <li is="customerLi" :leftText="'客户职业'">
-        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业">
+        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业" maxlength='50'>
       </li>
       <template v-if="areaType">
         <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="toAddress">

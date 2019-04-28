@@ -46,25 +46,25 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/>
         </li>
         <li>
           <color-select v-bind="formInfo.color" :value="colorPrefName" @update="updateColor" :showIcon="selectIcon"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.budget" v-model.trim="form.budget" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.budget" v-model.trim="form.budget" :readonly='readonly' :maxlength='8'/>
         </li>
         <li>
           <date-select v-bind="formInfo.deliver" :value="form.deliverDate" @update="updateDeliver" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly' :maxlength='8'/>
         </li>
         <li>
           <discount-select v-bind="formInfo.discount" :value="form.argreeDiscount" @update="updateDiscount" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark" :readonly='readonly' v-model="form.remark"></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :mexlength='200' :readonly='readonly' v-model="form.remark"></yan-textarea>
       <div class="select">
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="form.level" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>

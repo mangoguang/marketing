@@ -1,13 +1,13 @@
 <template>
   <div class="remark">
     <p>{{label}}</p>
-    <textarea name="" id="" :placeholder="placeholder" :readonly='readonly' :value="value" @input="$emit('input',$event.target.value)"></textarea>
+    <textarea name="" id="" :maxlength='maxlength' :placeholder="placeholder"  :readonly='readonly' :value="value" @input="$emit('input',$event.target.value)"></textarea>
   </div>
 </template>
 
 <script>
 export default {
-  props:['value','label','placeholder','readonly'],
+  props:['value','label','placeholder','readonly','maxlength'],
   data(){
     return{
 
@@ -55,6 +55,7 @@ export default {
       border-right: none;
       padding:4.266vw;
       box-sizing: border-box;
+      overflow: scroll;
     }
   }
 </style>
