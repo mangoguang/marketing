@@ -1,6 +1,6 @@
 <template>
     <div class="addAdress">
-      <mybanner :title="title" style="background:#fff">
+      <mybanner :title="title" :style="{background:'#f8f8f8'}" >
         <button type="button" @click="addRecord" v-if="isRecord">保存</button>
 
         <button type="button" @click="close" v-if="this.form.status==='New'&&!isRecord" style="color:#FF3B30">意向关闭</button>
@@ -127,6 +127,7 @@ const indexModel=new IndexModel()
 export default {
   data () {
     return {
+      padding: '',
       form:{
         goodsList:[],
         shopName:'',
@@ -223,7 +224,6 @@ export default {
   },
   created(){
    this.getOpportunity();
-  
   },
   mounted(){
 
@@ -268,7 +268,7 @@ export default {
           if(res.data.recordList.length>0){
             this.form.recordList=res.data.recordList;
           }
-          if(res.data.urgency==='Y'){
+          if(res.data.urgency===true){
             this.urgency="是";
             this.setUrgency(['是']);
           }else{

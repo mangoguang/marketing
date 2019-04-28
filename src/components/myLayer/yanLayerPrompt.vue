@@ -50,6 +50,7 @@ export default {
     left:50%;
     width:74.666vw;
     height:49.333vw;
+    overflow: hidden;
     background: #fff;
     border-radius: 1.333vw;
     transform: translate(-50%,-50%);
@@ -92,6 +93,7 @@ export default {
       padding:2.666vw;
       box-sizing: border-box;
       border-radius:1.333vw;
+      overflow:scroll;
     }
     .yan-btn-group{
       position: absolute;

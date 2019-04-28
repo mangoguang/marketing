@@ -168,6 +168,14 @@ export default {
     creatNewCustomer() {
       //头像的formdata
       this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
+      //如果有填写验证微信号
+      if(this.newCustomerInfo.weChat) {
+        var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
+        if(!wx.test(this.newCustomerInfo.weChat)) {
+          MessageBox.alert('请填写正确的微信号')
+          return
+        }
+      }
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
         return

@@ -6,7 +6,7 @@
         <!--select表示直接选择照片-->
       </li>
       <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>
-        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name" maxlength='20'>
+        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name"  oninput="if(value.length>5)value=value.slice(0,20)">
       </li>
       <li is="sexSelect" :sexVal="newCustomerInfo.sex"  @sexChange="sexChange" class="sex"></li>
        <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
@@ -14,16 +14,16 @@
       </li>
       <li is="ageSelect"   @ageChange="ageChange"></li>
       <li is="customerLi" :leftText="'客户电话'">
-        <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话">
+        <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话"  oninput="if(value.length>5)value=value.slice(0,11)">
       </li>
       <li is="customerLi" :leftText="'客户微信'">
-        <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号">
+        <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  oninput="if(value.length>5)value=value.slice(0,20)">
       </li>
       <li is="customerLi" :leftText="'客户  QQ'">
-        <input v-model="newCustomerInfo.qq" type="text" placeholder="请填写客户 QQ" maxlength='15'>
+        <input v-model="newCustomerInfo.qq" type="number" placeholder="请填写客户 QQ"  oninput="if(value.length>5)value=value.slice(0,15)">
       </li>
       <li is="customerLi" :leftText="'客户职业'">
-        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业" maxlength='50'>
+        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业"  oninput="if(value.length>5)value=value.slice(0,30)">
       </li>
       <template v-if="areaType">
         <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="toAddress">
@@ -39,7 +39,7 @@
       <li is="shopSelect" :type='"descript"'></li>
       <li class="textarea">
         <h3>客户描述</h3>
-        <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧"></textarea>
+        <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧" maxlength='300'></textarea>
       </li>
     </ul>
     <div class="mintComponent">

@@ -1,6 +1,6 @@
 <template>
     <div class="addAdress">
-      <mybanner :title="title" style="background:#fff">
+      <mybanner :title="title" style="background:#f8f8f8">
         <button type="button" @click="submit" v-if="status!=='New'">保存</button>
         <button type="button" @click="close" v-if="status==='New'" style="color:#FF3B30">意向关闭</button>
       </mybanner>

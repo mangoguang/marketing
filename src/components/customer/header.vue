@@ -25,6 +25,7 @@
           @click="moduleSelect(index)">
           <!-- <img src="../../assets/imgs/customer-icon.png" class="topBarimg"> -->
           {{item.name}}
+          <hr v-show='item.status'></hr>
           </button>
           <!-- <button class="search" @click="showNav"></button> -->
         </li>
@@ -413,14 +414,21 @@ header{
       background: url(../../assets/imgs/search.png) no-repeat center;
       background-size: 5vw 5vw;
     }
+    hr {
+      border:none;
+      color: #fff;
+      border-bottom: .8vw solid #fff;
+      border-radius: 0.4vw;
+      margin: 0;
+    }
     button.on{
       font-size: 4.8vw;
       color: #fff;
-      border-bottom: .8vw solid #fff;
-      border-radius: .26vw;
+      // border-bottom: .8vw solid #fff;
+      // border-radius: .26vw;
       opacity: 0.8;
       .topBarimg{
-        width: 3vw;
+        // width: 3vw;
         // height: 3.6vw;
       }
     }
@@ -508,4 +516,5 @@ header{
     border-left: 1px solid #fff;
   }
 }
+
 </style>
