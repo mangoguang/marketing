@@ -130,7 +130,7 @@ export default {
         let key=['opportunity.oppId','record.source','record.residentTime','record.followDate','record.nextDate','record.situation','record.plan'];
         indexModel.updateTrackrecord(formData,key).then(res => {
           if(res.code===0){
-            mango.tip(res.msg);
+            mango.tip("提交成功");
             this.setFiles([]);
             this.setPicVal([]);
             this.isClear=true;

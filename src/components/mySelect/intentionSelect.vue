@@ -21,7 +21,8 @@ export default {
   methods:{
     jump(){
       if(this.showIcon){
-         this.$router.push({name:'searchProduct',query:{redirect:this.url}})
+         //this.$router.push({name:'searchProduct',query:{redirect:this.url}})
+         this.$router.push({name:'intentionProduct',query:{redirect:this.url}})
       }else{
         return;
       }

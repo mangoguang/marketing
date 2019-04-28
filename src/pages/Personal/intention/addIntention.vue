@@ -130,9 +130,10 @@ export default {
         argreeDiscount:'',    //协议折扣，例：80（百分之80折扣）
         remark:'',
         urgency:'',   //是否紧急
-        level:'',   //等级
+        level:'A',   //等级
         recordList:[]
       },
+      isFirstEnter:false,
       goodsValue:'',
       shopName:'',
       sourceName:'',
@@ -176,7 +177,7 @@ export default {
   },
   watch:{
     $route(to,from){
-      console.log(from);
+      //console.log(from);
       if(from.name==='selectAddress'){
         let obj={};
         if(this.$route.query.addressId){
@@ -202,6 +203,8 @@ export default {
       }
       if(from.name==='intentionProduct'){
         console.log('进来intentionProduct');
+        console.log(this.$store.state.checkedList.length);
+        //let list=JSON.parse(localStorage.getItem('product'));
         if(this.$store.state.checkedList.length>0){
           this.goodsValue=this.$store.state.checkedList[0].goodsName;
           this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
@@ -219,8 +222,11 @@ export default {
         
       }
       if(from.name==='chooseShop'){
+        console.log("进来chooseShop");
         let shops=JSON.parse(localStorage.getItem('shops'));
+        console.log(shops);
         let shopIndex=localStorage.getItem('shopIndex');
+        console.log(shopIndex);
         shops.map((item,index) => {
           if(shopIndex==index){
             this.form.shopId=item.id;
@@ -240,14 +246,21 @@ export default {
     ...mapState(['checkedList'])
   },
   created(){
+    console.log(this.checkedList);
+    this.getProduct();
+    this.getShop();
     console.log("回退进了created");
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
     this.url=this.$route.query.url;
-    if(this.$route.query.oppId){
+     if(this.$route.query.oppId){
       this.updateTitle('意向详情');
       this.form.oppId=this.$route.query.oppId;
-      this.getOpportunity(this.form.oppId);
+      if(!this.isFirstEnter){
+        /* this.isFirstEnter=true; */
+        this.getOpportunity(this.form.oppId);
+      }
+      
       
     }else{
       this.updateTitle('新建意向');
@@ -258,18 +271,48 @@ export default {
   activated(){
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
-    if(this.$store.state.checkedList.length<=0){
-      this.goodsValue='';
-      this.form.goodsList=[];
+    if(this.$route.meta.isUseCache){
+       this.getProduct();
+       this.getShop();
+    }else{
+      this.$route.meta.isUseCache=false;
     }
+   
     
   },
   mounted(){
-
+   
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
     ...mapMutations(['updateAddress','setCheckedList','updateSearchProductList']),
+    getShop(){
+      let shops=JSON.parse(localStorage.getItem('shops'));
+      console.log(shops);
+      let shopIndex=localStorage.getItem('shopIndex');
+      console.log(shopIndex);
+      shops.map((item,index) => {
+        if(shopIndex==index){
+          this.form.shopId=item.id;
+          this.shopName=item.name;
+        }
+      })
+    },
+    getProduct(){
+      if(this.$store.state.checkedList.length<=0){
+        this.goodsValue='';
+        this.form.goodsList=[];
+      }else{
+        this.goodsValue=this.$store.state.checkedList[0].goodsName;
+        this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
+          let obj={};
+          obj.goodsId=item.crmId;
+          obj.goodsName=item.goodsName;
+          obj.quantity=item.quantity;
+          return obj;
+        });
+      }
+    },
     addRecord(){
      this.$router.replace({name:'followRecord',query:{oppId:this.oppId}});
      //this.isRecord=true;
@@ -386,6 +429,14 @@ export default {
         mango.tip('门店不能为空');
         return false;
       }
+      if(this.form.source===''){
+        mango.tip('客户来源不能为空');
+        return false;
+      }
+      if(this.form.addressId===''){
+        mango.tip('请选择地址,如无地址请先新建地址');
+        return false;
+      }
       var reg=/^\d{1,}\.{0,1}\d{0,}$/;
       if(this.form.budget!==''&&!reg.test(this.form.budget)){
         mango.tip('预算金额必须为数字');
@@ -401,6 +452,7 @@ export default {
           return false;
         }
       }
+      
       return true;
 
     },
@@ -450,14 +502,18 @@ export default {
             form.delete(key[i]);
           }
         }
-        console.log(lastKey);
+        //console.log(lastKey);
         indexModel.updateOpportunity(form,[...lastKey]).then(res => {
             if(res.code==0){
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              // this.$router.push({path:this.url});
-              this.$router.go(-1)
+              setTimeout(() => {
+                 this.$router.replace({path:this.url});
+              },200)
+            
+             // this.$router.go(-1);
+             // window.history.go(-1);
               this.$destroy();
             }else{
               mango.tip(res.msg);
@@ -467,8 +523,11 @@ export default {
     },
     layerUpdate(){
       if(this.failReason===''){
-       mango.tip('战败原因不能为空');
-       return;
+        mango.tip('战败原因不能为空');
+        return;
+      }else if(this.failReason.length>300){
+        mango.tip('战败原因不能超过300字');
+        return;
       }else{
         let obj={
           opportunityId:this.form.oppId,
@@ -498,7 +557,7 @@ export default {
       this.isPrompt=true;
     },
     openStore(){
-       this.$router.push({name:'chooseShop',query: {type: 'addintention'}});
+       this.$router.replace({name:'chooseShop',query: {type: 'addintention'}});
       
     },
    updateClassify(option){
@@ -568,7 +627,7 @@ export default {
    }
   },
   beforeRouteEnter(to,from,next){
-    console.log("进来addIntention",to);
+   // console.log("进来addIntention",to);
    // console.log(from);
     if(from.name==='selectAddress'){
       to.meta.keepAlive=true;
@@ -580,6 +639,12 @@ export default {
     }
     if(from.name==='intentionProduct'){
       to.meta.keepAlive=true; 
+      to.meta.isUseCache=true;
+      next();
+    }
+    if(from.name==='chooseShop'){
+      to.meta.keepAlive=true; 
+      to.meta.isUseCache=true;
       next();
     }
     if(from.name==='intention'){
@@ -591,22 +656,26 @@ export default {
       next();
     }
     if(from.name==='/CustomerInfo'){
-      to.meta.keepAlive=false; 
-      
+      to.meta.keepAlive=false;   
       next();
     }
+    //to.meta.isUseCache=false;
     //to.meta.keepAlive=false;
    next();
   },
   beforeRouteLeave(to,from,next){
-    console.log(to);
-   console.log(from);
+   // console.log(to);
+   //console.log(from);
     if(to.name==='/enquiryInfo'){
-      //this.$destroy();
+      this.setCheckedList([]);
+      form.meta.keepAlive=true;
+      to.meta.isUseCache=false;
       next();
     }
     if(to.name==='/CustomerInfo'){
-     //this.$destroy();
+      this.setCheckedList([]);
+      form.meta.keepAlive=true;
+      to.meta.isUseCache=false;
       next();
     }
     next();
