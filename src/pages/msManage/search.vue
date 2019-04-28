@@ -1,5 +1,5 @@
 <template>
-  <div class="search">
+  <div class="search" :style='{paddingTop:padding,marginTop:marginTop}'>
     <div class="search_box">
       <Search class="searchComp" id="debounce"
         v-model.trim="searchVal"
@@ -45,7 +45,9 @@ export default {
       historyTxt: '',
       searchType: '',
       key: false,
-      account: ''
+      account: '',
+      padding:'',
+      marginTop:''
     }
   },
   computed: {
@@ -76,6 +78,7 @@ export default {
     this.compareTime(this.searchType)
     this.showHistory()
     this.account = this._localAjax().account
+    this.isIPhoneX()
   },
   mounted() {
     this.monitorInpub()
@@ -255,7 +258,19 @@ export default {
       }else {
         setLocalStorage(obj,type)
       }
+    },
+     //判断是否iphoneX
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.padding = "5.86vw";
+        this.marginTop ='-5.86vw'
+      }else {
+        this.padding = "";
+        this.marginTop =''
+      }
     }
+
   }
 }
 </script>
@@ -263,6 +278,8 @@ export default {
 <style lang="scss" scoped>
 .search {
   background: #fff;
+  width:100vw;
+  overflow-x:hidden;
   .search_box {
     display: flex;
     justify-content: space-between;

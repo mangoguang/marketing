@@ -1,6 +1,6 @@
 <template>
   <div class="feedback">
-    <mybanner :title="title" style="position:static;border:none;background:#fff"/>
+    <mybanner :title="title" style="position:static;border:none;"/>
     <div class="textareaBox">
       <textarea name="" id=""  placeholder="请描述你的反馈意见，我们将不断改进" maxlength="250" v-model="remark"></textarea>
       <span>{{remark.length}}/250</span>

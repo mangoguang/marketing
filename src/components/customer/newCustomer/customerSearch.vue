@@ -58,14 +58,23 @@ export default {
       if(type === 'phone') {
         this.phoneTest(type)
       }else {
-        if(this.phone) {
+        let wechat = this.weChatText()
+        if(wechat) {
           this.sendPhoneTest(type)
-        }else {
-          mango.tip('请输入客户微信号')
         }
       }
-
-     
+    },
+    //验证微信
+    weChatText() {
+      let result;
+      var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
+      if(!wx.test(this.phone)) {
+        mango.tip('请输入正确的微信号')
+        result = false
+      }else {
+        result = true
+      }
+      return result
     },
     //验证手机号
     phoneTest(type) {

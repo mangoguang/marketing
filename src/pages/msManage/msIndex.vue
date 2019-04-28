@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <banner :title="title"/>
-    <Search :origin="origin" :type='"msIndex"' class="search"/>
+    <Search :origin="origin" :type='"msIndex"' class="searchTop"/>
     <MSlider :list='list' class="slider" :myClass='"msManage"'/>
     <category-list :classify='$route.query.classify'/>
     <TopArt />
@@ -61,7 +61,7 @@ export default {
   overflow: scroll;
   background: #fff;
 }
-.search {
+.searchTop {
   margin-top: 20vw !important;
 }
 .slider {
