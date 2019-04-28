@@ -138,7 +138,7 @@ export default {
             this.$router.back(-1);
             //this.$router.push({name:'address',params:{customerId:this.$route.params.customerId}})
           }else{
-            mango.tip(res.msg);
+            mango.tip('更新失败');
           }
         }).catch((reject) => {
           if (reject === 510) {
