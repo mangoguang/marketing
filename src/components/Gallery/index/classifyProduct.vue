@@ -66,10 +66,14 @@ export default {
 .classifyProduct {
   padding: 4vw;
   margin-bottom: 45vw;
+  width: 100%;
+  box-sizing:border-box;
   h1 {
     font-size: 3.46vw;
     color: #666;
     font-weight: normal;
+    // border:1px solid red;
+
   }
   .loopList {
     display: flex;
@@ -77,6 +81,7 @@ export default {
     flex-wrap: wrap;
     text-align: center;
     padding-top: 4vw;
+    // border:1px solid red;
     li {
       width: 33%;
       // flex: 0.3;
@@ -100,17 +105,21 @@ export default {
       }
     }
     li:nth-child(3n+0) {
-      padding-right: 0
+      padding-right: 0;
+
+
     }
   }
   .brand {
     width: 100%;
+    // border:1px solid red;
     .topBar {
       display: flex;
       justify-content: space-between;
       .more {
         font-size: 3.2vw;
         color: #007aff;
+        width: 10vw;
       }
       .icon_more {
         background: url(../../../assets/imgs/m-more.png) no-repeat center;
