@@ -46,13 +46,11 @@ export default {
       list: [{
         imgUrl: './static/images/home/banner.png'
       },{
-        imgUrl: './static/images/home/banner.jpg'
-      },{
-        imgUrl: './static/images/home/homeBanner3.jpg'
-      },{
         imgUrl: './static/images/home/banner1.jpeg'
       },{
         imgUrl: './static/images/home/banner2.jpeg'
+      },{
+        imgUrl: './static/images/home/banner4.jpeg'
       }],
       cateList: [{
         name: '产品中心',

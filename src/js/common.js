@@ -1,14 +1,13 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
 import { Indicator, Toast } from 'mint-ui'
-import refreshToken from '../utils/token/refreshToken.js'
-import VueRouter from 'vue-router'
+import refreshToken, {toLogin} from '../utils/token/refreshToken.js'
 export default class Common {
   constructor() {
     //  this.port = 'http://10.11.8.250'
     // this.port = 'http://172.16.10.107'
-    this.port = "http://10.11.8.7"
-    //  this.port = "https://mobiletest.derucci.net/cd-sys-web"
+    // this.port = "http://10.11.8.7"
+     this.port = "https://mobiletest.derucci.net/cd-sys-web"
     // this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
@@ -144,14 +143,11 @@ export default class Common {
       let sign = this.getSign(params, token.access_token)
       // 显示加载动画，并在10秒后隐藏
       this.loading('open')
-      let loadingTimeOut = setTimeout(function() {
-        _this.loading('close')
-        clearTimeout(loadingTimeOut)
-      }, 10000)
       axios({
         method: thatType,
         async: false,
         url: url,
+        timeout: 15000,
         contentType: "application/json",
         headers: {
           "Authorization": `Bearer ${token.access_token}`,
@@ -166,12 +162,21 @@ export default class Common {
       })
       .catch((error) => {
         _this.loading('close')
-        if (error.response.status === 510) {
-          refreshToken.call(this).then(res => {
-            reject(510)
-          })
+        let [response, request] = [error.response, error.request]
+        if (response) {
+          if(response.status === 510) { // 510表示access_token失效
+            if (token.access_token) { // access_token存在则刷新，否则跳转首页。
+              refreshToken.call(this).then(res => {
+                reject(510)
+              })
+            } else {
+              toLogin()
+            }
+          }
+        } else if (request) {
+          _this.tip(`请求超时.`)
         } else {
-          console.log('otherss')
+          _this.tip(`请求失败.`)
         }
       })
     })
@@ -299,7 +304,7 @@ export default class Common {
       })
       let loadingTime = setTimeout(function() {
         Indicator.close()
-      }, 5000)
+      }, 15000)
     } else {
       Indicator.close()
     }

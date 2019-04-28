@@ -26,13 +26,18 @@ export default {
   data() {
     return {
       origin: true,
-      list: [{
-        imgUrl: './static/images/home/banner.png'
+      list: [],
+      list1: [{
+        imgUrl: './static/images/home/banner4.jpeg'
+      }],
+      list2: [{
+        imgUrl: './static/images/home/banner1.jpeg'
       }],
       title: ''
     };
   },
   created() {
+    this.list = (this.$route.query.classify == 1)? this.list1 : this.list2
     this.title = (this.$route.query.classify == 1)? '金管家服务' : '商学院'
     this.getImgList()
   },

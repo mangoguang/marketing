@@ -50,7 +50,6 @@ export default {
     ...mapGetters(['orderList'])
   },
   mounted() {
-    console.log(this)
     let params = {
       page: 1,
       limit: 30
@@ -65,6 +64,8 @@ export default {
     ]),
     getOrderList(obj) {
       indexModel.getOrderList(obj).then((res) => {
+        // 解除上拉加载动画
+        this.$refs.loadmore.onTopLoaded();
         res = res.data
         if (res) {
           let target = this.orderData.records || []
@@ -80,8 +81,12 @@ export default {
       })
     },
     loadTop() {
-      this.$refs.loadmore.onTopLoaded();
-      console.log('上拉刷新')
+      let params = {
+        page: 1,
+        limit: 30
+      }
+      this.setOrderSearchParam(params)
+      this.getOrderList(params)
     },
     //下拉刷新
     loadBottom() {
@@ -109,6 +114,7 @@ export default {
     height: 100vh;
     width: 100vw;
     overflow-x: hidden;
+
   }
 </style>
 

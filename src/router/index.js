@@ -331,13 +331,13 @@ export var router = new VueRouter({
     component:preShare
   },
   {
-    path: '/home',
+    path: '/',
     name: 'home',
     component: () => import('../pages/home/index')
   },
   /***工作模块***/
   {
-    path: '/',
+    path: '/work',
     name: 'work',
     component: () => import('../pages/work')
   },
