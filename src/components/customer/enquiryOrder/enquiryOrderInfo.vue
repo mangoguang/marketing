@@ -10,7 +10,7 @@
           <!-- <span>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</span> -->
           <div class="phone"></div>
         </li>
-        <li>收获地址：{{ list.address }}</li>
+        <li>收获地址：{{ address }}</li>
         <!-- <li>收获地址：{{ `******${list.address ? list.address.slice(6, 50) : ''}` }}</li> -->
         <li>需求日期：{{ turnDate(list.demandTime) }}</li>
       </ul>
@@ -81,6 +81,9 @@ export default {
   font-size: 3.73vw;
   color: #363636;
   // justify-content: space-between;
+  .address {
+    min-height: 20vw;
+  }
   .address-icon {
     background: url("../../../assets/imgs/address.png") no-repeat center;
     background-size: 100% 100%;

@@ -163,7 +163,7 @@ export default {
   }
    .type{
       display: flex;
-      min-height: 6vw;
+      // min-height: 6vw;
       .type_icon {
         font-size: 2.4vw;
         color: #666;
