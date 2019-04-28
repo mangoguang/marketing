@@ -1,12 +1,14 @@
 <template>
   <div class="dailyPlan">
     <H3>明日目标及重点工作安排</H3>
-    <textarea
-    @change="changeTextarea"
-    maxlength="300"
-    v-model="textareaVal"
-    :disabled="disabled"></textarea>
-    <span>({{textareaVal.length}}/300)</span>
+    <div v-if="disabled">
+      <textarea
+      @change="changeTextarea"
+      maxlength="300"
+      v-model="textareaVal"></textarea>
+      <span>({{textareaVal.length}}/300)</span>
+    </div>
+    <p v-else>{{text}}</p>
   </div>
 </template>
 
@@ -68,6 +70,10 @@ export default {
   }
   span{
     color: #999;
+  }
+  p{
+    padding: 4vw;
+    color: #363636;
   }
 }
 </style>
