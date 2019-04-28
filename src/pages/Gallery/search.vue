@@ -284,7 +284,7 @@ export default {
   box-sizing: border-box;
   overflow: hidden;
   .search_box {
-    padding: 2vw 4vw;
+    padding: 3vw 4vw;
     background: #fff;
     display: flex;
     justify-content: space-between;

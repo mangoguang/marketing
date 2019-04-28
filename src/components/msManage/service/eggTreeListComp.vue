@@ -5,7 +5,9 @@
         <span  
           @touchend="changeNewStatus(index)" 
           :class="item.status? 'addClass' : ''">
+          <!-- :class="item.status? 'addClass' : ''"> -->
           {{ item.name }}
+           <hr v-show="item.status">
         </span>
         <div class="child_wrapper" :style="{'top':`${top}vw`}">
           <ul class="child_treeList " v-show="item.status" >
@@ -13,6 +15,7 @@
               <span 
                 @touchend="changChildStatus(i, index)"
                 :class="el.status? 'childrenAddClass' : ''">
+                <!-- :class="el.status? 'childrenAddClass' : ''"> -->
                 {{ el.name }}
               </span>
             </li>
@@ -253,8 +256,14 @@ export default {
 }
 .addClass {
   color: #363636;
-  font-size: 4.5vw;
-  border-bottom: 0.8vw solid #363636;
-  border-radius: 0.4vw;
+  // font-size: 4.5vw;
+  // border-bottom: 0.8vw solid #363636;
+  // border-radius: 0.4vw;
 }
+ hr {
+    border: none;
+    border-top: 0.8vw solid #363636;
+    border-radius: 0.4vw;
+    margin: 0;
+  }
 </style>

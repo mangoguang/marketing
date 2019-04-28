@@ -90,7 +90,7 @@ export default {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     box-sizing: border-box;
-    padding-left:4vw;
+    // padding-left:4vw;
     background: #fff;
     margin-top: 4vw;
     color: #363636;

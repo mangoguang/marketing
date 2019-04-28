@@ -60,7 +60,7 @@ export default {
         image: './static/images/home/tuku1.png'
       },{
         name: '商学院',
-        preName: '加快知识和信息的流动，有利于知识共享与交流',
+        preName: '-精英必备产品知识、卖点，销售技能、门店管理攻略',
         link: '/msManage',
         id: 2,
         image: './static/images/home/xueyuan1.png'

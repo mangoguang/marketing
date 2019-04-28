@@ -337,7 +337,8 @@ export default {
   background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
   .topBar {
     background: #fff;
-    padding: 2vw 1.66vw;
+    padding: 3vw 1.66vw;
+    padding-bottom:1vw;
     display: flex;
     align-items: center;
     justify-content: space-between;

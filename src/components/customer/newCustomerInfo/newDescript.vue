@@ -325,7 +325,6 @@ export default {
 @import "../../../assets/common.scss";
 .customerDescript{
   background: $bgCol;
- 
   &>li{
     padding: 0 5vw;
   }
@@ -358,7 +357,7 @@ export default {
     }
   }
   li:nth-child(1) {
-    padding: 2vw 4vw;
+    padding: 2vw 5vw;
     img {
       width: 14.66vw;
       height: 14.66vw;
