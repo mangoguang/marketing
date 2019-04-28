@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" :style='{marginTop: marginTop}'>
     <div :class="`${myStyle.loginFix}`"></div>
     <div class="topBar">
       <tips-error :style="{display:display}"></tips-error>
@@ -48,14 +48,14 @@
           </ul>
         </form>
       </div>
-    </div>
-    <div class="wechatLogin" :style="{height: h}">
-      <div class="wechatText">
-        <hr>
-        <span>第三方账号登录</span>
-        <hr>
+       <div class="wechatLogin" :style="{height: h}">
+        <div class="wechatText">
+          <hr>
+          <span>第三方账号登录</span>
+          <hr>
+        </div>
+        <div class="wechat-icon"></div>
       </div>
-      <div class="wechat-icon"></div>
     </div>
     <footer></footer>
   </div>
@@ -102,7 +102,8 @@ export default {
       inputValue2: "",
       nameMsg: "",
       pwdMsg: "",
-      h: ''
+      h: '',
+      marginTop:''
     };
   },
   mounted() {
@@ -132,11 +133,13 @@ export default {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
         this.height = "54.4";
-        this.marginTop = "-5.86";
+        this.marginTop = "-5.86vw";
       } else if (phone === "iphone") {
         this.height = "49.26";
+        this.marginTop = ''
       } else {
         this.height = "49.26";
+        this.marginTop = ''
       }
     },
     login(account, pwd) {
@@ -389,12 +392,13 @@ export default {
 
 <style lang="scss" scoped>
 .login {
+  height: 100vh;
   background: #fff;
   // font-family: PINGPANG;
   position: relative;
   // height: 100vh;
-  // box-sizing: border-box;
-  // overflow: hidden;
+  box-sizing: border-box;
+  overflow: hidden;
   .fix {
     width: 100%;
     height: 6vw;
@@ -506,11 +510,13 @@ export default {
   }
   .wechatLogin {
     margin-top: 13.33vw;
-    padding: 0 4vw;
-    background: #fff;
+    // padding: 0 4vw;
+    // background: #fff;
     position: relative;
     z-index: 999;
     // height: 60vw;
+    // top:0;
+    // left:0;
     .wechatText {
       display: flex;
       justify-content: space-between;

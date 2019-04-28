@@ -5,7 +5,7 @@
         v-model="radioVal" @change="changeVal"/>
     </div>
     <div class="inp">
-      <input v-model="phone" type="number" :placeholder="chooseVal">
+      <input v-model="phone" :type="inpType" :placeholder="chooseVal">
       <button @click="toCustomerInfo" type="button">新建</button>
     </div>
     <div class="tips" v-show="existStatus">
@@ -37,12 +37,14 @@ export default {
       chooseVal: '请输入客户手机号',
       existStatus: false,
       cusId: '',
-      tipsVal: '手机号码已存在，'
+      tipsVal: '手机号码已存在，',
+      inpType: ''
     }
   },
   watch: {
     radioVal() {
       this.chooseVal = this.radioVal == '客户手机'? '请输入客户手机号' : '请输入客户微信号'
+      this.inpType = this.radioVal == '客户手机'? 'number' : 'text'
       this.tipsVal = this.radioVal == '客户手机'? '手机号码已存在，' : '微信号已存在，'
     }
   },
