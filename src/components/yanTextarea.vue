@@ -55,6 +55,7 @@ export default {
       border-right: none;
       padding:4.266vw;
       box-sizing: border-box;
+      overflow: scroll;
     }
   }
 </style>

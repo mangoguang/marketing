@@ -133,6 +133,7 @@ export default {
         level:'A',   //等级
         recordList:[]
       },
+      isFirstEnter:false,
       goodsValue:'',
       shopName:'',
       sourceName:'',
@@ -252,10 +253,14 @@ export default {
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
     this.url=this.$route.query.url;
-    if(this.$route.query.oppId){
+     if(this.$route.query.oppId){
       this.updateTitle('意向详情');
       this.form.oppId=this.$route.query.oppId;
-      this.getOpportunity(this.form.oppId);
+      if(!this.isFirstEnter){
+        /* this.isFirstEnter=true; */
+        this.getOpportunity(this.form.oppId);
+      }
+      
       
     }else{
       this.updateTitle('新建意向');
@@ -276,7 +281,7 @@ export default {
     
   },
   mounted(){
-
+   
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
@@ -334,8 +339,8 @@ export default {
             this.setCheckedList(list);
             this.form.goodsList=res.data.goodsList;       
           }else{
-             //this.setCheckedList([]);
-             //this.form.goodsList=[];
+             this.setCheckedList([]);
+             this.form.goodsList=[];
           }
           this.status=res.data.status;
           console.log(4444,res.data.shopId);
@@ -552,7 +557,7 @@ export default {
       this.isPrompt=true;
     },
     openStore(){
-       this.$router.push({name:'chooseShop',query: {type: 'addintention'}});
+       this.$router.replace({name:'chooseShop',query: {type: 'addintention'}});
       
     },
    updateClassify(option){
@@ -654,6 +659,7 @@ export default {
       to.meta.keepAlive=false;   
       next();
     }
+    //to.meta.isUseCache=false;
     //to.meta.keepAlive=false;
    next();
   },
@@ -661,11 +667,15 @@ export default {
    // console.log(to);
    //console.log(from);
     if(to.name==='/enquiryInfo'){
-      //this.setCheckedList([]);
+      this.setCheckedList([]);
+      form.meta.keepAlive=true;
+      to.meta.isUseCache=false;
       next();
     }
     if(to.name==='/CustomerInfo'){
-      //this.setCheckedList([]);
+      this.setCheckedList([]);
+      form.meta.keepAlive=true;
+      to.meta.isUseCache=false;
       next();
     }
     next();
