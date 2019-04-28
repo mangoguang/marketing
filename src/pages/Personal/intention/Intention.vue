@@ -302,7 +302,7 @@ export default {
     },
     modify(){
       console.log(this.customerId);
-      this.$router.push({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
+      this.$router.replace({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
     },
     close(){
       this.isPrompt=true;
@@ -315,6 +315,9 @@ export default {
      //console.log(this.failReason);
      if(this.failReason===''){
        mango.tip('战败原因不能为空');
+       return;
+     }else if(this.failReason.length>300){
+       mango.tip('战败原因不能超过300字');
        return;
      }else{
       let obj={
