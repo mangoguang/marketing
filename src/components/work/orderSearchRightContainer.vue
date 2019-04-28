@@ -5,7 +5,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>起始日期</h3>
+            <h3>订单交期</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>

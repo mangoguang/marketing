@@ -34,6 +34,7 @@ import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
 import { IndexModel } from "../../utils/"
 import mango from "../../js"
+import Bus from '../../utils/Bus'
 import { mapMutations } from 'vuex';
 const indexModel = new IndexModel()
 export default {
@@ -72,13 +73,9 @@ export default {
 
   },
   created() {
-    let arr = [{
-      index: 0,
-      day: 4
-    }, {
-      index: 1,
-      day: 10
-    }]
+    Bus.$on('dailyPlanTextarea', val => {
+      console.log('dailyPlanTextarea', val)
+    })
   },
   mounted() {
     this.curDay = this.getToday()
@@ -130,6 +127,7 @@ export default {
     },
     // 明日目标及重点工作安排子组件触发更改文本
     changeDailyPlanTextarea(str) {
+      this.dailyPlanTextarea = str
     },
     // 获取当天日期字符串，格式如：2019年04月17日
     getToday() {
