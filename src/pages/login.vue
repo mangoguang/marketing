@@ -151,9 +151,9 @@ export default {
       //   }
       // axios({
       //   method: 'post',
-      //   url:'http://172.16.10.107/oauth.token',
+      //   // url:'http://172.16.10.107/oauth.token',
       //   // url: 'http://10.11.8.7/oauth/token',
-      //   // url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
+      //   url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
       //   data: data,
       //   transformRequest: [function(data) {
       //     let ret = ''
@@ -169,6 +169,10 @@ export default {
       // .then((res) => {
       //     mango.loading('close')
       //     let data = res.data
+      //     if (data.code === 500) {
+      //       mango.tip(data.msg)
+      //       return
+      //     }
       //     // data.access_token = '111'
       //     if(data) {
       //       // 将账号信息添加到对象
@@ -188,6 +192,8 @@ export default {
       //       // 登陆成功跳转页面
       //       this.getUserInfo()
       //     }
+      // }).catch((reject) => {
+      //   alert('账号或密码有误。')
       // })
 
       // indexModel.getToken(account,md5(pwd)).then(res => {
@@ -239,6 +245,10 @@ export default {
         mango.loading('close')
         let data = res.data
         // data.access_token = '111'
+        if (data.code === 500) {
+          mango.tip(data.msg)
+          return
+        }
         if(data) {
           // 将账号信息添加到对象
           Object.assign(data, {
@@ -257,7 +267,7 @@ export default {
           // 登陆成功跳转页面
           this.getUserInfo()
         }
-      }) 
+      })
     },
     // 获取用户个人信息
     getUserInfo() {

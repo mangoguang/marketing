@@ -241,7 +241,7 @@ export var router = new VueRouter({
     component: () => import('../pages/Personal/intention/addIntention'),
     meta:{
       keepAlive:true,
-      isUseCache: false
+      isUseCache: true
     }
   },
   //金管家模块-我的收藏

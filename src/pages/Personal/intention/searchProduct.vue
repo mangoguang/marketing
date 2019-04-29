@@ -84,7 +84,6 @@ export default {
      
    },
    updateVal(checkList){
-     //console.log(checkList);
      this.productList=checkList;
    },
    search(){
