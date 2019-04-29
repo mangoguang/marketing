@@ -45,7 +45,8 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/>
+          <!-- <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/> -->
+          <yan-one-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/>
         </li>
         <li>
           <color-select v-bind="formInfo.color" :value="colorPrefName" @update="updateColor" :showIcon="selectIcon"/>
@@ -60,7 +61,7 @@
           <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly' :maxlength='8'/>
         </li>
         <li>
-          <discount-select v-bind="formInfo.discount" :value="form.argreeDiscount" @update="updateDiscount" :showIcon="selectIcon"/>
+          <discount-select v-bind="formInfo.discount" :value="argreeDiscountTxt" @update="updateDiscount" :showIcon="selectIcon"/>
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.remark" :maxlength='200' :readonly='readonly' v-model="form.remark"></yan-textarea>
@@ -87,6 +88,7 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import titleBar from '../../../components/common/titleBar'
 import yanInput from '../../../components/yanInput'
+import yanOneInput from '../../../components/yanOneInput'
 import yanTextarea from '../../../components/yanTextarea'
 import intentionSelect from '../../../components/mySelect/intentionSelect'
 import storeSelect from '../../../components/mySelect/storeSelect'
@@ -152,7 +154,8 @@ export default {
       status:'',
       urgency:'否',
       url:'',
-      go:-1
+      go:-1,
+      argreeDiscountTxt:''
     }
   },
   components:{
@@ -173,7 +176,8 @@ export default {
      recordPannel,
      yanLayerPrompt,
      colorSelect,
-     discountSelect
+     discountSelect,
+     yanOneInput
   },
   watch:{
     $route(to,from){
@@ -246,6 +250,9 @@ export default {
     ...mapState(['checkedList'])
   },
   created(){
+    this.customerId=this.$route.params.customerId;
+    this.path=this.$route.fullPath;
+    this.url=this.$route.query.url;
     this.getProduct();
     this.getShop();
     this.$route.meta.keepAlive=true;
@@ -273,7 +280,7 @@ export default {
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
-    ...mapMutations(['updateAddress','setCheckedList','updateSearchProductList']),
+    ...mapMutations(['updateAddress','setClassify','setCheckedList','updateSearchProductList']),
     getShop(){
       let shops=JSON.parse(localStorage.getItem('shops'));
       console.log(shops);
@@ -350,7 +357,14 @@ export default {
           this.form.budget=res.data.budget;
           this.form.depositPaid=res.data.depositPaid;
           this.form.argreeDiscount=res.data.argreeDiscount;
-          this.form.level=res.data.level;
+          if(res.data.argreeDiscount!==''){
+            let txt=parseFloat(res.data.argreeDiscount)/10;
+            console.log('333',txt);
+            this.argreeDiscountTxt=txt+"折";
+          }else{
+            this.argreeDiscountTxt=0;
+          }
+          this.form.level=res.data.level===''?"A":res.data.level;
           this.form.recordList=res.data.recordList;
           if(res.data.urgency){
             this.urgency="是";
@@ -631,6 +645,9 @@ export default {
      discount=parseFloat(discount)*10;
      console.log(discount);
      this.form.argreeDiscount=discount;
+     let txt=discount/10;
+     this.argreeDiscountTxt=txt+"折";
+    
    },
    //离开清除缓存
    clearKeepAlive(){
@@ -677,76 +694,77 @@ export default {
       this.urgency='否';
       this.url='';
       this.go=-1;
+      this.argreeDiscountTxt='';
    }
-  }
-  // beforeRouteEnter(to,from,next){
-  //  // console.log("进来addIntention",to);
-  //  console.log(from);
-  //   if(from.name==='selectAddress'){
-  //     to.meta.keepAlive=true;
-  //     next();
-  //   }
-  //   if(from.name==='searchProduct'){
-  //     to.meta.keepAlive=true;
-  //     next();
-  //   }
-  //   if(from.name==='intentionProduct'){
+  },
+  beforeRouteEnter(to,from,next){
+   // console.log("进来addIntention",to);
+   console.log(from);
+    if(from.name==='selectAddress'){
+      to.meta.keepAlive=true;
+      next();
+    }
+    if(from.name==='searchProduct'){
+      to.meta.keepAlive=true;
+      next();
+    }
+    if(from.name==='intentionProduct'){
        
-  //       to.meta.keepAlive=true;
-  //       next();
+        to.meta.keepAlive=true;
+        next();
        
-  //     next();
-  //   }
-  //   if(from.name==='chooseShop'){
+      next();
+    }
+    if(from.name==='chooseShop'){
      
-  //       to.meta.keepAlive=true;
-  //       next();
+        to.meta.keepAlive=true;
+        next();
       
-  //   }
-  //   if(from.name==='intention'){
-  //     to.meta.keepAlive=false;
-  //     next();
-  //   }
-  //   if(from.name==='/enquiryInfo'){
-  //     to.meta.keepAlive=false; 
-  //     next();
-  //   }
-  //   if(from.name==='/CustomerInfo'){
-  //     to.meta.keepAlive=false;   
-  //     next();
-  //   }
-  //  next();
-  // }
-  // beforeRouteLeave(to,from,next){
-  //  console.log(to.name);
-  //  //console.log(from);
-  //   if(to.name==='/enquiryInfo'){
-  //       //from.meta.keepAlive=false;
-  //       if(!from.meta.keepAlive){
-  //         this.setCheckedList([]);
-  //         this.clearKeepAlive();
-  //         next();    
-  //       }
-  //       next();
-  //   }
-  //   if(to.name==='/CustomerInfo'){
-  //       //from.meta.keepAlive=false;
-  //       if(!from.meta.keepAlive){
-  //         this.setCheckedList([]);
-  //         this.clearKeepAlive();
-  //         next();    
-  //       }
-  //        next();    
-  //   }
-  //   if(to.name==='intentionProduct'){
-  //       //from.meta.keepAlive=false;
-  //     if(!from.meta.keepAlive){
-  //       from.meta.keepAlive=true;
-  //       next();
-  //     }
-  //   }
-  //   next();
-  // }
+    }
+    if(from.name==='intention'){
+      to.meta.keepAlive=false;
+      next();
+    }
+    if(from.name==='/enquiryInfo'){
+      to.meta.keepAlive=false; 
+      next();
+    }
+    if(from.name==='/CustomerInfo'){
+      to.meta.keepAlive=false;   
+      next();
+    }
+   next();
+  },
+  beforeRouteLeave(to,from,next){
+   console.log(to.name);
+   //console.log(from);
+    if(to.name==='/enquiryInfo'){
+        //from.meta.keepAlive=false;
+        if(!from.meta.keepAlive){
+          this.setCheckedList([]);
+          this.clearKeepAlive();
+          next();    
+        }
+        next();
+    }
+    if(to.name==='/CustomerInfo'){
+        //from.meta.keepAlive=false;
+        if(!from.meta.keepAlive){
+          this.setCheckedList([]);
+          this.clearKeepAlive();
+          next();    
+        }
+         next();    
+    }
+    if(to.name==='intentionProduct'){
+        //from.meta.keepAlive=false;
+      if(!from.meta.keepAlive){
+        from.meta.keepAlive=true;
+        next();
+      }
+    }
+    next();
+  }
 };
 </script>
 

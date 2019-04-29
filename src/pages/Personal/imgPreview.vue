@@ -170,9 +170,7 @@ export default {
     if(this.picVal.length>0){
       var array=this.picVal;
       window.picVal=array;
-    }
-      
-      
+    }  
   }
     
 

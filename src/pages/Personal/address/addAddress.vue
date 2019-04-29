@@ -6,7 +6,8 @@
           <area-select v-bind="formInfo.areaInfo" v-model="area" readonly @update="updateArea" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border" :maxlength='200'/>
+          <!-- <yan-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border" :maxlength='200'/>-->
+          <yan-one-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border" :maxlength='200'/> 
         </li>
         <li>
           <house-select v-bind="formInfo.apartmentType" v-model="apartmentType" @update="updateApartmentType" :showIcon="selectIcon" class="li_border"/>
@@ -25,6 +26,7 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import Btn from '../../../components/personal/Btn'
 import yanInput from '../../../components/yanInput'
+import yanOneInput from '../../../components/yanOneInput'
 import yanTextarea from '../../../components/yanTextarea'
 import areaSelect from '../../../components/mySelect/areaSelect'
 import houseSelect from '../../../components/mySelect/houseSelect'
@@ -65,7 +67,8 @@ export default {
      yanTextarea,
      areaSelect,
      houseSelect,
-     elevatorSelect
+     elevatorSelect,
+     yanOneInput
   },
   computed:{
     ...mapState('addAddress',[
