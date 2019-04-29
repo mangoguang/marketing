@@ -37,6 +37,10 @@ export default {
     box-sizing: border-box;
     overflow-x: hidden;
     width: 100vw;
+    span {
+      display: table-cell;
+      vertical-align: middle;
+    }
     .customerli-text {
       padding-right: 6vw;
       // width:16vw;

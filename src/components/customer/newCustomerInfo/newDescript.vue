@@ -408,5 +408,8 @@ export default {
   .upload {
     margin-left: 8vw;
   }
+  input {
+    width: 50vw;
+  }
 }
 </style>
