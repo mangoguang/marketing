@@ -126,6 +126,11 @@ export default {
     change(e) {
       let files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
+      let size = Math.floor(files.size / 1024);
+      if (size > 3 * 1024 * 1024) {
+        alert("请选择3M以内的图片！");
+        return false;
+      }
       this.hasImgStatus = false
       this.panel = true;
       this.picValue = files[0];

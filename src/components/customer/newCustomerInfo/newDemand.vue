@@ -36,20 +36,20 @@
       <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
       <li is="progressSelect"  @progressChange="progressChange" @pgCodeChange='pgCodeChange'></li>
       <li is="customerLi" :leftText="'竞品产品'">
-        <input v-model="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品" oninput="if(value.length>5)value=value.slice(0,100)">
+        <input v-model="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品" oninput="if(value.length>100)value=value.slice(0,100)">
       </li>
       <li is="colorSelect"  @colorChange="colorChange" @colorCodeChange='colorCodeChange'></li>
       <li is="customerLi" :leftText="'预算金额'">
-        <input v-model="newCustomerInfo.budget" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写预算金额" oninput="if(value.length>5)value=value.slice(0,8)">
+        <input v-model="newCustomerInfo.budget" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写预算金额" oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
       <li is="customerLi" :leftText="'已交定金'">
-        <input v-model="newCustomerInfo.depositPaid" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写已交金额" oninput="if(value.length>5)value=value.slice(0,8)">
+        <input v-model="newCustomerInfo.depositPaid" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写已交金额" oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
 
       <li is="discountSelect" @discountChange="discountChange"></li>
       <li class="textarea">
         <h3>备注信息</h3>
-        <textarea v-model="newCustomerInfo.remark2" placeholder="添加备注信息" oninput="if(value.length>5)value=value.slice(0,200)"></textarea>
+        <textarea v-model="newCustomerInfo.remark2" placeholder="添加备注信息" oninput="if(value.length>200)value=value.slice(0,200)"></textarea>
       </li>
       <intentionSelect :intentionVal='intentionVal'/>
       <urgentSelect :urgentVal='urgentVal'/>
