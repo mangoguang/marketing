@@ -24,8 +24,8 @@
         </remark>
       </li>
     </ul>
-    <upLoad ref="upload" :path="path" picLen='5' :clear="isClear"/>
-    <!-- <upLoad /> -->
+    <!-- <upLoad ref="upload" :path="path" picLen='5' :clear="isClear"/> -->
+    <upLoad />
     <p class="bottom">到底啦</p>
     <!-- <div class="btnsBox">
       <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
@@ -60,8 +60,8 @@ import Vuex, { mapMutations, mapState } from "vuex"
 import { DatetimePicker, MessageBox } from 'mint-ui'
 import followSelect from '../../select/followSelect'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
-// import upLoad from './upload'
-import upLoad from '../../upload/filesUpload'
+import upLoad from './upload'
+// import upLoad from '../../upload/filesUpload'
 Vue.component(DatetimePicker.name, DatetimePicker)
 import remark from '../remark'
 import myRange from '../myRange'

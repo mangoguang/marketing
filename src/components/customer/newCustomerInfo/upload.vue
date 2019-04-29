@@ -46,11 +46,11 @@ export default {
   computed: {
     ...mapState({
       newCustomerInfo: state => state.customer.newCustomerInfo
-    }),
+    })
+  },
+  watch: {
     imgLen() {
-      get() {
-        return this.imgLen
-      }
+      console.log('imgLen',this.imgLen)
     }
   },
   methods: {
@@ -109,7 +109,7 @@ export default {
       });
       this.newCustomerInfo.dataFiles = formdata
       this.setNewCustomerInfo(this.newCustomerInfo)
-      this.imgLen -= 1
+      this.imgLen --;
     },
     //
     getArr(i,arr) {
