@@ -162,7 +162,13 @@ export default class Common {
       .then((res) => {
         // console.log(23234234, res)
         if (res.code === 510) {
-          reject(500)
+          if (token.access_token && token.access_token.length < 48) {
+            refreshToken.call(this).then(res => {
+              reject(510)
+            })
+          } else {
+            reject(500)
+          }
         } else {
           _this.loading('close')
           res = res.data
