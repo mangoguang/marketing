@@ -169,6 +169,16 @@ export default {
        mango.tip('请选择有无电梯');
        return false;
      }
+     if(this.form.address.length>200){
+       this.form.address=this.form.address.substring(0,200);
+       mango.tip('地址不能超过200字');
+       return false;
+     }
+     if(this.form.remark.length>200){
+       this.form.remark=this.form.remark.substring(0,200);
+       mango.tip('备注不能超过200字');
+       return false;
+     }
      return true;
    }
       

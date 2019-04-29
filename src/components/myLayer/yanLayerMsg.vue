@@ -79,6 +79,14 @@ export default {
           width:44.533vw;
         }
       }
+      .yan-layer-item:last-child{
+        span:last-child{
+          display: block;
+          width:44.533vw;
+          height:44.533vw;
+          overflow: scroll;
+        }
+      }
     }
     .yan-btn-group{
       position: absolute;
