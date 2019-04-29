@@ -1,6 +1,6 @@
 <template>
     <div class="addAdress">
-      <mybanner :title="title" style="background:#fff">
+      <mybanner :title="title" style="background:#f8f8f8">
         <button type="button" @click="update">保存</button>
       </mybanner>
       <ul class="list">

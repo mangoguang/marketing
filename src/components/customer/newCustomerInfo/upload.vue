@@ -76,7 +76,6 @@ export default {
         );
        this.submit(this.fil[i])
       }
-      // this.saveData()
     },
     //创建url预览图片
     getObjectURL(file) {

@@ -126,6 +126,32 @@ export default {
         }
       })
     },
+    //判断是外部链接还是内部id
+    isHttps(url) {
+      let result = url.indexOf('https') == '-1' ? 'id' : 'https'
+      return result
+    },
+    //判断系统并打开外部链接
+    judgeSystem(url) {
+      // 判断操作系统
+      if(api.systemType == 'android'){
+          //Android中的使用方法如下：
+        api.openApp({
+            androidPkg: 'android.intent.action.VIEW',
+            mimeType: 'text/html',
+            url: url
+        }, function(ret, err) {
+          if(err) {alert('链接错误')}
+        });
+      }else{
+        //iOS中的使用方法如下：
+        api.openApp({
+            iosUrl: url
+        },function(ret, err) {
+          if(err) {alert('链接错误')}
+        });
+      } 
+    },
     //轮播图跳转到活动
     goNext(e) {
       let dom = e.target
@@ -134,24 +160,18 @@ export default {
         return false;
       }
       let index = dom.getAttribute("data-type");
-        //判断操作系统
-        if(api.systemType == 'android'){
-            //Android中的使用方法如下：
-          api.openApp({
-              androidPkg: 'android.intent.action.VIEW',
-              mimeType: 'text/html',
-              url: this.imgSliderList[index].url
-          }, function(ret, err) {
-            if(err) {alert('该图片没有地址')}
-          });
-        }else{
-          //iOS中的使用方法如下：
-          api.openApp({
-              iosUrl: this.imgSliderList[index].url
-          },function(ret, err) {
-            if(err) {alert('该图片没有地址')}
-          });
-        } 
+      if(this.imgSliderList && this.imgSliderList[index].url) {
+        let url = this.imgSliderList[index].url
+        let type = this.isHttps(url)
+        if(type === 'id') {
+          this.$router.push({path:'/productDetails',query: {id: url}})
+        }else if(type === 'https') {
+          this.judgeSystem(url)
+        }
+      }else {
+        alert('没有相应的链接')
+      }
+        
     }
   }
 }

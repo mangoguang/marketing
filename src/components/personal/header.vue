@@ -10,12 +10,13 @@
           <span>{{ajaxData.sex === 0 ? '未知' : (ajaxData.sex === 1?'男' : '女')}}</span>
         </div>
         <div class="phoneNumber">
-          <span>{{`******${ajaxData.phone.slice(6, 11)}`}}</span>
-          <div class="phone-icon">
+          <p class='shop'>{{shop}}</p>
+          <p>{{ajaxData.account}}</p>
+          <!-- <div class="phone-icon">
             <a href="tel:1599999999">
               <img src="../../assets/imgs/call.png" alt="电话">
             </a> 
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -31,13 +32,16 @@ export default {
     return{
       height:'',
       marginTop:'',
-      ajaxData: {}
+      ajaxData: {},
+      shop: ''
     }
   },
   created() {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
+    let shop = localStorage.getItem('shops')
+    this.shop = JSON.parse(shop)[0].name
   },
   mounted(){
     this.isIPhoneX()
@@ -93,7 +97,8 @@ export default {
     .personal-content{
       margin-left: 5.6vw;
       .phoneNumber{
-        display: flex;
+        // display: flex;
+        line-height:1.4em;
         .phone-icon{
           padding-left: 2vw;
           padding-right: 4vw;

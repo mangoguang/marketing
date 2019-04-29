@@ -8,7 +8,7 @@
       <li is="shopSelect"></li>
       <li class="textarea">
         <remark :title="'备注'">
-          <textarea v-model="newCustomerInfo.remark" name="" id="" placeholder="描述一下情况吧"></textarea>
+          <textarea v-model="newCustomerInfo.remark" name="" id="" placeholder="描述一下情况吧" oninput="if(value.length>5)value=value.slice(0,200)"></textarea>
         </remark>
       </li>
       <li class="saveBtn"><big-btn :text="'保存'" @click.native="saveCustomerInfo" class="myBtn"></big-btn></li>

@@ -160,16 +160,25 @@ export default class Common {
         params: params
       })
       .then((res) => {
-        _this.loading('close')
-        res = res.data
-        resolve(res)
+        // console.log(23234234, res)
+        if (res.code === 510) {
+          reject(500)
+        } else {
+          _this.loading('close')
+          res = res.data
+          resolve(res)
+        }
       })
       .catch((error) => {
         _this.loading('close')
         if (error.response.status === 510) {
-          refreshToken.call(this).then(res => {
-            reject(510)
-          })
+          console.log('刷新前token', token.access_token, typeof token.access_token)
+          if (token.access_token) {
+            console.log('刷新token！！！')
+            refreshToken.call(this).then(res => {
+              reject(510)
+            })
+          }
         } else {
           console.log('otherss')
         }
@@ -224,7 +233,6 @@ export default class Common {
         _this.loading('close')
         clearTimeout(loadingTimeOut)
       }, 10000)
-      
        axios({
         method: 'post',
         //async: false,

@@ -27,16 +27,16 @@
       </li>
       <li is="colorSelect"  @colorChange="colorChange" @colorCodeChange='colorCodeChange'></li>
       <li is="customerLi" :leftText="'预算金额'">
-        <input v-model="newCustomerInfo.budget" type="number" placeholder="请填写预算金额">
+        <input v-model="newCustomerInfo.budget" type="number" placeholder="请填写预算金额" oninput="if(value.length>5)value=value.slice(0,8)">
       </li>
       <li is="customerLi" :leftText="'已交定金'">
-        <input v-model="newCustomerInfo.depositPaid" type="number" placeholder="请填写已交金额">
+        <input v-model="newCustomerInfo.depositPaid" type="number" placeholder="请填写已交金额" oninput="if(value.length>5)value=value.slice(0,8)">
       </li>
 
       <li is="discountSelect" @discountChange="discountChange"></li>
       <li class="textarea">
         <h3>备注信息</h3>
-        <textarea v-model="newCustomerInfo.remark2" placeholder="添加备注信息"></textarea>
+        <textarea v-model="newCustomerInfo.remark2" placeholder="添加备注信息" oninput="if(value.length>5)value=value.slice(0,200)"></textarea>
       </li>
       <intentionSelect :intentionVal='intentionVal'/>
       <urgentSelect :urgentVal='urgentVal'/>
