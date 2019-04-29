@@ -2,7 +2,8 @@
   <div class="header" :style="{'height':`${height}vw`,'marginTop':`${marginTop}vw`}">
     <div class="compile">编辑</div>
     <div class="personalMsg">
-      <div class="via" @click="go"></div>
+      <!-- <div class="via" @click="go"></div> -->
+      <img src="../../assets/imgs/via.png" alt="" class="via" @click="go">
       <div class="personal-content">
         <div class="name">
           <span>{{'导购员张三' || ajaxData.name}}</span>
@@ -89,8 +90,8 @@ export default {
     color: #fff;
     font-size: 4.266vw;
     .via{
-      background: url('../../assets/imgs/via.png') no-repeat center;
-      background-size: 100% 100%;
+      // background: url('../../assets/imgs/via.png') no-repeat center;
+      // background-size: 100% 100%;
       width: 16vw;
       height: 16vw;
     }

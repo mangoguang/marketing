@@ -53,6 +53,7 @@ export default {
     border-radius: 1.333vw;
     transform: translate(-50%,-50%);
     box-sizing: border-box;
+    overflow: hidden;
     // overflow: scroll;
     .yan-layer-content{
       padding-top:2.666vw;
