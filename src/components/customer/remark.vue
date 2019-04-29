@@ -1,6 +1,6 @@
 <template>
   <div class="remark">
-    <h3>{{title}}</h3>
+    <h3>{{title}} <span v-if='start === "start"'>*</span></h3>
     <slot></slot>
   </div>
 </template>
@@ -10,7 +10,7 @@ import Vue from 'vue'
 // import trackRecord from '../dealCustomer/trackRecord'
 export default {
   name:'remark',
-  props: ['title'],
+  props: ['title', 'start'],
   data(){
     return{
 
@@ -49,6 +49,9 @@ export default {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     font-size: $fontSize;
+  }
+  span {
+    color: #fb222b;
   }
 }
 </style>

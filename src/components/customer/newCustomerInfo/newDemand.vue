@@ -12,11 +12,11 @@
       <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       
       <template v-if='addressType !== "intention"'>
-        <li is="customerLi" :leftText="'客户地区'"  >
-          <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地址'}}</span>
+        <li is="customerLi" :leftText="'客户地区'"  :start="'*'">
+          <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
         </li>
-        <li is="customerLi" :leftText="'客户地址'"  >
-          <span>{{newCustomerInfo.address}}</span>
+        <li is="customerLi" :leftText="'客户地址'"  :start="'*'">
+          <span>{{newCustomerInfo.address || '请选择客户地址'}}</span>
         </li>
         <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
         <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>

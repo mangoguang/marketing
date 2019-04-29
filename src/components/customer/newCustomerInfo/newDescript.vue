@@ -32,7 +32,7 @@
       </template>
       <template v-else>
         <li is="areaSelect" @areaChange="areaChange"></li>
-        <li is="customerLi" :leftText="'客户地址'"  >
+        <li is="customerLi" :leftText="'客户地址'" >
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>5)value=value.slice(0,200)">
         </li>
       </template>
