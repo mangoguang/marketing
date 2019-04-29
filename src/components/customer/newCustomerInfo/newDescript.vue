@@ -29,7 +29,6 @@
         <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="toAddress">
           <span>地址管理</span>
         </li>
-      <li is="shopSelect" :type='"descript"'></li>
       </template>
       <template v-else>
         <li is="areaSelect" @areaChange="areaChange"></li>
@@ -37,6 +36,7 @@
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>5)value=value.slice(0,200)">
         </li>
       </template>
+      <li is="shopSelect" :type='"descript"'></li>
       <li class="textarea">
         <h3>客户描述</h3>
         <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧" oninput="if(value.length>5)value=value.slice(0,200)"></textarea>

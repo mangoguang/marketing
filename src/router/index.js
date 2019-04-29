@@ -16,6 +16,7 @@ const newCustomerDemand = () => import('../pages/customer/newCustomerDemand')
 const changeDemand = () => import('../pages/customer/changeDemand')
 const enquiryInfo = () => import('../pages/customer/enquiryInfo')
 const searchResult = () => import('../pages/customer/searchResult')
+const newIntention = () => import('../pages/customer/newCustomer/newIntention')
 
 //个人模块
 const personalMsg = () => import('../pages/Personal/personalMsg')
@@ -161,6 +162,11 @@ export var router = new VueRouter({
       isUseCache: false,  // 这个字段的意思稍后再说      
       keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
     }
+  },
+  {
+    path: '/newIntention',
+    name: 'newIntention',
+    component: newIntention
   },
   /****个人模块****/
   {

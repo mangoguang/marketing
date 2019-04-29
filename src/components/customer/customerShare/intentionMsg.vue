@@ -26,16 +26,16 @@ export default {
       })
     },
     newCustomer() {
-      // this.$router.push({path:`/addintention/${this.$route.query.id}`})
-      this.$router.push({
-        name:'addintention',
-        params: {
-          customerId: this.$route.query.id
-        },
-        query:{
-          url:this.$route.fullPath
-        }
-      })
+       this.$router.push({path:'newIntention',query: {id:this.$route.query.id}})
+      // this.$router.push({
+      //   name:'addintention',
+      //   params: {
+      //     customerId: this.$route.query.id
+      //   },
+      //   query:{
+      //     url:this.$route.fullPath
+      //   }
+      // })
     }
   }
 }

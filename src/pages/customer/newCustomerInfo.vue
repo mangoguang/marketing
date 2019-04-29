@@ -22,7 +22,7 @@
           <img src="../../assets/imgs/newPullDown.png" :class="{changSide:isShowDemand}">
         </div>
       </li>
-      <new-demand v-show="isShowDemand" :fromName='fromName' :changeCode="change"/>
+      <new-demand v-show="isShowDemand" :fromName='fromName' :changeCode="change" :type='"demand"' :addressType='"newCustomer"'/>
     </ul>
     <ul class="dealUl">
       <li @click="controlDaal">
@@ -119,7 +119,6 @@ export default {
     this.setCheckedList([])
     this.setFollowVal('')
     this.setFollowTiming('')
-
   },
   methods: {
     ...mapMutations([
@@ -317,7 +316,7 @@ export default {
         'address.apartmentType': this.codeList.htCode,   //户型    
         'address.elevator': obj.elevator,
         'opportunity.shopId': obj.shopId,
-        'opportunity.arrivalDate':mango.indexTimeB(new Date())[1],
+        'opportunity.arrivalDate':obj.arrivalDate || mango.indexTimeB(new Date())[1],
         'opportunity.source': this.codeList.sourceCode || 'Natural',
         'opportunity.residentTime': obj.residentTime,   //留店时长
         'opportunity.stylePref': this.codeList.spCode,    //风格

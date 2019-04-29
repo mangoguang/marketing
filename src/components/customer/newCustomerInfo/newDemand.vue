@@ -4,26 +4,34 @@
       <li is="customerLi" :leftText="'意向产品'" :icon='true' :start="'*'" @click.native='addIntention'>
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
-      <li is="shopSelect" :start='"*"' :type='"demand"'></li>
+      <li is="shopSelect" :start='"*"' :type='type'></li>
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
-
+      
+      <template v-if='addressType === "intention"'>
+        <li is="areaSelect" @areaChange="areaChange"></li>
+        <li is="customerLi" :leftText="'客户地址'"  >
+          <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>5)value=value.slice(0,200)">
+        </li>
+      </template>
+      <template v-else>
       <li is='customerLi' :leftText='"客户地区"'>
         <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
       </li>
        <li is='customerLi' :leftText='"客户地址"'>
         <span>{{newCustomerInfo.address || '请输入客户地址'}}</span>
       </li>
+      </template>
       <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
       <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
       <li is="BuyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
       <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
       <li is="progressSelect"  @progressChange="progressChange" @pgCodeChange='pgCodeChange'></li>
       <li is="customerLi" :leftText="'竞品产品'">
-        <input v-model="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品">
+        <input v-model="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品" oninput="if(value.length>5)value=value.slice(0,100)">
       </li>
       <li is="colorSelect"  @colorChange="colorChange" @colorCodeChange='colorCodeChange'></li>
       <li is="customerLi" :leftText="'预算金额'">
@@ -63,7 +71,7 @@ import { Picker, Popup } from 'mint-ui'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
-
+import areaSelect from '../../select/areaSelect'
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
 import YanintentionSelect from '../../mySelect/intentionSelect'
@@ -82,7 +90,7 @@ import mango from '../../../js'
 import {btnList} from '../../../utils/gallery'
 export default {
   name:'newDemand',
-  props: ['btns', 'fromName', 'changeCode'],
+  props: ['btns', 'fromName', 'changeCode', 'type','addressType'],
   components: {
     customerLi,
     bigBtn,
@@ -98,7 +106,8 @@ export default {
     colorSelect,
     houseType,
     elevatorSelect,
-    YanintentionSelect
+    YanintentionSelect,
+    areaSelect
   },
   data(){
     return{
@@ -128,9 +137,9 @@ export default {
   watch: {
     //初始进来的时候初始化数据
     fromName() {
-      if(this.fromName === 'NewCustomer') {
+      if(this.fromName === 'NewCustomer' && this.type == 'demand') {
         this.setInitData()
-      }else {
+      }else if(this.fromName !='NewCustomer'){
         this.setIntentionProduct()
         if(this.newCustomerInfo.arrivalDate) {
           this.timeColor = 'color: #363636'
@@ -209,6 +218,16 @@ export default {
       });
       }
       this.newCustomerInfo.shopId = this.shopId
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    areaChange(val) {
+      // console.log('选择的地区：', val)
+      this.$set(this.newCustomerInfo,'provinceName',val.provinceName)
+      this.$set(this.newCustomerInfo,'cityName',val.cityName)
+      this.$set(this.newCustomerInfo,'countryName',val.countryName)
+      this.newCustomerInfo.province = val.provinceCode
+      this.newCustomerInfo.city = val.cityCode
+      this.newCustomerInfo.area = val.countyCode
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //选择留店时长
