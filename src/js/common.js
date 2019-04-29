@@ -8,8 +8,8 @@ export default class Common {
   constructor() {
     //  this.port = 'http://10.11.8.250'
    // this.port = 'http://172.16.10.107'
-    //  this.port = "http://10.11.8.7"
-     this.port = "https://mobiletest.derucci.net/cd-sys-web"
+     this.port = "http://10.11.8.7"
+    //  this.port = "https://mobiletest.derucci.net/cd-sys-web"
     // this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
@@ -158,6 +158,7 @@ export default class Common {
         params: params
       })
       .then((res) => {
+        console.log('请求正常！！！')
         if (res.code === 510) { // token失效
           if (token.access_token && token.access_token.length < 48) { // 有效token
             refreshToken.call(this).then(res => {
@@ -173,6 +174,7 @@ export default class Common {
         }
       })
       .catch((error) => {
+        console.log('请求异常！！！')
         _this.loading('close')
         if (error.response) { // 如果服务器响应
           if (error.response.status === 510) {
@@ -190,6 +192,8 @@ export default class Common {
             this.tip('请求失败!')
           }
         } else if (error.request) {
+          this.tip('网络异常!')
+        } else {
           this.tip('网络异常!')
         }
       })
@@ -237,15 +241,12 @@ export default class Common {
       //let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
       let sign = this.getFormSign(data, token.access_token,keys)
-      // 显示加载动画，并在10秒后隐藏
+      // 显示加载动画
       this.loading('open')
-      let loadingTimeOut = setTimeout(function() {
-        _this.loading('close')
-        clearTimeout(loadingTimeOut)
-      }, 10000)
        axios({
         method: 'post',
         //async: false,
+        timeout: 3000,
         url: url,
         data:data,
          headers: {
@@ -263,6 +264,9 @@ export default class Common {
         }
       })
       
+    }).catch((error) => {
+      _this.loading('close')
+      console.log('请求异常', error)
     }) 
     
   }
