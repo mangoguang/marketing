@@ -112,6 +112,16 @@ export default {
           mango.tip('下次跟进时间不能小于等于当前跟进时间');
           return false;
       }
+      if(this.form.report.length>300){
+        this.form.report=this.form.report.substring(0,300);
+        mango.tip('跟进情况不能超过300字');
+        return false;
+      }
+      if(this.form.plan.length>300){
+        this.form.plan=this.form.plan.substring(0,300);
+        mango.tip('跟进计划不能超过300字');
+        return false;
+      }
       return true;
     },
    update(){

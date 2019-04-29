@@ -212,12 +212,10 @@ export default {
   watch:{
     $route(to,from){
       if(from.name==='/CustomerInfo'){
-        console.log('/CustomerInfo');
         this.UpdateRedirect=from.fullPath;
 
       }
       if(from.name==='/enquiryInfo'){
-         console.log('/enquiryInfo');
         this.UpdateRedirect=from.fullPath;
       } 
     }
@@ -233,7 +231,6 @@ export default {
     getOpportunity(){
       let id=this.$route.params.opportunityId;
       indexModel.getOpportunity(id).then(res => {
-        console.log(res.data);
         if(res.code===0){
           //this.form=res.data;
           this.oppId=res.data.oppId;
@@ -301,7 +298,6 @@ export default {
       })
     },
     modify(){
-      console.log(this.customerId);
       this.$router.replace({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
     },
     close(){
@@ -311,8 +307,6 @@ export default {
       this.isMsg=true;
     },
    layerUpdate(){
-     //console.log("确定");
-     //console.log(this.failReason);
      if(this.failReason===''){
        mango.tip('战败原因不能为空');
        return;
@@ -344,8 +338,6 @@ export default {
    },
    layerCancel(){
       this.isPrompt=false;
-     //console.log("取消");
-     //console.log(this.failReason);
    },
    confirm(){
     this.isMsg=false;
@@ -376,10 +368,8 @@ export default {
    },
    getShopName(id){
      let list=JSON.parse(localStorage.getItem('shops'));
-     //console.log(list)
     let name;
      list.map((item,index) => {
-       console.log(item);
        if(item.id===id){
          return name=item.name;
        } 
@@ -392,19 +382,15 @@ export default {
   },
   beforeRouteEnter(to,from,next){
     if(from.name==='/CustomerInfo'){
-      console.log('/CustomerInfo');
       let path=from.fullPath;
       next(vm => {
         vm.UpdateRedirect=path;
-        console.log('456')
       });
     }
     if(from.name==='/enquiryInfo'){
-      console.log('/enquiryInfo');
       let path=from.fullPath;
       next(vm => {
          vm.UpdateRedirect=path;
-         console.log('1234')
       });
     } 
     next();

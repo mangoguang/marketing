@@ -90,6 +90,14 @@ export default {
           white-space:pre-wrap
         }
       }
+      .yan-layer-item:last-child{
+        span:last-child{
+          display: block;
+          width:44.533vw;
+          height:44.533vw;
+          overflow: scroll;
+        }
+      }
     }
    
     .yan-btn-group{

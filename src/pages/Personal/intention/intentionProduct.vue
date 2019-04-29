@@ -50,15 +50,13 @@ export default {
   methods:{
    ...mapMutations(['addGoodsNum','cutGoodsNum','delGoods','setCheckedList']),
    update(){
-      //console.log("点击了");
       let arr=this.$store.state.checkedList;
       //localStorage.setItem('prouduct',JSON.stringify(arr));
-      console.log('arr',arr);
       this.setCheckedList(arr);
-      setTimeout(() => {
-        this.$router.replace({path:this.path});
-      },200);
-      
+      // setTimeout(() => {
+      //   this.$router.replace({path:this.path});
+      // },200);
+      this.$router.go(-1);
    },
    jump(){
      this.$router.replace({name:'searchProduct',params:{customerId:this.id},query:{redirect:this.path}})

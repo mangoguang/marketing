@@ -218,6 +218,16 @@ export default {
           this.goodsValue='';
           this.form.goodsList=[];
         }
+        // let shops=JSON.parse(localStorage.getItem('shops'));
+        // console.log(shops);
+        // let shopIndex=localStorage.getItem('shopIndex');
+        // console.log(shopIndex);
+        // shops.map((item,index) => {
+        //   if(shopIndex==index){
+        //     this.form.shopId=item.id;
+        //     this.shopName=item.name;
+        //   }
+        // })
         
         
       }
@@ -233,6 +243,19 @@ export default {
             this.shopName=item.name;
           }
         })
+        //  if(this.$store.state.checkedList.length>0){
+        //   this.goodsValue=this.$store.state.checkedList[0].goodsName;
+        //   this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
+        //     let obj={};
+        //     obj.goodsId=item.crmId;
+        //     obj.goodsName=item.goodsName;
+        //     obj.quantity=item.quantity;
+        //     return obj;
+        //   });
+        // }else{
+        //   this.goodsValue='';
+        //   this.form.goodsList=[];
+        // }
       }
       
     }
@@ -247,41 +270,39 @@ export default {
   },
   created(){
     console.log(this.checkedList);
-    this.getProduct();
-    this.getShop();
+    //this.getProduct();
+    //this.getShop();
     console.log("回退进了created");
-    this.customerId=this.$route.params.customerId;
-    this.path=this.$route.fullPath;
-    this.url=this.$route.query.url;
-     if(this.$route.query.oppId){
-      this.updateTitle('意向详情');
-      this.form.oppId=this.$route.query.oppId;
-      if(!this.isFirstEnter){
-        /* this.isFirstEnter=true; */
+    this.isFirstEnter=true;
+    if(!this.$route.meta.isUseCache || this.isFirstEnter){
+      if(this.$route.query.oppId){
+        this.updateTitle('意向详情');
+        this.form.oppId=this.$route.query.oppId;
         this.getOpportunity(this.form.oppId);
+      }else{
+        this.updateTitle('新建意向');
+        this.setCheckedList([]);
       }
-      
-      
-    }else{
-      this.updateTitle('新建意向');
-      this.setCheckedList([]);
     }
-    
+  },
+  mounted(){
+   
   },
   activated(){
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
-    if(this.$route.meta.isUseCache){
-       this.getProduct();
-       this.getShop();
-    }else{
-      this.$route.meta.isUseCache=false;
-    }
-   
+    this.url=this.$route.query.url;
     
-  },
-  mounted(){
-   
+    this.$route.meta.isUseCache=false;
+    this.isFirstEnter=false;
+    // this.customerId=this.$route.params.customerId;
+    // this.path=this.$route.fullPath;
+    // if(this.$route.meta.isUseCache){
+    //    this.getProduct();
+    //    this.getShop();
+    // }else{
+    //   this.$route.meta.isUseCache=false;
+    // }
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
@@ -421,12 +442,20 @@ export default {
         mango.tip('客户ID不能为空');
         return false;
       }
+      if(this.form.goodsList.length<=0){
+        mango.tip('意向产品不能为空');
+        return false;
+      }
       if(this.form.arrivalDate===''){
         mango.tip('进店日期不能为空');
         return false;
       }
       if(this.form.shopId===''){
         mango.tip('门店不能为空');
+        return false;
+      }
+      if(this.form.residentTime===''){
+        mango.tip('留店时长不能为空');
         return false;
       }
       if(this.form.source===''){
@@ -452,7 +481,26 @@ export default {
           return false;
         }
       }
-      
+      if(this.form.budget.length>8){
+        this.form.budget=this.form.budget.substring(0,8);
+        mango.tip('预算金额不能超过8个字');
+        return false;
+      }
+       if(this.form.depositPaid.length>8){
+        this.form.depositPaid=this.form.depositPaid.substring(0,8);
+        mango.tip('已交定金不能超过8个字');
+        return false;
+      }
+      if(this.form.competingGoods.length>100){
+        this.form.competingGoods=this.form.competingGoods.substring(0,100);
+        mango.tip('竞品产品不能超过100个字');
+        return false;
+      }
+      if(this.form.remark.length>200){
+        this.form.remark=this.form.remark.substring(0,200);
+        mango.tip('备注信息不能超过200个字');
+        return false;
+      }
       return true;
 
     },
@@ -508,13 +556,14 @@ export default {
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              setTimeout(() => {
-                 this.$router.replace({path:this.url});
-              },200)
+              // setTimeout(() => {
+              //    this.$router.replace({path:this.url});
+              // },200)
             
              // this.$router.go(-1);
-             // window.history.go(-1);
-              this.$destroy();
+            history.back(-1);
+             console.log(this.$router);
+              //this.$destroy();
             }else{
               mango.tip(res.msg);
             }
@@ -526,6 +575,7 @@ export default {
         mango.tip('战败原因不能为空');
         return;
       }else if(this.failReason.length>300){
+        this.failReason=this.failReason.substring(0,300);
         mango.tip('战败原因不能超过300字');
         return;
       }else{
@@ -557,7 +607,7 @@ export default {
       this.isPrompt=true;
     },
     openStore(){
-       this.$router.replace({name:'chooseShop',query: {type: 'addintention'}});
+       this.$router.push({name:'chooseShop',query: {type: 'addintention'}});
       
     },
    updateClassify(option){
@@ -638,17 +688,30 @@ export default {
       next();
     }
     if(from.name==='intentionProduct'){
-      to.meta.keepAlive=true; 
-      to.meta.isUseCache=true;
+      if(!to.meta.keepAlive){
+        to.meta.keepAlive=true; 
+        to.meta.isUseCache=true;
+      }else{
+        to.meta.keepAlive=false; 
+        to.meta.isUseCache=false;
+      }
       next();
     }
     if(from.name==='chooseShop'){
-      to.meta.keepAlive=true; 
-      to.meta.isUseCache=true;
+      if(!to.meta.keepAlive){
+        to.meta.keepAlive=true; 
+        to.meta.isUseCache=true;
+      }else{
+        to.meta.keepAlive=false; 
+        to.meta.isUseCache=false;
+      }
       next();
     }
     if(from.name==='intention'){
       to.meta.keepAlive=false; 
+      next();
+    }else{
+      to.meta.keepAlive=true;
       next();
     }
     if(from.name==='/enquiryInfo'){
@@ -659,8 +722,8 @@ export default {
       to.meta.keepAlive=false;   
       next();
     }
-    //to.meta.isUseCache=false;
-    //to.meta.keepAlive=false;
+    to.meta.isUseCache=true;
+    
    next();
   },
   beforeRouteLeave(to,from,next){
@@ -671,12 +734,16 @@ export default {
       from.meta.keepAlive=true;
       to.meta.isUseCache=false;
       next();
+    }else{
+      from.meta.keepAlive=true;
     }
     if(to.name==='/CustomerInfo'){
       this.setCheckedList([]);
       from.meta.keepAlive=true;
       to.meta.isUseCache=false;
       next();
+    }else{
+       from.meta.keepAlive=true;
     }
     next();
   }
