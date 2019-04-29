@@ -45,8 +45,11 @@ export default {
     })
   },
   beforeRouteLeave(to, from, next) {
+     if(to.name == '/CustomerInfo'){
+       this.clearData()
+      }
     next(vm => {
-       to.name === '/CustomerInfo'? vm.initData() :''
+     
     })
   },
   mounted() {
@@ -67,32 +70,44 @@ export default {
       'setColorPref',
       'setHouseType',
       'setElevatorVal',
-      'setCheckedList'
+      'setCheckedList',
+      'setAddressId'
       ]),
     initData() {
       this.setNewCustomerInfo({})
       let shopsList = btnList(this.shops,0)
       this.initShopList(shopsList)
       this.getShopVal()
+      this.setCheckedList([])
+      this.$set(this.newCustomerInfo,'urgency','false')
+      this.$set(this.newCustomerInfo,'level','A')
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    clearData() {
+      this.setNewCustomerInfo({})
+      this.setCheckedList([])
     },
     submit() {
-      this.whichFollowData(this.newCustomerInfo)
-      let formdata = new FormData()
-      let obj = this.updateParams(this.newCustomerInfo)
-      let arr = []
-      for(var key in obj) {
-        formdata.append(key,obj[key])
-        arr.push(key)
-      }
-      mango.getFormdataAjax('/v3/app/opportunity/update', formdata, arr).then((res) => {
-        if(res.status) {
-          MessageBox.alert('保存成功！').then(action => {
-            this.$router.go(-1)
-          })
-        }else {
-          MessageBox.alert('保存错误')
+      let temp = this.whichFollowData(this.newCustomerInfo)
+      if(temp) {
+        let formdata = new FormData()
+        let obj = this.updateParams(this.newCustomerInfo)
+        let arr = []
+        for(var key in obj) {
+          formdata.append(key,obj[key])
+          arr.push(key)
         }
-      })
+        mango.getFormdataAjax('/v3/app/opportunity/update', formdata, arr).then((res) => {
+          if(res.status) {
+            MessageBox.alert('保存成功！').then(action => {
+              this.$router.go(-1)
+            })
+          }else {
+            MessageBox.alert('保存错误')
+          }
+        })
+      }
+     
     },
     //获取门店的值
     getShopName() {
@@ -123,6 +138,7 @@ export default {
     },
     //判断根据情况哪个没有填写
     whichFollowData(obj) {
+      let temp;
       for(var key in obj) {
         if(!obj['productArr']) {
           MessageBox.alert('请选择意向产品')
@@ -139,12 +155,14 @@ export default {
         }else if(!obj['source']) {
           MessageBox.alert('请选择客户来源')
           return
+        }else if(!obj['addressId']) {
+          MessageBox.alert('请选择客户地址')
+          return
+        }else {
+          temp = true
         }
-        // else if(!obj['addressId']) {
-        //   MessageBox.alert('请选择地址')
-        //   return
-        // }
       }
+      return temp
     },
      //获取参数
      updateParams(obj) {
@@ -160,7 +178,7 @@ export default {
       let temp = {
         'customerId':this.$route.query.id,
         'opportunity.shopId': obj.shopId,
-        'opportunity.addressId': '1112612691244748801',
+        'opportunity.addressId': obj.addressId,
         'opportunity.arrivalDate': obj.arrivalDate || mango.indexTimeB(new Date())[1],
         'opportunity.source': this.codeList.sourceCode || 'Natural',
         'opportunity.residentTime': obj.residentTime,   //留店时长
@@ -193,7 +211,7 @@ export default {
       }
     }
   },
-   destroyed(){
+  destroyed(){
     this.setSourceVal('')
     this.setLeaveStoreVal('')
     this.setBuyReason('')
@@ -202,7 +220,7 @@ export default {
     this.setColorPref('')
     this.setHouseType('')
     this.setElevatorVal('')
-    this.setCheckedList([])
+    this.setAddressId('')
   }
 }
 </script>

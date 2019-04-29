@@ -28,7 +28,7 @@ export default {
       origin: true,
       list: [],
       list1: [{
-        imgUrl: './static/images/home/banner4.jpeg'
+        imgUrl: './static/images/home/jinguanjia2.jpeg'
       }],
       list2: [{
         imgUrl: './static/images/home/banner1.jpeg'

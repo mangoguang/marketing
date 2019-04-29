@@ -116,7 +116,7 @@ export default {
     this.setColorPref('')
     this.setHouseType('')
     this.setElevatorVal('')
-    this.setCheckedList([])
+    // this.setCheckedList([])
     this.setFollowVal('')
     this.setFollowTiming('')
   },

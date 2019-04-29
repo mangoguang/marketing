@@ -11,22 +11,27 @@
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       
-      <template v-if='addressType === "intention"'>
-        <li is="areaSelect" @areaChange="areaChange"></li>
-        <li is="customerLi" :leftText="'客户地址'"  >
-          <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>5)value=value.slice(0,200)">
+      <template v-if='addressType !== "intention"'>
+        <li is="customerLi" :leftText="'客户地区'"  :start="'*'">
+          <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
         </li>
+        <li is="customerLi" :leftText="'客户地址'"  :start="'*'">
+          <span>{{newCustomerInfo.address || '请选择客户地址'}}</span>
+        </li>
+        <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
+        <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
       </template>
       <template v-else>
-      <li is='customerLi' :leftText='"客户地区"'>
-        <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
+       <li is='customerLi' :leftText='"客户地址"' @click.native='toSelectAddress' :icon="true">
+        <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.districtName || '请选择客户地址'}}</span>
       </li>
-       <li is='customerLi' :leftText='"客户地址"'>
-        <span>{{newCustomerInfo.address || '请输入客户地址'}}</span>
+      <li is='customerLi' :leftText='"户型大小"'>
+        <span>{{newCustomerInfo.apartmentTypeName || '请先选择客户地址'}}</span>
+      </li>
+      <li is='customerLi' :leftText='"有无电梯"'>
+        <span>{{newCustomerInfo.elevatorName || '请先选择客户地址'}}</span>
       </li>
       </template>
-      <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
-      <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
       <li is="BuyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
       <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
       <li is="progressSelect"  @progressChange="progressChange" @pgCodeChange='pgCodeChange'></li>
@@ -65,12 +70,15 @@
 </template>
 
 <script>
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import { Picker, Popup } from 'mint-ui'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
+import addressSelect from '../../mySelect/addressSelect'
 import areaSelect from '../../select/areaSelect'
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
@@ -107,7 +115,8 @@ export default {
     houseType,
     elevatorSelect,
     YanintentionSelect,
-    areaSelect
+    areaSelect,
+    addressSelect
   },
   data(){
     return{
@@ -155,6 +164,7 @@ export default {
     this.shops = JSON.parse(shops)
     //获取默认进店时间
     this.day = mango.indexTimeB(this.today)[1]
+    this.hasAddressId()
   },
   methods: {
     ...mapMutations(['initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
@@ -169,6 +179,29 @@ export default {
       this.setLeaveStoreVal('')
       this.setDiscountVal('')
       this.setCheckedList([])
+    },
+    //请求客户地址
+    hasAddressId() {
+      if(this.$store.state.addressId) {
+        let id = this.$store.state.addressId
+        indexModel.getAddress(id).then(res => {
+          if(res.status == 1) {
+            this.$set(this.newCustomerInfo,'provinceName',res.data.provinceName)
+            this.$set(this.newCustomerInfo,'cityName',res.data.cityName)
+            this.$set(this.newCustomerInfo,'districtName',res.data.districtName)
+            this.newCustomerInfo.apartmentTypeName = res.data.apartmentTypeName
+            this.newCustomerInfo.elevatorName = res.data.elevator? '有' : '无'
+            this.newCustomerInfo.addressId = res.data.id
+            this.setNewCustomerInfo(this.newCustomerInfo)
+          }else {
+            mango.tips('地址选择失败')
+          }
+        })
+      }
+    },
+    //跳转客户地址
+    toSelectAddress() {
+      this.$router.push({name:'selectAddress',params:{customerId:this.$route.query.id},query:{type: 'intention'}})
     },
     //跳转到选择意向产品页面
     addIntention() {

@@ -58,7 +58,7 @@ export default {
       }else {
         this.val = this.shopVal
       }
-      console.log('shopval',this.val)
+      // console.log('shopval',this.val)
     },
     // getShopName() {
     //   let shopName = []

@@ -50,7 +50,7 @@ export default {
       },{
         imgUrl: './static/images/home/banner2.jpeg'
       },{
-        imgUrl: './static/images/home/banner4.jpeg'
+        imgUrl: './static/images/home/jinguanjia2.jpeg'
       }],
       cateList: [{
         name: '产品中心',

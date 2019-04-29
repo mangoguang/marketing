@@ -33,15 +33,14 @@ export default {
       newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
-  created() {
-    this.init()
-  },
   methods: {
     //初始化问题
      init() {
       if(this.newCustomerInfo.level) {
         let i = this.newCustomerInfo.level === 'A'? 0 : this.newCustomerInfo.level === 'B'? 1 : 2
         mango.changeBtnStatus(this.keyBtns, i)
+      }else {
+        mango.changeBtnStatus(this.keyBtns, 0)
       }
     },
      // 选择
