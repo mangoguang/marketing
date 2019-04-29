@@ -193,7 +193,7 @@ export default {
             this.getUserInfo()
           }
       }).catch((reject) => {
-        alert('账号或密码有误。')
+        mango.tip('网络异常！')
       })
 
       // indexModel.getToken(account,md5(pwd)).then(res => {
@@ -244,11 +244,11 @@ export default {
       // indexModel.getToken(account,md5(pwd)).then(res => {
       //   mango.loading('close')
       //   let data = res.data
-      //   // data.access_token = '111'
       //   if (data.code === 500) {
       //     mango.tip(data.msg)
       //     return
       //   }
+      //   // data.access_token = '111'
       //   if(data) {
       //     // 将账号信息添加到对象
       //     Object.assign(data, {
@@ -267,6 +267,8 @@ export default {
       //     // 登陆成功跳转页面
       //     this.getUserInfo()
       //   }
+      // }).catch((reject) => {
+      //   mango.tip('网络异常！')
       // })
     },
     // 获取用户个人信息

@@ -12,10 +12,12 @@
     <!-- 当日总结 -->
     <DailySummary
     :text="''"
+    :disabled="true"
     @changeDailySummaryTextarea="changeDailySummaryTextarea" />
     <!-- 明日目标及重点工作安排 -->
     <DailyPlan
-    :text="dailyPlanTextarea"
+    :text="''"
+    :disabled="true"
     @changeDailyPlanTextarea="changeDailyPlanTextarea" />
   </div>
 </template>

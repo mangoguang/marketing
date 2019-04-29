@@ -33,6 +33,17 @@ export default {
       ajaxData: {}
     }
   },
+  watch: {
+    dateInterVal(val) {
+      console.log('时间区间改变', val)
+      let  btns = this.timeBtns
+      for (let i = 0; i < btns.length; i++) {
+        btns[i].status = false
+      }
+      this.btnIndex = -1
+      // this.timeBtns = mango.btnList(['今日', '本周', '本月', '本年'], 0)
+    }
+  },
   computed: {
     ...mapState({
       dateInterVal: state => state.common.dateInterVal

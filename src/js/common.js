@@ -1,13 +1,14 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
 import { Indicator, Toast } from 'mint-ui'
-import refreshToken from '../utils/token/refreshToken.js'
+import refreshToken from '../utils/token/refreshToken'
+import toLogin from '../utils/token/toLogin'
 import VueRouter from 'vue-router'
 export default class Common {
   constructor() {
     //  this.port = 'http://10.11.8.250'
-    // this.port = 'http://172.16.10.107'
-    // this.port = "http://10.11.8.7"
+   // this.port = 'http://172.16.10.107'
+    //  this.port = "http://10.11.8.7"
      this.port = "https://mobiletest.derucci.net/cd-sys-web"
     // this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
@@ -144,13 +145,10 @@ export default class Common {
       let sign = this.getSign(params, token.access_token)
       // 显示加载动画，并在10秒后隐藏
       this.loading('open')
-      let loadingTimeOut = setTimeout(function() {
-        _this.loading('close')
-        clearTimeout(loadingTimeOut)
-      }, 10000)
       axios({
         method: thatType,
         async: false,
+        timeout: 15000,
         url: url,
         contentType: "application/json",
         headers: {
@@ -160,9 +158,14 @@ export default class Common {
         params: params
       })
       .then((res) => {
-        // console.log(23234234, res)
-        if (res.code === 510) {
-          reject(500)
+        if (res.code === 510) { // token失效
+          if (token.access_token && token.access_token.length < 48) { // 有效token
+            refreshToken.call(this).then(res => {
+              reject(510)
+            })
+          } else {
+            toLogin()
+          }
         } else {
           _this.loading('close')
           res = res.data
@@ -171,16 +174,23 @@ export default class Common {
       })
       .catch((error) => {
         _this.loading('close')
-        if (error.response.status === 510) {
-          console.log('刷新前token', token.access_token, typeof token.access_token)
-          if (token.access_token) {
-            console.log('刷新token！！！')
-            refreshToken.call(this).then(res => {
-              reject(510)
-            })
+        if (error.response) { // 如果服务器响应
+          if (error.response.status === 510) {
+            console.log('非法令牌，需要刷新。', token)
+            // 检测token是否存在
+            if (token.access_token && token.access_token.length < 48) { // 有效token
+              console.log('开始刷新令牌')
+              refreshToken.call(this).then(res => {
+                reject(510)
+              })
+            } else {
+              toLogin()
+            }
+          } else {
+            this.tip('请求失败!')
           }
-        } else {
-          console.log('otherss')
+        } else if (error.request) {
+          this.tip('网络异常!')
         }
       })
     })
@@ -305,9 +315,10 @@ export default class Common {
         text: '数据请求中...',
         spinnerType: 'fading-circle'
       })
-      let loadingTime = setTimeout(function() {
-        Indicator.close()
-      }, 5000)
+      // let loadingTime = setTimeout(function() {
+      //   Indicator.close()
+      //   clearTimeout(loadingTime)
+      // }, 15000)
     } else {
       Indicator.close()
     }

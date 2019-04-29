@@ -246,7 +246,16 @@ export var router = new VueRouter({
     name: 'addintention',
     component: () => import('../pages/Personal/intention/addIntention'),
     meta:{
-      keepAlive:true,
+      keepAlive:false,
+      isUseCache: true
+    }
+  },
+  {
+    path: '/updateintention/:customerId',
+    name: 'updateintention',
+    component: () => import('../pages/Personal/intention/updateIntention'),
+    meta:{
+      keepAlive:false,
       isUseCache: true
     }
   },

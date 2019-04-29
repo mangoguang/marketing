@@ -12,10 +12,12 @@
 
 <script>
 import intentionLi from './intentionLi'
+import { mapMutations } from 'vuex'
 export default {
   props: ['list'],
   components: { intentionLi },
   methods: {
+     ...mapMutations(['setCheckedList']),
     toIntentionDetails(index) {
       // this.$router.push({path:`/intention/${this.list[index].oppId}`})
       this.$router.push({
@@ -37,6 +39,14 @@ export default {
       //   }
       // })
     }
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==='addintention'){
+      this.setCheckedList([]);
+      to.meta.keepAlive=false;
+      next();
+    }
+    next();
   }
 }
 </script>

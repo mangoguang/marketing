@@ -1,9 +1,11 @@
 <template>
     <div class="addAdress">
       <mybanner :title="title" style="background:#f8f8f8">
-        <button type="button" @click="submit">保存</button>
+        <button type="button" @click="close" style="color:#FF3B30">意向关闭</button>
       </mybanner>
-      <title-bar :text="titleModule.info"></title-bar>
+      <title-bar :text="titleModule.info">
+         <button type="button"  @click="submit">保存</button>
+      </title-bar>
       <ul class="list">
         <li>
           <intention-select v-bind="formInfo.intention" :value="goodsValue" :id="customerId" :url="path" :showIcon="selectIcon"/>
@@ -66,7 +68,7 @@
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="form.level" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
       </div>
-     <!--  <div v-if="status==='New'">
+      <div>
          <title-bar :text="titleModule.report">
            <button type="button" @click="addRecord">添加记录</button>
          </title-bar>
@@ -76,7 +78,7 @@
       <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
         <span slot='update'>确定</span>
         <span slot='cancel'>取消</span>
-      </yan-layer-prompt> -->
+      </yan-layer-prompt>
     </div>
 </template>
 
@@ -216,6 +218,7 @@ export default {
           this.goodsValue='';
           this.form.goodsList=[];
         }
+     
       }
       if(from.name==='chooseShop'){
         console.log("进来chooseShop");
@@ -243,8 +246,15 @@ export default {
     ...mapState(['checkedList'])
   },
   created(){
-    this.updateTitle('新建意向');
+    this.getProduct();
+    this.getShop();
     this.$route.meta.keepAlive=true;
+    if(this.$route.query.oppId){
+      this.updateTitle('意向详情');
+      this.form.oppId=this.$route.query.oppId;
+      this.getOpportunity(this.form.oppId);
+    }
+   
   },
   activated(){
     this.customerId=this.$route.params.customerId;
@@ -255,6 +265,8 @@ export default {
     this.getShop();
     console.log("回退进了created");
     this.isFirstEnter=true;
+   
+     
   },
   mounted(){
    
@@ -297,6 +309,69 @@ export default {
         mango.tip('请先选择地址');
       }
     },
+    getOpportunity(id){
+      indexModel.getOpportunity(id).then(res => {
+        if(res.code===0){
+          if(res.data.goodsList.length>0){
+            this.setCheckedList([]);
+            this.goodsValue=res.data.goodsList[0].goodsName;
+           let list=res.data.goodsList.map((item,index) => {
+             let obj={};
+             obj.crmId=item.goodsId;
+             obj.goodsName=item.goodsName;
+             obj.quantity=item.quantity;
+             return obj;
+           })
+            this.setCheckedList(list);
+            this.form.goodsList=res.data.goodsList;       
+          }else{
+             this.setCheckedList([]);
+             this.form.goodsList=[];
+          }
+          this.status=res.data.status;
+          console.log(4444,res.data.shopId);
+          this.shopName=res.data.shopId===''?'':this.getShopName(res.data.shopId);
+          this.form.shopId=res.data.shopId;
+          this.form.arrivalDate=res.data.arrivalDate;
+          this.form.residentTime=res.data.residentTime;
+          this.sourceName=res.data.sourceName;
+          this.form.source=res.data.source;
+          this.buyReasonName=res.data.buyReasonName==''?'':res.data.buyReasonName;
+          this.form.buyReason=res.data.buyReason;
+          this.stylePrefName=res.data.stylePrefName==''?'':res.data.stylePrefName;
+          this.form.stylePref=res.data.stylePref;
+          this.progressName=res.data.progressName==''?'':res.data.progressName;
+          this.form.progress=res.data.progress;
+          this.form.competingGoods=res.data.competingGoods==''?'':res.data.competingGoods;
+          this.colorPrefName=res.data.colorPrefName==''?'':res.data.colorPrefName;
+          this.form.colorPref=res.data.colorPref;
+          this.form.deliverDate=res.data.deliverDate==''?'':res.data.deliverDate;
+          this.form.remark=res.data.remark==''?'':res.data.remark;
+          this.form.budget=res.data.budget;
+          this.form.depositPaid=res.data.depositPaid;
+          this.form.argreeDiscount=res.data.argreeDiscount;
+          this.form.level=res.data.level;
+          this.form.recordList=res.data.recordList;
+          if(res.data.urgency){
+            this.urgency="是";
+            this.form.urgency=res.data.urgency?'true':'false';
+          }else{
+            this.urgency="否";
+            this.form.urgency=res.data.urgency?'true':'false';
+          }
+          let address=res.data.addressId===''?'':this.getAddress(res.data.addressId);
+          this.address=address;
+          this.form.addressId=res.data.addressId;
+        }else{
+            mango.tip(res.msg);
+        }
+        
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOpportunity(id)
+        }
+      })
+    },
     getAddress(id){
      indexModel.getAddress(id).then(res => {
           if(res.code===0){
@@ -314,9 +389,8 @@ export default {
    },
    getShopName(id){
     let shops=localStorage.getItem('shops');
-    //console.log(shops);
     let list=JSON.parse(shops);
-    //console.log(list)
+   
     let name;
     list.map((item,index) => {
        //console.log(item);
@@ -440,24 +514,55 @@ export default {
             form.delete(key[i]);
           }
         }
+        //console.log(lastKey);
         indexModel.updateOpportunity(form,[...lastKey]).then(res => {
             if(res.code==0){
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-               this.$destroy();
-               
-              this.$router.back(this.go);
-              console.log("执行了");
+              history.back(this.go);
             }else{
               mango.tip(res.msg);
             }
         })
      }
     },
-    
-    
-    
+    layerUpdate(){
+      if(this.failReason===''){
+        mango.tip('战败原因不能为空');
+        return;
+      }else if(this.failReason.length>300){
+        this.failReason=this.failReason.substring(0,300);
+        mango.tip('战败原因不能超过300字');
+        return;
+      }else{
+        let obj={
+          opportunityId:this.form.oppId,
+          closeReason:this.failReason
+        }
+        indexModel.closeOpportunity(obj).then(res => {
+          if(res.code===0){
+            mango.tip(res.msg);
+            this.isPrompt=false;
+            this.$router.replace({name:'intention',params:{opportunityId:this.form.oppId}});
+          }else{
+            mango.tip(res.msg);
+            this.isPrompt=true;
+          }
+          
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.layerUpdate()
+          }
+        })
+      }
+    },
+    layerCancel(){
+      this.isPrompt=false;
+    },
+    close(){
+      this.isPrompt=true;
+    },
     openStore(){
       this.$router.push({name:'chooseShop',query: {type: 'addintention'}});
       
@@ -573,73 +678,75 @@ export default {
       this.url='';
       this.go=-1;
    }
-  },
-  //  beforeRouteEnter(to,from,next){
-   // console.log("进来addIntention",to);
-    // if(from.name==='selectAddress'){
-    //   to.meta.keepAlive=true;
-    //   next();
-    // }
-    // if(from.name==='searchProduct'){
-    //   to.meta.keepAlive=true;
-    //   next();
-    // }
-    // if(from.name==='intentionProduct'){
-    //   to.meta.keepAlive=true;
-    //   next();
-    // }
-    // if(from.name==='chooseShop'){
-    //     to.meta.keepAlive=true;
-    //     next();
-      
-    // }
-    // if(from.name==='intention'){
-    //   to.meta.keepAlive=false;
-    //   next();
-    // }
-    // if(from.name==='/enquiryInfo'){
-    //   to.meta.keepAlive=false; 
-    //   next();
-    // }
-    // if(from.name==='/CustomerInfo'){
-    //   to.meta.keepAlive=false;   
-    //   next();
-    // }
-    // to.meta.keepAlive=true;
-    // next();
-  // }
-  beforeRouteLeave(to,from,next){
-   console.log(to.name);
-   //console.log(from);
-    if(to.name==='/enquiryInfo'){
-        //from.meta.keepAlive=false;
-        if(!from.meta.keepAlive){
-          //this.setCheckedList([]);
-          this.clearKeepAlive();
-          this.$destroy();
-          next();    
-        }
-    }
-    if(to.name==='/CustomerInfo'){
-        //from.meta.keepAlive=false;
-        if(!from.meta.keepAlive){
-          //this.setCheckedList([]);
-          this.clearKeepAlive();
-           this.$destroy();
-          next();    
-        }
-         next();    
-    }
-    // if(to.name==='intentionProduct'){
-    //     //from.meta.keepAlive=false;
-      
-    //     from.meta.keepAlive=true;
-    //     next();
-      
-    // }
-    
-    next();
   }
+  // beforeRouteEnter(to,from,next){
+  //  // console.log("进来addIntention",to);
+  //  console.log(from);
+  //   if(from.name==='selectAddress'){
+  //     to.meta.keepAlive=true;
+  //     next();
+  //   }
+  //   if(from.name==='searchProduct'){
+  //     to.meta.keepAlive=true;
+  //     next();
+  //   }
+  //   if(from.name==='intentionProduct'){
+       
+  //       to.meta.keepAlive=true;
+  //       next();
+       
+  //     next();
+  //   }
+  //   if(from.name==='chooseShop'){
+     
+  //       to.meta.keepAlive=true;
+  //       next();
+      
+  //   }
+  //   if(from.name==='intention'){
+  //     to.meta.keepAlive=false;
+  //     next();
+  //   }
+  //   if(from.name==='/enquiryInfo'){
+  //     to.meta.keepAlive=false; 
+  //     next();
+  //   }
+  //   if(from.name==='/CustomerInfo'){
+  //     to.meta.keepAlive=false;   
+  //     next();
+  //   }
+  //  next();
+  // }
+  // beforeRouteLeave(to,from,next){
+  //  console.log(to.name);
+  //  //console.log(from);
+  //   if(to.name==='/enquiryInfo'){
+  //       //from.meta.keepAlive=false;
+  //       if(!from.meta.keepAlive){
+  //         this.setCheckedList([]);
+  //         this.clearKeepAlive();
+  //         next();    
+  //       }
+  //       next();
+  //   }
+  //   if(to.name==='/CustomerInfo'){
+  //       //from.meta.keepAlive=false;
+  //       if(!from.meta.keepAlive){
+  //         this.setCheckedList([]);
+  //         this.clearKeepAlive();
+  //         next();    
+  //       }
+  //        next();    
+  //   }
+  //   if(to.name==='intentionProduct'){
+  //       //from.meta.keepAlive=false;
+  //     if(!from.meta.keepAlive){
+  //       from.meta.keepAlive=true;
+  //       next();
+  //     }
+  //   }
+  //   next();
+  // }
 };
 </script>
 

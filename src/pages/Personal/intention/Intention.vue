@@ -228,6 +228,7 @@ export default {
   },
   methods:{
     ...mapMutations('intention',['setClassify','setUrgency','setTitle']),
+    ...mapMutations(['setCheckedList']),
     getOpportunity(){
       let id=this.$route.params.opportunityId;
       indexModel.getOpportunity(id).then(res => {
@@ -298,7 +299,7 @@ export default {
       })
     },
     modify(){
-      this.$router.replace({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
+      this.$router.replace({name:'updateintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
     },
     close(){
       this.isPrompt=true;
@@ -393,6 +394,14 @@ export default {
          vm.UpdateRedirect=path;
       });
     } 
+    next();
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==='updateintention'){
+      this.setCheckedList([]);
+      to.meta.keepAlive=false;
+      next();
+    }
     next();
   }
 };
