@@ -1,7 +1,7 @@
 
 <template>
   <ul>
-    <DailyLi :number="list.cus" :title="'接待客户'"/>
+    <DailyLi :number="list.cus" :title="'进店数'"/>
     <DailyLi :number="list.opp" :title="'新增意向'"/>
     <DailyLi :number="list.tourist" :title="'游客数'"/>
     <DailyLi :number="list.trackRecord" :title="'跟进客户'"/>

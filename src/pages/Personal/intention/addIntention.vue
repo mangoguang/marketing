@@ -64,7 +64,7 @@
           <discount-select v-bind="formInfo.discount" :value="form.argreeDiscount" @update="updateDiscount" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark" :mexlength='200' :readonly='readonly' v-model="form.remark"></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :maxlength='200' :readonly='readonly' v-model="form.remark"></yan-textarea>
       <div class="select">
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="form.level" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>

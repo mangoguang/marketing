@@ -53,7 +53,7 @@ export default {
     border-radius: 1.333vw;
     transform: translate(-50%,-50%);
     box-sizing: border-box;
-    overflow: scroll;
+    // overflow: scroll;
     .yan-layer-content{
       padding-top:2.666vw;
       position: relative;
@@ -75,12 +75,23 @@ export default {
         flex-direction: row;
         font-size: 3.733vw;
         color:#363636;
+      }
+      .yan-layer-item:last-child{
+        span:first-child {
+          width: 20vw;
+          display:block;
+        }
         span:last-child{
           display: block;
           width:44.533vw;
+          height: 12vw;
+          overflow: scroll;
+          word-break:break-all;
+          white-space:pre-wrap
         }
       }
     }
+   
     .yan-btn-group{
       position: absolute;
       bottom:0;

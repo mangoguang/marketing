@@ -1,6 +1,6 @@
 <template>
     <div class="address">
-      <mybanner :title="title" style="background:#fff;border:none">
+      <mybanner :title="title" style="background:#f8f8f8;border:none">
         <button type="button" @click="update">确定</button>
       </mybanner>
       <search-input v-model.trim="key" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
