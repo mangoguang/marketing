@@ -218,16 +218,16 @@ export default {
           this.goodsValue='';
           this.form.goodsList=[];
         }
-         let shops=JSON.parse(localStorage.getItem('shops'));
-        console.log(shops);
-        let shopIndex=localStorage.getItem('shopIndex');
-        console.log(shopIndex);
-        shops.map((item,index) => {
-          if(shopIndex==index){
-            this.form.shopId=item.id;
-            this.shopName=item.name;
-          }
-        })
+        // let shops=JSON.parse(localStorage.getItem('shops'));
+        // console.log(shops);
+        // let shopIndex=localStorage.getItem('shopIndex');
+        // console.log(shopIndex);
+        // shops.map((item,index) => {
+        //   if(shopIndex==index){
+        //     this.form.shopId=item.id;
+        //     this.shopName=item.name;
+        //   }
+        // })
         
         
       }
@@ -243,19 +243,19 @@ export default {
             this.shopName=item.name;
           }
         })
-         if(this.$store.state.checkedList.length>0){
-          this.goodsValue=this.$store.state.checkedList[0].goodsName;
-          this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
-            let obj={};
-            obj.goodsId=item.crmId;
-            obj.goodsName=item.goodsName;
-            obj.quantity=item.quantity;
-            return obj;
-          });
-        }else{
-          this.goodsValue='';
-          this.form.goodsList=[];
-        }
+        //  if(this.$store.state.checkedList.length>0){
+        //   this.goodsValue=this.$store.state.checkedList[0].goodsName;
+        //   this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
+        //     let obj={};
+        //     obj.goodsId=item.crmId;
+        //     obj.goodsName=item.goodsName;
+        //     obj.quantity=item.quantity;
+        //     return obj;
+        //   });
+        // }else{
+        //   this.goodsValue='';
+        //   this.form.goodsList=[];
+        // }
       }
       
     }
@@ -561,7 +561,8 @@ export default {
               // },200)
             
              // this.$router.go(-1);
-             this.$router.back(-1);
+            history.back(-1);
+             console.log(this.$router);
               //this.$destroy();
             }else{
               mango.tip(res.msg);
