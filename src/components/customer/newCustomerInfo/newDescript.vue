@@ -211,7 +211,7 @@ export default {
           }
       });
       }
-      console.log(123,this.shopId)
+      // console.log(123,this.shopId)
       this.newCustomerInfo.orgId = this.shopId
       this.setNewCustomerInfo(this.newCustomerInfo)
     },

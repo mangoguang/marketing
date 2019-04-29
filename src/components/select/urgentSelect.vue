@@ -34,9 +34,12 @@ export default {
   methods: {
     //初始化问题
      init() {
+      //  console.log('init',this.newCustomerInfo.urgency)
       if(this.newCustomerInfo.urgency === 'false' || this.newCustomerInfo.urgency === 'true') {
         let i = this.newCustomerInfo.urgency  === 'false'? 1 : 0
         mango.changeBtnStatus(this.urgencyBtns, i)
+      }else {
+        mango.changeBtnStatus(this.urgencyBtns, 1)
       }
     },
     // 紧急程度选择
