@@ -1,7 +1,7 @@
 <template>
   <div class="customerDescript">
     <ul>
-      <li is="customerLi" :leftText="'头像'" :icon="true" >
+      <li is="customerLi" :leftText="'头像'" >
         <unLoadVia class="upload" :select='select' :customerImage='customerImage'/>
         <!--select表示直接选择照片-->
       </li>

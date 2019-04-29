@@ -328,8 +328,8 @@ export default {
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
         'opportunity.argreeDiscount': parseInt(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
         'opportunity.remark': obj.remark2,
-        'opportunity.urgency': obj.urgency,   //是否紧急
-        'opportunity.level': obj.level,   //等级
+        'opportunity.urgency': obj.urgency || false,   //是否紧急
+        'opportunity.level': obj.level || 'A',   //等级
         'record.source': obj.source2,
         'record.followDate': obj.followDate,
         'record.residentTime': obj.residentTime2,   //跟进时长
