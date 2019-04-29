@@ -269,41 +269,45 @@ export default {
     ...mapState(['checkedList'])
   },
   created(){
+    this.customerId=this.$route.params.customerId;
+    this.path=this.$route.fullPath;
+    this.url=this.$route.query.url;
     console.log(this.checkedList);
-    //this.getProduct();
-    //this.getShop();
+    this.getProduct();
+    this.getShop();
     console.log("回退进了created");
     this.isFirstEnter=true;
-    if(!this.$route.meta.isUseCache || this.isFirstEnter){
-      if(this.$route.query.oppId){
-        this.updateTitle('意向详情');
-        this.form.oppId=this.$route.query.oppId;
-        this.getOpportunity(this.form.oppId);
-      }else{
-        this.updateTitle('新建意向');
-        this.setCheckedList([]);
-      }
+    if(this.$route.query.oppId){
+      this.updateTitle('意向详情');
+      this.form.oppId=this.$route.query.oppId;
+      this.getOpportunity(this.form.oppId);
+    }else{
+      this.updateTitle('新建意向');
+      this.setCheckedList([]);
     }
+     
   },
   mounted(){
    
   },
-  activated(){
-    this.customerId=this.$route.params.customerId;
-    this.path=this.$route.fullPath;
-    this.url=this.$route.query.url;
+  // activated(){
+  //   this.customerId=this.$route.params.customerId;
+  //   this.path=this.$route.fullPath;
+  //   this.url=this.$route.query.url;
+  //   // if(!this.$route.meta.keepAlive){
     
-    this.$route.meta.isUseCache=false;
-    this.isFirstEnter=false;
-    // this.customerId=this.$route.params.customerId;
-    // this.path=this.$route.fullPath;
-    // if(this.$route.meta.isUseCache){
-    //    this.getProduct();
-    //    this.getShop();
-    // }else{
-    //   this.$route.meta.isUseCache=false;
-    // }
-  },
+  //   // }
+  //   // this.$route.meta.isUseCache=false;
+  //   // this.isFirstEnter=false;
+  //   // this.customerId=this.$route.params.customerId;
+  //   // this.path=this.$route.fullPath;
+  //   // if(this.$route.meta.isUseCache){
+  //   //    this.getProduct();
+  //   //    this.getShop();
+  //   // }else{
+  //   //   this.$route.meta.isUseCache=false;
+  //   // }
+  // },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
     ...mapMutations(['updateAddress','setCheckedList','updateSearchProductList']),
@@ -688,30 +692,37 @@ export default {
       next();
     }
     if(from.name==='intentionProduct'){
+      // if(!to.meta.keepAlive){
+      //   to.meta.keepAlive=true; 
+      //   to.meta.isUseCache=true;
+      // }else{
+      //   to.meta.keepAlive=false; 
+      //   to.meta.isUseCache=false;
+      // }
       if(!to.meta.keepAlive){
-        to.meta.keepAlive=true; 
-        to.meta.isUseCache=true;
-      }else{
-        to.meta.keepAlive=false; 
-        to.meta.isUseCache=false;
+        to.meta.keepAlive=true;
       }
       next();
     }
     if(from.name==='chooseShop'){
       if(!to.meta.keepAlive){
-        to.meta.keepAlive=true; 
-        to.meta.isUseCache=true;
-      }else{
-        to.meta.keepAlive=false; 
-        to.meta.isUseCache=false;
+        to.meta.keepAlive=true;
       }
+      // if(!to.meta.keepAlive){
+      //   to.meta.keepAlive=true; 
+      //   to.meta.isUseCache=true;
+      // }else{
+      //   to.meta.keepAlive=false; 
+      //   to.meta.isUseCache=false;
+      // }
       next();
     }
     if(from.name==='intention'){
-      to.meta.keepAlive=false; 
-      next();
-    }else{
-      to.meta.keepAlive=true;
+      // if(!to.meta.keepAlive){
+        to.meta.keepAlive=false;
+      // }else{
+      //   to.meta.keepAlive=false;
+      // }
       next();
     }
     if(from.name==='/enquiryInfo'){
@@ -730,20 +741,14 @@ export default {
    console.log(to.name);
    //console.log(from);
     if(to.name==='/enquiryInfo'){
-      this.setCheckedList([]);
-      from.meta.keepAlive=true;
-      to.meta.isUseCache=false;
-      next();
-    }else{
-      from.meta.keepAlive=true;
+        //from.meta.keepAlive=false;
+        this.setCheckedList([]);
+        next();
     }
     if(to.name==='/CustomerInfo'){
-      this.setCheckedList([]);
-      from.meta.keepAlive=true;
-      to.meta.isUseCache=false;
-      next();
-    }else{
-       from.meta.keepAlive=true;
+        //from.meta.keepAlive=false;
+        this.setCheckedList([]);
+        next();
     }
     next();
   }
