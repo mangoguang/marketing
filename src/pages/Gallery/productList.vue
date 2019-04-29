@@ -22,6 +22,7 @@
               <m-list :list='item'/>
             </router-link>
           </div>
+          <div v-if='!list.length' class='noTips'>暂无产品</div>
         </div>
         <!-- 瀑布流 -->
         <div class="list" v-show="showType">
@@ -30,6 +31,7 @@
               <w-list :list='item'/>
             </router-link>
           </div>  
+          <div v-if='!list.length' class='noTips'>暂无产品</div>
         </div>
       </mt-loadmore>
     <div class="tips" v-show="showTips">已经到底了</div>
@@ -337,7 +339,8 @@ export default {
   background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
   .topBar {
     background: #fff;
-    padding: 2vw 1.66vw;
+    padding: 3vw 1.66vw;
+    padding-bottom:1vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -405,5 +408,10 @@ export default {
     color: #666;
     text-align: center;
     // font-size: 4vw;
+  }
+  .noTips {
+    width:100vw;
+    text-align: center;
+    background:#fff;
   }
 </style>

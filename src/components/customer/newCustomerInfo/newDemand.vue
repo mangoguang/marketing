@@ -2,7 +2,7 @@
   <div class="newDemand">
     <ul>
       <li is="customerLi" :leftText="'意向产品'" :icon='true' :start="'*'" @click.native='addIntention'>
-        <span>{{checkedList && checkedList.length? checkedList[0].goodsName: '请选择意向产品'}}</span>
+        <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
       <li is="shopSelect" :start='"*"' :type='"demand"'></li>
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
@@ -111,7 +111,8 @@ export default {
       Color: 'color: #999',
       shops:'',
       day: '',
-      codeList: {}
+      codeList: {},
+      productList: []
    }
   },
   computed: {
@@ -179,6 +180,7 @@ export default {
             id: item.crmId,
             quantity: item.quantity
           }
+          this.productList.push(item.goodsName)
           newArr.push(obj)
         })
         this.newCustomerInfo.productArr = newArr

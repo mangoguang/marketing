@@ -103,6 +103,8 @@ $bgcolor: #31c3b0;
 #app {
   box-sizing: border-box;
   background-color: #fff;
+  height: 100vh;
+  overflow:scroll
 }
 body {
   background: #fff;

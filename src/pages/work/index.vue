@@ -4,7 +4,7 @@
     <WorkModules />
     <Footer/>
     <Daily />
-    <div @click="changeToken" style="text-align: center;line-height: 10vw;">测试</div>
+    <!-- <div @click="changeToken" style="text-align: center;line-height: 10vw;">测试</div> -->
   </div>
 </template>
 

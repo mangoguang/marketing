@@ -1,6 +1,6 @@
 <template>
     <div class="addAdress">
-      <mybanner :title="title" style="background:#fff">
+      <mybanner :title="title" style="background:#f8f8f8">
         <button type="button" @click="submit" v-if="status!=='New'">保存</button>
         <button type="button" @click="close" v-if="status==='New'" style="color:#FF3B30">意向关闭</button>
       </mybanner>
@@ -46,25 +46,25 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/>
         </li>
         <li>
           <color-select v-bind="formInfo.color" :value="colorPrefName" @update="updateColor" :showIcon="selectIcon"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.budget" v-model.trim="form.budget" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.budget" v-model.trim="form.budget" :readonly='readonly' :maxlength='8'/>
         </li>
         <li>
           <date-select v-bind="formInfo.deliver" :value="form.deliverDate" @update="updateDeliver" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly' :maxlength='8'/>
         </li>
         <li>
           <discount-select v-bind="formInfo.discount" :value="form.argreeDiscount" @update="updateDiscount" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark" :readonly='readonly' v-model="form.remark"></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :mexlength='200' :readonly='readonly' v-model="form.remark"></yan-textarea>
       <div class="select">
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="form.level" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
@@ -677,7 +677,7 @@ export default {
   },
   beforeRouteEnter(to,from,next){
    // console.log("进来addIntention",to);
-   // console.log(from);
+   console.log(from);
     if(from.name==='selectAddress'){
       to.meta.keepAlive=true;
       next();
@@ -726,19 +726,20 @@ export default {
    next();
   },
   beforeRouteLeave(to,from,next){
-   // console.log(to);
+   console.log(to.name);
    //console.log(from);
     if(to.name==='/enquiryInfo'){
-      //this.setCheckedList([]);
-     from.meta.keepAlive=false;
+      this.setCheckedList([]);
+      from.meta.keepAlive=true;
       to.meta.isUseCache=false;
       next();
     }else{
       from.meta.keepAlive=true;
     }
     if(to.name==='/CustomerInfo'){
-      //this.setCheckedList([]);
-      from.meta.keepAlive=false;
+      this.setCheckedList([]);
+      from.meta.keepAlive=true;
+      to.meta.isUseCache=false;
       next();
     }else{
        from.meta.keepAlive=true;

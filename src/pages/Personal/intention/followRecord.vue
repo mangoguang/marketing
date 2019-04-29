@@ -14,11 +14,11 @@
           <duration-select v-bind="formInfo.duration" v-model="form.residentTime"  @update="updateResidentTime" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.report" v-model.trim="form.report"/>
+      <yan-textarea v-bind="formInfo.report" :maxlength='300' v-model.trim="form.report"/>
       <div class="next">
          <date-select v-bind="formInfo.nextTime" v-model="form.nextTime"  @update="updateNextTime" :showIcon="selectIcon"/>
       </div>
-      <yan-textarea v-bind="formInfo.plan" v-model.trim="form.plan"/>
+      <yan-textarea v-bind="formInfo.plan" :maxlength='300' v-model.trim="form.plan"/>
       <p class="title">附件图片</p>
       <upload ref="upload" picLen='5' :clear="isClear" :path="path"/>
     </div>
@@ -129,6 +129,7 @@ export default {
         let formData=new FormData();
         formData.append('opportunity.oppId',this.oppId);
         formData.append('record.source',this.form.follow);
+        formData.append('record.residentTime',this.form.residentTime);
         formData.append('record.followDate',this.form.time);
         formData.append('record.nextDate',this.form.nextTime);
         formData.append('record.situation',this.form.report);
@@ -136,7 +137,7 @@ export default {
         for(let i=0;i<this.Files.length;i++){
           formData.append('record.dataFile',this.Files[i]);
         }
-        let key=['opportunity.oppId','record.source','record.followDate','record.nextDate','record.situation','record.plan'];
+        let key=['opportunity.oppId','record.source','record.residentTime','record.followDate','record.nextDate','record.situation','record.plan'];
         indexModel.updateTrackrecord(formData,key).then(res => {
           if(res.code===0){
             mango.tip("提交成功");

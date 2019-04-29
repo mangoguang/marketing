@@ -1,21 +1,9 @@
 <template>
-  <li class="sourceSelect">
+  <li class="shopSelect">
     <ul>
       <li is="customerLi" :leftText="'所属门店'" :start='start' :icon="true" @click.native="selectShop">
-        <!-- <span>{{shopVal || '请选择门店'}}</span> -->
-        <span>{{ val }}</span>
+        <span class='shop'>{{ val }}</span>
       </li>
-      <!-- 性别选择插件 -->
-      <!-- <li>
-      <mt-popup 
-      position="bottom"
-      v-model="popupVisible">
-        <mt-picker
-        :slots="slots"
-        @change="onValuesChange"
-        ref="sourcePicker"></mt-picker>
-      </mt-popup>
-      </li> -->
     </ul>
   </li>
 </template>
@@ -107,7 +95,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .sourceSelect{
+  .shopSelect{
     ul{
       width: 100%;
     }

@@ -48,11 +48,12 @@ export default {
     top:40%;
     left:50%;
     width:74.666vw;
-    min-height:50.666vw;
+    height:50.666vw;
     background: #fff;
     border-radius: 1.333vw;
     transform: translate(-50%,-50%);
     box-sizing: border-box;
+    overflow: scroll;
     .yan-layer-content{
       padding-top:2.666vw;
       position: relative;

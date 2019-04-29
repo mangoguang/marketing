@@ -106,7 +106,7 @@ export default {
     margin: 5vw auto;
     width: 91.46vw;
     position: relative;
-    box-sizing: border-box;
+    box-sizing:border-box;
     input{
       caret-color:#000;
     }

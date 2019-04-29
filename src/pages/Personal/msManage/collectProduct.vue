@@ -7,6 +7,7 @@
         :cancleCollect='cancleCollect'
         />
     </mt-loadmore>
+    <div v-if='!list.length' style="text-align:center;color:#000;background:#fff;marginTop:-2vw">暂无记录</div>
     <div class="tips" v-show="showTips">已经到底了</div>
   </div>
 </template>

@@ -2,7 +2,7 @@
   <div class="footer" :style="{'padding-bottom':`${padding}vw`}">
     <ul>
       <li id="1">
-        <router-link to="/home" @click.native="changeActive" replace>
+        <router-link to="/" @click.native="changeActive" replace>
           <div class="iconHome"></div>
           <p class="iconCharP">首页</p>
         </router-link>
@@ -24,7 +24,7 @@
         </router-link>
       </li>
       <li id="4" >
-        <router-link to="/" @click.native="changeActive" replace>
+        <router-link to="/work" @click.native="changeActive" replace>
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>
         </router-link>
@@ -67,10 +67,8 @@ export default {
       this.setChartActive(true);
     },
     isDeal() {
-      if(this._localAjax().typename === 'boss') {
-        this.status = true
-      }else {
-        this.status = false
+      if(this._localAjax() && this._localAjax().typename) {
+        this.status = this._localAjax().typename === 'boss'? 'true' : 'false'
       }
     },
     touchend(e) {

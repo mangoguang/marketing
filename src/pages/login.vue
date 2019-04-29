@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="login" :style='{marginTop: marginTop}'>
     <div :class="`${myStyle.loginFix}`"></div>
     <div class="topBar">
       <tips-error :style="{display:display}"></tips-error>
@@ -48,20 +48,21 @@
           </ul>
         </form>
       </div>
-    </div>
-    <div class="wechatLogin" :style="{height: h}">
-      <div class="wechatText">
-        <hr>
-        <span>第三方账号登录</span>
-        <hr>
+       <div class="wechatLogin" :style="{height: h}">
+        <div class="wechatText">
+          <hr>
+          <span>第三方账号登录</span>
+          <hr>
+        </div>
+        <div class="wechat-icon"></div>
       </div>
-      <div class="wechat-icon"></div>
     </div>
     <footer></footer>
   </div>
 </template>
 
 <script>
+import {baseUrl} from '../Request/request'
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations } from "vuex";
@@ -101,7 +102,8 @@ export default {
       inputValue2: "",
       nameMsg: "",
       pwdMsg: "",
-      h: ''
+      h: '',
+      marginTop:''
     };
   },
   mounted() {
@@ -131,14 +133,17 @@ export default {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
         this.height = "54.4";
-        this.marginTop = "-5.86";
+        this.marginTop = "-5.86vw";
       } else if (phone === "iphone") {
         this.height = "49.26";
+        this.marginTop = ''
       } else {
         this.height = "49.26";
+        this.marginTop = ''
       }
     },
     login(account, pwd) {
+      // console.log(111,baseUrl)
       // let data = {
       //     grant_type: 'password',        //固定填 password
       //     username: account,   //登录账号
@@ -146,8 +151,9 @@ export default {
       //   }
       // axios({
       //   method: 'post',
+      //   url:'http://172.16.10.107/oauth.token',
       //   // url: 'http://10.11.8.7/oauth/token',
-      //   url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
+      //   // url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
       //   data: data,
       //   transformRequest: [function(data) {
       //     let ret = ''
@@ -276,6 +282,7 @@ export default {
           this.$router.replace({ path: "/" })
         }
       }).catch((reject) => {
+        // console.log('reject',reject)
         if (reject === 510) {
           this.getUserInfo()
         }
@@ -386,12 +393,13 @@ export default {
 
 <style lang="scss" scoped>
 .login {
+  height: 100vh;
   background: #fff;
   // font-family: PINGPANG;
   position: relative;
   // height: 100vh;
-  // box-sizing: border-box;
-  // overflow: hidden;
+  box-sizing: border-box;
+  overflow: hidden;
   .fix {
     width: 100%;
     height: 6vw;
@@ -503,11 +511,13 @@ export default {
   }
   .wechatLogin {
     margin-top: 13.33vw;
-    padding: 0 4vw;
-    background: #fff;
+    // padding: 0 4vw;
+    // background: #fff;
     position: relative;
     z-index: 999;
     // height: 60vw;
+    // top:0;
+    // left:0;
     .wechatText {
       display: flex;
       justify-content: space-between;

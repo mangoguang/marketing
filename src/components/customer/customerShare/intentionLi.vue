@@ -78,7 +78,7 @@ export default {
   .icon {
     // flex: 0.2;
     width: 15vw;
-    height: 100%;
+    // height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -96,6 +96,9 @@ export default {
   .content{
     width:70vw;
     height: 100%;
+    // border:1px solid red;
+    box-sizing:border-box;
+    padding: 2vw 0;
     // flex: 0.9;
     .title {
       display: flex;
