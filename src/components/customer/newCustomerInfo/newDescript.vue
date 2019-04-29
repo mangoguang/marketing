@@ -1,7 +1,7 @@
 <template>
   <div class="customerDescript">
     <ul>
-      <li is="customerLi" :leftText="'头像'" :icon="true" >
+      <li is="customerLi" :leftText="'头像'" >
         <unLoadVia class="upload" :select='select' :customerImage='customerImage'/>
         <!--select表示直接选择照片-->
       </li>
@@ -14,13 +14,13 @@
       </li>
       <li is="ageSelect"   @ageChange="ageChange"></li>
       <li is="customerLi" :leftText="'客户电话'">
-        <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话"  oninput="if(value.length>5)value=value.slice(0,11)">
+        <input v-model="newCustomerInfo.phone" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户电话"  oninput="if(value.length>5)value=value.slice(0,11)">
       </li>
       <li is="customerLi" :leftText="'客户微信'">
         <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  oninput="if(value.length>5)value=value.slice(0,20)">
       </li>
       <li is="customerLi" :leftText="'客户  QQ'">
-        <input v-model="newCustomerInfo.qq" type="number" placeholder="请填写客户 QQ"  oninput="if(value.length>5)value=value.slice(0,15)">
+        <input v-model="newCustomerInfo.qq" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户 QQ"  oninput="if(value.length>5)value=value.slice(0,15)">
       </li>
       <li is="customerLi" :leftText="'客户职业'">
         <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业"  oninput="if(value.length>5)value=value.slice(0,30)">
@@ -32,7 +32,7 @@
       </template>
       <template v-else>
         <li is="areaSelect" @areaChange="areaChange"></li>
-        <li is="customerLi" :leftText="'客户地址'"  >
+        <li is="customerLi" :leftText="'客户地址'" >
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>5)value=value.slice(0,200)">
         </li>
       </template>
@@ -211,7 +211,7 @@ export default {
           }
       });
       }
-      console.log(123,this.shopId)
+      // console.log(123,this.shopId)
       this.newCustomerInfo.orgId = this.shopId
       this.setNewCustomerInfo(this.newCustomerInfo)
     },

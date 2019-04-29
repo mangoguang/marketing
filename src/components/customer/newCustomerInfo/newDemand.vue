@@ -4,33 +4,46 @@
       <li is="customerLi" :leftText="'意向产品'" :icon='true' :start="'*'" @click.native='addIntention'>
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
-      <li is="shopSelect" :start='"*"' :type='"demand"'></li>
+      <li is="shopSelect" :start='"*"' :type='type'></li>
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
-
-      <li is='customerLi' :leftText='"客户地区"'>
-        <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
+      
+      <template v-if='addressType !== "intention"'>
+        <li is="customerLi" :leftText="'客户地区'"  :start="'*'">
+          <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
+        </li>
+        <li is="customerLi" :leftText="'客户地址'"  :start="'*'">
+          <span>{{newCustomerInfo.address || '请选择客户地址'}}</span>
+        </li>
+        <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
+        <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
+      </template>
+      <template v-else>
+       <li is='customerLi' :leftText='"客户地址"' @click.native='toSelectAddress' :icon="true">
+        <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.districtName || '请选择客户地址'}}</span>
       </li>
-       <li is='customerLi' :leftText='"客户地址"'>
-        <span>{{newCustomerInfo.address || '请输入客户地址'}}</span>
+      <li is='customerLi' :leftText='"户型大小"'>
+        <span>{{newCustomerInfo.apartmentTypeName || '请先选择客户地址'}}</span>
       </li>
-      <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
-      <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
+      <li is='customerLi' :leftText='"有无电梯"'>
+        <span>{{newCustomerInfo.elevatorName || '请先选择客户地址'}}</span>
+      </li>
+      </template>
       <li is="BuyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
       <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
       <li is="progressSelect"  @progressChange="progressChange" @pgCodeChange='pgCodeChange'></li>
       <li is="customerLi" :leftText="'竞品产品'">
-        <input v-model="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品">
+        <input v-model="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品" oninput="if(value.length>5)value=value.slice(0,100)">
       </li>
       <li is="colorSelect"  @colorChange="colorChange" @colorCodeChange='colorCodeChange'></li>
       <li is="customerLi" :leftText="'预算金额'">
-        <input v-model="newCustomerInfo.budget" type="number" placeholder="请填写预算金额" oninput="if(value.length>5)value=value.slice(0,8)">
+        <input v-model="newCustomerInfo.budget" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写预算金额" oninput="if(value.length>5)value=value.slice(0,8)">
       </li>
       <li is="customerLi" :leftText="'已交定金'">
-        <input v-model="newCustomerInfo.depositPaid" type="number" placeholder="请填写已交金额" oninput="if(value.length>5)value=value.slice(0,8)">
+        <input v-model="newCustomerInfo.depositPaid" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写已交金额" oninput="if(value.length>5)value=value.slice(0,8)">
       </li>
 
       <li is="discountSelect" @discountChange="discountChange"></li>
@@ -57,13 +70,16 @@
 </template>
 
 <script>
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from 'vuex'
 import { Picker, Popup } from 'mint-ui'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
-
+import addressSelect from '../../mySelect/addressSelect'
+import areaSelect from '../../select/areaSelect'
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
 import YanintentionSelect from '../../mySelect/intentionSelect'
@@ -82,7 +98,7 @@ import mango from '../../../js'
 import {btnList} from '../../../utils/gallery'
 export default {
   name:'newDemand',
-  props: ['btns', 'fromName', 'changeCode'],
+  props: ['btns', 'fromName', 'changeCode', 'type','addressType'],
   components: {
     customerLi,
     bigBtn,
@@ -98,7 +114,9 @@ export default {
     colorSelect,
     houseType,
     elevatorSelect,
-    YanintentionSelect
+    YanintentionSelect,
+    areaSelect,
+    addressSelect
   },
   data(){
     return{
@@ -128,9 +146,9 @@ export default {
   watch: {
     //初始进来的时候初始化数据
     fromName() {
-      if(this.fromName === 'NewCustomer') {
+      if(this.fromName === 'NewCustomer' && this.type == 'demand') {
         this.setInitData()
-      }else {
+      }else if(this.fromName !='NewCustomer'){
         this.setIntentionProduct()
         if(this.newCustomerInfo.arrivalDate) {
           this.timeColor = 'color: #363636'
@@ -146,6 +164,7 @@ export default {
     this.shops = JSON.parse(shops)
     //获取默认进店时间
     this.day = mango.indexTimeB(this.today)[1]
+    this.hasAddressId()
   },
   methods: {
     ...mapMutations(['initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
@@ -160,6 +179,29 @@ export default {
       this.setLeaveStoreVal('')
       this.setDiscountVal('')
       this.setCheckedList([])
+    },
+    //请求客户地址
+    hasAddressId() {
+      if(this.$store.state.addressId) {
+        let id = this.$store.state.addressId
+        indexModel.getAddress(id).then(res => {
+          if(res.status == 1) {
+            this.$set(this.newCustomerInfo,'provinceName',res.data.provinceName)
+            this.$set(this.newCustomerInfo,'cityName',res.data.cityName)
+            this.$set(this.newCustomerInfo,'districtName',res.data.districtName)
+            this.newCustomerInfo.apartmentTypeName = res.data.apartmentTypeName
+            this.newCustomerInfo.elevatorName = res.data.elevator? '有' : '无'
+            this.newCustomerInfo.addressId = res.data.id
+            this.setNewCustomerInfo(this.newCustomerInfo)
+          }else {
+            mango.tips('地址选择失败')
+          }
+        })
+      }
+    },
+    //跳转客户地址
+    toSelectAddress() {
+      this.$router.push({name:'selectAddress',params:{customerId:this.$route.query.id},query:{type: 'intention'}})
     },
     //跳转到选择意向产品页面
     addIntention() {
@@ -209,6 +251,16 @@ export default {
       });
       }
       this.newCustomerInfo.shopId = this.shopId
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    areaChange(val) {
+      // console.log('选择的地区：', val)
+      this.$set(this.newCustomerInfo,'provinceName',val.provinceName)
+      this.$set(this.newCustomerInfo,'cityName',val.cityName)
+      this.$set(this.newCustomerInfo,'countryName',val.countryName)
+      this.newCustomerInfo.province = val.provinceCode
+      this.newCustomerInfo.city = val.cityCode
+      this.newCustomerInfo.area = val.countyCode
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //选择留店时长

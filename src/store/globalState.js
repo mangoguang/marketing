@@ -6,6 +6,7 @@ export default {
   //选中产品列表
   checkedList:[],
   Files:[],
-  picVal:[]
+  picVal:[],
+  addressId: ''
   
 }

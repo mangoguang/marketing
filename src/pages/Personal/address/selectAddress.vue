@@ -31,7 +31,8 @@ const indexModel=new IndexModel()
 export default {
   data () {
     return {
-      fromPath:''
+      fromPath:'',
+      type: ''
     }
   },
   components:{
@@ -51,24 +52,31 @@ export default {
   }, 
   created(){
    this.getAddressList();
+   if(this.$route.query.type) {
+     this.type = this.$route.query.type
+   }
   },
   
   mounted(){
     
   },
   methods:{
-   ...mapMutations(['updateAddress']),
+   ...mapMutations(['updateAddress','setAddressId']),
    ...mapMutations('selectAddress',['updateHasRecord','updatePath']),
    jump(){
      this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId}});
    },
    //获取选择项
    updateVal(id){
+     if(this.type === 'intention') {
+       this.setAddressId(id)
+       this.$router.go(-1)
+     }else {
+       setTimeout(() => {
+        this.$router.replace({path:this.$route.query.redirect,query:{addressId:id}})
+      },100)
+     }
     //  console.log(222,id);
-     setTimeout(() => {
-       this.$router.replace({path:this.$route.query.redirect,query:{addressId:id}})
-     },100)
-     
    },
    //获取编辑的id
    edit(id){
@@ -77,7 +85,11 @@ export default {
     //  console.log('customerId',customerId);
      let addressId=id;
      //let redirect=this.$route.query.redirect;
-     this.$router.replace({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
+     if(this.type === 'intention') {
+       this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
+     }else {
+        this.$router.replace({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
+     }
    },
    //获取地址
    getAddressList(){

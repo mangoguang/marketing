@@ -190,6 +190,7 @@ export default {
     img {
       width: 70.13vw;
       height: 21.33vw;
+      border-radius:1.4vw; 
     }
   }
   .m-slider {

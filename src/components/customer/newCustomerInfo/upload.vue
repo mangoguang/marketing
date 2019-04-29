@@ -48,6 +48,11 @@ export default {
       newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
+  watch: {
+    imgLen() {
+      console.log('imgLen',this.imgLen)
+    }
+  },
   methods: {
     ...mapMutations(['setNewCustomerInfo']),
     //添加图片
@@ -104,7 +109,7 @@ export default {
       });
       this.newCustomerInfo.dataFiles = formdata
       this.setNewCustomerInfo(this.newCustomerInfo)
-      this.imgLen--;
+      this.imgLen --;
     },
     //
     getArr(i,arr) {

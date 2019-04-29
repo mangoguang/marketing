@@ -148,10 +148,12 @@ export default {
       }
       mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
         if(res.status) {
-          this.editStatus = false
-          this.getData()
+          MessageBox.alert('更新成功').then(action => {
+            this.editStatus = false
+            this.getData()
+          })
         }else {
-          MessageBox.alert(res.msg)
+          MessageBox.alert('更新失败')
         }
       })
     },

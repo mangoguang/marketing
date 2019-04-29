@@ -1,5 +1,5 @@
 <template>
-  <div class="newCustomerInfo">
+  <div class="newCustomerInfo" ref='index'>
     <my-banner :title="'新建客户信息'">
       <div class="save" @click="creatNewCustomer">保存</div>
     </my-banner>
@@ -22,7 +22,7 @@
           <img src="../../assets/imgs/newPullDown.png" :class="{changSide:isShowDemand}">
         </div>
       </li>
-      <new-demand v-show="isShowDemand" :fromName='fromName' :changeCode="change"/>
+      <new-demand v-show="isShowDemand" :fromName='fromName' :changeCode="change" :type='"demand"' :addressType='"newCustomer"'/>
     </ul>
     <ul class="dealUl">
       <li @click="controlDaal">
@@ -95,7 +95,8 @@ export default {
       leaveStoreVal: state => state.select.leaveStoreVal,
       shopVal: state => state.select.shopVal,
       upLoadUrl: state => state.loadImgUrl.upLoadUrl
-    })
+    }),
+    ...mapState(['Files'])
   },
   mounted() {
     let shops = localStorage.getItem('shops')
@@ -115,8 +116,9 @@ export default {
     this.setColorPref('')
     this.setHouseType('')
     this.setElevatorVal('')
-    this.setCheckedList([])
-
+    // this.setCheckedList([])
+    this.setFollowVal('')
+    this.setFollowTiming('')
   },
   methods: {
     ...mapMutations([
@@ -138,7 +140,11 @@ export default {
       'setCheckedList',
       'initShopList',
       'initDescriptShopList',
-      'getShopVal'
+      'getShopVal',
+      'setFiles',
+      'setPicVal',
+      'setFollowVal',
+      'setFollowTiming'
     ]),
     change(val) {
       this.codeList = val
@@ -193,7 +199,14 @@ export default {
       if(!result) {
         this.whichFollowData(this.newCustomerInfo)
       }else {
+        //上传附件图片
         let formdata = this.newCustomerInfo.dataFiles
+        //新增
+        // let formdata=new FormData();
+        // for(let i=0;i<this.Files.length;i++){
+        //   formdata.append('record.dataFile',this.Files[i]);
+        // }
+        //
         let obj = this.updateParams(this.newCustomerInfo)
         // console.log(obj)
         let arr = []
@@ -209,6 +222,8 @@ export default {
           }else {
             MessageBox.alert('保存错误')
           }
+          this.setFiles([]);
+          this.setPicVal([]);
         })
       }
       // // let ref = this.$refs.myForm
@@ -301,7 +316,7 @@ export default {
         'address.apartmentType': this.codeList.htCode,   //户型    
         'address.elevator': obj.elevator,
         'opportunity.shopId': obj.shopId,
-        'opportunity.arrivalDate':mango.indexTimeB(new Date())[1],
+        'opportunity.arrivalDate':obj.arrivalDate || mango.indexTimeB(new Date())[1],
         'opportunity.source': this.codeList.sourceCode || 'Natural',
         'opportunity.residentTime': obj.residentTime,   //留店时长
         'opportunity.stylePref': this.codeList.spCode,    //风格
@@ -313,8 +328,8 @@ export default {
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
         'opportunity.argreeDiscount': parseInt(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
         'opportunity.remark': obj.remark2,
-        'opportunity.urgency': obj.urgency,   //是否紧急
-        'opportunity.level': obj.level,   //等级
+        'opportunity.urgency': obj.urgency || false,   //是否紧急
+        'opportunity.level': obj.level || 'A',   //等级
         'record.source': obj.source2,
         'record.followDate': obj.followDate,
         'record.residentTime': obj.residentTime2,   //跟进时长
