@@ -9,7 +9,7 @@
       
       <li class="noPadding">
         <remark :title="'跟进情况'">
-          <textarea v-model="newCustomerInfo.situation" name="" id="" placeholder="描述一下跟进情况"></textarea>
+          <textarea v-model="newCustomerInfo.situation" name="" id="" placeholder="描述一下跟进情况" oninput="if(value.length>5)value=value.slice(0,200)"></textarea>
         </remark>
       </li>
       <!-- <li>
@@ -20,7 +20,7 @@
       </li>
       <li class="noPadding">
         <remark :title="'下一步计划'">
-          <textarea v-model="newCustomerInfo.plan" name="" id="" placeholder="请填写下一步跟进计划"></textarea>
+          <textarea v-model="newCustomerInfo.plan" name="" id="" placeholder="请填写下一步跟进计划" oninput="if(value.length>5)value=value.slice(0,200)"></textarea>
         </remark>
       </li>
     </ul>
