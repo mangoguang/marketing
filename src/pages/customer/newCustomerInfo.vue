@@ -1,5 +1,5 @@
 <template>
-  <div class="newCustomerInfo">
+  <div class="newCustomerInfo" ref='index'>
     <my-banner :title="'新建客户信息'">
       <div class="save" @click="creatNewCustomer">保存</div>
     </my-banner>
@@ -95,7 +95,8 @@ export default {
       leaveStoreVal: state => state.select.leaveStoreVal,
       shopVal: state => state.select.shopVal,
       upLoadUrl: state => state.loadImgUrl.upLoadUrl
-    })
+    }),
+    ...mapState(['Files'])
   },
   mounted() {
     let shops = localStorage.getItem('shops')
@@ -116,6 +117,8 @@ export default {
     this.setHouseType('')
     this.setElevatorVal('')
     this.setCheckedList([])
+    this.setFollowVal('')
+    this.setFollowTiming('')
 
   },
   methods: {
@@ -138,7 +141,11 @@ export default {
       'setCheckedList',
       'initShopList',
       'initDescriptShopList',
-      'getShopVal'
+      'getShopVal',
+      'setFiles',
+      'setPicVal',
+      'setFollowVal',
+      'setFollowTiming'
     ]),
     change(val) {
       this.codeList = val
@@ -193,7 +200,14 @@ export default {
       if(!result) {
         this.whichFollowData(this.newCustomerInfo)
       }else {
+        //上传附件图片
         let formdata = this.newCustomerInfo.dataFiles
+        //新增
+        // let formdata=new FormData();
+        // for(let i=0;i<this.Files.length;i++){
+        //   formdata.append('record.dataFile',this.Files[i]);
+        // }
+        //
         let obj = this.updateParams(this.newCustomerInfo)
         // console.log(obj)
         let arr = []
@@ -209,6 +223,8 @@ export default {
           }else {
             MessageBox.alert('保存错误')
           }
+          this.setFiles([]);
+          this.setPicVal([]);
         })
       }
       // // let ref = this.$refs.myForm

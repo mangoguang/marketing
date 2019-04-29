@@ -14,13 +14,13 @@
       </li>
       <li is="ageSelect"   @ageChange="ageChange"></li>
       <li is="customerLi" :leftText="'客户电话'">
-        <input v-model="newCustomerInfo.phone" type="text" placeholder="请填写客户电话"  oninput="if(value.length>5)value=value.slice(0,11)">
+        <input v-model="newCustomerInfo.phone" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户电话"  oninput="if(value.length>5)value=value.slice(0,11)">
       </li>
       <li is="customerLi" :leftText="'客户微信'">
         <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  oninput="if(value.length>5)value=value.slice(0,20)">
       </li>
       <li is="customerLi" :leftText="'客户  QQ'">
-        <input v-model="newCustomerInfo.qq" type="number" placeholder="请填写客户 QQ"  oninput="if(value.length>5)value=value.slice(0,15)">
+        <input v-model="newCustomerInfo.qq" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户 QQ"  oninput="if(value.length>5)value=value.slice(0,15)">
       </li>
       <li is="customerLi" :leftText="'客户职业'">
         <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业"  oninput="if(value.length>5)value=value.slice(0,30)">
@@ -29,6 +29,7 @@
         <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="toAddress">
           <span>地址管理</span>
         </li>
+      <li is="shopSelect" :type='"descript"'></li>
       </template>
       <template v-else>
         <li is="areaSelect" @areaChange="areaChange"></li>
@@ -36,7 +37,6 @@
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>5)value=value.slice(0,200)">
         </li>
       </template>
-      <li is="shopSelect" :type='"descript"'></li>
       <li class="textarea">
         <h3>客户描述</h3>
         <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧" oninput="if(value.length>5)value=value.slice(0,200)"></textarea>

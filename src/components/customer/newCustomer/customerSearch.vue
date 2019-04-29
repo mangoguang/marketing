@@ -5,7 +5,8 @@
         v-model="radioVal" @change="changeVal"/>
     </div>
     <div class="inp">
-      <input v-model="phone" :type="inpType" :placeholder="chooseVal">
+      <input v-model="phone" :type="inpType" :placeholder="chooseVal" v-show='inpType=="number"' onkeypress="if(event.keyCode == 101){return false}"/>
+      <input v-model="phone" :type="inpType" :placeholder="chooseVal" v-show='inpType=="text"'/>
       <button @click="toCustomerInfo" type="button">新建</button>
     </div>
     <div class="tips" v-show="existStatus">
@@ -38,7 +39,8 @@ export default {
       existStatus: false,
       cusId: '',
       tipsVal: '手机号码已存在，',
-      inpType: ''
+      inpType: '',
+      pressType: ''
     }
   },
   watch: {
@@ -52,6 +54,11 @@ export default {
     this.radioVal = this.text[0].name
   },
   methods: {
+    myFunction(e) {
+      console.log(e.keyCode)
+      if(e.keyCode == 101) {
+      }
+    },
     //新建客户时候验证手机/微信号
     toCustomerInfo() {
       let type = this.radioVal === '客户手机'? 'phone' : 'wechat'

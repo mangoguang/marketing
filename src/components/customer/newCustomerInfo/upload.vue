@@ -46,7 +46,12 @@ export default {
   computed: {
     ...mapState({
       newCustomerInfo: state => state.customer.newCustomerInfo
-    })
+    }),
+    imgLen() {
+      get() {
+        return this.imgLen
+      }
+    }
   },
   methods: {
     ...mapMutations(['setNewCustomerInfo']),
@@ -104,7 +109,7 @@ export default {
       });
       this.newCustomerInfo.dataFiles = formdata
       this.setNewCustomerInfo(this.newCustomerInfo)
-      this.imgLen--;
+      this.imgLen -= 1
     },
     //
     getArr(i,arr) {

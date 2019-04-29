@@ -59,8 +59,8 @@ export default {
         id: 0,
         image: './static/images/home/tuku1.png'
       },{
-        name: '商学院',
-        preName: '-精英必备产品知识、卖点，销售技能、门店管理攻略',
+        name: '网络商学院',
+        preName: '精英必备产品知识、卖点，销售技能、门店管理攻略',
         link: '/msManage',
         id: 2,
         image: './static/images/home/xueyuan1.png'

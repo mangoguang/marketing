@@ -27,10 +27,10 @@
       </li>
       <li is="colorSelect"  @colorChange="colorChange" @colorCodeChange='colorCodeChange'></li>
       <li is="customerLi" :leftText="'预算金额'">
-        <input v-model="newCustomerInfo.budget" type="number" placeholder="请填写预算金额" oninput="if(value.length>5)value=value.slice(0,8)">
+        <input v-model="newCustomerInfo.budget" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写预算金额" oninput="if(value.length>5)value=value.slice(0,8)">
       </li>
       <li is="customerLi" :leftText="'已交定金'">
-        <input v-model="newCustomerInfo.depositPaid" type="number" placeholder="请填写已交金额" oninput="if(value.length>5)value=value.slice(0,8)">
+        <input v-model="newCustomerInfo.depositPaid" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写已交金额" oninput="if(value.length>5)value=value.slice(0,8)">
       </li>
 
       <li is="discountSelect" @discountChange="discountChange"></li>
