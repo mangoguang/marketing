@@ -164,7 +164,11 @@ export default {
         let url = this.imgSliderList[index].url
         let type = this.isHttps(url)
         if(type === 'id') {
-          this.$router.push({path:'/productDetails',query: {id: url}})
+          if(/^[0-9]+$/.test(url)) {
+            this.$router.push({path:'/productDetails',query: {id: url}})
+          }else {
+            alert('链接错误')
+          }
         }else if(type === 'https') {
           this.judgeSystem(url)
         }

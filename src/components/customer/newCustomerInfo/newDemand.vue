@@ -206,11 +206,12 @@ export default {
     //跳转到选择意向产品页面
     addIntention() {
       this.$router.push({
-        name:'searchProduct',
+        name:'intentionProduct',
         query:{
             redirect: this.$route.path
           }
         })
+      // this.$router.push({name:'intentionProduct',query:{redirect:this.url}})
     },
     // 保存意向产品
     setIntentionProduct() {
