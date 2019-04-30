@@ -93,7 +93,8 @@ const state = {
 }
 
 const mutations = {
-  updateTitle:(state,str) => {state.title=str}
+  updateTitle:(state,str) => {state.title=str},
+  setClassify:(state,array) => {state.formInfo.classify=array}
 }
 
 const actions = {

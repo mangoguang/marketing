@@ -64,7 +64,7 @@
             <yan-input v-bind="formInfo.paid" :value="depositPaid" :readonly='readonly'/>
           </li>
           <li>
-            <discount-select v-bind="formInfo.discount" :value="argreeDiscount"  :showIcon="selectIcon"/>
+            <discount-select v-bind="formInfo.discount" :value="argreeDiscountTxt"  :showIcon="selectIcon"/>
           </li>
         </ul>
         <yan-textarea v-bind="formInfo.remark" :readonly='readonly' :value="form.remark"></yan-textarea>
@@ -80,7 +80,6 @@
         </div>
         <div v-if="this.form.status==='Approved'">
           <title-bar :text="titleModule.order"/>
-
           <order-info class="order" :orderList="item" v-for="(item,index) in form.orderList" :key="index"/>
         </div>
         <p class="last">到底啦</p>
@@ -176,7 +175,8 @@ export default {
       ],
       customerId:'',
       isRecord:false,
-      UpdateRedirect:''
+      UpdateRedirect:'',
+      argreeDiscountTxt:''
     }
   },
   components:{
@@ -259,9 +259,16 @@ export default {
           this.budget=res.data.budget;
           this.depositPaid=res.data.depositPaid;
           this.argreeDiscount=res.data.argreeDiscount;
-          this.form.level=res.data.level;
+          if(res.data.argreeDiscount!==''){
+            this.argreeDiscountTxt=parseFloat(res.data.argreeDiscount)/10+"折";
+          }else{
+            this.argreeDiscountTxt=0;
+          }
+          this.form.level=res.data.level===''?'A':res.data.level;
           if(res.data.level){
              this.setClassify([res.data.level])
+          }else{
+            this.setClassify(['A'])
           }
           if(res.data.recordList.length>0){
             this.form.recordList=res.data.recordList;
