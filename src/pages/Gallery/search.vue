@@ -303,7 +303,7 @@ export default {
       background-size: contain;
       width: 2.66vw;
       height: 4.8vw;
-      padding-right: 6vw;
+      padding-right: 10vw;
       box-sizing: border-box;
     }
   }

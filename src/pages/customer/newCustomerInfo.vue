@@ -1,5 +1,5 @@
 <template>
-  <div class="newCustomerInfo" ref='index'>
+  <div class="newCustomerInfo" ref='newTop'>
     <my-banner :title="'新建客户信息'">
       <div class="save" @click="creatNewCustomer">保存</div>
     </my-banner>
@@ -82,6 +82,7 @@ export default {
         vm.isShowDemand = true
       }else {
         vm.setUpLoadUrl('')
+        vm.setNewCustomerScroll(0)
       }
     })
   },
@@ -94,13 +95,18 @@ export default {
       sourceVal: state => state.select.sourceVal,
       leaveStoreVal: state => state.select.leaveStoreVal,
       shopVal: state => state.select.shopVal,
-      upLoadUrl: state => state.loadImgUrl.upLoadUrl
+      upLoadUrl: state => state.loadImgUrl.upLoadUrl,
+      newCustomerScroll: state => state.customerScroll.newCustomerScroll
     }),
     ...mapState(['Files'])
   },
   mounted() {
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
+    this.$refs.newTop.addEventListener('scroll', this.handleScroll,true)
+    setTimeout(() => {
+      this.$refs.newTop.scrollTop = this.newCustomerScroll
+    }, 100);
   },
   destroyed(){
     this.setSexVal('')
@@ -121,7 +127,12 @@ export default {
     this.setFollowTiming('')
   },
   methods: {
+    handleScroll(e) {
+      let top = e.target.scrollTop
+      this.setNewCustomerScroll(top)
+    },
     ...mapMutations([
+      'setNewCustomerScroll',
       "setNewCustomerInfo",
       'setSexVal',
       'setAreaVal',
@@ -353,7 +364,10 @@ export default {
 .newCustomerInfo{
   background: $bgCol;
   padding-top: 16vw;
-  position: relative;
+  // position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
   .save{
     color: #0071ff;
     width: 10vw;

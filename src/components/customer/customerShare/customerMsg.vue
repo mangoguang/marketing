@@ -103,7 +103,7 @@ export default {
       box-sizing:border-box;
     }
      span:first-child  {
-        border: 1px solid red
+        // border: 1px solid red
       }
     li:last-child{
       border-bottom: none;
