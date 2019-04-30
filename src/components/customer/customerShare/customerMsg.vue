@@ -21,11 +21,11 @@
         <span v-if='list.duty'>{{ list.duty }}</span>
         <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi" :leftText="'客户地址'">
+      <li is="customerLi" class="customerLi2" :leftText="'客户地址'">
         <span v-if='list.address'>{{ list.address }}</span>
         <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi" :leftText="'客户描述'">
+      <li is="customerLi" class="customerLi2" :leftText="'客户描述'">
         <span v-if='list.remark'>{{ list.remark }}</span>
         <span class='unspan' v-else>未收集</span>
       </li>
