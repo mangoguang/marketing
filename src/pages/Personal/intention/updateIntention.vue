@@ -275,9 +275,10 @@ export default {
    
   },
   activated(){
-    // this.customerId=this.$route.params.customerId;
-    // this.path=this.$route.fullPath;
-    // this.url=this.$route.query.url;
+    this.form.oppId=this.$route.query.oppId;
+    this.customerId=this.$route.params.customerId;
+    this.path=this.$route.fullPath;
+    this.url=this.$route.query.url;
     // console.log(this.checkedList);
     // this.getProduct();
     // this.getShop();
@@ -507,6 +508,7 @@ export default {
     },
     submit(){
      if(this.valid()){
+       console.log("oppid",this.form.oppId)
         let Akey=[];
         let form=new FormData();
         form.append('customerId',this.customerId);
@@ -560,6 +562,7 @@ export default {
               // history.go(this.go);
               //this.$router.go(this.go);
               this.$router.go(-1);
+              //this.clearKeepAlive();
             }else{
               mango.tip(res.msg);
             }
@@ -729,33 +732,30 @@ export default {
       to.meta.keepAlive=true;
       next();
     }else{
+      //to.meta.keepAlive=false;
       next();
     }
     if(from.name==='searchProduct'){
       to.meta.keepAlive=true;
       next();
     }else{
+      //to.meta.keepAlive=false;
       next();
     }
     if(from.name==='intentionProduct'){
         to.meta.keepAlive=true;
         next();
     }else{
+      //to.meta.keepAlive=false;
       next();
     }
     if(from.name==='chooseShop'){
         to.meta.keepAlive=true;
         next();  
     }else{
+      //to.meta.keepAlive=false;
       next();
     }
-     if(from.name==='intention'){
-       to.meta.keepAlive=false;
-       next();
-     }else{
-       to.meta.keepAlive=true;
-       next();
-     }
     if(from.name==='/enquiryInfo'){
       to.meta.keepAlive=false; 
       next();
@@ -778,29 +778,33 @@ export default {
     if(to.name==='/enquiryInfo'){
         //from.meta.keepAlive=false;
         if(!from.meta.keepAlive){
+          //from.meta.keepAlive=false;
           this.setCheckedList([]);
           //this.clearKeepAlive();
           next();    
         }else{
-          from.meta.keepAlive=true;
+          //from.meta.keepAlive=true;
           next();
         }
        
     }else{
+      from.meta.keepAlive=false;
        next();
     }
     if(to.name==='/CustomerInfo'){
         //from.meta.keepAlive=false;
         if(!from.meta.keepAlive){
+          //from.meta.keepAlive=false;
           this.setCheckedList([]);
           //this.clearKeepAlive();
           next();    
         }else{
-          from.meta.keepAlive=true;
+          //from.meta.keepAlive=true;
           next();
         }
          
     }else{
+      from.meta.keepAlive=false;
        next();
     }
     if(to.name==='intentionProduct'){
@@ -813,7 +817,8 @@ export default {
       }
     
     }else{
-       next();
+      from.meta.keepAlive=false;
+      next();
     }
     next();
   }

@@ -239,7 +239,7 @@ export default {
       this.$route.meta.isUseCache = true; 
     }else {
       this.$route.meta.isUseCache = false; 
-      this.setUpLoadUrl('')
+      this.setUpLoadUrl('') 
     }        
     next();
   },

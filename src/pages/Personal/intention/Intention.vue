@@ -414,10 +414,11 @@ export default {
   },
   beforeRouteLeave(to,from,next){
     if(to.name==='updateintention'){
-      this.setCheckedList([]);
+      //this.setCheckedList([]);
       to.meta.keepAlive=false;
       next();
     }
+    to.meta.keepAlive=false;
     next();
   }
 };
