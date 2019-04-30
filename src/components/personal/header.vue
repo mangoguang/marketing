@@ -89,10 +89,12 @@ export default {
     align-items: center;
     color: #fff;
     font-size: 4.266vw;
+    height: 30vw;
     .via{
       // background: url('../../assets/imgs/via.png') no-repeat center;
       // background-size: 100% 100%;
       width: 16vw;
+      height: auto;
       //height: 16vw;
     }
     .personal-content{

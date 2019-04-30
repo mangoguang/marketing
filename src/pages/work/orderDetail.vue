@@ -110,6 +110,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-around;
+      height: 20vw;
       .photo {
         background: url("../../assets/imgs/order-icon.png");
         background-size: 100% 100%;

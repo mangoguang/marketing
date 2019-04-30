@@ -25,7 +25,7 @@
           @click="moduleSelect(index)">
           <!-- <img src="../../assets/imgs/customer-icon.png" class="topBarimg"> -->
           {{item.name}}
-          <hr v-show='item.status'></hr>
+          <hr v-show='item.status'/>
           </button>
           <!-- <button class="search" @click="showNav"></button> -->
         </li>

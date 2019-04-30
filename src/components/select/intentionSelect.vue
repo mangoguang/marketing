@@ -1,8 +1,9 @@
 <template>
   <div class="intentionSelect">
-    <div class="content">
-      <span>意向分类</span>
-    </div>
+    <!-- <div class="content">
+      <span></span>
+    </div> -->
+    <h3>意向分类</h3>
     <ul class="select">
       <li v-for="(item, index) in keyBtns"
         :class="{on: item.status}"
@@ -67,6 +68,12 @@ export default {
   font-size: 4vw;
   color: #363636;
   height: 15vw;
+  h3 {
+    font-size: 4vw;
+    color: #363636;
+    font-weight: normal;
+    flex: 0.24;
+  }
   .content {
     flex: 0.24
   }
