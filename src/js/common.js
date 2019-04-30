@@ -158,7 +158,6 @@ export default class Common {
         params: params
       })
       .then((res) => {
-        console.log('请求正常！！！')
         if (res.code === 510) { // token失效
           if (token.access_token && token.access_token.length < 48) { // 有效token
             refreshToken.call(this).then(res => {
@@ -174,7 +173,7 @@ export default class Common {
         }
       })
       .catch((error) => {
-        console.log('请求异常！！！')
+        // console.log('请求失败！：', error.response, error.request)
         _this.loading('close')
         if (error.response) { // 如果服务器响应
           if (error.response.status === 510) {
@@ -211,7 +210,7 @@ export default class Common {
       let loadingTimeOut = setTimeout(function() {
         _this.loading('close')
         clearTimeout(loadingTimeOut)
-      }, 10000)
+      }, 15000)
       axios({
         method: 'post',
         // async: false,
@@ -246,7 +245,7 @@ export default class Common {
        axios({
         method: 'post',
         //async: false,
-        timeout: 3000,
+        timeout: 15000,
         url: url,
         data:data,
          headers: {
