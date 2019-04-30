@@ -163,6 +163,8 @@ export default {
             this.form.report='';
             this.form.plan='';
           };
+        }).catch((reject) => {
+          mango.tip("网络异常");
         })
       }
      
