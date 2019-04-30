@@ -190,7 +190,7 @@ export default {
             this.$set(this.newCustomerInfo,'cityName',res.data.cityName)
             this.$set(this.newCustomerInfo,'districtName',res.data.districtName)
             this.newCustomerInfo.apartmentTypeName = res.data.apartmentTypeName
-            this.newCustomerInfo.elevatorName = res.data.elevator? '有' : '无'
+            this.newCustomerInfo.elevatorName = res.data.elevator === "Y"? '有' : '无'
             this.newCustomerInfo.addressId = res.data.id
             this.setNewCustomerInfo(this.newCustomerInfo)
           }else {

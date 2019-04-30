@@ -2,7 +2,7 @@
   <div class="upload">
     <h1>附件图片</h1>
     <ul class="load_box">
-      <div v-if="imgLen>=5 ? false : true" class="addFile">
+      <div v-if="newCustomerInfo.imgLen>=5 ? false : true" class="addFile">
         <input
           name='record.dataFile'
           type="file"
@@ -17,14 +17,14 @@
           <p>添加图片</p>
         </div>
       </div>
-      <li v-for="(value, key, i) in imgs" :key="key">
+      <li v-for="(value, key, i) in newCustomerInfo.imgs" :key="key">
         <img :src="getObjectURL(value)">
         <a class="close" @click="delImg(key,i)">
           <img src="../../../assets/imgs/egg_delete.png" alt="">
         </a>
       </li>
       <div class="count">
-        <span>{{ imgLen }}</span>
+        <span>{{ newCustomerInfo.imgLen }}</span>
         <span>/5</span>
       </div>
     </ul>
@@ -40,7 +40,7 @@ export default {
       imgs: {},
       imgLen: 0,
       imgdata: "",
-      fil: ''
+      fil: []
     };
   },
   computed: {
@@ -50,7 +50,7 @@ export default {
   },
   watch: {
     imgLen() {
-      console.log('imgLen',this.imgLen)
+      console.log('imgLen',this.newCustomerInfo.imgLen)
     }
   },
   methods: {
@@ -61,7 +61,7 @@ export default {
       // 通过DOM取文件数据
       this.fil = inputDOM.files;
       // console.log('文件：', this.fil)
-      let oldLen = this.imgLen;
+      let oldLen = this.newCustomerInfo.imgLen;
       let len = this.fil.length + oldLen;
       if (len > 5) {
         alert("最多可上传5张，您还可以上传" + (5 - oldLen) + "张");
@@ -73,13 +73,25 @@ export default {
           alert("请选择3M以内的图片！");
           return false;
         }
-        this.imgLen ++;
-        this.$set(
-          this.imgs,
-          this.fil[i].name + "?" + new Date().getTime() + i,
-          this.fil[i]
-        );
-       this.submit(this.fil[i])
+        this.newCustomerInfo.imgLen ++;
+        //判断有没有缓存图片
+        if(this.newCustomerInfo.imgs) {
+          this.imgs = this.newCustomerInfo.imgs
+          this.$set(
+            this.imgs,
+            this.fil[i].name + "?" + new Date().getTime() + i,
+            this.fil[i]
+          )
+        }else {
+          this.$set(
+            this.imgs,
+            this.fil[i].name + "?" + new Date().getTime() + i,
+            this.fil[i]
+          );
+        }
+        this.$set(this.newCustomerInfo,'imgs',this.imgs)
+        this.submit(this.fil[i])
+        this.setNewCustomerInfo(this.newCustomerInfo)
       }
     },
     //创建url预览图片
@@ -99,7 +111,12 @@ export default {
     },
     //删除图片
     delImg(key,i) {
-      this.$delete(this.imgs, key);
+      // if(this.imgs && this.imgs.length) {
+      //   this.$delete(this.imgs, key);
+      //   this.$set(this.newCustomerInfo,'imgs',this.imgs)
+      // }else {
+        this.$delete(this.newCustomerInfo.imgs,key)
+      // }
       let formdata = this.newCustomerInfo.dataFiles
       //获取删除后的formdata
       let temp = this.getArr(i,formdata.getAll('record.dataFile'))
@@ -108,8 +125,8 @@ export default {
         formdata.append('record.dataFile', item)
       });
       this.newCustomerInfo.dataFiles = formdata
+      this.newCustomerInfo.imgLen --;
       this.setNewCustomerInfo(this.newCustomerInfo)
-      this.imgLen --;
     },
     //
     getArr(i,arr) {

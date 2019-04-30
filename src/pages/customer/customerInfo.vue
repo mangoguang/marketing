@@ -234,7 +234,6 @@ export default {
     //
   beforeRouteLeave (to, from, next) { 
   // /Customer   
-    // console.log(to.name)    
     if (to.name === 'address' || to.name === 'chooseShop'){
       this.$route.meta.isUseCache = true; 
     }else {
