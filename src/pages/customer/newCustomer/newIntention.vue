@@ -30,7 +30,8 @@ export default {
   computed: {
     ...mapState({
        newCustomerInfo: state => state.customer.newCustomerInfo
-    })
+    }),
+    ...mapState(['Files'])
   },
   watch: {
      //初始进来的时候初始化数据
@@ -74,7 +75,9 @@ export default {
       'setCheckedList',
       'setAddressId',
       'setFollowVal',
-      'setFollowTiming'
+      'setFollowTiming',
+      'setFiles',
+      'setPicVal'
       ]),
     initData() {
       this.setNewCustomerInfo({})
@@ -92,12 +95,18 @@ export default {
     clearData() {
       this.setNewCustomerInfo({})
       this.setCheckedList([])
+      this.setFiles([]);
+      this.setPicVal([]);
     },
     submit() {
       let temp = this.whichFollowData(this.newCustomerInfo)
       if(temp) {
         let formdata = this.newCustomerInfo.dataFiles
-        // let formdata = new FormData()
+        // let formdata=new FormData();
+        // for(let i=0;i<this.Files.length;i++){
+        //   formdata.append('record.dataFile',this.Files[i]);
+        // }
+
         let obj = this.updateParams(this.newCustomerInfo)
         let arr = []
         for(var key in obj) {
@@ -108,6 +117,8 @@ export default {
           if(res.status) {
             MessageBox.alert('保存成功！').then(action => {
               this.$router.go(-1)
+              this.setFiles([]);
+              this.setPicVal([]);
             })
           }else {
             MessageBox.alert('保存错误')

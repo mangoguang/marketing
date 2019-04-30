@@ -79,13 +79,22 @@ export default {
     next(vm => {
       vm.fromName = from.name
       if(from.name === 'chooseShop' || from.name === 'searchProduct' || from.name === 'intentionProduct') {
-        vm.isShowDemand = true
+          vm.isShowDemand = true
+          vm.isShowDeal = true
       }else {
         vm.setUpLoadUrl('')
         vm.setNewCustomerScroll(0)
         // vm.setNewCustomerInfo({})
       }
     })
+  },
+  beforeRouteLeave(to, from, next) {
+    if(to.name === 'NewCustomer') {
+      this.setFiles([]);
+      this.setPicVal([]);
+      this.setNewCustomerInfo({})
+    }
+    next()
   },
   computed: {
     ...mapState({
@@ -218,7 +227,7 @@ export default {
         // for(let i=0;i<this.Files.length;i++){
         //   formdata.append('record.dataFile',this.Files[i]);
         // }
-        //
+        
         let obj = this.updateParams(this.newCustomerInfo)
         // console.log(obj)
         let arr = []
@@ -230,12 +239,12 @@ export default {
           if(res.status) {
             MessageBox.alert('保存成功！').then(action => {
               this.$router.replace({path: '/customer'})
+              this.setFiles([]);
+              this.setPicVal([]);
             })
           }else {
             MessageBox.alert('保存错误')
           }
-          this.setFiles([]);
-          this.setPicVal([]);
         })
       }
       // // let ref = this.$refs.myForm
