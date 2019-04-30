@@ -2,7 +2,8 @@
   <div class="inputBox" @click="jump">
       <label>
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
-          <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
+         <!--  <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)"> -->
+          <textarea  rows="1" cols="1" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)"></textarea>
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
@@ -37,8 +38,8 @@ export default {
 .inputBox{
   font-size: 4vw;
   color:#363636;
-  height:12vw;
-  line-height: 12vw;
+  min-height:12vw;
+  // line-height: 12vw;
   padding-right:4.266vw;
   display:flex;
   flex-direction: row;
@@ -80,6 +81,33 @@ export default {
     font-size: 4vw;
     flex: 1;
   }
+  textarea::-moz-placeholder{
+      color:#999;
+      font-size:4vw;
+    }
+     textarea:-moz-placeholder{
+      color:#999;
+      font-size:4vw;
+    }
+    textarea::-ms-input-placeholder{
+      color:#999;
+      font-size:4vw;
+    }
+    textarea::-webkit-input-placeholder{
+      color:#999;
+      font-size:4vw;
+    }
+    textarea{
+      color:#363636;
+      font-size:4vw;
+      flex: 1;
+      outline: none;
+      resize: none;
+      border:none;
+      height:12vw;
+      overflow: scroll;
+     line-height:12vw;
+    }
   .icon-right{
     margin-left:2.133vw;
     //padding-right:4.266vw;

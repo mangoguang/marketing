@@ -1,13 +1,13 @@
 <template>
   <div class="remark">
-    <p>{{label}}</p>
+    <p>{{label}}<span class="yan-red" v-show="required">*</span></p>
     <textarea name="" id="" :maxlength='maxlength' :placeholder="placeholder"  :readonly='readonly' :value="value" @input="$emit('input',$event.target.value)"></textarea>
   </div>
 </template>
 
 <script>
 export default {
-  props:['value','label','placeholder','readonly','maxlength'],
+  props:['value','label','placeholder','readonly','maxlength','required'],
   data(){
     return{
 
@@ -25,6 +25,9 @@ export default {
       padding-left: 4.266vw;
       margin-top:4vw;
       margin-bottom:2.666vw;
+       .yan-red{
+        color:#FB222B;
+      }
     }
     textarea::-moz-placeholder{
       color:#999;

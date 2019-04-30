@@ -43,7 +43,8 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/>
+          <!-- <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/> -->
+          <yan-one-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/>
         </li>
         <li>
           <color-select v-bind="formInfo.color" :value="colorPrefName" @update="updateColor" :showIcon="selectIcon"/>
@@ -85,6 +86,7 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import titleBar from '../../../components/common/titleBar'
 import yanInput from '../../../components/yanInput'
+import yanOneInput from '../../../components/yanOneInput'
 import yanTextarea from '../../../components/yanTextarea'
 import intentionSelect from '../../../components/mySelect/intentionSelect'
 import storeSelect from '../../../components/mySelect/storeSelect'
@@ -171,7 +173,8 @@ export default {
      recordPannel,
      yanLayerPrompt,
      colorSelect,
-     discountSelect
+     discountSelect,
+     yanOneInput
   },
   watch:{
     $route(to,from){

@@ -234,7 +234,10 @@ export var router = new VueRouter({
   {
     path: '/followRecord',
     name: 'followRecord',
-    component: () => import('../pages/Personal/intention/followRecord')
+    component: () => import('../pages/Personal/intention/followRecord'),
+    meta:{
+      keepAlive:true
+    }
   },
   {
     path: '/intention/:opportunityId',

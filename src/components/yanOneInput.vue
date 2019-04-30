@@ -4,7 +4,7 @@
           <span>{{label}}</span>
           <textarea :value="value" :style="color" 
           :readonly='readonly' :placeholder="placeholder" @input="$emit('input',$event.target.value)"
-          :maxlength='maxlength' rows="1" cols="1">
+          :maxlength='maxlength' rows="1" cols="1"></textarea>
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../assets/imgs/rightside.png" alt="">
@@ -70,7 +70,8 @@ export default {
       outline: none;
       resize: none;
       border:none;
-      height:100%;
+      height:12vw;
+      line-height: 12vw;
       overflow: scroll;
     }
   .icon-right{

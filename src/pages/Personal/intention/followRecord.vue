@@ -192,13 +192,27 @@ export default {
    }
       
   },
+ /*  beforeRouteEnter(to,from,next){
+    if(from.name==="updateintention"){
+      to.meta.keepAlive=false;
+      next();
+    }else{
+      to.meta.keepAlive=true;
+      next();
+    }
+  },  */
   beforeRouteLeave(to,from,next){
-    console.log(this);
+   // console.log(this);
     if(to.path!=="/previewImg"){
       this.setFiles([]);
       this.setPicVal([]);
+      from.meta.keepAlive=false;
+      next();
+    }else{
+      from.meta.keepAlive=true;
+      next();
     }
-    next();
+    //next();
   }
 };
 </script>
