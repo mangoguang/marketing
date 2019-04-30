@@ -56,8 +56,8 @@
         </div>
         <div class="wechat-icon"></div>
       </div>
+      <footer></footer>
     </div>
-    <footer></footer>
   </div>
 </template>
 
@@ -457,6 +457,9 @@ export default {
   }
   .login {
     background: #fff;
+    width: 100vw;
+    height: 100vh;
+    // margin-top: -45.06vw;
     .box {
       width: 80vw;
       height: 69.2vw;
@@ -522,11 +525,13 @@ export default {
     }
   }
   .wechatLogin {
-    margin-top: 13.33vw;
+    // margin-top: 13.33vw;
     // padding: 0 4vw;
     // background: #fff;
-    position: relative;
+    position: fixed;
     z-index: 999;
+    bottom: 16vw;
+    left: 15%;
     // height: 60vw;
     // top:0;
     // left:0;
