@@ -258,7 +258,7 @@ export var router = new VueRouter({
     name: 'updateintention',
     component: () => import('../pages/Personal/intention/updateIntention'),
     meta:{
-      keepAlive:false,
+      keepAlive:true,
       isUseCache: true
     }
   },

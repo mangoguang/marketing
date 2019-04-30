@@ -183,11 +183,14 @@ export default {
     $route(to,from){
       //console.log(from);
       if(from.name==='selectAddress'){
+        //this.$route.meta.keepAlive=true;
         let obj={};
-        if(this.$route.query.addressId){
+        if(this.$store.state.addressId){
+        // if(this.$route.query.addressId){
           this.$store.state.addressList.map((item,index) => {
             console.log(item);
-            if(item.addressId===this.$route.query.addressId){
+            //if(item.addressId===this.$route.query.addressId){
+              if(item.addressId===this.$store.state.addressId){
               console.log('进来了');
               obj=Object.assign({},item);
             }
@@ -197,7 +200,8 @@ export default {
           this.address=address;
           this.apartmentType=obj.apartmentType;
           this.elevator=elevator;
-          this.form.addressId=this.$route.query.addressId;
+          //this.form.addressId=this.$route.query.addressId;
+          this.form.addressId=this.$store.state.addressId;
         }else{
           this.address='未收集地址';
           this.apartmentType='未收集户型';
@@ -250,12 +254,13 @@ export default {
     ...mapState(['checkedList'])
   },
   created(){
+    console.log("回退进了created");
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
     this.url=this.$route.query.url;
     this.getProduct();
     this.getShop();
-    this.$route.meta.keepAlive=true;
+    //this.$route.meta.keepAlive=true;
     if(this.$route.query.oppId){
       this.updateTitle('意向详情');
       this.form.oppId=this.$route.query.oppId;
@@ -270,7 +275,7 @@ export default {
     console.log(this.checkedList);
     this.getProduct();
     this.getShop();
-    console.log("回退进了created");
+    console.log("回退进了activated");
     this.isFirstEnter=true;
    
      
@@ -309,7 +314,7 @@ export default {
       }
     },
     addRecord(){
-     this.$router.replace({name:'followRecord',query:{oppId:this.oppId}});
+     this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
    },
     listen(){
       if(this.form.address===''){
@@ -534,7 +539,9 @@ export default {
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              history.back(this.go);
+              // history.go(this.go);
+              //this.$router.go(this.go);
+              this.$router.go(-1);
             }else{
               mango.tip(res.msg);
             }
@@ -703,35 +710,44 @@ export default {
     if(from.name==='selectAddress'){
       to.meta.keepAlive=true;
       next();
+    }else{
+      next();
     }
     if(from.name==='searchProduct'){
       to.meta.keepAlive=true;
       next();
+    }else{
+      next();
     }
     if(from.name==='intentionProduct'){
-       
         to.meta.keepAlive=true;
         next();
-       
+    }else{
       next();
     }
     if(from.name==='chooseShop'){
-     
         to.meta.keepAlive=true;
-        next();
-      
-    }
-    if(from.name==='intention'){
-      to.meta.keepAlive=false;
+        next();  
+    }else{
       next();
     }
+     if(from.name==='intention'){
+       to.meta.keepAlive=false;
+       next();
+     }else{
+       next();
+     }
     if(from.name==='/enquiryInfo'){
       to.meta.keepAlive=false; 
       next();
-    }
+    }else{
+       next();
+     }
     if(from.name==='/CustomerInfo'){
       to.meta.keepAlive=false;   
       next();
+    }else{
+       next();
     }
    next();
   },
@@ -742,26 +758,41 @@ export default {
         //from.meta.keepAlive=false;
         if(!from.meta.keepAlive){
           this.setCheckedList([]);
-          this.clearKeepAlive();
+          //this.clearKeepAlive();
           next();    
+        }else{
+          from.meta.keepAlive=true;
+          next();
         }
-        next();
+       
+    }else{
+       next();
     }
     if(to.name==='/CustomerInfo'){
         //from.meta.keepAlive=false;
         if(!from.meta.keepAlive){
           this.setCheckedList([]);
-          this.clearKeepAlive();
+          //this.clearKeepAlive();
           next();    
+        }else{
+          from.meta.keepAlive=true;
+          next();
         }
-         next();    
+         
+    }else{
+       next();
     }
     if(to.name==='intentionProduct'){
         //from.meta.keepAlive=false;
       if(!from.meta.keepAlive){
         from.meta.keepAlive=true;
         next();
+      }else{
+        next();
       }
+    
+    }else{
+       next();
     }
     next();
   }
