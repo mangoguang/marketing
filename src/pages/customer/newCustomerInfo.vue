@@ -279,7 +279,7 @@ export default {
           MessageBox.alert('请选择下次跟进日期')
           return
         }else if(!obj['situation']) {
-          MessageBox.alert('请描述根据情况')
+          MessageBox.alert('请描述跟进情况')
           return
         }else if(!obj['plan']) {
           MessageBox.alert('请填写下一步跟进计划')

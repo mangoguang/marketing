@@ -53,7 +53,7 @@ export default {
         addressId: id
       }).then(res => {
         if(res.data) {
-          this.address = res.data.country + res.data.province + res.data.city + res.data.address + res.data.housingEstate
+          this.address = res.data.provinceName + res.data.cityName + res.data.districtName + res.data.address + res.data.housingEstate
         }
       })
     },
@@ -80,6 +80,8 @@ export default {
   padding: 5.46vw 0;
   font-size: 3.73vw;
   color: #363636;
+  height: 28vw;
+  overflow: scroll;
   // justify-content: space-between;
   .address {
     min-height: 20vw;

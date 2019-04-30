@@ -2,7 +2,7 @@
   <div class="index">
     <banner :title="title"/>
     <Search :origin="origin" :type='"msIndex"' class="searchTop"/>
-    <MSlider :list='list' class="slider" :myClass='"msManage"'/>
+    <MSlider :list='list' class="slider" :myClass='"msManage"' @click.native="goNext"/>
     <category-list :classify='$route.query.classify'/>
     <TopArt />
     <!-- <Footer/> -->
@@ -50,6 +50,56 @@ export default {
           this.list = res.data
         }
       })
+    },
+     //判断系统并打开外部链接
+    judgeSystem(url) {
+      // 判断操作系统
+      if(api.systemType == 'android'){
+          //Android中的使用方法如下：
+        api.openApp({
+            androidPkg: 'android.intent.action.VIEW',
+            mimeType: 'text/html',
+            url: url
+        }, function(ret, err) {
+          if(err) {alert('链接错误')}
+        });
+      }else{
+        //iOS中的使用方法如下：
+        api.openApp({
+            iosUrl: url
+        },function(ret, err) {
+          if(err) {alert('链接错误')}
+        });
+      } 
+    },
+      //判断是外部链接还是内部id
+    isHttps(url) {
+      let result = url.indexOf('https') == '-1' ? 'id' : 'https'
+      return result
+    },
+    //轮播图跳转到活动
+    goNext(e) {
+      let dom = e.target
+      let className = dom.className.toLowerCase();
+      if (className != "mint-swipe-item is-active") {
+        return false;
+      }
+      let index = dom.getAttribute("data-type");
+      if(this.imgSliderList && this.imgSliderList[index].url) {
+        let url = this.imgSliderList[index].url
+        let type = this.isHttps(url)
+        if(type === 'id') {
+           if(/^[0-9]+$/.test(url)) {
+            this.$router.push({path:'/articleDetails',query: {articleId: url}})
+          }else {
+            alert('链接错误')
+          }
+        }else if(type === 'https') {
+          this.judgeSystem(url)
+        }
+      }else {
+        alert('没有相应的链接')
+      }
     }
   }
 };

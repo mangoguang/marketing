@@ -3,7 +3,7 @@
     <div class="banner" :style="{'paddingTop':`${marginTop}vw`}">
       <img src="../../../static/images/home/logo.png" alt="">
     </div>
-    <m-slider :list='list' class="slider" :myClass='"home"'/>
+    <m-slider :list='list' class="slider" :myClass='"home"' @click.native="goNext"/>
     <ul class="cateList">
       <router-link 
         :to="{path: item.link,
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import {IndexModel} from '../../utils/index'
+const indexModel = new IndexModel()
 import Footer from "../../components/Footer";
 import MSlider from '../../components/Gallery/index/slider'
 import category from '../../components/msManage/index/category'
@@ -82,15 +84,74 @@ export default {
     this.setLeftNavList([])
     this.initListVal('慕思')
     this.isIPhoneX()
+    this.getImgList()
   },
   methods: {
     ...mapMutations(['setLeftNavList', 'initListVal']),
+     //获取首页轮播图
+    getImgList() {
+      indexModel.getIndexSlider(0).then(res => {
+        if(res.data && res.data.length) {
+          this.list = res.data
+        }
+      })
+    },
     toArt(index) {
       this.$router.push({
         path: this.cateList[index].link,
         query: {
           classify: this.cateList[index].id
         }})
+    },
+     //判断系统并打开外部链接
+    judgeSystem(url) {
+      // 判断操作系统
+      if(api.systemType == 'android'){
+          //Android中的使用方法如下：
+        api.openApp({
+            androidPkg: 'android.intent.action.VIEW',
+            mimeType: 'text/html',
+            url: url
+        }, function(ret, err) {
+          if(err) {alert('链接错误')}
+        });
+      }else{
+        //iOS中的使用方法如下：
+        api.openApp({
+            iosUrl: url
+        },function(ret, err) {
+          if(err) {alert('链接错误')}
+        });
+      } 
+    },
+      //判断是外部链接还是内部id
+    isHttps(url) {
+      let result = url.indexOf('https') == '-1' ? 'id' : 'https'
+      return result
+    },
+    //轮播图跳转到活动
+    goNext(e) {
+      let dom = e.target
+      let className = dom.className.toLowerCase();
+      if (className != "mint-swipe-item is-active") {
+        return false;
+      }
+      let index = dom.getAttribute("data-type");
+      if(this.list && this.list[index].url) {
+        let url = this.list[index].url
+        let type = this.isHttps(url)
+        if(type === 'id') {
+          if(/^[0-9]+$/.test(url)) {
+            this.$router.push({path:'/articleDetails',query: {articleId: url}})
+          }else {
+            alert('链接错误')
+          }
+        }else if(type === 'https') {
+          this.judgeSystem(url)
+        }
+      }else {
+        alert('没有相应的链接')
+      }
     },
     //获取背景颜色
     getBgColor() {
