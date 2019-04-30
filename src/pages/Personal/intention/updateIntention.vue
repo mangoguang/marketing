@@ -756,6 +756,13 @@ export default {
       //to.meta.keepAlive=false;
       next();
     }
+    // if(from.name==='followRecord'){
+    //     to.meta.keepAlive=true;
+    //     next();  
+    // }else{
+    //   //to.meta.keepAlive=false;
+    //   next();
+    // }
     if(from.name==='/enquiryInfo'){
       to.meta.keepAlive=false; 
       next();
