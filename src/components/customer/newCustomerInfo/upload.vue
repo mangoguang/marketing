@@ -162,6 +162,8 @@ export default {
 .upload {
   box-sizing: border-box;
   padding: 4vw;
+  width: 100vw;
+  max-height: 62vw;
   h1 {
     font-size: 4vw;
     color: #363636;

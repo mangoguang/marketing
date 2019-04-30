@@ -66,6 +66,7 @@ export default {
   padding: 2vw 4vw;
   font-size: 4vw;
   color: #363636;
+  height: 15vw;
   .content {
     flex: 0.24
   }

@@ -136,7 +136,7 @@ export default {
         MessageBox.alert('性别不能为空')
         return
       }else if(!this.newCustomerInfo.username) {
-        MessageBox.alert('姓名不能为空')
+        MessageBox.alert('称呼不能为空')
         return
       }
       if(this.phone === this.newCustomerInfo.phone) {
@@ -177,8 +177,12 @@ export default {
       }
       mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
         if(res.status) {
-          this.editStatus = false
-          this.getData()
+          MessageBox.alert('更新成功').then(action => {
+            this.editStatus = false
+            this.getData()
+          })
+        }else {
+          MessageBox.alert('更新失败')
         }
       })
     },
