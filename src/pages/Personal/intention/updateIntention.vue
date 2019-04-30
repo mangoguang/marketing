@@ -214,7 +214,13 @@ export default {
         console.log(this.$store.state.checkedList.length);
         //let list=JSON.parse(localStorage.getItem('product'));
         if(this.$store.state.checkedList.length>0){
-          this.goodsValue=this.$store.state.checkedList[0].goodsName;
+          //this.goodsValue=this.$store.state.checkedList[0].goodsName;
+          let arr=[];
+          this.$store.state.checkedList.map((item,index) => {
+            arr.push(item.goodsName);
+          })
+          //console.log(arr);
+          this.goodsValue=arr.join("、");
           this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
             let obj={};
             obj.goodsId=item.crmId;
@@ -269,14 +275,14 @@ export default {
    
   },
   activated(){
-    this.customerId=this.$route.params.customerId;
-    this.path=this.$route.fullPath;
-    this.url=this.$route.query.url;
-    console.log(this.checkedList);
-    this.getProduct();
-    this.getShop();
+    // this.customerId=this.$route.params.customerId;
+    // this.path=this.$route.fullPath;
+    // this.url=this.$route.query.url;
+    // console.log(this.checkedList);
+    // this.getProduct();
+    // this.getShop();
     console.log("回退进了activated");
-    this.isFirstEnter=true;
+    // this.isFirstEnter=true;
    
      
   },
@@ -303,7 +309,13 @@ export default {
         this.goodsValue='';
         this.form.goodsList=[];
       }else{
-        this.goodsValue=this.$store.state.checkedList[0].goodsName;
+        //this.goodsValue=this.$store.state.checkedList[0].goodsName;
+        let arr=[];
+        this.$store.state.checkedList.map((item,index) => {
+          arr.push(item.goodsName);
+        })
+        //console.log(arr);
+        this.goodsValue=arr.join("、");
         this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
           let obj={};
           obj.goodsId=item.crmId;
@@ -326,7 +338,13 @@ export default {
         if(res.code===0){
           if(res.data.goodsList.length>0){
             this.setCheckedList([]);
-            this.goodsValue=res.data.goodsList[0].goodsName;
+            //this.goodsValue=res.data.goodsList[0].goodsName;
+            let arr=[];
+            res.data.goodsList.map((item,index) => {
+              arr.push(item.goodsName);
+            })
+            //console.log(arr);
+            this.goodsValue=arr.join("、");
            let list=res.data.goodsList.map((item,index) => {
              let obj={};
              obj.crmId=item.goodsId;
@@ -735,18 +753,21 @@ export default {
        to.meta.keepAlive=false;
        next();
      }else{
+       to.meta.keepAlive=true;
        next();
      }
     if(from.name==='/enquiryInfo'){
       to.meta.keepAlive=false; 
       next();
     }else{
-       next();
+      to.meta.keepAlive=true;
+      next();
      }
     if(from.name==='/CustomerInfo'){
       to.meta.keepAlive=false;   
       next();
     }else{
+      to.meta.keepAlive=true;
        next();
     }
    next();
