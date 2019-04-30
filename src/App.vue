@@ -262,7 +262,9 @@ a:hover {
 .line100 {
   height: 100px;
 }
-
+input::-webkit-search-cancel-button{
+  display: none;
+}
 //设置input框的placeholder样式
 // input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
 //     color: #fff;

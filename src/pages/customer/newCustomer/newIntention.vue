@@ -3,7 +3,7 @@
     <my-banner :title="'新增意向'" class="banner"/>
     <button class="submit" :style="{top:top}" @click="submit">保存</button>
     <new-demand :changeCode="change" class="newDemand" :fromName='fromName' :type='"demand"' :addressType='"intention"' />
-    <p class="footer">到底啦</p>
+    <new-record :fromName='fromName'/>
   </div>
 </template>
 
@@ -12,10 +12,11 @@ import { MessageBox } from 'mint-ui'
 import {mapState,mapMutations} from 'vuex'
 import {btnList} from '../../../utils/gallery'
 import newDemand from '../../../components/customer/newCustomerInfo/newDemand'
+import newRecord from '../../../components/customer/newCustomerInfo/newRecord'
 import myBanner from '../../../components/banner'
 import mango from '../../../js'
 export default {
-  components: { newDemand, myBanner },
+  components: { newDemand, myBanner, newRecord },
   data () {
     return {
       top: '',
@@ -71,16 +72,21 @@ export default {
       'setHouseType',
       'setElevatorVal',
       'setCheckedList',
-      'setAddressId'
+      'setAddressId',
+      'setFollowVal',
+      'setFollowTiming'
       ]),
     initData() {
       this.setNewCustomerInfo({})
       let shopsList = btnList(this.shops,0)
+      this.$set(this.newCustomerInfo,'imgLen', 0)
+      this.$set(this.newCustomerInfo,'imgs', '')
       this.initShopList(shopsList)
       this.getShopVal()
       this.setCheckedList([])
       this.$set(this.newCustomerInfo,'urgency','false')
       this.$set(this.newCustomerInfo,'level','A')
+      this.$set(this.newCustomerInfo,'dataFiles', new FormData())
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     clearData() {
@@ -90,7 +96,8 @@ export default {
     submit() {
       let temp = this.whichFollowData(this.newCustomerInfo)
       if(temp) {
-        let formdata = new FormData()
+        let formdata = this.newCustomerInfo.dataFiles
+        // let formdata = new FormData()
         let obj = this.updateParams(this.newCustomerInfo)
         let arr = []
         for(var key in obj) {
@@ -158,6 +165,24 @@ export default {
         }else if(!obj['addressId']) {
           MessageBox.alert('请选择客户地址')
           return
+        }if(!obj['source2']) {
+          MessageBox.alert('请选择跟进方式')
+          return
+        }else if(!obj['followDate']) {
+          MessageBox.alert('请选择跟进时间')
+          return
+        }else if(!obj['residentTime2']) {
+          MessageBox.alert('请选择跟进时长')
+          return
+        }else if(!obj['nextDate']) {
+          MessageBox.alert('请选择下次跟进日期')
+          return
+        }else if(!obj['situation']) {
+          MessageBox.alert('请描述跟进情况')
+          return
+        }else if(!obj['plan']) {
+          MessageBox.alert('请填写下一步跟进计划')
+          return
         }else {
           temp = true
         }
@@ -165,7 +190,7 @@ export default {
       return temp
     },
      //获取参数
-     updateParams(obj) {
+    updateParams(obj) {
       let tempObj = {}
       let newArr = obj.productArr
       //意向产品名称和数量
@@ -192,7 +217,13 @@ export default {
         'opportunity.argreeDiscount': parseInt(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
         'opportunity.remark': obj.remark2,
         'opportunity.urgency': obj.urgency,   //是否紧急
-        'opportunity.level': obj.level   //等级
+        'opportunity.level': obj.level,   //等级
+        'record.source': obj.source2,
+        'record.followDate': obj.followDate,
+        'record.residentTime': obj.residentTime2,   //跟进时长
+        'record.nextDate': obj.nextDate,
+        'record.situation': obj.situation,
+        'record.plan': obj.plan
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {
@@ -221,6 +252,8 @@ export default {
     this.setHouseType('')
     this.setElevatorVal('')
     this.setAddressId('')
+    this.setFollowVal('')
+    this.setFollowTiming('')
   }
 }
 </script>
@@ -244,10 +277,10 @@ export default {
     // width: 100vw;
     // height: 90vh;
   }
-  .footer {
-    color: #909090;
-    font-size: 3.2vw;
-    text-align: center;
-  }
+  // .footer {
+  //   color: #909090;
+  //   font-size: 3.2vw;
+  //   text-align: center;
+  // }
 }
 </style>

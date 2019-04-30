@@ -1,6 +1,6 @@
 <template>
   <div class="remark">
-    <h3>{{title}} <span v-if='start === "start"'>*</span></h3>
+    <h3>{{title}}<span v-if='start === "start"'>*</span></h3>
     <slot></slot>
   </div>
 </template>

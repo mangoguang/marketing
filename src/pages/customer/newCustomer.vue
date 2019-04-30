@@ -8,7 +8,10 @@
         :key="`btns11${index}`"
         :class="{on: item.status}"
         @click="customerSelect(index)"
-      >{{item.name}}</li>
+      >
+      {{item.name}}
+      <hr v-show="item.status">
+      </li>
     </ul>
     <customer-search v-show="btnlist[0].status" />
     <visitor v-show="btnlist[1].status" :fromName='fromName'/>
@@ -111,11 +114,20 @@ export default {
       font-size: 16px;
       line-height: 6vw;
       color: $fontCol;
-      margin: 2vw 5vw;
+      margin: 3vw 5vw;
+      margin-bottom: 0.8vw;
     }
     li.on{
-      border-bottom: 2px solid $fontCol;
+      // border-bottom: 2px solid $fontCol;
     }
   }
+   hr {
+      border: none;
+      border-top: 0.8vw solid #363636;
+      border-radius: 1vw;
+      margin: 0;
+      // width: 5vw;
+      // text-align: center;
+    }
 }
 </style>

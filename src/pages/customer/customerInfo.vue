@@ -106,7 +106,7 @@ export default {
         MessageBox.alert('性别不能为空')
         return
       }else if(!this.newCustomerInfo.username) {
-        MessageBox.alert('姓名不能为空')
+        MessageBox.alert('称呼不能为空')
         return
       }
       if(this.phone === this.newCustomerInfo.phone) {
