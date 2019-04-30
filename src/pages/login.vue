@@ -143,7 +143,7 @@ export default {
       }
     },
     login(account, pwd) {
-      console.log(111,baseUrl)
+      // console.log(111,baseUrl)
       let data = {
           grant_type: 'password',        //固定填 password
           username: account,   //登录账号
@@ -151,7 +151,7 @@ export default {
         }
       axios({
         method: 'post',
-        // url:'http://172.16.10.107/oauth.token',
+        // url:'https://op.derucci.com',
         // url: 'http://10.11.8.7/oauth/token',
         url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,

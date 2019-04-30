@@ -6,6 +6,7 @@ import toLogin from '../utils/token/toLogin'
 import VueRouter from 'vue-router'
 export default class Common {
   constructor() {
+    // this.port = 'https://op.derucci.com'
     //  this.port = 'http://10.11.8.250'
    // this.port = 'http://172.16.10.107'
       // this.port = "http://10.11.8.7"
@@ -173,6 +174,7 @@ export default class Common {
         }
       })
       .catch((error) => {
+        // console.log('请求失败！：', error.response, error.request)
         _this.loading('close')
         if (error.response) { // 如果服务器响应
           if (error.response.status === 510) {
@@ -191,6 +193,8 @@ export default class Common {
           }
         } else if (error.request) {
           this.tip('网络异常!')
+        } else {
+          this.tip('网络异常!')
         }
       })
     })
@@ -198,21 +202,22 @@ export default class Common {
 
   getFormdataAjax(path, data, keys) {
     let _this = this
-    let token = JSON.parse(localStorage.getItem('token'))
+    let token = JSON.parse(localStorage.getItem('token')) || {}
     return new Promise((resolve, reject) => {
       let url = `${this.port}${path}`
       let sign = this.getFormSign(data, token.access_token, keys)
       // 显示加载动画，并在10秒后隐藏
       this.loading('open')
-      let loadingTimeOut = setTimeout(function() {
-        _this.loading('close')
-        clearTimeout(loadingTimeOut)
-      }, 10000)
+      // let loadingTimeOut = setTimeout(function() {
+      //   _this.loading('close')
+      //   clearTimeout(loadingTimeOut)
+      // }, 15000)
       axios({
         method: 'post',
         // async: false,
         url: url,
         data: data,
+        timeout: 15000,
         headers: {
           "Authorization": `Bearer ${token.access_token}`,
           'sign': sign,
@@ -220,11 +225,48 @@ export default class Common {
         }
       })
       .then((res) => {
-        _this.loading('close')
-        if (res.data) {
-          resolve(res.data)
+        if (res.code === 510) { // token失效
+          if (token.access_token && token.access_token.length < 48) { // 有效token
+            refreshToken.call(this).then(res => {
+              reject(510)
+            })
+          } else {
+            toLogin()
+          }
         } else {
-          resolve(false)
+          _this.loading('close')
+          res = res.data
+          resolve(res)
+        }
+        // _this.loading('close')
+        // if (res.data) {
+        //   resolve(res.data)
+        // } else {
+        //   resolve(false)
+        // }
+      })
+      .catch((error) => {
+        // console.log('请求失败！：', error.response, error.request)
+        _this.loading('close')
+        if (error.response) { // 如果服务器响应
+          if (error.response.status === 510) {
+            console.log('非法令牌，需要刷新。', token)
+            // 检测token是否存在
+            if (token.access_token && token.access_token.length < 48) { // 有效token
+              console.log('开始刷新令牌')
+              refreshToken.call(this).then(res => {
+                reject(510)
+              })
+            } else {
+              toLogin()
+            }
+          } else {
+            this.tip('请求失败!')
+          }
+        } else if (error.request) {
+          this.tip('网络异常!')
+        } else {
+          this.tip('网络异常!')
         }
       })
     })
@@ -237,15 +279,12 @@ export default class Common {
       //let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
       let sign = this.getFormSign(data, token.access_token,keys)
-      // 显示加载动画，并在10秒后隐藏
+      // 显示加载动画
       this.loading('open')
-      let loadingTimeOut = setTimeout(function() {
-        _this.loading('close')
-        clearTimeout(loadingTimeOut)
-      }, 10000)
        axios({
         method: 'post',
         //async: false,
+        timeout: 15000,
         url: url,
         data:data,
          headers: {
@@ -263,7 +302,31 @@ export default class Common {
         }
       })
       
-    }) 
+    })
+    .catch((error) => {
+      // console.log('请求失败！：', error.response, error.request)
+      _this.loading('close')
+      if (error.response) { // 如果服务器响应
+        if (error.response.status === 510) {
+          console.log('非法令牌，需要刷新。', token)
+          // 检测token是否存在
+          if (token.access_token && token.access_token.length < 48) { // 有效token
+            console.log('开始刷新令牌')
+            refreshToken.call(this).then(res => {
+              reject(510)
+            })
+          } else {
+            toLogin()
+          }
+        } else {
+          this.tip('请求失败!')
+        }
+      } else if (error.request) {
+        this.tip('网络异常!')
+      } else {
+        this.tip('网络异常!')
+      }
+    })
     
   }
   // getAjax(_vue, port, params, pathVersion,type) {

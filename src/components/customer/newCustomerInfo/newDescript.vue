@@ -26,13 +26,13 @@
         <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业"  oninput="if(value.length>30)value=value.slice(0,30)">
       </li>
       <template v-if="areaType">
-        <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="toAddress">
+        <li is="customerLi" :leftText="'客户地区'"  :icon="true" @click.native="toAddress">
           <span>地址管理</span>
         </li>
       </template>
       <template v-else>
         <li is="areaSelect" @areaChange="areaChange"></li>
-        <li is="customerLi" :leftText="'客户地址'" >
+        <li is="customerLi" :leftText="'客户地址'" :start='"*"'>
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>200)value=value.slice(0,200)">
         </li>
       </template>

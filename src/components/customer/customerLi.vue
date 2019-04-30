@@ -67,6 +67,13 @@ export default {
       font-size: 3.73vw;
     }
   }
+  .customerLi2{
+    height: 18vw;
+    span{
+      height: 18vw!important;
+      line-height: 9vw!important;
+    }
+  }
   .icon{
     position: relative;
     span:last-child{

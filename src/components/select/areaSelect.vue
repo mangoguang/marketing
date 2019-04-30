@@ -1,7 +1,7 @@
 <template>
   <li class="areaSelect">
     <ul>
-      <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
+      <li is="customerLi" :leftText="'客户地区'" :start='"*"' :icon="true" @click.native="selectArea">
         <span>{{areaVal && areaVal.provinceName != '' ? `${areaVal.provinceName} ${areaVal.cityName} ${areaVal.countryName}` : '请选择客户地区'}}</span>
       </li>
       <!-- 性别选择插件 -->
