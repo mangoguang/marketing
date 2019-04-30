@@ -63,6 +63,7 @@ export default {
   align-items: center;
   box-sizing: border-box;
   padding: 2vw 4vw;
+  height: 15vw;
   h3 {
     font-size: 4vw;
     color: #363636;
