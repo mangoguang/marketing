@@ -83,6 +83,7 @@ export default {
       }else {
         vm.setUpLoadUrl('')
         vm.setNewCustomerScroll(0)
+        // vm.setNewCustomerInfo({})
       }
     })
   },

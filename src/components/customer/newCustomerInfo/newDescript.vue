@@ -283,7 +283,8 @@ export default {
       let shopsList = btnList(this.shops,0)
       this.initDescriptShopList(shopsList)
       this.getDescriptShopVal()
-
+      this.$set(this.newCustomerInfo,'imgLen',0)
+      this.$set(this.newCustomerInfo,'imgs','')
       this.setAgeVal('')
       this.setSexVal('')
       this.setUpLoadUrl('')

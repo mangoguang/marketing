@@ -79,6 +79,8 @@ export default {
     initData() {
       this.setNewCustomerInfo({})
       let shopsList = btnList(this.shops,0)
+      this.$set(this.newCustomerInfo,'imgLen', 0)
+      this.$set(this.newCustomerInfo,'imgs', '')
       this.initShopList(shopsList)
       this.getShopVal()
       this.setCheckedList([])
