@@ -418,7 +418,7 @@ export default {
       to.meta.keepAlive=false;
       next();
     }
-    to.meta.keepAlive=false;
+    //to.meta.keepAlive=false;
     next();
   }
 };
