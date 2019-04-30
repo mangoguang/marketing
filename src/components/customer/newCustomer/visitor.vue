@@ -146,7 +146,9 @@ export default {
       let parmas = this.getParmas()
       indexModel.getVisitor(parmas,'post').then(res => {
         if(res.status === 1) {
-          this.$router.replace('/Customer')
+          MessageBox.alert('保存成功！').then(action => {
+            this.$router.replace('/Customer')
+          })
         }
       }).catch((reject) => {
         if (reject === 510) {
