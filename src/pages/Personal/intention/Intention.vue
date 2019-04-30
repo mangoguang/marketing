@@ -49,7 +49,8 @@
         </ul>
         <ul class="list">
           <li>
-            <yan-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/>
+            <!-- <yan-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/> -->
+            <yan-one-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/>
           </li>
           <li>
             <color-select v-bind="formInfo.color" :value="form.colorPrefName" :showIcon="selectIcon"/>
@@ -100,6 +101,7 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import titleBar from '../../../components/common/titleBar'
 import yanInput from '../../../components/yanInput'
+import yanOneInput from '../../../components/yanOneInput'
 import yanTextarea from '../../../components/yanTextarea'
 import intentionSelect from '../../../components/mySelect/intentionSelect'
 import storeSelect from '../../../components/mySelect/storeSelect'
@@ -200,7 +202,8 @@ export default {
      yanLayerMsg,
      colorSelect,
      discountSelect,
-     newRecord
+     newRecord,
+     yanOneInput
   },
   computed:{
     ...mapState('intention',[
@@ -237,7 +240,13 @@ export default {
           this.oppId=res.data.oppId;
           this.customerId=res.data.customerId;
           if(res.data.goodsList.length>0){
-            this.goodsValue=res.data.goodsList[0].goodsName;
+            //this.goodsValue=res.data.goodsList[0].goodsName;
+            let arr=[];
+            res.data.goodsList.map((item,index) => {
+              arr.push(item.goodsName);
+            })
+            //console.log(arr);
+            this.goodsValue=arr.join("、");
           }
           if(res.data.status==="Approved"){
             if(res.data.orderList.length>0){
@@ -405,10 +414,11 @@ export default {
   },
   beforeRouteLeave(to,from,next){
     if(to.name==='updateintention'){
-      this.setCheckedList([]);
+      //this.setCheckedList([]);
       to.meta.keepAlive=false;
       next();
     }
+    to.meta.keepAlive=false;
     next();
   }
 };

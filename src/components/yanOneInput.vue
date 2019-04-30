@@ -39,10 +39,14 @@ export default {
     width:100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    //align-items: center;
+    align-items: flex-start;
+    font-size: 0;
     span{
       display: inline-block;
+      font-size: 4vw;
       width:22.4vw;
+      //line-height: 7vw;
     }
     
     
@@ -70,9 +74,10 @@ export default {
       outline: none;
       resize: none;
       border:none;
-      height:12vw;
+      //height:12vw;
       line-height: 12vw;
       overflow: scroll;
+      //padding-top:1vw;
     }
   .icon-right{
     margin-left:2.133vw;

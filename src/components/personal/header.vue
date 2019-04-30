@@ -93,7 +93,7 @@ export default {
       // background: url('../../assets/imgs/via.png') no-repeat center;
       // background-size: 100% 100%;
       width: 16vw;
-      height: 16vw;
+      //height: 16vw;
     }
     .personal-content{
       margin-left: 5.6vw;
