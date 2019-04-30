@@ -95,7 +95,7 @@ export default {
         span:last-child{
           display: block;
           width:44.533vw;
-          height:44.533vw;
+          height:12vw;
           overflow: scroll;
         }
       }

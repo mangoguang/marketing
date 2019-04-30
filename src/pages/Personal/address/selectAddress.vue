@@ -73,7 +73,9 @@ export default {
        this.$router.go(-1)
      }else {
        setTimeout(() => {
-        this.$router.replace({path:this.$route.query.redirect,query:{addressId:id}})
+         this.setAddressId(id);
+        //this.$router.replace({path:this.$route.query.redirect,query:{addressId:id}})
+        this.$router.go(-1);
       },100)
      }
     //  console.log(222,id);

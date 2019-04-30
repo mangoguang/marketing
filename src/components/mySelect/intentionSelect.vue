@@ -3,7 +3,7 @@
       <label>
           <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
          <!--  <input  type="text" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)"> -->
-          <textarea  rows="1" cols="1" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)"></textarea>
+          <textarea  rows="2" cols="1" :value="value" readonly  :placeholder="placeholder" @input="$emit('input',$event.target.value)"></textarea>
       </label>
       <div class="icon-right" v-if="showIcon">
         <img src="../../assets/imgs/rightside.png" alt="">
@@ -39,20 +39,25 @@ export default {
   font-size: 4vw;
   color:#363636;
   min-height:12vw;
-  // line-height: 12vw;
+  line-height: 6vw;
   padding-right:4.266vw;
   display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  padding-top:2.4vw;
+  padding-bottom:2.4vw;
   label{
     width:100%;
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
+    //font-size: 0;
     span{
       display: inline-block;
       width:22.4vw;
+      font-size: 4vw;
+      
     }
     .yan-red{
       display: inline;
@@ -104,9 +109,10 @@ export default {
       outline: none;
       resize: none;
       border:none;
-      height:12vw;
+      // height:100%;
       overflow: scroll;
-     line-height:12vw;
+     line-height:7vw;
+     //padding-top: 1vw;
     }
   .icon-right{
     margin-left:2.133vw;
