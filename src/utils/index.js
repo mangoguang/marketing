@@ -323,7 +323,7 @@ class IndexModel extends Request {
   }
   //保存反馈信息
   feedback(obj,key){
-    return mango.getFormAjax('/v2/app/feedback',obj,key)
+    return mango.getFormAjax('/v2/api/feedback',obj,key)
     //return mango.port+'/v2/app/feedback';
   }
   //保存反馈信息
