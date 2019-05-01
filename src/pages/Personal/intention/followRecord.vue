@@ -67,6 +67,18 @@ export default {
      upload,
      durationSelect
   },
+  watch:{
+    $route(to,from){
+      // if(from.name==="intention"){
+      //   this.$route.meta.keepAlive=false;
+      //   this.setFiles([]);
+      //   this.setPicVal([]);
+      // }
+      // if(from.name==="/previewImg"){
+      //    this.$route.meta.keepAlive=true;
+      // }
+    }
+  },
   computed:{
     ...mapState('followRecord',[
       'title',
@@ -75,7 +87,10 @@ export default {
     ...mapState(['Files'])
   },
   created(){
+    console.log("created");
    this.oppId=this.$route.query.oppId;
+   this.setFiles([]);
+   this.setPicVal([]);
   },
   methods:{
     ...mapMutations(['setFiles','setPicVal']),
@@ -189,45 +204,28 @@ export default {
    },
    //选择跟进
    updateFollow(arr){
-     //console.log(arr);
     this.form.follow=arr[0];
    }
       
   },
   beforeRouteEnter(to,from,next){
-    if(from.name==="updateintention"||from.name==="intention"){
-      console.log("updateintention");
-      if(to.meta.keepAlive){
-        to.meta.keepAlive=false;
-        next();
-      }
-      to.meta.keepAlive=true;
-      next();
-    }else{
-       next();
-    }
-  
-    if(from.path==="/previewImg"){
-      if(!to.meta.keepAlive){
-        to.meta.keepAlive=true;
-        next();
-      }
-      next();
+    if(!to.meta.isUseCache){
+      next(vm => {
+        vm.setFiles([]);
+        vm.setPicVal([]);
+        vm.isClear=true;
+        vm.form.follow='';
+        vm.form.time='';
+        vm.form.residentTime='';
+        vm.form.nextTime='';
+        vm.form.report='';
+        vm.form.plan='';
+      })
     }else{
       next();
     }
-  },
-  beforeRouteLeave(to,from,next){
-     if(to.name==="updateintention"||to.name==="intention"){
-       this.setFiles([]);
-       this.setPicVal([]);
-       to.meta.keepAlive=false;
-       next();
-     }
-     next();
    
-    
-   }
+  }
   
 };
 </script>

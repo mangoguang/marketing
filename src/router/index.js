@@ -236,7 +236,8 @@ export var router = new VueRouter({
     name: 'followRecord',
     component: () => import('../pages/Personal/intention/followRecord'),
     meta:{
-      keepAlive:true
+      keepAlive:true,
+      isUseCache:false
     }
   },
   {

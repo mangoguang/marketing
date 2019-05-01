@@ -3,8 +3,7 @@ const state = {
   formInfo:{
     intention:{
       label:'意向产品',
-      placeholder:'请选择意向产品',
-      required:true
+      placeholder:'请选择意向产品'
     },
     store:{
       label:'所属门店',

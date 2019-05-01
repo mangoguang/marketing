@@ -46,11 +46,11 @@ export default {
       if(from.name==='imgPreview'){
         this.picVal=this.$store.state.picVal;
         consolelog("进来路由了",this.picVal);
-        // if(files.length+this.picVal.length>=4){
-        //   this.$refs.upload_list.style='width:100%;justify-content: space-between;'
-        // }else{
-        //   this.$refs.upload_list.style='';
-        // }
+      }
+      if(from.name==="intention"){
+        this.setFiles([]);
+        this.setPicVal([]);
+        this.picVal=this.$store.state.picVal;
       }
     },
     isClear:function(newVal,oldValue){

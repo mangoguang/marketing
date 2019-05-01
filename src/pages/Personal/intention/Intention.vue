@@ -221,6 +221,7 @@ export default {
       if(from.name==='/enquiryInfo'){
         this.UpdateRedirect=from.fullPath;
       } 
+      
     }
   },
   created(){
@@ -231,7 +232,7 @@ export default {
   },
   methods:{
     ...mapMutations('intention',['setClassify','setUrgency','setTitle']),
-    ...mapMutations(['setCheckedList']),
+    ...mapMutations(['setCheckedList','setAddressId','setFiles','setPicVal']),
     getOpportunity(){
       let id=this.$route.params.opportunityId;
       indexModel.getOpportunity(id).then(res => {
@@ -387,6 +388,7 @@ export default {
     this.setTitle('意向详情');
    },
    getAddress(id){
+     this.setAddressId(id);
      indexModel.getAddress(id).then(res => {
           if(res.code===0){
             this.address=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}${res.data.address}`;
@@ -437,13 +439,9 @@ export default {
       next();
     }
     if(to.name==='followRecord'){
-      to.meta.keepAlive=false;
-      next(vm => {
-        vm.setFiles([]);
-        vm.setPicVal([]);
-      });
+      to.meta.isUseCache=false;
+      next();
     }
-    //to.meta.keepAlive=false;
     next();
   }
 };

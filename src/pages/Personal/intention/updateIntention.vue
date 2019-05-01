@@ -71,7 +71,7 @@
       </div>
       <div>
          <title-bar :text="titleModule.report">
-           <button type="button" @click="addRecord">添加记录</button>
+           <!-- <button type="button" @click="addRecord" >添加记录</button> -->
          </title-bar>
          <record-pannel :recordList="form.recordList"/>
       </div>
@@ -279,12 +279,8 @@ export default {
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
     this.url=this.$route.query.url;
-    // console.log(this.checkedList);
-    // this.getProduct();
-    // this.getShop();
+    
     console.log("回退进了activated");
-    // this.isFirstEnter=true;
-   
      
   },
   mounted(){
@@ -292,7 +288,7 @@ export default {
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
-    ...mapMutations(['updateAddress','setClassify','setCheckedList','updateSearchProductList','setFiles','setPicVal']),
+    ...mapMutations(['updateAddress','setClassify','setCheckedList','updateSearchProductList','setFiles','setPicVal','setAddressId']),
     getShop(){
       let shops=JSON.parse(localStorage.getItem('shops'));
       console.log(shops);
@@ -444,10 +440,10 @@ export default {
         mango.tip('客户ID不能为空');
         return false;
       }
-      if(this.form.goodsList.length<=0){
-        mango.tip('意向产品不能为空');
-        return false;
-      }
+      // if(this.form.goodsList.length<=0){
+      //   mango.tip('意向产品不能为空');
+      //   return false;
+      // }
       if(this.form.arrivalDate===''){
         mango.tip('进店日期不能为空');
         return false;
@@ -561,6 +557,7 @@ export default {
               this.updateSearchProductList([]);
               // history.go(this.go);
               //this.$router.go(this.go);
+              //this.form.goodsList=[];
               this.$router.go(-1);
               //this.clearKeepAlive();
             }else{
@@ -570,7 +567,7 @@ export default {
      }
     },
     layerUpdate(type){
-      if(type===''){
+    if(type===''){
       mango.tip('请选择是否成单');
       return;
      }else{
@@ -773,13 +770,6 @@ export default {
       //to.meta.keepAlive=false;
       next();
     }
-    // if(from.name==='followRecord'){
-    //     to.meta.keepAlive=true;
-    //     next();  
-    // }else{
-    //   //to.meta.keepAlive=false;
-    //   next();
-    // }
     if(from.name==='/enquiryInfo'){
       to.meta.keepAlive=false; 
       next();
@@ -797,17 +787,11 @@ export default {
    next();
   },
   beforeRouteLeave(to,from,next){
-   console.log(to.name);
-   //console.log(from);
     if(to.name==='/enquiryInfo'){
-        //from.meta.keepAlive=false;
         if(!from.meta.keepAlive){
-          //from.meta.keepAlive=false;
           this.setCheckedList([]);
-          //this.clearKeepAlive();
           next();    
         }else{
-          //from.meta.keepAlive=true;
           next();
         }
        
@@ -816,14 +800,10 @@ export default {
        next();
     }
     if(to.name==='/CustomerInfo'){
-        //from.meta.keepAlive=false;
         if(!from.meta.keepAlive){
-          //from.meta.keepAlive=false;
           this.setCheckedList([]);
-          //this.clearKeepAlive();
           next();    
         }else{
-          //from.meta.keepAlive=true;
           next();
         }
          
@@ -832,7 +812,6 @@ export default {
        next();
     }
     if(to.name==='intentionProduct'){
-        //from.meta.keepAlive=false;
       if(!from.meta.keepAlive){
         from.meta.keepAlive=true;
         next();
@@ -843,13 +822,6 @@ export default {
     }else{
       from.meta.keepAlive=false;
       next();
-    }
-    if(to.name==='followRecord'){
-       to.meta.keepAlive=false;
-       next(vm => {
-         vm.setFiles([]);
-         vm.setPicVal([]);
-       });
     }
     next();
   }
