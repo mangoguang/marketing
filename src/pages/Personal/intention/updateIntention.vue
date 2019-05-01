@@ -218,8 +218,7 @@ export default {
           //this.goodsValue=this.$store.state.checkedList[0].goodsName;
           let arr=[];
           this.$store.state.checkedList.map((item,index) => {
-            let str=item.goodsName+",数量："+item.quantity;
-            arr.push(str);
+            arr.push(item.goodsName);
           })
           //console.log(arr);
           this.goodsValue=arr.join("、");
@@ -312,8 +311,7 @@ export default {
         //this.goodsValue=this.$store.state.checkedList[0].goodsName;
         let arr=[];
         this.$store.state.checkedList.map((item,index) => {
-          let str=item.goodsName+",数量："+item.quantity;
-          arr.push(str);
+          arr.push(item.goodsName);
         })
         //console.log(arr);
         this.goodsValue=arr.join("、");
@@ -342,8 +340,7 @@ export default {
             //this.goodsValue=res.data.goodsList[0].goodsName;
             let arr=[];
             res.data.goodsList.map((item,index) => {
-              let str=item.goodsName+",数量："+item.quantity;
-              arr.push(str);
+              arr.push(item.goodsName);
             })
             //console.log(arr);
             this.goodsValue=arr.join("、");
@@ -585,6 +582,10 @@ export default {
             mango.tip('战败原因不能超过300字');
             return;
           }else{
+            if(this.phone===""||this.phone==="0"||this.phone===0){
+              mango.tip("客户手机号码不能为空");
+              return;
+            }
               let obj={
                 opportunityId:this.form.oppId,
                 closeReason:this.failReason,
