@@ -418,6 +418,13 @@ export default {
       to.meta.keepAlive=false;
       next();
     }
+    if(to.name==='followRecord'){
+      to.meta.keepAlive=false;
+      next(vm => {
+        vm.setFiles([]);
+        vm.setPicVal([]);
+      });
+    }
     //to.meta.keepAlive=false;
     next();
   }

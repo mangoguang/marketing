@@ -292,7 +292,7 @@ export default {
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
-    ...mapMutations(['updateAddress','setClassify','setCheckedList','updateSearchProductList']),
+    ...mapMutations(['updateAddress','setClassify','setCheckedList','updateSearchProductList','setFiles','setPicVal']),
     getShop(){
       let shops=JSON.parse(localStorage.getItem('shops'));
       console.log(shops);
@@ -826,6 +826,13 @@ export default {
     }else{
       from.meta.keepAlive=false;
       next();
+    }
+    if(to.name==='followRecord'){
+       to.meta.keepAlive=false;
+       next(vm => {
+         vm.setFiles([]);
+         vm.setPicVal([]);
+       });
     }
     next();
   }
