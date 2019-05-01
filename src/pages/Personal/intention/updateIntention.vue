@@ -569,35 +569,52 @@ export default {
         })
      }
     },
-    layerUpdate(){
-      if(this.failReason===''){
-        mango.tip('战败原因不能为空');
-        return;
-      }else if(this.failReason.length>300){
-        this.failReason=this.failReason.substring(0,300);
-        mango.tip('战败原因不能超过300字');
-        return;
-      }else{
-        let obj={
-          opportunityId:this.form.oppId,
-          closeReason:this.failReason
-        }
-        indexModel.closeOpportunity(obj).then(res => {
-          if(res.code===0){
-            mango.tip(res.msg);
-            this.isPrompt=false;
-            this.$router.replace({name:'intention',params:{opportunityId:this.form.oppId}});
+    layerUpdate(type){
+      if(type===''){
+      mango.tip('请选择是否成单');
+      return;
+     }else{
+       let nobj;
+       if(type==="2"){
+         if(this.failReason===''){
+            mango.tip('战败原因不能为空');
+            return;
+          }else if(this.failReason.length>300){
+            mango.tip('战败原因不能超过300字');
+            return;
           }else{
-            mango.tip(res.msg);
-            this.isPrompt=true;
+              let obj={
+                opportunityId:this.form.oppId,
+                closeReason:this.failReason,
+                type:type
+              }
+              nobj=Object.assign({},obj);    
           }
-          
-        }).catch((reject) => {
-          if (reject === 510) {
-            this.layerUpdate()
+       }else{
+          let obj={
+            opportunityId:this.form.oppId,
+            closeReason:'已成单',
+            type:type
           }
-        })
-      }
+          nobj=Object.assign({},obj); 
+       }
+       indexModel.closeOpportunity(nobj).then(res => {
+        if(res.code===0){
+          mango.tip(res.msg);
+          this.isPrompt=false;
+          this.$router.go(-1);
+        }else{
+          mango.tip(res.msg);
+          this.isPrompt=true;
+        }
+        
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.layerUpdate()
+        }
+      })
+
+     }
     },
     layerCancel(){
       this.isPrompt=false;
