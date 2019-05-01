@@ -38,6 +38,7 @@ const indexModel = new IndexModel()
 import Footer from "../../components/Footer";
 import MSlider from '../../components/Gallery/index/slider'
 import category from '../../components/msManage/index/category'
+import {checkLogin} from '../../utils/token/toLogin'
 import { mapMutations } from "vuex";
 export default {
   components: { Footer, MSlider, category },
@@ -80,6 +81,7 @@ export default {
     this.getBgColor()
   },
   created() {
+    checkLogin()
     //图库的进入默认热门搜索
     this.setLeftNavList([])
     this.initListVal('慕思')
