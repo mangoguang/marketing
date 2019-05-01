@@ -7,7 +7,7 @@
       <div class="line"></div>
       <div class="sriangle"></div>
     </div>
-    <div class="login">
+    <div class="login1">
       <div class="box">
         <div class="welcome">Hi,</div>
         <h1>欢迎使用慕思营销助手</h1>
@@ -54,7 +54,7 @@
           <span>第三方账号登录</span>
           <hr>
         </div>
-        <div class="wechat-icon"></div>
+        <!-- <div class="wechat-icon"></div> -->
       </div>
     </div>
     <footer></footer>
@@ -455,8 +455,15 @@ export default {
       // left: 42.66vw;
     }
   }
-  .login {
-    background: #fff;
+  .login1 {
+    position: absolute;
+    width: 100vw;
+    box-sizing: border-box;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    // margin-top: -45.06vw;
+    padding-top: 45.06vw;
     .box {
       width: 80vw;
       height: 69.2vw;

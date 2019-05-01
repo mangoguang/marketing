@@ -1,3 +1,10 @@
+function checkLogin() {
+  let token = localStorage.getItem('token')
+  if (!token) toLogin()
+}
+
+export {checkLogin}
+
 function toLogin() {
   let url = location.href
   let index = url.indexOf('#/')
@@ -8,5 +15,7 @@ function toLogin() {
   window.history.replaceState(null, '登录', loginUrl)
   window.history.go(0)
 }
+
+
 
 export default toLogin

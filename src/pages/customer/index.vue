@@ -33,6 +33,7 @@ import EnquiryOrder from "../../components/customer/enquiryOrder/enquiryOrder";
 import RightContainer from "../../components/customer/rightContainer";
 import RightTimeSelect from "../../components/customer/rightTimeSelect";
 import mango from "../../js";
+import {checkLogin} from '../../utils/token/toLogin'
 
 export default {
   components: {
@@ -57,6 +58,7 @@ export default {
     })
   },
   created() {
+    checkLogin()
     this.checkLogin();
     // this.test()
   },
