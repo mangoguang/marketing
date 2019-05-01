@@ -155,7 +155,8 @@ export default {
       urgency:'否',
       url:'',
       go:-1,
-      argreeDiscountTxt:''
+      argreeDiscountTxt:'',
+      phone:''
     }
   },
   components:{
@@ -217,7 +218,8 @@ export default {
           //this.goodsValue=this.$store.state.checkedList[0].goodsName;
           let arr=[];
           this.$store.state.checkedList.map((item,index) => {
-            arr.push(item.goodsName);
+            let str=item.goodsName+",数量："+item.quantity;
+            arr.push(str);
           })
           //console.log(arr);
           this.goodsValue=arr.join("、");
@@ -262,6 +264,7 @@ export default {
   created(){
     console.log("回退进了created");
     this.customerId=this.$route.params.customerId;
+    this.phone=this.$route.query.phone;
     this.path=this.$route.fullPath;
     this.url=this.$route.query.url;
     this.getProduct();
@@ -309,7 +312,8 @@ export default {
         //this.goodsValue=this.$store.state.checkedList[0].goodsName;
         let arr=[];
         this.$store.state.checkedList.map((item,index) => {
-          arr.push(item.goodsName);
+          let str=item.goodsName+",数量："+item.quantity;
+          arr.push(str);
         })
         //console.log(arr);
         this.goodsValue=arr.join("、");
@@ -338,7 +342,8 @@ export default {
             //this.goodsValue=res.data.goodsList[0].goodsName;
             let arr=[];
             res.data.goodsList.map((item,index) => {
-              arr.push(item.goodsName);
+              let str=item.goodsName+",数量："+item.quantity;
+              arr.push(str);
             })
             //console.log(arr);
             this.goodsValue=arr.join("、");
@@ -588,6 +593,10 @@ export default {
               nobj=Object.assign({},obj);    
           }
        }else{
+          if(this.phone===""||this.phone==="0"||this.phone===0){
+            mango.tip("客户手机号码不能为空");
+            return;
+          }
           let obj={
             opportunityId:this.form.oppId,
             closeReason:'已成单',
@@ -621,7 +630,6 @@ export default {
     },
     openStore(){
       this.$router.push({name:'chooseShop',query: {type: 'addintention'}});
-      
     },
    updateClassify(option){
     this.form.level=option;

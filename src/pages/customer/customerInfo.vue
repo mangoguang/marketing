@@ -18,7 +18,7 @@
       </div>
     </div>
     <!-- 意向信息-->
-    <intentionMsg v-show="customerTabStatus[1].status" :list='list.opportunityList'/>
+    <intentionMsg v-show="customerTabStatus[1].status" :list='list.opportunityList' :phone="phone"/>
   </div>
 </template>
 

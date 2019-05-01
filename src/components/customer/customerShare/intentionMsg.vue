@@ -14,7 +14,7 @@
 import intentionLi from './intentionLi'
 import { mapMutations } from 'vuex'
 export default {
-  props: ['list'],
+  props: ['list','phone'],
   components: { intentionLi },
   methods: {
      ...mapMutations(['setCheckedList']),
@@ -24,6 +24,9 @@ export default {
         name:'intention',
         params: {
           opportunityId: this.list[index].oppId
+        },
+        query:{
+          phone:this.phone
         }
       })
     },

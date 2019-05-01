@@ -178,7 +178,8 @@ export default {
       customerId:'',
       isRecord:false,
       UpdateRedirect:'',
-      argreeDiscountTxt:''
+      argreeDiscountTxt:'',
+      phone:''
     }
   },
   components:{
@@ -225,7 +226,8 @@ export default {
     }
   },
   created(){
-   this.getOpportunity();
+    this.phone=this.$route.query.phone;
+    this.getOpportunity();
   },
   mounted(){
 
@@ -244,7 +246,8 @@ export default {
             //this.goodsValue=res.data.goodsList[0].goodsName;
             let arr=[];
             res.data.goodsList.map((item,index) => {
-              arr.push(item.goodsName);
+              let str=item.goodsName+",数量："+item.quantity;
+              arr.push(str);
             })
             //console.log(arr);
             this.goodsValue=arr.join("、");
@@ -316,7 +319,7 @@ export default {
       })
     },
     modify(){
-      this.$router.replace({name:'updateintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
+      this.$router.replace({name:'updateintention',params:{customerId:this.customerId},query:{oppId:this.oppId,phone:this.phone}});
     },
     close(){
       this.isPrompt=true;
@@ -346,6 +349,10 @@ export default {
               nobj=Object.assign({},obj);    
           }
        }else{
+         if(this.phone===""||this.phone==="0"||this.phone===0){
+            mango.tip("客户手机号码不能为空");
+            return;
+          }
           let obj={
             opportunityId:this.oppId,
             closeReason:'已成单',
@@ -373,7 +380,7 @@ export default {
 
    },
    layerCancel(){
-      this.isPrompt=false;
+    this.isPrompt=false;
    },
    confirm(){
     this.isMsg=false;

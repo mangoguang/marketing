@@ -152,7 +152,7 @@ export default {
       axios({
         method: 'post',
         // url:'http://172.16.10.107/oauth.token',
-         url: 'http://10.11.8.7/oauth/token',
+        url: 'http://10.11.8.7/oauth/token',
         //url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
         transformRequest: [function(data) {
