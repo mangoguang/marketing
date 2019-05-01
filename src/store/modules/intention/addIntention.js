@@ -28,7 +28,8 @@ const state = {
     },
     address:{
       label:'客户地址',
-      placeholder:'请选择客户地址'
+      placeholder:'请选择客户地址',
+      required:true
     },
     house:{
       label:'户型大小',

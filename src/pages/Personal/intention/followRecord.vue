@@ -163,6 +163,8 @@ export default {
             this.form.report='';
             this.form.plan='';
           };
+        }).catch((reject) => {
+          mango.tip("网络异常");
         })
       }
      
@@ -192,28 +194,41 @@ export default {
    }
       
   },
- /*  beforeRouteEnter(to,from,next){
-    if(from.name==="updateintention"){
-      to.meta.keepAlive=false;
-      next();
-    }else{
+  beforeRouteEnter(to,from,next){
+    if(from.name==="updateintention"||from.name==="intention"){
+      console.log("updateintention");
+      if(to.meta.keepAlive){
+        to.meta.keepAlive=false;
+        next();
+      }
       to.meta.keepAlive=true;
       next();
+    }else{
+       next();
     }
-  },  */
-  beforeRouteLeave(to,from,next){
-   // console.log(this);
-    if(to.path!=="/previewImg"){
-      this.setFiles([]);
-      this.setPicVal([]);
-      from.meta.keepAlive=false;
+  
+    if(from.path==="/previewImg"){
+      if(!to.meta.keepAlive){
+        to.meta.keepAlive=true;
+        next();
+      }
       next();
     }else{
-      from.meta.keepAlive=true;
       next();
     }
-    //next();
-  }
+  },
+  beforeRouteLeave(to,from,next){
+     if(to.name==="updateintention"||to.name==="intention"){
+       this.setFiles([]);
+       this.setPicVal([]);
+       to.meta.keepAlive=false;
+       next();
+     }
+     next();
+   
+    
+   }
+  
 };
 </script>
 

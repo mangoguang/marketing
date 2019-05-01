@@ -323,19 +323,36 @@ export default {
     closeReason(){
       this.isMsg=true;
     },
-   layerUpdate(){
-     if(this.failReason===''){
-       mango.tip('战败原因不能为空');
-       return;
-     }else if(this.failReason.length>300){
-       mango.tip('战败原因不能超过300字');
-       return;
+   layerUpdate(type){
+     if(type===''){
+      mango.tip('请选择是否成单');
+      return;
      }else{
-      let obj={
-        opportunityId:this.oppId,
-        closeReason:this.failReason
-      }
-      indexModel.closeOpportunity(obj).then(res => {
+       let nobj;
+       if(type==="2"){
+         if(this.failReason===''){
+            mango.tip('战败原因不能为空');
+            return;
+          }else if(this.failReason.length>300){
+            mango.tip('战败原因不能超过300字');
+            return;
+          }else{
+              let obj={
+                opportunityId:this.oppId,
+                closeReason:this.failReason,
+                type:type
+              }
+              nobj=Object.assign({},obj);    
+          }
+       }else{
+          let obj={
+            opportunityId:this.oppId,
+            closeReason:'已成单',
+            type:type
+          }
+          nobj=Object.assign({},obj); 
+       }
+       indexModel.closeOpportunity(nobj).then(res => {
         if(res.code===0){
           mango.tip(res.msg);
           this.isPrompt=false;
@@ -350,8 +367,9 @@ export default {
           this.layerUpdate()
         }
       })
+
      }
-     
+
    },
    layerCancel(){
       this.isPrompt=false;
@@ -417,6 +435,13 @@ export default {
       //this.setCheckedList([]);
       to.meta.keepAlive=false;
       next();
+    }
+    if(to.name==='followRecord'){
+      to.meta.keepAlive=false;
+      next(vm => {
+        vm.setFiles([]);
+        vm.setPicVal([]);
+      });
     }
     //to.meta.keepAlive=false;
     next();
