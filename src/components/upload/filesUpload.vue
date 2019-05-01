@@ -52,6 +52,11 @@ export default {
         this.setPicVal([]);
         this.picVal=this.$store.state.picVal;
       }
+      if(from.name==="/personalCenter"){
+        this.setFiles([]);
+        this.setPicVal([]);
+        this.picVal=this.$store.state.picVal;
+      }
     },
     isClear:function(newVal,oldValue){
       console.log(newVal);

@@ -199,7 +199,11 @@ export var router = new VueRouter({
   {
     path: '/feedback',
     name: '/feedback',
-    component: feedback
+    component: feedback,
+    meta:{
+      keepAlive:true,
+      isUseCache:false
+    }
   },
   {
     path: '/previewImg',

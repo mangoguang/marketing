@@ -127,6 +127,14 @@ export default {
       localStorage.clear()
       this.$router.push({path: '/login'})
     }
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==="/feedback"){
+      to.meta.isUseCache=false;
+      next();
+    }
+    next();
+    
   }
 }
 </script>

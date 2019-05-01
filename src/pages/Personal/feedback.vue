@@ -135,6 +135,20 @@ export default {
       return true;
     }
 
+  },
+  beforeRouteEnter(to,from,next){
+    if(!to.meta.isUseCache){
+      next(vm => {
+        vm.updateRemark('');
+        vm.updateContact('');
+        vm.setFiles([]);
+        vm.setPicVal([]);
+        vm.path='/feedback';
+        vm.isClear=true;
+      })
+    }else{
+      next();
+    }
   }
 };
 </script>
