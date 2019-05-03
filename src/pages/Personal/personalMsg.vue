@@ -24,6 +24,7 @@ import btn from '../../components/personal/Btn'
 import Footer from '../../components/Footer'
 import Header from '../../components/personal/header'
 import {IndexModel} from '../../utils/index'
+import {checkLogin} from '../../utils/token/toLogin'
 const indexModel = new IndexModel()
 
 export default {
@@ -46,9 +47,7 @@ export default {
     }
   },
   created(){
-    // if(this.key) {
-    //   this.setTime()
-    // }
+    checkLogin()
     this.checkLogin()
   //  console.log(this.forms[0].text)
   //到时候放在初始页面
@@ -128,6 +127,14 @@ export default {
       localStorage.clear()
       this.$router.push({path: '/login'})
     }
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==="/feedback"){
+      to.meta.isUseCache=false;
+      next();
+    }
+    next();
+    
   }
 }
 </script>

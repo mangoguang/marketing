@@ -3,8 +3,7 @@ const state = {
   formInfo:{
     intention:{
       label:'意向产品',
-      placeholder:'请选择意向产品',
-      required:true
+      placeholder:'请选择意向产品'
     },
     store:{
       label:'所属门店',
@@ -28,7 +27,8 @@ const state = {
     },
     address:{
       label:'客户地址',
-      placeholder:'请选择客户地址'
+      placeholder:'请选择客户地址',
+      required:true
     },
     house:{
       label:'户型大小',
@@ -64,7 +64,8 @@ const state = {
     },
     deliver:{
       label:'需求日期',
-      placeholder:'请填写需求日期'
+      placeholder:'请填写需求日期',
+      required:true
     },
     paid:{
       label:'已交定金',

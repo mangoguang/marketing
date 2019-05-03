@@ -47,6 +47,16 @@ export default {
         this.picVal=this.$store.state.picVal;
         consolelog("进来路由了",this.picVal);
       }
+      if(from.name==="intention"){
+        this.setFiles([]);
+        this.setPicVal([]);
+        this.picVal=this.$store.state.picVal;
+      }
+      if(from.name==="/personalCenter"){
+        this.setFiles([]);
+        this.setPicVal([]);
+        this.picVal=this.$store.state.picVal;
+      }
     },
     isClear:function(newVal,oldValue){
       console.log(newVal);
@@ -78,9 +88,11 @@ export default {
         _this.$refs.upload.value='';
         return;
       }
-      if(files.length+this.picVal.length>=4){
-        this.$refs.upload_list.style='width:100%;justify-content: space-between;'
-      }
+      // if(files.length+this.picVal.length>=4){
+      //   this.$refs.upload_list.style='width:100%;justify-content: space-between;'
+      // }else{
+      //   this.$refs.upload_list.style='';
+      // }
       let imgSize=3*1024*1024;
      files.map((item,index) => {
         if(/^image/.test(item.type)){

@@ -17,6 +17,7 @@ import Footer from '../../components/Footer'
 import WorkModules from '../../components/work/workModules/'
 import Daily from '../../components/work/daily/'
 import { IndexModel } from "../../utils/"
+import {checkLogin} from '../../utils/token/toLogin'
 const indexModel = new IndexModel()
 
 export default {
@@ -32,6 +33,9 @@ export default {
     return{
 
     }
+  },
+  created() {
+    checkLogin()
   },
   mounted() {
 

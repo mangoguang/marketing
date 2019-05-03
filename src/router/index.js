@@ -199,7 +199,11 @@ export var router = new VueRouter({
   {
     path: '/feedback',
     name: '/feedback',
-    component: feedback
+    component: feedback,
+    meta:{
+      keepAlive:true,
+      isUseCache:false
+    }
   },
   {
     path: '/previewImg',
@@ -236,7 +240,8 @@ export var router = new VueRouter({
     name: 'followRecord',
     component: () => import('../pages/Personal/intention/followRecord'),
     meta:{
-      keepAlive:true
+      keepAlive:true,
+      isUseCache:false
     }
   },
   {

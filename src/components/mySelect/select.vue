@@ -3,7 +3,7 @@
     <div class="yan-select" v-for="(item,index) in options" :key="index">
       <label class="yan-radio-label">
         <div class="yan-radio-icon">
-          <input type="radio" :name="name" class="yan-radio" @change="updataVal" :value="item.addressId">
+          <input type="radio" :name="name" class="yan-radio" @change="updataVal" :value="item.addressId" :checked="id===item.addressId?true:false">
           <span></span>
         </div>
         <div class="yan-select-content">
@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { mapState,mapMutations } from "vuex"
+
 export default {
   props:['options','name'],
   data(){
@@ -25,9 +27,15 @@ export default {
      county:''
     }
   },
+  computed:{
+    ...mapState({
+      id:state => state.addressId
+    })
+  },
   methods:{
+    ...mapMutations(['setAddressId']),
     updataVal(ev){
-      this.$emit('change',ev.target.value);
+      this.$emit('change',ev.target.value); 
     },
     edit(id){
       this.$emit('edit',id);

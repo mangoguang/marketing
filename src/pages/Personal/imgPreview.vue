@@ -171,6 +171,10 @@ export default {
       var array=this.picVal;
       window.picVal=array;
     }  
+  },
+  beforeRouteLeave(to,from,next){
+    to.meta.isUseCache=true;
+    next();
   }
     
 

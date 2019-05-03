@@ -71,7 +71,7 @@
       </div>
       <div>
          <title-bar :text="titleModule.report">
-           <button type="button" @click="addRecord">添加记录</button>
+           <!-- <button type="button" @click="addRecord" >添加记录</button> -->
          </title-bar>
          <record-pannel :recordList="form.recordList"/>
       </div>
@@ -155,7 +155,8 @@ export default {
       urgency:'否',
       url:'',
       go:-1,
-      argreeDiscountTxt:''
+      argreeDiscountTxt:'',
+      phone:''
     }
   },
   components:{
@@ -262,6 +263,7 @@ export default {
   created(){
     console.log("回退进了created");
     this.customerId=this.$route.params.customerId;
+    this.phone=this.$route.query.phone;
     this.path=this.$route.fullPath;
     this.url=this.$route.query.url;
     this.getProduct();
@@ -279,12 +281,8 @@ export default {
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
     this.url=this.$route.query.url;
-    // console.log(this.checkedList);
-    // this.getProduct();
-    // this.getShop();
+    
     console.log("回退进了activated");
-    // this.isFirstEnter=true;
-   
      
   },
   mounted(){
@@ -292,7 +290,7 @@ export default {
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
-    ...mapMutations(['updateAddress','setClassify','setCheckedList','updateSearchProductList']),
+    ...mapMutations(['updateAddress','setClassify','setCheckedList','updateSearchProductList','setFiles','setPicVal','setAddressId']),
     getShop(){
       let shops=JSON.parse(localStorage.getItem('shops'));
       console.log(shops);
@@ -444,10 +442,10 @@ export default {
         mango.tip('客户ID不能为空');
         return false;
       }
-      if(this.form.goodsList.length<=0){
-        mango.tip('意向产品不能为空');
-        return false;
-      }
+      // if(this.form.goodsList.length<=0){
+      //   mango.tip('意向产品不能为空');
+      //   return false;
+      // }
       if(this.form.arrivalDate===''){
         mango.tip('进店日期不能为空');
         return false;
@@ -466,6 +464,10 @@ export default {
       }
       if(this.form.addressId===''){
         mango.tip('请选择地址,如无地址请先新建地址');
+        return false;
+      }
+      if(this.form.deliverDate===''){
+        mango.tip('需求日期不能为空');
         return false;
       }
       var reg=/^\d{1,}\.{0,1}\d{0,}$/;
@@ -561,6 +563,7 @@ export default {
               this.updateSearchProductList([]);
               // history.go(this.go);
               //this.$router.go(this.go);
+              //this.form.goodsList=[];
               this.$router.go(-1);
               //this.clearKeepAlive();
             }else{
@@ -569,35 +572,60 @@ export default {
         })
      }
     },
-    layerUpdate(){
-      if(this.failReason===''){
-        mango.tip('战败原因不能为空');
-        return;
-      }else if(this.failReason.length>300){
-        this.failReason=this.failReason.substring(0,300);
-        mango.tip('战败原因不能超过300字');
-        return;
-      }else{
-        let obj={
-          opportunityId:this.form.oppId,
-          closeReason:this.failReason
-        }
-        indexModel.closeOpportunity(obj).then(res => {
-          if(res.code===0){
-            mango.tip(res.msg);
-            this.isPrompt=false;
-            this.$router.replace({name:'intention',params:{opportunityId:this.form.oppId}});
+    layerUpdate(type){
+    if(type===''){
+      mango.tip('请选择是否成单');
+      return;
+     }else{
+       let nobj;
+       if(type==="2"){
+         if(this.failReason===''){
+            mango.tip('战败原因不能为空');
+            return;
+          }else if(this.failReason.length>300){
+            mango.tip('战败原因不能超过300字');
+            return;
           }else{
-            mango.tip(res.msg);
-            this.isPrompt=true;
+            if(this.phone===""||this.phone==="0"||this.phone===0){
+              mango.tip("客户手机号码不能为空");
+              return;
+            }
+              let obj={
+                opportunityId:this.form.oppId,
+                closeReason:this.failReason,
+                type:type
+              }
+              nobj=Object.assign({},obj);    
           }
-          
-        }).catch((reject) => {
-          if (reject === 510) {
-            this.layerUpdate()
+       }else{
+          if(this.phone===""||this.phone==="0"||this.phone===0){
+            mango.tip("客户手机号码不能为空");
+            return;
           }
-        })
-      }
+          let obj={
+            opportunityId:this.form.oppId,
+            closeReason:'已成单',
+            type:type
+          }
+          nobj=Object.assign({},obj); 
+       }
+       indexModel.closeOpportunity(nobj).then(res => {
+        if(res.code===0){
+          mango.tip(res.msg);
+          this.isPrompt=false;
+          this.$router.go(-1);
+        }else{
+          mango.tip(res.msg);
+          this.isPrompt=true;
+        }
+        
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.layerUpdate()
+        }
+      })
+
+     }
     },
     layerCancel(){
       this.isPrompt=false;
@@ -607,7 +635,6 @@ export default {
     },
     openStore(){
       this.$router.push({name:'chooseShop',query: {type: 'addintention'}});
-      
     },
    updateClassify(option){
     this.form.level=option;
@@ -773,17 +800,11 @@ export default {
    next();
   },
   beforeRouteLeave(to,from,next){
-   console.log(to.name);
-   //console.log(from);
     if(to.name==='/enquiryInfo'){
-        //from.meta.keepAlive=false;
         if(!from.meta.keepAlive){
-          //from.meta.keepAlive=false;
           this.setCheckedList([]);
-          //this.clearKeepAlive();
           next();    
         }else{
-          //from.meta.keepAlive=true;
           next();
         }
        
@@ -792,14 +813,10 @@ export default {
        next();
     }
     if(to.name==='/CustomerInfo'){
-        //from.meta.keepAlive=false;
         if(!from.meta.keepAlive){
-          //from.meta.keepAlive=false;
           this.setCheckedList([]);
-          //this.clearKeepAlive();
           next();    
         }else{
-          //from.meta.keepAlive=true;
           next();
         }
          
@@ -808,7 +825,6 @@ export default {
        next();
     }
     if(to.name==='intentionProduct'){
-        //from.meta.keepAlive=false;
       if(!from.meta.keepAlive){
         from.meta.keepAlive=true;
         next();

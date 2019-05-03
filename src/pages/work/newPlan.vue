@@ -31,6 +31,7 @@ import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
 import mango from "../../js"
 import { IndexModel } from "../../utils/"
+import { doubleDigit } from "../../utils/common/"
 const indexModel = new IndexModel()
 export default {
   name: 'newPlan',
@@ -59,7 +60,7 @@ export default {
     if (month < 10) {
       month = `0${month}`
     }
-    this.curDay = `${year}-${month}-${day}`
+    this.curDay = `${year}-${doubleDigit(month)}-${doubleDigit(day)}`
     // 获取当日数据
     this.getDailyData({
       startDate: this.curDay,
@@ -88,7 +89,6 @@ export default {
       this.dailyPlanTextarea = str
     },
     save() {
-      console.log('!!!', this.dailySummaryTextarea, this.dailyPlanTextarea)
       if (this.dailySummaryTextarea === '' && this.dailyPlanTextarea === '') {
         mango.tip('总结与计划不能同时为空！')
         return

@@ -178,7 +178,8 @@ export default {
       customerId:'',
       isRecord:false,
       UpdateRedirect:'',
-      argreeDiscountTxt:''
+      argreeDiscountTxt:'',
+      phone:''
     }
   },
   components:{
@@ -221,17 +222,19 @@ export default {
       if(from.name==='/enquiryInfo'){
         this.UpdateRedirect=from.fullPath;
       } 
+      
     }
   },
   created(){
-   this.getOpportunity();
+    this.phone=this.$route.query.phone;
+    this.getOpportunity();
   },
   mounted(){
 
   },
   methods:{
     ...mapMutations('intention',['setClassify','setUrgency','setTitle']),
-    ...mapMutations(['setCheckedList']),
+    ...mapMutations(['setCheckedList','setAddressId','setFiles','setPicVal']),
     getOpportunity(){
       let id=this.$route.params.opportunityId;
       indexModel.getOpportunity(id).then(res => {
@@ -243,7 +246,8 @@ export default {
             //this.goodsValue=res.data.goodsList[0].goodsName;
             let arr=[];
             res.data.goodsList.map((item,index) => {
-              arr.push(item.goodsName);
+              let str=item.goodsName+",数量："+item.quantity;
+              arr.push(str);
             })
             //console.log(arr);
             this.goodsValue=arr.join("、");
@@ -315,7 +319,7 @@ export default {
       })
     },
     modify(){
-      this.$router.replace({name:'updateintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
+      this.$router.replace({name:'updateintention',params:{customerId:this.customerId},query:{oppId:this.oppId,phone:this.phone}});
     },
     close(){
       this.isPrompt=true;
@@ -323,19 +327,40 @@ export default {
     closeReason(){
       this.isMsg=true;
     },
-   layerUpdate(){
-     if(this.failReason===''){
-       mango.tip('战败原因不能为空');
-       return;
-     }else if(this.failReason.length>300){
-       mango.tip('战败原因不能超过300字');
-       return;
+   layerUpdate(type){
+     if(type===''){
+      mango.tip('请选择是否成单');
+      return;
      }else{
-      let obj={
-        opportunityId:this.oppId,
-        closeReason:this.failReason
-      }
-      indexModel.closeOpportunity(obj).then(res => {
+       let nobj;
+       if(type==="2"){
+         if(this.failReason===''){
+            mango.tip('战败原因不能为空');
+            return;
+          }else if(this.failReason.length>300){
+            mango.tip('战败原因不能超过300字');
+            return;
+          }else{
+              let obj={
+                opportunityId:this.oppId,
+                closeReason:this.failReason,
+                type:type
+              }
+              nobj=Object.assign({},obj);    
+          }
+       }else{
+         if(this.phone===""||this.phone==="0"||this.phone===0){
+            mango.tip("客户手机号码不能为空");
+            return;
+          }
+          let obj={
+            opportunityId:this.oppId,
+            closeReason:'已成单',
+            type:type
+          }
+          nobj=Object.assign({},obj); 
+       }
+       indexModel.closeOpportunity(nobj).then(res => {
         if(res.code===0){
           mango.tip(res.msg);
           this.isPrompt=false;
@@ -350,11 +375,12 @@ export default {
           this.layerUpdate()
         }
       })
+
      }
-     
+
    },
    layerCancel(){
-      this.isPrompt=false;
+    this.isPrompt=false;
    },
    confirm(){
     this.isMsg=false;
@@ -369,6 +395,7 @@ export default {
     this.setTitle('意向详情');
    },
    getAddress(id){
+     this.setAddressId(id);
      indexModel.getAddress(id).then(res => {
           if(res.code===0){
             this.address=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}${res.data.address}`;
@@ -418,7 +445,10 @@ export default {
       to.meta.keepAlive=false;
       next();
     }
-    //to.meta.keepAlive=false;
+    if(to.name==='followRecord'){
+      to.meta.isUseCache=false;
+      next();
+    }
     next();
   }
 };
