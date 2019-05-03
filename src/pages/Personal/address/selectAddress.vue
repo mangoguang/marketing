@@ -158,6 +158,9 @@ export default {
         width:4vw;
         margin-top:4vw;
       }
+      p{
+        text-align: center;
+      }
     }
    }
  }
