@@ -185,6 +185,13 @@ export default {
       //console.log(from);
       if(from.name==='selectAddress'){
         //this.$route.meta.isUseCache=true;
+        if(this.$store.state.addressList<=0){
+          this.form.addressId='';
+          this.address='未收集地址';
+          this.apartmentType='未收集户型';
+          this.elevator='未收集';
+          return;
+        }
         this.form.addressId=this.$store.state.addressId;
         let obj={};
         if(this.$store.state.addressId){
