@@ -90,7 +90,7 @@ export default {
      if(this.type === 'intention') {
        this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
      }else {
-        this.$router.replace({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
+        this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
      }
    },
    //获取地址
