@@ -466,6 +466,10 @@ export default {
         mango.tip('请选择地址,如无地址请先新建地址');
         return false;
       }
+      if(this.form.deliverDate===''){
+        mango.tip('需求日期不能为空');
+        return false;
+      }
       var reg=/^\d{1,}\.{0,1}\d{0,}$/;
       if(this.form.budget!==''&&!reg.test(this.form.budget)){
         mango.tip('预算金额必须为数字');
