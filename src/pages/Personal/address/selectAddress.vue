@@ -145,6 +145,8 @@ export default {
     p{
       color:#363636;
       font-size: 3.2vw;
+      word-break: break-all;
+      text-align: justify;
     }
     .noRecord{
       text-align: center;
