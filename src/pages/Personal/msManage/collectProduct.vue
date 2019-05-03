@@ -65,7 +65,7 @@ export default {
     },
     //初始化数据
     initData() {
-      if(this.collectLimit) {
+      if(this.collectLimit && this.collectLimit > 10) {
         this.getData(this.collectLimit)
       }else {
         this.getData(10)
