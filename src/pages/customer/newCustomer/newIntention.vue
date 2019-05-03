@@ -216,6 +216,7 @@ export default {
         'opportunity.shopId': obj.shopId,
         'opportunity.addressId': obj.addressId,
         'opportunity.arrivalDate': obj.arrivalDate || mango.indexTimeB(new Date())[1],
+        'opportunity.deliverDate': obj.deliverDate,
         'opportunity.source': this.codeList.sourceCode || 'Natural',
         'opportunity.residentTime': obj.residentTime,   //留店时长
         'opportunity.stylePref': this.codeList.spCode,    //风格

@@ -5,7 +5,7 @@
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
       <li is="shopSelect" :start='"*"' :type='type'></li>
-      <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
+      <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectTime">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
@@ -42,6 +42,9 @@
       <li is="customerLi" :leftText="'预算金额'">
         <input v-model="newCustomerInfo.budget" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写预算金额" oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
+      <li is="customerLi" :leftText="'需求日期'"  :icon="true" @click.native="selectFollowTime">
+        <span :style="timeColor">{{turnDate(newCustomerInfo.deliverDate) || '请选择需求日期'}}</span>
+      </li>
       <li is="customerLi" :leftText="'已交定金'">
         <input v-model="newCustomerInfo.depositPaid" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写已交金额" oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
@@ -54,18 +57,26 @@
       <intentionSelect :intentionVal='intentionVal'/>
       <urgentSelect :urgentVal='urgentVal'/>
     </ul>
-    <div class="mintComponent">
-       <mt-datetime-picker
-        ref="datePicker"
-        type="date"
-        v-model="today"
-        :startDate="new Date('1930-01-01')"
-        year-format="{value} 年"
-        month-format="{value} 月"
-        date-format="{value} 日"
-        @confirm="setStoreDate">
-      </mt-datetime-picker>
-    </div>
+    <mt-datetime-picker
+      ref="followDatePicker"
+      type="date"
+      v-model="today"
+      :startDate="new Date()"
+      year-format="{value} 年"
+      month-format="{value} 月"
+      date-format="{value} 日"
+      @confirm="setFollowTime">
+    </mt-datetime-picker>
+    <mt-datetime-picker
+      ref="DatePicker"
+      type="date"
+      v-model="today"
+      :startDate="new Date()"
+      year-format="{value} 年"
+      month-format="{value} 月"
+      date-format="{value} 日"
+      @confirm="setTime">
+    </mt-datetime-picker>
   </div>
 </template>
 
@@ -74,10 +85,11 @@ import {IndexModel} from '../../../utils/index'
 const indexModel = new IndexModel()
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from 'vuex'
-import { Picker, Popup } from 'mint-ui'
+import { Picker, Popup, DatetimePicker } from 'mint-ui'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
+Vue.component(DatetimePicker.name, DatetimePicker)
 import addressSelect from '../../mySelect/addressSelect'
 import areaSelect from '../../select/areaSelect'
 import customerLi from '../customerLi'
@@ -169,7 +181,7 @@ export default {
   methods: {
     ...mapMutations(['initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
     setInitData() {
-      this.newCustomerInfo.arrivalDate = this.day
+      this.$set(this.newCustomerInfo, 'arrivalDate', this.day)
       this.setNewCustomerInfo(this.newCustomerInfo)
       //初始化门店的值
       let shopsList = btnList(this.shops,0)
@@ -271,14 +283,21 @@ export default {
       this.newCustomerInfo.residentTime = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
-    //打开日期选择插件
-    selectStoreDate() {
-      this.$refs.datePicker.open()
+    selectTime() {
+      this.$refs.DatePicker.open()
     },
-    //选择日期
-    setStoreDate(value) {
+    //进店日期
+    setTime(value) {
       this.timeColor = 'color: #363636'
       this.$set(this.newCustomerInfo, 'arrivalDate', mango.indexTimeB(value)[1])
+    },
+    selectFollowTime() {
+      this.$refs.followDatePicker.open()
+    },
+    //需求日期
+    setFollowTime(value) {
+      this.timeColor = 'color: #363636'
+      this.$set(this.newCustomerInfo, 'deliverDate', mango.indexTimeB(value)[1])
     },
     //转变日期格式
     turnDate(date) {
