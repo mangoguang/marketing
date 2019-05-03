@@ -3,6 +3,10 @@
     <my-banner :title="'新增意向'" class="banner"/>
     <button class="submit" :style="{top:top}" @click="submit">保存</button>
     <new-demand :changeCode="change" class="newDemand" :fromName='fromName' :type='"demand"' :addressType='"intention"' />
+     <div class="title">
+        <p></p>
+        <span>跟进情况</span>
+      </div>
     <new-record :fromName='fromName'/>
   </div>
 </template>
@@ -288,6 +292,21 @@ export default {
     margin-top: 16vw;
     // width: 100vw;
     // height: 90vh;
+  }
+   .title{
+    display: flex;
+    align-items: center;
+    color: #363636;
+    font-weight: bold;
+    margin: 2vw 0 ;
+    padding-left: 2vw;
+    box-sizing: border-box;
+    p{
+      background: #007aff;
+      width: 0.53vw;
+      height: 4vw;
+      margin-right: 2.6vw;
+    }
   }
   // .footer {
   //   color: #909090;
