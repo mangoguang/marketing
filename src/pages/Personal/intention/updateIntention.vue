@@ -184,7 +184,8 @@ export default {
     $route(to,from){
       //console.log(from);
       if(from.name==='selectAddress'){
-        //this.$route.meta.keepAlive=true;
+        //this.$route.meta.isUseCache=true;
+        this.form.addressId=this.$store.state.addressId;
         let obj={};
         if(this.$store.state.addressId){
         // if(this.$route.query.addressId){
@@ -211,6 +212,7 @@ export default {
         
       }
       if(from.name==='intentionProduct'){
+        //this.$route.meta.isUseCache=true;
         console.log('进来intentionProduct');
         console.log(this.$store.state.checkedList.length);
         //let list=JSON.parse(localStorage.getItem('product'));
@@ -236,6 +238,7 @@ export default {
      
       }
       if(from.name==='chooseShop'){
+        ///this.$route.meta.isUseCache=true;
         console.log("进来chooseShop");
         let shops=JSON.parse(localStorage.getItem('shops'));
         console.log(shops);
@@ -260,29 +263,13 @@ export default {
     ]),
     ...mapState(['checkedList'])
   },
-  created(){
-    console.log("回退进了created");
-    this.customerId=this.$route.params.customerId;
-    this.phone=this.$route.query.phone;
-    this.path=this.$route.fullPath;
-    this.url=this.$route.query.url;
-    this.getProduct();
-    this.getShop();
-    //this.$route.meta.keepAlive=true;
-    if(this.$route.query.oppId){
-      this.updateTitle('意向详情');
-      this.form.oppId=this.$route.query.oppId;
-      this.getOpportunity(this.form.oppId);
-    }
-   
-  },
   activated(){
-    this.form.oppId=this.$route.query.oppId;
-    this.customerId=this.$route.params.customerId;
-    this.path=this.$route.fullPath;
-    this.url=this.$route.query.url;
+    //this.form.oppId=this.$route.query.oppId;
+    //this.customerId=this.$route.params.customerId;
+    //this.path=this.$route.fullPath;
+    //this.url=this.$route.query.url;
     
-    console.log("回退进了activated");
+    //console.log("回退进了activated");
      
   },
   mounted(){
@@ -753,87 +740,27 @@ export default {
    }
   },
   beforeRouteEnter(to,from,next){
-   // console.log("进来addIntention",to);
-   console.log(from);
-    if(from.name==='selectAddress'){
-      to.meta.keepAlive=true;
-      next();
-    }else{
-      //to.meta.keepAlive=false;
-      next();
+    if(!to.meta.isUseCache){
+      next(vm => {
+        vm.customerId=to.params.customerId;
+        vm.phone=to.query.phone;
+        vm.path=to.fullPath;
+        vm.url=to.query.url;
+        vm.getProduct();
+        vm.getShop();
+        //this.$route.meta.keepAlive=true;
+        if(to.query.oppId){
+          vm.updateTitle('意向详情');
+          vm.form.oppId=to.query.oppId;
+          vm.getOpportunity(vm.form.oppId);
+        }
+      })
     }
-    if(from.name==='searchProduct'){
-      to.meta.keepAlive=true;
-      next();
-    }else{
-      //to.meta.keepAlive=false;
-      next();
-    }
-    if(from.name==='intentionProduct'){
-        to.meta.keepAlive=true;
-        next();
-    }else{
-      //to.meta.keepAlive=false;
-      next();
-    }
-    if(from.name==='chooseShop'){
-        to.meta.keepAlive=true;
-        next();  
-    }else{
-      //to.meta.keepAlive=false;
-      next();
-    }
-    if(from.name==='/enquiryInfo'){
-      to.meta.keepAlive=false; 
-      next();
-    }else{
-      to.meta.keepAlive=true;
-      next();
-     }
-    if(from.name==='/CustomerInfo'){
-      to.meta.keepAlive=false;   
-      next();
-    }else{
-      to.meta.keepAlive=true;
-       next();
-    }
-   next();
+    next();
   },
   beforeRouteLeave(to,from,next){
-    if(to.name==='/enquiryInfo'){
-        if(!from.meta.keepAlive){
-          this.setCheckedList([]);
-          next();    
-        }else{
-          next();
-        }
-       
-    }else{
-      from.meta.keepAlive=false;
-       next();
-    }
-    if(to.name==='/CustomerInfo'){
-        if(!from.meta.keepAlive){
-          this.setCheckedList([]);
-          next();    
-        }else{
-          next();
-        }
-         
-    }else{
-      from.meta.keepAlive=false;
-       next();
-    }
-    if(to.name==='intentionProduct'){
-      if(!from.meta.keepAlive){
-        from.meta.keepAlive=true;
-        next();
-      }else{
-        next();
-      }
-    
-    }else{
-      from.meta.keepAlive=false;
+    if(to.name==="/CustomerInfo"||to.name==="/enquiryInfo"){
+      from.meta.isUseCache=false;
       next();
     }
     next();

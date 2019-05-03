@@ -96,6 +96,13 @@ export default {
       }
       
     }
+  },
+  beforeRouteLeave(to,from,next){
+     if(to.name==="updateintention"){
+      to.meta.isUseCache=true;
+      next();
+    }
+    next();
   }
 }
 </script>

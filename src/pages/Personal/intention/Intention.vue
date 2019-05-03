@@ -442,7 +442,7 @@ export default {
   beforeRouteLeave(to,from,next){
     if(to.name==='updateintention'){
       //this.setCheckedList([]);
-      to.meta.keepAlive=false;
+      to.meta.isUseCache=false;
       next();
     }
     if(to.name==='followRecord'){

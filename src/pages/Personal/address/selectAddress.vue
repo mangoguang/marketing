@@ -116,6 +116,13 @@ export default {
   beforeRouteEnter(to, from, next) {
     
     next();
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==="updateintention"){
+      to.meta.isUseCache=true;
+      next();
+    }
+    next();
   }
   
 };

@@ -76,6 +76,11 @@ export default {
       to.meta.isUseCache=true;
       next();
     }
+    if(to.name==="updateintention"){
+      console.log("意向updateintention")
+      to.meta.isUseCache=true;
+      next();
+    }
     next();
   }
 };

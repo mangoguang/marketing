@@ -42,14 +42,6 @@ export default {
       //   }
       // })
     }
-  },
-  beforeRouteLeave(to,from,next){
-    if(to.name==='addintention'){
-      this.setCheckedList([]);
-      to.meta.keepAlive=false;
-      next();
-    }
-    next();
   }
 }
 </script>
