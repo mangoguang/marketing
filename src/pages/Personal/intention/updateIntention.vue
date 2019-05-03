@@ -592,6 +592,10 @@ export default {
               nobj=Object.assign({},obj);    
           }
        }else{
+          if(this.form.deliverDate===''){
+            mango.tip('需求日期不能为空');
+            return;
+          }
           if(this.phone===""||this.phone==="0"||this.phone===0){
             mango.tip("客户手机号码不能为空");
             return;
