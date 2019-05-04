@@ -2,7 +2,8 @@
   <div class="yan-layer-shade">
       <div class="yan-layer-box">
         <div class="yan-layer-content">
-          <img src="../../assets/imgs/fail.png" alt="">
+          <img src="../../assets/imgs/fail.png" alt="" v-show="type==='2'">
+          <img src="../../assets/imgs/getOrder.png" alt=""  v-show="type==='1'">
           <div class="order">
             <label>
               <input type="radio" v-model="type" value="1" />
@@ -31,10 +32,19 @@
 
 <script>
 export default {
-  props:['placeholder','readonly','value'],
+  props:['readonly','value'],
   data(){
     return{
-      type:''
+      type:'1'
+    }
+  },
+  computed:{
+    placeholder:function(){
+      if(this.type==='1'){
+        return "已成单"
+      }else{
+        return "请输入战败原因"
+      }
     }
   },
   methods:{

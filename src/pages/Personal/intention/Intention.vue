@@ -84,7 +84,7 @@
           <order-info class="order" :orderList="item" v-for="(item,index) in form.orderList" :key="index"/>
         </div>
         <p class="last">到底啦</p>
-        <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
+        <yan-layer-prompt v-if="isPrompt"  v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
           <span slot='update'>确定</span>
           <span slot='cancel'>取消</span>
         </yan-layer-prompt>
@@ -179,7 +179,8 @@ export default {
       isRecord:false,
       UpdateRedirect:'',
       argreeDiscountTxt:'',
-      phone:''
+      phone:'',
+      placeholder:'已成单'
     }
   },
   components:{
