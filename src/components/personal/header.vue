@@ -6,13 +6,13 @@
       <img src="../../assets/imgs/via.png" alt="" class="via" @click="go">
       <div class="personal-content">
         <div class="name">
-          <span>{{ajaxData.typename.typeName}}{{ajaxData.name}}</span>
+          <span>{{ajaxData.positionList.typeName}}{{ajaxData.name}}</span>
           <span>|</span>
           <span>{{ajaxData.sex === 0 ? '未知' : (ajaxData.sex === 1?'男' : '女')}}</span>
         </div>
         <div class="phoneNumber">
           <!-- <p class='shop'>{{shop}}</p> -->
-          <p class='shop'>{{ajaxData.typename.positionName}}</p>
+          <p class='shop'>{{ajaxData.positionList.positionName}}</p>
           <p>{{ajaxData.account}}</p>
           <!-- <div class="phone-icon">
             <a href="tel:1599999999">

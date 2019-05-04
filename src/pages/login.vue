@@ -278,7 +278,7 @@ export default {
       indexModel.getUserInfo().then(res => {
         res = res.data
         if (res) {
-          // let typename = this.getName(res.positionList)
+          let typename = this.getName(res.positionList)
           let ajaxData = {
             account: res.account,
             tenantId: res.tenantId,
@@ -287,8 +287,8 @@ export default {
             phone: res.phone,
             sex: res.sex,
             type:res.type,
-            // typename: typename
-            typename:res.positionList[0]
+            typename: typename,
+            positionList:res.positionList[0]
           }
           console.log(ajaxData);
           let shops = JSON.stringify(res.shopList)
