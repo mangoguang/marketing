@@ -6,12 +6,13 @@
       <img src="../../assets/imgs/via.png" alt="" class="via" @click="go">
       <div class="personal-content">
         <div class="name">
-          <span>{{'导购员张三' || ajaxData.name}}</span>
+          <span>{{ajaxData.typename.typeName}}{{ajaxData.name}}</span>
           <span>|</span>
           <span>{{ajaxData.sex === 0 ? '未知' : (ajaxData.sex === 1?'男' : '女')}}</span>
         </div>
         <div class="phoneNumber">
-          <p class='shop'>{{shop}}</p>
+          <!-- <p class='shop'>{{shop}}</p> -->
+          <p class='shop'>{{ajaxData.typename.positionName}}</p>
           <p>{{ajaxData.account}}</p>
           <!-- <div class="phone-icon">
             <a href="tel:1599999999">
@@ -41,8 +42,8 @@ export default {
     //获取本地缓存信息
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
-    let shop = localStorage.getItem('shops')
-    this.shop = JSON.parse(shop)[0].name
+    //let shop = localStorage.getItem('shops')
+    //this.shop = JSON.parse(shop)[0].name
   },
   mounted(){
     this.isIPhoneX()
