@@ -47,12 +47,21 @@ export default {
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {
-      vm.fromName = from.name === '/CustomerInfo'? 'NewCustomer' : 'other'
+      if(from.name === '/CustomerInfo') {
+        vm.fromName = 'NewCustomer'
+      }else if(from.name === '/enquiryInfo'){
+        vm.fromName = 'NewCustomer'
+      }else {
+        vm.fromName = 'other'
+      }
+      // vm.fromName = from.name === '/CustomerInfo' || '/enquiryInfo'? 'NewCustomer' : 'other'
     })
   },
   beforeRouteLeave(to, from, next) {
      if(to.name == '/CustomerInfo'){
        this.clearData()
+      }else if(to.name == '/enquiryInfo') {
+        this.clearData()
       }
     next(vm => {
      

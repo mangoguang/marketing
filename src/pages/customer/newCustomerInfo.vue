@@ -72,7 +72,8 @@ export default {
       isShowDeal: false,
       shops: [],
       fromName: '',
-      codeList: {}
+      codeList: {},
+      saveDataKey: true
     }
   },
   beforeRouteEnter(to, from, next) {
@@ -220,37 +221,35 @@ export default {
       if(!result) {
         this.whichFollowData(this.newCustomerInfo)
       }else {
-        //上传附件图片
-        let formdata = this.newCustomerInfo.dataFiles
-        //新增
-        // let formdata=new FormData();
-        // for(let i=0;i<this.Files.length;i++){
-        //   formdata.append('record.dataFile',this.Files[i]);
-        // }
-        
-        let obj = this.updateParams(this.newCustomerInfo)
-        // console.log(obj)
-        let arr = []
-        for(var key in obj) {
-          formdata.append(key,obj[key])
-          arr.push(key)
-        }
-        mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
-          if(res.status) {
-            MessageBox.alert('保存成功！').then(action => {
-              this.$router.replace({path: '/customer'})
-              this.setFiles([]);
-              this.setPicVal([]);
-            })
-          }else {
-            MessageBox.alert('保存错误')
+        if(this.saveDataKey) {
+          this.saveDataKey = false
+          //上传附件图片
+          let formdata = this.newCustomerInfo.dataFiles
+          //新增
+          // let formdata=new FormData();
+          // for(let i=0;i<this.Files.length;i++){
+          //   formdata.append('record.dataFile',this.Files[i]);
+          // }
+          let obj = this.updateParams(this.newCustomerInfo)
+          let arr = []
+          for(var key in obj) {
+            formdata.append(key,obj[key])
+            arr.push(key)
           }
-        })
+        }else {
+           mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+            if(res.status) {
+              MessageBox.alert('保存成功！').then(action => {
+                this.$router.replace({path: '/customer'})
+                this.setFiles([]);
+                this.setPicVal([]);
+              })
+            }else {
+              MessageBox.alert('保存错误')
+            }
+          })
+        }
       }
-      // // let ref = this.$refs.myForm
-      // // let formdata = new FormData(ref)
-      
-      
     },
     //初始化数据
     setInitData() {
