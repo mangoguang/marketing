@@ -223,18 +223,21 @@ export default {
         this.whichFollowData(this.newCustomerInfo)
       }else {
         //判断是第一次保存还是多次保存
-        let formdata;
-        if(this.saveDataKey) {
-          this.saveDataKey = false
-          //上传附件图片
-          formdata = this.newCustomerInfo.dataFiles
-        }else {
-          formdata = new FormData()
+        // let formdata;
+        // if(this.saveDataKey) {
+        //   this.saveDataKey = false
+        //   //上传附件图片
+        //   formdata = this.newCustomerInfo.dataFiles
+        // }else {
+          let formdata = new FormData()
           let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
-           for(let i=0;i<file.length;i++){
+           for(let i = 0; i < file.length; i++){
             formdata.append('record.dataFile',file[i]);
           }
-        }
+          if(this.newCustomerInfo.dataFiles.get('dataFile')) {
+            formdata.append('dataFile',this.newCustomerInfo.dataFiles.get('dataFile'));
+          }
+        // }
         let obj = this.updateParams(this.newCustomerInfo)
         let arr = []
         for(var key in obj) {

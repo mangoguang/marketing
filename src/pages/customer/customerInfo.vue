@@ -136,7 +136,13 @@ export default {
     },
     //保存数据
     saveData() {
-      let formdata = this.newCustomerInfo.dataFiles
+      let formdata = new FormData()
+      let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+      for(let i = 0; i < file.length; i++){
+        formdata.append('record.dataFile',file[i]);
+      }
+
+      // let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
         this.changeFormData(this.upLoadUrl)
       }
