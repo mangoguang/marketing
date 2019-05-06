@@ -218,38 +218,43 @@ export default {
         return
       }
       let result = this.hasFollowData(this.newCustomerInfo)
+      //判断有没有填写跟进情况
       if(!result) {
         this.whichFollowData(this.newCustomerInfo)
       }else {
+        //判断是第一次保存还是多次保存
+        let formdata;
         if(this.saveDataKey) {
           this.saveDataKey = false
           //上传附件图片
-          let formdata = this.newCustomerInfo.dataFiles
-          //新增
-          // let formdata=new FormData();
-          // for(let i=0;i<this.Files.length;i++){
-          //   formdata.append('record.dataFile',this.Files[i]);
-          // }
-          let obj = this.updateParams(this.newCustomerInfo)
-          let arr = []
-          for(var key in obj) {
-            formdata.append(key,obj[key])
-            arr.push(key)
-          }
+          formdata = this.newCustomerInfo.dataFiles
         }else {
-           mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
-            if(res.status) {
-              MessageBox.alert('保存成功！').then(action => {
-                this.$router.replace({path: '/customer'})
-                this.setFiles([]);
-                this.setPicVal([]);
-              })
-            }else {
-              MessageBox.alert('保存错误')
-            }
+          formdata = new FormData()
+          let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+           for(let i=0;i<file.length;i++){
+            formdata.append('record.dataFile',file[i]);
+          }
+        }
+        let obj = this.updateParams(this.newCustomerInfo)
+        let arr = []
+        for(var key in obj) {
+          formdata.append(key,obj[key])
+          arr.push(key)
+        }
+        this.getData(formdata, arr)
+      }
+    },
+    //请求数据
+    getData(formdata, arr) {
+      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+        if(res.status) {
+          MessageBox.alert('保存成功！').then(action => {
+            this.$router.replace({path: '/customer'})
+            this.setFiles([]);
+            this.setPicVal([]);
           })
         }
-      }
+      })
     },
     //初始化数据
     setInitData() {
