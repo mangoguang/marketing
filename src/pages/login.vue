@@ -152,7 +152,7 @@ export default {
       axios({
         method: 'post',
         // url:'https://op.derucci.com',
-        // url: 'http://10.11.8.7/oauth/token',
+        //url: 'http://10.11.8.7/oauth/token',
         url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
         transformRequest: [function(data) {
@@ -195,7 +195,9 @@ export default {
       }).catch((reject) => {
         mango.tip('网络异常！')
       })
-
+// indexModel.getType('POSITION_TYPE').then(res => {
+//   console.log(res);
+// })
       // indexModel.getToken(account,md5(pwd)).then(res => {
       //   mango.loading('close')
       //   let data = res.data
@@ -285,8 +287,10 @@ export default {
             phone: res.phone,
             sex: res.sex,
             type:res.type,
-            typename: typename
+            typename: typename,
+            positionList:res.positionList[0]
           }
+          console.log(ajaxData);
           let shops = JSON.stringify(res.shopList)
           localStorage.setItem("shops", shops);
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))

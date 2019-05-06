@@ -140,6 +140,8 @@ export default {
         p{
           font-size: 3.2vw;
           color:#363636;
+          word-break: break-all;
+          text-align: justify;
         }
     }
    }

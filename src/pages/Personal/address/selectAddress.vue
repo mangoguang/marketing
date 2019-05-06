@@ -90,7 +90,7 @@ export default {
      if(this.type === 'intention') {
        this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
      }else {
-        this.$router.replace({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
+        this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
      }
    },
    //获取地址
@@ -116,6 +116,13 @@ export default {
   beforeRouteEnter(to, from, next) {
     
     next();
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==="updateintention"){
+      to.meta.isUseCache=true;
+      next();
+    }
+    next();
   }
   
 };
@@ -138,6 +145,8 @@ export default {
     p{
       color:#363636;
       font-size: 3.2vw;
+      word-break: break-all;
+      text-align: justify;
     }
     .noRecord{
       text-align: center;
@@ -148,6 +157,9 @@ export default {
       img{
         width:4vw;
         margin-top:4vw;
+      }
+      p{
+        text-align: center;
       }
     }
    }

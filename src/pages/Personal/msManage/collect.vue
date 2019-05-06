@@ -122,6 +122,15 @@ export default {
       this.$store.commit('collect/setMessageBox',{showMessageBox:false});
     }
     
+  },
+  beforeRouteEnter(to,from,next){
+    if(from.name==="productDetails"){
+      next(vm => {
+        //console.log(vm);
+        vm.changeTab(2);
+      })
+    }
+    next();
   }
 }
 </script>
