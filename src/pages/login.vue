@@ -104,7 +104,7 @@ export default {
       pwdMsg: "",
       h: '',
       marginTop:''
-    };
+    }
   },
   mounted() {
     this.$root.author = 'mangoguang'
@@ -152,8 +152,8 @@ export default {
       axios({
         method: 'post',
         // url:'https://op.derucci.com',
-        // url: 'http://10.11.8.7/oauth/token',
-        url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
+        url: 'http://10.11.8.7/oauth/token',
+        // url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
         transformRequest: [function(data) {
           let ret = ''

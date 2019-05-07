@@ -9,8 +9,8 @@ export default class Common {
     // this.port = 'https://op.derucci.com'
     //  this.port = 'http://10.11.8.250'
    // this.port = 'http://172.16.10.107'
-    //this.port = "http://10.11.8.7"
-    this.port = "https://mobiletest.derucci.net/cd-sys-web"
+    this.port = "http://10.11.8.7"
+    // this.port = "https://mobiletest.derucci.net/cd-sys-web"
     // this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
@@ -149,7 +149,7 @@ export default class Common {
       axios({
         method: thatType,
         async: false,
-        timeout: 15000,
+        timeout: 30000,
         url: url,
         contentType: "application/json",
         headers: {
@@ -217,7 +217,7 @@ export default class Common {
         // async: false,
         url: url,
         data: data,
-        timeout: 15000,
+        timeout: 30000,
         headers: {
           "Authorization": `Bearer ${token.access_token}`,
           'sign': sign,
@@ -284,7 +284,7 @@ export default class Common {
        axios({
         method: 'post',
         //async: false,
-        timeout: 15000,
+        timeout: 30000,
         url: url,
         data:data,
          headers: {

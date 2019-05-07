@@ -74,6 +74,7 @@ export default {
   p{
     padding: 4vw;
     color: #363636;
+    word-break: break-all;
   }
 }
 </style>
