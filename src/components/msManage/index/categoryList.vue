@@ -103,8 +103,10 @@ export default {
       //background: #007aff;
     }
     img {
-      width: 16vw;
-      height: auto;
+      //width: 16vw;
+      //height: auto;
+      width:100%;
+      height:100%;
     }
     .text {
       color: #666;

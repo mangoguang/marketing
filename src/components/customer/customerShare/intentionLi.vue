@@ -22,7 +22,7 @@
       </div>
        <div class="date" v-show="list.status === 'Approved'">
         <span>成交日期：</span>
-        <span>{{ turnDate(list.orderTime) }}</span>
+        <span>{{ turnDate(list.closeTime) }}</span>
       </div>
        <div class="date" v-show="list.status === 'Closed'">
         <span>战败日期：</span>
