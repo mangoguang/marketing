@@ -6,7 +6,7 @@
       <img src="../../assets/imgs/via.png" alt="" class="via" @click="go">
       <div class="personal-content">
         <div class="name">
-          <span>{{'导购员张三' || ajaxData.name}}</span>
+          <span>{{ajaxData.positionList.typeName}}{{ajaxData.name}}</span>
           <span>|</span>
           <span>{{ajaxData.sex === 0 ? '未知' : (ajaxData.sex === 1?'男' : '女')}}</span>
         </div>
@@ -73,6 +73,7 @@ export default {
   background: url('../../assets/imgs/viaBg.png') no-repeat center;
   background-size: 100% 100%;
   position: relative;
+  overflow-x:hidden;
   .compile{
     color: #fff;
     font-size: 4vw;

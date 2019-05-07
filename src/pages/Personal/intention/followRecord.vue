@@ -86,11 +86,16 @@ export default {
     ]),
     ...mapState(['Files'])
   },
-  created(){
-    console.log("created");
-   this.oppId=this.$route.query.oppId;
-   this.setFiles([]);
-   this.setPicVal([]);
+  // created(){
+  //   console.log("created");
+  //  this.oppId=this.$route.query.oppId;
+  //  this.setFiles([]);
+  //  this.setPicVal([]);
+  // },
+  activated(){
+    if(!this.$route.meta.isUseCache){
+       this.oppId=this.$route.query.oppId;
+    }
   },
   methods:{
     ...mapMutations(['setFiles','setPicVal']),

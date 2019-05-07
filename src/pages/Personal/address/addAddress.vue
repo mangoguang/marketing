@@ -82,7 +82,8 @@ export default {
       this.form.id=this.$route.query.addressId;
       this.updateTitle('编辑地址');
       this.getAddress(this.form.id);
-
+   }else{
+     this.updateTitle('新建地址');
    }
   
   },

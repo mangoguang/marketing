@@ -101,10 +101,14 @@ export default {
 
 <style lang="scss" scoped>
 .article {
-  padding: 4.26vw;
+  // padding: 4.26vw;
   text-align: center;
   padding-top: 20vw;
   position: relative;
+  box-sizing: border-box;
+  // width: 100vw;
+  // overflow: hidden;
+
   .collentBtn {
       position: fixed;
       right: 4.26vw;
@@ -115,7 +119,7 @@ export default {
     .title {
       color: #353535;
       font-size: 5.33vw;
-      width: 50vw;
+      width: 80vw;
       text-align: center;
       margin: 0 auto;
       font-weight: bold;
@@ -129,6 +133,10 @@ export default {
   .content {
     text-align: left;
     word-wrap: break-word !important;
+    width: 100vw;
+    overflow: hidden;
+    padding: 4.26vw;
+    box-sizing: border-box;
     h2,p {
       color: #363636;
       font-size: 3.73vw;

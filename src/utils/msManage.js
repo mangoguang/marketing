@@ -111,7 +111,7 @@ export {changeImgStyle}
 //正则匹配html中的img，把img中alt换成style样式 //title
 function changeGalleryStyle(html){
   var newContent= html.replace(/<img[^>]*>/gi,function(match,capture){
-  var match = match.replace(/title=\"(.*)\"/gi, 'style="width: 100%;height:auto"');
+  var match = match.replace(/title=\"(.*)\"/gi, 'style="width: 100%;height:auto;"');
   return match;
   });
   return newContent;

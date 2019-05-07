@@ -76,7 +76,7 @@
          <record-pannel :recordList="form.recordList"/>
       </div>
       <p class="last">到底啦</p>
-      <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
+      <yan-layer-prompt v-if="isPrompt"  v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
         <span slot='update'>确定</span>
         <span slot='cancel'>取消</span>
       </yan-layer-prompt>
@@ -580,10 +580,6 @@ export default {
             mango.tip('战败原因不能超过300字');
             return;
           }else{
-            if(this.phone===""||this.phone==="0"||this.phone===0){
-              mango.tip("客户手机号码不能为空");
-              return;
-            }
               let obj={
                 opportunityId:this.form.oppId,
                 closeReason:this.failReason,
@@ -757,6 +753,7 @@ export default {
         vm.phone=to.query.phone;
         vm.path=to.fullPath;
         vm.url=to.query.url;
+        vm.failReason="";
         vm.getProduct();
         vm.getShop();
         //this.$route.meta.keepAlive=true;
