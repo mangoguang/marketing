@@ -73,6 +73,7 @@ export default {
   background: url('../../assets/imgs/viaBg.png') no-repeat center;
   background-size: 100% 100%;
   position: relative;
+  overflow-x:hidden;
   .compile{
     color: #fff;
     font-size: 4vw;
