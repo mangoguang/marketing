@@ -50,11 +50,13 @@ export default {
       if(from.name==="intention"){
         this.setFiles([]);
         this.setPicVal([]);
+        this.FilesList=[];
         this.picVal=this.$store.state.picVal;
       }
       if(from.name==="/personalCenter"){
         this.setFiles([]);
         this.setPicVal([]);
+        this.FilesList=[];
         this.picVal=this.$store.state.picVal;
       }
     },

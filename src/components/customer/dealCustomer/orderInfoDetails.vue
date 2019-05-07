@@ -63,13 +63,13 @@
         <li>
           <div>
             <span>订单创建日期:</span>
-            <p>{{ list.submitTime }}</p>
+            <p>{{ list.orderTime }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单下单日期:</span>
-            <p>{{ list.orderTime }}</p>
+            <p>{{ list.submitTime }}</p>
           </div>
         </li>
         <li>

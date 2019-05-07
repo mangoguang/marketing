@@ -22,15 +22,15 @@
         <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
       </template>
       <template v-else>
-       <li is='customerLi' :leftText='"客户地址"' @click.native='toSelectAddress' :icon="true">
-        <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.districtName || '请选择客户地址'}}</span>
-      </li>
-      <li is='customerLi' :leftText='"户型大小"'>
-        <span>{{newCustomerInfo.apartmentTypeName || '请先选择客户地址'}}</span>
-      </li>
-      <li is='customerLi' :leftText='"有无电梯"'>
-        <span>{{newCustomerInfo.elevatorName || '请先选择客户地址'}}</span>
-      </li>
+        <li is='customerLi' :leftText='"客户地址"' @click.native='toSelectAddress' :icon="true">
+          <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.districtName || '请选择客户地址'}}</span>
+        </li>
+        <li is='customerLi' :leftText='"户型大小"'>
+          <span>{{newCustomerInfo.apartmentTypeName || '请先选择客户地址'}}</span>
+        </li>
+        <li is='customerLi' :leftText='"有无电梯"'>
+          <span>{{newCustomerInfo.elevatorName || '请先选择客户地址'}}</span>
+        </li>
       </template>
       <li is="BuyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
       <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
@@ -162,6 +162,7 @@ export default {
         this.setInitData()
       }else if(this.fromName !='NewCustomer'){
         this.setIntentionProduct()
+        this.hasAddressId()
         if(this.newCustomerInfo.arrivalDate) {
           this.timeColor = 'color: #363636'
         }
@@ -176,10 +177,9 @@ export default {
     this.shops = JSON.parse(shops)
     //获取默认进店时间
     this.day = mango.indexTimeB(this.today)[1]
-    this.hasAddressId()
   },
   methods: {
-    ...mapMutations(['initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
+    ...mapMutations(['setAddressId','initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
     setInitData() {
       this.$set(this.newCustomerInfo, 'arrivalDate', this.day)
       this.setNewCustomerInfo(this.newCustomerInfo)
@@ -191,6 +191,7 @@ export default {
       this.setLeaveStoreVal('')
       this.setDiscountVal('')
       this.setCheckedList([])
+      this.setAddressId('')
     },
     //请求客户地址
     hasAddressId() {

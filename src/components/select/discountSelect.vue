@@ -38,12 +38,12 @@ export default {
   props: ['start'],
   data() {
     return {
-      firSlots: [{values: [6, 7, 8, 9]},{
+      firSlots: [{values: ['6', '7', '8', '9']},{
           divider: true,
           content: '  .  ',
           className: 'slot2'
         }],
-      secSlots: [{values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]},{
+      secSlots: [{values: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']},{
           divider: true,
           content: '  折',
           className: 'slot3'
@@ -99,7 +99,9 @@ export default {
     selectDiscount() {
       this.color = "color: #363636";
       if (this.discountVal === "") {
-        this.discount = this.firstCount + this.secondCount + '折'
+        this.firstCount = '6'
+        this.secondCount = '0'
+        this.discount = this.firstCount + '.' +this.secondCount + '折'
         this.setDiscountVal(this.discount);
         this.$emit('discountChange', this.discountVal)
       } else {

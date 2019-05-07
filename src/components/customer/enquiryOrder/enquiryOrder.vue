@@ -16,9 +16,12 @@
         >
           <div class="name">
             <i :class="`important${item.level}`"></i>
+              <!-- <span
+              :class="{active : compareTime[index]}"
+            >{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span> -->
             <span
               :class="{active : compareTime[index]}"
-            >{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span>
+            >{{item.username}}</span>
             <strong :class="`urgency${item.urgency}`"></strong>
           </div>
           <span class="phone">{{item.phone}}</span>
@@ -350,7 +353,7 @@ export default {
       // }
       .name {
         color: #363636;
-        flex: 0.4;
+        flex: 0.5;
         display: flex;
         align-items: center;
         // justify-content: space-between;
