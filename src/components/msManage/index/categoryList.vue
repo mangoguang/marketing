@@ -13,7 +13,7 @@
         query:{id: 4,name:'常见问题',type:1}}">
         <li class="question">
           <div class="icon">
-            <img src="../../../assets/imgs/ms-policy.png" alt>
+            <img src="../../../assets/imgs/3.png" alt>
           </div>
           <div class="text">
             <p>常见问题</p>
@@ -100,10 +100,10 @@ export default {
       align-items: center;
       justify-content: center;
       margin: 0 auto;
-      background: #007aff;
+      //background: #007aff;
     }
     img {
-      width: auto;
+      width: 16vw;
       height: auto;
     }
     .text {
