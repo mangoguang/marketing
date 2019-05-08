@@ -289,6 +289,7 @@ export default {
         this.page = len
         console.log(this.page);
         let obj = this.getCategoriesId(this.page, this.limit)
+        obj = this.setType(obj)
         this.getArticlesList(obj);
       }
     }
