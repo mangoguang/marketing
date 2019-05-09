@@ -256,6 +256,8 @@ export default {
             this.setFiles([]);
             this.setPicVal([]);
           })
+        }else{
+           MessageBox.alert('保存失败！')
         }
       })
     },
