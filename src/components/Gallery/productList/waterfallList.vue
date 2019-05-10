@@ -100,7 +100,7 @@ export default {
   background:rgba(255,255,255,1);
   box-shadow:0px 0.4vw 1.2vw 0px rgba(200,219,239,0.2);
   border-radius:1.33vw; 
-  margin-bottom: 2vw;
+  margin-bottom: 2.666vw;
   height: 68.66vw;
   .img_icon {
     background-size: 100% 100%;
@@ -149,9 +149,13 @@ export default {
       font-size: 3.2vw;
       padding-top: 2vw;
       padding-left: 2vw;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
       img {
         width: 3.46vw;
         height: 3.06vw;
+        margin-right: 1.866vw;
       }
     }
   }

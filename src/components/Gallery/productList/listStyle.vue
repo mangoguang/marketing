@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="listItem">
     <div class="img_icon" :style="{backgroundImage:'url(' + img + ')'}"></div>
     <div class="text_box">
       <p class="title">{{ list.goodsName }}</p>
@@ -104,7 +104,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.list {
+.listItem {
   width: 94.133vw;
   // height: 26.66vw;
   box-shadow:0px 0.4vw 1.2vw 0px rgba(200,219,239,0.2);
@@ -123,7 +123,7 @@ export default {
     // flex: 0.3
   }
   .text_box {
-    margin-left: 4vw;
+    margin-left: 2.666vw;
     // flex: 0.7;
     .title {
       width: 62vw;
@@ -156,9 +156,13 @@ export default {
       font-size: 3.2vw;
       padding-top: 2vw;
       padding-left: 2vw;
+      display: flex;
+      flex-direction:row;
+      align-items: center;
       img {
         width: 3.46vw;
         height: 3.06vw;
+        margin-right:1.866vw;
       }
     }
   }
