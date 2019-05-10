@@ -12,7 +12,7 @@
     <!-- 客户信息-->
     <div v-show="customerTabStatus[0].status">
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
-      <div v-else>
+      <div v-else style="margin-top:2.666vw;" >
         <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>

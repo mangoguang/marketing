@@ -4,9 +4,9 @@
       <div class="address-box">
         <my-select :options="addressList" name="1" @change="updateVal" @edit="edit" v-if='hasRecord'>
           <template slot-scope="props">
-              <span v-if="props.info.elevator">{{props.info.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;有电梯</span>
-              <span v-else>{{props.info.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;无电梯</span>
-              <p>{{props.info.province}}{{props.info.city}}{{props.info.district}}{{props.info.address}}</p>
+              <span v-if="props.info.elevator">{{props.info.apartmentType?props.info.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}有电梯</span>
+              <span v-else>{{props.info.apartmentType?props.info.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}无电梯</span>
+              <p>{{props.info.province+props.info.city+props.info.district+props.info.address}}</p>
           </template>
         </my-select>
         <div class="noRecord"  v-else>
