@@ -1,7 +1,7 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'" :icon='true' :start="'*'" @click.native='addIntention'>
+      <li is="customerLi" :leftText="'意向产品'" :icon='true'  @click.native='addIntention'>
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
       <li is="shopSelect" :start='"*"' :type='type'></li>
@@ -22,7 +22,7 @@
         <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
       </template>
       <template v-else>
-        <li is='customerLi' :leftText='"客户地址"' @click.native='toSelectAddress' :icon="true">
+        <li is='customerLi' :leftText='"客户地址"' :start="'*'" @click.native='toSelectAddress' :icon="true">
           <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.districtName || '请选择客户地址'}}</span>
         </li>
         <li is='customerLi' :leftText='"户型大小"'>
