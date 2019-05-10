@@ -340,6 +340,7 @@ export default {
   .topBar {
     background: #fff;
     padding: 3vw 1.66vw;
+    padding-right:0;
     padding-bottom:1vw;
     display: flex;
     align-items: center;
@@ -353,7 +354,8 @@ export default {
     }
     .search {
       width: 78.66vw;
-      margin-left: 2vw;
+      //margin-left: 2vw;
+      text-align: center;
     }
   }
   .nav_function {
