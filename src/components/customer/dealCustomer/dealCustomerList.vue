@@ -327,12 +327,12 @@ export default {
   height: 100vh;
   overflow: scroll; 
   box-sizing: border-box;
-  padding-top: 33.88vw;
+  padding-top: 35vw;
   background: #f8f8f8;
   -webkit-overflow-scrolling: touch;
   // margin-bottom: 20vw;
   ul {
-    border-top: 1px solid #e1e1e1;
+   // border-top: 1px solid #e1e1e1;
     margin-top: -1vw;
     // border-bottom: 1px solid #e1e1e1;
     color: #999;
