@@ -409,7 +409,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/common.scss";
+@import "../../../assets/common.scss";  
+input:-moz-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei";
+  }
+  input::-moz-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei"
+  }
+  input::-ms-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei";
+  }
+  input::-webkit-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei"
+  }
+   textarea::-moz-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+     textarea:-moz-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+    textarea::-ms-input-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+    textarea::-webkit-input-placeholder{
+      color:#999;
+      font-size:14px;
+    }
 .newDemand{
   background: #f8f8f8;
   .address {
@@ -445,6 +485,7 @@ export default {
       padding: 3vw 5vw;
       box-sizing: border-box;
       font-size: $fontSize;
+      border-bottom: 1px solid #ccc;
     }
   }
   li:nth-child(6) {

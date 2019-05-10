@@ -398,12 +398,13 @@ export default {
       padding: 3vw 5vw;
       box-sizing: border-box;
       font-size: $fontSize;
+      border-bottom: 1px solid #ccc;
     }
   }
   li.textarea{
     display: block;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10.666vw;
+    //border-bottom: 1px solid #ccc;
+    //margin-bottom: 10.666vw;
   }
   .name{
     // margin-left: -3vw;
