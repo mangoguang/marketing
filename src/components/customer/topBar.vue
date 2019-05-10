@@ -30,7 +30,7 @@ export default {
     box-sizing: border-box;
     padding: 0 4.27vw;
     align-items: center;
-    margin-top: -12.6vw;
+    margin-top: -12vw;
     //margin-top:-11vw;
   }
 </style>

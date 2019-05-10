@@ -327,7 +327,7 @@ export default {
   height: 100vh;
   overflow: scroll; 
   box-sizing: border-box;
-  padding-top: 35vw;
+  padding-top: 34vw;
   background: #f8f8f8;
   -webkit-overflow-scrolling: touch;
   // margin-bottom: 20vw;
