@@ -1,9 +1,13 @@
 <template>
   <div class="myDatePicker">
     <div class="date-header">
-      <div class="prev-month" @click="prevMonth"><</div>
+      <div class="prev-month" @click="prevMonth">
+        <img src="../../../assets/imgs/prev.png" alt="">
+      </div>
       <div class="show-date">{{`${year}年${month}月`}}</div>
-      <div class="next-month" @click="nextMonth">></div>
+      <div class="next-month" @click="nextMonth">
+         <img src="../../../assets/imgs/next.png" alt="">
+      </div>
     </div>
 
     <div class="date-content">
@@ -176,6 +180,9 @@ export default {
     text-align: center;
     color: #363636;
     cursor: pointer;
+    img{
+      width:2.933vw;
+    }
   }
   .show-date{
     flex: 1;

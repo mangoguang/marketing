@@ -51,7 +51,7 @@ export default {
     content: '';
     display: block;
     position: absolute;
-    width: 2px;
+    width: 3px;
     height: 20px;
     left: 0;
     top: 50%;
