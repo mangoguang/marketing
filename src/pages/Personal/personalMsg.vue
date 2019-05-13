@@ -11,6 +11,16 @@
       </li>
     </ul>
     <btn :text='text' @click.native="quit()"/>
+    <message-box :type="messageTip.type" :btnNum='messageTip.btnNum' v-if="messageTip.showMessageBox">
+      {{messageTip.tip}}
+    <template v-slot:btn-group>
+        <button type="button" @click="remove">确定</button>
+        <button type="button" @click="cancel">取消</button>
+    </template>
+    <template v-slot:btn>
+        <button type="button" @click="cancel">确定</button>
+    </template>
+  </message-box>
     <Footer/>
   </div>
 </template>
@@ -25,6 +35,7 @@ import Footer from '../../components/Footer'
 import Header from '../../components/personal/header'
 import {IndexModel} from '../../utils/index'
 import {checkLogin} from '../../utils/token/toLogin'
+import messageBox from '../../components/msManage/yanMessageBox'
 const indexModel = new IndexModel()
 
 export default {
@@ -32,7 +43,8 @@ export default {
   components:{
     Footer,
     Header,
-    btn
+    btn,
+    messageBox
   },
   data(){
     return{
@@ -43,7 +55,13 @@ export default {
       ListItem: [
         '我的收藏','意见反馈','账户安全','关于我们'
       ],
-      key: true
+      key: true,
+      messageTip:{
+        showMessageBox:false,
+        btnNum:1,
+        type:false,
+        tip:'确定要退出账号吗?'
+      }
     }
   },
   created(){
@@ -124,8 +142,17 @@ export default {
       }
     },
     quit(){
+      this.messageTip.tip="确定要退出账号吗?";
+      this.messageTip.btnNum=2;
+      this.messageTip.showMessageBox=true; 
+    },
+    remove(){
       localStorage.clear()
       this.$router.push({path: '/login'})
+      this.messageTip.showMessageBox=false;
+    },
+    cancel(){
+      this.messageTip.showMessageBox=false;
     }
   },
   beforeRouteLeave(to,from,next){
@@ -133,6 +160,7 @@ export default {
       to.meta.isUseCache=false;
       next();
     }
+    to.meta.isUseCache=false;
     next();
     
   }
