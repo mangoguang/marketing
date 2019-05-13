@@ -77,10 +77,10 @@ export default {
   background: #fff;
   display: flex;
   align-items: center;
-  padding: 5.46vw 0;
+  padding: 5.333vw 0;
   font-size: 3.73vw;
   color: #363636;
-  height: 28vw;
+  //height: 28vw;
   overflow: scroll;
   // justify-content: space-between;
   .address {
