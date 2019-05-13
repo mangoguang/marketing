@@ -482,7 +482,7 @@ header{
     position: absolute;
     height: 100vh;
     width: 100vw;
-    top: 6vw;
+    top: 7vw;
     left: -4.266vw;;
     background: rgba(0, 0, 0, .5);
     li{
