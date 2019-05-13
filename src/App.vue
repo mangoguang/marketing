@@ -297,7 +297,7 @@ ul.infoNav{
   display: flex;
   justify-content: space-between;
   padding: 0 4.26vw;
-  margin-top: -7.75vw;
+  margin-top: -8vw;
   li{
     // width: 29.3vw;
     width: 49%;
