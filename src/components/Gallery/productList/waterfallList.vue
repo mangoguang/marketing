@@ -50,7 +50,7 @@ export default {
     //字符串转为数组
     getLabel(label) {
       if(label) {
-        return this.list.label.split(',')
+        return this.list.label.split('、')
       }
     },
     //收藏
@@ -111,6 +111,7 @@ export default {
   .text_box {
     margin-left: 2vw;
     box-sizing: border-box;
+    min-height: 23vw;
     // height: 15vw;
     // display: flex;
     // flex-direction: column;
@@ -124,17 +125,24 @@ export default {
     }
     .type{
       display: flex;
+      flex-wrap: wrap;
       min-height: 6vw;
+      //margin-top:1.333vw;
     }
     .type_icon {
       font-size: 2.4vw;
       color: #666;
-      line-height: 1.4em;
+      //line-height: 1.4em;
       margin-right: 2vw;
       max-width: 42vw;
       word-wrap:break-word;
       word-break:break-all;
       display: flex;
+      padding:0 1.6vw;
+      border:1px solid #FF2D55;
+      color:#FF2D55;
+      border-radius: 1.333vw;
+      //margin-bottom:1.333vw;
     }
     .price {
       font-size: 4.8vw;
