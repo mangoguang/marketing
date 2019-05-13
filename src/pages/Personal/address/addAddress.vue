@@ -17,7 +17,8 @@
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark" :maxlength='200'/>
-      <btn text='保存' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
+      <btn text='保存' style="position:absolute;bottom:6.4vw;left:0;right:0"  @click.native='jump'/>
+      
     </div>
 </template>
 
@@ -35,6 +36,7 @@ import { Picker, Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 Vue.component(Picker.name, Picker);
 import mango from "../../../js"
+import { resize } from '../../../utils/public'
 import { IndexModel } from '../../../utils' 
 const indexModel = new IndexModel()
 export default {
@@ -56,7 +58,8 @@ export default {
       area:'',
       apartmentType:'',
       selectIcon:true,
-      inputIcon:false
+      inputIcon:false,
+      status:true
     
     }
   },
@@ -82,13 +85,15 @@ export default {
       this.form.id=this.$route.query.addressId;
       this.updateTitle('编辑地址');
       this.getAddress(this.form.id);
-
+   }else{
+     this.updateTitle('新建地址');
    }
   
   },
   
   mounted(){
 
+    //this.status=resize(this.status);
   },
   methods:{
     ...mapMutations('addAddress',['updateTitle']),

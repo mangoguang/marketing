@@ -62,7 +62,7 @@ export default {
 
 .tukuDetails {
   .mint-swipe-indicators {
-    right: 78%;
+    //right: 78%;
     .mint-swipe-indicator {
       background: rgba(54, 54, 54, 0.6);
       width: 1.06vw;

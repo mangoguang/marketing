@@ -13,7 +13,8 @@
           <!-- <span class="name">{{`*${item.username.slice(1, 5)}`}}</span> -->
           <!-- <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span> -->
           <span class="phone">{{item.phone}}</span>
-          <span class="date">{{item.followDate}}</span>
+          <!-- <span class="date">{{item.followDate}}</span> -->
+          <span class="date">{{item.closeTime.split(" ")[0]}}</span>
         </li>
       </mt-loadmore>
     </ul>
