@@ -114,7 +114,7 @@ export default {
 
 .msManage {
   .mint-swipe-indicators {
-    right: 0;
+    //right: 0;
     .mint-swipe-indicator {
       background: rgba(255, 255, 255, 0.5);
       width: 1.33vw;
