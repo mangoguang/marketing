@@ -62,7 +62,7 @@ export default {
     //字符串转为数组
     getLabel(label) {
       if(label) {
-        return this.list.label.split(',')
+        return this.list.label.split('、')
       }
     },
      //收藏
@@ -134,15 +134,18 @@ export default {
       overflow: hidden;
     }
     .type_icon {
-      // border: 1px solid #ff2d55;
-      // border-radius: 1.33vw;
+      border: 1px solid #FF2D55;
+      border-radius: 1.333vw;
+      padding:0 1.6vw;
+      color:#FF2D55;
       // width: 8vw;
       display: inline-block;
       // line-height: 3.6vw;
       font-size: 2.4vw;
-      color: #666;
+      // color: #666;
       text-align: center;
       margin-right: 2vw;
+
     }
     .price {
       font-size: 4.8vw;
