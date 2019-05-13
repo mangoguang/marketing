@@ -88,6 +88,7 @@ export default {
 <style lang="scss" scoped>
 .categoryList {
   padding: 4vw 6.6vw;
+  padding-bottom: 3vw;
   display: flex;
   overflow: scroll;
   .question {

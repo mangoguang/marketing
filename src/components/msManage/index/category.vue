@@ -27,7 +27,7 @@ export default {
 <style lang="scss">
 .category {
   width: 25%;
-  margin-right: 4vw;
+  margin-right: 7.466vw;
   .icon {
     width: 16vw;
     height: 16vw;
