@@ -13,7 +13,7 @@
             <label>
               <input type="radio" v-model="type" value="2" />
               <span></span>
-              未成单
+              已流失
             </label>
           </div>
           <textarea :placeholder="placeholder"  maxlength="200" :readonly='readonly' :disabled="type==='1'?true:false"  :value="value" @input="$emit('input',$event.target.value)"></textarea>
@@ -43,7 +43,7 @@ export default {
       if(this.type==='1'){
         return "已成单"
       }else{
-        return "请输入战败原因"
+        return "请输入流失原因"
       }
     }
   },

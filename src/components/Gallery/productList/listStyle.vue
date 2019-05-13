@@ -111,7 +111,7 @@ export default {
   border-radius: 1.33vw; 
   background: #fff;
   margin: 0 auto;
-  // margin-top: 2.66vw;
+  margin-top: 2.66vw;
   display: flex;
   align-items: center;
   position: relative;

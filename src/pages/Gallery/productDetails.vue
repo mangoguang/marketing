@@ -85,7 +85,7 @@ export default {
     height: auto;
   }
   .details {
-    margin-top: 4vw;
+    margin-top: 1.333vw;
     width: 100vw;
     word-wrap: break-word !important;
     img {
