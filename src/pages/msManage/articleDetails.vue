@@ -44,6 +44,7 @@ export default {
     // var a = document.getElementsByTagName("html")
     // console.log(a)
     waterMark();
+    console.log(document.getElementsByTagName('embed'));
   },
   methods: {
     //获取文章详情
