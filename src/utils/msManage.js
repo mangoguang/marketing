@@ -163,3 +163,23 @@ function judgeObj(obj, type) {
     setLocalStorage(obj,type)
   }
 }
+//增加水印
+function waterMark(){
+  let ajaxData=JSON.parse(localStorage.getItem('ajaxData'));
+  let str=ajaxData.name+ajaxData.account;
+  console.log();
+  let width=document.body.clientWidth;
+  let height=document.body.offsetHeight;
+  let canvas=document.createElement('canvas');
+  canvas.width=120;
+  canvas.height=200;
+  let ctx=canvas.getContext('2d');
+  console.log(ctx);
+  ctx.font="14px Vedana";
+  ctx.fillStyle='#F1F1F1';
+  ctx.translate(60,100);
+  ctx.rotate(-45* Math.PI/180);
+  ctx.fillText(str,-60,0);
+  document.querySelector('.article').style.background=`url(${canvas.toDataURL('image/png')}) left top repeat`;
+}
+export {waterMark}
