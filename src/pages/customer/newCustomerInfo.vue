@@ -259,9 +259,9 @@ export default {
         }else{
            MessageBox.alert('保存失败！')
         }
-      }).catch((reject) => {
+      })/* .catch((reject) => {
         MessageBox.alert('网络差,请重新操作');
-      })
+      }) */
     },
     //初始化数据
     setInitData() {

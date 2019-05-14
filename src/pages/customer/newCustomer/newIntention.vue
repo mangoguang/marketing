@@ -137,9 +137,9 @@ export default {
           }else {
             MessageBox.alert('保存错误')
           }
-        }).catch((reject) => {
+        })/* .catch((reject) => {
           MessageBox.alert('网络差,请重新操作');
-        })
+        }) */
       }
      
     },
