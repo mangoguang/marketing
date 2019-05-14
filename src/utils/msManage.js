@@ -174,7 +174,7 @@ function waterMark(){
   canvas.width=120;
   canvas.height=200;
   let ctx=canvas.getContext('2d');
-  console.log(ctx);
+  //console.log(ctx);
   ctx.font="14px Vedana";
   ctx.fillStyle='#F1F1F1';
   ctx.translate(60,100);
