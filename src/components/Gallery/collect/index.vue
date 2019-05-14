@@ -186,6 +186,6 @@ export default {
     }
 }
 .list {
-  width: 100vw!important;
+ //width: 100vw!important;
 }
 </style>

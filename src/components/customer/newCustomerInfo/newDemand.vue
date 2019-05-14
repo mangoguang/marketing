@@ -1,7 +1,7 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'" :icon='true' :start="'*'" @click.native='addIntention'>
+      <li is="customerLi" :leftText="'意向产品'" :icon='true'  @click.native='addIntention'>
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
       <li is="shopSelect" :start='"*"' :type='type'></li>
@@ -22,7 +22,7 @@
         <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
       </template>
       <template v-else>
-        <li is='customerLi' :leftText='"客户地址"' @click.native='toSelectAddress' :icon="true">
+        <li is='customerLi' :leftText='"客户地址"' :start="'*'" @click.native='toSelectAddress' :icon="true">
           <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.districtName || '请选择客户地址'}}</span>
         </li>
         <li is='customerLi' :leftText='"户型大小"'>
@@ -409,7 +409,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/common.scss";
+@import "../../../assets/common.scss";  
+input:-moz-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei";
+  }
+  input::-moz-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei"
+  }
+  input::-ms-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei";
+  }
+  input::-webkit-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei"
+  }
+   textarea::-moz-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+     textarea:-moz-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+    textarea::-ms-input-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+    textarea::-webkit-input-placeholder{
+      color:#999;
+      font-size:14px;
+    }
 .newDemand{
   background: #f8f8f8;
   .address {
@@ -445,6 +485,7 @@ export default {
       padding: 3vw 5vw;
       box-sizing: border-box;
       font-size: $fontSize;
+      border-bottom: 1px solid #ccc;
     }
   }
   li:nth-child(6) {

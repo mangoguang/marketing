@@ -359,6 +359,7 @@ export default {
   }
   li:nth-child(1) {
     padding: 2vw 5vw;
+    border-top:1px solid #ccc;
     img {
       width: 14.66vw;
       height: 14.66vw;
@@ -367,7 +368,7 @@ export default {
     }
   }
   li:nth-child(6){
-    margin-top: 5vw;
+    margin-top: 2.666vw;
     border-top: 1px solid #ccc;
   }
   .btnBox{
@@ -397,10 +398,13 @@ export default {
       padding: 3vw 5vw;
       box-sizing: border-box;
       font-size: $fontSize;
+      border-bottom: 1px solid #ccc;
     }
   }
   li.textarea{
     display: block;
+    //border-bottom: 1px solid #ccc;
+    //margin-bottom: 10.666vw;
   }
   .name{
     // margin-left: -3vw;

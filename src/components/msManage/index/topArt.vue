@@ -61,12 +61,14 @@ export default {
     width: 26.66vw;
     // margin: 0 auto;
     margin-left: 2vw;
+    line-height: normal;
     h1 {
       color: #363636;
       font-size: 4.8vw;
       font-weight: bold;
       border-bottom: .53vw solid #363636;
       text-align: center;
+       line-height: normal;
     }
   }
   ul {

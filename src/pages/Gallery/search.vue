@@ -293,6 +293,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding:2.7vw 0 2.6vw;
     .searchComp {
       width: 78.66vw;
       // margin-left: 2vw;

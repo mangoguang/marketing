@@ -113,7 +113,8 @@ export default {
     margin-top: 19vw;
   }
   .CustomerList {
-    margin-top: 22vw;
+   // margin-top: 22vw;
+   margin-top:19vw;
   }
 }
 </style>

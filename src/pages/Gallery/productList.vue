@@ -340,6 +340,7 @@ export default {
   .topBar {
     background: #fff;
     padding: 3vw 1.66vw;
+    padding-right:0;
     padding-bottom:1vw;
     display: flex;
     align-items: center;
@@ -353,7 +354,8 @@ export default {
     }
     .search {
       width: 78.66vw;
-      margin-left: 2vw;
+      //margin-left: 2vw;
+      text-align: center;
     }
   }
   .nav_function {
@@ -363,7 +365,7 @@ export default {
     line-height: 10.6vw;
     background:rgba(255,255,255,1);
     box-shadow:0px 1px 1px 0px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2vw;
+    //margin-bottom: 2vw;
     .sortList {
       flex: 0.94;
     }
@@ -379,8 +381,9 @@ export default {
     background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
   }
   .list {
-    background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
+    //background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
     margin: 3vw;
+    margin-top:2.666vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;

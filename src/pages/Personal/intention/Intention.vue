@@ -48,7 +48,7 @@
           </li>
         </ul>
         <ul class="list">
-          <li>
+          <li style="border-top:1px solid transparent;">
             <!-- <yan-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/> -->
             <yan-one-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/>
           </li>

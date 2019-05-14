@@ -121,13 +121,14 @@ export {changeGalleryStyle}
 
 //正则匹配html中的vedio，把img中alt换成style样式 //alt
 function changeVedioStyle(html){
-  //console.log(html);
   var newContent= html.replace(/<embed[^>]*>/gi,function(match,capture){
-    console.log(match);
   // var match = match.replace(/width=\"(.*)\"/gi, 'wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
-  var match = match.replace(/width=\"(.*)\"/gi, 'autostart=false wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
+  //var match = match.replace(/width=\"(.*)\"/gi, 'autoplay=false autostart=false play=false wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
+  var src=match.split(' ')[1].split('=')[1];
+  var match=`<video src=${src} style="width: 100%;height:auto" controls></video>`
   return match;
   });
+  console.log(newContent);
   return newContent;
 }
 
@@ -163,3 +164,23 @@ function judgeObj(obj, type) {
     setLocalStorage(obj,type)
   }
 }
+//增加水印
+function waterMark(){
+  let ajaxData=JSON.parse(localStorage.getItem('ajaxData'));
+  let str=ajaxData.name+ajaxData.account;
+  console.log();
+  let width=document.body.clientWidth;
+  let height=document.body.offsetHeight;
+  let canvas=document.createElement('canvas');
+  canvas.width=120;
+  canvas.height=200;
+  let ctx=canvas.getContext('2d');
+  //console.log(ctx);
+  ctx.font="14px Vedana";
+  ctx.fillStyle='#F1F1F1';
+  ctx.translate(60,100);
+  ctx.rotate(-45* Math.PI/180);
+  ctx.fillText(str,-60,0);
+  document.querySelector('.article').style.background=`url(${canvas.toDataURL('image/png')}) left top repeat`;
+}
+export {waterMark}

@@ -409,7 +409,7 @@ export default {
 
 <style lang="scss" scoped>
 .login {
-  height: auto;
+  height: 100%;
   background: #fff!important;
   // font-family: PINGPANG;
   position: relative;
@@ -541,6 +541,7 @@ export default {
       justify-content: space-between;
       color: #909090;
       font-size: 3.2vw;
+      margin-top: 20vw;
       hr {
         width: 24vw;
         border: none;

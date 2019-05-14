@@ -137,7 +137,9 @@ export default {
           }else {
             MessageBox.alert('保存错误')
           }
-        })
+        })/* .catch((reject) => {
+          MessageBox.alert('网络差,请重新操作');
+        }) */
       }
      
     },
@@ -172,10 +174,10 @@ export default {
     whichFollowData(obj) {
       let temp;
       for(var key in obj) {
-        if(!obj['productArr']) {
+        /*if(!obj['productArr']) {
           MessageBox.alert('请选择意向产品')
           return
-        }else if(!obj['shopId']) {
+        }else */if(!obj['shopId']) {
           MessageBox.alert('请选择门店')
           return
         }else if(!obj['arrivalDate']) {

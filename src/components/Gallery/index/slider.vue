@@ -43,7 +43,10 @@ export default {
   width: 70.13vw;
   height: 21.33vw;
   .mint-swipe-indicators {
-    right: 10%;
+    //right: 10%;
+    left:initial;
+    right:2.666vw;
+    bottom:1.333vw;
     .mint-swipe-indicator {
       background: rgba(255, 255, 255, 0.5);
       width: 1.06vw;
@@ -63,6 +66,9 @@ export default {
 .tukuDetails {
   .mint-swipe-indicators {
     //right: 78%;
+    left:4.266vw;
+    transform: none;
+    -webkit-transform: none;
     .mint-swipe-indicator {
       background: rgba(54, 54, 54, 0.6);
       width: 1.06vw;
@@ -83,7 +89,10 @@ export default {
 
 .home {
   .mint-swipe-indicators {
-    right: 0;
+    right:2.666vw;
+    left:initial;
+    transform: none;
+    -webkit-transform: none;
     .mint-swipe-indicator {
       background: rgba(255, 255, 255, 0.5);
       width: 1.33vw;
@@ -105,7 +114,7 @@ export default {
 
 .msManage {
   .mint-swipe-indicators {
-    right: 0;
+    //right: 0;
     .mint-swipe-indicator {
       background: rgba(255, 255, 255, 0.5);
       width: 1.33vw;

@@ -17,7 +17,7 @@
         </li>
       </ul>
       <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark" :maxlength='200'/>
-      <btn text='保存' style="position:absolute;bottom:6.4vw;left:0;right:0"  @click.native='jump'/>
+      <btn text='保存' @click.native='jump'/>
       
     </div>
 </template>

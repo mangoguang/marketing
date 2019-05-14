@@ -44,7 +44,7 @@
         </li>
       </ul>
       <ul class="list">
-         <li>
+         <li style="border-top:1px solid transparent;">
           <!-- <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/> -->
           <yan-one-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/>
         </li>

@@ -256,14 +256,21 @@ export default {
       width: 80vw;
       height: 100vh;
       background: #fff;
-      padding: 4vw;
+      padding: 4.533vw;
+      padding-top:5.333vw;
       box-sizing: border-box;
       &>ul{
         // width: 100%;
         h3{
           font-size: $fontSize;
           color: $fontSubCol;
-          margin-top: 3vw;
+          margin-top: 5.333vw;
+          margin-bottom: 2.666vw;
+        }
+        li:first-child{
+          h3{
+            margin-top:0;
+          }
         }
         ul{
           display: flex;
@@ -283,6 +290,7 @@ export default {
             background: $btnSubCol;
           }
         }
+       
       }
       .botBtns{
         display: flex;
