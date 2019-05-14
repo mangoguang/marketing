@@ -7,7 +7,7 @@
         :key="`customerInfoBtn${index}`"
         :class="{active: customerTabStatus[index].status}"
         @click="infoSelect(index)"
-      >{{item.name}}</li>
+      ><span>{{item.name}}</span></li>
     </ul>
     <!-- 客户信息-->
     <div v-show="customerTabStatus[0].status">
@@ -266,10 +266,14 @@ export default {
 .customerInfo{
   padding-bottom:4vw;
   box-sizing: border-box; 
+  
   .active {
-    background: #f8f8f8;
+    
     color: #007aff;
     font-weight: bold;
+    span{
+      background: #f8f8f8;
+    }
   }
   .theBtn {
     background:rgba(0,122,255,1);
