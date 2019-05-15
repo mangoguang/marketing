@@ -128,7 +128,7 @@ function changeVedioStyle(html){
   var match=`<video src=${src} style="width: 100%;height:auto" controls></video>`
   return match;
   });
-  console.log(newContent);
+  //console.log(newContent);
   return newContent;
 }
 
@@ -167,20 +167,28 @@ function judgeObj(obj, type) {
 //增加水印
 function waterMark(){
   let ajaxData=JSON.parse(localStorage.getItem('ajaxData'));
-  let str=ajaxData.name+ajaxData.account;
+  let str=ajaxData.account;
   console.log();
   let width=document.body.clientWidth;
   let height=document.body.offsetHeight;
   let canvas=document.createElement('canvas');
-  canvas.width=120;
+  let img=new Image();
+  img.src="../assets/imgs/logo.png";
+  document.querySelector('.article').appendChild(canvas);
+  document.querySelector('.article').appendChild(img);
+  canvas.width=200;
   canvas.height=200;
+  canvas.style="position:absolute;top:0;left:0;"
   let ctx=canvas.getContext('2d');
   //console.log(ctx);
+  ctx.fillStyle="yellow";
   ctx.font="14px Vedana";
-  ctx.fillStyle='#F1F1F1';
-  ctx.translate(60,100);
-  ctx.rotate(-45* Math.PI/180);
-  ctx.fillText(str,-60,0);
-  document.querySelector('.article').style.background=`url(${canvas.toDataURL('image/png')}) left top repeat`;
+  ctx.fillStyle='#ccc';
+  ctx.save();
+  //ctx.translate(60,100);
+  //ctx.rotate(-45* Math.PI/180);
+  ctx.drawImage(img,28,30);
+  //ctx.fillText(str,0,100);
+  //document.querySelector('.article').style.background=`url(${canvas.toDataURL('image/png')}) left top repeat`;
 }
 export {waterMark}
