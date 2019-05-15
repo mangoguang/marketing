@@ -165,39 +165,51 @@ function judgeObj(obj, type) {
   }
 }
 //增加水印
-function waterMark(selector){
+function waterMark(selector,num){
   let ajaxData=JSON.parse(localStorage.getItem('ajaxData'));
   let str=ajaxData.account;
   let width=document.body.clientWidth;
   let height=document.body.offsetHeight;
   let canvas=document.createElement('canvas');
   let img=new Image();
-  img.src=require("../assets/imgs/logo.png");
+  img.src="./static/images/logo.png";
   //document.querySelector('.article').appendChild(canvas);
-  //document.querySelector('.article').appendChild(img);
-  canvas.width=200;
-  canvas.height=200;
-  //canvas.style="position:absolute;top:0;left:0;"
-  let ctx=canvas.getContext('2d');
-  //console.log(ctx);
-  //ctx.fillStyle="yellow";
-  //ctx.fillRect(0,0,200,200);
-  ctx.font="14px Vedana";
-  ctx.fillStyle='#ccc';
-  ctx.globalAlpha=0.4;
-  ctx.save();
-  ctx.translate(-120,50);
-  ctx.rotate(-45* Math.PI/180);
-  ctx.drawImage(img,0,185,14,15);
-  ctx.fillText(str,15,200);
-  ctx.restore();
-  ctx.translate(-18,80);
-  ctx.rotate(-45* Math.PI/180);
-  ctx.drawImage(img,100,85,14,15);
-  ctx.fillText(str,115,100);
-  ctx.save();
-  document.querySelector(selector).style.backgroundImage=`url(${canvas.toDataURL('image/png')})`;
-  document.querySelector(selector).style.backgroundPosition='left top';
-  document.querySelector(selector).style.backgroundRepeat='repeat';
+  //document.querySelector(selector).appendChild(img);
+  img.onload=function(){
+    canvas.width=200;
+    canvas.height=200;
+    //canvas.style="position:absolute;top:0;left:0;"
+    let ctx=canvas.getContext('2d');
+    //console.log(ctx);
+    //ctx.fillStyle="yellow";
+    //ctx.fillRect(0,0,200,200);
+    ctx.font="14px Vedana";
+    ctx.fillStyle='#ccc';
+    ctx.globalAlpha=0.4;
+    ctx.save();
+    ctx.translate(-120,50);
+    ctx.rotate(-45* Math.PI/180);
+    ctx.drawImage(img,0,185,14,15);
+    ctx.fillText(str,15,200);
+    ctx.restore();
+    ctx.translate(-18,80);
+    ctx.rotate(-45* Math.PI/180);
+    ctx.drawImage(img,100,85,14,15);
+    ctx.fillText(str,115,100);
+    ctx.save();
+    if(num==1){
+      document.querySelector(selector).style.backgroundImage=`url(${canvas.toDataURL('image/png')})`;
+      document.querySelector(selector).style.backgroundPosition='left top';
+      document.querySelector(selector).style.backgroundRepeat='repeat';
+    }else{
+      let selectors=document.querySelectorAll(selector);
+      for(let i=0;i<selectors.length;i++){
+        selectors[i].style.backgroundImage=`url(${canvas.toDataURL('image/png')})`;
+        selectors[i].style.backgroundPosition='left top';
+        selectors[i].style.backgroundRepeat='repeat';
+      }
+    }
+   
+  }
 }
 export {waterMark}
