@@ -165,30 +165,39 @@ function judgeObj(obj, type) {
   }
 }
 //增加水印
-function waterMark(){
+function waterMark(selector){
   let ajaxData=JSON.parse(localStorage.getItem('ajaxData'));
   let str=ajaxData.account;
-  console.log();
   let width=document.body.clientWidth;
   let height=document.body.offsetHeight;
   let canvas=document.createElement('canvas');
   let img=new Image();
-  img.src="../assets/imgs/logo.png";
-  document.querySelector('.article').appendChild(canvas);
-  document.querySelector('.article').appendChild(img);
+  img.src=require("../assets/imgs/logo.png");
+  //document.querySelector('.article').appendChild(canvas);
+  //document.querySelector('.article').appendChild(img);
   canvas.width=200;
   canvas.height=200;
-  canvas.style="position:absolute;top:0;left:0;"
+  //canvas.style="position:absolute;top:0;left:0;"
   let ctx=canvas.getContext('2d');
   //console.log(ctx);
-  ctx.fillStyle="yellow";
+  //ctx.fillStyle="yellow";
+  //ctx.fillRect(0,0,200,200);
   ctx.font="14px Vedana";
   ctx.fillStyle='#ccc';
+  ctx.globalAlpha=0.4;
   ctx.save();
-  //ctx.translate(60,100);
-  //ctx.rotate(-45* Math.PI/180);
-  ctx.drawImage(img,28,30);
-  //ctx.fillText(str,0,100);
-  //document.querySelector('.article').style.background=`url(${canvas.toDataURL('image/png')}) left top repeat`;
+  ctx.translate(-120,50);
+  ctx.rotate(-45* Math.PI/180);
+  ctx.drawImage(img,0,185,14,15);
+  ctx.fillText(str,15,200);
+  ctx.restore();
+  ctx.translate(-18,80);
+  ctx.rotate(-45* Math.PI/180);
+  ctx.drawImage(img,100,85,14,15);
+  ctx.fillText(str,115,100);
+  ctx.save();
+  document.querySelector(selector).style.backgroundImage=`url(${canvas.toDataURL('image/png')})`;
+  document.querySelector(selector).style.backgroundPosition='left top';
+  document.querySelector(selector).style.backgroundRepeat='repeat';
 }
 export {waterMark}
