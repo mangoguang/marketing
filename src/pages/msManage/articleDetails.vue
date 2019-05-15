@@ -43,7 +43,7 @@ export default {
   mounted() {
     // var a = document.getElementsByTagName("html")
     // console.log(a)
-    waterMark();
+    waterMark('.article',1);
     console.log(document.getElementsByTagName('embed'));
   },
   methods: {

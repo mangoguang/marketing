@@ -31,6 +31,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+import {waterMark} from '../../../utils/msManage'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -63,6 +64,7 @@ export default {
   },
   mounted(){
     this.getStoreSalesData()
+    waterMark('.barBox');
   },
   computed: {
 

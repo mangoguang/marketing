@@ -9,6 +9,7 @@
 import Vue from 'vue'
 // import VueRouter from 'vue-router'
 import echarts from 'echarts'
+import {waterMark} from '../../utils/msManage'
 // import mango from '../js/variable'
 // import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 // Vue.use(Vuex)
@@ -24,6 +25,7 @@ export default {
   mounted() {
     echarts.init(this.$refs.main).setOption(this.option())
     this.initDom = echarts.init(this.$refs.main)
+    waterMark('.main');
     // console.log(99887766, this.title)
   },
   updated() {

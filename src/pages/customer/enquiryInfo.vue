@@ -18,7 +18,7 @@
         v-for="(item,index) in dealTabStatus" :key="index" 
         @click="clickTab(index)"
         :class="{'active' : dealTabStatus[index].status}">
-        {{item.name}}
+        <span>{{item.name}}</span>
       </li>
     </ul> 
     <!-- 订单信息-->
@@ -313,9 +313,12 @@ export default {
       width: 30%;
     }
     .active {
-      background: #f8f8f8;
+     
       color: #007aff;
       font-weight: bold;
+      span{
+         background: #f8f8f8;
+      }
     }
   } 
   // .header {

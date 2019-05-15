@@ -268,11 +268,13 @@ export default {
       let phone = this.phoneSize()
       if(phone === 'iphonex') {
         this.marginTop = {marginTop: '-5.86vw'};
-        this.paddingTop = {paddingTop: '5vw'}
+        this.paddingTop = {paddingTop: '11vw'}
       }else if(phone === 'iphone') {
         this.marginTop = "";
+        this.paddingTop = {paddingTop: '5vw'}
       }else {
         this.marginTop = "";
+        this.paddingTop = {paddingTop: '5vw'}
       }
     }
   }

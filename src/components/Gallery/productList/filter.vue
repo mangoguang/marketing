@@ -252,6 +252,8 @@ export default {
         dt {
           color: #999;
           font-size: 3.73vw;
+          line-height: normal;
+          margin-bottom: 2.666vw;
         }
         dd {
           background: #f8f8f8;
@@ -272,6 +274,10 @@ export default {
       .price {
         padding: 0 4.4vw;
         color: #999;
+        p{
+          line-height: normal;
+          margin-bottom: 2.666vw;
+        }
         .inp_box {
           display: flex;
           span {

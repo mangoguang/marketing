@@ -1,6 +1,6 @@
 <template>
   <div class="prodectList" :style="marginTop">
-    <div class="topBar">
+    <div class="topBar" :style="{'paddingTop':`${paddingTop}vw`}">
       <button class="cancle" @click="backBtn"></button>
       <Search :origin="true" :type="'gallery'" class="search"/>
     </div>
@@ -65,6 +65,7 @@ export default {
   data() {
     return{
       marginTop: '',
+      paddingTop:'',
       key: true,
       changeStatus: false,
       list: [],
@@ -320,10 +321,13 @@ export default {
       let phone = this.phoneSize()
       if(phone === 'iphonex') {
         this.marginTop = {marginTop: '-5.86vw'};
+        this.paddingTop=11
       }else if(phone === 'iphone') {
         this.marginTop = "";
+        this.paddingTop=5
       }else {
         this.marginTop = "";
+        this.paddingTop=5
       }
     }
   }

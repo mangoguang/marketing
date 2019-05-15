@@ -22,6 +22,9 @@
         <li>
           <source-select v-bind="formInfo.source" :value="sourceName" @update="updateSource" :showIcon="selectIcon"/>
         </li>
+         <li>
+          <date-select v-bind="formInfo.deliver" :value="form.deliverDate" @update="updateDeliver" :showIcon="selectIcon"/>
+        </li>
       </ul>
        <ul class="list">
         <li>
@@ -54,9 +57,7 @@
         <li>
           <yan-input v-bind="formInfo.budget" v-model.trim="form.budget" :readonly='readonly' :maxlength='8'/>
         </li>
-        <li>
-          <date-select v-bind="formInfo.deliver" :value="form.deliverDate" @update="updateDeliver" :showIcon="selectIcon"/>
-        </li>
+       
          <li>
           <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly' :maxlength='8'/>
         </li>

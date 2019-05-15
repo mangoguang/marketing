@@ -6,7 +6,7 @@
           <li v-for="(item, index) in type.list" :key="index">
             <router-link :to='{name:"productList", query:{index:index, categoryName:item.name}}'>
               <div class="img">
-                <img :src="item.img" alt="">
+                <img v-lazy="item.img" alt="">
               </div>
               <p>{{ item.name }}</p>
             </router-link>
@@ -27,7 +27,7 @@
         <li v-for="(el, i) in item.products" :key='i + "_" + el'>
           <router-link :to='{name: "productDetails",query: {id: el.id}}'>
             <div class="img">
-              <img :src="el.imgUrl" alt="">
+              <img v-lazy="el.imgUrl" alt="">
             </div>
             <p class="productName">{{ el.name }}</p>
           </router-link>
