@@ -23,7 +23,8 @@ export default function(data, vertical, salesVal, title) {
     {
     // 直角坐标相关设置。
       axisTick: {
-        show: false
+        //show: false
+        alignWithLabel: true
       },
       axisLine: {
         show: false,
@@ -61,6 +62,10 @@ export default function(data, vertical, salesVal, title) {
             position: seriesPosition
           }
         },
+        //barMaxWidth:'15',
+        //barWidth:'15',
+        //barGap:'45',
+        //barCategoryGap:'45',
         data: salesVal ? item.data.map((key) => {
 
           if (parseInt(key) == 0) {
@@ -97,6 +102,7 @@ export default function(data, vertical, salesVal, title) {
     } else {
       xAxis.data = data.yAxisData
     }
+
     // console.log('坐标轴数据赋值：')
   return {
     title: title ? {
@@ -126,6 +132,7 @@ export default function(data, vertical, salesVal, title) {
     },
     grid: {
       left: '3%',
+      bottom:'3%',
       top: title ? '80' : '40',
       // height: 700,
       containLabel: true

@@ -1,6 +1,6 @@
 <template>
   <div class="dealCustomer" ref="deal">
-    <TopBar :topBarTitle='topbar'/>
+    <TopBar :topBarTitle='topbar' style="margin-top:-13vw;"/>
     <ul>
       <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
         <li

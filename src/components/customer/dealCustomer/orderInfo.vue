@@ -51,6 +51,9 @@ export default {
       discountPrice: state => state.dealOrderInfoDetails.discountPrice
     })
   },
+  mounted(){
+    console.log('list',this.list);
+  },
   methods:{
     // ...mapMutations([
     //   'setOrderInfoDetails',

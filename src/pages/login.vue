@@ -1,4 +1,5 @@
 <template>
+  <div class="login_box">
   <div class="login" :style='{marginTop: marginTop}'>
     <div :class="`${myStyle.loginFix}`"></div>
     <div class="topBar">
@@ -58,6 +59,7 @@
       </div>
     </div>
     <!-- <footer></footer> -->
+  </div>
   </div>
 </template>
 
@@ -408,6 +410,11 @@ export default {
 
 
 <style lang="scss" scoped>
+.login_box{
+  height:100%;
+  width:100vw;
+  background: #fff;
+}
 .login {
   height: 100%;
   background: #fff!important;

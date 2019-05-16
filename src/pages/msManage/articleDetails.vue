@@ -44,7 +44,6 @@ export default {
     // var a = document.getElementsByTagName("html")
     // console.log(a)
     waterMark('.article',1);
-    console.log(document.getElementsByTagName('embed'));
   },
   methods: {
     //获取文章详情
@@ -108,6 +107,7 @@ export default {
   padding-top: 20vw;
   position: relative;
   box-sizing: border-box;
+  
   // width: 100vw;
   // overflow: hidden;
 
