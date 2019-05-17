@@ -6,7 +6,7 @@
       <img src="../../assets/imgs/via.png" alt="" class="via" @click="go">
       <div class="personal-content">
         <div class="name">
-          <span>{{ajaxData.positionList.typeName}}{{ajaxData.name}}</span>
+          <span><span v-if="ajaxData.positionList">{{ajaxData.positionList.typeName}}</span>{{ajaxData.name}}</span>
           <span>|</span>
           <span>{{ajaxData.sex === 0 ? '未知' : (ajaxData.sex === 1?'男' : '女')}}</span>
         </div>

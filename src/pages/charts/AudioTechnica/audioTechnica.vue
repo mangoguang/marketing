@@ -122,7 +122,7 @@ export default {
     })
   },
   mounted(){
-    waterMark('.barBox');
+    waterMark('.barBox')
   },
   watch: {
     citySelect() {

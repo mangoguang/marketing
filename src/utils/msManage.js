@@ -173,16 +173,10 @@ function waterMark(selector,num){
   let canvas=document.createElement('canvas');
   let img=new Image();
   img.src="./static/images/logo.png";
-  //document.querySelector('.article').appendChild(canvas);
-  //document.querySelector(selector).appendChild(img);
   img.onload=function(){
     canvas.width=200;
     canvas.height=200;
-    //canvas.style="position:absolute;top:0;left:0;"
     let ctx=canvas.getContext('2d');
-    //console.log(ctx);
-    //ctx.fillStyle="yellow";
-    //ctx.fillRect(0,0,200,200);
     ctx.font="14px Vedana";
     ctx.fillStyle='#ccc';
     ctx.globalAlpha=0.4;
