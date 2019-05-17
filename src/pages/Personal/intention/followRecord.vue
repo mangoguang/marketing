@@ -120,17 +120,19 @@ export default {
         mango.tip('请填写本次跟进情况');
         return false;
       }
-      if(this.form.nextTime===''){
-        mango.tip('请选择下次跟进时间');
-        return false;
-      }
-      if(this.form.plan===''){
-        mango.tip('请填写下一步跟进计划');
-        return false;
-      }
-      if(!mango.compareTimeStamp(this.form.time,this.form.nextTime)){
-          mango.tip('下次跟进时间不能小于等于当前跟进时间');
-          return false;
+      // if(this.form.nextTime===''){
+      //   mango.tip('请选择下次跟进时间');
+      //   return false;
+      // }
+      // if(this.form.plan===''){
+      //   mango.tip('请填写下一步跟进计划');
+      //   return false;
+      // }
+      if(this.form.nextTime){
+        if(!mango.compareTimeStamp(this.form.time,this.form.nextTime)){
+            mango.tip('下次跟进时间不能小于等于当前跟进时间');
+            return false;
+        }
       }
       if(this.form.report.length>300){
         this.form.report=this.form.report.substring(0,300);

@@ -8,7 +8,7 @@
       <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectTime">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
-      <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
+      <!-- <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li> -->
       <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       
       <template v-if='addressType !== "intention"'>

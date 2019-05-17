@@ -135,10 +135,10 @@ export default {
               this.setPicVal([]);
             })
           }else {
-            MessageBox.alert('保存错误')
+            MessageBox.alert('保存失败！');
           }
         })/* .catch((reject) => {
-          MessageBox.alert('网络差,请重新操作');
+          MessageBox.alert(reject);
         }) */
       }
      
@@ -183,10 +183,10 @@ export default {
         }else if(!obj['arrivalDate']) {
           MessageBox.alert('请选择进店日期')
           return
-        }else if(!obj['residentTime']) {
+        }/* else if(!obj['residentTime']) {
           MessageBox.alert('请选择留店时长')
           return
-        }else if(!obj['source']) {
+        } */else if(!obj['source']) {
           MessageBox.alert('请选择客户来源')
           return
         }else if(!obj['addressId']) {
@@ -201,16 +201,16 @@ export default {
         }else if(!obj['residentTime2']) {
           MessageBox.alert('请选择跟进时长')
           return
-        }else if(!obj['nextDate']) {
+        }/* else if(!obj['nextDate']) {
           MessageBox.alert('请选择下次跟进日期')
           return
-        }else if(!obj['situation']) {
+        } */else if(!obj['situation']) {
           MessageBox.alert('请描述跟进情况')
           return
-        }else if(!obj['plan']) {
+        }/* else if(!obj['plan']) {
           MessageBox.alert('请填写下一步跟进计划')
           return
-        }else {
+        } */else {
           temp = true
         }
       }

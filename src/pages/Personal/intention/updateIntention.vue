@@ -476,7 +476,7 @@ export default {
       }
       if(this.form.deliverDate!==''){
         if(!mango.compareTimeStamp(this.form.arrivalDate,this.form.deliverDate)){
-          mango.tip('需求日期不能小于到店日期');
+          mango.tip('需求日期不能小于等于到店日期');
           return false;
         }
       }

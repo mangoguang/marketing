@@ -5,7 +5,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>更新时间</h3>
+            <h3>最近跟进时间</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>
