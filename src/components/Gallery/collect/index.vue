@@ -137,7 +137,7 @@ export default {
   transform: translate3d(-1rem, 0, 0);
 }
 .list-box {
-  background: #fff;
+  //background: #fff;
   display: flex;
   align-items: center;
   box-sizing: border-box;
