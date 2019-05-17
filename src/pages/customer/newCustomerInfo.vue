@@ -298,17 +298,17 @@ export default {
           count +=1 
         }else if(key === 'residentTime2') {
           count +=1 
-        }else if(key === 'nextDate') {
+        }/* else if(key === 'nextDate') {
           count +=1 
-        }else if(key === 'situation') {
+        } */else if(key === 'situation') {
           count +=1 
-        }else if(key === 'plan') {
+        }/* else if(key === 'plan') {
           count +=1 
-        }
+        } */
       }
       if(count === 0) {
         result = true
-      }else if(count === 6) {
+      }else if(count === 4) {
         result = true
       }else {
         result = false
