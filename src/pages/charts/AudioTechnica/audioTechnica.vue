@@ -370,6 +370,7 @@ export default {
           res = res.data
           mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
+          console.log('res',res);
           _this.orderFormTotalData = res
         }
       })

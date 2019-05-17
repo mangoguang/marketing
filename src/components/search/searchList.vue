@@ -1,6 +1,6 @@
 <template>
   <div class="yan-searchList">
-     <label class="yan-label" v-for="(item,index) in options" :key="index">
+     <label class="yan-label" v-for="item in options" :key="item.id">
        <slot :info="item"></slot>
        <input type="checkbox" :name='name' :value="item.id" v-model='checkList' @change="updateVal" class="yan-radio">
        <span></span>
@@ -8,12 +8,16 @@
   </div>
 </template>
 <script>
+import { mapState,mapMutations } from "vuex";
 export default {
   props:['options','name'],
   data(){
     return{
       checkList:[]
     }
+  },
+  computed:{
+    ...mapState(['again'])
   },
   methods:{
     updateVal(ev){

@@ -18,13 +18,13 @@ export default function(data, vertical, salesVal, title) {
   } else {
     seriesPosition = 'top'
   }
-  // console.log('option对象数据：', data)
+  console.log('option对象数据：', data)
   let [xAxis, yAxis, series] = [
     {
     // 直角坐标相关设置。
       axisTick: {
-        //show: false
-        alignWithLabel: true
+        show: false
+        //alignWithLabel: true
       },
       axisLine: {
         show: false,
@@ -102,7 +102,6 @@ export default function(data, vertical, salesVal, title) {
     } else {
       xAxis.data = data.yAxisData
     }
-
     // console.log('坐标轴数据赋值：')
   return {
     title: title ? {
