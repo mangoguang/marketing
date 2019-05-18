@@ -8,7 +8,7 @@
         </router-link>
       </li>
       <li id="2" v-if="status">
-         <router-link to="/ReportForms" @click.native="test" replace>
+         <router-link to="/ReportForms" replace>
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
          </router-link>

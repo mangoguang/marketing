@@ -1,6 +1,7 @@
 import mango from '../js/index'
 // import chartsData from './data.js'
 export default function(data, vertical, salesVal, title) {
+  console.log(998877, title)
   mango.sortArrs(data)
   // data = chartsData
   // mango.sortArrs(chartsData)
@@ -67,15 +68,16 @@ export default function(data, vertical, salesVal, title) {
         //barGap:'45',
         //barCategoryGap:'45',
         data: salesVal ? item.data.map((key) => {
-
-          if (parseInt(key) == 0) {
+          let temp = key
+          if (temp == 0) {
             return ''
           } else {
             // seriesPosition = 'insideRight'
             return (key/10000).toFixed(2)
           }
         }) : item.data.map((key) => {
-          if (parseInt(key) == 0) {
+          let temp = key
+          if (temp == 0) {
             return ''
           } else {
             // seriesPosition = 'insideRight'
