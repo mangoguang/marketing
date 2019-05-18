@@ -16,9 +16,9 @@
         <li>
           <date-select v-bind="formInfo.time" :value="form.arrivalDate" @update="updateTime" :showIcon="selectIcon"/>
         </li>
-        <li>
+        <!-- <li>
           <duration-select v-bind="formInfo.duration" :value="form.residentTime" @update="updateDuration" :showIcon="selectIcon"/>
-        </li>
+        </li> -->
         <li>
           <source-select v-bind="formInfo.source" :value="sourceName" @update="updateSource" :showIcon="selectIcon"/>
         </li>
@@ -121,7 +121,7 @@ export default {
         arrivalDate:'',  //进店日期
         budget:'',
         deliverDate:'',    //需求日期
-        residentTime:'',   //留店时长
+        //residentTime:'',   //留店时长
         source:'',  //客户来源
         stylePref:'',   //风格
         progress:'',   //进度
@@ -357,7 +357,7 @@ export default {
           this.shopName=res.data.shopId===''?'':this.getShopName(res.data.shopId);
           this.form.shopId=res.data.shopId;
           this.form.arrivalDate=res.data.arrivalDate;
-          this.form.residentTime=res.data.residentTime;
+          //this.form.residentTime=res.data.residentTime;
           this.sourceName=res.data.sourceName;
           this.form.source=res.data.source;
           this.buyReasonName=res.data.buyReasonName==''?'':res.data.buyReasonName;
@@ -449,10 +449,10 @@ export default {
         mango.tip('门店不能为空');
         return false;
       }
-      if(this.form.residentTime===''){
-        mango.tip('留店时长不能为空');
-        return false;
-      }
+      // if(this.form.residentTime===''){
+      //   mango.tip('留店时长不能为空');
+      //   return false;
+      // }
       if(this.form.source===''){
         mango.tip('客户来源不能为空');
         return false;
@@ -523,7 +523,7 @@ export default {
         form.append('opportunity.shopId',this.form.shopId);
         form.append('opportunity.arrivalDate',this.form.arrivalDate);
         form.append('opportunity.deliverDate',this.form.deliverDate);
-        form.append('opportunity.residentTime',this.form.residentTime);
+        //form.append('opportunity.residentTime',this.form.residentTime);
         form.append('opportunity.source',this.form.source);
         form.append('opportunity.stylePref',this.form.stylePref);
         form.append('opportunity.progress',this.form.progress);
@@ -537,8 +537,12 @@ export default {
         form.append('opportunity.urgency',this.form.urgency);
         form.append('opportunity.level',this.form.level);
 
-        let Bkey=['customerId','opportunity.oppId','opportunity.addressId','opportunity.shopId','opportunity.arrivalDate',
+        /* let Bkey=['customerId','opportunity.oppId','opportunity.addressId','opportunity.shopId','opportunity.arrivalDate',
         'opportunity.deliverDate','opportunity.residentTime','opportunity.source','opportunity.stylePref','opportunity.progress',
+        'opportunity.colorPref','opportunity.competingGoods','opportunity.buyReason','opportunity.budget','opportunity.depositPaid',
+        'opportunity.argreeDiscount','opportunity.remark','opportunity.urgency','opportunity.level']; */
+        let Bkey=['customerId','opportunity.oppId','opportunity.addressId','opportunity.shopId','opportunity.arrivalDate',
+        'opportunity.deliverDate','opportunity.source','opportunity.stylePref','opportunity.progress',
         'opportunity.colorPref','opportunity.competingGoods','opportunity.buyReason','opportunity.budget','opportunity.depositPaid',
         'opportunity.argreeDiscount','opportunity.remark','opportunity.urgency','opportunity.level'];
         let key=[...Akey,...Bkey];
@@ -649,7 +653,7 @@ export default {
      this.form.arrivalDate=anotherVal;
    },
    //选择更新留店时长
-   updateDuration(value){
+   /* updateDuration(value){
      console.log(value);
      if(!value){
        this.form.residentTime='0分钟';
@@ -658,7 +662,7 @@ export default {
     this.form.residentTime=value;
      
     
-   },
+   }, */
    //选择更新购买原因
    updateReason(name,code){
      this.buyReasonName=name;
@@ -709,7 +713,7 @@ export default {
         arrivalDate:'',  //进店日期
         budget:'',
         deliverDate:'',    //需求日期
-        residentTime:'',   //留店时长
+        //residentTime:'',   //留店时长
         source:'',  //客户来源
         stylePref:'',   //风格
         progress:'',   //进度
