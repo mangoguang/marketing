@@ -58,6 +58,13 @@
         <div class="wechat-icon"></div>
       </div>
     </div>
+    <message-box v-show="mergeBoxShow">
+      使用APP前需要把您的CRM登陆账号D00002修改为当前登陆账号19050014，修改后使用19050014登陆APP和CRM，是否确定修改？
+    <template v-slot:btn-group>
+        <button type="button" @click="merge">确定</button>
+        <button type="button" @click="cancel">取消</button>
+    </template>
+  </message-box>
     <!-- <footer></footer> -->
   </div>
   </div>
@@ -76,6 +83,7 @@ import tipsWeb from "../components/charts/tipsWeb";
 import btn from "../components/btn";
 import myinput from "../components/myInput";
 import refreshToken from '../utils/token/refreshToken.js'
+import messageBox from '../components/msManage/yanMessageBox'
 import {IndexModel} from '../utils/index'
 const indexModel = new IndexModel()
 export default {
@@ -85,7 +93,8 @@ export default {
     tipsError,
     tipsWeb,
     btn,
-    myinput
+    myinput,
+    messageBox
   },
   props: ["myStyle"],
   data() {
@@ -105,7 +114,8 @@ export default {
       nameMsg: "",
       pwdMsg: "",
       h: '',
-      marginTop:''
+      marginTop:'',
+      mergeBoxShow: false
     }
   },
   mounted() {
@@ -275,11 +285,13 @@ export default {
       //   mango.tip('网络异常！')
       // })
     },
+
     // 获取用户个人信息
     getUserInfo() {
       indexModel.getUserInfo().then(res => {
         res = res.data
         if (res) {
+          console.log(11223344, this.mergeBoxShow)
           let typename = this.getName(res.positionList)
           let ajaxData = {
             account: res.account,
@@ -290,14 +302,15 @@ export default {
             sex: res.sex,
             type:res.type,
             typename: typename,
-            positionList:res.positionList[0]
+            positionList:res.positionList[0],
+            userId: res.userId
           }
-          console.log(ajaxData);
           let shops = JSON.stringify(res.shopList)
           localStorage.setItem("shops", shops);
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
           this.$root.ajaxData = ajaxData
-          this.$router.replace({ path: "/" })
+          // 检测app账号跟crm账号是否一致
+          this.mergeBoxShow = res.account !== res.crmAccount
         }
       }).catch((reject) => {
         // console.log('reject',reject)
@@ -306,6 +319,23 @@ export default {
         }
       })
     },
+
+    // 合并app与crm账号
+    merge() {
+      let obj = this.$root.ajaxData
+      indexModel.merge({
+        id: obj.userId,
+        crmAccount: obj.account
+      }).then(res => {
+        console.log('合并：', res)
+      })
+      // this.$router.replace({ path: "/" })
+    },
+
+    cancel() {
+      this.$router.replace({ path: "/" })
+    },
+
     getName(arr) {
       let name;
       arr.map(item => {
