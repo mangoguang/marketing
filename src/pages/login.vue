@@ -58,11 +58,14 @@
         <div class="wechat-icon"></div>
       </div>
     </div>
-    <message-box v-show="mergeBoxShow">
-      使用APP前需要把您的CRM登陆账号D000修改为当前登陆账号19050014，修改后使用19050014登陆APP和CRM，是否确定修改？
+    <message-box v-show="mergeBoxShow" v-bind="mergeBox">
+      <p id="tip">{{mergeBox.tip}}</p>
     <template v-slot:btn-group>
         <button type="button" @click="merge">确定</button>
         <button type="button" @click="cancel">取消</button>
+    </template>
+    <template v-slot:btn>
+        <button type="button" @click="cancel">确定</button>
     </template>
   </message-box>
     <!-- <footer></footer> -->
@@ -115,7 +118,12 @@ export default {
       pwdMsg: "",
       h: '',
       marginTop:'',
-      mergeBoxShow: false
+      mergeBoxShow: false,
+      mergeBox:{
+        tip:'',
+        type:false,
+        btnNumbrella:2
+      }
     }
   },
   mounted() {
@@ -304,13 +312,30 @@ export default {
             typename: typename,
             positionList:res.positionList[0],
             userId: res.userId
+            //crmAccount:res.crmAccount
           }
+          let crmAccount=JSON.stringify({
+            crmAccount:res.crmAccount
+          })
           let shops = JSON.stringify(res.shopList)
+          localStorage.setItem("crmAccount", crmAccount);
           localStorage.setItem("shops", shops);
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
           this.$root.ajaxData = ajaxData
           // 检测app账号跟crm账号是否一致
-          this.mergeBoxShow = res.account !== res.crmAccount
+          //this.mergeBoxShow = res.account !== res.crmAccount
+          if(res.account !== res.crmAccount){
+            let obj={
+              tip:`使用APP前需要把您的CRM登陆账号${res.crmAccount}修改为当前登陆账号${res.account}，修改后使用${res.account}登陆APP和CRM，是否确定修改？`,
+              btnNum:2,
+              type:false
+            }
+            this.mergeBox=obj
+            this.mergeBoxShow=true
+          }else{
+            this.mergeBoxShow=false
+            this.$router.replace({ path: "/" })
+          }
         }
       }).catch((reject) => {
         // console.log('reject',reject)
@@ -322,12 +347,33 @@ export default {
 
     // 合并app与crm账号
     merge() {
+      this.mergeBoxShow=false;
       let obj = this.$root.ajaxData
       indexModel.merge({
         id: obj.userId,
         crmAccount: obj.account
       }).then(res => {
-        console.log('合并：', res)
+        if(res.status){
+          let obj={
+            tip:res.msg,
+            btnNum:1,
+            type:true
+          }
+          let crmAccount=JSON.stringify({
+            crmAccount:obj.account
+          })
+          localStorage.setItem("crmAccount", crmAccount);
+          this.mergeBox=obj;
+          this.mergeBoxShow=true;
+        }else{
+          let obj={
+            tip:res.msg,
+            btnNum:1,
+            type:false
+          }
+          this.mergeBox=obj;
+          this.mergeBoxShow=true;
+        }
       })
       // this.$router.replace({ path: "/" })
     },
@@ -440,6 +486,12 @@ export default {
 
 
 <style lang="scss" scoped>
+#tip{
+  padding:0;
+  margin:0;
+  word-break:break-all;
+  text-align:justify;
+}
 .login_box{
   height:100%;
   width:100vw;
