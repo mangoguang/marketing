@@ -9,12 +9,12 @@
           <img src="../../assets/imgs/rightside.png" alt="">
         </div>
       </li>
-      <li @click="crmMerge" v-show="isMerge">
+      <!-- <li @click="crmMerge" v-show="isMerge">
         <span>同步CRM账号</span>
         <div class="icon-right">
           <img src="../../assets/imgs/rightside.png" alt="">
         </div>
-      </li>
+      </li> -->
     </ul>
     <btn :text='text' @click.native="quit()"/>
     <message-box :type="messageTip.type" :btnNum='messageTip.btnNum' v-if="messageTip.showMessageBox">

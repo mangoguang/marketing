@@ -168,6 +168,7 @@ export default {
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     change(val) {
+      console.log(val);
       this.codeList = val
     },
     //判断根据情况哪个没有填写
