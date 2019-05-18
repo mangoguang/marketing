@@ -168,6 +168,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .inputBox{
   font-size: 4vw;
   color:#363636;
@@ -233,6 +234,29 @@ export default {
     //flex:1;
     color:#26a2ff;
     font-size: 16px;
+  }
+}
+.area{
+  input:-moz-input-placeholder{
+   font-size: 3.73vw;
+    color:#909090;
+  }
+  input::-moz-input-placeholder{
+   font-size: 3.73vw;
+    color:#909090;
+  }
+  input::-ms-input-placeholder{
+    font-size: 3.73vw;
+    color:#909090;
+  }
+  input::-webkit-input-placeholder{
+    font-size: 3.73vw;
+    color:#909090;
+  }
+  input{
+    color:#363636;
+    font-size: 3.73vw;
+    flex: 1;
   }
 }
 </style>
