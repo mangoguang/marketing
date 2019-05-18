@@ -103,7 +103,7 @@ export default {
           this.existStatus = true
           this.cusId = res.customerId
         } else {
-          this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}`})
+         this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}`})
         }
       })
     },

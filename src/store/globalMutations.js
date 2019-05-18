@@ -17,5 +17,6 @@ export default {
     delPicVal:(state,index) => {state.picVal.splice(index,1)},
     setFiles:(state,array) => {state.Files = array},
     setPicVal:(state,array) => {state.picVal = array},
-    setAddressId:(state, id) => {state.addressId = id}
+    setAddressId:(state, id) => {state.addressId = id},
+    updateAgain:(state,boolean) => {state.again = boolean}
 }

@@ -15,11 +15,11 @@
       <!-- <li>
         <my-range :title="'成交概率'" @changeVal="changeMyRangeVal" />
       </li> -->
-      <li class="timeLi top" is="customerLi" :start="'*'" :leftText="'下次跟进'" :icon="true" @click.native="selectTime">
+      <li class="timeLi top" is="customerLi"  :leftText="'下次跟进'" :icon="true" @click.native="selectTime">
         <span>{{turnDate(newCustomerInfo.nextDate) || '请选择日期'}}</span>
       </li>
       <li class="noPadding">
-        <remark :title="'下一步计划'" :start='"start"'>
+        <remark :title="'下一步计划'" >
           <textarea v-model="newCustomerInfo.plan" name="" id="" placeholder="请填写下一步跟进计划" oninput="if(value.length>300)value=value.slice(0,300)"></textarea>
         </remark>
       </li>

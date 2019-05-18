@@ -476,7 +476,7 @@ export default {
       }
       if(this.form.deliverDate!==''){
         if(!mango.compareTimeStamp(this.form.arrivalDate,this.form.deliverDate)){
-          mango.tip('需求日期不能小于到店日期');
+          mango.tip('需求日期不能小于等于到店日期');
           return false;
         }
       }
@@ -575,10 +575,10 @@ export default {
        let nobj;
        if(type==="2"){
          if(this.failReason===''){
-            mango.tip('战败原因不能为空');
+            mango.tip('流失原因不能为空');
             return;
           }else if(this.failReason.length>300){
-            mango.tip('战败原因不能超过300字');
+            mango.tip('流失原因不能超过300字');
             return;
           }else{
               let obj={

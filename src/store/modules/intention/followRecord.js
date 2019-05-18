@@ -23,13 +23,11 @@ const state = {
     },
     nextTime:{
       label:'下次跟进',
-      placeholder:'请选择日期',
-      required:true
+      placeholder:'请选择日期'
     },
     plan:{
       label:'下一步计划',
-      placeholder:'请填写下一步跟进计划',
-      required:true
+      placeholder:'请填写下一步跟进计划'
     }
 
   }

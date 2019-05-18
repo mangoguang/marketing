@@ -45,7 +45,7 @@ export default {
    this.id=this.$route.params.customerId;
   },
   mounted(){
-   
+   console.log(this.checkedList);
   },
   methods:{
    ...mapMutations(['addGoodsNum','cutGoodsNum','delGoods','setCheckedList']),
