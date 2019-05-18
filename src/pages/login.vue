@@ -172,8 +172,8 @@ export default {
       axios({
         method: 'post',
         // url:'https://op.derucci.com',
-        //url: 'http://10.11.8.7/oauth/token',
-        url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
+        url: 'http://10.11.8.7/oauth/token',
+        //url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
         transformRequest: [function(data) {
           let ret = ''
@@ -322,10 +322,10 @@ export default {
           localStorage.setItem("shops", shops);
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
           this.$root.ajaxData = ajaxData
-          this.$router.replace({ path: "/" })
+          //this.$router.replace({ path: "/" })
           // 检测app账号跟crm账号是否一致
           //this.mergeBoxShow = res.account !== res.crmAccount
-          /* if(res.account !== res.crmAccount){
+          if(res.account !== res.crmAccount){
             let obj={
               tip:`使用APP前需要把您的CRM登陆账号${res.crmAccount}修改为当前登陆账号${res.account}，修改后使用${res.account}登陆APP和CRM，是否确定修改？`,
               btnNum:2,
@@ -336,7 +336,7 @@ export default {
           }else{
             this.mergeBoxShow=false
             this.$router.replace({ path: "/" })
-          } */
+          }
         }
       }).catch((reject) => {
         // console.log('reject',reject)
@@ -351,11 +351,11 @@ export default {
       this.mergeBoxShow=false;
       let obj = this.$root.ajaxData
       indexModel.merge({
-        id: obj.userId,
-        crmAccount: obj.account
+        userId: obj.userId,
+        account: obj.account
       }).then(res => {
         if(res.status){
-          let obj={
+          let nObj={
             tip:res.msg,
             btnNum:1,
             type:true
@@ -364,7 +364,7 @@ export default {
             crmAccount:obj.account
           })
           localStorage.setItem("crmAccount", crmAccount);
-          this.mergeBox=obj;
+          this.mergeBox=nObj;
           this.mergeBoxShow=true;
         }else{
           let obj={

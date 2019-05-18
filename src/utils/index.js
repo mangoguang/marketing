@@ -264,7 +264,7 @@ class IndexModel extends Request {
 
   //统一app和crm账号
   merge(obj) {
-    return mango.getAjax('/v1/app//update/user', obj, 'post')
+    return mango.getAjax('/v1/app//update/user/account', obj, 'post')
   }
 
   /* 

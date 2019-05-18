@@ -9,12 +9,12 @@
           <img src="../../assets/imgs/rightside.png" alt="">
         </div>
       </li>
-      <!-- <li @click="crmMerge" v-show="isMerge">
+       <li @click="crmMerge" v-if="isMerge">
         <span>同步CRM账号</span>
         <div class="icon-right">
           <img src="../../assets/imgs/rightside.png" alt="">
         </div>
-      </li> -->
+      </li>
     </ul>
     <btn :text='text' @click.native="quit()"/>
     <message-box :type="messageTip.type" :btnNum='messageTip.btnNum' v-if="messageTip.showMessageBox">
@@ -175,7 +175,7 @@ export default {
       let account=JSON.parse(localStorage.getItem('ajaxData')).account;
       let crmAccount=JSON.parse(localStorage.getItem('crmAccount')).crmAccount;
       let obj={
-        tip:`是否确定修改您的CRM登陆账号${crmAccount}修改为当前登陆账号${account}，修改后使用${account}登陆APP和CRM`,
+        tip:`是否确定修改您的CRM登陆账号${crmAccount}为当前登陆账号${account}，修改后使用${account}登陆APP和CRM`,
         btnNum:2,
         type:false
       }
@@ -198,8 +198,8 @@ export default {
     merge(){
       let obj=JSON.parse(localStorage.getItem('ajaxData'));
       indexModel.merge({
-        id: obj.userId,
-        crmAccount: obj.account
+        userId: obj.userId,
+        account: obj.account
       }).then((res) => {
         if(res.status){
           let tipObj={
@@ -208,6 +208,10 @@ export default {
             type:true
           }
           this.mergeBox=tipObj;
+          let crmAccount=JSON.stringify({
+            crmAccount:obj.account
+          })
+          localStorage.setItem("crmAccount", crmAccount);
           //this.mergeBoxShow=true;
         }else{
           let tipObj={
@@ -221,6 +225,13 @@ export default {
       })
     },
     cancelMerge(){
+      let account=JSON.parse(localStorage.getItem('ajaxData')).account;
+      let crmAccount=JSON.parse(localStorage.getItem('crmAccount')).crmAccount;
+      if(account!==crmAccount){
+        this.isMerge=true
+      }else{
+        this.isMerge=false
+      }
       this.mergeBoxShow=false
     }
   },

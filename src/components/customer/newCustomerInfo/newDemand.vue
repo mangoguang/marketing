@@ -71,7 +71,7 @@
       ref="DatePicker"
       type="date"
       v-model="today"
-      :startDate="new Date()"
+      :endDate="new Date()"
       year-format="{value} 年"
       month-format="{value} 月"
       date-format="{value} 日"

@@ -14,7 +14,7 @@
          <store-select v-bind="formInfo.store" :value="shopName"  :showIcon="selectIcon"/>
         </li>
         <li>
-          <date-select v-bind="formInfo.time" :value="form.arrivalDate" @update="updateTime" :showIcon="selectIcon"/>
+          <date-select day='end' v-bind="formInfo.time" :value="form.arrivalDate" @update="updateTime" :showIcon="selectIcon"/>
         </li>
         <!-- <li>
           <duration-select v-bind="formInfo.duration" :value="form.residentTime" @update="updateDuration" :showIcon="selectIcon"/>
@@ -476,8 +476,10 @@ export default {
       }
       if(this.form.deliverDate!==''){
         if(!mango.compareTimeStamp(this.form.arrivalDate,this.form.deliverDate)){
-          mango.tip('需求日期不能小于等于到店日期');
-          return false;
+          if(this.form.arrivalDate!==this.form.deliverDate){
+            mango.tip('需求日期不能小于到店日期');
+            return false;
+          }
         }
       }
       if(this.form.budget.length>8){
