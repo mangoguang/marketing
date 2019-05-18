@@ -342,7 +342,9 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          console.log('店铺成交率0', res)
           let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          console.log('店铺成交率1', newData)
           this.$set(res.data,'idsData',newData[3])
           this.$set(res.data.series[0],'data',newData[1])
           this.$set(res.data.series[1],'data',newData[2])
@@ -350,6 +352,7 @@ export default {
           this.key4 = true
           res = res.data
           _this.perAchieveRatioData = res
+          console.log('店铺成交率', res)
         }
       })
     },
