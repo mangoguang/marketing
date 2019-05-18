@@ -59,7 +59,7 @@
       </div>
     </div>
     <message-box v-show="mergeBoxShow">
-      使用APP前需要把您的CRM登陆账号D00002修改为当前登陆账号19050014，修改后使用19050014登陆APP和CRM，是否确定修改？
+      使用APP前需要把您的CRM登陆账号D000修改为当前登陆账号19050014，修改后使用19050014登陆APP和CRM，是否确定修改？
     <template v-slot:btn-group>
         <button type="button" @click="merge">确定</button>
         <button type="button" @click="cancel">取消</button>
