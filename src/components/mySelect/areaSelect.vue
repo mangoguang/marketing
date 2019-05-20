@@ -1,7 +1,7 @@
 <template>
   <div class="inputBox">
       <label @click="selectArea">
-          <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
+          <span>{{label}}<span class="yan-red" v-show="required"> *</span></span>
           <input  type="text" :value="value" :readonly='readonly'  :placeholder="placeholder" @input="$emit('input',$event.target.value)">
       </label>
       <div class="icon-right" v-if="showIcon">
@@ -21,6 +21,7 @@
 
 <script>
 import Vue from 'vue'
+import {mapState,mapMutations} from 'vuex'
 import { Picker } from 'mint-ui';
 Vue.component(Picker.name, Picker);
 import {IndexModel} from '../../utils'
@@ -63,10 +64,28 @@ export default {
       pickerArr:[]
     }
   },
+  computed:{
+    ...mapState({
+      areaVal: state => state.select.areaVal,
+      newCustomerInfo: state => state.customer.newCustomerInfo
+    })
+  },
   mounted(){
     this.getProvinceArr();
   },
   methods:{
+    ...mapMutations(["setAreaVal"]),
+    // init() {
+    //   if(!this.newCustomerInfo.provinceName) {
+    //     return
+    //   } 
+    //   let obj = {
+    //     provinceName: this.newCustomerInfo.provinceName,
+    //     cityName: this.newCustomerInfo.cityName,
+    //     countryName: this.newCustomerInfo.countryName
+    //   }
+    //   this.setAreaVal(obj)
+    // },
     onValuesChange(picker,values){
       let that=this;
       
@@ -114,8 +133,18 @@ export default {
         cityName=`${that.slots[0].values[0].name} ${that.slots[2].values[0].name} ${that.slots[4].values[0].name}`;
         cityCode=`${that.slots[0].values[0].code}-${that.slots[2].values[0].code}-${that.slots[4].values[0].code}`;
       }
-    
+      // let cityNameAttr=cityName.split(' ');
+      // let cityCodeAttr=cityCode.split('-');
+      // let obj = {
+      //     provinceName:cityNameAttr[0],
+      //     provinceCode:cityCodeAttr[0],
+      //     cityName:cityNameAttr[1],
+      //     cityCode:cityCodeAttr[1],
+      //     countryName:cityNameAttr[2],
+      //     countyCode:cityCodeAttr[2]
+      //   }
       that.$emit('update',cityName,cityCode);
+      //this.setAreaVal(obj)
       that.popupVisible=false;
     },
     getProvinceArr(){

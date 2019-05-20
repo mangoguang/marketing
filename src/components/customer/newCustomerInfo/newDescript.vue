@@ -31,8 +31,8 @@
         </li>
       </template>
       <template v-else>
-        <!-- <li is="areaSelect" @areaChange="areaChange"></li> -->
-        <li class="area"><area-select is='areaSelect' v-model='area' @update="updateArea" readonly placeholder="请选择客户地区" label='客户地区' :required="true" :showIcon="true"/></li>
+        <li is="areaSelect" @areaChange="areaChange"></li>
+        <!-- <li class="area"><area-select is='areaSelect' v-model='area' @update="updateArea" readonly placeholder="请选择客户地区" label='客户地区' :required="true" :showIcon="true"/></li> -->
         <li is="customerLi" :leftText="'客户地址'" :start='"*"'>
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>200)value=value.slice(0,200)">
         </li>
@@ -77,8 +77,8 @@ import ageSelect from '../../select/ageSelect'
 import sourceSelect from '../../select/sourceSelect'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 import addressSelect from '../../select/addressSelect'
-//import areaSelect from '../../select/areaSelect'
-import areaSelect from '../../mySelect/areaSelect'
+import areaSelect from '../../select/areaSelect'
+//import areaSelect from '../../mySelect/areaSelect'
 import mango from '../../../js'
 import variable from '../../../js/variable'
 import shopSelect from '../../select/shopSelect'
@@ -237,7 +237,7 @@ export default {
       this.setNewCustomerInfo(this.newCustomerInfo)
       // console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.storeDate)
     },
-    /* areaChange(val) {
+    areaChange(val) {
       // console.log('选择的地区：', val)
       this.$set(this.newCustomerInfo,'provinceName',val.provinceName)
       this.$set(this.newCustomerInfo,'cityName',val.cityName)
@@ -246,8 +246,8 @@ export default {
       this.newCustomerInfo.city = val.cityCode
       this.newCustomerInfo.area = val.countyCode
       this.setNewCustomerInfo(this.newCustomerInfo)
-    }, */
-    updateArea(cityName,cityCode){
+    },
+   /*  updateArea(cityName,cityCode){
       this.area=cityName;
       let cityNameAttr=cityName.split(' ');
       let cityCodeAttr=cityCode.split('-');
@@ -258,7 +258,7 @@ export default {
       this.newCustomerInfo.city = cityCodeAttr[1]
       this.newCustomerInfo.area = cityCodeAttr[2]
       this.setNewCustomerInfo(this.newCustomerInfo)
-    },
+    }, */
     //跳转到地址管理页面
     toAddress() {
       this.$router.push({path:`/address/${this.$route.query.id}`})
