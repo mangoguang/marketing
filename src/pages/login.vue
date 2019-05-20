@@ -62,7 +62,7 @@
       <p id="tip">{{mergeBox.tip}}</p>
     <template v-slot:btn-group>
         <button type="button" @click="merge">确定</button>
-        <button type="button" @click="cancel">取消</button>
+        <button type="button" @click="cancelMerge">取消</button>
     </template>
     <template v-slot:btn>
         <button type="button" @click="cancel">确定</button>
@@ -327,7 +327,7 @@ export default {
           //this.mergeBoxShow = res.account !== res.crmAccount
           if(res.account !== res.crmAccount){
             let obj={
-              tip:`使用APP前需要把您的CRM登陆账号${res.crmAccount}修改为当前登陆账号${res.account}，修改后使用${res.account}登陆APP和CRM，是否确定修改？`,
+              tip:`当前APP登录账号为${res.account}，CRM登录账号${res.crmAccount}，不一致，是否修改CRM登录账号为${res.account}，修改后使用${res.account}登录APP和CRM,是否确定修改？`,
               btnNum:2,
               type:false
             }
@@ -378,7 +378,15 @@ export default {
       })
       // this.$router.replace({ path: "/" })
     },
-
+    cancelMerge(){
+       let obj={
+          tip:'如果需要同步APP与CRM登录账号,请在个人中心点击同步账号',
+          btnNum:1,
+          type:false
+        }
+        this.mergeBox=obj;
+        this.mergeBoxShow=true;
+    },
     cancel() {
       this.$router.replace({ path: "/" })
     },

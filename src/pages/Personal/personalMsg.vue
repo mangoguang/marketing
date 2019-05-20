@@ -175,7 +175,7 @@ export default {
       let account=JSON.parse(localStorage.getItem('ajaxData')).account;
       let crmAccount=JSON.parse(localStorage.getItem('crmAccount')).crmAccount;
       let obj={
-        tip:`是否确定修改您的CRM登陆账号${crmAccount}为当前登陆账号${account}，修改后使用${account}登陆APP和CRM`,
+        tip:`当前APP登录账号为${account}，CRM登录账号${crmAccount}，不一致，是否修改CRM登录账号为${account}，修改后使用${account}登录APP和CRM,是否确定修改？`,
         btnNum:2,
         type:false
       }
