@@ -8,38 +8,38 @@
         </router-link>
       </li>
       <li id="2" v-if="status">
-         <router-link to="/ReportForms" replace>
+         <!-- <router-link to="/ReportForms" replace>
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
-         </router-link>
-         <!-- <a href="javascript:;" @click="pingbi">
+         </router-link> -->
+         <a href="javascript:;" @click="pingbi">
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
-         </a> -->
+         </a>
         <!-- <div v-show="!chartActive">
           <div class="charActive"></div>
           <p class="charPActive">报表</p>
         </div> -->
       </li>
       <li id="3" v-else>
-        <router-link to="/Customer" @click.native="changeActive" replace>
+        <!-- <router-link to="/Customer" @click.native="changeActive" replace>
           <div class="iconSalary"></div>
           <p class="iconCharP">客户</p>
-        </router-link>
-        <!-- <a href="javascript:;" @click="pingbi">
+        </router-link> -->
+        <a href="javascript:;" @click="pingbi">
           <div class="iconSalary"></div>
           <p class="iconCharP">客户</p>
-        </a> -->
+        </a>
       </li>
       <li id="4" >
-        <router-link to="/work" @click.native="changeActive" replace>
+        <!-- <router-link to="/work" @click.native="changeActive" replace>
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>
-        </router-link>
-        <!-- <a  href="javascript:;" @click="pingbi">
+        </router-link> -->
+        <a  href="javascript:;" @click="pingbi">
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>
-        </a> -->
+        </a>
       </li>
       <li id="5">
         <router-link to="/personalCenter" @click.native="changeActive" replace>
