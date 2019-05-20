@@ -144,6 +144,7 @@ export default {
     },
     login(account, pwd) {
       // console.log(111,baseUrl)
+      mango.loading('open')
       let data = {
           grant_type: 'password',        //固定填 password
           username: account,   //登录账号
@@ -151,7 +152,7 @@ export default {
         }
       axios({
         method: 'post',
-        // url:'https://op.derucci.com',
+        // url:'https://agency.derucci.com/oauth/token',
         url: 'http://10.11.8.7/oauth/token',
         //url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
