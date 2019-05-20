@@ -14,7 +14,8 @@
           <!-- <span v-show='key1'>{{`***${address ? address.slice(3, 50) : ''}`}}</span> -->
         </div>
         <div class="phoneNumber">
-          <a :href="`tel:${list.phone}`">{{ list.phone }}</a>
+          <a :href="`tel:${list.phone}`" v-if="list.phone!=='0'">{{ list.phone }}</a>
+          <a href="javascript:;" v-else>未收集</a>
           <!-- <a :href="`tel:${list.phone}`">{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</a> -->
           <!-- <span>{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</span> -->
           <div class="phone-icon">
