@@ -5,7 +5,7 @@
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
       <li is="shopSelect" :start='"*"' :type='type'></li>
-      <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectTime">
+      <li is="customerLi" :leftText="'创建日期'" :start="'*'" :icon="true" @click.native="selectTime">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>

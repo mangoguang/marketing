@@ -11,8 +11,8 @@ const state = {
       required:true
     },
     time:{
-      label:'进店日期',
-      placeholder:'请选择进店日期',
+      label:'创建日期',
+      placeholder:'请选择创建日期',
       required:true
     },
     duration:{
