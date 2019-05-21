@@ -43,7 +43,7 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: []}],
+      slots: [{values: [],defaultIndex:0}],
       popupVisible: false,
       key: false,
       color: "color: #999",
@@ -83,7 +83,7 @@ export default {
       })
     },
     selectHouseType() {
-      this.color = "color: #363636";
+      //this.color = "color: #363636";
       /* if (this.houseType === "") {
         this.setHouseType(this.slots[0].values[0]);
         let code = getCode(this.houseType,this.typeList)
@@ -96,7 +96,7 @@ export default {
     },
     //进来的时候走两次change事件
     onValuesChange(picker, values) {
-      if(this.key) {
+      //if(this.key) {
         //if(this.houseType) {
           //let code = getCode(values[0],this.typeList)
           //this.$emit('htCodeChange', code)
@@ -104,14 +104,15 @@ export default {
           this.code=getCode(values[0],this.typeList)
           this.value=values[0];
         //}
-      }else {
-        this.key = true
-      }
+      // }else {
+      //   this.key = true
+      // }
     },
     cancel(){
       this.popupVisible = false;
     },
     update(){
+      this.color = "color: #363636";
       this.$emit('htCodeChange', this.code)
       this.$emit('houseTypeChange',this.value)
       this.popupVisible = false;

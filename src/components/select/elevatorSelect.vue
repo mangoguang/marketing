@@ -40,7 +40,7 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['有', '无']}],
+      slots: [{values: ['有', '无'],defaultIndex:0}],
       popupVisible: false,
       key: false,
       color: 'color: #999',
@@ -69,29 +69,31 @@ export default {
     },
     selectElevator() {
       this.color = 'color: #363636'
-      /* if(this.elevatorVal === '') {
-        this.setElevatorVal(this.slots[0].values[0])
-        this.newCustomerInfo.elevator = 'Y'
-        this.setNewCustomerInfo(this.newCustomerInfo)
-      }else {
-        this.$refs.elevatorPicker.setSlotValue(0, this.elevatorVal)
-      } */
+    //  if(this.elevatorVal === '') {
+    //     this.setElevatorVal(this.slots[0].values[0])
+    //     this.newCustomerInfo.elevator = 'Y'
+    //     this.setNewCustomerInfo(this.newCustomerInfo)
+    //   }else {
+    //     this.$refs.elevatorPicker.setSlotValue(0, this.elevatorVal)
+    //   }
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
       // this.val = values[0]
-      if(this.key) {
-        this.value=values[0];
+      //if(this.key) {
+          this.value=values[0];
+         
         //this.$emit('elevatorChange', values[0])
-      }else {
+      /* }else {
         this.key = true
-      }
+      } */
     },
     cancel(){
       this.popupVisible = false
     },
     update(){
       this.$emit('elevatorChange', this.value)
+      //this.newCustomerInfo.elevator==='Y'?this.setElevatorVal('有'):this.setElevatorVal('无')
       this.popupVisible = false
     }
   }

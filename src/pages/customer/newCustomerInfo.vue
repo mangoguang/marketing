@@ -379,7 +379,7 @@ export default {
         'opportunity.buyReason': this.codeList.brCode,   //购买原因
         'opportunity.budget':obj.budget,    //预算
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
-        'opportunity.argreeDiscount': parseInt(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
+        'opportunity.argreeDiscount': parseFloat(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
         'opportunity.remark': obj.remark2,
         'opportunity.urgency': obj.urgency || false,   //是否紧急
         'opportunity.level': obj.level || 'A',   //等级

@@ -43,7 +43,7 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: []}],
+      slots: [{values: [],defaultIndex:0}],
       popupVisible: false,
       key: false,
       color: "color: #999",
@@ -83,7 +83,7 @@ export default {
       })
     },
     selectColorPref() {
-      this.color = "color: #363636";
+      // this.color = "color: #363636";
       // if (this.colorPref === "") {
       //   this.setColorPref(this.slots[0].values[0]);
       //   let code = getCode(this.colorPref,this.typeList)
@@ -96,21 +96,22 @@ export default {
     },
     //进来的时候走两次change事件
     onValuesChange(picker, values) {
-      if(this.key) {
+      // if(this.key) {
         // if(this.colorPref) {
           this.code = getCode(values[0],this.typeList)
           this.colorName=values[0]
           //this.$emit('colorCodeChange', code)
           //this.$emit('colorChange', values[0])
         // }
-      }else {
-        this.key = true
-      }
+      // }else {
+      //   this.key = true
+      // }
     },
     cancel(){
       this.popupVisible = false
     },
     update(){
+      this.color = "color: #363636";
       this.$emit('colorCodeChange', this.code)
       this.$emit('colorChange',this.colorName)
       this.popupVisible=false;

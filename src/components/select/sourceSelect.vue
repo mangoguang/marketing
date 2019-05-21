@@ -45,7 +45,7 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: []}],
+      slots: [{values: [],defaultIndex:0}],
       popupVisible: false,
       key: false,
       color: "color: #999",
@@ -90,7 +90,7 @@ export default {
     selectSource() {
       // this.$refs.sourcePicker.setSlotValue(0, this.sourceVal)
       // this.popupVisible = true
-      this.color = "color: #363636";
+      // this.color = "color: #363636";
       /* if (this.sourceVal === "") {
         this.setSourceVal(this.slots[0].values[0]);
       } else {
@@ -99,19 +99,20 @@ export default {
       this.popupVisible = true;
     },
     onValuesChange(picker, values) {
-      if(this.key) {
+      /* if(this.key) { */
         this.code = getCode(values[0],this.typeList)
         this.source= values[0]
         //this.$emit('codeChange', code)
         //this.$emit('sourceChange', values[0])
-      }else {
+      /* }else {
         this.key = true
-      }
+      } */
     },
     cancel(){
       this.popupVisible=false
     },
     update(){
+      this.color = "color: #363636";
       this.$emit('codeChange', this.code)
       this.$emit('sourceChange',this.source)
       this.popupVisible=false

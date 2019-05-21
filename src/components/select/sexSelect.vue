@@ -43,7 +43,7 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['男', '女','未知']}],
+      slots: [{values: ['男', '女','未知'],defaultIndex:0}],
       popupVisible: false,
       key: false,
       color: 'color: #999',
@@ -65,6 +65,7 @@ export default {
       this.popupVisible = false
     },
     update(){
+      this.color = 'color: #363636'
       this.$emit('sexChange',this.value);
        this.popupVisible=false;
     },
@@ -77,7 +78,7 @@ export default {
       } 
     },
     selectSex() {
-      this.color = 'color: #363636'
+      //this.color = 'color: #363636'
       // if(this.sexVal === '') {
       //   this.setSexVal(this.slots[0].values[0])
       //   this.newCustomerInfo.sex = 'Mr.'
