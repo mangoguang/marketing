@@ -109,6 +109,12 @@ export default {
         this.$refs.secPicker.setSlotValue(0, this.secondCount);
       }
       this.popupVisible = true;
+    },
+    cancel(){
+
+    },
+    update(){
+
     }
   }
 };
@@ -128,4 +134,15 @@ export default {
       // align-items: flex-start;
     }
   }
+.btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+  div{
+    color:#26a2ff;
+    font-size: 16px;
+  }
+}
 </style>
