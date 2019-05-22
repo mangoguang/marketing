@@ -2,7 +2,7 @@
   <li class="arrivalDate">
     <ul>
       <li is="customerLi" :leftText="'创建日期'" :start="'*'" :icon="true" @click.native="selectTime">
-        <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
+        <span :style="timeColor">{{newCustomerInfo.arrivalDate || day}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>

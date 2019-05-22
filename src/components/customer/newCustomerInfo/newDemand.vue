@@ -170,7 +170,10 @@ export default {
     ...mapMutations(['setAddressId','initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
     setInitData() {
       this.$set(this.newCustomerInfo, 'arrivalDate', this.day)
+      this.$set(this.newCustomerInfo,'source','自然进店')
       this.setNewCustomerInfo(this.newCustomerInfo)
+      this.codeList.sourceCode = 'Natural'
+      this.changeCode(this.codeList)
       //初始化门店的值
       let shopsList = btnList(this.shops,0)
       this.initShopList(shopsList)

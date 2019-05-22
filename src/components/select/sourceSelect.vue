@@ -67,7 +67,7 @@ export default {
     // this.$refs.sourcePicker.setSlotValue(0, this.val)
   },
   methods:{
-    ...mapMutations(["setSourceVal"]),
+    ...mapMutations(["setSourceVal","setNewCustomerInfo"]),
     //获取slot列表值
     init() {
       indexModel.getType('DR_SOURCE_CHANNEL').then(res => {

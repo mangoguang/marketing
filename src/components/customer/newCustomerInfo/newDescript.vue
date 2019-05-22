@@ -10,7 +10,7 @@
       </li>
       <li is="sexSelect" :sexVal="newCustomerInfo.sex"  @sexChange="sexChange" class="sex"></li>
        <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
-        <span :style="newCustomerInfo.birthday?'color: #363636':color ">{{turnDate(newCustomerInfo.birthday) || '请选择客户生日'}}</span>
+        <span :style="newCustomerInfo.birthday?'color: #363636':color ">{{newCustomerInfo.birthday || '请选择客户生日'}}</span>
       </li>
       <li is="ageSelect"   @ageChange="ageChange"></li>
       <li is="customerLi" :leftText="'客户电话'">

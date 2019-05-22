@@ -43,10 +43,10 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['电话沟通','到店沟通','微信沟通'],defaultIndex:0}],
+      slots: [{values: ['到店沟通','电话沟通','微信沟通'],defaultIndex:0}],
       popupVisible: false,
       key: false,
-      color: "color: #999",
+      color: "color: #363636",
       typeList: [],
       code:'',
       value:''
