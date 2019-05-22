@@ -8,7 +8,7 @@
                 v-if='hasInput'
                 :type="type"
                 :placeholderText='placeholderText'
-                @changeVal='changeVal'
+                v-model.lazy='getValue'
               />
     </div>
 
@@ -28,7 +28,7 @@
               v-show='!eye'
               @click="changeEye" >
       </template>
-      
+
     </div>
 
   </li>
@@ -48,14 +48,16 @@ export default {
   data () {
     return {
       eye: true,
-      type: 'password'
+      type: 'password',
+      getValue: ''
     };
   },
+  watch: {
+    getValue() {
+      this.pwdChange(this.getValue)
+    }
+  },
   methods: {
-    //获取input组件传的值赋给父组件。
-    changeVal(val) {
-      this.pwdChange(val)
-    },
     //改变密码显示隐藏
     changeEye() {
       this.eye = !this.eye

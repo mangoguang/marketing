@@ -8,15 +8,15 @@
           :key="index"
           :lefttext="item.name"
           :icon='item.icon'
-          @click.native="routeTo(index)">
+          @touchend.native="routeTo(index)">
       </li>
     </ul>
-    <btn text="退出登录" class="unlogin" @click.native='unlogin'/>
+    <btn text="退出登录" class="unlogin" @touchend.native='unlogin'/>
     <messageBox :type='false' :btnNum='2' v-show="control">
       <div>确定退出账号？</div>
       <div slot='btn-group' class="btn-group">
-        <button @click="comfirm">确定</button>
-        <button @click="cancle">取消</button>
+        <button @touchend="comfirm">确定</button>
+        <button @touchend="cancle">取消</button>
       </div>
     </messageBox>
   </div>
@@ -57,7 +57,7 @@ export default {
       this.control = true
     },
     comfirm() {
-      localStorage.clear()
+      // localStorage.clear()
       this.$router.push({path: '/login'})
     },
     cancle() {
