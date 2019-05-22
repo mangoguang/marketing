@@ -15,10 +15,7 @@
 <script>
 export default {
   props: {
-    type: {
-      type: String,
-      default: 'text'
-    },
+    type: String,
     placeholderText: String
   },
   data () {

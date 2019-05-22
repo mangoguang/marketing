@@ -6,18 +6,29 @@
       <slot></slot>
       <e-input  class="input" 
                 v-if='hasInput'
+                :type="type"
                 :placeholderText='placeholderText'
-                @changeVal='changeVal'/>
+                @changeVal='changeVal'
+              />
     </div>
 
     <div class="right-icon" >
-      <template v-if="icon">
+
+      <template v-if="icon ==='icon'">
         <img src="../../assets/imgs/rightside.png" class="icon">
       </template>
-      <template v-if='eye'>
-        <img src="../../assets/imgs/cansee.png" v-if="eye" class="eye">
-        <img src="../../assets/imgs/rightside.png" v-else class="eye">
+
+      <template v-if='icon === "eye"' >
+        <img  class="eye"
+              src="../../assets/imgs/cansee.png" 
+              v-show="eye"
+              @click="changeEye" >
+        <img  class="eye"
+              src="../../assets/imgs/nosee.png" 
+              v-show='!eye'
+              @click="changeEye" >
       </template>
+      
     </div>
 
   </li>
@@ -26,16 +37,29 @@
 <script>
 import eInput from './e-input'
 export default {
-  props: ['lefttext','icon','hasInput','placeholderText','pwdChange', 'eye'],
+  props: {
+    lefttext: String,
+    icon: String,
+    hasInput: Boolean,
+    placeholderText: String,
+    pwdChange: Function
+  },
   components: {eInput},
   data () {
     return {
+      eye: true,
+      type: 'password'
     };
   },
   methods: {
     //获取input组件传的值赋给父组件。
     changeVal(val) {
       this.pwdChange(val)
+    },
+    //改变密码显示隐藏
+    changeEye() {
+      this.eye = !this.eye
+      this.type = this.eye === true? 'password' : 'text'
     }
   }
 }

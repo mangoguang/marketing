@@ -38,12 +38,12 @@ export default {
     return {
       list: [{
         name: '修改密码',
-        icon: true,
+        icon: 'icon',
         routePath: 'resetMyPwd'
       },{
         name: '修改手机绑定',
-        icon: true,
-        routePath: 'resetMyPwd'
+        icon: 'icon',
+        routePath: ''
       }],
       control: false
     };
