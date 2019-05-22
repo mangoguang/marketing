@@ -3,7 +3,7 @@
     <ul>
       <li is="leaveStoreSelect"  @leaveStoreChange="leaveStoreChange"></li>
       <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
-        <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(Time)}}</span>
+        <span :style="timeColor">{{newCustomerInfo.arrivalDate || Time}}</span>
       </li>
       <li is="shopSelect"></li>
       <li class="textarea">

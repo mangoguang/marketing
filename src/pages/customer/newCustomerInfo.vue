@@ -376,7 +376,7 @@ export default {
         'opportunity.arrivalDate':obj.arrivalDate || mango.indexTimeB(new Date())[1],
         'opportunity.deliverDate': obj.deliverDate,
         'opportunity.source': this.codeList.sourceCode || 'Natural',
-        'opportunity.residentTime': obj.residentTime,   //留店时长
+        //'opportunity.residentTime': obj.residentTime,   //留店时长
         'opportunity.stylePref': this.codeList.spCode,    //风格
         'opportunity.progress': this.codeList.pgCode,    //进度
         'opportunity.colorPref': this.codeList.colorCode,    //颜色偏好

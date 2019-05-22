@@ -75,7 +75,7 @@ export default {
   methods: {
     ...mapMutations(["setLeaveStoreVal",'setFollowTiming']),
      init() {
-      //  if(this.type) {
+      if(this.type) {
          if(this.newCustomerInfo && this.newCustomerInfo.residentTime2) {
             this.color = 'color: #363636'
             this.setFollowTiming(this.newCustomerInfo.residentTime2)
@@ -84,14 +84,14 @@ export default {
           }else{
             this.setFollowTiming('')
           }
-      //  }else {
-      //    if(this.newCustomerInfo && this.newCustomerInfo.residentTime) {
-      //       this.color = 'color: #363636'
-      //       this.setLeaveStoreVal(this.newCustomerInfo.residentTime)
-      //       this.key1 = false
-      //       this.key2 = false
-      //     }
-      //  }
+      }else {
+         if(this.newCustomerInfo && this.newCustomerInfo.residentTime) {
+            this.color = 'color: #363636'
+            this.setLeaveStoreVal(this.newCustomerInfo.residentTime)
+            this.key1 = false
+            this.key2 = false
+          }
+       }
       //初始化问题
       
     },
@@ -107,10 +107,14 @@ export default {
         let minute=parseInt(durationAttr[1])<=0?'':parseInt(durationAttr[1])+"分钟";
         let duration=hour+minute;
         this.setFollowTiming(duration);
+        this.setLeaveStoreVal(duration);
         this.$emit('leaveStoreChange2', duration)
+        this.$emit('leaveStoreChange',duration);
       }else{
         this.setFollowTiming('0分钟');
+        this.setLeaveStoreVal('0分钟');
         this.$emit('leaveStoreChange2','0分钟');
+        this.$emit('leaveStoreChange','0分钟');
       }
     },
 
