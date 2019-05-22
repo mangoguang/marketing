@@ -110,7 +110,7 @@ export default {
         this.$router.push({path: '/feedback'});
         break;
         case 2 :
-        console.log('账户安全');
+        this.$router.push({path: '/security'});
         break;
         case 3 :
         this.$router.push({path: '/aboutUs'});

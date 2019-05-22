@@ -26,6 +26,8 @@ const ResetPwd = () => import('../pages/ResetPwd')
 const aboutUs = () => import('../pages/aboutUs')
 const personalData = () => import('../pages/personalData')
 const feedback = () => import('../pages/Personal/feedback')
+const security = () => import('../pages/Personal/security/index')
+const resetMyPwd = () => import('../pages/Personal/security/resetPwd')
 
 //图库模块
 const gallery = () => import('../pages/Gallery/index')
@@ -204,7 +206,16 @@ export var router = new VueRouter({
       keepAlive:true,
       isUseCache:false
     }
+  },{
+    path: '/security',
+    name: 'security',
+    component: security
+  },{
+    path: '/resetMyPwd',
+    name: 'resetMyPwd',
+    component: resetMyPwd
   },
+
   {
     path: '/previewImg',
     name: '/previewImg',
