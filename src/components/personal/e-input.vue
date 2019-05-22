@@ -3,7 +3,8 @@
   <div class="e-input">
     <form action='' @submit.prevent>
       <input  :type="type" 
-              @change="changeVal"
+              :value="value"    
+              @input="$emit('input', $event.target.value)"
               @blur="viewDefault"
               :placeholder="placeholderText"
               maxlength="18"
@@ -16,7 +17,8 @@
 export default {
   props: {
     type: String,
-    placeholderText: String
+    placeholderText: String,
+    value: String
   },
   data () {
     return {
@@ -27,10 +29,6 @@ export default {
     viewDefault() {
       document.body.scrollTop = 0;
       document.documentElement.scrollTop = 0;
-    },
-    //给父组件传值
-    changeVal(e) {
-      this.$emit('changeVal',e.target.value)
     }
   }
 }

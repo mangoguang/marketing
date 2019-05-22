@@ -12,7 +12,7 @@ function refreshToken() {
     // 刷新token
     indexModel.refreshToken(token.refresh_token).then(res => {
       let data = res.data
-      if(data) {
+      if(data && typeof data === 'object') {
         // 获取当前时间戳
         Object.assign(data, {
           account: token.account,

@@ -5,7 +5,7 @@
       </mybanner>
       <search-input v-model.trim="key" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <div class="list">
-       <search-list :options="searchProductList" name="1" @change="updateVal" v-if="hasRecord">
+       <search-list ref="search" :key="key" :options="searchProductList" name='1' @change="updateVal" v-if="hasRecord">
          <template slot-scope="props">
            <span class="item">{{props.info.goodsName}}</span>
          </template>
@@ -45,7 +45,7 @@ export default {
     ...mapState('searchProduct',[
       'title'
     ]),
-    ...mapState(['searchProductList','checkedList'])
+    ...mapState(['searchProductList','checkedList','allSearchProductList','again'])
   }, 
   created(){
    this.id=this.$route.params.customerId;
@@ -56,7 +56,7 @@ export default {
       this.isIPhoneX();
   },
   methods:{
-   ...mapMutations(['updateSearchProductList','updateCheckedList']),
+   ...mapMutations(['updateSearchProductList','updateCheckedList','updateAllSearchProductList','updateAgain']),
    isIPhoneX : function(fn) {
       var u = navigator.userAgent;
       var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
@@ -90,6 +90,7 @@ export default {
     var that=this;
       Debounce(function(){
        if(that.key!==''){
+         that.productList=[];
           indexModel.getProduct(that.key).then(res => {
           if(res.code===0){
             if(res.data.length>0){

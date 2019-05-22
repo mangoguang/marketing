@@ -9,9 +9,9 @@
         </div>
        <customer-address v-for="(item,index) in addressList" :key="index" :index='index' :id="item.addressId" @edit="edit" @del="del" v-else>
           <div class="address_li">
-            <h1 v-if="item.elevator">{{item.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;有电梯</h1>
-            <h1 v-else>{{item.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;无电梯</h1>
-            <p>{{item.province}}{{item.city}}{{item.district}}{{item.address}}</p>
+            <h1 v-if="item.elevator">{{item.apartmentType?item.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}有电梯</h1>
+            <h1 v-else>{{item.apartmentType?item.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}无电梯</h1>
+            <p>{{item.province+item.city+item.district+item.address}}</p>
           </div>
         </customer-address> 
       </div>

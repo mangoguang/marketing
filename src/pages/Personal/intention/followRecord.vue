@@ -8,7 +8,7 @@
           <follow-select v-bind="formInfo.follow" v-model="form.follow" @update="updateFollow" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <date-select v-bind="formInfo.time" v-model="form.time" @update="updateTime" :showIcon="selectIcon" class="li_border"/>
+          <date-select day='end' v-bind="formInfo.time" v-model="form.time" @update="updateTime" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
           <duration-select v-bind="formInfo.duration" v-model="form.residentTime"  @update="updateResidentTime" :showIcon="selectIcon"/>
@@ -86,11 +86,16 @@ export default {
     ]),
     ...mapState(['Files'])
   },
-  created(){
-    console.log("created");
-   this.oppId=this.$route.query.oppId;
-   this.setFiles([]);
-   this.setPicVal([]);
+  // created(){
+  //   console.log("created");
+  //  this.oppId=this.$route.query.oppId;
+  //  this.setFiles([]);
+  //  this.setPicVal([]);
+  // },
+  activated(){
+    if(!this.$route.meta.isUseCache){
+       this.oppId=this.$route.query.oppId;
+    }
   },
   methods:{
     ...mapMutations(['setFiles','setPicVal']),
@@ -115,17 +120,21 @@ export default {
         mango.tip('请填写本次跟进情况');
         return false;
       }
-      if(this.form.nextTime===''){
-        mango.tip('请选择下次跟进时间');
-        return false;
-      }
-      if(this.form.plan===''){
-        mango.tip('请填写下一步跟进计划');
-        return false;
-      }
-      if(!mango.compareTimeStamp(this.form.time,this.form.nextTime)){
-          mango.tip('下次跟进时间不能小于等于当前跟进时间');
-          return false;
+      // if(this.form.nextTime===''){
+      //   mango.tip('请选择下次跟进时间');
+      //   return false;
+      // }
+      // if(this.form.plan===''){
+      //   mango.tip('请填写下一步跟进计划');
+      //   return false;
+      // }
+      if(this.form.nextTime){
+        if(!mango.compareTimeStamp(this.form.time,this.form.nextTime)){
+          if(this.form.time!==this.form.nextTime){
+            mango.tip('下次跟进时间不能小于当前跟进时间');
+            return false;
+          }  
+        }
       }
       if(this.form.report.length>300){
         this.form.report=this.form.report.substring(0,300);

@@ -56,6 +56,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
+import {waterMark} from '../../../utils/msManage'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -119,6 +120,9 @@ export default {
       startTimeSelect: state => state.select.startTimeSelect,
       endTimeSelect: state => state.select.endTimeSelect
     })
+  },
+  mounted(){
+    waterMark('.barBox')
   },
   watch: {
     citySelect() {
@@ -338,7 +342,9 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          console.log('店铺成交率0', res)
           let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          console.log('店铺成交率1', newData)
           this.$set(res.data,'idsData',newData[3])
           this.$set(res.data.series[0],'data',newData[1])
           this.$set(res.data.series[1],'data',newData[2])
@@ -346,6 +352,7 @@ export default {
           this.key4 = true
           res = res.data
           _this.perAchieveRatioData = res
+          console.log('店铺成交率', res)
         }
       })
     },
@@ -366,6 +373,7 @@ export default {
           res = res.data
           mango.sortYears(res)
           res.yAxisData = [mango.chartsBotTit(res)]
+          console.log('res',res);
           _this.orderFormTotalData = res
         }
       })

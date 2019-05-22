@@ -103,7 +103,7 @@ export default {
 
 <style lang="scss" scoped>
 .eggSearchInp {
-    margin: 5vw auto;
+    margin: 4vw auto;
     width: 91.46vw;
     position: relative;
     box-sizing:border-box;

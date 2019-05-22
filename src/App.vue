@@ -302,14 +302,22 @@ ul.infoNav{
     // width: 29.3vw;
     width: 49%;
     line-height: 8vw;
+    height:9vw;
     text-align: center;
-    background: #b2d7ff;
+    background: #f8f8f8;
     border-radius: 1.6vw 1.6vw 0 0;
     color: #007aff;
     font-size: 3.73vw;
+    span{
+      border-radius: 1.6vw 1.6vw 0 0;
+      background: #b2d7ff;
+      display: block;
+      height:8vw;
+    }
   }
   .active, .on{
-    background: #007aff;
+    // background: #007aff;
+    background: #f8f8f8;
     color: #fff
   }
 }

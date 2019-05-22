@@ -2,9 +2,9 @@
   <div class="resetPwd">
     <banner title='修改密码'/>
     <div class="errTips-box">
-       <errTips  class="errtips" 
-              v-show="showTips"
-              :errTips='errTips'/>
+       <errTips class="errtips" 
+                v-show="showTips"
+                :errTips='errTips'/>
     </div>
     <ul class="container">
       <li is='personalLi'
@@ -26,12 +26,12 @@
     <div class="pwdtips">
       密码必须为6-18位字母和数字组合，英文区分大小写
     </div>
-    <btn text='确定修改' class="btn" @click.native="changeBtn"/>
+    <btn text='确定修改' class="btn" @touchend.native="changeBtn"/>
 
     <messageBox :type='true' :btnNum='1' v-show="changeSuc">
       <div>密码修改成功，请重新登录</div>
       <div slot='btn'>
-        <button @click="comfirm">确定</button>
+        <button @touchend="comfirm">确定</button>
       </div>
     </messageBox>
   </div>
@@ -78,7 +78,8 @@ export default {
       newValAgain: '',
       showTips: false,
       errTips: '',
-      changeSuc: false
+      changeSuc: false,
+      top: ''
     };
   },
   methods: {
@@ -162,7 +163,6 @@ export default {
     }
   }
   .container {
-    position: relative;
     width: 100vw;
     margin-top: 16.4vw;
     padding-left: 4.26vw;

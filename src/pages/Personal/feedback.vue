@@ -11,7 +11,7 @@
     </div>
     <btn text="提交" @click.native="submit"/>
     <message-box :type="messageBox.type" :btnNum='messageBox.btnNum' v-if="messageBox.showMessageBox">
-    提交成功！感谢您的反馈~
+      {{messageBox.tip}}
     <template v-slot:btn-group>
         <button type="button" @click="remove">移除</button>
         <button type="button" @click="cancel">取消</button>
@@ -127,11 +127,11 @@ export default {
           mango.tip('反馈信息不能为空');
           return false;
       }
-      let reg=/^1[34578]\d{9}$/;
-      if(!reg.test(this.phone)){
-        mango.tip('请输入正确的手机号码');
-        return false;
-      }
+      // let reg=/^1[34578]\d{9}$/;
+      // if(!reg.test(this.phone)){
+      //   mango.tip('请输入正确的手机号码');
+      //   return false;
+      // }
       return true;
     }
 

@@ -268,11 +268,13 @@ export default {
       let phone = this.phoneSize()
       if(phone === 'iphonex') {
         this.marginTop = {marginTop: '-5.86vw'};
-        this.paddingTop = {paddingTop: '5vw'}
+        this.paddingTop = {paddingTop: '11vw'}
       }else if(phone === 'iphone') {
         this.marginTop = "";
+        this.paddingTop = {paddingTop: '5vw'}
       }else {
         this.marginTop = "";
+        this.paddingTop = {paddingTop: '5vw'}
       }
     }
   }
@@ -293,6 +295,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding:2.7vw 0 2.6vw;
     .searchComp {
       width: 78.66vw;
       // margin-left: 2vw;

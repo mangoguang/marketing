@@ -1,6 +1,6 @@
 <template>
   <div class="dealCustomer" ref="deal">
-    <TopBar :topBarTitle='topbar'/>
+    <TopBar :topBarTitle='topbar' style="margin-top:-13vw;"/>
     <ul>
       <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
         <li
@@ -13,7 +13,8 @@
           <!-- <span class="name">{{`*${item.username.slice(1, 5)}`}}</span> -->
           <!-- <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span> -->
           <span class="phone">{{item.phone}}</span>
-          <span class="date">{{item.followDate}}</span>
+          <!-- <span class="date">{{item.followDate}}</span> -->
+          <span class="date">{{item.closeTime.split(" ")[0]}}</span>
         </li>
       </mt-loadmore>
     </ul>
@@ -326,12 +327,12 @@ export default {
   height: 100vh;
   overflow: scroll; 
   box-sizing: border-box;
-  padding-top: 33.88vw;
+  padding-top: 34vw;
   background: #f8f8f8;
   -webkit-overflow-scrolling: touch;
   // margin-bottom: 20vw;
   ul {
-    border-top: 1px solid #e1e1e1;
+   // border-top: 1px solid #e1e1e1;
     margin-top: -1vw;
     // border-bottom: 1px solid #e1e1e1;
     color: #999;

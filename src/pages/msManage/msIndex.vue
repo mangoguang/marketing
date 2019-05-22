@@ -38,7 +38,7 @@ export default {
   },
   created() {
     this.list = (this.$route.query.classify == 1)? this.list1 : this.list2
-    this.title = (this.$route.query.classify == 1)? '金管家服务' : '商学院'
+    this.title = (this.$route.query.classify == 1)? '金管家服务' : '网络商学院'
     this.getImgList()
   },
   methods: {

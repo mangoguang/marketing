@@ -5,6 +5,7 @@ import App from './App'
 import mango from './js'
 import api from './js/api.js'
 import VueTouch from 'vue-touch'
+import VueLazyload from 'vue-lazyload'
 import 'mint-ui/lib/style.min.css'
 // import '../mockjs/index' 	
 import base from './Global/index'
@@ -15,6 +16,7 @@ VueTouch.config.swipe = {
   threshold: 100, 
   direction: 'horizontal'//手指左右滑动距离
 }
+Vue.use(VueLazyload)
 import {
   router
 } from './router/index.js'

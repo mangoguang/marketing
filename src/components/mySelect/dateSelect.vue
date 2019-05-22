@@ -8,11 +8,24 @@
         <img src="../../assets/imgs/rightside.png" alt="">
       </div>
       <mt-datetime-picker
+        v-if="day==='end'"
         v-model="pickerVisible"
         type="date"
-        year-format="{value}"
-        month-format="{value}"
-        date-format="{value}"
+        :endDate="new Date()"
+        year-format="{value}年"
+        month-format="{value}月"
+        date-format="{value}日"
+        @confirm="handleConfirm"
+        ref="date">
+      </mt-datetime-picker>
+      <mt-datetime-picker
+        v-else
+        v-model="pickerVisible"
+        type="date"
+        :startDate="new Date()"
+        year-format="{value}年"
+        month-format="{value}月"
+        date-format="{value}日"
         @confirm="handleConfirm"
         ref="date">
       </mt-datetime-picker>
@@ -25,7 +38,7 @@ import { DatetimePicker } from 'mint-ui';
 Vue.component(DatetimePicker.name, DatetimePicker);
 import mango from '../../js/'
 export default {
-  props:['value','label','placeholder','showIcon','required'],
+  props:['value','label','placeholder','showIcon','required','day'],
   data(){
     return{
       pickerVisible:new Date()
@@ -35,7 +48,8 @@ export default {
     handleConfirm(){
       let day=mango.indexTimeB(this.pickerVisible)[0];
       let anotherDay=mango.indexTimeB(this.pickerVisible)[1];
-      //console.log(anotherDay);
+      console.log(day)
+      console.log(anotherDay);
       this.$emit('update',day,anotherDay);
     },
     openDatePicker(){

@@ -6,7 +6,7 @@
         <div class="list_left">
           <h1>{{item.title}}</h1>
           <div class="list_bottom">
-            <span v-if="item.top" class="top">置顶</span>
+            <span v-if="item.top&&$route.query.classify==='1'" class="top">置顶</span>
             <span class="time">{{item.createTime}}</span>
           </div>
         </div>
@@ -38,7 +38,8 @@ export default {
       allLoaded:false,
       list: [],
       page: 1,
-      limit: 5,
+      //limit: 5,
+      limit:10,
       typeId: '',
       key: false,
       noData: false,
@@ -61,6 +62,7 @@ export default {
       if(this.key) {
         let temp = 0
         let parmas = this.getId()
+        console.log('00',parmas);
         // if(this.parmas.name1 && !this.parmas.name2) {
         //   temp = this.hasList(this.parmas.name1)
         // }else if(this.parmas.name1 && this.parmas.name2){
@@ -69,7 +71,7 @@ export default {
          temp = this.hasList(parmas)
         if(temp === this.msManageList.length) {
           this.getInitList([])
-          let obj = this.getCategoriesId(1, 10)
+          let obj = this.getCategoriesId(1,10)
           obj = this.setType(obj)
           this.getArticlesList(obj)
         }else {
@@ -179,6 +181,7 @@ export default {
     //获取文章列表
     getArticlesList(obj) {
       let parmas = this.getId()
+      console.log('w',parmas);
       indexModel.getArticles(obj).then(res => {
         if(res.data) {
           if(res.data.length) {
@@ -200,6 +203,7 @@ export default {
     getCategoriesId(page, limit){
       const categoryId = this.$route.query.id
       let obj = {}
+      console.log('www',this.parmas);
       if(this.parmas.name1 && !this.parmas.name2) {
         let subCateId = this.parmas.name1
         obj = {
@@ -209,6 +213,7 @@ export default {
           'page': page,
           'limit':limit
           }
+          console.log('234',obj);
       }else if(this.parmas.name1 && this.parmas.name2) {
         let subCateId = this.parmas.name1
         let subCate2Id = this.parmas.name2
@@ -276,12 +281,15 @@ export default {
     //下拉加载数据
     pullDownData() {
       this.allLoaded = true
+      console.log('artlist',this.artList.length);
       let len = (this.artList.length)/10 + 1
       if(Math.floor(len) < len) {
         this.allLoaded = true
       }else {
         this.page = len
+        console.log(this.page);
         let obj = this.getCategoriesId(this.page, this.limit)
+        obj = this.setType(obj)
         this.getArticlesList(obj);
       }
     }
@@ -317,7 +325,7 @@ export default {
       h1 {
         color: #363636;
         font-size: 4.8vw;
-        font-weight: bold;
+        //font-weight: bold;
         flex: 0.8;
         line-height: 1.5em;
       }

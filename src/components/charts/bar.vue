@@ -132,6 +132,7 @@ export default {
         grid: {
           left: '3%',
           top: '80',
+          bottom:'3%',
           // height: 700,
           containLabel: true
         },

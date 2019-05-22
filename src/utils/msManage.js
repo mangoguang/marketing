@@ -123,9 +123,12 @@ export {changeGalleryStyle}
 function changeVedioStyle(html){
   var newContent= html.replace(/<embed[^>]*>/gi,function(match,capture){
   // var match = match.replace(/width=\"(.*)\"/gi, 'wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
-  var match = match.replace(/width=\"(.*)\"/gi, 'autostart=false wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
+  //var match = match.replace(/width=\"(.*)\"/gi, 'autoplay=false autostart=false play=false wmode="transparent"  loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" style="width: 100%;height:auto"');
+  var src=match.split(' ')[1].split('=')[1];
+  var match=`<video src=${src} style="width: 100%;height:auto" controls></video>`
   return match;
   });
+  //console.log(newContent);
   return newContent;
 }
 
@@ -161,3 +164,46 @@ function judgeObj(obj, type) {
     setLocalStorage(obj,type)
   }
 }
+//增加水印
+function waterMark(selector,num){
+  let ajaxData=JSON.parse(localStorage.getItem('ajaxData'));
+  let str=ajaxData.account;
+  let width=document.body.clientWidth;
+  let height=document.body.offsetHeight;
+  let canvas=document.createElement('canvas');
+  let img=new Image();
+  img.src="./static/images/logo.png";
+  img.onload=function(){
+    canvas.width=200;
+    canvas.height=200;
+    let ctx=canvas.getContext('2d');
+    ctx.font="14px Vedana";
+    ctx.fillStyle='#ccc';
+    ctx.globalAlpha=0.4;
+    ctx.save();
+    ctx.translate(-120,50);
+    ctx.rotate(-45* Math.PI/180);
+    ctx.drawImage(img,0,185,14,15);
+    ctx.fillText(str,15,200);
+    ctx.restore();
+    ctx.translate(-18,80);
+    ctx.rotate(-45* Math.PI/180);
+    ctx.drawImage(img,100,85,14,15);
+    ctx.fillText(str,115,100);
+    ctx.save();
+    if(num==1){
+      document.querySelector(selector).style.backgroundImage=`url(${canvas.toDataURL('image/png')})`;
+      document.querySelector(selector).style.backgroundPosition='left top';
+      document.querySelector(selector).style.backgroundRepeat='repeat';
+    }else{
+      let selectors=document.querySelectorAll(selector);
+      for(let i=0;i<selectors.length;i++){
+        selectors[i].style.backgroundImage=`url(${canvas.toDataURL('image/png')})`;
+        selectors[i].style.backgroundPosition='left top';
+        selectors[i].style.backgroundRepeat='repeat';
+      }
+    }
+   
+  }
+}
+export {waterMark}

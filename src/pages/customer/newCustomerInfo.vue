@@ -194,6 +194,26 @@ export default {
     },
     //保存客户信息，新建客户	
     creatNewCustomer() {
+      let isHasPhone;
+      if(this.$route.query.wechat&&this.newCustomerInfo.phone){
+        mango.getAjax('/v3/app/customer/check', {
+          value: this.newCustomerInfo.phone,
+          type:'phone'
+        }).then((res) => {
+          if(res.data){
+            MessageBox.alert('手机号码已存在').then(action => {
+             isHasPhone=false;
+            })
+          }else{
+            isHasPhone=true;
+          }
+        })
+      }else{
+        isHasPhone=true;
+      }
+      if(!isHasPhone){
+        return;
+      }
       //头像的formdata
       this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
       //如果有填写验证微信号
@@ -256,8 +276,12 @@ export default {
             this.setFiles([]);
             this.setPicVal([]);
           })
+        }else{
+           MessageBox.alert('保存失败！')
         }
-      })
+      })/* .catch((reject) => {
+        MessageBox.alert('网络差,请重新操作');
+      }) */
     },
     //初始化数据
     setInitData() {
@@ -274,17 +298,17 @@ export default {
           count +=1 
         }else if(key === 'residentTime2') {
           count +=1 
-        }else if(key === 'nextDate') {
+        }/* else if(key === 'nextDate') {
           count +=1 
-        }else if(key === 'situation') {
+        } */else if(key === 'situation') {
           count +=1 
-        }else if(key === 'plan') {
+        }/* else if(key === 'plan') {
           count +=1 
-        }
+        } */
       }
       if(count === 0) {
         result = true
-      }else if(count === 6) {
+      }else if(count === 4) {
         result = true
       }else {
         result = false
@@ -303,16 +327,16 @@ export default {
         }else if(!obj['residentTime2']) {
           MessageBox.alert('请选择跟进时长')
           return
-        }else if(!obj['nextDate']) {
+        }/* else if(!obj['nextDate']) {
           MessageBox.alert('请选择下次跟进日期')
           return
-        }else if(!obj['situation']) {
+        } */else if(!obj['situation']) {
           MessageBox.alert('请描述跟进情况')
           return
-        }else if(!obj['plan']) {
+        }/* else if(!obj['plan']) {
           MessageBox.alert('请填写下一步跟进计划')
           return
-        }
+        } */
       }
     },
     //获取参数
@@ -355,7 +379,7 @@ export default {
         'opportunity.buyReason': this.codeList.brCode,   //购买原因
         'opportunity.budget':obj.budget,    //预算
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
-        'opportunity.argreeDiscount': parseInt(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
+        'opportunity.argreeDiscount': parseFloat(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
         'opportunity.remark': obj.remark2,
         'opportunity.urgency': obj.urgency || false,   //是否紧急
         'opportunity.level': obj.level || 'A',   //等级

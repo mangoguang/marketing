@@ -5,6 +5,7 @@ function checkLogin() {
 
 export {checkLogin}
 
+
 function toLogin() {
   let url = location.href
   let index = url.indexOf('#/')
