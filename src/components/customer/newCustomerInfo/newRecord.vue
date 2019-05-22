@@ -3,7 +3,7 @@
     <ul class="newRecord">
       <li is="followSelect" @followWayChange="followWayChange" ></li>
       <li class="timeLi" is="customerLi" :start="'*'" :leftText="'跟进时间'" :icon="true" @click.native="selectFollowTime">
-        <span :style="color">{{turnDate(newCustomerInfo.followDate)|| turnDate(setDay)}}</span>
+        <span :style="color">{{turnDate(newCustomerInfo.followDate)|| '请选择跟进时间'}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true" :text='"跟进时长"' :type='true' @leaveStoreChange2="leaveStoreChange2"></li>
       
@@ -80,7 +80,7 @@ export default {
       setDay: '',
       path:this.$route.fullPath,
       isClear:true,
-      color:'color:#363636'
+      color:'color:#999'
     }
   },
   watch: {

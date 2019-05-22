@@ -46,7 +46,7 @@ export default {
       address: '',
       key: false,
       key1: false,
-      via: './static/images/via.png'
+      via: './static/images/avatar.png'
     }
   },
   computed: {

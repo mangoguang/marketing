@@ -5,7 +5,7 @@
       <li>
         <span>头像</span>
         <div class="cell">
-          <img v-if="headPortrait===''" src="../assets/imgs/avatar.png" alt="" class="avatar">
+          <img v-if="headPortrait===''" :src="via" alt="" class="avatar">
           <img v-else :src="headPortrait" alt="" class="avatar">
         </div>
       </li>
@@ -63,7 +63,8 @@ export default {
       sex:'',
       phone:'',
       account:'',
-      shopList:''
+      shopList:'',
+      via:'./static/images/avatar.png'
     }
   },
   components:{
