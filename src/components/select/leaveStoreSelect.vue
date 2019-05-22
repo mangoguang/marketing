@@ -68,6 +68,22 @@ export default {
       newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
+  watch:{
+    leaveStoreVal(){
+      if(this.leaveStoreVal===''){
+        this.color="color: #999"
+      }else{
+        this.color="color: #363636"
+      }
+    },
+    followTiming(){
+      if(this.followTiming===''){
+        this.color="color: #999"
+      }else{
+        this.color="color: #363636"
+      }
+    }
+  },
   mounted() {
     //this.getSlots();
     this.init()
@@ -90,6 +106,8 @@ export default {
             this.setLeaveStoreVal(this.newCustomerInfo.residentTime)
             this.key1 = false
             this.key2 = false
+          }else{
+            this.setLeaveStoreVal('')
           }
        }
       //初始化问题
