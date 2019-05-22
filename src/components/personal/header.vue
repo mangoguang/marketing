@@ -3,7 +3,7 @@
     <div class="compile">编辑</div>
     <div class="personalMsg">
       <!-- <div class="via" @click="go"></div> -->
-      <img src="../../assets/imgs/via.png" alt="" class="via" @click="go">
+      <img :src="via" alt="" class="via" @click="go">
       <div class="personal-content">
         <div class="name">
           <span><span v-if="ajaxData.positionList">{{ajaxData.positionList.typeName}}</span>{{ajaxData.name}}</span>
@@ -34,7 +34,8 @@ export default {
       height:'',
       marginTop:'',
       ajaxData: {},
-      shop: ''
+      shop: '',
+      via:'./static/images/avatar.png'
     }
   },
   created() {
