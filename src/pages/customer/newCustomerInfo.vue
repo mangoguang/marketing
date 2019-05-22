@@ -270,17 +270,22 @@ export default {
     //请求数据
     getData(formdata, arr) {
       mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
-        if(res.status) {
-          MessageBox.alert('保存成功！').then(action => {
-            this.$router.replace({path: '/customer'})
-            this.setFiles([]);
-            this.setPicVal([]);
-          })
+        if(res.code==0) {
+          if(res.status){
+            MessageBox.alert('保存成功！').then(action => {
+              this.$router.replace({path: '/customer'})
+              this.setFiles([]);
+              this.setPicVal([]);
+            })
+          }else{
+             MessageBox.alert('保存失败！')
+          }
+          
         }else{
-           MessageBox.alert('保存失败！')
+          MessageBox.alert(res.msg)
         }
       })/* .catch((reject) => {
-        MessageBox.alert('网络差,请重新操作');
+        MessageBox.alert(reject);
       }) */
     },
     //初始化数据
