@@ -1,4 +1,5 @@
 <template>
+  <div class="login_box">
   <div class="login" :style='{marginTop: marginTop}'>
     <div :class="`${myStyle.loginFix}`"></div>
     <div class="topBar">
@@ -57,7 +58,18 @@
         <div class="wechat-icon"></div>
       </div>
     </div>
+    <message-box v-show="mergeBoxShow" v-bind="mergeBox">
+      <p id="tip">{{mergeBox.tip}}</p>
+    <template v-slot:btn-group>
+        <button type="button" @click="merge">确定</button>
+        <button type="button" @click="cancelMerge">取消</button>
+    </template>
+    <template v-slot:btn>
+        <button type="button" @click="cancel">确定</button>
+    </template>
+  </message-box>
     <!-- <footer></footer> -->
+  </div>
   </div>
 </template>
 
@@ -74,6 +86,7 @@ import tipsWeb from "../components/charts/tipsWeb";
 import btn from "../components/btn";
 import myinput from "../components/myInput";
 import refreshToken from '../utils/token/refreshToken.js'
+import messageBox from '../components/msManage/yanMessageBox'
 import {IndexModel} from '../utils/index'
 const indexModel = new IndexModel()
 export default {
@@ -83,7 +96,8 @@ export default {
     tipsError,
     tipsWeb,
     btn,
-    myinput
+    myinput,
+    messageBox
   },
   props: ["myStyle"],
   data() {
@@ -103,8 +117,14 @@ export default {
       nameMsg: "",
       pwdMsg: "",
       h: '',
-      marginTop:''
-    };
+      marginTop:'',
+      mergeBoxShow: false,
+      mergeBox:{
+        tip:'',
+        type:false,
+        btnNumbrella:2
+      }
+    }
   },
   mounted() {
     this.$root.author = 'mangoguang'
@@ -144,6 +164,7 @@ export default {
     },
     login(account, pwd) {
       // console.log(111,baseUrl)
+      mango.loading('open')
       let data = {
           grant_type: 'password',        //固定填 password
           username: account,   //登录账号
@@ -151,8 +172,8 @@ export default {
         }
       axios({
         method: 'post',
-        // url:'https://op.derucci.com',
-        // url: 'http://10.11.8.7/oauth/token',
+        //url:'https://agency.derucci.com/oauth/token',
+        //url: 'http://10.11.8.7/oauth/token',
         url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
         transformRequest: [function(data) {
@@ -273,11 +294,13 @@ export default {
       //   mango.tip('网络异常！')
       // })
     },
+
     // 获取用户个人信息
     getUserInfo() {
       indexModel.getUserInfo().then(res => {
         res = res.data
         if (res) {
+          console.log(11223344, this.mergeBoxShow)
           let typename = this.getName(res.positionList)
           let ajaxData = {
             account: res.account,
@@ -288,14 +311,33 @@ export default {
             sex: res.sex,
             type:res.type,
             typename: typename,
-            positionList:res.positionList[0]
+            positionList:res.positionList[0],
+            userId: res.userId
+            //crmAccount:res.crmAccount
           }
-          console.log(ajaxData);
+          let crmAccount=JSON.stringify({
+            crmAccount:res.crmAccount
+          })
           let shops = JSON.stringify(res.shopList)
+          localStorage.setItem("crmAccount", crmAccount);
           localStorage.setItem("shops", shops);
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
           this.$root.ajaxData = ajaxData
-          this.$router.replace({ path: "/" })
+          //this.$router.replace({ path: "/" })
+          // 检测app账号跟crm账号是否一致
+          //this.mergeBoxShow = res.account !== res.crmAccount
+          if(res.account !== res.crmAccount){
+            let obj={
+              tip:`当前APP登录账号为${res.account}，CRM登录账号${res.crmAccount}，不一致，是否修改CRM登录账号为${res.account}，修改后使用${res.account}登录APP和CRM,是否确定修改？`,
+              btnNum:2,
+              type:false
+            }
+            this.mergeBox=obj
+            this.mergeBoxShow=true
+          }else{
+            this.mergeBoxShow=false
+            this.$router.replace({ path: "/" })
+          }
         }
       }).catch((reject) => {
         // console.log('reject',reject)
@@ -304,6 +346,52 @@ export default {
         }
       })
     },
+
+    // 合并app与crm账号
+    merge() {
+      this.mergeBoxShow=false;
+      let obj = this.$root.ajaxData
+      indexModel.merge({
+        userId: obj.userId,
+        account: obj.account
+      }).then(res => {
+        if(res.status){
+          let nObj={
+            tip:res.msg,
+            btnNum:1,
+            type:true
+          }
+          let crmAccount=JSON.stringify({
+            crmAccount:obj.account
+          })
+          localStorage.setItem("crmAccount", crmAccount);
+          this.mergeBox=nObj;
+          this.mergeBoxShow=true;
+        }else{
+          let obj={
+            tip:res.msg,
+            btnNum:1,
+            type:false
+          }
+          this.mergeBox=obj;
+          this.mergeBoxShow=true;
+        }
+      })
+      // this.$router.replace({ path: "/" })
+    },
+    cancelMerge(){
+       let obj={
+          tip:'如果需要同步APP与CRM登录账号,请在个人中心点击同步账号',
+          btnNum:1,
+          type:false
+        }
+        this.mergeBox=obj;
+        this.mergeBoxShow=true;
+    },
+    cancel() {
+      this.$router.replace({ path: "/" })
+    },
+
     getName(arr) {
       let name;
       arr.map(item => {
@@ -408,8 +496,19 @@ export default {
 
 
 <style lang="scss" scoped>
+#tip{
+  padding:0;
+  margin:0;
+  word-break:break-all;
+  text-align:justify;
+}
+.login_box{
+  height:100%;
+  width:100vw;
+  background: #fff;
+}
 .login {
-  height: auto;
+  height: 100%;
   background: #fff!important;
   // font-family: PINGPANG;
   position: relative;
@@ -541,6 +640,7 @@ export default {
       justify-content: space-between;
       color: #909090;
       font-size: 3.2vw;
+      margin-top: 20vw;
       hr {
         width: 24vw;
         border: none;

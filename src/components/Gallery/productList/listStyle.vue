@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="listItem">
     <div class="img_icon" :style="{backgroundImage:'url(' + img + ')'}"></div>
     <div class="text_box">
       <p class="title">{{ list.goodsName }}</p>
@@ -62,7 +62,7 @@ export default {
     //字符串转为数组
     getLabel(label) {
       if(label) {
-        return this.list.label.split(',')
+        return this.list.label.split('、')
       }
     },
      //收藏
@@ -104,14 +104,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.list {
+.listItem {
   width: 94.133vw;
   // height: 26.66vw;
   box-shadow:0px 0.4vw 1.2vw 0px rgba(200,219,239,0.2);
   border-radius: 1.33vw; 
   background: #fff;
   margin: 0 auto;
-  // margin-top: 2.66vw;
+  margin-top: 2.66vw;
   display: flex;
   align-items: center;
   position: relative;
@@ -123,7 +123,7 @@ export default {
     // flex: 0.3
   }
   .text_box {
-    margin-left: 4vw;
+    margin-left: 2.666vw;
     // flex: 0.7;
     .title {
       width: 62vw;
@@ -134,15 +134,18 @@ export default {
       overflow: hidden;
     }
     .type_icon {
-      // border: 1px solid #ff2d55;
-      // border-radius: 1.33vw;
+      border: 1px solid #FF2D55;
+      border-radius: 1.333vw;
+      padding:0 1.6vw;
+      color:#FF2D55;
       // width: 8vw;
       display: inline-block;
       // line-height: 3.6vw;
       font-size: 2.4vw;
-      color: #666;
+      // color: #666;
       text-align: center;
       margin-right: 2vw;
+
     }
     .price {
       font-size: 4.8vw;
@@ -156,9 +159,13 @@ export default {
       font-size: 3.2vw;
       padding-top: 2vw;
       padding-left: 2vw;
+      display: flex;
+      flex-direction:row;
+      align-items: center;
       img {
         width: 3.46vw;
         height: 3.06vw;
+        margin-right:1.866vw;
       }
     }
   }

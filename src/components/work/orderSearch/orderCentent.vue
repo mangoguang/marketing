@@ -1,7 +1,6 @@
 <template>
   <ul class="orderCentent">
     <Loadmore
-    :top-method="loadTop"
     :bottom-method="loadBottom"
     :bottom-all-loaded="allLoaded"
     ref="loadmore"
@@ -73,6 +72,11 @@ export default {
           res.records = target.concat(arr)
           this.setOrderData(res)
           console.log(res)
+          if(res.pages==this.orderSearchParam.page){
+            this.allLoaded=true
+          }else{
+            this.allLoaded=false
+          }
         }
       }).catch((reject) => {
         if (reject === 510) {
@@ -80,19 +84,19 @@ export default {
         }
       })
     },
-    loadTop() {
-      let params = {
-        page: 1,
-        limit: 30
-      }
-      this.setOrderSearchParam(params)
-      this.getOrderList(params)
-    },
+    // loadTop() {
+    //   let params = {
+    //     page: 1,
+    //     limit: 30
+    //   }
+    //   this.setOrderSearchParam(params)
+    //   this.getOrderList(params)
+    // },
     //下拉刷新
     loadBottom() {
       this.orderSearchParam.page++
       this.getOrderList(this.orderSearchParam)
-      // this.allLoaded = true;// 若数据已全部获取完毕
+      //this.allLoaded = true;// 若数据已全部获取完毕
       this.$refs.loadmore.onBottomLoaded()
     },
     toOrderDetail(orderId) {

@@ -1,14 +1,15 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'" :icon='true' :start="'*'" @click.native='addIntention'>
+      <li is="customerLi" :leftText="'意向产品'" :icon='true'  @click.native='addIntention'>
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
       <li is="shopSelect" :start='"*"' :type='type'></li>
-      <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectTime">
+      <!-- <li is="customerLi" :leftText="'创建日期'" :start="'*'" :icon="true" @click.native="selectTime">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
-      </li>
-      <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
+      </li> -->
+      <li is="arrivalDate"></li>
+      <!-- <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li> -->
       <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
       
       <template v-if='addressType !== "intention"'>
@@ -42,9 +43,10 @@
       <li is="customerLi" :leftText="'预算金额'">
         <input v-model="newCustomerInfo.budget" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写预算金额" oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
-      <li is="customerLi" :leftText="'需求日期'"  :icon="true" @click.native="selectFollowTime">
+      <!-- <li is="customerLi" :leftText="'需求日期'"  :icon="true" @click.native="selectFollowTime">
         <span :style="timeColor">{{turnDate(newCustomerInfo.deliverDate) || '请选择需求日期'}}</span>
-      </li>
+      </li> -->
+      <li is="deliverDate"></li>
       <li is="customerLi" :leftText="'已交定金'">
         <input v-model="newCustomerInfo.depositPaid" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写已交金额" oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
@@ -57,26 +59,8 @@
       <intentionSelect :intentionVal='intentionVal'/>
       <urgentSelect :urgentVal='urgentVal'/>
     </ul>
-    <mt-datetime-picker
-      ref="followDatePicker"
-      type="date"
-      v-model="today"
-      :startDate="new Date()"
-      year-format="{value} 年"
-      month-format="{value} 月"
-      date-format="{value} 日"
-      @confirm="setFollowTime">
-    </mt-datetime-picker>
-    <mt-datetime-picker
-      ref="DatePicker"
-      type="date"
-      v-model="today"
-      :startDate="new Date()"
-      year-format="{value} 年"
-      month-format="{value} 月"
-      date-format="{value} 日"
-      @confirm="setTime">
-    </mt-datetime-picker>
+   
+    
   </div>
 </template>
 
@@ -106,6 +90,8 @@ import intentionSelect from '../../select/intentionSelect'
 import urgentSelect from '../../select/urgentSelect'
 import houseType from '../../select/houseType'
 import elevatorSelect from '../../select/elevatorSelect'
+import arrivalDate from '../../select/arrivalDate'
+import deliverDate from '../../select/deliverDate'
 import mango from '../../../js'
 import {btnList} from '../../../utils/gallery'
 export default {
@@ -128,7 +114,9 @@ export default {
     elevatorSelect,
     YanintentionSelect,
     areaSelect,
-    addressSelect
+    addressSelect,
+    arrivalDate,
+    deliverDate
   },
   data(){
     return{
@@ -143,6 +131,7 @@ export default {
       day: '',
       codeList: {},
       productList: []
+     
    }
   },
   computed: {
@@ -163,9 +152,9 @@ export default {
       }else if(this.fromName !='NewCustomer'){
         this.setIntentionProduct()
         this.hasAddressId()
-        if(this.newCustomerInfo.arrivalDate) {
+        /* if(this.newCustomerInfo.arrivalDate) {
           this.timeColor = 'color: #363636'
-        }
+        } */
       }
       //获取shopid
       let val = this.getShopVal()
@@ -175,7 +164,6 @@ export default {
   mounted() {
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
-    //获取默认进店时间
     this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
@@ -284,22 +272,7 @@ export default {
       this.newCustomerInfo.residentTime = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
-    selectTime() {
-      this.$refs.DatePicker.open()
-    },
-    //进店日期
-    setTime(value) {
-      this.timeColor = 'color: #363636'
-      this.$set(this.newCustomerInfo, 'arrivalDate', mango.indexTimeB(value)[1])
-    },
-    selectFollowTime() {
-      this.$refs.followDatePicker.open()
-    },
-    //需求日期
-    setFollowTime(value) {
-      this.timeColor = 'color: #363636'
-      this.$set(this.newCustomerInfo, 'deliverDate', mango.indexTimeB(value)[1])
-    },
+  
     //转变日期格式
     turnDate(date) {
       if (date) {
@@ -349,8 +322,11 @@ export default {
     elevatorChange(val) {
       // console.log('age改变了：', val)
       this.setElevatorVal(val)
-      this.newCustomerInfo.elevator = val === '有'? 'Y' : 'N'
-      this.setNewCustomerInfo(this.newCustomerInfo)
+      if(val){
+        this.newCustomerInfo.elevator = val === '有'? 'Y' : 'N'
+        this.setNewCustomerInfo(this.newCustomerInfo)
+      }
+     
     },
      //选择装修风格
     stylePrefChange(val) {
@@ -409,7 +385,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/common.scss";
+@import "../../../assets/common.scss";  
+input:-moz-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei";
+  }
+  input::-moz-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei"
+  }
+  input::-ms-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei";
+  }
+  input::-webkit-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei"
+  }
+   textarea::-moz-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+     textarea:-moz-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+    textarea::-ms-input-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+    textarea::-webkit-input-placeholder{
+      color:#999;
+      font-size:14px;
+    }
 .newDemand{
   background: #f8f8f8;
   .address {
@@ -445,6 +461,7 @@ export default {
       padding: 3vw 5vw;
       box-sizing: border-box;
       font-size: $fontSize;
+      border-bottom: 1px solid #ccc;
     }
   }
   li:nth-child(6) {

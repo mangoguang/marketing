@@ -12,7 +12,13 @@
         <mt-picker
         :slots="slots"
         @change="onValuesChange"
-        ref="sourcePicker"></mt-picker>
+        :showToolbar="true"
+        ref="sourcePicker">
+        <div class="btn-group">
+          <div @click="cancel">取消</div>
+          <div @click="update">确定</div>
+        </div>
+        </mt-picker>
       </mt-popup>
       </li>
     </ul>
@@ -39,11 +45,14 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: []}],
+      slots: [{values: [],defaultIndex:0}],
       popupVisible: false,
       key: false,
       color: "color: #999",
-      typeList: []
+      typeList: [],
+      code:'',
+      source:''
+
     }
   },
   computed:{
@@ -81,32 +90,56 @@ export default {
     selectSource() {
       // this.$refs.sourcePicker.setSlotValue(0, this.sourceVal)
       // this.popupVisible = true
-      this.color = "color: #363636";
-      if (this.sourceVal === "") {
+      // this.color = "color: #363636";
+      /* if (this.sourceVal === "") {
         this.setSourceVal(this.slots[0].values[0]);
       } else {
         this.$refs.sourcePicker.setSlotValue(0, this.sourceVal);
-      }
+      } */
       this.popupVisible = true;
     },
     onValuesChange(picker, values) {
-      if(this.key) {
-        let code = getCode(values[0],this.typeList)
-        this.$emit('codeChange', code)
-        this.$emit('sourceChange', values[0])
-      }else {
+      /* if(this.key) { */
+        this.code = getCode(values[0],this.typeList)
+        this.source= values[0]
+        //this.$emit('codeChange', code)
+        //this.$emit('sourceChange', values[0])
+      /* }else {
         this.key = true
-      }
+      } */
+    },
+    cancel(){
+      this.popupVisible=false
+    },
+    update(){
+      this.color = "color: #363636";
+      this.$emit('codeChange', this.code)
+      this.$emit('sourceChange',this.source)
+      this.popupVisible=false
     }
   }
   }
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+
   .sourceSelect{
     ul{
       width: 100%;
     }
+  }
+  .btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+ height:100%;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
+  }
   }
 </style>

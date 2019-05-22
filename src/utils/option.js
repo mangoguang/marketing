@@ -1,6 +1,7 @@
 import mango from '../js/index'
 // import chartsData from './data.js'
 export default function(data, vertical, salesVal, title) {
+  console.log(998877, title)
   mango.sortArrs(data)
   // data = chartsData
   // mango.sortArrs(chartsData)
@@ -18,12 +19,13 @@ export default function(data, vertical, salesVal, title) {
   } else {
     seriesPosition = 'top'
   }
-  // console.log('option对象数据：', data)
+  console.log('option对象数据：', data)
   let [xAxis, yAxis, series] = [
     {
     // 直角坐标相关设置。
       axisTick: {
         show: false
+        //alignWithLabel: true
       },
       axisLine: {
         show: false,
@@ -61,16 +63,21 @@ export default function(data, vertical, salesVal, title) {
             position: seriesPosition
           }
         },
+        //barMaxWidth:'15',
+        //barWidth:'15',
+        //barGap:'45',
+        //barCategoryGap:'45',
         data: salesVal ? item.data.map((key) => {
-
-          if (parseInt(key) == 0) {
+          let temp = key
+          if (temp == 0) {
             return ''
           } else {
             // seriesPosition = 'insideRight'
             return (key/10000).toFixed(2)
           }
         }) : item.data.map((key) => {
-          if (parseInt(key) == 0) {
+          let temp = key
+          if (temp == 0) {
             return ''
           } else {
             // seriesPosition = 'insideRight'
@@ -126,6 +133,7 @@ export default function(data, vertical, salesVal, title) {
     },
     grid: {
       left: '3%',
+      bottom:'3%',
       top: title ? '80' : '40',
       // height: 700,
       containLabel: true

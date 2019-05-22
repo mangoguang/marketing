@@ -21,9 +21,12 @@
         <span v-if='list.duty'>{{ list.duty }}</span>
         <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi" class="customerLi2" :leftText="'客户地址'">
+      <!-- <li is="customerLi" class="customerLi2" :leftText="'客户地址'">
         <span v-if='list.address'>{{ list.address }}</span>
         <span class='unspan' v-else>未收集</span>
+      </li> -->
+      <li is="customerLi" :leftText="'客户地区'"  :icon="true" @click.native="toAddress">
+          <span>地址管理</span>
       </li>
       <li is="customerLi" class="customerLi2" :leftText="'客户描述'">
         <span v-if='list.remark'>{{ list.remark }}</span>
@@ -57,6 +60,9 @@ export default {
    edit() {
      this.editMsg(true)
    },
+   toAddress() {
+      this.$router.push({path:`/address/${this.$route.query.id}`})
+    },
     //获取门店
     getShopId(id) {
       let name

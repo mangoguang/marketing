@@ -12,7 +12,13 @@
         <mt-picker
         :slots="slots"
         @change="onValuesChange"
-        ref="houseTypePicker"></mt-picker>
+        :showToolbar="true"
+        ref="houseTypePicker">
+        <div class="btn-group">
+              <div @click="cancel">取消</div>
+              <div @click="update">确定</div>
+            </div>
+        </mt-picker>
       </mt-popup>
       </li>
     </ul>
@@ -37,11 +43,13 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: []}],
+      slots: [{values: [],defaultIndex:0}],
       popupVisible: false,
       key: false,
       color: "color: #999",
-      typeList: []
+      typeList: [],
+      code:'',
+      value:''
     }
   },
   computed:{
@@ -75,29 +83,41 @@ export default {
       })
     },
     selectHouseType() {
-      this.color = "color: #363636";
-      if (this.houseType === "") {
+      //this.color = "color: #363636";
+      /* if (this.houseType === "") {
         this.setHouseType(this.slots[0].values[0]);
         let code = getCode(this.houseType,this.typeList)
         this.$emit('htCodeChange', code)
         this.$emit('houseTypeChange', this.houseType)
       } else {
         this.$refs.houseTypePicker.setSlotValue(0, this.houseType);
-      }
+      } */
       this.popupVisible = true;
     },
     //进来的时候走两次change事件
     onValuesChange(picker, values) {
-      if(this.key) {
-        if(this.houseType) {
-          let code = getCode(values[0],this.typeList)
-          this.$emit('htCodeChange', code)
-          this.$emit('houseTypeChange', values[0])
-        }
-      }else {
-        this.key = true
-      }
+      //if(this.key) {
+        //if(this.houseType) {
+          //let code = getCode(values[0],this.typeList)
+          //this.$emit('htCodeChange', code)
+          //this.$emit('houseTypeChange', values[0])
+          this.code=getCode(values[0],this.typeList)
+          this.value=values[0];
+        //}
+      // }else {
+      //   this.key = true
+      // }
+    },
+    cancel(){
+      this.popupVisible = false;
+    },
+    update(){
+      this.color = "color: #363636";
+      this.$emit('htCodeChange', this.code)
+      this.$emit('houseTypeChange',this.value)
+      this.popupVisible = false;
     }
+
   }
   }
 
@@ -109,4 +129,16 @@ export default {
       width: 100%;
     }
   }
+   .btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
+  }
+}
 </style>

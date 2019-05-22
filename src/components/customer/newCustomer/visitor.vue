@@ -226,5 +226,6 @@ ul{
  .myBtn {
     background:rgba(0,122,255,1)!important;
     border: .13vw solid rgba(0,93,194,1)!important;
+    border-radius: 0.53vw;
   }
 </style>

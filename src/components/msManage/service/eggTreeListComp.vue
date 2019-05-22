@@ -209,6 +209,7 @@ export default {
       font-size: 3.73vw;
       color: #666;
       padding: 2vw 4vw;
+     
       .child_wrapper {
         // border:1px solid red;
         overflow-x: hidden;

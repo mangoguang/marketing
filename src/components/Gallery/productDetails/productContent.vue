@@ -70,7 +70,7 @@ export default {
     //字符串转为数组
     getLabel(label) {
       if(label) {
-        return this.list.label.split(',')
+        return this.list.label.split('、')
       }
     },
       //收藏
@@ -173,6 +173,10 @@ export default {
         word-wrap:break-word;
         word-break:break-all;
         display: flex;
+        border:1px solid #FF2D55;
+        color:#FF2D55;
+        padding:0 1.6vw;
+        border-radius: 1.333vw;
       }
     }
 }

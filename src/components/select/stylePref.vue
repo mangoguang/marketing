@@ -12,7 +12,13 @@
         <mt-picker
         :slots="slots"
         @change="onValuesChange"
-        ref="stylePicker"></mt-picker>
+        :showToolbar="true"
+        ref="stylePicker">
+        <div class="btn-group">
+          <div @click="cancel">取消</div>
+          <div @click="update">确定</div>
+        </div>
+        </mt-picker>
       </mt-popup>
       </li>
     </ul>
@@ -37,11 +43,13 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: []}],
+      slots: [{values: [],defaultIndex:0}],
       popupVisible: false,
       key: false,
       color: "color: #999",
-      typeList: []
+      typeList: [],
+      code:'',
+      value:''
     }
   },
   computed:{
@@ -75,7 +83,7 @@ export default {
       })
     },
     selectStyle() {
-      this.color = "color: #363636";
+     /*  this.color = "color: #363636";
       if (this.stylePref === "") {
         this.setStylePref(this.slots[0].values[0]);
         let code = getCode(this.stylePref,this.typeList)
@@ -83,12 +91,12 @@ export default {
         this.$emit('stylePrefChange', this.stylePref)
       } else {
         this.$refs.stylePicker.setSlotValue(0, this.stylePref);
-      }
+      } */
       this.popupVisible = true;
     },
     //进来的时候走两次change事件
     onValuesChange(picker, values) {
-      if(this.key) {
+     /*  if(this.key) {
         if(this.stylePref) {
           let code = getCode(values[0],this.typeList)
           this.$emit('spCodeChange', code)
@@ -96,7 +104,18 @@ export default {
         }
       }else {
         this.key = true
-      }
+      } */
+      this.code=getCode(values[0],this.typeList)
+      this.value=values[0]
+    },
+    cancel(){
+      this.popupVisible = false;
+    },
+    update(){
+      this.color = "color: #363636";
+      this.$emit('spCodeChange', this.code)
+      this.$emit('stylePrefChange',this.value)
+      this.popupVisible = false;
     }
   }
   }
@@ -109,4 +128,16 @@ export default {
       width: 100%;
     }
   }
+    .btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
+  }
+}
 </style>

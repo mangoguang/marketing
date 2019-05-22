@@ -50,7 +50,7 @@ export default {
     //字符串转为数组
     getLabel(label) {
       if(label) {
-        return this.list.label.split(',')
+        return this.list.label.split('、')
       }
     },
     //收藏
@@ -100,7 +100,7 @@ export default {
   background:rgba(255,255,255,1);
   box-shadow:0px 0.4vw 1.2vw 0px rgba(200,219,239,0.2);
   border-radius:1.33vw; 
-  margin-bottom: 2vw;
+  margin-bottom: 2.666vw;
   height: 68.66vw;
   .img_icon {
     background-size: 100% 100%;
@@ -111,6 +111,7 @@ export default {
   .text_box {
     margin-left: 2vw;
     box-sizing: border-box;
+    min-height: 23vw;
     // height: 15vw;
     // display: flex;
     // flex-direction: column;
@@ -124,17 +125,24 @@ export default {
     }
     .type{
       display: flex;
+      flex-wrap: wrap;
       min-height: 6vw;
+      //margin-top:1.333vw;
     }
     .type_icon {
       font-size: 2.4vw;
       color: #666;
-      line-height: 1.4em;
+      //line-height: 1.4em;
       margin-right: 2vw;
       max-width: 42vw;
       word-wrap:break-word;
       word-break:break-all;
       display: flex;
+      padding:0 1.6vw;
+      border:1px solid #FF2D55;
+      color:#FF2D55;
+      border-radius: 1.333vw;
+      //margin-bottom:1.333vw;
     }
     .price {
       font-size: 4.8vw;
@@ -149,9 +157,13 @@ export default {
       font-size: 3.2vw;
       padding-top: 2vw;
       padding-left: 2vw;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
       img {
         width: 3.46vw;
         height: 3.06vw;
+        margin-right: 1.866vw;
       }
     }
   }

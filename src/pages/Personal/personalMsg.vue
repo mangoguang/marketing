@@ -9,8 +9,34 @@
           <img src="../../assets/imgs/rightside.png" alt="">
         </div>
       </li>
+       <li @click="crmMerge" v-if="isMerge">
+        <span>同步CRM账号</span>
+        <div class="icon-right">
+          <img src="../../assets/imgs/rightside.png" alt="">
+        </div>
+      </li>
     </ul>
     <btn :text='text' @click.native="quit()"/>
+    <message-box :type="messageTip.type" :btnNum='messageTip.btnNum' v-if="messageTip.showMessageBox">
+      {{messageTip.tip}}
+    <template v-slot:btn-group>
+        <button type="button" @click="remove">确定</button>
+        <button type="button" @click="cancel">取消</button>
+    </template>
+    <template v-slot:btn>
+        <button type="button" @click="cancel">确定</button>
+    </template>
+  </message-box>
+   <message-box v-show="mergeBoxShow" v-bind="mergeBox">
+      <p id="tip">{{mergeBox.tip}}</p>
+    <template v-slot:btn-group>
+        <button type="button" @click="merge">确定</button>
+        <button type="button" @click="cancelMerge">取消</button>
+    </template>
+    <template v-slot:btn>
+        <button type="button" @click="cancelMerge">确定</button>
+    </template>
+  </message-box>
     <Footer/>
   </div>
 </template>
@@ -25,6 +51,7 @@ import Footer from '../../components/Footer'
 import Header from '../../components/personal/header'
 import {IndexModel} from '../../utils/index'
 import {checkLogin} from '../../utils/token/toLogin'
+import messageBox from '../../components/msManage/yanMessageBox'
 const indexModel = new IndexModel()
 
 export default {
@@ -32,7 +59,8 @@ export default {
   components:{
     Footer,
     Header,
-    btn
+    btn,
+    messageBox
   },
   data(){
     return{
@@ -43,7 +71,20 @@ export default {
       ListItem: [
         '我的收藏','意见反馈','账户安全','关于我们'
       ],
-      key: true
+      key: true,
+      messageTip:{
+        showMessageBox:false,
+        btnNum:1,
+        type:false,
+        tip:'确定要退出账号吗?'
+      },
+      mergeBoxShow:false,
+      mergeBox:{
+        tip:'',
+        type:false,
+        btnNum:2
+      },
+      isMerge:false
     }
   },
   created(){
@@ -58,6 +99,13 @@ export default {
     this.setDealScroll(0)
     // this.setIsSelectStatus(false)
     this.$store.commit('setIsSelectStatus', false)
+    let account=JSON.parse(localStorage.getItem('ajaxData')).account;
+    let crmAccount=JSON.parse(localStorage.getItem('crmAccount')).crmAccount;
+    if(account!==crmAccount){
+      this.isMerge=true
+    }else{
+      this.isMerge=false
+    }
   },
   mounted() {
     console.log('个人中心页面：', this.$root.token)
@@ -116,16 +164,75 @@ export default {
         this.$router.push({path: '/aboutUs'});
         break;
         case 4 :
-        console.log('4');
+          console.log(4);
         //this.$router.push({path: '/dailyPaper'});
         break;
         default:
         return
       }
     },
+    crmMerge(){
+      let account=JSON.parse(localStorage.getItem('ajaxData')).account;
+      let crmAccount=JSON.parse(localStorage.getItem('crmAccount')).crmAccount;
+      let obj={
+        tip:`当前APP登录账号为${account}，CRM登录账号${crmAccount}，不一致，是否修改CRM登录账号为${account}，修改后使用${account}登录APP和CRM,是否确定修改？`,
+        btnNum:2,
+        type:false
+      }
+      this.mergeBox=obj;
+      this.mergeBoxShow=true;
+    },
     quit(){
+      this.messageTip.tip="确定要退出账号吗?";
+      this.messageTip.btnNum=2;
+      this.messageTip.showMessageBox=true; 
+    },
+    remove(){
       localStorage.clear()
       this.$router.push({path: '/login'})
+      this.messageTip.showMessageBox=false;
+    },
+    cancel(){
+      this.messageTip.showMessageBox=false;
+    },
+    merge(){
+      let obj=JSON.parse(localStorage.getItem('ajaxData'));
+      indexModel.merge({
+        userId: obj.userId,
+        account: obj.account
+      }).then((res) => {
+        if(res.status){
+          let tipObj={
+            tip:res.msg,
+            btnNum:1,
+            type:true
+          }
+          this.mergeBox=tipObj;
+          let crmAccount=JSON.stringify({
+            crmAccount:obj.account
+          })
+          localStorage.setItem("crmAccount", crmAccount);
+          //this.mergeBoxShow=true;
+        }else{
+          let tipObj={
+            tip:res.msg,
+            btnNum:1,
+            type:false
+          }
+          this.mergeBox=tipObj;
+        }
+       
+      })
+    },
+    cancelMerge(){
+      let account=JSON.parse(localStorage.getItem('ajaxData')).account;
+      let crmAccount=JSON.parse(localStorage.getItem('crmAccount')).crmAccount;
+      if(account!==crmAccount){
+        this.isMerge=true
+      }else{
+        this.isMerge=false
+      }
+      this.mergeBoxShow=false
     }
   },
   beforeRouteLeave(to,from,next){
@@ -133,6 +240,7 @@ export default {
       to.meta.isUseCache=false;
       next();
     }
+    to.meta.isUseCache=false;
     next();
     
   }
@@ -140,6 +248,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#tip{
+  padding:0;
+  margin:0;
+  word-break:break-all;
+  text-align:justify;
+}
 .personalMsg{
   background: #f8f8f8;
   min-height: 100vh;

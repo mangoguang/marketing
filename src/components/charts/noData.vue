@@ -8,10 +8,19 @@
 <!-- </keep-alive> -->
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+<script>
+import {waterMark} from '../../utils/msManage'
+export default {
+  mounted(){
+    waterMark('.noData')
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .noData{
   height: 100vw;
-  background: #f8f8f8;
+  background-color: #fff;
   text-align: center;
   // display: flex;
   img{

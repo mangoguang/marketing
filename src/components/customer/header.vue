@@ -16,7 +16,7 @@
         </form>
       </div>
       <!-- 模块选择 -->
-      <ul :style="{display: !navShow ? 'none' : 'flex'}">
+      <ul :style="{display: !navShow ? 'none' : 'flex'}" class="moduleNav">
         <li v-for="(item, index) in headerStatus"
         :key="`this.headerStatus${index}`">
           <button 
@@ -322,6 +322,7 @@ header{
       font-size: 4.26vw;
       color: #fff;
       text-align: center;
+      transition: all .1s;
     }
     button:first-child{
       // padding-left: 0;
@@ -345,6 +346,8 @@ header{
     }
     ul{
       display: flex;
+      //height:7.733vw;
+      align-items: center;
       margin-top: 3.26vw;
       justify-content: space-around;
       margin-bottom: 3.26vw;
@@ -422,8 +425,9 @@ header{
       margin: 0;
     }
     button.on{
-      font-size: 4.8vw;
+      //font-size: 4.8vw;
       color: #fff;
+      transform: scale(1.125);
       // border-bottom: .8vw solid #fff;
       // border-radius: .26vw;
       opacity: 0.8;
@@ -436,7 +440,9 @@ header{
   .bot-select, .bot-result, .bot-total{
     display: flex;
     justify-content: space-between;
-    line-height: 9vw;
+    //line-height: 9vw;
+    height:5.866vw;
+    align-items: center;
     color: #fff;
     button, p{
       // color: $fontCol;
@@ -445,6 +451,8 @@ header{
   }
   .bot-select {
     display: flex;
+    align-items: center;
+    height: 5.866vw;
     position: relative;
     justify-content: space-between;
     button:first-child, button:last-child {
@@ -474,7 +482,7 @@ header{
     position: absolute;
     height: 100vh;
     width: 100vw;
-    top: 6vw;
+    top: 7vw;
     left: -4.266vw;;
     background: rgba(0, 0, 0, .5);
     li{

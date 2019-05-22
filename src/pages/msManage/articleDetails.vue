@@ -18,7 +18,7 @@
 <script>
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
-import {removeItem, addItem, b64DecodeUnicode, changeImgStyle, changeVedioStyle} from '../../utils/msManage'
+import {removeItem, addItem, b64DecodeUnicode, changeImgStyle, changeVedioStyle,waterMark} from '../../utils/msManage'
 import Banner from '../../components/banner'
 import CollectBtn from '../../components/msManage/eggCollectBtn'
 export default {
@@ -43,6 +43,7 @@ export default {
   mounted() {
     // var a = document.getElementsByTagName("html")
     // console.log(a)
+    waterMark('.article',1);
   },
   methods: {
     //获取文章详情
@@ -106,6 +107,7 @@ export default {
   padding-top: 20vw;
   position: relative;
   box-sizing: border-box;
+  
   // width: 100vw;
   // overflow: hidden;
 

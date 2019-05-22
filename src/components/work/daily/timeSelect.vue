@@ -116,6 +116,7 @@ export default {
   .timeSelect{
     padding: 0 2vw;
     position: relative;
+    border-bottom: 1px solid #E1E1E1;
     li{
       line-height: 10.6vw;
       button{
@@ -133,10 +134,11 @@ export default {
         position: absolute;
         display: block;
         width: 6vw;
-        height: 1px;
+        height: 2px;
         bottom: 0;
         left: 50%;
         margin-left: -3vw;
+        bottom: -1vw;
         background: #007aff;
       }
     }

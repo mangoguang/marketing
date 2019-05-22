@@ -21,8 +21,8 @@
             <date-select v-bind="formInfo.time" :value="form.arrivalDate"  :showIcon="selectIcon"/>
           </li>
           <li>
-            <duration-select v-bind="formInfo.duration" :value="form.residentTime"  :showIcon="selectIcon"/>
-          </li>
+            <!-- <duration-select v-bind="formInfo.duration" :value="form.residentTime"  :showIcon="selectIcon"/>
+          </li> -->
           <li>
             <source-select v-bind="formInfo.source" :value="form.sourceName"  :showIcon="selectIcon"/>
           </li>
@@ -48,7 +48,7 @@
           </li>
         </ul>
         <ul class="list">
-          <li>
+          <li style="border-top:1px solid transparent;">
             <!-- <yan-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/> -->
             <yan-one-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/>
           </li>
@@ -133,7 +133,7 @@ export default {
         goodsList:[],
         shopName:'',
         arrivalDate:'',
-        residentTime:'',
+        // residentTime:'',
         sourceName:'',
         buyReasonName:'',
         stylePrefName:'',
@@ -261,7 +261,7 @@ export default {
           this.form.status=res.data.status;
           this.form.shopName=res.data.shopId===''?'未收集':this.getShopName(res.data.shopId);
           this.form.arrivalDate=res.data.arrivalDate;
-          this.form.residentTime=res.data.residentTime;
+          //this.form.residentTime=res.data.residentTime;
           this.form.sourceName=res.data.sourceName;
           this.form.buyReasonName=res.data.buyReasonName==''?'未收集':res.data.buyReasonName;
           this.form.stylePrefName=res.data.stylePrefName==''?'未收集':res.data.stylePrefName;
@@ -336,10 +336,10 @@ export default {
        let nobj;
        if(type==="2"){
          if(this.failReason===''){
-            mango.tip('战败原因不能为空');
+            mango.tip('流失原因不能为空');
             return;
           }else if(this.failReason.length>300){
-            mango.tip('战败原因不能超过300字');
+            mango.tip('流失原因不能超过300字');
             return;
           }else{
               let obj={
