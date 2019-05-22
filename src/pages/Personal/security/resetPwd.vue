@@ -1,9 +1,11 @@
 <template>
   <div class="resetPwd">
     <banner title='修改密码'/>
-    <errTips  class="errtips" 
+    <div class="errTips-box">
+       <errTips  class="errtips" 
               v-show="showTips"
               :errTips='errTips'/>
+    </div>
     <ul class="container">
       <li is='personalLi'
           class="personalLi" 
@@ -144,17 +146,20 @@ export default {
 </script>
 <style lang='scss' scoped>
 .resetPwd {
-  .errtips {
+  .errTips-box {
     position: absolute;
-    top: 16.4vw;
     left: 0;
-    z-index: 1;
-    -webkit-animation: run 2s;
-  }
-  @keyframes run {
-    0%   {top: 0;}
-    100%  {top: 16.4vw;}
-    // 100% {top: 0;}
+    .errtips {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      -webkit-animation: run 2s;
+    }
+    @keyframes run {
+      0%   {top: -16.4vw;}
+      100%  {top: 0;}
+    }
   }
   .container {
     position: relative;
