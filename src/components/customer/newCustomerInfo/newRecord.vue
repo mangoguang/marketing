@@ -117,9 +117,9 @@ export default {
     //初始化
     setInitData() {
       //this.$set(this.newCustomerInfo,'followDate',mango.indexTimeB(this.today)[1])
-      this.newCustomerInfo.followDate = mango.indexTimeB(this.today)[1]
-      this.$set(this.newCustomerInfo, 'followDate', mango.indexTimeB(value)[1])
-      //this.setNewCustomerInfo(this.newCustomerInfo)
+      //this.newCustomerInfo.followDate = mango.indexTimeB(this.today)[1]
+      this.$set(this.newCustomerInfo, 'followDate',mango.indexTimeB(new Date())[1])
+      this.setNewCustomerInfo(this.newCustomerInfo)
       this.setFollowVal('')
       this.setFollowTiming('')
     },
