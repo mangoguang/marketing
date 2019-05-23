@@ -165,13 +165,13 @@ export default {
     },
     //
     saveData() {
-      // let formdata = new FormData()
+      let formdata = new FormData()
       // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
       // for(let i = 0; i < file.length; i++){
       //   formdata.append('record.dataFile',file[i]);
       // }
 
-      let formdata = this.newCustomerInfo.dataFiles
+      //let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
         let blob=this.changeFormData(this.upLoadUrl)
         formdata.append("dataFile", blob, Date.now() + ".jpg");
