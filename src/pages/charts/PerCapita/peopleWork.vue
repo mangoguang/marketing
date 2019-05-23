@@ -169,7 +169,7 @@ export default {
           this.key1 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          //res.yAxisData = [mango.chartsBotTit(res)]
           // res.average = res.siblings
           _this.peopleWorkData = res
         }

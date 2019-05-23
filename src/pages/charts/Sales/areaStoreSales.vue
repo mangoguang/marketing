@@ -92,7 +92,7 @@ export default {
   methods:{
     getStoreSalesData() {
       let _this = this
-      mango.getAjax(this, 'area/shop/sales', {
+      mango.getAjax('/v1/app/report/area/shop/sales', {
         date: '2018-08',
         tenantId: this.ajaxData.tenantId
       }).then((res) => {

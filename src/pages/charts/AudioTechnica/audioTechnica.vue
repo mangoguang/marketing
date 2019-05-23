@@ -325,7 +325,7 @@ export default {
           this.key3 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          //res.yAxisData = [mango.chartsBotTit(res)]
           _this.achieveRatioTotalData = res
         }
       })
@@ -373,7 +373,7 @@ export default {
           this.key5 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          //res.yAxisData = [mango.chartsBotTit(res)]
           console.log('res',res);
           _this.orderFormTotalData = res
         }
