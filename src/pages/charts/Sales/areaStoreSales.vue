@@ -124,7 +124,7 @@ export default {
   // background:#f8f8f8;
 }
 .areaStoreBox{
-  background: #f8f8f8;
+  background:transparent;
   h4{
     margin: 0 2%;
     padding-left: 5vw;
