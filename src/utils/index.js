@@ -388,6 +388,14 @@ class IndexModel extends Request {
     return mango.getFormAjax('/v3/app/trackrecord/update',obj,key)
   }
 
+   /* 
+    个人模块  
+  */
+
+  //修改密码
+  changePassword(obj,key) {
+    return mango.getFormAjax('/v1/app/password',obj,key)
+  }
  
 }
 
