@@ -279,7 +279,8 @@ export default {
           this.key1 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          console.log('测试',res);
+          //res.yAxisData = [mango.chartsBotTit(res)]
           _this.storeGetInTotalData = res
         }
       })
