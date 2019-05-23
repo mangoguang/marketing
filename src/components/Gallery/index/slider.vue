@@ -1,11 +1,12 @@
 <template>
   <mt-swipe :class="myClass" :auto="auto" @change="handleChange" >
     <mt-swipe-item
-      :style="{'backgroundImage':'url('+ item.imgUrl + ')','backgroundSize': '100% 100%','width':'100%','height': '100%'}"
       v-for="(item,index) in list"
       :key="index"
       :data-type="index"
-    ></mt-swipe-item>
+    >
+    <img v-lazy="item.imgUrl" alt="" :key="item.imgUrl">
+    </mt-swipe-item>
   </mt-swipe>
 </template>
 
@@ -39,9 +40,15 @@ export default {
 </script>
 
 <style lang="scss">
+img{
+  width:100%;
+  height:100%;
+  display: block;
+}
 .tukuHome {
   width: 70.13vw;
   height: 21.33vw;
+  overflow: hidden;
   .mint-swipe-indicators {
     //right: 10%;
     left:initial;
@@ -64,6 +71,7 @@ export default {
 }
 
 .tukuDetails {
+  overflow: hidden;
   .mint-swipe-indicators {
     //right: 78%;
     left:4.266vw;
@@ -88,6 +96,7 @@ export default {
 }
 
 .home {
+  overflow: hidden;
   .mint-swipe-indicators {
     right:2.666vw;
     left:initial;
@@ -113,6 +122,7 @@ export default {
 }
 
 .msManage {
+  overflow: hidden;
   .mint-swipe-indicators {
     //right: 0;
     .mint-swipe-indicator {
