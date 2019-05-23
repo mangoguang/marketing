@@ -165,15 +165,16 @@ export default {
     },
     //
     saveData() {
-      let formdata = new FormData()
-      let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
-      for(let i = 0; i < file.length; i++){
-        formdata.append('record.dataFile',file[i]);
-      }
+      // let formdata = new FormData()
+      // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+      // for(let i = 0; i < file.length; i++){
+      //   formdata.append('record.dataFile',file[i]);
+      // }
 
-      // let formdata = this.newCustomerInfo.dataFiles
+      let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
-        this.changeFormData(this.upLoadUrl)
+        let blob=this.changeFormData(this.upLoadUrl)
+        formdata.append("dataFile", blob, Date.now() + ".jpg");
       }
       let obj = this.updateParams(this.newCustomerInfo)
       let arr = []
@@ -202,9 +203,10 @@ export default {
       }
       //Blob对象
       let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
+      return blob
       //FormData对象
-      let formdata = this.newCustomerInfo.dataFiles
-      formdata.append("dataFile", blob, Date.now() + ".jpg");
+      //let formdata = this.newCustomerInfo.dataFiles
+      //formdata.append("dataFile", blob, Date.now() + ".jpg");
     },
      //获取参数
      updateParams(obj) {
