@@ -3,7 +3,9 @@
     <div class="compile">编辑</div>
     <div class="personalMsg">
       <!-- <div class="via" @click="go"></div> -->
-      <img :src="via" alt="" class="via" @click="go">
+      <img v-if="ajaxData.sex===1" :src="via" alt="" class="via" @click="go">
+      <img v-else-if="ajaxData.sex===2" :src="svia" alt="" class="via" @click="go">
+      <img v-else :src="unknow" alt="" class="via" @click="go">
       <div class="personal-content">
         <div class="name">
           <span><span v-if="ajaxData.positionList">{{ajaxData.positionList.typeName}}</span>{{ajaxData.name}}</span>
@@ -35,7 +37,9 @@ export default {
       marginTop:'',
       ajaxData: {},
       shop: '',
-      via:'./static/images/avatar.png'
+      unknow:'./static/images/avatar.png',
+      svia:'./static/images/svia.png',
+      via:'./static/images/via.png'
     }
   },
   created() {
