@@ -21,7 +21,7 @@
       <h1>{{list.goodsName}}</h1>
       <div v-if="list.remark">
         <img src="../../../assets/imgs/trigon1.png" alt="">
-      <p >{{list.remark}}</p>
+      <p>{{list.remark}}</p>
       </div>
     </div>
   </div>
