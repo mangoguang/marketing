@@ -2,7 +2,7 @@
   <div class="m-right" ref="classfiyScroll">
     <div class="pictureLink">
       <router-link :to='{name:"recommend",query: {brand: listVal}}'>
-        <img :src="imgUrl" alt="">
+        <img v-lazy="imgUrl" alt="" :key="imgUrl">
       </router-link>
     </div>
     <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext" :myClass='"tukuHome"'/>
