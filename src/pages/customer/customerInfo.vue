@@ -13,7 +13,7 @@
     <div v-show="customerTabStatus[0].status">
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else style="margin-top:2.666vw;" >
-        <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
+        <newDescript :select='list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
@@ -136,15 +136,17 @@ export default {
     },
     //保存数据
     saveData() {
-      let formdata = new FormData()
+    /*  let formdata = new FormData()
       let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+      console.log('file',file);
       for(let i = 0; i < file.length; i++){
         formdata.append('record.dataFile',file[i]);
-      }
-
-      // let formdata = this.newCustomerInfo.dataFiles
+      } */
+ 
+      let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
-        this.changeFormData(this.upLoadUrl)
+        let blob=this.changeFormData(this.upLoadUrl);
+        formdata.append("dataFile", blob, Date.now() + ".jpg");
       }
       let obj = this.updateParams(this.newCustomerInfo)
       let arr = []
@@ -173,9 +175,11 @@ export default {
       }
       //Blob对象
       let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
+      return blob
       //FormData对象
-      let formdata = this.newCustomerInfo.dataFiles
-      formdata.append("dataFile", blob, Date.now() + ".jpg");
+      //let formdata = this.newCustomerInfo.dataFiles
+      //formdata.append("dataFile", blob, Date.now() + ".jpg");
+      //console.log('123',formdata.getAll('dataFile'))
     },
      //获取参数
      updateParams(obj) {

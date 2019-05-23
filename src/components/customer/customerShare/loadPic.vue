@@ -125,6 +125,7 @@ export default {
     //上传图片
     change(e) {
       let files = e.target.files || e.dataTransfer.files;
+      //console.log(files);
       if (!files.length) return;
       let size = Math.floor(files.size / 1024);
       if (size > 3 * 1024 * 1024) {

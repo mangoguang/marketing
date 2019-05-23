@@ -165,7 +165,7 @@ export default {
       if(!this.newCustomerInfo.provinceName){
         return;
       }
-      this.area=`${this.newCustomerInfo.provinceName} ${this.newCustomerInfo.cityName} ${this.newCustomerInfo.countryName}`;
+      this.area=`${this.newCustomerInfo.provinceName}${this.newCustomerInfo.cityName}${this.newCustomerInfo.countryName}`;
     },
     //编辑资料
     hasList() {
