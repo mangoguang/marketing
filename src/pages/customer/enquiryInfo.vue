@@ -28,7 +28,7 @@
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else>
         <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
-        <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
+        <btn @touchend.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
     <!-- 意向信息-->
@@ -182,14 +182,14 @@ export default {
         formdata.append(key,obj[key])
         arr.push(key)
       }
-      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+      indexModel.updateCustomer(formdata,arr,obj).then(res => {
         if(res.status) {
-          MessageBox.alert('更新成功').then(action => {
+           MessageBox.alert('更新成功').then(action => {
             this.editStatus = false
             this.getData()
           })
         }else {
-          MessageBox.alert('更新失败')
+           MessageBox.alert('更新失败')
         }
       })
     },
