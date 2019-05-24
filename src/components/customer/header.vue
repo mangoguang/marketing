@@ -154,7 +154,7 @@ export default {
       if(this.headerStatus[1].status) {
         this.setRightHeadTitle('订单交单日期')
       }else{
-        this.setRightHeadTitle('最新下单日期')
+        this.setRightHeadTitle('战败时间')
       }
     },
     // 显示右侧边栏

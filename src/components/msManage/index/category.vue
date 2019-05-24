@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss">
 .category {
-  width: 25%;
+  //width: 25%;
   margin-right: 7.466vw;
   .icon {
     width: 16vw;
@@ -49,6 +49,7 @@ export default {
     word-wrap: break-word;
     line-height: 1.4em;
     margin-top: 2vw;
+    white-space: nowrap;
   }
 }
 .category:last-child{
