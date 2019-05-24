@@ -271,6 +271,7 @@ export default {
       this.editStatus = false
       let shops = localStorage.getItem('shops')
       this.shops = JSON.parse(shops)
+      this.getStatus()
       this.getData()
       this.$route.meta.customerUseCache = false;  
     } 
