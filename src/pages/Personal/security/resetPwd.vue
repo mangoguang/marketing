@@ -17,10 +17,10 @@
           :icon='item.icon'
           :pwdChange='item.pwdChange'
           >
-          <input  type="password" 
+          <input  type="text" 
                   v-if="!item.hasInput" 
-                  :value="getOriginPwd()"
-                  readonly>
+                  v-model="originPassword"
+                  placeholder="请输入原登录密码">
       </li>
     </ul>
     <div class="pwdtips">
@@ -79,8 +79,22 @@ export default {
       showTips: false,
       errTips: '',
       changeSuc: false,
-      top: ''
+      top: '',
+      originPassword: ''
     };
+  },
+  watch : {
+    originPassword() {
+      //  const a  = this.originPassword.replace(/.(?!$)/g,"*");
+      //  console.log(a)
+        // clearTimeout(timer);
+
+        // var timer = setTimeout(function(){
+          // this.originPassword = (this.originPassword).replace(/^(\w){6,18}$/g,"*");
+        // }, 1000);
+        // console.log(this.originPassword)
+      
+    }
   },
   methods: {
     //获取原密码
@@ -199,6 +213,15 @@ export default {
     height: 11.7vw;
     font-size: 4vw;
     color: #363636;
+  }
+
+  input::-webkit-input-placeholder { /* WebKit browsers */
+    font-size: 4vw;
+    color: #909090;
+    padding: 0;
+    margin: 0;
+    width: 45vw;
+    height: 11.7vw;
   }
 } 
 </style>
