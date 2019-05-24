@@ -46,6 +46,7 @@ import Vue from 'vue'
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import {mapState, mapMutations} from 'vuex'
+import mango from "../../js";
 import {fliterItem} from '../../utils/gallery'
 import Search from "../../components/msManage/search/eggSearchInp";
 import PTopNav from "../../components/Gallery/productList/pTopNav";
@@ -103,7 +104,7 @@ export default {
   watch: {
     downListVal() {
       if(this.init) {
-        this.list = []
+        //this.list = []
         this.allLoaded = false
         this.showTips = false
         this.obj = this.filterParmas
@@ -113,7 +114,7 @@ export default {
     },
     filterVal() {
       if(this.init) {
-        this.list = []
+        //this.list = []
         this.allLoaded = false
         this.showTips = false
         this.obj = this.filterParmas
@@ -123,7 +124,7 @@ export default {
     },
     price() {
       if(this.init) {
-        this.list = []
+        //this.list = []
         this.allLoaded = false
         this.showTips = false
         this.obj = this.filterParmas
@@ -133,7 +134,7 @@ export default {
     },
     productNavlistVal() {
       if(this.init) {
-        this.list = []
+        //this.list = []
         this.allLoaded = false
         this.showTips = false
         this.obj = this.filterParmas
@@ -199,11 +200,16 @@ export default {
     },
     //请求数据
     filterData(obj) {
+     
       indexModel.fliterList(obj).then(res => {
         if(res.data) {
           this.allLoaded = false
           this.init = true
-          this.list = this.list.concat(res.data.list)
+          if(obj.page===1){
+            this.list=res.data.list;
+          }else{
+            this.list = this.list.concat(res.data.list)
+          }
           this.saveLimit()
           this.getProductLimit(this.productNavlistVal)
           this.listenScrollTop()

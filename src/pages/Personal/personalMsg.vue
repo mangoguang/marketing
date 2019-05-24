@@ -84,7 +84,9 @@ export default {
         type:false,
         btnNum:2
       },
-      isMerge:false
+      isMerge:false,
+      version:'',
+      deviceId:''
     }
   },
   created(){
@@ -109,6 +111,7 @@ export default {
   },
   mounted() {
     console.log('个人中心页面：', this.$root.token)
+    let that=this;
   },
   methods:{
     ...mapMutations([

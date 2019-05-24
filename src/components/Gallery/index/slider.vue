@@ -49,6 +49,7 @@ export default {
   width:100%;
   height:100%;
   display: block;
+  border-radius: 1.4vw;
 }
   .mint-swipe-indicators {
     //right: 10%;
@@ -77,6 +78,7 @@ export default {
   width:100%;
   height:100%;
   display: block;
+  border-radius: 1.4vw;
 }
   .mint-swipe-indicators {
     //right: 78%;
@@ -107,6 +109,7 @@ export default {
   width:100%;
   height:100%;
   display: block;
+  border-radius: 1.4vw;
 }
   .mint-swipe-indicators {
     right:2.666vw;
@@ -138,6 +141,7 @@ export default {
   width:100%;
   height:100%;
   display: block;
+  border-radius: 1.4vw;
 }
   .mint-swipe-indicators {
     //right: 0;

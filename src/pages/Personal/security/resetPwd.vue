@@ -17,10 +17,11 @@
           :icon='item.icon'
           :pwdChange='item.pwdChange'
           >
-          <input  type="text" 
+          <input  type="password" 
                   v-if="!item.hasInput" 
-                  v-model="originPassword"
-                  placeholder="请输入原登录密码">
+                  v-model="value"
+                  placeholder="请输入原登录密码"
+                  maxlength="18">
       </li>
     </ul>
     <div class="pwdtips">
@@ -80,21 +81,9 @@ export default {
       errTips: '',
       changeSuc: false,
       top: '',
-      originPassword: ''
+      value: '',
+      key: true
     };
-  },
-  watch : {
-    originPassword() {
-      //  const a  = this.originPassword.replace(/.(?!$)/g,"*");
-      //  console.log(a)
-        // clearTimeout(timer);
-
-        // var timer = setTimeout(function(){
-          // this.originPassword = (this.originPassword).replace(/^(\w){6,18}$/g,"*");
-        // }, 1000);
-        // console.log(this.originPassword)
-      
-    }
   },
   methods: {
     //获取原密码
@@ -130,6 +119,22 @@ export default {
     },
     //确定修改
     changeBtn() {
+      if(!this.key) {
+        return
+      }
+      this.key = false
+      const password = this.getOriginPwd()
+      if(this.value === password) {
+        this.comfirmChange()
+        this.key = true
+      }else {
+        this.errTips = '原登录密码错误'
+        this.showTips = true
+        this.hideTips()
+      }
+    },
+    //确认修改后再判断格式
+    comfirmChange() {
       if(this.onSamePwd()) {
         if(this.judgePwd(this.newVal)) {
           this.changePassword()
@@ -138,6 +143,12 @@ export default {
         this.errTips = '请输入相同的密码'
         this.showTips = true
       }
+    },
+    hideTips() {
+      setTimeout(() => {
+        this.showTips = false
+        this.key = true
+      }, 1500);
     },
     //修改成功
     comfirm() {
