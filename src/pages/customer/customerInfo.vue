@@ -14,7 +14,7 @@
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else style="margin-top:2.666vw;" >
         <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
-        <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
+        <btn @touchend.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
     <!-- 意向信息-->
@@ -136,13 +136,13 @@ export default {
     },
     //保存数据
     saveData() {
-      let formdata = new FormData()
-      let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
-      for(let i = 0; i < file.length; i++){
-        formdata.append('record.dataFile',file[i]);
-      }
+      // let formdata = new FormData()
+      // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+      // for(let i = 0; i < file.length; i++){
+      //   formdata.append('record.dataFile',file[i]);
+      // }
 
-      // let formdata = this.newCustomerInfo.dataFiles
+      let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
         this.changeFormData(this.upLoadUrl)
       }
@@ -152,14 +152,14 @@ export default {
         formdata.append(key,obj[key])
         arr.push(key)
       }
-      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+      indexModel.updateCustomer(formdata,arr,obj).then(res => {
         if(res.status) {
-          MessageBox.alert('更新成功').then(action => {
+           MessageBox.alert('更新成功').then(action => {
             this.editStatus = false
             this.getData()
           })
         }else {
-          MessageBox.alert('更新失败')
+           MessageBox.alert('更新失败')
         }
       })
     },
@@ -181,17 +181,17 @@ export default {
      updateParams(obj) {
       let tempObj = {}
       let temp = {
-        phone: obj.phone,
-        username: obj.username,
-        sex: obj.sex, 
-        birthday: obj.birthday,
-        age: obj.age,
-        qq:obj.qq,
-        weChat: obj.weChat,
-        duty: obj.duty,
-        remark: obj.remark,
-        customerId: this.$route.query.id,
-        orgId: obj.orgId || this.list.orgId
+        "phone": obj.phone,
+        "username": obj.username,
+        "sex": obj.sex, 
+        "birthday": obj.birthday,
+        "age": obj.age,
+        "qq":obj.qq,
+        "weChat": obj.weChat,
+        "duty": obj.duty,
+        "remark": obj.remark,
+        "customerId": this.$route.query.id,
+        "orgId": obj.orgId || this.list.orgId
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

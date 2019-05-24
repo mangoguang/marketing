@@ -121,7 +121,7 @@ export default class Common {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    // console.log('生成的sign字符串', str, token)
+    // console.log('生成的sign字符串', str,token)
     return sha1.hex(str + token)
   }
   getFormSign(obj, token, keys) {
@@ -132,8 +132,9 @@ export default class Common {
         str = str === '' ? `${keys[i]}=${obj.get(keys[i])}` : `${str}&${keys[i]}=${obj.get(keys[i])}`
       }
     }
+    console.log('str',str)
     // let [phone, feedbackInfo] = [obj.get('phone'), obj.get('feedbackInfo')]
-    console.log('生成的sign字符串', `${str}:${token}`)
+    // console.log('生成的sign字符串', `${str}:${token}`)
     return sha1.hex(`${str}${token}`)
   }
   getAjax(path, params, type) {
@@ -246,6 +247,7 @@ export default class Common {
         // }
       })
       .catch((error) => {
+        console.log(222,JSON.stringify(error))
         // console.log('请求失败！：', error.response, error.request)
         _this.loading('close')
         if (error.response) { // 如果服务器响应
@@ -272,13 +274,15 @@ export default class Common {
     })
   }
  
-  getFormAjax(path, data, keys) {
+  getFormAjax(path, data, keys, jsonData) {
     let _this = this
     let token = JSON.parse(localStorage.getItem('token'))
+    // console.log('token',token)
     return new Promise((resolve, reject) => {
       //let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
-      let sign = this.getFormSign(data, token.access_token,keys)
+      let sign = this.getSign(jsonData, token.access_token)
+      // console.log('sign',sign)
       // 显示加载动画
       this.loading('open')
        axios({
@@ -304,6 +308,7 @@ export default class Common {
       
     })
     .catch((error) => {
+      
       // console.log('请求失败！：', error.response, error.request)
       _this.loading('close')
       if (error.response) { // 如果服务器响应

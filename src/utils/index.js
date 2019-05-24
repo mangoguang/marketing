@@ -388,6 +388,11 @@ class IndexModel extends Request {
     return mango.getFormAjax('/v3/app/trackrecord/update',obj,key)
   }
 
+
+  //编辑客户
+  updateCustomer(obj,key,jsonData) {
+    return mango.getFormAjax('/v3/app/customer/update',obj,key,jsonData)
+  }
    /* 
     个人模块  
   */

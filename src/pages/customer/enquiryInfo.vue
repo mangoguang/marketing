@@ -165,13 +165,12 @@ export default {
     },
     //
     saveData() {
-      let formdata = new FormData()
-      let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
-      for(let i = 0; i < file.length; i++){
-        formdata.append('record.dataFile',file[i]);
-      }
-
-      // let formdata = this.newCustomerInfo.dataFiles
+      // let formdata = new FormData()
+      // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+      // for(let i = 0; i < file.length; i++){
+      //   formdata.append('record.dataFile',file[i]);
+      // }
+      let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
         this.changeFormData(this.upLoadUrl)
       }
@@ -181,14 +180,14 @@ export default {
         formdata.append(key,obj[key])
         arr.push(key)
       }
-      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+      indexModel.updateCustomer(formdata,arr,obj).then(res => {
         if(res.status) {
-          MessageBox.alert('更新成功').then(action => {
+           MessageBox.alert('更新成功').then(action => {
             this.editStatus = false
             this.getData()
           })
         }else {
-          MessageBox.alert('更新失败')
+           MessageBox.alert('更新失败')
         }
       })
     },
