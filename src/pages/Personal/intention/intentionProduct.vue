@@ -105,7 +105,7 @@ export default {
    .no-record{
       //padding-top:20vw;
       margin-top:20vw;
-      font-size: 2.4vw;
+      font-size:14px;
       text-align: center;
       padding:13.33vw 0;
     }

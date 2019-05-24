@@ -13,7 +13,7 @@
             </div>
           </div>
           <div class="list_right">
-            <img :src=" item.image" alt="" class="img">
+            <img v-lazy="item.image" alt="" class="img" :key="item.image">
           </div>
         </li>
       </ul>

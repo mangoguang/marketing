@@ -1,7 +1,7 @@
 <template>
     <div class="addAdress">
       <mybanner :title="title" style="background:#f8f8f8">
-        <button type="button" @click="close" style="color:#FF3B30">意向关闭</button>
+       <!--  <button type="button" @click="close" style="color:#FF3B30">意向关闭</button> -->
       </mybanner>
       <title-bar :text="titleModule.info">
          <button type="button"  @click="submit">保存</button>

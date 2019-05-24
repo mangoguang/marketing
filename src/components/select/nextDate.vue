@@ -2,7 +2,7 @@
   <li class="nextDate">
     <ul>
       <li is="customerLi"  :leftText="'下次跟进'" :icon="true" @click.native="selectTime">
-        <span :style="timeColor">{{turnDate(newCustomerInfo.nextDate) || '请选择日期'}}</span>
+        <span :style="timeColor">{{newCustomerInfo.nextDate || '请选择日期'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>

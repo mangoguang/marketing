@@ -191,6 +191,8 @@ export default class Common {
             }
           } else {
             this.tip('请求失败!')
+            //console.log(error.response)
+            //this.tip(error.response.msg)
           }
         } else if (error.request) {
           this.tip('网络异常!')
@@ -264,6 +266,8 @@ export default class Common {
             }
           } else {
             this.tip('请求失败!')
+            //console.log(error.response)
+            //this.tip(error.response.msg)
           }
         } else if (error.request) {
           this.tip('网络异常!')
@@ -324,7 +328,9 @@ export default class Common {
             toLogin()
           }
         } else {
+          //console.log(error.response)
           this.tip('请求失败!')
+          //this.tip(error.response.msg)
         }
       } else if (error.request) {
         this.tip('网络异常!')

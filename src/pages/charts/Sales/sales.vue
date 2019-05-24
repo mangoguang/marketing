@@ -130,7 +130,8 @@ export default {
           if (this[`${chartsName}Data`].series) {
             // 检测数据是否为空
             this.areaSalesShow = emptyData(this[`${chartsName}Data`].series)
-            chartsInit(this, chartsName, 'vertical', true)
+            //chartsInit(this, chartsName, 'vertical', true)
+            chartsInit(this, chartsName, 'horizontal', true)
             this.salchanrtDom2 = chanrtDom
           }
         }
@@ -169,7 +170,7 @@ export default {
           this.key1 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          //res.yAxisData = [mango.chartsBotTit(res)]
           // console.log(887799, res)
           _this.salesData = res
         }

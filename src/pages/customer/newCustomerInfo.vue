@@ -270,17 +270,22 @@ export default {
     //请求数据
     getData(formdata, arr) {
       mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
-        if(res.status) {
-          MessageBox.alert('保存成功！').then(action => {
-            this.$router.replace({path: '/customer'})
-            this.setFiles([]);
-            this.setPicVal([]);
-          })
+        if(res.code==0) {
+          if(res.status){
+            MessageBox.alert('保存成功！').then(action => {
+              this.$router.replace({path: '/customer'})
+              this.setFiles([]);
+              this.setPicVal([]);
+            })
+          }else{
+             MessageBox.alert('保存失败！')
+          }
+          
         }else{
-           MessageBox.alert('保存失败！')
+          MessageBox.alert(res.msg)
         }
       })/* .catch((reject) => {
-        MessageBox.alert('网络差,请重新操作');
+        MessageBox.alert(reject);
       }) */
     },
     //初始化数据
@@ -371,7 +376,7 @@ export default {
         'opportunity.arrivalDate':obj.arrivalDate || mango.indexTimeB(new Date())[1],
         'opportunity.deliverDate': obj.deliverDate,
         'opportunity.source': this.codeList.sourceCode || 'Natural',
-        'opportunity.residentTime': obj.residentTime,   //留店时长
+        //'opportunity.residentTime': obj.residentTime,   //留店时长
         'opportunity.stylePref': this.codeList.spCode,    //风格
         'opportunity.progress': this.codeList.pgCode,    //进度
         'opportunity.colorPref': this.codeList.colorCode,    //颜色偏好

@@ -2,7 +2,7 @@
   <li class="category">
     <div class="icon" :style="{background: color}">
       <!-- <img src="../../../assets/imgs/ms-policy.png" alt=""> -->
-      <img :src="list.image" alt="">
+      <img v-lazy="list.image" alt="" :key="list.image">
     </div>
     <div class="text">
       <p>{{ list.name }}</p>
@@ -50,5 +50,8 @@ export default {
     line-height: 1.4em;
     margin-top: 2vw;
   }
+}
+.category:last-child{
+  padding-right: 7.466vw;
 }
 </style>

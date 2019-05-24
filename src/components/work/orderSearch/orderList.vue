@@ -2,12 +2,12 @@
   <div class="orderList">
     <!-- <TopBar :topBarTitle="topbar" /> -->
     <OrderCentent
-    :list="orderArr" />
+    :list="orderArr"/>
   </div>
 </template>
 
 <script>
-import TopBar from "../../customer/topBar";
+import TopBar from"../../customer/topBar";
 import OrderCentent from "./orderCentent";
 export default {
   name: 'orderList',

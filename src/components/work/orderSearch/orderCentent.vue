@@ -11,6 +11,7 @@
       :key="`orderList${index}`"
       @click.native="toOrderDetail(item.orderId)"
       :obj="item"></li>
+      <li v-if='orderList.length<=0' class='no-record'>暂无记录</li>
     </Loadmore>
   </ul>
 </template>
@@ -118,7 +119,10 @@ export default {
     height: 100vh;
     width: 100vw;
     overflow-x: hidden;
-
+  }
+  .no-record{
+    text-align: center;
+    padding:10px 0;
   }
 </style>
 

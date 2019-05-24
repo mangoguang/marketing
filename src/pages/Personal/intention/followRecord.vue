@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       form:{
-       follow:'',
+       follow:'到店沟通',
        time:'',
        residentTime:'',
        report:'',
@@ -207,7 +207,7 @@ export default {
     if(!value){
       this.form.residentTime='0分钟';
     }else{
-       this.form.residentTime=value;
+      this.form.residentTime=value;
     }
    
    },
@@ -223,8 +223,8 @@ export default {
         vm.setFiles([]);
         vm.setPicVal([]);
         vm.isClear=true;
-        vm.form.follow='';
-        vm.form.time='';
+        vm.form.follow='到店沟通';
+        vm.form.time=mango.indexTimeB(new Date())[1];
         vm.form.residentTime='';
         vm.form.nextTime='';
         vm.form.report='';

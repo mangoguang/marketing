@@ -3,7 +3,7 @@
     <ul class="newRecord">
       <li is="followSelect" @followWayChange="followWayChange" ></li>
       <li class="timeLi" is="customerLi" :start="'*'" :leftText="'跟进时间'" :icon="true" @click.native="selectFollowTime">
-        <span :style="color">{{turnDate(newCustomerInfo.followDate)|| turnDate(setDay)}}</span>
+        <span>{{newCustomerInfo.followDate}}</span>
       </li>
       <li is="leaveStoreSelect" :start="true" :text='"跟进时长"' :type='true' @leaveStoreChange2="leaveStoreChange2"></li>
       
@@ -73,20 +73,20 @@ export default {
     upLoad,
     nextDate
   },
-  props: ['btns'],
+  props: ['btns','fromName'],
   data(){
     return{
       today: new Date(),
       setDay: '',
       path:this.$route.fullPath,
-      isClear:true,
-      color:'color:#363636'
+      isClear:true
     }
   },
   watch: {
       //初始进来的时候初始化数据
     fromName() {
       if(this.fromName === "NewCustomer") {
+        console.log('record')
         this.setInitData()
       }
     }
@@ -117,10 +117,11 @@ export default {
     //初始化
     setInitData() {
       //this.$set(this.newCustomerInfo,'followDate',mango.indexTimeB(this.today)[1])
-      this.newCustomerInfo.followDate = mango.indexTimeB(this.today)[1]
-      this.$set(this.newCustomerInfo, 'followDate', mango.indexTimeB(value)[1])
-      //this.setNewCustomerInfo(this.newCustomerInfo)
-      this.setFollowVal('')
+      //this.newCustomerInfo.followDate = this.setDay 
+      this.$set(this.newCustomerInfo, 'followDate',mango.indexTimeB(this.today)[1])
+      this.$set(this.newCustomerInfo, 'source2','到店沟通')
+      this.setNewCustomerInfo(this.newCustomerInfo)
+      this.setFollowVal('到店沟通')
       this.setFollowTiming('')
     },
    

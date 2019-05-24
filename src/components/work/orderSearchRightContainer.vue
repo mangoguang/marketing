@@ -240,6 +240,7 @@ export default {
         res = res.data
         if (res) {
           this.setOrderData(res)
+          
         }
       }).catch((reject) => {
         if (reject === 510) {
