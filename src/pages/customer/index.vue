@@ -60,7 +60,6 @@ export default {
   created() {
     checkLogin()
     this.checkLogin();
-    // this.test()
   },
   methods: {
     checkLogin() {
