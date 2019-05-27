@@ -3,7 +3,7 @@
       <label>
           <span>{{label}}</span>
           <input :id="id" type="text" :value="value" :style="color" 
-          :readonly='readonly' :placeholder="placeholder" @input="$emit('input',$event.target.value)"
+          :readonly='readonly' :placeholder="placeholder"  @input="$emit('input',$event.target.value)"
           :maxlength='maxlength'>
       </label>
       <div class="icon-right" v-if="showIcon">
@@ -20,7 +20,6 @@ export default {
 
     }
   }
- 
 }
 </script>
 

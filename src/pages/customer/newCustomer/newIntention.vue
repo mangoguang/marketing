@@ -127,7 +127,7 @@ export default {
           formdata.append(key,obj[key])
           arr.push(key)
         }
-        mango.getFormdataAjax('/v3/app/opportunity/update', formdata, arr).then((res) => {
+        mango.getFormAjax('/v3/app/opportunity/update', formdata, arr,obj).then((res) => {
           if(res.status) {
             MessageBox.alert('保存成功！').then(action => {
               this.$router.go(-1)
