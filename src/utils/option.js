@@ -63,9 +63,10 @@ export default function(data, vertical, salesVal, title) {
             position: seriesPosition
           }
         },
+        barWidth: '20',
         //barMaxWidth:'15',
         //barWidth:'15',
-        //barGap:'45',
+        // barGap:'5',
         //barCategoryGap:'45',
         data: salesVal ? item.data.map((key) => {
           let temp = key
