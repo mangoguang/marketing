@@ -10,8 +10,8 @@ export default class Common {
     // this.port = 'https://op.derucci.com'
     //  this.port = 'http://10.11.8.250'
    // this.port = 'http://172.16.10.107'
-    // this.port = "http://10.11.8.7"
-    this.port = "https://mobiletest.derucci.net/cd-sys-web"
+    this.port = "http://10.11.8.7"
+    // this.port = "https://mobiletest.derucci.net/cd-sys-web"
     // this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
@@ -122,7 +122,7 @@ export default class Common {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    // console.log('生成的sign字符串', str,token)
+    // console.log('生成的sign字符串', str)
     return sha1.hex(str + token)
   }
   getFormSign(obj, token, keys) {
@@ -133,7 +133,7 @@ export default class Common {
         str = str === '' ? `${keys[i]}=${obj.get(keys[i])}` : `${str}&${keys[i]}=${obj.get(keys[i])}`
       }
     }
-    console.log('str',str)
+    // console.log('str',str)
     // let [phone, feedbackInfo] = [obj.get('phone'), obj.get('feedbackInfo')]
     // console.log('生成的sign字符串', `${str}:${token}`)
     return sha1.hex(`${str}${token}`)
@@ -288,7 +288,7 @@ export default class Common {
       let url = `${this.port}${path}`
       
       let sign = this.getSign(jsonData || data, token.access_token)
-      // console.log('sign',sign)
+      console.log('sign',sign)
       // 显示加载动画
       this.loading('open')
        axios({

@@ -389,7 +389,7 @@ class IndexModel extends Request {
   }
 
 
-  //编辑客户
+  //编辑客户//新建客户
   updateCustomer(obj,key,jsonData) {
     return mango.getFormAjax('/v3/app/customer/update',obj,key,jsonData)
   }

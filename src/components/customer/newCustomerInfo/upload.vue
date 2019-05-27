@@ -111,21 +111,25 @@ export default {
     },
     //删除图片
     delImg(key,i) {
-      // if(this.imgs && this.imgs.length) {
-      //   this.$delete(this.imgs, key);
-      //   this.$set(this.newCustomerInfo,'imgs',this.imgs)
-      // }else {
-        this.$delete(this.newCustomerInfo.imgs,key)
+   
+
+      // const imgs = this.newCustomerInfo.imgs
+      this.$delete(this.newCustomerInfo.imgs,key)
+      // const imgArr = []
+      // for(key in imgs) {
+      //   imgArr.push(img[key])
       // }
-      let formdata = this.newCustomerInfo.dataFiles
-      //获取删除后的formdata
-      let temp = this.getArr(i,formdata.getAll('record.dataFile'))
-      formdata.delete('record.dataFile')
-      temp.forEach(item => {
-        formdata.append('record.dataFile', item)
-      });
-      this.newCustomerInfo.dataFiles = formdata
-      this.newCustomerInfo.imgLen --;
+      // let temp = this.getArr(i,imgArr)
+
+      // let formdata = this.newCustomerInfo.dataFiles
+      // //获取删除后的formdata
+      // let temp = this.getArr(i,formdata.getAll('record.dataFile'))
+      // formdata.delete('record.dataFile')
+      // temp.forEach(item => {
+      //   formdata.append('record.dataFile', item)
+      // });
+      // this.newCustomerInfo.dataFiles = formdata
+      this.newCustomerInfo.imgLen -= 1
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     //
@@ -149,7 +153,7 @@ export default {
         reader.onload = (e) => {
           // console.log('事件原对象：', e)
           this.imgUrl = e.target.result
-          this.changeFormData(this.imgUrl)
+          // this.changeFormData(this.imgUrl)
         };
       }
     },
