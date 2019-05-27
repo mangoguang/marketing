@@ -173,8 +173,8 @@ export default {
       axios({
         method: 'post',
         //url:'https://agency.derucci.com/oauth/token',
-        //url: 'http://10.11.8.7/oauth/token',
-        url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
+        url: 'http://10.11.8.7/oauth/token',
+        //url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
         transformRequest: [function(data) {
           let ret = ''

@@ -94,7 +94,8 @@ export default {
   overflow-x: hidden;
   position: relative;
   box-sizing: border-box;
- 
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   .btnBox{
     position:relative;
     span{

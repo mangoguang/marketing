@@ -461,10 +461,10 @@ export default {
         mango.tip('请选择地址,如无地址请先新建地址');
         return false;
       }
-      if(this.form.deliverDate===''){
+      /* if(this.form.deliverDate===''){
         mango.tip('需求日期不能为空');
         return false;
-      }
+      } */
       var reg=/^\d{1,}\.{0,1}\d{0,}$/;
       if(this.form.budget!==''&&!reg.test(this.form.budget)){
         mango.tip('预算金额必须为数字');
@@ -565,7 +565,8 @@ export default {
               // history.go(this.go);
               //this.$router.go(this.go);
               //this.form.goodsList=[];
-              this.$router.go(-1);
+              //this.$router.go(-1);
+              this.$router.replace({name:'intention',params:{opportunityId:this.$router.params.opportunityId}})
               //this.clearKeepAlive();
             }else{
               mango.tip(res.msg);
