@@ -19,8 +19,9 @@
           >
           <input  type="password" 
                   v-if="!item.hasInput" 
-                  :value="getOriginPwd()"
-                  readonly>
+                  v-model="value"
+                  placeholder="请输入原登录密码"
+                  maxlength="18">
       </li>
     </ul>
     <div class="pwdtips">
@@ -79,7 +80,9 @@ export default {
       showTips: false,
       errTips: '',
       changeSuc: false,
-      top: ''
+      top: '',
+      value: '',
+      key: true
     };
   },
   methods: {
@@ -116,6 +119,22 @@ export default {
     },
     //确定修改
     changeBtn() {
+      if(!this.key) {
+        return
+      }
+      this.key = false
+      const password = this.getOriginPwd()
+      if(this.value === password) {
+        this.comfirmChange()
+        this.key = true
+      }else {
+        this.errTips = '原登录密码错误'
+        this.showTips = true
+        this.hideTips()
+      }
+    },
+    //确认修改后再判断格式
+    comfirmChange() {
       if(this.onSamePwd()) {
         if(this.judgePwd(this.newVal)) {
           this.changePassword()
@@ -124,6 +143,12 @@ export default {
         this.errTips = '请输入相同的密码'
         this.showTips = true
       }
+    },
+    hideTips() {
+      setTimeout(() => {
+        this.showTips = false
+        this.key = true
+      }, 1500);
     },
     //修改成功
     comfirm() {
@@ -199,6 +224,15 @@ export default {
     height: 11.7vw;
     font-size: 4vw;
     color: #363636;
+  }
+
+  input::-webkit-input-placeholder { /* WebKit browsers */
+    font-size: 4vw;
+    color: #909090;
+    padding: 0;
+    margin: 0;
+    width: 45vw;
+    height: 11.7vw;
   }
 } 
 </style>

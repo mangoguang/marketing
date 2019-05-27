@@ -21,11 +21,11 @@
       <template v-if='icon === "eye"' >
         <img  class="eye"
               src="../../assets/imgs/cansee.png" 
-              v-show="eye"
+              v-show="!eye"
               @click="changeEye" >
         <img  class="eye"
               src="../../assets/imgs/nosee.png" 
-              v-show='!eye'
+              v-show='eye'
               @click="changeEye" >
       </template>
 

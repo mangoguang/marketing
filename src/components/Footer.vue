@@ -82,6 +82,7 @@ export default {
       if(this._localAjax() && this._localAjax().typename) {
         this.status = this._localAjax().typename === 'boss'? 'true' : 'false'
       }
+      console.log('status',this.status)
     },
     pingbi(){
       alert('敬请期待！！！')
