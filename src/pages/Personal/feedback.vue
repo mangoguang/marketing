@@ -79,14 +79,18 @@ export default {
     submit(){
       if(this.valid()){ 
            let f=new FormData();
-          f.append('phone',this.phone);
-          console.log(f.get('phone'));
-          f.append('feedbackInfo',this.remark);
-          console.log(f.get('feedbackInfo'));
-           for(let i=0;i<this.Files.length;i++){
-            f.append('dataFile',this.Files[i]);
+          if(this.Files.length>0){
+            for(let i=0;i<this.Files.length;i++){
+              f.append('dataFile',this.Files[i]);
+            }
           }
-           indexModel.feedback(f,['phone','feedbackInfo']).then(res => {
+          let obj=this.updateParams()
+          let keys=[];
+          for(let key in obj){
+            f.append(key,obj[key])
+            keys.push(key)
+          }
+           indexModel.feedback(f,keys,obj).then(res => {
             if(res.code===0){
               this.messageTip.tip=res.msg;
               this.messageTip.showMessageBox=true;
@@ -110,6 +114,19 @@ export default {
       }
     
      
+    },
+    updateParams(){
+      let tempObj={};
+      let temp={
+        'phone':this.phone,
+        'feedbackInfo':this.remark
+      }
+      for(let key in temp){
+        if(temp[key]||temp[key]===0){
+          tempObj[key]=temp[key]
+        }
+      }
+      return tempObj
     },
     cancel(){
       this.messageTip.showMessageBox=false;

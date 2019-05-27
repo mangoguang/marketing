@@ -327,8 +327,8 @@ class IndexModel extends Request {
     return mango.getAjax('/v2/app/address/status',obj,'post')
   }
   //保存反馈信息
-  feedback(obj,key){
-    return mango.getFormAjax('/v2/api/feedback',obj,key)
+  feedback(obj,key,jsonData){
+    return mango.getFormAjax('/v2/api/feedback',obj,key,jsonData)
     //return mango.port+'/v2/app/feedback';
   }
   //保存反馈信息
