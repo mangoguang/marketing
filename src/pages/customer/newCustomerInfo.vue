@@ -277,8 +277,8 @@ export default {
     //请求数据
     getData(formdata, arr, jsonData) {
       indexModel.updateCustomer(formdata,arr,jsonData).then(res => {
-          console.log('res',res)
          if(res.code == 0) {
+          // mango.loading('close')
           if(res.status){
             MessageBox.alert('保存成功！').then(action => {
               this.$router.replace({path: '/customer'})
