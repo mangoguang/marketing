@@ -151,18 +151,20 @@ export default {
    update(){
       if(this.valid()){
         let formData=new FormData();
-        formData.append('opportunity.oppId',this.oppId);
-        formData.append('record.source',this.form.follow);
-        formData.append('record.residentTime',this.form.residentTime);
-        formData.append('record.followDate',this.form.time);
-        formData.append('record.nextDate',this.form.nextTime);
-        formData.append('record.situation',this.form.report);
-        formData.append('record.plan',this.form.plan);
-        for(let i=0;i<this.Files.length;i++){
-          formData.append('record.dataFile',this.Files[i]);
+        if(this.Files.length>0){
+          for(let i=0;i<this.Files.length;i++){
+              formData.append('record.dataFile',this.Files[i]);
+          }
         }
-        let key=['opportunity.oppId','record.source','record.residentTime','record.followDate','record.nextDate','record.situation','record.plan'];
-        indexModel.updateTrackrecord(formData,key).then(res => {
+        let obj=this.updateParams(this.form);
+        let keys=[];
+        for(let key in obj){
+          formData.append(key,obj[key])
+          keys.push(key)
+        }
+        console.log(keys);
+        console.log(obj);
+        indexModel.updateTrackrecord(formData,keys,obj).then(res => {
           if(res.code===0){
             mango.tip("提交成功");
             this.setFiles([]);
@@ -192,6 +194,24 @@ export default {
         })
       }
      
+   },
+   updateParams(obj){
+    let tempObj={};
+    let temp={
+      'opportunity.oppId':this.oppId,
+      'record.source':obj.follow,
+      'record.residentTime':obj.residentTime,
+      'record.followDate':obj.time,
+      'record.nextDate':obj.nextTime,
+      'record.situation':obj.report,
+      'record.plan':obj.plan
+    }
+    for(let key in temp){
+      if(temp[key]||temp[key]===0){
+        tempObj[key]=temp[key]
+      }
+    }
+    return tempObj   
    },
    //选择更新跟进时间
    updateTime(value,anotherVal){

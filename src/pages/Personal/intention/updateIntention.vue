@@ -74,7 +74,7 @@
          <title-bar :text="titleModule.report">
            <!-- <button type="button" @click="addRecord" >添加记录</button> -->
          </title-bar>
-         <record-pannel :recordList="form.recordList"/>
+         <record-pannel :recordList="recordList"/>
       </div>
       <p class="last">到底啦</p>
       <yan-layer-prompt v-if="isPrompt"  v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
@@ -132,9 +132,9 @@ export default {
         argreeDiscount:'',    //协议折扣，例：80（百分之80折扣）
         remark:'',
         urgency:'',   //是否紧急
-        level:'A',   //等级
-        recordList:[]
+        level:'A'   //等级
       },
+      recordList:[],
       isFirstEnter:false,
       goodsValue:'',
       shopName:'',
@@ -382,7 +382,7 @@ export default {
             this.argreeDiscountTxt=0;
           }
           this.form.level=res.data.level===''?"A":res.data.level;
-          this.form.recordList=res.data.recordList;
+          this.recordList=res.data.recordList;
           if(res.data.urgency){
             this.urgency="是";
             this.form.urgency=res.data.urgency?'true':'false';
@@ -507,72 +507,63 @@ export default {
     },
     submit(){
      if(this.valid()){
-       console.log("oppid",this.form.oppId)
-        let Akey=[];
         let form=new FormData();
-        form.append('customerId',this.customerId);
-        form.append('opportunity.oppId',this.form.oppId);
-         
-        if(this.form.goodsList.length>0){
-          for(let i=0;i<this.form.goodsList.length;i++){
-             form.append(`opportunity.goodsList[${i}].goodsId`,this.form.goodsList[i].goodsId);
-             form.append(`opportunity.goodsList[${i}].quantity`,this.form.goodsList[i].quantity);
-             Akey.push(`opportunity.goodsList[${i}].goodsId`);
-             Akey.push(`opportunity.goodsList[${i}].quantity`);
-          }
+        let obj=this.updateParams(this.form);
+        console.log('obj',obj)
+        let keys=[];
+        for(let key in obj){
+          form.append(key,obj[key])
+          keys.push(key)
         }
-        form.append('opportunity.addressId',this.form.addressId);
-        form.append('opportunity.shopId',this.form.shopId);
-        form.append('opportunity.arrivalDate',this.form.arrivalDate);
-        form.append('opportunity.deliverDate',this.form.deliverDate);
-        //form.append('opportunity.residentTime',this.form.residentTime);
-        form.append('opportunity.source',this.form.source);
-        form.append('opportunity.stylePref',this.form.stylePref);
-        form.append('opportunity.progress',this.form.progress);
-        form.append('opportunity.colorPref',this.form.colorPref);
-        form.append('opportunity.competingGoods',this.form.competingGoods);
-        form.append('opportunity.buyReason',this.form.buyReason);
-        form.append('opportunity.budget',this.form.budget);
-        form.append('opportunity.depositPaid',this.form.depositPaid);
-        form.append('opportunity.argreeDiscount',this.form.argreeDiscount);
-        form.append('opportunity.remark',this.form.remark);
-        form.append('opportunity.urgency',this.form.urgency);
-        form.append('opportunity.level',this.form.level);
-
-        /* let Bkey=['customerId','opportunity.oppId','opportunity.addressId','opportunity.shopId','opportunity.arrivalDate',
-        'opportunity.deliverDate','opportunity.residentTime','opportunity.source','opportunity.stylePref','opportunity.progress',
-        'opportunity.colorPref','opportunity.competingGoods','opportunity.buyReason','opportunity.budget','opportunity.depositPaid',
-        'opportunity.argreeDiscount','opportunity.remark','opportunity.urgency','opportunity.level']; */
-        let Bkey=['customerId','opportunity.oppId','opportunity.addressId','opportunity.shopId','opportunity.arrivalDate',
-        'opportunity.deliverDate','opportunity.source','opportunity.stylePref','opportunity.progress',
-        'opportunity.colorPref','opportunity.competingGoods','opportunity.buyReason','opportunity.budget','opportunity.depositPaid',
-        'opportunity.argreeDiscount','opportunity.remark','opportunity.urgency','opportunity.level'];
-        let key=[...Akey,...Bkey];
-        let lastKey=[];
-        for(let i=0;i<key.length;i++){
-          if(form.get(key[i])!==''){
-            lastKey.push(key[i]);
-          }else{
-            form.delete(key[i]);
-          }
-        }
-        //console.log(lastKey);
-        indexModel.updateOpportunity(form,[...lastKey]).then(res => {
+        indexModel.updateOpportunity(form,keys,obj).then(res => {
             if(res.code==0){
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              // history.go(this.go);
-              //this.$router.go(this.go);
-              //this.form.goodsList=[];
-              //this.$router.go(-1);
-              this.$router.replace({name:'intention',params:{opportunityId:this.$router.params.opportunityId}})
-              //this.clearKeepAlive();
+              this.$router.replace({name:'intention',params:{opportunityId:this.form.oppId}})
             }else{
               mango.tip(res.msg);
             }
         })
      }
+    },
+    updateParams(obj){
+      let tempObj={};
+      if(obj.goodsList.length>0){
+          for(let i=0;i<obj.goodsList.length;i++){
+             this.$set(tempObj,`opportunity.goodsList[${i}].goodsId`,obj.goodsList[i].goodsId);
+             this.$set(tempObj,`opportunity.goodsList[${i}].quantity`,obj.goodsList[i].quantity);
+          }
+      }
+      let temp={
+      'customerId':this.customerId,
+      'opportunity.oppId':obj.oppId,
+      'opportunity.addressId':obj.addressId,
+      'opportunity.shopId':obj.shopId,
+      'opportunity.arrivalDate':obj.arrivalDate,
+      'opportunity.deliverDate':obj.deliverDate,
+      //'opportunity.residentTime':obj.residentTime,
+      'opportunity.source':obj.source,
+      'opportunity.stylePref':obj.stylePref,
+      'opportunity.progress':obj.progress,
+      'opportunity.colorPref':obj.colorPref,
+      'opportunity.competingGoods':obj.competingGoods,
+      'opportunity.buyReason':obj.buyReason,
+      'opportunity.budget':obj.budget,
+      'opportunity.depositPaid':obj.depositPaid,
+      'opportunity.argreeDiscount':obj.argreeDiscount,
+      'opportunity.remark':obj.remark,
+      'opportunity.urgency':obj.urgency,
+      'opportunity.level':obj.level
+      }
+      //console.log('temp',temp);
+      for(let key in temp){
+        if(temp[key]||temp[key]===0){
+          tempObj[key]=temp[key]
+        }
+      }
+      //console.log(tempObj);
+      return tempObj
     },
     layerUpdate(type){
     if(type===''){

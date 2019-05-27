@@ -369,8 +369,8 @@ class IndexModel extends Request {
     })
   }
   //更新意向
-  updateOpportunity(obj,key){
-    return mango.getFormAjax('/v3/app/opportunity/update',obj,key)
+  updateOpportunity(obj,key,jsonData){
+    return mango.getFormAjax('/v3/app/opportunity/update',obj,key,jsonData)
   }
 
   //获取意向详情
@@ -384,8 +384,8 @@ class IndexModel extends Request {
   }
 
   //新建跟踪记录
-  updateTrackrecord(obj,key){
-    return mango.getFormAjax('/v3/app/trackrecord/update',obj,key)
+  updateTrackrecord(obj,key,jsonData){
+    return mango.getFormAjax('/v3/app/trackrecord/update',obj,key,jsonData)
   }
 
 

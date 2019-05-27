@@ -288,7 +288,7 @@ export default class Common {
       let url = `${this.port}${path}`
       
       let sign = this.getSign(jsonData || data, token.access_token)
-      // console.log('sign',sign)
+      console.log('sign',sign)
       // 显示加载动画
       this.loading('open')
        axios({
