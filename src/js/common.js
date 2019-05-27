@@ -12,7 +12,7 @@ export default class Common {
    // this.port = 'http://172.16.10.107'
     // this.port = "http://10.11.8.7"
     this.port = "https://mobiletest.derucci.net/cd-sys-web"
-    //this.port = 'https://agency.derucci.com/'
+    // this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
     // this.port = 'http://10.11.8.181/'
@@ -280,7 +280,6 @@ export default class Common {
   }
  
   getFormAjax(path, data, keys, jsonData) {
-    let _this = this
     let token = JSON.parse(localStorage.getItem('token'))
     // console.log('token',token)
     return new Promise((resolve, reject) => {
@@ -294,7 +293,7 @@ export default class Common {
        axios({
         method: 'post',
         //async: false,
-        timeout: 30000,
+        timeout: 3000,
         url: url,
         data:data,
          headers: {
@@ -304,43 +303,40 @@ export default class Common {
         } 
       })
       .then((res) => {
-        _this.loading('close')
+        this.loading('close')
         if (res.data) {
           resolve(res.data)
         } else {
           resolve(false)
         }
       })
-      
-    })
-    .catch((error) => {
-      
-      // console.log('请求失败！：', error.response, error.request)
-      _this.loading('close')
-      if (error.response) { // 如果服务器响应
-        if (error.response.status === 510) {
-          console.log('非法令牌，需要刷新。', token)
-          // 检测token是否存在
-          if (token.access_token && token.access_token.length < 48) { // 有效token
-            console.log('开始刷新令牌')
-            refreshToken.call(this).then(res => {
-              reject(510)
-            })
+      .catch((error) => {
+        // console.log('请求失败！：', error.response, error.request)
+        this.loading('close')
+        if (error.response) { // 如果服务器响应
+          if (error.response.status === 510) {
+            console.log('非法令牌，需要刷新。', token)
+            // 检测token是否存在
+            if (token.access_token && token.access_token.length < 48) { // 有效token
+              console.log('开始刷新令牌')
+              refreshToken.call(this).then(res => {
+                reject(510)
+              })
+            } else {
+              toLogin()
+            }
           } else {
-            toLogin()
+            //console.log(error.response)
+            this.tip('请求失败!')
+            //this.tip(error.response.msg)
           }
+        } else if (error.request) {
+          this.tip('网络异常!')
         } else {
-          //console.log(error.response)
-          this.tip('请求失败!')
-          //this.tip(error.response.msg)
+          this.tip('网络异常!')
         }
-      } else if (error.request) {
-        this.tip('网络异常!')
-      } else {
-        this.tip('网络异常!')
-      }
+      })
     })
-    
   }
   // getAjax(_vue, port, params, pathVersion,type) {
   //   let _this = this
