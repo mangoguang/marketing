@@ -7,7 +7,7 @@
           <p class="iconCharP">首页</p>
         </router-link>
       </li>
-      <li id="2" v-if="status">
+      <li id="2" v-if="_localAjax().typename === 'Dealer Boss'">
          <router-link to="/ReportForms" replace>
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
@@ -22,24 +22,32 @@
         </div> -->
       </li>
       <li id="3" v-else>
-        <router-link to="/Customer" @click.native="changeActive" replace>
-          <div class="iconSalary"></div>
-          <p class="iconCharP">客户</p>
-        </router-link>
-       <!--  <a href="javascript:;" @click="pingbi">
-          <div class="iconSalary"></div>
-          <p class="iconCharP">客户</p>
-        </a> -->
+        <template>
+          <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || _localAjax().typename === 'Store Manager'"
+                        to="/Customer" @click.native="changeActive" replace>
+            <div class="iconSalary"></div>
+            <p class="iconCharP">客户</p>
+          </router-link>
+           <a href="javascript:;" @click="pingbi" v-else>
+            <div class="iconSalary"></div>
+            <p class="iconCharP">客户</p>
+          </a>
+        </template>
       </li>
       <li id="4" >
-        <router-link to="/work" @click.native="changeActive" replace>
+        <template>
+        <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
+                      _localAjax().typename === 'Store Manager' || 
+                      _localAjax().typename === 'Dealer Boss' "
+                      to="/work" @click.native="changeActive" replace>
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>
         </router-link>
-        <!-- <a  href="javascript:;" @click="pingbi">
+        <a  href="javascript:;" @click="pingbi" v-else>
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>
-        </a> -->
+        </a>
+        </template>
       </li>
       <li id="5">
         <router-link to="/personalCenter" @click.native="changeActive" replace>
@@ -79,10 +87,10 @@ export default {
       this.setChartActive(true);
     },
     isDeal() {
-      if(this._localAjax() && this._localAjax().typename) {
-        this.status = this._localAjax().typename === 'boss'? 'true' : 'false'
-      }
-      console.log('status',this.status)
+      // if(this._localAjax() && this._localAjax().typename) {
+      //   this.status = this._localAjax().typename === 'boss'? 'true' : 'false'
+      // }
+      // console.log('isBoss',this.status)
     },
     pingbi(){
       alert('敬请期待！！！')
@@ -143,9 +151,10 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../../static/images/icon.png);
-        background-size: 2100%;
-        background-position: -21.4vw -20.8vw;
+        background: url(../assets/imgs/_char-icon.png) no-repeat center;
+        // background-size: 2100%;
+        // background-position: -21.4vw -20.8vw;
+        background-size: 100% 100%;
       }
       .iconSalary {
         width: 6.6vw;
@@ -188,9 +197,11 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../../static/images/icon.png);
-        background-size: 2100%;
-        background-position: -14.2vw -20.8vw;
+        background: url(../assets/imgs/char-icon.png) no-repeat center;
+        background-size: 100% 100%;
+        // background: url(../../static/images/icon.png);
+        // background-size: 2100%;
+        // background-position: -14.2vw -20.8vw;
       }
       .router-link-exact-active .iconCharP {
         color: #007aff;

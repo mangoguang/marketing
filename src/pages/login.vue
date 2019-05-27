@@ -172,8 +172,8 @@ export default {
         }
       axios({
         method: 'post',
-        //url:'https://agency.derucci.com/oauth/token',
-        //url: 'http://10.11.8.7/oauth/token',
+        // url:'https://agency.derucci.com/oauth/token',
+        // url: 'http://10.11.8.7/oauth/token',
         url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
         data: data,
         transformRequest: [function(data) {
@@ -391,15 +391,57 @@ export default {
     cancel() {
       this.$router.replace({ path: "/" })
     },
-
+    //获取职位名称
     getName(arr) {
-      let name;
-      arr.map(item => {
-        if(item.typeName === '经销商老板') {
-          name = 'boss'
+      let name = '';
+      if(arr && arr.length === 1) {
+         arr.map(item => {
+          if(item.positionType === 'Dealer Boss') {
+            name = 'Dealer Boss'
+          }else if(item.positionType === 'Sleep Consultant') {
+            name = 'Sleep Consultant'
+          }else if(item.positionType === 'Store Manager') {
+            name = 'Store Manager'
+          }
+        })
+      }else if(arr && arr.length > 1){  //多个职位
+        arr.forEach(item => {
+          name = name === ''? item.positionType : name + '&' + item.positionType
+        })
+        name = name.split('&')
+        name = this.getUnique(name)
+        let nameStrs = ''
+        if(name && name.length > 1) {
+          name.forEach(item => {
+            nameStrs = nameStrs === ''? item : nameStrs + '&' + item
+          })
+          //只判断了经销商和导购或者经销商和店长
+          //如果有导购和店长，返回店长
+          if(nameStrs === 'Dealer Boss&Sleep Consultant' || nameStrs === 'Sleep Consultant&Dealer Boss') {
+            name = 'Boss&Consultant'
+          }else if(nameStrs === 'Dealer Boss&Store Manager' || nameStrs === 'Store Manager&Dealer Boss') {
+            name = 'Boss&Manager'
+          }else {
+            name = 'Store Manager'
+          }
+        }else {
+          name = name[0]
         }
-      })
+      }
       return name
+    },
+    //去重
+    getUnique(typeArr) {
+      var temp = {},
+      arr = [],
+      len = typeArr.length;
+      for(var i = 0; i < len; i ++) {
+        if(!temp[typeArr[i]]) {
+          temp[typeArr[i]] = 'abc'
+          arr.push(typeArr[i])
+        }
+      }
+      return arr;
     },
     setAccountMsg(uname, upwd) {
       let string = `{"name":" ${uname}", "pwd": "${upwd}"}`;

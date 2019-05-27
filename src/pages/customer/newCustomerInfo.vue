@@ -179,7 +179,7 @@ export default {
       this.isShowDeal = !this.isShowDeal
     },
     //base64转成formdata形式上传
-    changeFormData(url) {
+    changeFormData(url,formdata,imgType) {
       let bytes = window.atob(url.split(",")[1]);
       let temp = new ArrayBuffer(bytes.length);
       let ia = new Uint8Array(temp);
@@ -189,8 +189,7 @@ export default {
       //Blob对象
       let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
       //FormData对象
-      let formdata = this.newCustomerInfo.dataFiles
-      formdata.append("dataFile", blob, Date.now() + ".jpg");
+      formdata.append(imgType, blob, Date.now() + ".jpg");
     },
     //保存客户信息，新建客户	
     creatNewCustomer() {
@@ -214,8 +213,7 @@ export default {
       if(!isHasPhone){
         return;
       }
-      //头像的formdata
-      this.upLoadUrl? this.changeFormData(this.upLoadUrl) : ''
+      
       //如果有填写验证微信号
       if(this.newCustomerInfo.weChat) {
         var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
@@ -250,13 +248,22 @@ export default {
         //   formdata = this.newCustomerInfo.dataFiles
         // }else {
           let formdata = new FormData()
-          let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
-           for(let i = 0; i < file.length; i++){
-            formdata.append('record.dataFile',file[i]);
+          //头像的formdata
+          this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
+          //附件
+          if(this.newCustomerInfo.imgs) {
+            const imgs = this.newCustomerInfo.imgs
+            for(var key in imgs) {
+              formdata.append('record.dataFile',imgs[key])
+            }
           }
-          if(this.newCustomerInfo.dataFiles.get('dataFile')) {
-            formdata.append('dataFile',this.newCustomerInfo.dataFiles.get('dataFile'));
-          }
+          // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+          //  for(let i = 0; i < file.length; i++){
+          //   formdata.append('record.dataFile',file[i]);
+          // }
+          // if(this.newCustomerInfo.dataFiles.get('dataFile')) {
+          //   formdata.append('dataFile',this.newCustomerInfo.dataFiles.get('dataFile'));
+          // }
         // }
         let obj = this.updateParams(this.newCustomerInfo)
         let arr = []
@@ -264,15 +271,14 @@ export default {
           formdata.append(key,obj[key])
           arr.push(key)
         }
-        this.getData(formdata, arr)
+        this.getData(formdata, arr, obj)
       }
     },
     //请求数据
-    getData(formdata, arr) {
-      mango.loading('open')
-      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
-        if(res.code==0) {
-          mango.loading('close')
+    getData(formdata, arr, jsonData) {
+      indexModel.updateCustomer(formdata,arr,jsonData).then(res => {
+         if(res.code == 0) {
+          // mango.loading('close')
           if(res.status){
             MessageBox.alert('保存成功！').then(action => {
               this.$router.replace({path: '/customer'})
@@ -282,13 +288,10 @@ export default {
           }else{
              MessageBox.alert('保存失败！')
           }
-          
         }else{
           MessageBox.alert(res.msg)
         }
-      })/* .catch((reject) => {
-        MessageBox.alert(reject);
-      }) */
+      })
     },
     //初始化数据
     setInitData() {
