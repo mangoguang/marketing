@@ -204,7 +204,7 @@ export default {
     overflow-x: auto;
     display: flex;
     //white-space: nowrap;
-    //width: 100vw;
+    min-width: 100vw;
     font-size: 0;
     .select {
       font-size: 3.73vw;
