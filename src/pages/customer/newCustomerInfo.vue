@@ -207,6 +207,11 @@ export default {
             isHasPhone=true;
           }
         })
+        .catch((reject) => {
+          if (reject === 510) {
+            this.creatNewCustomer()
+          }
+        })
       }else{
         isHasPhone=true;
       }
@@ -291,7 +296,16 @@ export default {
         }else{
           MessageBox.alert(res.msg)
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getData(formdata, arr, jsonData)
+        }
       })
+       .catch((reject) => {
+          if (reject === 510) {
+            this.getData(formdata, arr, jsonData)
+          }
+        })
     },
     //初始化数据
     setInitData() {

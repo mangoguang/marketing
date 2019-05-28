@@ -201,6 +201,11 @@ export default {
             mango.tips('地址选择失败')
           }
         })
+        .catch(reject => {
+          if(reject === 510) {
+            this.hasAddressId()
+          }
+        })
       }
     },
     //跳转客户地址

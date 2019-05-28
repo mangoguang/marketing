@@ -15,7 +15,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import store from "./store";
-import refreshToken from './utils/token/refreshToken.js'
 const Bus = new Vue()
 
 export default {
@@ -43,12 +42,6 @@ export default {
   },
   mounted() {
     this.isIPhoneX();
-    // 开发过程中手动刷新页面后刷新token
-    // refreshToken.call(this)
-    clearInterval(this.$root.tokenTime)
-    this.$root.tokenTime = setInterval(() => {
-      refreshToken.call(this)
-    }, 7000000)
   },
   methods: {
     //左右滑动前进/后退
@@ -58,18 +51,6 @@ export default {
     onSwipeLeft() {
       // this.$router.go(+1);
     },
-    // refreshToken() {
-    //   // 获取本地token
-    //   let token = JSON.parse(localStorage.getItem('token'))
-    //   if (!token) return
-    //   // 刷新token
-    //   indexModel.refreshToken(token.access_token).then(res => {
-    //     let data = res.data
-    //     if(data) {
-    //       console.log(data)
-    //     }
-    //   })
-    // },
     //判断是否iphoneX
     isIPhoneX() {
       let phone = this.phoneSize()

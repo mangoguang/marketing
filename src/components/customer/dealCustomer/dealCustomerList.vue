@@ -225,6 +225,11 @@ export default {
           // this.setCustomerList(res.data)
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.getData(page, limit, startTime, endTime)
+        }
+      })
 
       // mango.getAjax(this,"makedeal",{
       //       account: this.account,

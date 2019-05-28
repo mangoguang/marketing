@@ -66,6 +66,11 @@ export default {
               })
             }
           })
+          .catch((reject) => {
+            if (reject === 510) {
+              this.saveRecord()
+            }
+          })
         } else {
           console.log(obj)
           mango.tip('请填写跟进计划。')

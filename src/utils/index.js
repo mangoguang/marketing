@@ -5,8 +5,8 @@ import mango from '../js/'
 class IndexModel extends Request {
   //获取令牌
   getToken(account,password) {
-    return this.getPostData({
-      url: '/oauth/token',
+    return mango.getPostAjax({
+      path: '/oauth/token',
       data: {
         grant_type:'password',        //固定填 password
         username: account,   //登录账号
@@ -16,8 +16,8 @@ class IndexModel extends Request {
   }
   //刷新令牌
   refreshToken(reToken) {
-    return this.getPostData({
-      url: '/oauth/token',
+    return mango.getPostAjax({
+      path: '/oauth/token',
       data: {
         grant_type:'refresh_token',  
         refresh_token: reToken

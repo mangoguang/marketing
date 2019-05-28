@@ -3,6 +3,7 @@ const indexModel = new IndexModel()
 import toLogin from './toLogin'
 
 function refreshToken() {
+  console.log('refreshToken.this', this)
   return new Promise((resolve, reject) => {
     // 获取本地token
     let token = JSON.parse(localStorage.getItem('token')) || {}

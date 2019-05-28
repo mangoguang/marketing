@@ -226,8 +226,10 @@ export default {
         }
         this.setCustomerDemand(res)
       })
-      .catch(error => {
-        console.log(error)
+      .catch(reject => {
+        if(reject === 510) {
+          this.getCustomerInfo()
+        }
       })
     },
     setSelectVal(res) {
@@ -381,9 +383,15 @@ export default {
           tenantId: this.ajaxData.tenantId,
           customerId: this.$route.params.id == 0 ? '' : this.$route.params.id,
           ...turnParams(this.customerDemand)
-        },'v2', 'post').then((res) => {
+        },'v2', 'post')
+        .then((res) => {
           if (res) {
             mango.tip('保存成功！')
+          }
+        })
+        .catch(reject => {
+          if(reject === 510) {
+            this.saveCustomerInfo()
           }
         })
       } else {
@@ -425,6 +433,11 @@ export default {
           }
           // resolve(res)
         })
+        .catch(reject => {
+          if(reject === 510) {
+            this.getProvince()
+          }
+        })
       // })
     },
     getCity(province) {
@@ -448,6 +461,11 @@ export default {
             }
             // resolve(res)
           })
+          .catch(reject => {
+          if(reject === 510) {
+            this.getCity(province)
+          }
+        })
         // })
       }
     },
@@ -471,6 +489,11 @@ export default {
             }]
           }
           resolve(res)
+        })
+        .catch(reject => {
+          if(reject === 510) {
+            this.getCounty(city)
+          }
         })
       })
     },

@@ -85,7 +85,6 @@ import tipsError from "../components/charts/tipsError";
 import tipsWeb from "../components/charts/tipsWeb";
 import btn from "../components/btn";
 import myinput from "../components/myInput";
-import refreshToken from '../utils/token/refreshToken.js'
 import messageBox from '../components/msManage/yanMessageBox'
 import {IndexModel} from '../utils/index'
 const indexModel = new IndexModel()
@@ -163,136 +162,31 @@ export default {
       }
     },
     login(account, pwd) {
-      // console.log(111,baseUrl)
-      mango.loading('open')
-      let data = {
-          grant_type: 'password',        //固定填 password
-          username: account,   //登录账号
-          password: md5(pwd)    //MD5(密码)
+      indexModel.getToken(account,md5(pwd)).then(res => {
+        mango.loading('close')
+        let data = res.data
+        if (data.code === 500) {
+          mango.tip(data.msg)
+          return
         }
-      axios({
-        method: 'post',
-        // url:'https://agency.derucci.com/oauth/token',
-        //url: 'http://10.11.8.7/oauth/token',
-        url:'https://mobiletest.derucci.net/cd-sys-web/oauth/token',
-        data: data,
-        transformRequest: [function(data) {
-          let ret = ''
-          for(let it in data) {
-            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-          }
-          return ret
-        }],
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+        // data.access_token = '111'
+        if(data) {
+          // 将账号信息添加到对象
+          Object.assign(data, {
+            account,
+            pwd
+          })
+          // 转成字符串
+          let str = JSON.stringify(data)
+          // 存储到本地
+          localStorage.setItem('token', str)
+          this.$root.token = data
+          // 登陆成功跳转页面
+          this.getUserInfo()
         }
-      })
-      .then((res) => {
-          mango.loading('close')
-          let data = res.data
-          if (data.code === 500) {
-            mango.tip(data.msg)
-            return
-          }
-          // data.access_token = '111'
-          if(data) {
-            // 将账号信息添加到对象
-            Object.assign(data, {
-              account,
-              pwd
-            })
-            // 转成字符串
-            let str = JSON.stringify(data)
-            // 存储到本地
-            localStorage.setItem('token', str)
-            this.$root.token = data
-            clearInterval(this.$root.tokenTime)
-            this.$root.tokenTime = setInterval(() => {
-              refreshToken.call(this)
-            }, 7000000)
-            // 登陆成功跳转页面
-            this.getUserInfo()
-          }
       }).catch((reject) => {
         mango.tip('网络异常！')
       })
-// indexModel.getType('POSITION_TYPE').then(res => {
-//   console.log(res);
-// })
-      // indexModel.getToken(account,md5(pwd)).then(res => {
-      //   mango.loading('close')
-      //   let data = res.data
-      //   if(data) {
-      //     // 将账号信息添加到对象
-      //     Object.assign(data, {
-      //       account,
-      //       pwd
-      //     })
-      //     // 转成字符串
-      //     let str = JSON.stringify(data)
-      //     // 存储到本地
-      //     localStorage.setItem('token', str)
-      //     this.$root.token = data
-      //     clearInterval(this.$root.tokenTime)
-      //     this.$root.tokenTime = setInterval(() => {
-      //       refreshToken.call(this)
-      //     }, 7000000)
-      //     // 登陆成功跳转页面
-      //     this.getUserInfo()
-      //   }
-      // })
-      // .then((res) => {
-      //     mango.loading('close')
-      //     let data = res.data
-      //     if(data) {
-      //       // 将账号信息添加到对象
-      //       Object.assign(data, {
-      //         account,
-      //         pwd
-      //       })
-      //       // 转成字符串
-      //       let str = JSON.stringify(data)
-      //       // 存储到本地
-      //       localStorage.setItem('token', str)
-      //       this.$root.token = data
-      //       clearInterval(this.$root.tokenTime)
-      //       this.$root.tokenTime = setInterval(() => {
-      //         refreshToken.call(this)
-      //       }, 7000000)
-      //       // 登陆成功跳转页面
-      //       this.getUserInfo()
-      //     }
-      // })
-
-      // indexModel.getToken(account,md5(pwd)).then(res => {
-      //   mango.loading('close')
-      //   let data = res.data
-      //   if (data.code === 500) {
-      //     mango.tip(data.msg)
-      //     return
-      //   }
-      //   // data.access_token = '111'
-      //   if(data) {
-      //     // 将账号信息添加到对象
-      //     Object.assign(data, {
-      //       account,
-      //       pwd
-      //     })
-      //     // 转成字符串
-      //     let str = JSON.stringify(data)
-      //     // 存储到本地
-      //     localStorage.setItem('token', str)
-      //     this.$root.token = data
-      //     clearInterval(this.$root.tokenTime)
-      //     this.$root.tokenTime = setInterval(() => {
-      //       refreshToken.call(this)
-      //     }, 7000000)
-      //     // 登陆成功跳转页面
-      //     this.getUserInfo()
-      //   }
-      // }).catch((reject) => {
-      //   mango.tip('网络异常！')
-      // })
     },
 
     // 获取用户个人信息
@@ -377,6 +271,11 @@ export default {
           this.mergeBoxShow=true;
         }
       })
+      .catch((reject) => {
+          if (reject === 510) {
+            this.merge()
+          }
+        })
       // this.$router.replace({ path: "/" })
     },
     cancelMerge(){

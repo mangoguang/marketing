@@ -242,6 +242,11 @@ export default {
           this.setCustomerList(res.data)
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.getCustomerList()
+        }
+      })
     },
     // 根据手机或名字搜索客户
     searchCustomer() {
@@ -273,6 +278,11 @@ export default {
               })`
             );
           }
+        }
+      })
+      .catch(reject => {
+        if(reject === 510) {
+          this.searchCustomer()
         }
       })
     },

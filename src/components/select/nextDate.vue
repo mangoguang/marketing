@@ -1,7 +1,7 @@
 <template>
   <li class="nextDate">
     <ul>
-      <li is="customerLi"  :leftText="'下次跟进'" :icon="true" @click.native="selectTime">
+      <li is="customerLi"  :leftText="'下次跟进'" :icon="true" :start='start? "*": ""'  @click.native="selectTime">
         <span :style="timeColor">{{newCustomerInfo.nextDate || '请选择日期'}}</span>
       </li>
       <!-- 性别选择插件 -->
@@ -32,6 +32,7 @@ import customerLi from '../customer/customerLi'
 
 export default {
   name: 'nextDate',
+  props: ['start'],
   components:{customerLi},
   data() {
     return {

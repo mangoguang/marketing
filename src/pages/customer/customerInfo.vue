@@ -133,6 +133,11 @@ export default {
           this.saveData()
         }
       })
+       .catch((reject) => {
+          if (reject === 510) {
+            this.checkPhone()
+          }
+        })
     },
     //保存数据
     saveData() {
@@ -162,6 +167,10 @@ export default {
           })
         }else {
            MessageBox.alert('更新失败')
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.saveData()
         }
       })
     },

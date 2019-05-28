@@ -338,6 +338,32 @@ export default class Common {
       })
     })
   }
+
+  getPostAjax ({path, data}) {
+    console.log(123123, path)
+    let url = `${this.port}${path}`
+    return new Promise((resolve, reject) => {
+      axios({
+        method: 'post',
+        url: url,
+        data: data,
+        transformRequest: [function(data) {
+          let ret = ''
+          for(let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+          }
+          return ret
+        }],
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then(res => {
+        resolve(res)
+      }).catch(err => {
+        reject(err)
+      })
+    })
+  }
   // getAjax(_vue, port, params, pathVersion,type) {
   //   let _this = this
   //   return new Promise((resolve, reject) => {

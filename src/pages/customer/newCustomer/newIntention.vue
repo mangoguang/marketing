@@ -143,7 +143,13 @@ export default {
           }else {
             MessageBox.alert('保存失败！');
           }
-        })/* .catch((reject) => {
+        })
+        .catch((reject) => {
+          if (reject === 510) {
+            this.submit()
+          }
+        })
+        /* .catch((reject) => {
           MessageBox.alert(reject);
         }) */
       }

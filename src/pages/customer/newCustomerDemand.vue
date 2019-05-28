@@ -57,6 +57,11 @@ export default {
             })
           }
         })
+        .catch((reject) => {
+          if (reject === 510) {
+            this.newDemand()
+          }
+        })
       } else {
         mango.tip('请选择门店')
       }
