@@ -28,7 +28,7 @@ export {emptyPieData}
 // salesVal标记是否为销售额，主要用于改变数据单位
 // routeTo图表点击事件，可不传
 // chartsIndex如果是循环渲染图表，则传图表下标
-chartsInit = (_this, chartName, vertical, salesVal, title, routeTo, chartsIndex) => {
+chartsInit = (_this, chartName, vertical, salesVal, title, routeTo, chartsIndex,radio) => {
   let [dom, chartsData] = [_this.$refs[`${chartName}Container`], _this[`${chartName}Data`]]
   // console.log('传入charts插件的数据：', chartsData)
   if (typeof(chartsIndex) === 'number') {
@@ -47,7 +47,7 @@ chartsInit = (_this, chartName, vertical, salesVal, title, routeTo, chartsIndex)
   }
   if(dom){
     if (series) {
-      echarts.init(dom).setOption(option(chartsData, vertical, salesVal, title))
+      echarts.init(dom).setOption(option(chartsData, vertical, salesVal, title,radio))
       chanrtDom =  echarts.init(dom)
       if (routeTo) {
         // 如果需要添加点击事件，则添加点击事件。

@@ -172,7 +172,7 @@ export default {
         if (this[`${chartsName}Data`].series) {
           // 检测数据是否为空
           this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
-          chartsInit(this, chartsName, 'vertical')
+          chartsInit(this, chartsName, 'vertical','','','','',true)
           this.auchanrtDom3 = chanrtDom
         }
       }
@@ -184,7 +184,7 @@ export default {
           if (this[`${chartsName}Data`].series) {
             // 检测数据是否为空
           this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
-          chartsInit(this, chartsName, 'horizontal')
+          chartsInit(this, chartsName, 'horizontal','','','','',true)
             this.auchanrtDom4 = chanrtDom
             if(this.i > 1){
               try {
@@ -352,6 +352,7 @@ export default {
           this.$set(res.data,'yAxisData',newData[0])
           this.key4 = true
           res = res.data
+          console.log("店铺成交率",res);
           _this.perAchieveRatioData = res
           console.log('店铺成交率', res)
         }
