@@ -156,8 +156,14 @@ export default {
         tenantId: this.ajaxData.tenantId,
         id: this.$route.params.id,
         ...turnParams(this.customerDemand, 'demand')
-      },'v2', 'post').then((res) => {
+      },'v2', 'post')
+      .then((res) => {
         console.log('保存数据成功', res)
+      })
+      .catch(reject => {
+        if(reject === 510) {
+          this.getDemand()
+        }
       })
     },
     setOptions(data, dataList) {
@@ -247,10 +253,16 @@ export default {
           'details.phone': this.customerInfo.phone,
           shopId: this.customerDemand.shopId,
           ...turnParams(this.customerDemand, 'demand')
-        },'v2', 'post').then((res) => {
+        },'v2', 'post')
+        .then((res) => {
           if (res) {
             // this.$router.go(0)
             mango.tip('保存成功！')
+          }
+        })
+        .catch(reject => {
+          if(reject === 510) {
+            this.saveCustomerDemand()
           }
         })
        }else{

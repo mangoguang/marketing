@@ -56,6 +56,11 @@ export default {
           this.address = res.data.provinceName + res.data.cityName + res.data.districtName + res.data.address + res.data.housingEstate
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.getAddress()
+        }
+      })
     },
       // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {

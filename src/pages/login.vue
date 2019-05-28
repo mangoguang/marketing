@@ -377,6 +377,11 @@ export default {
           this.mergeBoxShow=true;
         }
       })
+      .catch((reject) => {
+          if (reject === 510) {
+            this.merge()
+          }
+        })
       // this.$router.replace({ path: "/" })
     },
     cancelMerge(){

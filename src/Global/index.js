@@ -28,5 +28,10 @@ exports.install = (Vue, options) => {
      }).then(res => {
         Vue.prototype._type = res.data
      })
+     .catch(reject => {
+      if(reject === 510) {
+        Vue.prototype.getType()
+      }
+    })
    }
 };

@@ -51,6 +51,11 @@ export default {
           mango.tip(res.msg)
         }
       })
+       .catch((reject) => {
+          if (reject === 510) {
+            this.saveDemand()
+          }
+        })
     },
     changeDemand(obj) {
       this.setCustomerDemand(obj)

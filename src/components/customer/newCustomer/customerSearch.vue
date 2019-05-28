@@ -106,6 +106,11 @@ export default {
          this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}`})
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.sendPhoneTest(type)
+        }
+      })
     },
     //单选框的值
     changeVal(val) {

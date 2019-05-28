@@ -124,6 +124,11 @@ export default {
           this.isExpire(len)
         }
       }) 
+      .catch((reject) => {
+        if (reject === 510) {
+          this.getCustomerList(key)
+        }
+      })
     },
     //成交客户搜索
     getDealCustomerList(key) {
@@ -137,6 +142,11 @@ export default {
           this.dealList = res.data
         }
       }) 
+      .catch((reject) => {
+        if (reject === 510) {
+          this.getDealCustomerList(key)
+        }
+      })
     },
     //判断type
     judgeType() {
@@ -161,6 +171,11 @@ export default {
       mango.getAjax(this, 'customer', this.customerAjaxParams, 'v2').then((res) => {
         if (res) {
           this.myCustomerList = res.data
+        }
+      })
+      .catch((reject) => {
+        if (reject === 510) {
+          this.getMyCustomerList(myKey)
         }
       })
     },
@@ -191,6 +206,11 @@ export default {
             this.setOrderInfoDetails(res.data);
             this.calcPrice(this.orderInfoDetails)
           }
+        })
+        .catch((reject) => {
+          if (reject === 510) {
+            this.orderInfoIn(index)
+          }
         });
       this.$router.push({ path: "/enquiryInfo" });
     },
@@ -205,7 +225,12 @@ export default {
           if (res) {
             this.setDealOrderInfoDetails(res.data);
           }
-        });
+        })
+        .catch((reject) => {
+          if (reject === 510) {
+            this.getDetails(index)
+          }
+        })
       this.$router.push({ path: "/dealDetails" ,
         query: {
           username: this.dealList.records[index].username,

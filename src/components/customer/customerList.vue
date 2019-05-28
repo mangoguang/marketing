@@ -130,6 +130,11 @@ export default {
           }
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.loadBottom()
+        }
+      })
       // mango.loading('open')
       // setTimeout(() => {
       //   // let last = this.customerList[this.customerList.length - 1]
