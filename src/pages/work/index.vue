@@ -4,7 +4,7 @@
     <WorkModules />
     <Footer/>
     <Daily />
-    <!-- <div @click="changeToken" style="text-align: center;line-height: 10vw;">测试</div> -->
+    <div @click="changeToken" style="text-align: center;line-height: 10vw;">测试</div>
   </div>
 </template>
 
@@ -43,7 +43,8 @@ export default {
   methods:{
     changeToken() {
       let token = JSON.parse(localStorage.getItem('token'))
-      token.access_token = '123456789123456789123456789123456789123456789123456789'
+      token.access_token = '1234567891234567891234567'
+      // token.refresh_token = '2e0ce02f-6076-43d2-b935-5e329faedd0'
       localStorage.setItem('token', JSON.stringify(token))
     }
   }
