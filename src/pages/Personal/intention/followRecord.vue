@@ -190,7 +190,9 @@ export default {
             this.form.plan='';
           };
         }).catch((reject) => {
-          mango.tip("网络异常");
+          if (reject === 510) {
+            this.update()
+          }
         })
       }
      
