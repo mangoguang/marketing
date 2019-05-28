@@ -34,14 +34,14 @@
     </li>
     <!-- 整体客单值 -->
     <li class="barBox">
-      <chartsTit :text="'客单值-整体'">
+      <chartsTit :text="'均单值-整体'">
       </chartsTit>
       <div v-show="!orderFormTotalShow" :style="{height: `100vw`}" ref="orderFormTotalContainer" ></div>
       <noData v-show="orderFormTotalShow"></noData>
     </li>
     <!-- 各门店客单值 -->
     <li class="barBox">
-      <chartsTit :text="'客单值-各门店'">
+      <chartsTit :text="'均单值-各门店'">
       </chartsTit>
       <div v-show="!perOrderFormShow" ref="perOrderFormContainer" ></div>
       <noData v-show="perOrderFormShow"></noData>

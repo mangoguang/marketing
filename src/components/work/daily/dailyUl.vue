@@ -7,7 +7,7 @@
     <DailyLi :number="list.trackRecord" :title="'跟进客户'"/>
     <DailyLi :number="list.cusBusiness" :title="'成交客户'"/>
     <DailyLi :number="list.volumeBusiness" :title="'成交金额'"/>
-    <DailyLi :number="list.guestSingleValue" :title="'客单值'"/>
+    <DailyLi :number="list.guestSingleValue" :title="'均单值'"/>
     <DailyLi :number="turnRatio(list.turnoverRatio)" :title="'成交率'"/>
     <!-- <DailyLi
     v-for="(item, index) in list"
