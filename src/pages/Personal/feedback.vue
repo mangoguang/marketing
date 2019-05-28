@@ -110,8 +110,8 @@ export default {
               this.setPicVal([]);
                
             }
-          }).catch((reject)=>{
-            if(reject===510){
+          }).catch((reject) => {
+            if(reject === 510){
               this.submit()
             }
           }) 
