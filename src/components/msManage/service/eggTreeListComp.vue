@@ -59,7 +59,7 @@ export default {
     getCategoriesList() {
       let categoryId
       if(this.$route.query.name == '常见问题') {
-        this.height = '10vw'
+        this.height = '12vw'
         indexModel.getQuestionCategoryList().then(res => {
           if(res.data && res.data.length) {
             this.setList(res.data)
@@ -81,9 +81,9 @@ export default {
     },
     initHeight() {
       if(this.fatherList && this.fatherList.length && !this.childList.length) {
-        this.height = '10vw'
+        this.height = '12vw'
       }else if(this.childList && this.childList.length) {
-        this.height = '22vw'
+        this.height = '23vw'
       }else {
         this.height = ''
       }
@@ -122,12 +122,12 @@ export default {
     getChildList(list, index, i) {
       let arr = []
       if(list[index].subCateList) {
-        this.height = '22vw'      //
+        this.height = '23vw'      //
         list[index].subCateList.forEach(el => {
           arr.push(el.name)
         });
       }else {
-        this.height = '10vw'      //
+        this.height = '12vw'      //
       }
       let listName = mango.btnList(arr, i)
       return listName
@@ -171,7 +171,7 @@ export default {
     isIPhoneX (){
       let phone = this.phoneSize()
       if(phone === 'iphonex') {
-        this.top = '33'
+        this.top = '34'
       }else if(phone === 'iphone') {
         this.top = '28'
       }else {
@@ -191,7 +191,7 @@ export default {
   // background-color:#fff;
 }
 .wrapper {
-  min-width: 100vw;
+  max-width: 100vw;
   overflow-x: hidden;
   // position: relative;
   // height: 22vw;
@@ -203,13 +203,21 @@ export default {
   .treeList{
     overflow-x: auto;
     display: flex;
-    white-space: nowrap;
-    width: 100vw;
+    //white-space: nowrap;
+    //width: 100vw;
+    font-size: 0;
     .select {
       font-size: 3.73vw;
       color: #666;
-      padding: 2vw 4vw;
-     
+      padding: 0 4vw;
+      
+      & > span{
+        display: block;
+        white-space: nowrap;
+        height:12vw;
+        line-height: 12vw;
+        position: relative;
+      }
       .child_wrapper {
         // border:1px solid red;
         overflow-x: hidden;
@@ -232,6 +240,9 @@ export default {
             color: #666;
             padding: 2vw 0;
             padding-left: 4vw;
+            }
+            .selectChild:last-child{
+              padding-right: 4vw;
             }
           span {
             padding: 1.23vw 4.26vw;
@@ -266,5 +277,10 @@ export default {
     border-top: 0.8vw solid #363636;
     border-radius: 0.4vw;
     margin: 0;
+    position: absolute;
+    bottom:0;
+    left:0;
+    right:0;
+
   }
 </style>
