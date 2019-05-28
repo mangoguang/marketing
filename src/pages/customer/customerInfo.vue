@@ -168,6 +168,10 @@ export default {
         }else {
            MessageBox.alert('更新失败')
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.saveData()
+        }
       })
     },
       //base64转成formdata形式上传

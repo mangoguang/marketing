@@ -17,6 +17,4 @@ function toLogin() {
   window.history.go(0)
 }
 
-
-
 export default toLogin
