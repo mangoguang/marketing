@@ -7,7 +7,9 @@
           <p class="iconCharP">首页</p>
         </router-link>
       </li>
-      <li id="2" v-if="_localAjax().typename === 'Dealer Boss'">
+      <li id="2" v-if="_localAjax().typename === 'Dealer Boss'
+                      ||_localAjax().typename ==='Boss&Consultant'
+                      ||_localAjax().typename === 'Boss&Manager'">
          <router-link to="/ReportForms" replace>
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
@@ -23,7 +25,11 @@
       </li>
       <li id="3" v-else>
         <template>
-          <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || _localAjax().typename === 'Store Manager'"
+          <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' ||
+                              _localAjax().typename === 'Dealer Boss' "
                         to="/Customer" @click.native="changeActive" replace>
             <div class="iconSalary"></div>
             <p class="iconCharP">客户</p>
@@ -37,8 +43,10 @@
       <li id="4" >
         <template>
         <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
-                      _localAjax().typename === 'Store Manager' || 
-                      _localAjax().typename === 'Dealer Boss' "
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' ||
+                              _localAjax().typename === 'Dealer Boss' "
                       to="/work" @click.native="changeActive" replace>
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>

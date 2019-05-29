@@ -77,10 +77,10 @@ export default function(data, vertical, salesVal, title,radio) {
             
           }
         }:{}, */
-        barWidth: '20',
+        barWidth: '10',
         //barMaxWidth:'15',
         //barWidth:'15',
-        // barGap:'5',
+         //barGap:'0',
         //barCategoryGap:'45',
         data: salesVal ? item.data.map((key) => {
           let temp = key
@@ -146,7 +146,7 @@ export default function(data, vertical, salesVal, title,radio) {
       x:'center'
     } : {},
     legend: vertical === 'horizontal'?{
-      // type: 'scroll',
+      type: 'scroll',
       orient: 'horizontal',
       left: '3%',
       right: '3%',
@@ -172,7 +172,7 @@ export default function(data, vertical, salesVal, title,radio) {
     grid: {
       left: '3%',
       bottom:'3%',
-      top: title ? '80' : '40',
+      top:  title ? '80' : '40',
       // height: 700,
       containLabel: true
     },

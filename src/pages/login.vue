@@ -313,17 +313,37 @@ export default {
         name = this.getUnique(name)
         let nameStrs = ''
         if(name && name.length > 1) {
-          name.forEach(item => {
-            nameStrs = nameStrs === ''? item : nameStrs + '&' + item
+          const regBoss = new RegExp("Dealer Boss", "");
+          const regConsultant = new RegExp("Sleep Consultant", "");
+          const regManager = new RegExp("Store Manager", "");
+          var hasData;
+          //去除虚拟门店店长等相似字段
+          name.map(item => {
+            if(item ==='Dealer Boss' || item === 'Sleep Consultant' || item === 'Store Manager') {
+              hasData = true
+              return
+            }else {
+              hasData = false
+            }
           })
-          //只判断了经销商和导购或者经销商和店长
-          //如果有导购和店长，返回店长
-          if(nameStrs === 'Dealer Boss&Sleep Consultant' || nameStrs === 'Sleep Consultant&Dealer Boss') {
-            name = 'Boss&Consultant'
-          }else if(nameStrs === 'Dealer Boss&Store Manager' || nameStrs === 'Store Manager&Dealer Boss') {
-            name = 'Boss&Manager'
+          if(hasData) {
+            name.forEach(item => {
+              nameStrs = nameStrs === ''? item : nameStrs + '&' + item
+            })
+             //判断了经销商和导购或者经销商和店长
+            if(regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
+              name = 'Boss&Consultant'
+            }else if(regManager.test(nameStrs) && regBoss.test(nameStrs)) {
+              name = 'Boss&Manager'
+            }else if(regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
+              name = 'Store Manager'
+            }else if(regManager.test(nameStrs)){
+              name = 'Store Manager'
+            }else if(regConsultant.test(nameStrs)) {
+              name = 'Sleep Consultant'
+            }
           }else {
-            name = 'Store Manager'
+            name = 'other'
           }
         }else {
           name = name[0]
