@@ -207,6 +207,11 @@ export default {
             isHasPhone=true;
           }
         })
+        .catch((reject) => {
+          if (reject === 510) {
+            this.creatNewCustomer()
+          }
+        })
       }else{
         isHasPhone=true;
       }
@@ -285,13 +290,16 @@ export default {
               this.setFiles([]);
               this.setPicVal([]);
             })
+          
           }else{
              MessageBox.alert('保存失败！')
           }
         }else{
           MessageBox.alert(res.msg)
         }
-      }).catch((reject) => {
+      })
+      .catch((reject) => {
+        // console.log(111,reject)
         if (reject === 510) {
           this.getData(formdata, arr, jsonData)
         }

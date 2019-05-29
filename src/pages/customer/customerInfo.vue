@@ -133,6 +133,11 @@ export default {
           this.saveData()
         }
       })
+       .catch((reject) => {
+          if (reject === 510) {
+            this.checkPhone()
+          }
+        })
     },
     //保存数据
     saveData() {

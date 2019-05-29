@@ -7,12 +7,12 @@ import VueRouter from 'vue-router'
 export default class Common {
   constructor() {
     
-    // this.port = 'https://op.derucci.com'
+   //this.port = 'https://op.derucci.com'
     //  this.port = 'http://10.11.8.250'
    // this.port = 'http://172.16.10.107'
-     this.port = "http://10.11.8.7"
+   // this.port = "http://10.11.8.7"
     //this.port = "https://mobiletest.derucci.net/cd-sys-web"
-    // this.port = 'https://agency.derucci.com/'
+    this.port = 'https://agency.derucci.com/'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
     // this.port = 'http://10.11.8.181/'
@@ -283,7 +283,7 @@ export default class Common {
     let token = JSON.parse(localStorage.getItem('token'))
     // console.log('token',token)
     return new Promise((resolve, reject) => {
-      //let thatType = type == 'post' ? 'post' : 'get'
+      // let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
       
       let sign = this.getSign(jsonData || data, token.access_token)
@@ -292,8 +292,8 @@ export default class Common {
       this.loading('open')
        axios({
         method: 'post',
-        //async: false,
-        timeout: 3000,
+        // async: false,
+        timeout: 30000,
         url: url,
         data:data,
          headers: {

@@ -1,6 +1,6 @@
 import mango from '../js/index'
 // import chartsData from './data.js'
-export default function(data, vertical, salesVal, title) {
+export default function(data, vertical, salesVal, title,radio) {
   console.log(998877, title)
   mango.sortArrs(data)
   // data = chartsData
@@ -12,6 +12,7 @@ export default function(data, vertical, salesVal, title) {
   // height设置图标容器main的高度
   // salesVal标记是否为销售额，主要用于改变数据单位
   // 图标标题
+  //radio标记是否增加百分号显示
   let seriesPosition
   // vertical === horizontal,柱状图为水平方向，否则为垂直方向
   if (vertical === 'horizontal') {
@@ -50,6 +51,7 @@ export default function(data, vertical, salesVal, title) {
       axisLabel: {
         color: "#999",
         rotate: 60
+        
       }
     }, data.series.map((item, index) => {
       // console.log('数据', item.data)
@@ -60,13 +62,25 @@ export default function(data, vertical, salesVal, title) {
         label: {
           normal: {
             show: true,
-            position: seriesPosition
+            position: seriesPosition,
+            formatter:radio?function(params){
+              if(params.value){
+                return parseFloat(params.value)*100+"%"
+              }else{
+                return ''
+              }
+            }:function(params){}
           }
         },
-        barWidth: '20',
+        /* itemStyle:vertical==='horizontal'?{
+          normal:{
+            
+          }
+        }:{}, */
+        barWidth: '10',
         //barMaxWidth:'15',
         //barWidth:'15',
-        // barGap:'5',
+         //barGap:'0',
         //barCategoryGap:'45',
         data: salesVal ? item.data.map((key) => {
           let temp = key
@@ -132,7 +146,7 @@ export default function(data, vertical, salesVal, title) {
       x:'center'
     } : {},
     legend: vertical === 'horizontal'?{
-      // type: 'scroll',
+      type: 'scroll',
       orient: 'horizontal',
       left: '3%',
       right: '3%',
@@ -158,7 +172,7 @@ export default function(data, vertical, salesVal, title) {
     grid: {
       left: '3%',
       bottom:'3%',
-      top: title ? '80' : '40',
+      top:  title ? '80' : '40',
       // height: 700,
       containLabel: true
     },

@@ -19,8 +19,8 @@
         <span>{{turnDate(newCustomerInfo.nextDate) || '请选择日期'}}</span>
       </li> -->
       <li class="timeLi top" is="nextDate"></li>
-      <li class="noPadding">
-        <remark :title="'下一步计划'" >
+      <li class="noPadding" >
+        <remark :title="'下一步计划'">
           <textarea v-model="newCustomerInfo.plan" name="" id="" placeholder="请填写下一步跟进计划" oninput="if(value.length>300)value=value.slice(0,300)"></textarea>
         </remark>
       </li>

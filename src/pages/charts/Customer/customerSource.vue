@@ -126,7 +126,7 @@ export default {
           // 检测数据是否为空
           this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           console.log(22222221, emptyData(this[`${chartsName}Data`].series))
-          chartsInit(this, chartsName, 'horizontal')
+          chartsInit(this, chartsName, 'horizontal','','','','','',true)
           this.cusSourcechanrtDom2 = chanrtDom
           if(this.i > 1){
             try {

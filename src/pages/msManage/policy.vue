@@ -139,7 +139,7 @@ export default {
   }
   .listComp {
     position: absolute;
-    top: 38vw;
+    top: 39vw;
     left: 0;
   }
    .listComp1 {

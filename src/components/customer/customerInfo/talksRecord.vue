@@ -100,6 +100,11 @@ export default {
       },'v2', 'post').then((res) => {
         console.log('保存数据成功', res)
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.saveTalksRecord()
+        }
+      })
     }
   }
 }

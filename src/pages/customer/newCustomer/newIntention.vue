@@ -71,12 +71,12 @@ export default {
     let shops = localStorage.getItem('shops')
     this.shops = JSON.parse(shops)
     this.isIPhoneX()
-    let inputs=document.getElementsByTagName("input");
+    /* let inputs=document.getElementsByTagName("input");
     for(let i=0;i<inputs.length;i++){
       inputs[i].click=function(){
         this.scrollIntoView();
       }
-    }
+    } */
   },
   methods: {
     ...mapMutations([
@@ -123,10 +123,19 @@ export default {
         // let formdata = this.newCustomerInfo.dataFiles
         
         let formdata = new FormData()
-        let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
-          for(let i = 0; i < file.length; i++){
-          formdata.append('record.dataFile',file[i]);
+        // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+        //   for(let i = 0; i < file.length; i++){
+        //   formdata.append('record.dataFile',file[i]);
+        // }
+        
+        if(this.newCustomerInfo.imgs) {
+          const imgs = this.newCustomerInfo.imgs
+          for(var key in imgs) {
+            formdata.append('record.dataFile',imgs[key])
+          }
         }
+
+
         let obj = this.updateParams(this.newCustomerInfo)
         let arr = []
         for(var key in obj) {
@@ -143,7 +152,13 @@ export default {
           }else {
             MessageBox.alert('保存失败！');
           }
-        })/* .catch((reject) => {
+        })
+        .catch((reject) => {
+          if (reject === 510) {
+            this.submit()
+          }
+        })
+        /* .catch((reject) => {
           MessageBox.alert(reject);
         }) */
       }
