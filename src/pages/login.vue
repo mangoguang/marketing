@@ -21,6 +21,8 @@
               v-model.trim="inputValue1"
               autocomplete="off"
               :Msg="nameMsg"
+              @myFocus="myFocus"
+              @myBlur="myBlur"
             ></li>
             <li
               is="myinput"
@@ -28,6 +30,8 @@
               :labelContent="pwd"
               v-model.trim="inputValue2"
               :Msg="pwdMsg"
+              @myFocus="myFocus"
+              @myBlur="myBlur"
             ></li>
             <li class="tips clearfix">
               <input
@@ -49,7 +53,7 @@
           </ul>
         </form>
       </div>
-       <div class="wechatLogin" :style="{height: h}">
+       <div v-show="botContentShow" class="wechatLogin" :style="{height: h}">
         <div class="wechatText">
           <hr>
           <span>第三方账号登录</span>
@@ -122,7 +126,8 @@ export default {
         tip:'',
         type:false,
         btnNumbrella:2
-      }
+      },
+      botContentShow: true
     }
   },
   mounted() {
@@ -135,8 +140,11 @@ export default {
   methods: {
     ...mapMutations(['setPersonMsg']),
     //去除input输入框的左边空格
-    trimStr: function(str) {
-      return str.replace(/(^\s*)|(\s*$)/g, "");
+    myFocus() {
+      this.botContentShow = false
+    },
+    myBlur() {
+      this.botContentShow = true
     },
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
     submitForm() {
@@ -349,8 +357,6 @@ export default {
         // 去除空格
         var trimName = oldaccountMsg["name"].trim();
         var trimPwd = oldaccountMsg["pwd"].trim();
-        // let trimName = this.trimStr(oldaccountMsg['name'])
-        // let trimPwd = this.trimStr(oldaccountMsg['pwd'])
         this.nameMsg = trimName;
         this.pwdMsg = trimPwd;
         this.inputValue2 = trimPwd;
@@ -419,9 +425,8 @@ export default {
           console.log(res.status);
         }
       })
-      .catch(function(error) {
+      .catch(function() {
         mango.loading("close");
-        console.log("返回错误方法：", error);
         _this.display1 = "block";
         _this.key = true;
       })
