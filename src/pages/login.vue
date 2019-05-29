@@ -301,6 +301,8 @@ export default {
             name = 'Sleep Consultant'
           }else if(item.positionType === 'Store Manager') {
             name = 'Store Manager'
+          }else {
+            name = item.positionType
           }
         })
       }else if(arr && arr.length > 1){  //多个职位
