@@ -293,7 +293,7 @@ export default class Common {
        axios({
         method: 'post',
         // async: false,
-        timeout: 15000,
+        timeout: 30000,
         url: url,
         data:data,
          headers: {
