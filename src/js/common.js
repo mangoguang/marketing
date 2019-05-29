@@ -283,7 +283,7 @@ export default class Common {
     let token = JSON.parse(localStorage.getItem('token'))
     // console.log('token',token)
     return new Promise((resolve, reject) => {
-      //let thatType = type == 'post' ? 'post' : 'get'
+      // let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
       
       let sign = this.getSign(jsonData || data, token.access_token)
@@ -292,8 +292,8 @@ export default class Common {
       this.loading('open')
        axios({
         method: 'post',
-        //async: false,
-        timeout: 3000,
+        // async: false,
+        timeout: 30000,
         url: url,
         data:data,
          headers: {

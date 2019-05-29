@@ -123,10 +123,19 @@ export default {
         // let formdata = this.newCustomerInfo.dataFiles
         
         let formdata = new FormData()
-        let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
-          for(let i = 0; i < file.length; i++){
-          formdata.append('record.dataFile',file[i]);
+        // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+        //   for(let i = 0; i < file.length; i++){
+        //   formdata.append('record.dataFile',file[i]);
+        // }
+        
+        if(this.newCustomerInfo.imgs) {
+          const imgs = this.newCustomerInfo.imgs
+          for(var key in imgs) {
+            formdata.append('record.dataFile',imgs[key])
+          }
         }
+
+
         let obj = this.updateParams(this.newCustomerInfo)
         let arr = []
         for(var key in obj) {
