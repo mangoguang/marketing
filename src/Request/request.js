@@ -1,5 +1,5 @@
 import axios from 'axios'
-// let baseUrl = 'https://op.derucci.com'
+//let baseUrl = 'https://op.derucci.com'
 let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
 //  let baseUrl = 'http://10.11.8.250'
 // let baseUrl = 'http://10.11.8.229'
