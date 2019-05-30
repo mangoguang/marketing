@@ -39,7 +39,8 @@ export default {
       shop: '',
       unknow:'./static/images/avatar.png',
       svia:'./static/images/svia.png',
-      via:'./static/images/via.png'
+      via:'./static/images/via.png',
+      typeName: ''
     }
   },
   created() {

@@ -322,31 +322,31 @@ export default {
           const regBoss = new RegExp("Dealer Boss", "");
           const regConsultant = new RegExp("Sleep Consultant", "");
           const regManager = new RegExp("Store Manager", "");
-          var hasData;
-          //去除虚拟门店店长等相似字段
-          name.map(item => {
-            if(item ==='Dealer Boss' || item === 'Sleep Consultant' || item === 'Store Manager') {
-              hasData = true
-              return
-            }else {
-              hasData = false
-            }
-          })
+          const hasData = this.filterVirtualName(name)
           if(hasData) {
             name.forEach(item => {
               nameStrs = nameStrs === ''? item : nameStrs + '&' + item
             })
+            console.log('nameStrs',nameStrs)
              //判断了经销商和导购或者经销商和店长
-            if(regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
+            if(regManager.test(nameStrs) && regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
+              name = 'Boss&Manager'
+              return name
+            }else if(regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
               name = 'Boss&Consultant'
+              return name
             }else if(regManager.test(nameStrs) && regBoss.test(nameStrs)) {
               name = 'Boss&Manager'
+              return name
             }else if(regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
               name = 'Store Manager'
+              return name
             }else if(regManager.test(nameStrs)){
               name = 'Store Manager'
+              return name
             }else if(regConsultant.test(nameStrs)) {
               name = 'Sleep Consultant'
+              return name
             }
           }else {
             name = 'other'
@@ -356,6 +356,17 @@ export default {
         }
       }
       return name
+    },
+    //去除虚拟门店店长等相似字段
+    filterVirtualName(name) {
+      let len = name.length
+      for(var i = 0; i < len; i ++) {
+        if(name[i] ==='Dealer Boss' || name[i] === 'Sleep Consultant' || name[i] === 'Store Manager') {
+          return true
+        }else {
+          return false
+        }
+      }
     },
     //去重
     getUnique(typeArr) {

@@ -23,7 +23,7 @@
           <p class="charPActive">报表</p>
         </div> -->
       </li>
-      <li id="3" v-else>
+      <li id="3" >
         <template>
           <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
                               _localAjax().typename === 'Store Manager' || 
@@ -101,7 +101,7 @@ export default {
       // console.log('isBoss',this.status)
     },
     pingbi(){
-      alert('敬请期待！！！')
+      alert('暂无权限')
     },
     touchend(e) {
       // console.log(e.path[1].id)
