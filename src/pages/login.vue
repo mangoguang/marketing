@@ -10,6 +10,11 @@
     </div>
     <div class="login">
       <div class="box">
+        <div @click='test'>测试图片选择</div>
+      <div @click='test2'>测试视频选择</div>
+      <div @click='test3'>测试选择</div>
+      <div @click='test4'>测试安卓选择</div>
+      <div @click='test5'>测试安卓删除</div>
         <div class="welcome">Hi,</div>
         <h1>欢迎使用慕思营销助手</h1>
         <form>
@@ -57,6 +62,7 @@
         </div>
         <div class="wechat-icon"></div>
       </div>
+      
       <div :style="{height:colorheight}" class="fixBottom"></div>
     </div>
     <message-box v-show="mergeBoxShow" v-bind="mergeBox">
@@ -136,6 +142,68 @@ export default {
   },
   methods: {
     ...mapMutations(['setPersonMsg']),
+    test4(){
+      var photoSelect = api.require('photoSelect');
+      photoSelect.openAblum({
+          permitnum: '9'
+      }, function(ret, err) {
+          if (ret) {
+              alert(JSON.stringify(ret));
+          } else {
+              alert(JSON.stringify(err));
+          }
+      });
+    },
+    test5(){
+      var photoSelect = api.require('photoSelect');
+      photoSelect.clearoom();
+    },
+    test(){
+      var photoPicker = api.require('photoPicker');
+      photoPicker.addPhoto({
+              photoMaxNum : 5,
+              rowCount:3,
+              selectTogether:false,
+              selectedType:0,
+              lookGifPhoto:false,
+              lookLivePhoto:false,
+              outerCamera:false,
+              time:8
+          },function(ret, err){
+              alert(JSON.stringify(ret));
+      });
+    },
+     test2(){
+      var photoPicker = api.require('photoPicker');
+      photoPicker.addPhoto({
+              videoMaxNum:2,
+              rowCount:3,
+              selectTogether:false,
+              selectedType:1,
+              lookGifPhoto:true,
+              lookLivePhoto:true,
+              outerCamera:false,
+              time:8
+          },function(ret, err){
+              alert(JSON.stringify(ret));
+      });
+      },
+      test3(){
+      var photoPicker = api.require('photoPicker');
+      photoPicker.addPhoto({
+              photoMaxNum : 5,
+              videoMaxNum:2,
+              rowCount:3,
+              selectTogether:true,
+              selectedType:2,
+              lookGifPhoto:true,
+              lookLivePhoto:true,
+              outerCamera:false,
+              time:8
+          },function(ret, err){
+              alert(JSON.stringify(ret));
+      });
+    },
     //去除input输入框的左边空格
     trimStr: function(str) {
       return str.replace(/(^\s*)|(\s*$)/g, "");
