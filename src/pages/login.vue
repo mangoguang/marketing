@@ -323,6 +323,7 @@ export default {
           const regConsultant = new RegExp("Sleep Consultant", "");
           const regManager = new RegExp("Store Manager", "");
           const hasData = this.filterVirtualName(name)
+          console.log(123,hasData)
           if(hasData) {
             name.forEach(item => {
               nameStrs = nameStrs === ''? item : nameStrs + '&' + item
@@ -363,10 +364,9 @@ export default {
       for(var i = 0; i < len; i ++) {
         if(name[i] ==='Dealer Boss' || name[i] === 'Sleep Consultant' || name[i] === 'Store Manager') {
           return true
-        }else {
-          return false
         }
       }
+      return false
     },
     //去重
     getUnique(typeArr) {

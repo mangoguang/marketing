@@ -398,8 +398,8 @@ class IndexModel extends Request {
   */
 
   //修改密码
-  changePassword(obj,key) {
-    return mango.getFormAjax('/v1/app/password',obj,key)
+  changePassword(obj,type) {
+    return mango.getAjax('/v1/app/password',obj,type)
   }
  
 }
