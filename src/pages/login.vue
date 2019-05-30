@@ -57,6 +57,7 @@
         </div>
         <div class="wechat-icon"></div>
       </div>
+      <div :style="{height:colorheight}" class="fixBottom"></div>
     </div>
     <message-box v-show="mergeBoxShow" v-bind="mergeBox">
       <p id="tip">{{mergeBox.tip}}</p>
@@ -122,7 +123,8 @@ export default {
         tip:'',
         type:false,
         btnNumbrella:2
-      }
+      },
+      colorheight:''
     }
   },
   mounted() {
@@ -153,12 +155,16 @@ export default {
       if (phone === "iphonex") {
         this.height = "54.4";
         this.marginTop = "-5.86vw";
+        this.colorheight='5.86vw'
+
       } else if (phone === "iphone") {
         this.height = "49.26";
         this.marginTop = ''
+        this.colorheight=''
       } else {
         this.height = "49.26";
         this.marginTop = ''
+        this.colorheight=''
       }
     },
     login(account, pwd) {
@@ -587,6 +593,13 @@ export default {
           border: .13vw solid rgba(0,93,194,1);
         }
       }
+    }
+    .fixBottom{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      background:#fff;
     }
   }
   .wechatLogin {
