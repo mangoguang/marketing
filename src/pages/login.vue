@@ -10,11 +10,6 @@
     </div>
     <div class="login">
       <div class="box">
-        <div @click='test'>测试图片选择</div>
-      <div @click='test2'>测试视频选择</div>
-      <div @click='test3'>测试选择</div>
-      <div @click='test4'>测试安卓选择</div>
-      <div @click='test5'>测试安卓删除</div>
         <div class="welcome">Hi,</div>
         <h1>欢迎使用慕思营销助手</h1>
         <form>
@@ -142,68 +137,6 @@ export default {
   },
   methods: {
     ...mapMutations(['setPersonMsg']),
-    test4(){
-      var photoSelect = api.require('photoSelect');
-      photoSelect.openAblum({
-          permitnum: '9'
-      }, function(ret, err) {
-          if (ret) {
-              alert(JSON.stringify(ret));
-          } else {
-              alert(JSON.stringify(err));
-          }
-      });
-    },
-    test5(){
-      var photoSelect = api.require('photoSelect');
-      photoSelect.clearoom();
-    },
-    test(){
-      var photoPicker = api.require('photoPicker');
-      photoPicker.addPhoto({
-              photoMaxNum : 5,
-              rowCount:3,
-              selectTogether:false,
-              selectedType:0,
-              lookGifPhoto:false,
-              lookLivePhoto:false,
-              outerCamera:false,
-              time:8
-          },function(ret, err){
-              alert(JSON.stringify(ret));
-      });
-    },
-     test2(){
-      var photoPicker = api.require('photoPicker');
-      photoPicker.addPhoto({
-              videoMaxNum:2,
-              rowCount:3,
-              selectTogether:false,
-              selectedType:1,
-              lookGifPhoto:true,
-              lookLivePhoto:true,
-              outerCamera:false,
-              time:8
-          },function(ret, err){
-              alert(JSON.stringify(ret));
-      });
-      },
-      test3(){
-      var photoPicker = api.require('photoPicker');
-      photoPicker.addPhoto({
-              photoMaxNum : 5,
-              videoMaxNum:2,
-              rowCount:3,
-              selectTogether:true,
-              selectedType:2,
-              lookGifPhoto:true,
-              lookLivePhoto:true,
-              outerCamera:false,
-              time:8
-          },function(ret, err){
-              alert(JSON.stringify(ret));
-      });
-    },
     //去除input输入框的左边空格
     trimStr: function(str) {
       return str.replace(/(^\s*)|(\s*$)/g, "");
@@ -270,7 +203,7 @@ export default {
         if (res) {
           console.log(11223344, this.mergeBoxShow)
           let typename = this.getName(res.positionList)
-          let ajaxData = {
+          let ajaxData2 = {
             account: res.account,
             tenantId: res.tenantId,
             timestamp: Date.parse(new Date()),
@@ -289,8 +222,20 @@ export default {
           let shops = JSON.stringify(res.shopList)
           localStorage.setItem("crmAccount", crmAccount);
           localStorage.setItem("shops", shops);
-          localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
-          this.$root.ajaxData = ajaxData
+          let ajaxData=localStorage.getItem('ajaxData');
+          console.log(ajaxData)
+          if(ajaxData){
+            let obj=Object.assign({},ajaxData2,JSON.parse(ajaxData))
+            localStorage.setItem('ajaxData',JSON.stringify(obj))
+            this.$root.ajaxData = obj
+            // alert('1'+JSON.stringify(obj))
+          }else{
+            localStorage.setItem('ajaxData',JSON.stringify(ajaxData2))
+            this.$root.ajaxData = ajaxData2
+            // alert('2'+JSON.stringify(ajaxData2))
+          }
+          /* localStorage.setItem('ajaxData', JSON.stringify(ajaxData2)) */
+         
           //this.$router.replace({ path: "/" })
           // 检测app账号跟crm账号是否一致
           //this.mergeBoxShow = res.account !== res.crmAccount
