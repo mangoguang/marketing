@@ -228,11 +228,11 @@ export default {
             let obj=Object.assign({},ajaxData2,JSON.parse(ajaxData))
             localStorage.setItem('ajaxData',JSON.stringify(obj))
             this.$root.ajaxData = obj
-            // alert('1'+JSON.stringify(obj))
+            //alert('1'+JSON.stringify(obj))
           }else{
             localStorage.setItem('ajaxData',JSON.stringify(ajaxData2))
             this.$root.ajaxData = ajaxData2
-            // alert('2'+JSON.stringify(ajaxData2))
+            //alert('2'+JSON.stringify(ajaxData2))
           }
           /* localStorage.setItem('ajaxData', JSON.stringify(ajaxData2)) */
          

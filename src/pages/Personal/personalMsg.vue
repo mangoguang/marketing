@@ -189,7 +189,11 @@ export default {
       this.messageTip.showMessageBox=true; 
     },
     remove(){
+      let deviceId=JSON.parse(localStorage.getItem('ajaxData')).deviceId;
       localStorage.clear()
+      if(deviceId){
+        localStorage.setItem('ajaxData',JSON.stringify({deviceId:deviceId}))
+      }
       this.$router.push({path: '/login'})
       this.messageTip.showMessageBox=false;
     },
