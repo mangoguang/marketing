@@ -203,7 +203,7 @@ export default {
         if (res) {
           console.log(11223344, this.mergeBoxShow)
           let typename = this.getName(res.positionList)
-          let ajaxData2 = {
+          let ajaxData = {
             account: res.account,
             tenantId: res.tenantId,
             timestamp: Date.parse(new Date()),
@@ -221,21 +221,10 @@ export default {
           })
           let shops = JSON.stringify(res.shopList)
           localStorage.setItem("crmAccount", crmAccount);
-          localStorage.setItem("shops", shops);
-          let ajaxData=localStorage.getItem('ajaxData');
-          console.log(ajaxData)
-          if(ajaxData){
-            let obj=Object.assign({},ajaxData2,JSON.parse(ajaxData))
-            localStorage.setItem('ajaxData',JSON.stringify(obj))
-            this.$root.ajaxData = obj
-            //alert('1'+JSON.stringify(obj))
-          }else{
-            localStorage.setItem('ajaxData',JSON.stringify(ajaxData2))
-            this.$root.ajaxData = ajaxData2
-            //alert('2'+JSON.stringify(ajaxData2))
-          }
-          /* localStorage.setItem('ajaxData', JSON.stringify(ajaxData2)) */
-         
+          localStorage.setItem("shops", shops)
+          localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
+          this.$root.ajaxData = ajaxData
+          //alert("2:"+localStorage.getItem('deviceId'))
           //this.$router.replace({ path: "/" })
           // 检测app账号跟crm账号是否一致
           //this.mergeBoxShow = res.account !== res.crmAccount

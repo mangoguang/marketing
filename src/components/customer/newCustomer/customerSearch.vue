@@ -7,8 +7,13 @@
     <div class="inp">
       <input v-model="phone" :type="inpType" :placeholder="chooseVal" v-show='inpType=="number"' onkeypress="if(event.keyCode == 101){return false}"/>
       <input v-model="phone" :type="inpType" :placeholder="chooseVal" v-show='inpType=="text"'/>
-      <button @click="toCustomerInfo" type="button">新建</button>
+     
     </div>
+    <chooseShop />
+    <div class="btn">
+       <button @click="toCustomerInfo" type="button">新建</button>
+    </div>
+   
     <div class="tips" v-show="existStatus">
       <selectTips class="tips_box" :btnSelect='btnSelect' :tipsVal='tipsVal'/>
     </div>
@@ -20,10 +25,11 @@
 import mango from '../../../js'
 import variable from '../../../js/variable'
 import radioComp from './radioComp'
+import chooseShop from './chooseShop'
 import selectTips from './selectTips'
 export default {
   name:'customerSearch',
-  components: {radioComp,selectTips},
+  components: {radioComp,selectTips,chooseShop},
   data(){
     return{
       phone: '',
@@ -145,33 +151,35 @@ export default {
   .inp{
     display: flex;
     padding: 0 10vw;
+    
     // font-size: 0;
     input, button{
       display: block;
-      height: 11.6vw;
+      height: 11.733vw;
       font-size: 12px;
       line-height: 11.6vw;
     }
     input{
-      width: 61.4vw;
+      width: 80vw;
       padding: 0 8vw;
       color: $fontCol;
       box-sizing: border-box;
-      border-top-left-radius: 5.8vw;
-      border-bottom-left-radius: 5.8vw;
-      background: url(../../../assets/imgs/search.png) no-repeat, #ebebeb;
-      background-position: 3vw center;
-      background-size: 4vw auto;
+      border-radius: 5.8665vw;
+      background:#ebebeb;
     }
-    button{
-      width: 18.6vw;
+    
+    }
+    .btn{
+      text-align: center;
+      margin-top: 9.333vw;
+      & > button{
+      width: 80vw;
+      height:11.733vw;
       // background: $btnCol;
-      border-top-right-radius: 5.8vw;
-      border-bottom-right-radius: 5.8vw;
+      border-radius: 5.8665vw;
       color: #fff;
-      background:linear-gradient(0deg,rgba(0,122,255,1),rgba(59,154,255,1));
-      box-shadow:0px 2px 0px 0px rgba(255,255,255,0.3);
-      border-radius:0px 44px 44px 0px;
+      background: #007AFF;
+      border:1px solid #005DC2;
     }
   }
   .tips {

@@ -16,13 +16,8 @@
       window.apiready = function(){
         let deviceID=api.deviceId;
         let version=api.appVersion;
-        let ajaxData=localStorage.getItem('ajaxData')
-        if(ajaxData){
-          let obj=Object.assign({},JSON.parse(ajaxData),{deviceId:deviceID})
-          localStorage.setItem('ajaxData',JSON.stringify(obj))
-        }else{
-          localStorage.setItem('ajaxData',JSON.stringify({deviceId:deviceID}))
-        }
+        localStorage.setItem('deviceId',deviceID)
+        //alert(localStorage.getItem('deviceId'))
         //alert(deviceID)
         //alert(version)
       }

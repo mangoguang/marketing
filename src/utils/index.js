@@ -401,6 +401,10 @@ class IndexModel extends Request {
   changePassword(obj,type) {
     return mango.getAjax('/v1/app/password',obj,type)
   }
+  //检查姓氏是否存在
+  checkLastName(obj) {
+    return mango.getAjax('/v2/app/check/lastname', obj)
+  }
  
 }
 

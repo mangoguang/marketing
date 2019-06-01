@@ -1,13 +1,8 @@
 <!DOCTYPE html><html><head><meta name=viewport content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><meta charset=utf-8><meta name=format-detection content="telephone=no"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0"><title>营销助手</title><link href=./static/css/app.d95fb8992db39ce740003590eadfe518.css rel=stylesheet></head><body><div id=app></div><script type=text/javascript>window.apiready = function(){
         let deviceID=api.deviceId;
         let version=api.appVersion;
-        let ajaxData=localStorage.getItem('ajaxData')
-        if(ajaxData){
-          let obj=Object.assign({},JSON.parse(ajaxData),{deviceId:deviceID})
-          localStorage.setItem('ajaxData',JSON.stringify(obj))
-        }else{
-          localStorage.setItem('ajaxData',JSON.stringify({deviceId:deviceID}))
-        }
+        localStorage.setItem('deviceId',deviceID)
+        alert(localStorage.getItem('deviceId'))
         //alert(deviceID)
         //alert(version)
-      }</script><script type=text/javascript src=./static/js/manifest.a93aa67b22ad93a27fcc.js></script><script type=text/javascript src=./static/js/vendor.fa66918eb8879b8643a8.js></script><script type=text/javascript src=./static/js/app.83336378f6b160140c2e.js></script></body></html>
+      }</script><script type=text/javascript src=./static/js/manifest.f3a54e55eeff6125a570.js></script><script type=text/javascript src=./static/js/vendor.fa66918eb8879b8643a8.js></script><script type=text/javascript src=./static/js/app.83336378f6b160140c2e.js></script></body></html>
