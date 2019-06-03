@@ -121,13 +121,14 @@ export default {
               MessageBox.alert('请填写正确手机号码')
               return;
             }else {
-              let ishas=this.checkPhone('phone',this.newCustomerInfo.phone)
+              this.checkPhone('phone',this.newCustomerInfo.phone)
               if(ishas){
                 return;
+              }else{
+                this.saveData()
               }
             }
-          }else{
-            this.saveData()
+             
           }
           if(this.newCustomerInfo.weChat&&this.wechat!==this.newCustomerInfo.weChat){
             let testPhone = variable.testPhone(this.newCustomerInfo.phone)
@@ -148,13 +149,13 @@ export default {
               let ishas=this.checkPhone('wechat',this.newCustomerInfo.weChat)
               if(ishas){
                 return;
+              }else{
+                this.saveData()
               }
             }
-          }else{
-            this.saveData()
+            
           }
-          
-          
+
         }
         if(this.newCustomerInfo.phone&&this.phone===this.newCustomerInfo.phone){
            if(this.newCustomerInfo.weChat&&this.wechat!==this.newCustomerInfo.weChat){
@@ -166,12 +167,13 @@ export default {
               let ishas=this.checkPhone('wechat',this.newCustomerInfo.weChat)
               if(ishas){
                 return;
+              }else{
+                this.saveData()
               }
             }
-          }else{
-            this.saveData()
+            
           }
-          
+
         }
         
         
