@@ -149,6 +149,11 @@ let init = (function() {
       const nameReg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/
       return nameReg.test(name)
     }
+    //校验微信号
+    this.testWeChat = (name) => {
+      const wechatReg = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
+      return wechatReg.test(name)
+    }
 
     // 获取时间戳
     this.getTimestamp = () => {

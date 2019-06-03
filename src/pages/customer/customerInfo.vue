@@ -64,7 +64,8 @@ export default {
       shops: '',
       shpoId:'',
       index: '',
-      phone:''
+      phone:'',
+      wechat:''
     }
   },
   computed: {
@@ -88,7 +89,7 @@ export default {
         if(res.data) {
           this.list = res.data
           this.phone = this.list.phone
-          this.getShopName(this.list.orgId)
+          this.wechat = this.list.weChat
         }
       }).catch((reject) => {
         if (reject === 510) {
@@ -108,32 +109,107 @@ export default {
       }else if(!this.newCustomerInfo.username) {
         MessageBox.alert('称呼不能为空')
         return
-      }
-      if(this.phone === this.newCustomerInfo.phone) {
-          this.saveData()
-      }else {
-        let testPhone = variable.testPhone(this.newCustomerInfo.phone)
-        if(testPhone) {
-          this.checkPhone()
-        }else {
-          MessageBox.alert('请填写正确手机号码')
+      }else{
+        if(!this.newCustomerInfo.phone&&!this.newCustomerInfo.weChat){
+          MessageBox.alert('手机号码和微信号不能都为空')
+          return;
         }
+        if(this.newCustomerInfo.phone&&this.phone!==this.newCustomerInfo.phone) {
+          if(this.newCustomerInfo.weChat&&this.wechat===this.newCustomerInfo.weChat){
+            let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+            if(!testPhone) {
+              MessageBox.alert('请填写正确手机号码')
+              return;
+            }else {
+              let ishas=this.checkPhone('phone',this.newCustomerInfo.phone)
+              if(ishas){
+                return;
+              }
+            }
+          }else{
+            this.saveData()
+          }
+          if(this.newCustomerInfo.weChat&&this.wechat!==this.newCustomerInfo.weChat){
+            let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+            if(!testPhone) {
+              MessageBox.alert('请填写正确手机号码')
+              return;
+            }else {
+              let ishas=this.checkPhone('phone',this.newCustomerInfo.phone)
+              if(ishas){
+                return;
+              }
+            }
+            let testWeChat = variable.testWeChat(this.newCustomerInfo.weChat)
+            if(!testWeChat) {
+              MessageBox.alert('请填写正确微信号')
+              return;
+            }else {
+              let ishas=this.checkPhone('wechat',this.newCustomerInfo.weChat)
+              if(ishas){
+                return;
+              }
+            }
+          }else{
+            this.saveData()
+          }
+          
+          
+        }
+        if(this.newCustomerInfo.phone&&this.phone===this.newCustomerInfo.phone){
+           if(this.newCustomerInfo.weChat&&this.wechat!==this.newCustomerInfo.weChat){
+            let testWeChat = variable.testWeChat(this.newCustomerInfo.weChat)
+            if(!testWeChat) {
+              MessageBox.alert('请填写正确微信号')
+              return;
+            }else {
+              let ishas=this.checkPhone('wechat',this.newCustomerInfo.weChat)
+              if(ishas){
+                return;
+              }
+            }
+          }else{
+            this.saveData()
+          }
+          
+        }
+        
+        
+        
+          
       }
-      
+    },
+    //check
+    wx(){
+        
+    },
+    //check
+    judgePhone(){
+       
     },
     //验证手机
-    checkPhone() {
+    checkPhone(type,value) {
+      let ishas;
       mango.getAjax('/v3/app/customer/check', {
-        value: this.newCustomerInfo.phone,
-        type: 'phone'
+        value: value,
+        type: type,
+        orgId: this.newCustomerInfo.orgId
       }).then((res) => {
-        if(res.status) {
-          MessageBox.alert('该手机号码已存在')
-        }else {
-          this.saveData()
+        let existName;
+          if(type==='phone'){
+            existName="手机号"
+          }else{
+            existName="微信号"
+          }
+        if(res.data) {
+          MessageBox.alert(`该${existName}已存在`)
+          ishas=true;
+          return ishas;
+        }else{
+          ishas=false;
+          return ishas;
         }
-      })
-       .catch((reject) => {
+      }).catch((reject) => {
           if (reject === 510) {
             this.checkPhone()
           }
@@ -141,6 +217,7 @@ export default {
     },
     //保存数据
     saveData() {
+      console.log(this.newCustomerInfo);
       let formdata = new FormData()
       /*let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
       console.log('file',file);

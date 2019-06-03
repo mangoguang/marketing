@@ -4,7 +4,10 @@
       <li is="customerLi" :leftText="'意向产品'" :icon='true'  @click.native='addIntention'>
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
-      <li is="shopSelect" :start='"*"' :type='type'></li>
+      <li is="customerLi" :leftText="'所属门店'" :start="'*'" >
+        <span class='shop'>{{ shopName }}</span>
+      </li>
+      <!-- <li is="shopSelect" :start='"*"' :type='type'></li> -->
       <!-- <li is="customerLi" :leftText="'创建日期'" :start="'*'" :icon="true" @click.native="selectTime">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
       </li> -->
@@ -130,7 +133,8 @@ export default {
       shops:'',
       day: '',
       codeList: {},
-      productList: []
+      productList: [],
+      shopName:''
      
    }
   },
@@ -152,18 +156,17 @@ export default {
       }else if(this.fromName !='NewCustomer'){
         this.setIntentionProduct()
         this.hasAddressId()
+        this.initShop()
         /* if(this.newCustomerInfo.arrivalDate) {
           this.timeColor = 'color: #363636'
         } */
       }
       //获取shopid
-      let val = this.getShopVal()
-      this.getShopId(val)
+      /* let val = this.getShopVal()
+      this.getShopId(val) */
     }
   },
   mounted() {
-    let shops = localStorage.getItem('shops')
-    this.shops = JSON.parse(shops)
     this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
@@ -175,14 +178,28 @@ export default {
       this.codeList.sourceCode = 'Natural'
       this.changeCode(this.codeList)
       //初始化门店的值
-      let shopsList = btnList(this.shops,0)
-      this.initShopList(shopsList)
+    /*   let shopsList = btnList(this.shops,0)
+      this.initShopList(shopsList) */
+      this.initShop();
       this.getShopVal()
       this.setBuyReason('')
       this.setLeaveStoreVal('')
       this.setDiscountVal('')
       this.setCheckedList([])
       this.setAddressId('')
+    },
+    initShop(){
+      let orgId=this.$route.query.orgId;
+      let shops=JSON.parse(localStorage.getItem('shops'))
+       if(shops&&shops.length){
+          shops.map((item,index) => {
+            if(item.crmId===orgId){
+              this.shopName=item.name;
+              this.shopId=item.id;
+            }
+          })
+        }
+        this.newCustomerInfo.shopId=this.shopId;
     },
     //请求客户地址
     hasAddressId() {

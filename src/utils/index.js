@@ -405,7 +405,11 @@ class IndexModel extends Request {
   checkLastName(obj) {
     return mango.getAjax('/v2/app/check/lastname', obj)
   }
+ //检查手机或微信是否存在
+ checkCustomer(){
+  return mango.getAjax(' /v3/app/customer/check', obj)
  
+ }
 }
 
 export { IndexModel }

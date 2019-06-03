@@ -191,42 +191,75 @@ export default {
       //FormData对象
       formdata.append(imgType, blob, Date.now() + ".jpg");
     },
+    checkCustomer(obj){
+       let isHas;
+       let str;
+      indexModel.checkCustomer(obj).then((res) => {
+        if(obj.type==="phone"){
+            str="手机号码"
+          }else{
+            str="微信号"
+          }
+        if(res.data){
+          MessageBox.alert(`该${str}已存在`).then(action => {
+             isHas=false;
+             return isHas;
+          })
+        }else{
+          isHas=true;
+          return isHas;
+        }
+      }).catch((reject) => {
+          if (reject === 510) {
+            this.checkCustomer(obj)
+          }
+      })
+    },
     //保存客户信息，新建客户	
     creatNewCustomer() {
       let isHasPhone;
       if(this.$route.query.wechat&&this.newCustomerInfo.phone){
-        mango.getAjax('/v3/app/customer/check', {
-          value: this.newCustomerInfo.phone,
-          type:'phone'
-        }).then((res) => {
-          if(res.data){
-            MessageBox.alert('手机号码已存在').then(action => {
-             isHasPhone=false;
-            })
-          }else{
-            isHasPhone=true;
-          }
-        })
-        .catch((reject) => {
-          if (reject === 510) {
-            this.creatNewCustomer()
-          }
-        })
+        let phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/
+        if(!phoneReg.test(this.newCustomerInfo.phone)){
+           MessageBox.alert('请填写正确的手机号')
+          return
+        }else{
+          isHasPhone=this.checkCustomer({
+            value:this.newCustomerInfo.phone,
+            type:'phone',
+            orgId:this.newCustomerInfo.orgId
+          })
+        }
       }else{
-        isHasPhone=true;
+        isHasPhone=true
+      }
+      if(this.$route.query.phone&&this.newCustomerInfo.weChat) {
+        var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
+        if(!wx.test(this.newCustomerInfo.weChat)) {
+          MessageBox.alert('请填写正确的微信号')
+          return
+        }else{
+          isHasPhone=this.checkCustomer({
+            value:this.newCustomerInfo.weChat,
+            type:'wechat',
+            orgId:this.newCustomerInfo.orgId
+          })
+        }
+      }else{
+        isHasPhone=true
       }
       if(!isHasPhone){
         return;
       }
       
       //如果有填写验证微信号
-      if(this.newCustomerInfo.weChat) {
+      /* if(this.newCustomerInfo.weChat) {
         var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
         if(!wx.test(this.newCustomerInfo.weChat)) {
           MessageBox.alert('请填写正确的微信号')
           return
         }
-      }
+      } */
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
         return

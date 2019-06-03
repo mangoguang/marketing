@@ -5,11 +5,11 @@
         v-model="radioVal" @change="changeVal"/>
     </div>
     <div class="inp">
-      <input v-model="phone" :type="inpType" :placeholder="chooseVal" v-show='inpType=="number"' onkeypress="if(event.keyCode == 101){return false}"/>
-      <input v-model="phone" :type="inpType" :placeholder="chooseVal" v-show='inpType=="text"'/>
+      <input v-model="phone" @focus="changeStatus" @blur="close" :type="inpType" :placeholder="chooseVal" v-show='inpType=="number"' onkeypress="if(event.keyCode == 101){return false}"/>
+      <input v-model="phone" @focus="changeStatus"  @blur="close" :type="inpType" :placeholder="chooseVal" v-show='inpType=="text"'/>
      
     </div>
-    <chooseShop />
+    <chooseShop @change="updateShop" :status="status"/>
     <div class="btn">
        <button @click="toCustomerInfo" type="button">新建</button>
     </div>
@@ -46,7 +46,9 @@ export default {
       cusId: '',
       tipsVal: '手机号码已存在，',
       inpType: '',
-      pressType: ''
+      pressType: '',
+      status:true,
+      orgId:''
     }
   },
   watch: {
@@ -55,6 +57,9 @@ export default {
       this.inpType = this.radioVal == '客户手机'? 'number' : 'text'
       this.tipsVal = this.radioVal == '客户手机'? '手机号码已存在，' : '微信号已存在，'
     }
+  },
+  created(){
+    this.orgId=JSON.parse(localStorage.getItem('shops'))[0].crmId
   },
   mounted() {
     this.radioVal = this.text[0].name
@@ -102,14 +107,15 @@ export default {
     sendPhoneTest(type) {
       mango.getAjax('/v3/app/customer/check', {
         value: this.phone,
-        type: type
+        type: type,
+        orgId:this.orgId
       }).then((res) => {
         res = res.data
         if (res) {
           this.existStatus = true
           this.cusId = res.customerId
         } else {
-         this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}`})
+         this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}&orgId=${this.orgId}`})
         }
       })
       .catch(reject => {
@@ -130,6 +136,15 @@ export default {
         }})
       }
       this.existStatus = false
+    },
+    updateShop(value){
+      this.orgId=value;
+    },
+    changeStatus(){
+      this.status=false
+    },
+    close(){
+      this.status=true
     }
   }
 }
@@ -165,7 +180,7 @@ export default {
       color: $fontCol;
       box-sizing: border-box;
       border-radius: 5.8665vw;
-      background:#ebebeb;
+      background:#eee;
     }
     
     }
@@ -194,6 +209,18 @@ export default {
       left: 12.66vw;
       top: 72.13vw;
     }
+  }
+   input:-moz-input-placeholder{
+    color:#999;
+  }
+  input::-moz-input-placeholder{
+     color:#999;
+  }
+  input::-ms-input-placeholder{
+     color:#999;
+  }
+  input::-webkit-input-placeholder{
+     color:#999;
   }
 }
 </style>

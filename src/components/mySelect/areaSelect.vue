@@ -266,6 +266,9 @@ export default {
   }
 }
 .area{
+  label{
+    font-size: 14px;
+  }
   input:-moz-input-placeholder{
    font-size: 3.73vw;
     color:#909090;
