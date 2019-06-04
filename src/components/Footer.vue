@@ -7,7 +7,9 @@
           <p class="iconCharP">首页</p>
         </router-link>
       </li>
-      <li id="2" v-if="_localAjax().typename === 'Dealer Boss'">
+      <li id="2" v-if="_localAjax().typename === 'Dealer Boss'
+                      ||_localAjax().typename ==='Boss&Consultant'
+                      ||_localAjax().typename === 'Boss&Manager'">
          <router-link to="/ReportForms" replace>
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
@@ -21,24 +23,36 @@
           <p class="charPActive">报表</p>
         </div> -->
       </li>
-      <li id="3" v-else>
-        <template>
-          <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || _localAjax().typename === 'Store Manager'"
+      <li id="3" v-if="_localAjax().typename === 'Sleep Consultant' || 
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' ">
+          <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' "
                         to="/Customer" @click.native="changeActive" replace>
             <div class="iconSalary"></div>
             <p class="iconCharP">客户</p>
           </router-link>
-           <a href="javascript:;" @click="pingbi" v-else>
+          <a href="javascript:;" @click="pingbi" v-else>
             <div class="iconSalary"></div>
             <p class="iconCharP">客户</p>
           </a>
-        </template>
       </li>
-      <li id="4" >
+     
+
+      <li id="4" v-if="_localAjax().typename === 'Sleep Consultant' || 
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' ||
+                              _localAjax().typename === 'Dealer Boss' ">
         <template>
         <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
-                      _localAjax().typename === 'Store Manager' || 
-                      _localAjax().typename === 'Dealer Boss' "
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' ||
+                              _localAjax().typename === 'Dealer Boss' "
                       to="/work" @click.native="changeActive" replace>
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>
@@ -93,7 +107,7 @@ export default {
       // console.log('isBoss',this.status)
     },
     pingbi(){
-      alert('敬请期待！！！')
+      alert('暂无权限')
     },
     touchend(e) {
       // console.log(e.path[1].id)

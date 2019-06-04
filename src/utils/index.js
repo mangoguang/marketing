@@ -398,10 +398,18 @@ class IndexModel extends Request {
   */
 
   //修改密码
-  changePassword(obj,key) {
-    return mango.getFormAjax('/v1/app/password',obj,key)
+  changePassword(obj,type) {
+    return mango.getAjax('/v1/app/password',obj,type)
   }
+  //检查姓氏是否存在
+  checkLastName(obj) {
+    return mango.getAjax('/v2/app/check/lastname', obj)
+  }
+ //检查手机或微信是否存在
+ checkCustomer(){
+  return mango.getAjax(' /v3/app/customer/check', obj)
  
+ }
 }
 
 export { IndexModel }

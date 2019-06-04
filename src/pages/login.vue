@@ -61,6 +61,8 @@
         </div>
         <div class="wechat-icon"></div>
       </div>
+      
+      <div :style="{height:colorheight}" class="fixBottom"></div>
     </div>
     <message-box v-show="mergeBoxShow" v-bind="mergeBox">
       <p id="tip">{{mergeBox.tip}}</p>
@@ -127,7 +129,7 @@ export default {
         type:false,
         btnNumbrella:2
       },
-      botContentShow: true
+      colorheight:''
     }
   },
   mounted() {
@@ -161,12 +163,16 @@ export default {
       if (phone === "iphonex") {
         this.height = "54.4";
         this.marginTop = "-5.86vw";
+        this.colorheight='5.86vw'
+
       } else if (phone === "iphone") {
         this.height = "49.26";
         this.marginTop = ''
+        this.colorheight=''
       } else {
         this.height = "49.26";
         this.marginTop = ''
+        this.colorheight=''
       }
     },
     login(account, pwd) {
@@ -222,9 +228,10 @@ export default {
           })
           let shops = JSON.stringify(res.shopList)
           localStorage.setItem("crmAccount", crmAccount);
-          localStorage.setItem("shops", shops);
+          localStorage.setItem("shops", shops)
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
           this.$root.ajaxData = ajaxData
+          //alert("2:"+localStorage.getItem('deviceId'))
           //this.$router.replace({ path: "/" })
           // 检测app账号跟crm账号是否一致
           //this.mergeBoxShow = res.account !== res.crmAccount
@@ -309,6 +316,8 @@ export default {
             name = 'Sleep Consultant'
           }else if(item.positionType === 'Store Manager') {
             name = 'Store Manager'
+          }else {
+            name = item.positionType
           }
         })
       }else if(arr && arr.length > 1){  //多个职位
@@ -319,23 +328,54 @@ export default {
         name = this.getUnique(name)
         let nameStrs = ''
         if(name && name.length > 1) {
-          name.forEach(item => {
-            nameStrs = nameStrs === ''? item : nameStrs + '&' + item
-          })
-          //只判断了经销商和导购或者经销商和店长
-          //如果有导购和店长，返回店长
-          if(nameStrs === 'Dealer Boss&Sleep Consultant' || nameStrs === 'Sleep Consultant&Dealer Boss') {
-            name = 'Boss&Consultant'
-          }else if(nameStrs === 'Dealer Boss&Store Manager' || nameStrs === 'Store Manager&Dealer Boss') {
-            name = 'Boss&Manager'
+          const regBoss = new RegExp("Dealer Boss", "");
+          const regConsultant = new RegExp("Sleep Consultant", "");
+          const regManager = new RegExp("Store Manager", "");
+          const hasData = this.filterVirtualName(name)
+          console.log(123,hasData)
+          if(hasData) {
+            name.forEach(item => {
+              nameStrs = nameStrs === ''? item : nameStrs + '&' + item
+            })
+            console.log('nameStrs',nameStrs)
+             //判断了经销商和导购或者经销商和店长
+            if(regManager.test(nameStrs) && regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
+              name = 'Boss&Manager'
+              return name
+            }else if(regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
+              name = 'Boss&Consultant'
+              return name
+            }else if(regManager.test(nameStrs) && regBoss.test(nameStrs)) {
+              name = 'Boss&Manager'
+              return name
+            }else if(regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
+              name = 'Store Manager'
+              return name
+            }else if(regManager.test(nameStrs)){
+              name = 'Store Manager'
+              return name
+            }else if(regConsultant.test(nameStrs)) {
+              name = 'Sleep Consultant'
+              return name
+            }
           }else {
-            name = 'Store Manager'
+            name = 'other'
           }
         }else {
           name = name[0]
         }
       }
       return name
+    },
+    //去除虚拟门店店长等相似字段
+    filterVirtualName(name) {
+      let len = name.length
+      for(var i = 0; i < len; i ++) {
+        if(name[i] ==='Dealer Boss' || name[i] === 'Sleep Consultant' || name[i] === 'Store Manager') {
+          return true
+        }
+      }
+      return false
     },
     //去重
     getUnique(typeArr) {
@@ -570,6 +610,13 @@ export default {
           border: .13vw solid rgba(0,93,194,1);
         }
       }
+    }
+    .fixBottom{
+      position:fixed;
+      bottom:0;
+      left:0;
+      right:0;
+      background:#fff;
     }
   }
   .wechatLogin {

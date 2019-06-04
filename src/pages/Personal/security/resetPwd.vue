@@ -94,7 +94,9 @@ export default {
     //获取新密码
     newLoginVal(val) {
       this.newVal = val
-      this.judgePwd(val)
+      if(val.length >= 6) {
+        this.judgePwd(val)
+      }
     },
     //获取新密码
     newLoginValAgain(val) {
@@ -102,7 +104,8 @@ export default {
     },
     //判断密码格式
     judgePwd(val) {
-      const reg = /^(\w){6,18}$/g
+      // const reg = /^(\w){6,18}$/g
+      const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,18}$/
       if(!(reg.test(val))) {
         this.errTips = '密码格式错误'
         this.showTips = true
@@ -157,11 +160,15 @@ export default {
     },
     //修改密码
     changePassword() {
-      const formData = new FormData()
-      formData.append('password',md5(this.getOriginPwd()))
-      formData.append('newPassword',md5(this.newVal))
+      // const formData = new FormData()
+      let obj = {
+        password:md5(this.getOriginPwd()),
+        newPassword:md5(this.newVal)
+      }
+      // formData.append('password',md5(this.getOriginPwd()))
+      // formData.append('newPassword',md5(this.newVal))
       const key = ['password','newPassword']
-      indexModel.changePassword(formData,key).then(res => {
+      indexModel.changePassword(obj,'post').then(res => {
         if(res.status) {
           this.changeSuc = true
         }
