@@ -105,7 +105,7 @@ export default {
           let arr = this.changeStatus(this.list.orderList)
           this.list.orderList = arr
           this.getShopName(this.list.orgId)
-          this.phone = res.data.phone
+          this.phone = res.data.phone==='0'?'':res.data.phone
           this.wechat= res.data.weChat
         }
       }).catch((reject) => {
@@ -323,7 +323,7 @@ export default {
      updateParams(obj) {
       let tempObj = {}
       let temp = {
-        phone: obj.phone,
+        phone: obj.phone?obj.phone:'0',
         username: obj.username,
         sex: obj.sex, 
         birthday: obj.birthday,

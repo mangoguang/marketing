@@ -191,10 +191,10 @@ export default {
       //FormData对象
       formdata.append(imgType, blob, Date.now() + ".jpg");
     },
-    checkCustomer(obj){
+    async checkCustomer(obj){
        let isHas;
        let str;
-      indexModel.checkCustomer(obj).then((res) => {
+      await indexModel.checkCustomer(obj).then((res) => {
         if(obj.type==="phone"){
             str="手机号码"
           }else{
@@ -224,7 +224,7 @@ export default {
            MessageBox.alert('请填写正确的手机号')
           return
         }else{
-          isHasPhone=this.checkCustomer({
+          isHasPhone=await this.checkCustomer({
             value:this.newCustomerInfo.phone,
             type:'phone',
             orgId:this.newCustomerInfo.orgId
@@ -239,7 +239,7 @@ export default {
           MessageBox.alert('请填写正确的微信号')
           return
         }else{
-          isHasPhone=this.checkCustomer({
+          isHasPhone=await this.checkCustomer({
             value:this.newCustomerInfo.weChat,
             type:'wechat',
             orgId:this.newCustomerInfo.orgId

@@ -13,7 +13,7 @@
         <span :style="newCustomerInfo.birthday?'color: #363636':color ">{{newCustomerInfo.birthday || '请选择客户生日'}}</span>
       </li>
       <li is="ageSelect"   @ageChange="ageChange"></li>
-      <template v-if="newCustomerInfo.phone&&newCustomerInfo.phone.length>0&&!areaType">
+      <template v-if="$route.query.phone">
         <li is="customerLi" :leftText="'客户电话'">
           <input v-model="newCustomerInfo.phone" type="number" readonly>
         </li>
@@ -23,7 +23,7 @@
           <input v-model="newCustomerInfo.phone" type="number" placeholder="请填写客户电话"  oninput="if(value.length>11)value=value.slice(0,11)">
         </li>
       </template>
-       <template v-if="newCustomerInfo.weChat&&newCustomerInfo.weChat.length>0&&!areaType">
+       <template v-if="$route.query.wechat">
         <li is="customerLi" :leftText="'客户微信'">
           <input v-model="newCustomerInfo.weChat" type="text" readonly>
         </li>
@@ -211,7 +211,12 @@ export default {
         this.$set(this.newCustomerInfo,'age',this.list.age)
         this.setAgeVal(this.list.age)
       }
-      this.$set(this.newCustomerInfo,'phone',this.list.phone)
+      if(this.list.phone==='0'){
+        this.$set(this.newCustomerInfo,'phone','')
+      }else{
+        this.$set(this.newCustomerInfo,'phone',this.list.phone)
+      }
+      
       this.$set(this.newCustomerInfo,'weChat',this.list.weChat)
       this.$set(this.newCustomerInfo,'qq',this.list.qq)
       this.$set(this.newCustomerInfo,'remark',this.list.remark)

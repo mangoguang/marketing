@@ -88,7 +88,7 @@ export default {
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
-          this.phone = this.list.phone
+          this.phone = this.list.phone==='0'?'': this.list.phone
           this.wechat = this.list.weChat
         }
       }).catch((reject) => {
@@ -294,7 +294,7 @@ export default {
      updateParams(obj) {
       let tempObj = {}
       let temp = {
-        "phone": obj.phone,
+        "phone": obj.phone?obj.phone:'0',
         "username": obj.username,
         "sex": obj.sex, 
         "birthday": obj.birthday,
