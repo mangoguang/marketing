@@ -14,7 +14,7 @@
 import intentionLi from './intentionLi'
 import { mapMutations } from 'vuex'
 export default {
-  props: ['list','phone'],
+  props: ['list','phone','orgId'],
   components: { intentionLi },
   methods: {
      ...mapMutations(['setCheckedList']),
@@ -31,7 +31,7 @@ export default {
       })
     },
     newCustomer() {
-       this.$router.push({path:'newIntention',query: {id:this.$route.query.id}})
+       this.$router.push({path:'newIntention',query: {id:this.$route.query.id,orgId:this.orgId}})
       // this.$router.push({
       //   name:'addintention',
       //   params: {

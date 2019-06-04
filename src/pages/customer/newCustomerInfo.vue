@@ -216,7 +216,7 @@ export default {
       })
     },
     //保存客户信息，新建客户	
-    creatNewCustomer() {
+    async creatNewCustomer() {
       let isHasPhone;
       if(this.$route.query.wechat&&this.newCustomerInfo.phone){
         let phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/
@@ -273,6 +273,17 @@ export default {
         MessageBox.alert('请填写客户地址')
         return
       }
+      let testName=/^[\u4e00-\u9fa5]{2,}$/
+      if(!testName.test(this.newCustomerInfo.username)){
+        MessageBox.alert('称呼只能输入中文且不能少于2个字')
+        return
+      }
+      let passName=await this.recycleName(this.newCustomerInfo.username);
+      console.log(passName,'ss')
+      if(!passName){
+        MessageBox.alert('姓氏不存在')
+        return;
+      }
       let result = this.hasFollowData(this.newCustomerInfo)
       //判断有没有填写跟进情况
       if(!result) {
@@ -311,6 +322,35 @@ export default {
         }
         this.getData(formdata, arr, obj)
       }
+    },
+     async checkName(name){
+      let isExist;
+      await indexModel.checkLastName({lastName:name}).then((res) => {
+        console.log('检查名字',res)
+        if(res.data){
+          isExist=true
+        }else{
+          isExist=false
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.checkName()
+        }
+      })
+      return isExist;
+    }, 
+    async recycleName(str){
+      console.log('str',str)
+      let lastName;
+      let strLen=str.length-1;
+      let isExist;
+      console.log(lastName);
+      for(let i=0;i<strLen;i++){
+        lastName=str.slice(0,i+1);
+        isExist=await this.checkName(lastName)
+        break;
+      }
+      return isExist
     },
     //请求数据
     getData(formdata, arr, jsonData) {

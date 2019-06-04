@@ -14,11 +14,11 @@
       <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else style="margin-top:2.666vw;" >
         <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
-        <btn @touchend.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
+        <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
     <!-- 意向信息-->
-    <intentionMsg v-show="customerTabStatus[1].status" :list='list.opportunityList' :phone="phone"/>
+    <intentionMsg v-show="customerTabStatus[1].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
   </div>
 </template>
 
@@ -102,120 +102,141 @@ export default {
       this.editStatus = val
     },
       //保存资料
-    saveMsg() {
+    async saveMsg() {
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
         return
-      }else if(!this.newCustomerInfo.username) {
+      }
+      if(!this.newCustomerInfo.username) {
         MessageBox.alert('称呼不能为空')
         return
-      }else{
-        if(!this.newCustomerInfo.phone&&!this.newCustomerInfo.weChat){
-          MessageBox.alert('手机号码和微信号不能都为空')
+      }
+      let testName=/^[\u4e00-\u9fa5]{2,}$/
+      if(!testName.test(this.newCustomerInfo.username)){
+        MessageBox.alert('称呼只能输入中文且不能少于2个字')
+        return
+      }
+
+        let passName=await this.recycleName(this.newCustomerInfo.username);
+        console.log(passName,'ss')
+        if(!passName){
+          MessageBox.alert('姓氏不存在')
           return;
         }
+        let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+        if((!this.newCustomerInfo.phone||this.newCustomerInfo.phone==='')&&!this.newCustomerInfo.weChat){
+          MessageBox.alert('请填写手机号码或微信号')
+          return
+        }
+        if(!this.newCustomerInfo.phone||this.newCustomerInfo.phone===''){
+          if(this.phone!==''&&this.newCustomerInfo.phone===''){
+            MessageBox.alert('手机号码不能修改为空')
+            return
+          }
+          this.wx(this.newCustomerInfo.weChat)
+        }
         if(this.newCustomerInfo.phone&&this.phone!==this.newCustomerInfo.phone) {
-          if(this.newCustomerInfo.weChat&&this.wechat===this.newCustomerInfo.weChat){
-            let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+           let ishasPhone;
             if(!testPhone) {
               MessageBox.alert('请填写正确手机号码')
-              return;
+              return
             }else {
-              this.checkPhone('phone',this.newCustomerInfo.phone)
-              if(ishas){
-                return;
-              }else{
-                this.saveData()
-              }
+              ishasPhone=await this.checkPhone('phone',this.newCustomerInfo.phone)
             }
-             
-          }
-          if(this.newCustomerInfo.weChat&&this.wechat!==this.newCustomerInfo.weChat){
-            let testPhone = variable.testPhone(this.newCustomerInfo.phone)
-            if(!testPhone) {
-              MessageBox.alert('请填写正确手机号码')
-              return;
-            }else {
-              let ishas=this.checkPhone('phone',this.newCustomerInfo.phone)
-              if(ishas){
-                return;
-              }
+            if(ishasPhone){
+              return
             }
-            let testWeChat = variable.testWeChat(this.newCustomerInfo.weChat)
-            if(!testWeChat) {
-              MessageBox.alert('请填写正确微信号')
-              return;
-            }else {
-              let ishas=this.checkPhone('wechat',this.newCustomerInfo.weChat)
-              if(ishas){
-                return;
-              }else{
-                this.saveData()
-              }
-            }
-            
-          }
-
+            this.wx(this.newCustomerInfo.weChat);
         }
         if(this.newCustomerInfo.phone&&this.phone===this.newCustomerInfo.phone){
-           if(this.newCustomerInfo.weChat&&this.wechat!==this.newCustomerInfo.weChat){
-            let testWeChat = variable.testWeChat(this.newCustomerInfo.weChat)
-            if(!testWeChat) {
-              MessageBox.alert('请填写正确微信号')
-              return;
-            }else {
-              let ishas=this.checkPhone('wechat',this.newCustomerInfo.weChat)
-              if(ishas){
-                return;
-              }else{
-                this.saveData()
-              }
-            }
-            
+            this.wx(this.newCustomerInfo.weChat);
+        }
+    },
+    //check
+    async wx(wechat){
+        let testWeChat = variable.testWeChat(wechat)
+        let ishasWeChat;
+        if(this.wechat&&!wechat){
+          MessageBox.alert('微信号不能修改为空')
+          return
+        }
+        if(wechat&&this.wechat!==wechat){
+          if(!testWeChat) {
+            MessageBox.alert('请填写正确微信号')
+            return
+          }else {
+            ishasWeChat=await this.checkPhone('wechat',wechat)
+            console.log(ishasWeChat);
           }
-
+        }else if(wechat&&this.wechat===wechat){
+          ishasWeChat=false
+        }else{
+          ishasWeChat=false
+        }
+        if(ishasWeChat){
+          return
         }
         
-        
-        
-          
+        this.saveData();
+    },
+    async checkName(name){
+      let isExist;
+      await indexModel.checkLastName({lastName:name}).then((res) => {
+        console.log('检查名字',res)
+        if(res.data){
+          isExist=true
+        }else{
+          isExist=false
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.checkName()
+        }
+      })
+      return isExist;
+    }, 
+    async recycleName(str){
+      console.log('str',str)
+      let lastName;
+      let strLen=str.length-1;
+      let isExist;
+      console.log(lastName);
+      for(let i=0;i<strLen;i++){
+        lastName=str.slice(0,i+1);
+        isExist=await this.checkName(lastName)
+        break;
       }
-    },
-    //check
-    wx(){
-        
-    },
-    //check
-    judgePhone(){
-       
+      return isExist
     },
     //验证手机
-    checkPhone(type,value) {
+    async checkPhone(type,value) {
       let ishas;
-      mango.getAjax('/v3/app/customer/check', {
+      let existName;
+      if(type==='phone'){
+        existName="手机号"
+      }else{
+        existName="微信号"
+      }
+      await mango.getAjax('/v3/app/customer/check', {
         value: value,
         type: type,
         orgId: this.newCustomerInfo.orgId
       }).then((res) => {
-        let existName;
-          if(type==='phone'){
-            existName="手机号"
-          }else{
-            existName="微信号"
+          if(res.status==1) {
+            MessageBox.alert(`该${existName}已存在`)
+            ishas=true;
           }
-        if(res.data) {
-          MessageBox.alert(`该${existName}已存在`)
-          ishas=true;
-          return ishas;
-        }else{
-          ishas=false;
-          return ishas;
-        }
+          if(res.status==0){
+            ishas=false;
+            console.log(ishas);  
+          }
+        
       }).catch((reject) => {
           if (reject === 510) {
             this.checkPhone()
           }
         })
+        return ishas;
     },
     //保存数据
     saveData() {
@@ -238,7 +259,7 @@ export default {
         formdata.append(key,obj[key])
         arr.push(key)
       }
-      indexModel.updateCustomer(formdata,arr,obj).then(res => {
+     indexModel.updateCustomer(formdata,arr,obj).then(res => {
         if(res.status) {
            MessageBox.alert('更新成功').then(action => {
             this.editStatus = false

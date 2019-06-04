@@ -69,8 +69,10 @@ export default {
    //获取选择项
    updateVal(id){
      if(this.type === 'intention') {
+       setTimeout(() => {
        this.setAddressId(id)
        this.$router.go(-1)
+       },100)
      }else {
        setTimeout(() => {
         this.setAddressId(id);

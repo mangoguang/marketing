@@ -10,8 +10,8 @@
         <li>
           <intention-select v-bind="formInfo.intention" :value="goodsValue" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
-        <li @click="openStore">
-         <store-select v-bind="formInfo.store" :value="shopName"  :showIcon="selectIcon"/>
+        <li>
+         <store-select v-bind="formInfo.store" :value="shopName"  />
         </li>
         <li>
           <date-select day='end' v-bind="formInfo.time" :value="form.arrivalDate" @update="updateTime" :showIcon="selectIcon"/>

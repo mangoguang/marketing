@@ -6,7 +6,7 @@
         <!--select表示直接选择照片-->
       </li>
       <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>
-        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name"  maxlength="5">
+        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name"  maxlength="30">
       </li>
       <li is="sexSelect" :sexVal="newCustomerInfo.sex"  @sexChange="sexChange" class="sex"></li>
        <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
