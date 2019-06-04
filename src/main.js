@@ -12,6 +12,15 @@ import base from './Global/index'
 Vue.use(base)
 Vue.config.devtools = true
 Vue.use(VueTouch, {name: 'v-touch'})
+// 自定义指令
+// 注册一个全局自定义指令 `v-focus`
+// Vue.directive('focus', {
+//   // 当被绑定的元素插入到 DOM 中时……
+//   inserted: function (el) {
+//     // 聚焦元素
+//     el.focus()
+//   }
+// })
 VueTouch.config.swipe = {
   threshold: 100, 
   direction: 'horizontal'//手指左右滑动距离
@@ -22,6 +31,8 @@ import {
 } from './router/index.js'
 // 添加rem计算
 (function (doc, win) {
+  console.log('vue3',  Vue)
+  
   var docEl = doc.documentElement
   var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
   var recalc = function () {
