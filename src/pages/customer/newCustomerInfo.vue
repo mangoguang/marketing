@@ -224,11 +224,12 @@ export default {
            MessageBox.alert('请填写正确的手机号')
           return
         }else{
-          isHasPhone=await this.checkCustomer({
+          let obj={
             value:this.newCustomerInfo.phone,
             type:'phone',
             orgId:this.newCustomerInfo.orgId
-          })
+          }
+          isHasPhone=await this.checkCustomer(obj)
         }
       }else{
         isHasPhone=true
@@ -239,11 +240,12 @@ export default {
           MessageBox.alert('请填写正确的微信号')
           return
         }else{
-          isHasPhone=await this.checkCustomer({
+          let obj={
             value:this.newCustomerInfo.weChat,
             type:'wechat',
             orgId:this.newCustomerInfo.orgId
-          })
+          }
+          isHasPhone=await this.checkCustomer(obj)
         }
       }else{
         isHasPhone=true
