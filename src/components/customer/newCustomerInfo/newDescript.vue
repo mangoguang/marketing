@@ -34,7 +34,7 @@
         </li>
       </template>
       <li is="customerLi" :leftText="'客户  QQ'">
-        <input v-model="newCustomerInfo.qq" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户 QQ"  oninput="if(value.length>15)value=value.slice(0,15)">
+        <input v-model="newCustomerInfo.qq" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户 QQ"  oninput="if(value.length>15){value=parseInt(value.slice(0,15))}else{if(value!==''){value=parseInt(value)}}">
       </li>
       <li is="customerLi" :leftText="'客户职业'">
         <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业"  oninput="if(value.length>30)value=value.slice(0,30)">

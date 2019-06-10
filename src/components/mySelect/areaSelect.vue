@@ -93,14 +93,16 @@ export default {
         let id=values[0].id;
         //根据省id获取市
         indexModel.getArea('DR_CITY').then(res => {
+          console.log(res);
           if(res.code===0){
-          picker.setSlotValues(1,that.getReference(id,res.data));
+            picker.setSlotValues(1,that.getReference(id,res.data));
           }
         }).catch((reject) => {
         if (reject === 510) {
           this.onValuesChange(picker,values)
         }
       })
+      
         //根据市id获取区县
         indexModel.getArea('DR_COUNTY').then(res => {
           if(res.code===0){
@@ -157,11 +159,13 @@ export default {
           indexModel.getArea('DR_CITY').then(res => {
             if(res.code===0){
             this.slots[2].values=this.getReference(id,res.data)
+            
             }
           });
           //根据市id获取区县
           indexModel.getArea('DR_COUNTY').then(res => {
             if(res.code===0){
+              console.log('3',res.data)
               let cityId=this.slots[2].values[0].id;
               this.slots[4].values=this.getReference(cityId,res.data)
             }
@@ -188,7 +192,12 @@ export default {
       var newArr=arr.filter(function(item,index,array){
         return (item.parent===id);
       });
-      return newArr;
+      if(newArr.length){
+        return newArr;
+      }else{
+        return [{code: "", id: "", name: "", parent: ""}];
+      }
+     
     }
   }
 

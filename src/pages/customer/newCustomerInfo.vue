@@ -203,65 +203,20 @@ export default {
         if(res.data){
           MessageBox.alert(`该${str}已存在`).then(action => {
              isHas=false;
-             return isHas;
           })
         }else{
+          console.log(';;;;')
           isHas=true;
-          return isHas;
         }
       }).catch((reject) => {
           if (reject === 510) {
             this.checkCustomer(obj)
           }
       })
+      return isHas;
     },
     //保存客户信息，新建客户	
     async creatNewCustomer() {
-      let isHasPhone;
-      if(this.$route.query.wechat&&this.newCustomerInfo.phone){
-        let phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/
-        if(!phoneReg.test(this.newCustomerInfo.phone)){
-           MessageBox.alert('请填写正确的手机号')
-          return
-        }else{
-          let obj={
-            value:this.newCustomerInfo.phone,
-            type:'phone',
-            orgId:this.newCustomerInfo.orgId
-          }
-          isHasPhone=await this.checkCustomer(obj)
-        }
-      }else{
-        isHasPhone=true
-      }
-      if(this.$route.query.phone&&this.newCustomerInfo.weChat) {
-        var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
-        if(!wx.test(this.newCustomerInfo.weChat)) {
-          MessageBox.alert('请填写正确的微信号')
-          return
-        }else{
-          let obj={
-            value:this.newCustomerInfo.weChat,
-            type:'wechat',
-            orgId:this.newCustomerInfo.orgId
-          }
-          isHasPhone=await this.checkCustomer(obj)
-        }
-      }else{
-        isHasPhone=true
-      }
-      if(!isHasPhone){
-        return;
-      }
-      
-      //如果有填写验证微信号
-      /* if(this.newCustomerInfo.weChat) {
-        var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
-        if(!wx.test(this.newCustomerInfo.weChat)) {
-          MessageBox.alert('请填写正确的微信号')
-          return
-        }
-      } */
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
         return
@@ -286,18 +241,20 @@ export default {
         MessageBox.alert('姓氏不存在')
         return;
       }
-      let result = this.hasFollowData(this.newCustomerInfo)
-      //判断有没有填写跟进情况
-      if(!result) {
-        this.whichFollowData(this.newCustomerInfo)
-      }else {
-        //判断是第一次保存还是多次保存
-        // let formdata;
-        // if(this.saveDataKey) {
-        //   this.saveDataKey = false
-        //   //上传附件图片
-        //   formdata = this.newCustomerInfo.dataFiles
-        // }else {
+      let check;
+      if(this.$route.query.wechat&&this.newCustomerInfo.phone){
+       check=await this.checkPhone()
+      }else if(this.$route.query.phone&&this.newCustomerInfo.weChat) {
+        check=await this.checkWeChat()
+      }else{
+        check=true
+      }
+      if(!check){
+        //console.log('isHasPhone',check)
+        return;
+      }
+        let result=this.whichFollowData(this.newCustomerInfo)
+        if(result){
           let formdata = new FormData()
           //头像的formdata
           this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
@@ -308,22 +265,50 @@ export default {
               formdata.append('record.dataFile',imgs[key])
             }
           }
-          // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
-          //  for(let i = 0; i < file.length; i++){
-          //   formdata.append('record.dataFile',file[i]);
-          // }
-          // if(this.newCustomerInfo.dataFiles.get('dataFile')) {
-          //   formdata.append('dataFile',this.newCustomerInfo.dataFiles.get('dataFile'));
-          // }
-        // }
-        let obj = this.updateParams(this.newCustomerInfo)
-        let arr = []
-        for(var key in obj) {
-          formdata.append(key,obj[key])
-          arr.push(key)
-        }
-        this.getData(formdata, arr, obj)
+          
+          let obj = this.updateParams(this.newCustomerInfo)
+          let arr = []
+          for(var key in obj) {
+            formdata.append(key,obj[key])
+            arr.push(key)
+          }
+          this.getData(formdata, arr, obj)
       }
+    },
+    async checkPhone(){
+      let check;
+       let phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/
+        if(!phoneReg.test(this.newCustomerInfo.phone)){
+           MessageBox.alert('请填写正确的手机号')
+           check=false
+          return
+        }else{
+          let obj={
+            value:this.newCustomerInfo.phone,
+            type:'phone',
+            orgId:this.newCustomerInfo.orgId
+          }
+          check=await this.checkCustomer(obj)
+        }
+        return check
+    },
+    async checkWeChat(){
+      let check;
+      var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
+        if(!wx.test(this.newCustomerInfo.weChat)) {
+          MessageBox.alert('请填写正确的微信号')
+          check=false
+          return
+        }else{
+          let obj={
+            value:this.newCustomerInfo.weChat,
+            type:'wechat',
+            orgId:this.newCustomerInfo.orgId
+          }
+          check=await this.checkCustomer(obj)
+          //console.log('check',check)
+        }
+        return check;
     },
      async checkName(name){
       let isExist;
@@ -384,56 +369,28 @@ export default {
     setInitData() {
       this.newCustomerInfo.leaveStore = this.leaveStoreVal
     },
-    //判断跟进模块有没有数据
-    hasFollowData(obj) {
-      let count = 0,
-          result;
-      for(var key in obj) {
-        if(key === 'source2') {
-          count +=1 
-        }else if(key === 'followDate') {
-          count +=1 
-        }else if(key === 'residentTime2') {
-          count +=1 
-        }/* else if(key === 'nextDate') {
-          count +=1 
-        } */else if(key === 'situation') {
-          count +=1 
-        }/* else if(key === 'plan') {
-          count +=1 
-        } */
-      }
-      if(count === 0) {
-        result = true
-      }else if(count === 4) {
-        result = true
-      }else {
-        result = false
-      }
-      return result
-    },
     //判断根据情况哪个没有填写
     whichFollowData(obj) {
+      let result=false;
       for(var key in obj) {
         if(!obj['source2']) {
           MessageBox.alert('请选择跟进方式')
-          return
-        }else if(!obj['followDate']) {
+          return 
+        }
+        if(!obj['followDate']) {
           MessageBox.alert('请选择跟进时间')
           return
-        }else if(!obj['residentTime2']) {
+        }
+        if(!obj['residentTime2']) {
           MessageBox.alert('请选择跟进时长')
           return
-        }/* else if(!obj['nextDate']) {
-          MessageBox.alert('请选择下次跟进日期')
-          return
-        } */else if(!obj['situation']) {
+        }
+        if(!obj['situation']) {
           MessageBox.alert('请描述跟进情况')
           return
-        }/* else if(!obj['plan']) {
-          MessageBox.alert('请填写下一步跟进计划')
-          return
-        } */
+        }
+        result=true;
+        return result;
       }
     },
     //获取参数
