@@ -6,12 +6,12 @@
           <p>
             <slot></slot>
           </p>
-          <div class="btn-group" v-if="btnNum==2">
+          <div class="btn-group" v-show="btnNum==2">
            <!--  <button type="button">确定</button>
             <button type="button">取消</button> -->
             <slot name="btn-group"></slot>
           </div>
-          <div class="btn" v-else>
+          <div class="btn" v-show="btnNum!==2">
             <slot name="btn"></slot>
             <!-- <button type="button">确定</button> -->
           </div> 
@@ -90,7 +90,6 @@ export default {
       height: 13.33vw;
       color:#363636;
       font-size: .18rem;
-      justify-self: flex-end;
       border-top:1px solid #E1E1E1;
       display:flex;
       flex-direction: row;
@@ -122,7 +121,6 @@ export default {
       height: 13.33vw;
       color:#363636;
       font-size: .18rem;
-      justify-self: flex-end;
       border-top:1px solid #E1E1E1;
       display:flex;
       flex-direction: row;
