@@ -95,23 +95,17 @@ export default {
       flex-direction: row;
       align-items: center;
       :first-child{
-        flex:0 0 50%;
+        width:50%;
         height: 100%;
         border-right: 1px solid #E1E1E1;
-        display: block;
-        text-align: center;
-        display:flex;
-        justify-content: center;
+       line-height: 13.33vw;
         font-size: .18rem;
         color:#363636;
       }
       :last-child{
-        flex:0 0 50%;
+        width:50%;
         height: 100%;
-        display: block;
-        text-align: center;
-        display:flex;
-        justify-content: center;
+        line-height: 13.33vw;
         color:#909090;
         font-size: .18rem;
       }
@@ -122,17 +116,11 @@ export default {
       color:#363636;
       font-size: .18rem;
       border-top:1px solid #E1E1E1;
-      display:flex;
-      flex-direction: row;
-      align-items: center;
       :first-child{
-        flex:1;
+        width:100%;
         height: 100%;
         border-right: 1px solid #E1E1E1;
-        display: block;
-        text-align: center;
-        display:flex;
-        justify-content: center;
+        line-height: 13.33vw;
         font-size: .18rem;
         color:#363636;
       }
