@@ -230,6 +230,7 @@ export default {
         MessageBox.alert('请填写客户地址')
         return
       }
+     
       let testName=/^[\u4e00-\u9fa5]{2,}$/
       if(!testName.test(this.newCustomerInfo.username)){
         MessageBox.alert('称呼只能输入中文且不能少于2个字')
@@ -255,6 +256,15 @@ export default {
       }
         let result=this.whichFollowData(this.newCustomerInfo)
         if(result){
+          /* let checkQQ;
+          if(this.newCustomerInfo.qq&&this.newCustomerInfo.qq!==''){
+            checkQQ=this.checkQQ()
+          }else{
+            checkQQ=true
+          }
+          if(!checkQQ){
+            return
+          } */
           let formdata = new FormData()
           //头像的formdata
           this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
@@ -274,6 +284,18 @@ export default {
           }
           this.getData(formdata, arr, obj)
       }
+    },
+    checkQQ(){
+        let check;
+        let testQQ=/^[1-9][0-9]{4,9}$/
+        if(!testQQ.test(this.newCustomerInfo.qq)){
+          MessageBox.alert('请输入正确的QQ')
+          check=false
+          return
+        }else{
+          check=true;
+        }
+        return check;
     },
     async checkPhone(){
       let check;
@@ -395,6 +417,7 @@ export default {
     },
     //获取参数
      updateParams(obj) {
+       console.log(555,obj)
       let tempObj = {}
       let newArr = obj.productArr
       //意向产品名称和数量

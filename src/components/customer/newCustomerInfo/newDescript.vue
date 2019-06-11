@@ -30,14 +30,14 @@
       </template>
       <template v-else>
         <li is="customerLi" :leftText="'客户微信'">
-          <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  oninput="if(value.length>25)value=value.slice(0,25)">
+          <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  maxlength="25">
         </li>
       </template>
       <li is="customerLi" :leftText="'客户  QQ'">
-        <input v-model="newCustomerInfo.qq" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户 QQ"  oninput="if(value.length>15){value=parseInt(value.slice(0,15))}else{if(value!==''){value=parseInt(value)}}">
+        <input v-model="newCustomerInfo.qq" type="number" maxlength="15"  placeholder="请填写客户 QQ" >
       </li>
       <li is="customerLi" :leftText="'客户职业'">
-        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业"  oninput="if(value.length>30)value=value.slice(0,30)">
+        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业" maxlength="30">
       </li>
       <template v-if="areaType">
         <li is="customerLi" :leftText="'客户地区'"  :icon="true" @click.native="toAddress">
@@ -178,6 +178,12 @@ export default {
       'initDescriptShopList',
       'getDescriptShopVal'
     ]),
+    onlyNumber(e){
+      if(/[^\d]/g.test(e.target.value)){
+        e.target.value=e.target.value.replace(/[^\d]/g,'');
+      }
+     
+   },
     initArea(){
       if(!this.newCustomerInfo.provinceName){
         return;
