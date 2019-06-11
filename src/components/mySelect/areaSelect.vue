@@ -95,13 +95,13 @@ export default {
         let id=values[0].id;
         console.log(id);
         //根据省id获取市
-        /* indexModel.getArea('DR_CITY').then(res => {
+        indexModel.getArea('DR_CITY').then(res => {
           console.log(res);
           if(res.code===0){
             if(that.getReference(id,res.data).length>0){
               picker.setSlotValues(1,that.getReference(id,res.data));
                //根据市id获取区县
-                indexModel.getArea('DR_COUNTY').then(res => {
+                /* indexModel.getArea('DR_COUNTY').then(res => {
                   if(res.code===0){
                     let cityId=values[1].id;
                     console.log('city:',cityId)
@@ -112,7 +112,10 @@ export default {
                   if (reject === 510) {
                     this.onValuesChange(picker,values)
                   }
-                })
+                }) */
+                let cityId=values[1].id;
+                console.log('city:',cityId)
+                picker.setSlotValues(2,that.getReference(cityId,this.country));
             }else{
               picker.setSlotValues(1,[])
               picker.setSlotValues(2,[])
@@ -122,17 +125,8 @@ export default {
         if (reject === 510) {
           this.onValuesChange(picker,values)
         }
-      }) */
-      if(that.getReference(id,this.city).length>0){
-              picker.setSlotValues(1,that.getReference(id,this.city));
-               //根据市id获取区县
-                    let cityId=values[1].id;
-                    console.log('city:',cityId)
-                    picker.setSlotValues(2,that.getReference(cityId,this.country));
-            }else{
-              picker.setSlotValues(1,[])
-              picker.setSlotValues(2,[])
-            }
+      })
+    
         that.pickerArr=picker.getValues();
       }
   
@@ -207,6 +201,7 @@ export default {
       var newArr=arr.filter(function(item,index,array){
         return (item.parent===id);
       });
+      console.log('11',newArr)
       return newArr;
     }
   }

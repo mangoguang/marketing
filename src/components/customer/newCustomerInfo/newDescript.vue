@@ -30,14 +30,14 @@
       </template>
       <template v-else>
         <li is="customerLi" :leftText="'客户微信'">
-          <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  maxlength="25">
+          <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  oninput="if(value.length>20)value=value.slice(0,20)">
         </li>
       </template>
       <li is="customerLi" :leftText="'客户  QQ'">
-        <input v-model="newCustomerInfo.qq" type="number" maxlength="15"  placeholder="请填写客户 QQ" >
+        <input v-model="newCustomerInfo.qq" type="text"  onkeypress="if(event.keyCode == 101){return false}" oninput="if(value.length>15)value=value.slice(0,15)"  placeholder="请填写客户 QQ" >
       </li>
       <li is="customerLi" :leftText="'客户职业'">
-        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业" maxlength="30">
+        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业" oninput="if(value.length>30)value=value.slice(0,30)">
       </li>
       <template v-if="areaType">
         <li is="customerLi" :leftText="'客户地区'"  :icon="true" @click.native="toAddress">

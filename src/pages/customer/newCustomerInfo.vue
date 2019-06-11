@@ -256,7 +256,7 @@ export default {
       }
         let result=this.whichFollowData(this.newCustomerInfo)
         if(result){
-          /* let checkQQ;
+          let checkQQ;
           if(this.newCustomerInfo.qq&&this.newCustomerInfo.qq!==''){
             checkQQ=this.checkQQ()
           }else{
@@ -264,7 +264,7 @@ export default {
           }
           if(!checkQQ){
             return
-          } */
+          }
           let formdata = new FormData()
           //头像的formdata
           this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''

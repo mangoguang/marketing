@@ -6,7 +6,7 @@
     </div>
     <div class="inp">
       <input v-model="phone" @focus="changeStatus" @blur="close" :type="inpType" :placeholder="chooseVal" v-show='inpType=="number"' onkeypress="if(event.keyCode == 101){return false}"/>
-      <input v-model="phone" @focus="changeStatus"  @blur="close" :type="inpType" :placeholder="chooseVal" v-show='inpType=="text"'/>
+      <input v-model="phone" @focus="changeStatus"  @blur="close" :type="inpType" :placeholder="chooseVal" v-show='inpType=="text"'  oninput="if(value.length>20)value=value.slice(0,20)"/>
      
     </div>
     <chooseShop @change="updateShop" :status="status"/>

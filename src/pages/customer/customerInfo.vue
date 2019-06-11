@@ -176,7 +176,7 @@ export default {
         if(ishasWeChat){
           return
         }
-        /* let check;
+        let check;
         if(this.newCustomerInfo.qq&&this.newCustomerInfo.qq!==''){
           check=await this.checkQQ();
         }else{
@@ -184,12 +184,11 @@ export default {
         }
         if(!check){
           return;
-        } */
+        }
         this.saveData();
     },
     async checkQQ(){
         let check;
-        let testFF=/[@#\$%\^&\*-]+/g
         let testQQ=/^[1-9][0-9]{4,9}$/
        if(!testQQ.test(this.newCustomerInfo.qq)){
           MessageBox.alert('请输入正确的QQ')

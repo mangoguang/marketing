@@ -207,8 +207,28 @@ export default {
         if(ishasWeChat){
           return
         }
-        
+        let check;
+        if(this.newCustomerInfo.qq&&this.newCustomerInfo.qq!==''){
+          check=await this.checkQQ();
+        }else{
+          check=true
+        }
+        if(!check){
+          return;
+        }
         this.saveData();
+    },
+    async checkQQ(){
+        let check;
+        let testQQ=/^[1-9][0-9]{4,9}$/
+       if(!testQQ.test(this.newCustomerInfo.qq)){
+          MessageBox.alert('请输入正确的QQ')
+          check=false
+          return
+        }else{
+          check=true;
+        }
+        return check;
     },
     async checkName(name){
       let isExist;
