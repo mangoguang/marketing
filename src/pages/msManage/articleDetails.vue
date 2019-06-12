@@ -10,7 +10,7 @@
       <div class="title">{{ articleDetails.title }}</div>
       <!-- <span>{{ articleDetails.createTime }}</span> -->
     </div>
-    <div class="content" v-html="myhtml">
+    <div class="content" v-html="myhtml" @click.stop="showImage">
     </div>
   </div>
 </template>
@@ -31,7 +31,8 @@ export default {
       myhtml: '',
       articleDetails: '',
       top: '',
-      account: ''
+      account: '',
+      imgSrc:[]
     }
   },
   created() {
@@ -44,8 +45,63 @@ export default {
     // var a = document.getElementsByTagName("html")
     // console.log(a)
     waterMark('.article',1);
+    this.$nextTick().then(() => {
+      let imgs=document.querySelectorAll('.content img');
+      console.log(imgs)
+    })
+    
   },
   methods: {
+    browser() {
+      let flag;
+      let sUserAgent = navigator.userAgent.toLowerCase();
+      let bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+      let bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+      let bIsMidp = sUserAgent.match(/midp/i) == "midp";
+      let bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+      let bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+      let bIsAndroid = sUserAgent.match(/android/i) == "android";
+      let bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+      let bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+      if (!(bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM)){
+        console.log('phone')
+        flag=true
+      }else{
+        console.log('pc')
+        flag=false
+      }
+      return flag
+    },
+    showImage(e){
+      console.log(e.target.nodeName.toLowerCase());
+      if(e.target.nodeName.toLowerCase()==='img'){
+          console.log(e.target.src);
+          if(this.imgSrc.length>0){
+            let index=this.imgSrc.indexOf(e.target.src)
+            if(index>-1){
+              console.log(index);
+              let that = this
+              if(this.browser()){
+                var UIPhotoViewer = api.require('UIPhotoViewer');
+                UIPhotoViewer.open({
+                    images: that.imgSrc,
+                    bgColor: '#000',
+                    activeIndex:index
+                }, function(ret, err) {
+                    if (ret) {
+                        alert(JSON.stringify(ret));
+                    } else {
+                        alert(JSON.stringify(err));
+                    }
+                });
+              }
+              
+            }else{
+              this.activeImg=0;
+            }
+          }
+      }
+    },
     //获取文章详情
     getArticleDetail() {
       const id = this.articleId
@@ -55,6 +111,12 @@ export default {
           let temp = res.data.remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
           this.myhtml = changeVedioStyle(this.myhtml)
+          let imgReg=/<img.*?(?:>|\/>)/gi;
+          let srcReg=/src=[\'\"]?([^\'\"]*)[\'\"]?/i;
+          let arr=this.myhtml.match(imgReg);
+          for(let i=0;i<arr.length;i++){
+            this.imgSrc.push(arr[i].match(srcReg)[1]);
+          }
         }
         this.collection = res.data.collect
       })
