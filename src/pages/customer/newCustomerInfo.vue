@@ -485,7 +485,7 @@ export default {
   padding-top: 16vw;
   // position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   overflow: scroll;
   .save{
     color: #0071ff;
