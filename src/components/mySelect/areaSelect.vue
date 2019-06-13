@@ -227,7 +227,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    span{
+    &>span{
       display: inline-block;
       width:22.4vw;
     }
@@ -282,6 +282,12 @@ export default {
 .area{
   label{
     font-size: 14px;
+    &>span{
+      width:auto;
+      padding-right:5vw;
+      display: table-cell;
+      vertical-align: middle;
+    }
   }
   input:-moz-input-placeholder{
    font-size: 3.73vw;

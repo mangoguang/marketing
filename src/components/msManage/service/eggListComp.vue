@@ -6,7 +6,7 @@
         <div class="list_left">
           <h1>{{item.title}}</h1>
           <div class="list_bottom">
-            <span v-if="item.top&&$route.query.classify==='1'" class="top">置顶</span>
+            <span v-if="item.top" class="top">置顶</span>
             <span class="time">{{item.createTime}}</span>
           </div>
         </div>

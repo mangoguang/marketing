@@ -487,6 +487,7 @@ export default {
   width: 100vw;
   height: 100%;
   overflow: scroll;
+  position: relative;
   .save{
     color: #0071ff;
     width: 10vw;

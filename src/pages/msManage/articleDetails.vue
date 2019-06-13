@@ -45,10 +45,7 @@ export default {
     // var a = document.getElementsByTagName("html")
     // console.log(a)
     waterMark('.article',1);
-    this.$nextTick().then(() => {
-      let imgs=document.querySelectorAll('.content img');
-      console.log(imgs)
-    })
+   
     
   },
   methods: {
@@ -64,11 +61,11 @@ export default {
       let bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
       let bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
       if (!(bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM)){
-        console.log('phone')
-        flag=true
-      }else{
-        console.log('pc')
+        alert('pc')
         flag=false
+      }else{
+        alert('phone')
+        flag=true
       }
       return flag
     },
@@ -81,8 +78,10 @@ export default {
             if(index>-1){
               console.log(index);
               let that = this
-              if(this.browser()){
-                var UIPhotoViewer = api.require('UIPhotoViewer');
+               this.browser();
+            /*   if(this.browser()){ */
+               /*  var UIPhotoViewer=api.require('UIPhotoViewer');
+                alert(UIPhotoViewer);
                 UIPhotoViewer.open({
                     images: that.imgSrc,
                     bgColor: '#000',
@@ -93,8 +92,8 @@ export default {
                     } else {
                         alert(JSON.stringify(err));
                     }
-                });
-              }
+                }); */
+              /* } */
               
             }else{
               this.activeImg=0;
