@@ -212,7 +212,7 @@ export default {
       );
     },
     shareQQ(title) {
-      var qq = api.require("qq");
+      var qq = api.require("QQPlus");
       qq.shareNews({
         url: this.pageUrl,
         title: title,
