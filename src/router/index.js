@@ -38,6 +38,9 @@ const recommend = () => import('../pages/Gallery/recommend')
 const share = () => import('../pages/Gallery/share')
 const preShare = () => import('../pages/Gallery/preShare')
 
+//店长模块
+const storeCustomer = () => import('../pages/customer/storeCustomer')
+console.log(storeCustomer)
 Vue.use(VueRouter)
 
 
@@ -411,6 +414,12 @@ export var router = new VueRouter({
     path: '/newAddress',
     name: 'newAddress',
     component: () => import('../pages/customer/newCustomer/newAddress')
+  },
+  //店长
+  {
+    path:'/storeCustomer',
+    name:'storeCustomer',
+    component: storeCustomer
   }
 ],
   scrollBehavior (to, from, savedPosition) {
