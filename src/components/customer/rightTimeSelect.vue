@@ -125,6 +125,8 @@ export default {
     },
     //重置
     resizeCustomerList() {
+      this.initStartDateVal();
+      this.endDateVal=mango.indexTime(new Date(), 'day');
       let time = {startTime: '', endTime: ''}
       if(this.rightHeadTitle === '订单交单日期') {
         this.setCustomerTime(time)

@@ -14,7 +14,8 @@ const state = {
 
 const mutations = {
  setSort:(state,str) => {state.customerAjaxParams.sort=str},
- setKey:(state,str) => {state.customerAjaxParams.key=str}
+ setKey:(state,str) => {state.customerAjaxParams.key=str},
+ setStoreCustomerAjaxParams:(state,obj) => {state.customerAjaxParams=obj}
 }
 
 const actions = {

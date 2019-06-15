@@ -1,9 +1,8 @@
 <template>
-    <div>
-    <header class="header" :style="{paddingTop:padding}">
+    <header class="header" :style="{paddingTop:padding}" ref="header">
        <div class="top">
            <span>客户</span>
-           <input type="text" placeholder="请输入姓名或手机搜索" v-model="cusomerAjaxParams.key">
+           <input type="text" placeholder="请输入姓名或手机搜索" v-model="searchKey">
        </div>
        <div class="tabBox">
            <ul class="tab">
@@ -19,11 +18,13 @@
             </ul>
            <div v-show="headerStatus[1].status">
                 <ul class="filter" v-if="subHeaderStatus[0].status">
-                    <li>
-                        <span class="filterli">全部</span>
+                    <li @click="showFilterList">
+                        <div v-for="(item,index) in filterList" :key="index">
+                            <span class="filterli" v-if="item.val===cusomerAjaxParams.sort">{{item.name}}</span>
+                        </div>
                     </li>
                     <li>
-                        <span>筛选</span>
+                        <span @click="showRightContainer">筛选</span>
                     </li>
                 </ul>
                 <ul class="filter" v-else>
@@ -32,12 +33,12 @@
                         <span v-else>全部&nbsp;&nbsp;({{closedNum}})</span>
                     </li>
                     <li>
-                        <span>筛选</span>
+                        <span @click="showRightTimeSelect">筛选</span>
                     </li>
                 </ul>
-                <div class="filterList">
+                <div :class="showFilter&&subHeaderStatus[0].status?`filterList show`:'filterList'" :style="{top:`${top}`}">
                      <ul v-show="subHeaderStatus[0].status">
-                        <li v-for="(item,index) in filterList" :key="index">
+                        <li v-for="(item,index) in filterList" :key="index"  @click="closeFilter">
                             <label :class="item.val===cusomerAjaxParams.sort?'on':''">
                                 {{item.name}}
                                 <input type="radio" :value="item.val" :checked="item.val===cusomerAjaxParams.sort" v-model="cusomerAjaxParams.sort">
@@ -50,25 +51,31 @@
            </div>
        </div>
     </header>
-    </div>
 </template>
 <script>
 import {mapState,mapMutations} from 'vuex'
 export default {
     data(){
         return {
-            padding:''
+            padding:'',
+            top:'',
+            showFilter:false,
+            key:true,
+            searchKey:''
         }
     },
     computed:{
         ...mapState({
-          headerStatus:state => state.storeHeader.headerStatus,
-          subHeaderStatus:state => state.storeHeader.subHeaderStatus,
-          filterList:state => state.storeHeader.filterList,
-          sort:state => state.storeHeader.sort,
-          approvedNum:state => state.storeApproved.approvedNum,
-          closedNum:state => state.storeClosed.closedNum,
-          cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams
+            rightHeadTitle: state => state.rightContainer.rightHeadTitle,
+            rightTimeSelect: state => state.rightContainer.rightTimeSelect,
+            rightContainerStatus: state => state.rightContainer.rightContainerStatus,
+            headerStatus:state => state.storeHeader.headerStatus,
+            subHeaderStatus:state => state.storeHeader.subHeaderStatus,
+            filterList:state => state.storeHeader.filterList,
+            sort:state => state.storeHeader.sort,
+            approvedNum:state => state.storeApproved.approvedNum,
+            closedNum:state => state.storeClosed.closedNum,
+            cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams
         }),
         'cusomerAjaxParams.sort':{
             get(){
@@ -77,16 +84,22 @@ export default {
             set (val) {
                 this.$store.commit('storeCustomer/setSort', val)
             }
-        },
-        'cusomerAjaxParams.key':{
-            get(){
-                return this.$store.state.storeCustomer.customerAjaxParams.key
-            },
-            set (val) {
-                this.$store.commit('storeCustomer/setKey', val)
-            }
         }
           
+    },
+    watch:{
+        headerStatus(){
+            if(this.headerStatus[0].status){
+                //this.getCustomerList()
+            }
+        },
+        rightContainerStatus(val) {
+            this.key = false
+            if(val === 'hideRightContainer') {
+                //this.getCustomerList()
+                this.key = true
+            }
+        }
     },
     mounted(){
         this.isIphone();
@@ -95,16 +108,22 @@ export default {
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
         ...mapMutations('storeApproved',['setApprovedNum']),
         ...mapMutations('storeClosed',['setClosedNum']),
+        ...mapMutations(['setRightTimeSelect','setRightHeadTitle','setRightContainerStatus']),
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
                 this.padding='6vw'
+                this.top=((this.$refs.header.offsetHeight/375)*100+6)+"vw"
             }else{
                 this.padding=''
+                this.top=this.$refs.header.offsetHeight+"px"
             }
+            
+            
         },
         changeStatus(i,str){
             let array = str==='headerStatus'?this.headerStatus:this.subHeaderStatus;
+            str!=='headerStatus'&&i!==0?this.showFilter=false:'';
             console.log(array);
             let arr = array.map((item,index) => {
                 if(index===i){
@@ -115,6 +134,32 @@ export default {
                 return item;
             })
             str==='headerStatus'?this.setHeaderStatus(arr):this.setSubHeaderStatus(arr);
+        },
+        showFilterList(){
+            let phone=this.phoneSize()
+            if(phone==='iphonex'){
+                this.top=((this.$refs.header.offsetHeight/375)*100+6)+"vw"
+            }else{
+                this.top=this.$refs.header.offsetHeight+"px"
+            }
+            this.showFilter=!this.showFilter;
+        },
+        closeFilter(){
+            this.showFilter=false;
+        },
+        //订单查询成交客户的侧标栏
+        showRightTimeSelect() {
+            this.setRightTimeSelect(true)
+            if(this.subHeaderStatus[1].status) {
+                this.setRightHeadTitle('订单交单日期')
+            }else{
+                this.setRightHeadTitle('战败时间')
+            }
+        },
+        // 显示右侧边栏
+        showRightContainer() {
+        // console.log('显示侧边栏。')
+        this.setRightContainerStatus('show')
         }
     }
 }
@@ -130,6 +175,7 @@ export default {
     background-image: linear-gradient(32deg, #007aff 0%, #5ac8fa 100%);
     box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
+    z-index: 100;
     .top{
         display: flex;
         flex-direction: row;
@@ -235,7 +281,7 @@ export default {
             right:0;
             top:0;
             background: rgba(0,0,0,.5);
-            z-index: 1000;
+            display: none;
             ul{
                 color:#909090;
                 font-size: 4vw;
@@ -261,6 +307,9 @@ export default {
                     
                 }
             }
+        }
+        .show{
+            display: block;
         }
     }
 }

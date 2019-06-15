@@ -1,7 +1,8 @@
 <template>
     <div>
         <Header />
-        
+        <RightContainer type="store"/>
+        <RightTimeSelect v-show='rightTimeSelect'/>
         <Footer />
     </div>
 </template>
@@ -11,6 +12,7 @@ import Footer from "../../../components/Footer";
 import Header from "../../../components/customer/storeCustomer/header"
 import RightContainer from "../../../components/customer/rightContainer";
 import RightTimeSelect from "../../../components/customer/rightTimeSelect";
+
 import mango from "../../../js";
 import {checkLogin} from '../../../utils/token/toLogin'
 export default {
@@ -21,12 +23,13 @@ export default {
     },
     computed:{
         ...mapState({
-          headerStatus:state => state.storeHeader.headerStatus,
-          subHeaderStatus:state => state.storeHeader.subHeaderStatus,
-          filterList:state => state.storeHeader.filterList,
-          sort:state => state.storeHeader.sort,
-          approvedNum:state => state.storeApproved.approvedNum,
-          closedNum:state => state.storeClosed.closedNum
+            headerStatus:state => state.storeHeader.headerStatus,
+            subHeaderStatus:state => state.storeHeader.subHeaderStatus,
+            filterList:state => state.storeHeader.filterList,
+            sort:state => state.storeHeader.sort,
+            approvedNum:state => state.storeApproved.approvedNum,
+            closedNum:state => state.storeClosed.closedNum,
+            rightTimeSelect: state => state.rightContainer.rightTimeSelect
         })
     },
     components: {

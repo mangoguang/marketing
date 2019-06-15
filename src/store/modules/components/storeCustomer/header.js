@@ -2,11 +2,11 @@ const state = {
   headerStatus:[
     {
       name:'门店客户',
-      status:false
+      status:true
     },
     {
       name:'个人客户',
-      status:true
+      status:false
     }
   ],
   subHeaderStatus:[
