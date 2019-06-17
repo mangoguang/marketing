@@ -48,6 +48,7 @@ import storeHeader from './modules/components/storeCustomer/header'
 import storeApproved from './modules/components/storeCustomer/approvedCustomer'
 import storeClosed from './modules/components/storeCustomer/closedCustomer'
 import storeCustomer from './modules/components/storeCustomer/customer'
+import store from './modules/components/storeCustomer/storeCustomer'
 export default new Vuex.Store({
   state,
   mutations,
@@ -97,6 +98,7 @@ export default new Vuex.Store({
     storeHeader,
     storeApproved,
     storeClosed,
-    storeCustomer
+    storeCustomer,
+    store
   }
 })

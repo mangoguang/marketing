@@ -2,7 +2,9 @@
     <header class="header" :style="{paddingTop:padding}" ref="header">
        <div class="top">
            <span>客户</span>
-           <input type="text" placeholder="请输入姓名或手机搜索" v-model="searchKey">
+            <form action="" @submit.prevent>
+                <input type="search" placeholder="请输入姓名或手机搜索" v-model="searchKey" @keypress="search">
+            </form>
        </div>
        <div class="tabBox">
            <ul class="tab">
@@ -54,6 +56,8 @@
 </template>
 <script>
 import {mapState,mapMutations} from 'vuex'
+import { IndexModel } from '../../../utils'
+const indexModel=new IndexModel()
 export default {
     data(){
         return {
@@ -61,7 +65,8 @@ export default {
             top:'',
             showFilter:false,
             key:true,
-            searchKey:''
+            searchKey:'',
+            search:''
         }
     },
     computed:{
@@ -75,7 +80,10 @@ export default {
             sort:state => state.storeHeader.sort,
             approvedNum:state => state.storeApproved.approvedNum,
             closedNum:state => state.storeClosed.closedNum,
-            cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams
+            cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams,
+            list:state => state.store.list,
+            params:state => state.store.params,
+            allLoaded:state => state.store.allLoaded
         }),
         'cusomerAjaxParams.sort':{
             get(){
@@ -109,6 +117,7 @@ export default {
         ...mapMutations('storeApproved',['setApprovedNum']),
         ...mapMutations('storeClosed',['setClosedNum']),
         ...mapMutations(['setRightTimeSelect','setRightHeadTitle','setRightContainerStatus']),
+        ...mapMutations('store',['setStoreParmas','setStoreList','setAllLoaded','initStoreList']),
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
@@ -160,6 +169,62 @@ export default {
         showRightContainer() {
         // console.log('显示侧边栏。')
         this.setRightContainerStatus('show')
+        },
+        getType(){
+            if(this.headerStatus[0].status){
+                return 'store'
+            }
+            if(this.headerStatus[1].status){
+                let type;
+               if(this.subHeaderStatus[0].status){
+                   type='New'
+               }
+               if(this.subHeaderStatus[1].status){
+                  type='Approved'
+               }
+               if(this.subHeaderStatus[2].status){
+                  type='Closed'
+               }
+               return type
+            }   
+        },
+        search(){
+            if (event.keyCode == 13) { //如果按的是enter键 13是enter 
+                event.preventDefault(); //禁止默认事件（默认是换行） 
+                let type=this.getType();
+                console.log(type);
+                if(type==='store'){
+                    this.search=this.searchKey;
+                    let obj={
+                        key:this.searchKey,
+                        page:1,
+                        limit:30
+                    }
+                    this.setStoreParmas(obj)
+                    this.getStoreList(obj);
+                }
+            }
+            
+        },
+        getStoreList(obj){
+            indexModel.getStoreCustomer(obj).then((res) => {
+                if(res.status===1){
+                    if(obj.key!==''&&this.search!==this.searchKey){
+                        this.initStoreList(res.data.records);
+                    }else{
+                        this.setStoreList(res.data.records);
+                    } 
+                    if(obj.page===res.data.pages){
+                        this.setAllLoaded(true)
+                    }else{
+                        this.setAllLoaded(false)
+                    }   
+                }
+            }).catch((reject) => {
+                if(reject===510){
+                    this.getStoreList(obj)
+                }
+            })
         }
     }
 }
@@ -256,7 +321,8 @@ export default {
             @include flex-center;
             color:#fff;
             justify-content: space-between;
-            padding:2.133vw 4.266vw;
+            padding:0 4.266vw;
+            height:8vw;
             margin-top:1.333vw;
             font-size: 4vw;
             .filterli{

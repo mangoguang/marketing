@@ -95,6 +95,7 @@ export default {
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
       dealCustomerList: state => state.dealCustomerList.dealCustomerList
+      
     })
   },
   watch: {
@@ -252,6 +253,7 @@ export default {
     searchCustomer() {
        mango.changeBtnStatus(this.customerClassifyList, 0)
       let type = this.getType()
+      console.log(type);
        let parmas = {
         type: type,
         key: this.searchKey

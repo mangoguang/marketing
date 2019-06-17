@@ -409,6 +409,11 @@ class IndexModel extends Request {
  checkCustomer(obj){
   return mango.getAjax('/v3/app/customer/check', obj)
  }
+  //门店店长-门店客户
+  getStoreCustomer(obj){
+    return mango.getAjax('/v3/app/customers', obj)
+   }
+   
 }
 
 export { IndexModel }
