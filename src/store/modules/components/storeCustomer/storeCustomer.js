@@ -6,7 +6,8 @@ const state = {
     page:1,
     limit:30
   },
-  scroll:0
+  scroll:0,
+  storeNum:0
 }
 
 const mutations = {
@@ -27,6 +28,9 @@ const mutations = {
   },
   setPage:(state) => {
     state.params.page++
+  },
+  setStoreNum:(state,n) => {
+    state.storeNum=n
   }
 }
 

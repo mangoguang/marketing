@@ -73,18 +73,18 @@ export default {
     },
     methods:{
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
-        ...mapMutations('store',['setStoreParmas','setStoreList','setAllLoaded','setStoreScroll','setPage','initStoreList']),
+        ...mapMutations('store',['setStoreParmas','setStoreNum','setStoreList','setAllLoaded','setStoreScroll','setPage','initStoreList']),
         isIphone(){
             let top=document.querySelector('header').offsetHeight;
             let phone=this.phoneSize()
             if(phone==='iphonex'){
                 this.top='39.33vw';
                 this.paddingTop="43.99vw";
-                this.paddingBottom='21.07vw'
+                this.paddingBottom='29.07vw'
             }else{
                 this.top='33.33vw';
                 this.paddingTop="43.99vw";
-                this.paddingBottom='16.53vw'
+                this.paddingBottom='24.53vw'
             }  
         },
         listenScroll(){
@@ -109,6 +109,7 @@ export default {
                         this.setAllLoaded(false)
                     }
                     str==='init'?this.initStoreList(res.data.records):this.setStoreList(res.data.records);
+                    this.setStoreNum(res.data.total)
                 }
             }).catch((reject) => {
                 if(reject===510){

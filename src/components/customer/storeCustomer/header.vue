@@ -18,6 +18,9 @@
                     <span>{{item.name}}</span>
                 </li> 
             </ul>
+            <div class="lastNum" v-show="headerStatus[0].status" :style="{bottom:bottom}">
+                    共{{storeNum}}名
+            </div>
            <div v-show="headerStatus[1].status">
                 <ul class="filter" v-if="subHeaderStatus[0].status">
                     <li @click="showFilterList">
@@ -49,6 +52,7 @@
                         </li>
                     </ul>
                 </div>
+                
                
            </div>
        </div>
@@ -65,7 +69,8 @@ export default {
             top:'',
             showFilter:false,
             key:true,
-            searchKey:''
+            searchKey:'',
+            bottom:''
         }
     },
     computed:{
@@ -82,7 +87,8 @@ export default {
             cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams,
             list:state => state.store.list,
             params:state => state.store.params,
-            allLoaded:state => state.store.allLoaded
+            allLoaded:state => state.store.allLoaded,
+            storeNum:state => state.store.storeNum
         })
           
     },
@@ -113,7 +119,7 @@ export default {
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
         ...mapMutations(['setRightTimeSelect','setRightHeadTitle','setRightContainerStatus']),
         ...mapMutations('store',['setStoreScroll','setStoreParmas','setStoreList',
-        'setAllLoaded','initStoreList']),
+        'setAllLoaded','initStoreList','setStoreNum']),
         ...mapMutations('storeCustomer',['setCustomerList','setCustomerScroll',
         'setCustomerAllLoaded','initCustomerList','setStoreCustomerAjaxParams','setSort']),
         ...mapMutations('storeApproved',['setApprovedNum','setApprovedParams',
@@ -125,9 +131,11 @@ export default {
             if(phone==='iphonex'){
                 this.padding='6vw'
                 this.top=((this.$refs.header.offsetHeight/375)*100)+"vw"
+                this.bottom="21.07vw"
             }else{
                 this.padding=''
                 this.top=this.$refs.header.offsetHeight+"px"
+                this.bottom="16.53vw"
             }
             
             
@@ -476,6 +484,19 @@ export default {
         }
         .show{
             display: block;
+        }
+        .lastNum{
+            position: fixed;
+            left:0;
+            right:0;
+            bottom:0;
+            height:8vw;
+            @include flex-center;
+            justify-content: center;
+            background:#fff;
+            color:#999;
+            font-size: 12px;
+            z-index:100
         }
     }
 }
