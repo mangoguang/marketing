@@ -9,13 +9,31 @@ const state = {
     l:'',    //
     page: 1,  //页数
     limit: 30    //每页条数
-  }
+  },
+  list:[],
+  allLoaded:false,
+  scroll:0
 }
 
 const mutations = {
  setSort:(state,str) => {state.customerAjaxParams.sort=str},
  setKey:(state,str) => {state.customerAjaxParams.key=str},
- setStoreCustomerAjaxParams:(state,obj) => {state.customerAjaxParams=obj}
+ setStoreCustomerAjaxParams:(state,obj) => {state.customerAjaxParams=obj},
+ setCustomerList:(state,array) => {
+   state.list=[...state.list,...array]
+ },
+ setCustomerAllLoaded:(state,boolean) => {
+   state.allLoaded=boolean
+ },
+ setCustomerScroll:(state,n) => {
+   state.scroll=n;
+ },
+ setCustomerPage:(state) => {
+   state.customerAjaxParams.page++
+ },
+ initCustomerList:(state,array) => {
+   state.list=array
+ }
 }
 
 const actions = {

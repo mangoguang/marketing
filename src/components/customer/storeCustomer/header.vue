@@ -40,7 +40,7 @@
                 </ul>
                 <div :class="showFilter&&subHeaderStatus[0].status?`filterList show`:'filterList'" :style="{top:`${top}`}">
                      <ul v-show="subHeaderStatus[0].status">
-                        <li v-for="(item,index) in filterList" :key="index"  @click="closeFilter">
+                        <li v-for="(item,index) in filterList" :key="index"  @click="closeFilter(item.val)">
                             <label :class="item.val===cusomerAjaxParams.sort?'on':''">
                                 {{item.name}}
                                 <input type="radio" :value="item.val" :checked="item.val===cusomerAjaxParams.sort" v-model="cusomerAjaxParams.sort">
@@ -65,8 +65,7 @@ export default {
             top:'',
             showFilter:false,
             key:true,
-            searchKey:'',
-            search:''
+            searchKey:''
         }
     },
     computed:{
@@ -84,21 +83,14 @@ export default {
             list:state => state.store.list,
             params:state => state.store.params,
             allLoaded:state => state.store.allLoaded
-        }),
-        'cusomerAjaxParams.sort':{
-            get(){
-                return this.$store.state.storeCustomer.customerAjaxParams.sort
-            },
-            set (val) {
-                this.$store.commit('storeCustomer/setSort', val)
-            }
-        }
+        })
           
     },
     watch:{
         headerStatus(){
             if(this.headerStatus[0].status){
-                //this.getCustomerList()
+                this.showFilter=false
+                this.searchCustomer('')
             }
         },
         rightContainerStatus(val) {
@@ -107,6 +99,11 @@ export default {
                 //this.getCustomerList()
                 this.key = true
             }
+        },
+        subHeaderStatus(){
+            if(!this.subHeaderStatus[0].status){
+                this.setSort('')
+            }
         }
     },
     mounted(){
@@ -114,15 +111,20 @@ export default {
     },
     methods:{
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
-        ...mapMutations('storeApproved',['setApprovedNum']),
-        ...mapMutations('storeClosed',['setClosedNum']),
         ...mapMutations(['setRightTimeSelect','setRightHeadTitle','setRightContainerStatus']),
-        ...mapMutations('store',['setStoreParmas','setStoreList','setAllLoaded','initStoreList']),
+        ...mapMutations('store',['setStoreScroll','setStoreParmas','setStoreList',
+        'setAllLoaded','initStoreList']),
+        ...mapMutations('storeCustomer',['setCustomerList','setCustomerScroll',
+        'setCustomerAllLoaded','initCustomerList','setStoreCustomerAjaxParams','setSort']),
+        ...mapMutations('storeApproved',['setApprovedNum','setApprovedParams',
+        'setApprovedList','setApprovedScroll','setApprovedPage','setApprovedAllLoaded','initApprovedList']),
+        ...mapMutations('storeClosed',['setClosedNum','setClosedParams','setClosedList','setClosedAllLoaded',
+         'setClosedScroll','setClosedPage','initClosedList']),
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
                 this.padding='6vw'
-                this.top=((this.$refs.header.offsetHeight/375)*100+6)+"vw"
+                this.top=((this.$refs.header.offsetHeight/375)*100)+"vw"
             }else{
                 this.padding=''
                 this.top=this.$refs.header.offsetHeight+"px"
@@ -147,17 +149,20 @@ export default {
         showFilterList(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
-                this.top=((this.$refs.header.offsetHeight/375)*100+6)+"vw"
+                this.top="59.386vw"
             }else{
-                this.top=this.$refs.header.offsetHeight+"px"
+                this.top="53.386vw"
             }
             this.showFilter=!this.showFilter;
         },
-        closeFilter(){
+        closeFilter(val){
+            this.searchKey=''
+            this.filter(val)
             this.showFilter=false;
         },
         //订单查询成交客户的侧标栏
         showRightTimeSelect() {
+            this.searchKey=''
             this.setRightTimeSelect(true)
             if(this.subHeaderStatus[1].status) {
                 this.setRightHeadTitle('订单交单日期')
@@ -168,6 +173,8 @@ export default {
         // 显示右侧边栏
         showRightContainer() {
         // console.log('显示侧边栏。')
+        this.searchKey=''
+        this.showFilter=false;
         this.setRightContainerStatus('show')
         },
         getType(){
@@ -192,28 +199,15 @@ export default {
             if (event.keyCode == 13) { //如果按的是enter键 13是enter 
                 event.preventDefault(); //禁止默认事件（默认是换行） 
                 let type=this.getType();
-                console.log(type);
-                if(type==='store'){
-                    this.search=this.searchKey;
-                    let obj={
-                        key:this.searchKey,
-                        page:1,
-                        limit:30
-                    }
-                    this.setStoreParmas(obj)
-                    this.getStoreList(obj);
-                }
+                this.searchCustomer(type,this.searchKey)
+                
             }
             
         },
         getStoreList(obj){
             indexModel.getStoreCustomer(obj).then((res) => {
                 if(res.status===1){
-                    if(obj.key!==''&&this.search!==this.searchKey){
-                        this.initStoreList(res.data.records);
-                    }else{
-                        this.setStoreList(res.data.records);
-                    } 
+                    this.initStoreList(res.data.records);
                     if(obj.page===res.data.pages){
                         this.setAllLoaded(true)
                     }else{
@@ -225,7 +219,113 @@ export default {
                     this.getStoreList(obj)
                 }
             })
+        },
+        searchCustomer(type,val){
+            let obj;
+            switch (type){
+                case 'store':
+                    this.setStoreScroll(0)
+                    this.setAllLoaded(false)
+                    obj={
+                        key:this.searchKey,
+                        page:1,
+                        limit:30
+                    }
+                    this.setStoreParmas(obj)
+                    this.getStoreList(obj)
+                    break
+                case 'New':
+                    this.setCustomerScroll(0)
+                    this.setCustomerAllLoaded(false)
+                     obj= {
+                        type:'New',   //New:意向客户，Approved:成交客户，Closed:战败客户
+                        key:val,    //搜索关键字，电话或名字、微信
+                        sort:'',      //u:紧急排序，la:意向分类升序，ld:意向分类倒序
+                        sd:'',          //跟进日期
+                        ed:'',
+                        u:'',     //1:紧急，0不紧急
+                        l:'',    //
+                        page: 1,  //页数
+                        limit: 30    //每页条数
+                    }
+                    this.setStoreCustomerAjaxParams(obj)
+                    this.getCustomerList(obj)
+                    break
+                case 'Approved':
+                    this.setApprovedScroll(0)
+                    this.setApprovedAllLoaded(false)
+                    obj = {
+                        type:'Approved',   //New:意向客户，Approved:成交客户，Closed:战败客户
+                        key:val,    //搜索关键字，电话或名字、微信
+                        sd:'',          //跟进日期
+                        ed:'',
+                        page: 1,  //页数
+                        limit: 30    //每页条数
+                    }
+                    this.setApprovedParams(obj)
+                    this.getCustomerList(obj)
+                    break
+                case 'Closed':
+                    this.setClosedScroll(0)
+                    this.setClosedAllLoaded(false)
+                    obj = {
+                        type:'Closed',   //New:意向客户，Approved:成交客户，Closed:战败客户
+                        key:val,    //搜索关键字，电话或名字、微信
+                        sd:'',          //跟进日期
+                        ed:'',
+                        page: 1,  //页数
+                        limit: 30    //每页条数
+                    }
+                    this.setClosedParams(obj)
+                    this.getCustomerList(obj)
+                    break
+                default:
+                    break
+            }
+            
+           
+        },
+        filter(val){
+            this.setCustomerScroll(0)
+            this.setCustomerAllLoaded(false)
+            let obj = {
+                type:'New',   //New:意向客户，Approved:成交客户，Closed:战败客户
+                key:'',    //搜索关键字，电话或名字、微信
+                sort:val,      //u:紧急排序，la:意向分类升序，ld:意向分类倒序
+                sd:'',          //跟进日期
+                ed:'',
+                u:'',     //1:紧急，0不紧急
+                l:'',    //
+                page: 1,  //页数
+                limit: 30    //每页条数
+            }
+            this.setStoreCustomerAjaxParams(obj)
+            this.getCustomerList(obj)
+        },
+        getCustomerList(obj){
+            indexModel.getCusotmerList(obj).then((res) => {
+                if(res.status===1){
+                    if(obj.type==='New'){
+                        obj.page===res.data.pages?this.setCustomerAllLoaded(true):this.setCustomerAllLoaded(false)
+                        this.initCustomerList(res.data.records)
+                    }else if(obj.type==='Approved'){
+                        obj.page===res.data.pages?this.setApprovedAllLoaded(true):this.setApprovedAllLoaded(false)
+                        this.initApprovedList(res.data.records)
+                        this.setApprovedNum(res.data.total)
+                    }else{
+                        obj.page===res.data.pages?this.setClosedAllLoaded(true):this.setClosedAllLoaded(false)
+                        this.initClosedList(res.data.records)
+                        this.setClosedNum(res.data.total)
+                    }
+                }
+                
+            }).catch((reject) => {
+                if(reject===510){
+                    this.getCustomerList(obj)
+                }
+            })
         }
+
     }
 }
 </script>

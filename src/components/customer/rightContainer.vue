@@ -107,11 +107,21 @@ export default {
       return Math.ceil((end - start)/86400000)
     }
   },
-  // watch:{
-  //   rightContainerStatus() {
-  //     console.log(123,this.rightContainerStatus)
-  //   }
-  // },
+ watch:{
+   'cusomerAjaxParams':{
+      handler(newVal, oldVal) {
+        if(newVal.key!==''){
+          this.initStartDateVal();
+          this.endDateVal= mango.indexTime(new Date(), 'day');
+          mango.changeBtnStatus(this.urgencyBtns, '')
+          mango.changeBtnStatus(this.keyBtns, '')
+        }
+      },
+      immediate: true,
+      deep: true
+
+   }
+  },
   created() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
@@ -162,6 +172,7 @@ export default {
         this.$set(this.cusomerAjaxParams, 'sd', '')
         this.$set(this.cusomerAjaxParams, 'ed', '')
         this.$set(this.cusomerAjaxParams, 'l', '')
+        this.$emit('getPramas',0)
       }else{
         this.$set(this.customerAjaxParams,'i','')
         this.$set(this.customerAjaxParams,'u','')
@@ -177,7 +188,8 @@ export default {
       this.$set(this.paramsObj, 'sd', this.startDateVal)
       this.$set(this.paramsObj, 'ed', this.endDateVal)
       if(this.type==='store'){
-        this.setStoreCustomerAjaxParams(this.paramsObj)
+        //this.setStoreCustomerAjaxParams(this.paramsObj)
+        this.$emit('getPramas',1,this.paramsObj)
       }else{
         this.setCustomerAjaxParams(this.paramsObj)
       }

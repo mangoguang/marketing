@@ -5,7 +5,7 @@
             <li>性别</li>
             <li>创建人</li>
         </ul>
-        <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false">
+        <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore1" :auto-fill="false">
                 <ul class="content" v-for="item in list" :key="item.accntId" @click="linkTo(item.accntId)">
                     <li>{{item.username}}</li>
                     <li v-if="item.sex==='Mr.'">男</li>
@@ -47,6 +47,19 @@ export default {
         headerStatus(){
             if(this.headerStatus[0].status){
                  this.listenScroll();
+                 this.setStoreScroll(0)
+                 this.setAllLoaded(false)
+                 let obj={
+                     key:'',
+                     page:1,
+                     limit:30
+                 }
+                 this.getList(obj,'init')
+            }
+        },
+        scroll(){
+            if(this.scroll===0){
+                this.$refs.store.scrollTop=this.scroll;
             }
         }
     },
@@ -60,7 +73,7 @@ export default {
     },
     methods:{
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
-        ...mapMutations('store',['setStoreParmas','setStoreList','setAllLoaded','setStoreScroll','setPage']),
+        ...mapMutations('store',['setStoreParmas','setStoreList','setAllLoaded','setStoreScroll','setPage','initStoreList']),
         isIphone(){
             let top=document.querySelector('header').offsetHeight;
             let phone=this.phoneSize()
@@ -85,9 +98,9 @@ export default {
         loadBottom(){
             this.setPage();
             this.getList(this.params);
-            this.$refs.loadmore.onBottomLoaded();
+            this.$refs.loadmore1.onBottomLoaded();
         },
-        getList(obj){
+        getList(obj,str){
             indexModel.getStoreCustomer(obj).then((res) => {
                 if(res.status===1){
                     if(res.data.pages===this.params.page){
@@ -95,11 +108,11 @@ export default {
                     }else{
                         this.setAllLoaded(false)
                     }
-                    this.setStoreList(res.data.records);
+                    str==='init'?this.initStoreList(res.data.records):this.setStoreList(res.data.records);
                 }
             }).catch((reject) => {
                 if(reject===510){
-                    this.getList(obj)
+                    this.getList(obj,str)
                 }
             })
         },

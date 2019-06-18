@@ -130,8 +130,10 @@ export default {
       let time = {startTime: '', endTime: ''}
       if(this.rightHeadTitle === '订单交单日期') {
         this.setCustomerTime(time)
+        this.$emit('getTime',time,1)
       }else {
         this.setDealTime(time)
+         this.$emit('getTime',time)
       }
       this.setRightTimeSelect(false)
     },
@@ -140,8 +142,10 @@ export default {
       let time = {startTime: this.startDateVal, endTime: this.endDateVal}
       if(this.rightHeadTitle === '订单交单日期') {
         this.setCustomerTime(time)
+        this.$emit('getTime',time,1)
       }else {
         this.setDealTime(time)
+        this.$emit('getTime',time)
       }
       this.setRightTimeSelect(false)
     },

@@ -1,76 +1,22 @@
 <template>
-    <div class="box" :style="{paddingTop:paddingTop,paddingBottom:paddingBottom}">
+    <div class="box" :style="{paddingTop:paddingTop,paddingBottom:paddingBottom}" ref="customer">
         <ul class="top" :style="{top:top}">
             <li>客户信息</li>
             <li>意向产品</li>
             <li>最近跟进</li>
         </ul>
-        <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false">
-            <ul class="content">
+        <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="customerAllLoaded" ref="loadmore2" :auto-fill="false">
+            <ul class="content" v-for="(item,index) in customerList" :key="index" @click="linkTo(item.accntId)">
                 <li>
-                    <i :class="`importantA`"></i>
-                    <span>陆依依陆依依</span>
-                    <b :class="`urgencyfalse`"></b>
+                    <i :class="`important${item.level}`"></i>
+                    <span>{{item.username}}</span>
+                    <b :class="`urgency${item.urgency}`"></b>
                 </li>
-                <li>歌蒂娅海洋之心歌蒂娅海洋之心歌蒂娅海洋之心歌蒂娅海洋之心</li>
-                <li>2019.03.20</li>
-            </ul>
-             <ul class="content">
-                <li>
-                    <i :class="`importantB`"></i>
-                    <span>陆依依</span>
-                    <b :class="`urgencytrue`"></b>
-                </li>
-                <li>歌蒂娅海洋之心</li>
-                <li>2019.03.20</li>
-            </ul>
-            <ul class="content">
-                <li>
-                    <i :class="`importantC`"></i>
-                    <span>陆依依</span>
-                    <b :class="`urgencytrue`"></b>
-                </li>
-                <li>歌蒂娅海洋之心</li>
-                <li>2019.03.20</li>
-            </ul>
-            <ul class="content">
-                <li>
-                    <i :class="`importantC`"></i>
-                    <span>陆依依</span>
-                    <b :class="`urgencytrue`"></b>
-                </li>
-                <li>歌蒂娅海洋之心</li>
-                <li>2019.03.20</li>
-            </ul>
-            <ul class="content">
-                <li>
-                    <i :class="`importantC`"></i>
-                    <span>陆依依</span>
-                    <b :class="`urgencytrue`"></b>
-                </li>
-                <li>歌蒂娅海洋之心</li>
-                <li>2019.03.20</li>
-            </ul>
-            <ul class="content">
-                <li>
-                    <i :class="`importantC`"></i>
-                    <span>陆依依</span>
-                    <b :class="`urgencytrue`"></b>
-                </li>
-                <li>歌蒂娅海洋之心</li>
-                <li>2019.03.20</li>
-            </ul>
-             <ul class="content">
-                <li>
-                    <i :class="`importantC`"></i>
-                    <span>陆依依</span>
-                    <b :class="`urgencytrue`"></b>
-                </li>
-                <li>歌蒂娅海洋之心</li>
-                <li>2019.03.20</li>
+                <li>{{item.goodsName}}</li>
+                <li>{{item.followDate}}</li>
             </ul>
         </mt-loadmore>
-        <button class="new" :style="{bottom:bottom}"></button>
+        <button type="button" class="new" :style="{bottom:bottom}" @click="newCustomer"></button>
     </div>
 </template>
 <script>
@@ -78,10 +24,13 @@ import Vue from 'vue'
 import {mapState,mapMutations} from 'vuex'
 import { Loadmore } from 'mint-ui';
 Vue.component(Loadmore.name, Loadmore);
+import mango from '../../../js'
+import {btnList} from '../../../utils/gallery'
+import { IndexModel } from '../../../utils' 
+const indexModel = new IndexModel()
 export default {
     data(){
         return {
-            allLoaded:false,
             top:'',
             paddingTop:'',
             paddingBottom:'',
@@ -91,23 +40,42 @@ export default {
     computed:{
         ...mapState({
             headerStatus:state => state.storeHeader.headerStatus,
-            subHeaderStatus:state => state.storeHeader.subHeaderStatus
-            
+            subHeaderStatus:state => state.storeHeader.subHeaderStatus,
+            cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams,
+            customerList:state => state.storeCustomer.list,
+            customerAllLoaded:state => state.storeCustomer.allLoaded,
+            customerScroll:state => state.storeCustomer.scroll
         })
        
     },
     watch:{
         headerStatus(){
-            if(this.headerStatus[0].status){
-                //this.getCustomerList()
+            if(this.headerStatus[1].status&&this.subHeaderStatus[0].status){
+                this.initData()
+            }
+        },
+        subHeaderStatus(){
+            if(this.subHeaderStatus[0].status){
+                this.listenScroll()
+                this.initData()
+            }
+        },
+        customerScroll(){
+            if(this.customerScroll===0){
+                this.$refs.customer.scrollTop=this.customerScroll;
             }
         }
     },
+    created(){
+        this.getCustomerList(this.cusomerAjaxParams)
+    },
     mounted(){
-        this.isIphone();
+        this.isIphone();   
     },
     methods:{
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
+        ...mapMutations(['setBtn','initShopList','getShopVal']),
+        ...mapMutations('storeCustomer',['setCustomerList','setCustomerAllLoaded','setCustomerScroll','setCustomerPage','initCustomerList']),
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
@@ -122,11 +90,64 @@ export default {
                 this.paddingBottom='16.53vw'
             }  
         },
+        initData(){
+            this.setCustomerScroll(0)
+                this.setCustomerAllLoaded(false)
+                let obj={
+                    type:'New',
+                    key:'',
+                    sort:'',
+                    sd:'',
+                    ed:'',
+                    u:'',
+                    l:'',
+                    page: 1,
+                    limit: 30
+                }
+                this.getCustomerList(obj,'init')
+        },
+        listenScroll(){
+            this.$refs.customer.addEventListener('scroll',this.handleScroll,true)
+            this.$refs.customer.scrollTop=this.customerScroll
+        },
+        handleScroll(e){
+            let top = e.target.scrollTop
+            this.setCustomerScroll(top)
+        },
         loadBottom(){
-
+            this.setCustomerPage()
+            this.getCustomerList(this.cusomerAjaxParams)
+            this.$refs.loadmore2.onBottomLoaded();
+        },
+        getCustomerList(obj,str){
+            indexModel.getCusotmerList(obj).then((res) => {
+                if(res.status===1){
+                    if(obj.page===res.data.pages){
+                        this.setCustomerAllLoaded(true)
+                    }else{
+                        this.setCustomerAllLoaded(false)
+                    }
+                    str==='init'?this.initCustomerList(res.data.records):this.setCustomerList(res.data.records)
+                }
+                
+            }).catch((reject) => {
+                if(reject===510){
+                    this.getCustomerList(obj,str)
+                }
+            })
+        },
+        linkTo(id){
+            this.$router.push({path:"/customerInfo",query:{id:id}})
+        },
+        newCustomer() {
+            this.setBtn([])
+            let shops = localStorage.getItem('shops')
+            let shopsList = btnList(JSON.parse(shops),0)
+            this.initShopList(shopsList)
+            this.getShopVal()
+            this.$router.push({path: './newCustomer'})
         }
       
-       
     }
 }
 </script>
