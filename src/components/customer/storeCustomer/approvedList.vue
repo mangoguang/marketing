@@ -59,6 +59,9 @@ export default {
             }
         }
     },
+    created(){
+        this.initData()
+    },
     mounted(){
         this.isIphone();
     },
@@ -122,8 +125,6 @@ export default {
         linkTo(id){
             this.$router.push({path:"/enquiryInfo",query:{id:id}})
         }
-      
-       
     }
 }
 </script>
