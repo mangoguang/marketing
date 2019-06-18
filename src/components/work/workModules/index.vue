@@ -6,7 +6,7 @@
     v-for="(item, index) in list"
     :key="`workModule${index}`"
     @click.native="routerTo(index)"
-    :obj="item">
+    :obj="item" v-show="judge(index)">
     </li>
   </ul>
 </template>
@@ -24,6 +24,7 @@ export default {
       list: [
         { title: '公告', icon: 'noticeIcon' },
         { title: '日报', icon: 'dailyReportIcon' },
+        { title: '员工', icon: 'employee' },
         { title: '订单查询', icon: 'orderSearchIcon' }
       ]
     }
@@ -45,13 +46,30 @@ export default {
           this.$router.push({path: '/dailyReport'})
           break
         case 2:
+          alert('功能暂未开放！')
+          break
+        case 3:
           this.$router.push({path: '/orderSearch'})
           break
         default:
           return
       }
+    },
+    judge(i){
+      let status;
+      if(i===2){
+        if(this._localAjax.typename==='Store Manager'){
+          status=true
+        }else{
+          status=false
+        }
+      }else{
+        status=true
+      }
+      return status
     }
   }
+  
 }
 </script>
 

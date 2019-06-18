@@ -80,7 +80,7 @@ export default {
             if(phone==='iphonex'){
                 this.top='39.33vw';
                 this.paddingTop="43.99vw";
-                this.paddingBottom='29.07vw'
+                this.paddingBottom='21.07vw'
             }else{
                 this.top='33.33vw';
                 this.paddingTop="43.99vw";
