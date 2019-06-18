@@ -58,7 +58,7 @@ export default {
     judge(i){
       let status;
       if(i===2){
-        if(this._localAjax.typename==='Store Manager'){
+        if(this._localAjax().typename==='Store Manager'){
           status=true
         }else{
           status=false
