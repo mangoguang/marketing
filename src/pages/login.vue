@@ -129,7 +129,8 @@ export default {
         type:false,
         btnNumbrella:2
       },
-      colorheight:''
+      colorheight:'',
+      botContentShow:true
     }
   },
   mounted() {
