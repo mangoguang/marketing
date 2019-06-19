@@ -417,6 +417,10 @@ class IndexModel extends Request {
   getDailyStoreReport(obj){
     return mango.getAjax('/v3/app/staffDaily', obj)
   }
+  //门店店长-获取员工列表
+  getEmployeeList(obj){
+    return mango.getAjax('/v3/app/shop/employee/list', obj)
+  }
    
 }
 

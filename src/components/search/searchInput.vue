@@ -2,8 +2,7 @@
   <div class="searchBox">
       <label>
           <span class="search-icon"></span>
-          <input type="text" :value="value"  @input="$emit('input',$event.target.value)">
-          
+          <input type="text" :value="value" placeholder="请输入搜索内容" @input="$emit('input',$event.target.value)"> 
       </label>
    </div>
 </template>

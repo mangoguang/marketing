@@ -39,7 +39,6 @@ export default {
         "volumeBusiness": 0   //成交金额
       },
       tabList:[],
-      img:'./static/images/tab.png',
       isShow:false,
       status:''
     }
@@ -112,9 +111,6 @@ export default {
         this.status=0
         this.tabList=[{name:'门店数据',status:true},{name:"个人数据",status:false}]
         this.initData()
-      }else if(this._localAjax().typename === 'Dealer Boss'){
-        this.isShow=false
-        this.initData()
       }else{
         this.isShow=false
         this.getDailyData({
@@ -127,7 +123,7 @@ export default {
       if(this.isShow&&this.tabList[0].status){
         this.getParamsAjax(val)
       }else{
-        this._localAjax().typename === 'Dealer Boss'?this.getParamsAjax(val):this.getDailyData(val)
+        this.getDailyData(val)
       }
     },
     getParamsAjax(val){
@@ -139,7 +135,7 @@ export default {
         if(this.isShow&&this.tabList[0].status){
           this.initParamsData()
         }else{
-          this._localAjax().typename === 'Dealer Boss'?this.initParamsData():this.getDailyData({
+         this.getDailyData({
             startDate: this.curDay,
             endDate: this.curDay
           })
@@ -178,7 +174,7 @@ export default {
   }
   .dailyOn{
     padding-top:2.66vw;
-    background: url('../../../../static/images/bj.png') no-repeat top center;
+    background: url('../../../assets/imgs/bj.png') no-repeat top center;
     background-size:100% 48.266vw;
     .dailyUI{
        background: rgba(255,255,255,.9);
@@ -207,7 +203,7 @@ export default {
       left:2.66vw;
     }
     li.on{
-      background: url('../../../../static/images/tab.png') no-repeat center center;
+      background: url('../../../assets/imgs/tab.png') no-repeat center center;
       background-size: 28vw 8vw;
       font-weight: bold;
       z-index:10;

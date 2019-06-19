@@ -47,7 +47,7 @@ export default {
           this.$router.push({path: '/dailyReport'})
           break
         case 2:
-          alert('功能暂未开放！')
+          this.$router.push({path: '/employeeList'})
           break
         case 3:
           alert('功能暂未开放！')
@@ -68,7 +68,7 @@ export default {
           status=false
         }
       }else if(i===3){
-        if(this._localAjax().typename === 'Dealer Boss'){
+        if(this._localAjax().typename === 'Boss&Consultant' ||this._localAjax().typename === 'Boss&Manager' ||this._localAjax().typename === 'Dealer Boss'){
           status=true
         }else{
           status=false

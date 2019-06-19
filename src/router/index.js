@@ -40,7 +40,7 @@ const preShare = () => import('../pages/Gallery/preShare')
 
 //店长模块
 const storeCustomer = () => import('../pages/customer/storeCustomer')
-console.log(storeCustomer)
+const employeeList = () => import("../pages/work/employeeList")
 Vue.use(VueRouter)
 
 
@@ -420,6 +420,11 @@ export var router = new VueRouter({
     path:'/storeCustomer',
     name:'storeCustomer',
     component: storeCustomer
+  },
+  {
+    path:'/employeeList',
+    name:'employeeList',
+    component:employeeList
   }
 ],
   scrollBehavior (to, from, savedPosition) {
