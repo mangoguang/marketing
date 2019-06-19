@@ -25,6 +25,7 @@ export default {
         { title: '公告', icon: 'noticeIcon' },
         { title: '日报', icon: 'dailyReportIcon' },
         { title: '员工', icon: 'employee' },
+        { title: '门店', icon: 'store' },
         { title: '订单查询', icon: 'orderSearchIcon' }
       ]
     }
@@ -49,6 +50,9 @@ export default {
           alert('功能暂未开放！')
           break
         case 3:
+          alert('功能暂未开放！')
+          break
+        case 4:
           this.$router.push({path: '/orderSearch'})
           break
         default:
@@ -59,6 +63,12 @@ export default {
       let status;
       if(i===2){
         if(this._localAjax().typename==='Store Manager'){
+          status=true
+        }else{
+          status=false
+        }
+      }else if(i===3){
+        if(this._localAjax().typename === 'Dealer Boss'){
           status=true
         }else{
           status=false

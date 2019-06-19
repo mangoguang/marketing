@@ -413,7 +413,9 @@ class IndexModel extends Request {
   getStoreCustomer(obj){
     return mango.getAjax('/v3/app/customers', obj)
    }
-
+  getDailyStoreReport(obj){
+    return mango.getAjax('/v3/app/staffDaily', obj)
+  }
    
 }
 
