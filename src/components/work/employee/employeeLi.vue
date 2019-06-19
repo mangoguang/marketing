@@ -1,7 +1,7 @@
 <template>
   <li class="employeeLi">
     <div class="left">
-      <div class="headPortrait"></div>
+      <slot name="headPortrait"></slot>
       <div class="content"><slot></slot></div>
     </div>
     <img src="../../../assets/imgs/rightside.png" alt="">
@@ -37,6 +37,8 @@ export default {
 
 <style lang="scss" scoped>
   .employeeLi{
+    //width:91.466vw;
+    //box-sizing: border-box;
     background: #fff;
     margin:0 4.266vw;
     padding:0 2.66vw;
@@ -45,20 +47,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom:2.66vw;
     .left{
+      flex:1;
       display: flex;
       flex-direction: row;
       align-items: center;
-      .headPortrait{
-        width:14.66vw;
-        height:14.66vw;
-        background: red;
-        border-radius: 50%;
-        margin-right:2.66vw;
-      }
       .content{
-        width:65.06vw;
-        overflow: hidden;
+         flex:1;
       }
     }
     img{

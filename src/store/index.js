@@ -50,6 +50,7 @@ import storeClosed from './modules/components/storeCustomer/closedCustomer'
 import storeCustomer from './modules/components/storeCustomer/customer'
 import store from './modules/components/storeCustomer/storeCustomer'
 import employeeList from './modules/employee/employeeList'
+import shopList from './modules/store/shopList'
 export default new Vuex.Store({
   state,
   mutations,
@@ -101,6 +102,7 @@ export default new Vuex.Store({
     storeClosed,
     storeCustomer,
     store,
-    employeeList
+    employeeList,
+    shopList
   }
 })

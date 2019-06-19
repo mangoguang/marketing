@@ -1,13 +1,15 @@
 <template>
     <div class="employee">
-      <mybanner title="员工" style="background:#fff;border:none" ref='banner'></mybanner>
-      <search-input ref='search' v-model.trim="key" placeholder="请输入员工名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
+      <mybanner title="门店详情" style="background:#fff;border:none" ref='banner'></mybanner>
+      <search-input ref='search' v-model.trim="key" placeholder="请输入门店名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <ul v-if="list.length>0">
         <li is="employeeLi" v-for="(item,index) in list" :key="index">
-           <div class="headPortrait" slot="headPortrait"></div>
             <div class="detail">
-              <h1>{{item.username}}<span>{{item.shopName}}</span></h1>
-              <p>意向客户数：<b>{{item.countOpport}}</b></p>
+                <div>
+                  <h1>{{item.shopName}}</h1>
+                  <p>地址：{{item.address}}</p>
+                </div>
+                <span>店长：<b>{{item.storeManagers[0]}}</b></span>
             </div>
         </li>
       </ul>
@@ -41,18 +43,18 @@ export default {
   },
   computed:{
     ...mapState({
-      list:state => state.employeeList.list
+      list:state => state.shopList.list
     })
   }, 
   created(){
-    this.getData({username:''})
+    this.getData({shopName:''})
   },
   
   mounted(){
       this.isIPhoneX();
   },
   methods:{
-    ...mapMutations('employeeList',['setList']),
+    ...mapMutations('shopList',['setList']),
    isIPhoneX(){
       let phone=this.phoneSize()
       if(phone==="iphonex"){
@@ -65,12 +67,12 @@ export default {
    search(){
     var that=this;
       Debounce(function(){
-       that.getData({username:that.key})
+       that.getData({shopName:that.key})
       },500)()
     
    },
    getData(obj){
-     indexModel.getEmployeeList(obj).then((res) => {
+     indexModel.getShopList(obj).then((res) => {
        if(res.status===1){
          if(res.data.length>0){
             this.setList(res.data)
@@ -99,28 +101,25 @@ export default {
   position: relative;
   box-sizing: border-box;
   padding-top:30.92vw;
-   .headPortrait{
-        width:14.66vw;
-        height:14.66vw;
-        background: red;
-        border-radius: 50%;
-        margin-right:2.66vw;
-    }
   .detail{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     h1{
       font-size:4.8vw;
       color:#363636;
       font-weight: bold;
-      span{
-        font-size:3.733vw;
-        color:#909090;
-        font-weight: normal;
-        padding-left: 2.66vw;
-      }
     }
     p{
       font-size:3.733vw;
-      color:#363636;
+      color:#909090
+    }
+    span{
+      font-size:4vw;
+      color:#909090;
+      font-weight: bold;
+      padding-right:1.33vw;
       b{
         color:#FF964B;
       }

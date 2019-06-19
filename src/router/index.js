@@ -41,6 +41,8 @@ const preShare = () => import('../pages/Gallery/preShare')
 //店长模块
 const storeCustomer = () => import('../pages/customer/storeCustomer')
 const employeeList = () => import("../pages/work/employeeList")
+//经销商模块
+const shopList = () => import("../pages/work/shopList")
 Vue.use(VueRouter)
 
 
@@ -425,6 +427,12 @@ export var router = new VueRouter({
     path:'/employeeList',
     name:'employeeList',
     component:employeeList
+  },
+  //经销商
+  {
+    path:'/shopList',
+    name:'shopList',
+    component:shopList
   }
 ],
   scrollBehavior (to, from, savedPosition) {

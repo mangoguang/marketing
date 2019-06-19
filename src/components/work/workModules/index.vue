@@ -50,7 +50,7 @@ export default {
           this.$router.push({path: '/employeeList'})
           break
         case 3:
-          alert('功能暂未开放！')
+          this.$router.push({path: '/shopList'})
           break
         case 4:
           this.$router.push({path: '/orderSearch'})
