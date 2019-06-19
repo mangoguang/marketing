@@ -413,6 +413,7 @@ class IndexModel extends Request {
   getStoreCustomer(obj){
     return mango.getAjax('/v3/app/customers', obj)
    }
+   //门店店长-根据用户id获取工作台报表（id为店长时查询报表数据为门店总数据）
   getDailyStoreReport(obj){
     return mango.getAjax('/v3/app/staffDaily', obj)
   }

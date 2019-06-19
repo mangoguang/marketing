@@ -112,6 +112,9 @@ export default {
         this.status=0
         this.tabList=[{name:'门店数据',status:true},{name:"个人数据",status:false}]
         this.initData()
+      }else if(this._localAjax().typename === 'Dealer Boss'){
+        this.isShow=false
+        this.initData()
       }else{
         this.isShow=false
         this.getDailyData({
@@ -122,26 +125,32 @@ export default {
     },
     getData(val){
       if(this.isShow&&this.tabList[0].status){
-        let userId=this._localAjax().userId;
-        let temp=Object.assign({},{userId:userId},val)
-        this.getDailyStoreReport(temp)
+        this.getParamsAjax(val)
       }else{
-        this.getDailyData(val)
+        this._localAjax().typename === 'Dealer Boss'?this.getParamsAjax(val):this.getDailyData(val)
       }
     },
+    getParamsAjax(val){
+      let userId=this._localAjax().userId;
+      let temp=Object.assign({},{userId:userId},val)
+      this.getDailyStoreReport(temp)
+    },
     initData(){
-      if(this.isShow&&this.tabList[0].status){
-          this.getDailyStoreReport({
-            userId:this._localAjax().userId,
-            startDate: this.curDay,
-            endDate: this.curDay
-          })
+        if(this.isShow&&this.tabList[0].status){
+          this.initParamsData()
         }else{
-          this.getDailyData({
+          this._localAjax().typename === 'Dealer Boss'?this.initParamsData():this.getDailyData({
             startDate: this.curDay,
             endDate: this.curDay
           })
         }
+    },
+    initParamsData(){
+      this.getDailyStoreReport({
+            userId:this._localAjax().userId,
+            startDate: this.curDay,
+            endDate: this.curDay
+      })
     }
   }
 }
