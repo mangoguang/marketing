@@ -44,7 +44,8 @@ export default {
           alert('功能暂未开放！')
           break
         case 1:
-          this.$router.push({path: '/dailyReport'})
+          //this.$router.push({path: '/dailyReport'})
+          this.$router.push({path: '/storeDailyReport'})
           break
         case 2:
           this.$router.push({path: '/employeeList'})

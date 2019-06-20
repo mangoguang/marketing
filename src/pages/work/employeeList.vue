@@ -3,7 +3,7 @@
       <mybanner title="员工" style="background:#fff;border:none" ref='banner'></mybanner>
       <search-input ref='search' v-model.trim="key" placeholder="请输入员工名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <ul v-if="list.length>0">
-        <li is="employeeLi" v-for="(item,index) in list" :key="index">
+        <li is="employeeLi" v-for="(item,index) in list" :key="index" :icon="true">
            <div class="headPortrait" slot="headPortrait"></div>
             <div class="detail">
               <h1>{{item.username}}<span>{{item.shopName}}</span></h1>

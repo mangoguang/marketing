@@ -4,7 +4,7 @@
       <div class="prev-month" @click="prevMonth">
         <img src="../../../assets/imgs/prev.png" alt="">
       </div>
-      <div class="show-date">{{`${year}年${month}月`}}</div>
+      <div class="show-date">{{year}}.{{parseInt(month)<10?'0'+month:month}}</div>
       <div class="next-month" @click="nextMonth">
          <img src="../../../assets/imgs/next.png" alt="">
       </div>
@@ -34,7 +34,9 @@
             'summary': dateListCompare(`${year}-${month < 10 ? `0${month}` : month}-${item - getBeginDay < 10 ? `0${item - getBeginDay}` : item - getBeginDay}`),
             'future-day': dateCompare(`${year}-${month}-${item - getBeginDay}`, curDate)
           }"
-          @click="dateListCompare(`${year}-${month < 10 ? `0${month}` : month}-${item - getBeginDay < 10 ? `0${item - getBeginDay}` : item - getBeginDay}`) ? changeCurDay(item - getBeginDay) : noSummary(item - getBeginDay)">{{item - getBeginDay}}</span>
+          @click="dateListCompare(`${year}-${month < 10 ? `0${month}` : month}-${item - getBeginDay < 10 ? `0${item - getBeginDay}` : item - getBeginDay}`) ? changeCurDay(item - getBeginDay) : noSummary(item - getBeginDay)">
+          {{item - getBeginDay}}
+          </span>
           <!-- <span
           v-if="item - getBeginDay > curDay"
           class="other-day">{{item - getBeginDay - curDay}}</span> -->
@@ -67,6 +69,7 @@ export default {
   watch: {
     curMonthData(val) {
       if (val.length) {
+        console.log(val);
         this.dateList = val.map(element => element.createTime)
         console.log(this.dateList)
       }
@@ -80,12 +83,15 @@ export default {
   },
   computed: {
     getBeginDay() {
+      console.log('getBeginDay',new Date(this.year, this.month - 1, 1).getDay())
       return new Date(this.year, this.month - 1, 1).getDay()
     },
     curDay() {
+      console.log('getBeginDay111',new Date(this.year, this.month, 0).getDate())
       return new Date(this.year, this.month, 0).getDate()
     },
     prevDay() {
+      console.log('getBeginDay2222',new Date(this.year, this.month - 1, 0).getDate())
       return new Date(this.year, this.month - 1, 0).getDate()
     }
   },
@@ -153,7 +159,7 @@ export default {
     },
     dateListCompare(date) {
       let arr = this.dateList.map(item => item.substr(0, 10))
-      // console.log(arr.includes(date))
+      //console.log('22',arr.includes(date))
       return arr.includes(date)
     }
   }
@@ -164,13 +170,16 @@ export default {
 
 .myDatePicker{
   margin: 21.266vw 4.8vw 0 4.8vw;
+  //margin: 0 4.8vw 0 4.8vw;
   // padding: 1px;
   background: #fff;
   border-radius: 2vw;
   .date-header{
     width: 100%;
     display: flex;
-    line-height: 30px;
+    line-height: 10.466vw;
+    height:10.66vw;
+    border-bottom: 1px solid #E1E1E1;
   }
   .prev-month, .next-month{
     height: 10.6vw;
@@ -190,7 +199,7 @@ export default {
     line-height: 10.6vw;
     text-align: center;
     color: #363636;
-    font-size: 14px;
+    font-size:16px;
   }
 
   .week-header{

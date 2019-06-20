@@ -4,17 +4,15 @@
       <slot name="headPortrait"></slot>
       <div class="content"><slot></slot></div>
     </div>
-    <img src="../../../assets/imgs/rightside.png" alt="">
+    <img src="../../../assets/imgs/rightside.png" alt="" v-if="icon">
   </li>
 </template>
 
 <script>
 
-
-
 export default {
   name: 'employeeLi',
-  props: [],
+  props: ['icon'],
   data() {
     return{
     

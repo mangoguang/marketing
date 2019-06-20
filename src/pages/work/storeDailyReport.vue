@@ -1,27 +1,33 @@
 <template>
   <div class="dailyReport">
     <banner :title='"日报"' class="header">
-      <button @click="newPlan" class="newDailyReport" >+</button>
+      <button @click="newPlan" class="newDailyReport" v-if="tabList[0].status">+</button>
     </banner>
+    <tabUI :list="tabList" @getIndex="getIndex"/>
     <!-- 日历组件 -->
-    <myDatePicker
-    @getCurDay="getCurDay"
-    :curMonthData="curMonthData"
-    @changeCurMonthData="changeCurMonthData" />
-    <!-- 当日数据 -->
-    <CurReport
-    :list="dailyList"
-    :curDay="curDay" />
-    <!-- 当日总结 -->
-    <DailySummary
-    :text="dailySummaryTextarea"
-    :disabled="false"
-    @changeDailySummaryTextarea="changeDailySummaryTextarea" />
-    <!-- 明日目标及重点工作安排 -->
-    <DailyPlan
-    :text="dailyPlanTextarea"
-    :disabled="false"
-    @changeDailyPlanTextarea="changeDailyPlanTextarea" />
+    <div class="perDaily" v-if="tabList[0].status">
+        <myDatePicker
+        @getCurDay="getCurDay"
+        :curMonthData="curMonthData"
+        @changeCurMonthData="changeCurMonthData" />
+        <!-- 当日数据 -->
+        <CurReport
+        :list="dailyList"
+        :curDay="curDay" />
+        <!-- 当日总结 -->
+        <DailySummary
+        :text="dailySummaryTextarea"
+        :disabled="false"
+        @changeDailySummaryTextarea="changeDailySummaryTextarea" />
+        <!-- 明日目标及重点工作安排 -->
+        <DailyPlan
+        :text="dailyPlanTextarea"
+        :disabled="false"
+        @changeDailyPlanTextarea="changeDailyPlanTextarea" />
+    </div>
+    <div v-else>
+      <employeeDailyList/>
+    </div>
   </div>
 </template>
 
@@ -32,6 +38,8 @@ import banner from '../../components/banner'
 import CurReport from '../../components/work/dailyReport/curReport'
 import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
+import tabUI from '../../components/work/storeDailyReport/tabUI'
+import employeeDailyList from '../../components/work/storeDailyReport/employeeDailyList'
 import { IndexModel } from "../../utils/"
 import mango from "../../js"
 import Bus from '../../utils/Bus'
@@ -44,7 +52,9 @@ export default {
     banner,
     CurReport,
     DailySummary,
-    DailyPlan
+    DailyPlan,
+    tabUI,
+    employeeDailyList
   },
   props:[],
   data(){
@@ -66,7 +76,8 @@ export default {
       dailySummaryTextarea: '',
       dailyPlanTextarea: '',
       planList: [],
-      dailyList: []
+      dailyList: [],
+      tabList:[{title:'个人日报',status:true},{title:'员工日报',status:false}]
     }
   },
   computed: {
@@ -198,6 +209,18 @@ export default {
         mango.tip('当日已提交日报，请勿重复提交！')
         return
       }
+    },
+    getIndex(i){
+      console.log(i)
+      let array=this.tabList.map((item,index) => {
+        if(index===i){
+          item.status=true
+        }else{
+          item.status=false
+        }
+        return item;
+      })
+      this.tabList=array;
     }
   }
 }
@@ -208,17 +231,14 @@ export default {
 .dailyReport{
   padding-top: 1px;
   padding-bottom: 4.8vw;
-  &>div{
-    margin: 4.8vw 4.8vw 0 4.8vw;
-    background: #fff;
-    padding-top: 1px;
-    border-radius: 2vw;
-  }
-  &>div:first-child{
-    margin: 0;
-  }
-  &>div:nth-child(2){
-    margin-top: 21.266vw;
+  .perDaily{
+     margin-top:30.85vw;
+    &>div{
+      margin: 2.66vw 4.8vw 0 2.66vw;
+      background: #fff;
+      padding-top: 1px;
+      border-radius: 2vw;
+    }
   }
   .header{
     background: #fff;
@@ -230,5 +250,6 @@ export default {
     margin-right: 4.8vw;
     font-weight: 300;
   }
+  
 }
 </style>
