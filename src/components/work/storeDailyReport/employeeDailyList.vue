@@ -1,31 +1,31 @@
 <template>
-    <div class="perDailyList">
+    <div class="perDailyList" :style="{marginTop:_localAjax().typename!=='Store Manager'?'19.12vw':'30.82vw'}">
       <timeSelect @getPickerDate="getPickerDate"/>
-      <ul>
-          <li is="employeeLi" v-for="(item,index) in list" :key="index">
+      <ul v-for="(item,index) in list" :key="index" @click="getDaily(item.dailyOk,item.userId)">
+          <li is="employeeLi" >
             <div slot="headPortrait" class="headPortrait">
                 <img :src="img" alt="">
             </div>
             <div class="detail">
                 <div>
-                    <h1>{{item.userName}}&nbsp;<span v-if="_localAjax().typename==='Store Manager'">店长</span></h1>
+                    <h1>{{item.userName}}&nbsp;<span v-if="_localAjax().typename!=='Store Manager'">店长</span></h1>
                     <p>{{item.shopName}}</p>
                 </div>
-                <div v-if="item.isDaliy">
+                <div v-if="item.dailyOk" >
                      <b class="yes">已提交</b>
                      <br/>
-                     <i >20:30</i>
+                     <i>{{item.createTime.split(' ')[1].substr(0,5)}}</i>
                 </div>
                 <div v-else>
                      <b >未提交</b>  
                 </div>
             </div>
           </li>
-          
       </ul>
     </div>
 </template>
 <script>
+import mango from '../../../js'
 import timeSelect from './timeSelect'
 import employeeLi from '../employee/employeeLi'
 import mixin from '../../../utils/mixin'
@@ -53,15 +53,26 @@ export default {
     methods:{
        getPickerDate(date){
            this.date=date
+           this.getStaffDailyList({date:this.date})  
        },
        getStaffDailyList(obj){
            indexModel.getStaffDailyList(obj).then((res) => {
                console.log(res);
+               if(res.status===1){
+                 this.list=res.data;  
+               }
            }).catch((reject) => {
                if(reject===510){
                    this.getStaffDailyList(obj)
                }
            })
+       },
+       getDaily(isDailyOk,id){
+           console.log('isDailyOk',isDailyOk);
+           isDailyOk?this.go(id):mango.tip('未提交日报')
+       },
+       go(id){
+           this.$router.push({path:'/employeeDailyReport'})
        }
         
     }
@@ -107,7 +118,7 @@ $red:#FF2D55;
             white-space: nowrap;
         }
         div:last-child{
-            text-align: right;
+            text-align: center;
             b{
                 color:$red;
                 font-size:$fontSize16 

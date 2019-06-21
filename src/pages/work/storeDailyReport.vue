@@ -1,11 +1,11 @@
 <template>
   <div class="dailyReport">
-    <banner :title='"日报"' class="header">
-      <button @click="newPlan" class="newDailyReport" v-if="tabList[0].status">+</button>
+    <banner :title="`${_localAjax().typename==='Store Manager'?'日报':'员工日报'}`" class="header">
+      <button @click="newPlan" class="newDailyReport" v-if="_localAjax().typename==='Store Manager'&&tabList[0].status">+</button>
     </banner>
-    <tabUI :list="tabList" @getIndex="getIndex"/>
+    <tabUI :list="tabList" @getIndex="getIndex" v-if="_localAjax().typename==='Store Manager'"/>
     <!-- 日历组件 -->
-    <div class="perDaily" v-if="tabList[0].status">
+    <div class="perDaily" v-if="_localAjax().typename==='Store Manager'&&tabList[0].status" >
         <myDatePicker
         @getCurDay="getCurDay"
         :curMonthData="curMonthData"
@@ -25,7 +25,7 @@
         :disabled="false"
         @changeDailyPlanTextarea="changeDailyPlanTextarea" />
     </div>
-    <div v-else>
+    <div v-else >
       <employeeDailyList/>
     </div>
   </div>

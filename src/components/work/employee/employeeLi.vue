@@ -40,7 +40,7 @@ export default {
     background: #fff;
     margin:0 4.266vw;
     padding:0 2.66vw;
-    height:20vw;
+    min-height:20vw;
     border-radius: 1.6vw;
     display: flex;
     align-items: center;

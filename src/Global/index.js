@@ -34,4 +34,8 @@ exports.install = (Vue, options) => {
       }
     })
    }
+   Vue.prototype._getPosition = (position) => {
+    let arr=['Store Manager','Boss&Consultant','Boss&Manager','Dealer Boss']
+    return arr.includes(position)
+   }
 };

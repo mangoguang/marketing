@@ -4,9 +4,6 @@
       <search-input ref='search' v-model.trim="key" placeholder="请输入门店名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <ul v-if="list.length>0">
         <li is="employeeLi" v-for="(item,index) in list" :key="index" :icon='true'>
-           <div slot="headPortrait" class="headPortrait">
-                <img :src="img" alt="">
-            </div>
             <div class="detail">
                 <div>
                   <h1>{{item.shopName}}</h1>
@@ -36,8 +33,7 @@ export default {
     return {
       key:'',
       top:'',
-      status:'',
-      img:'./static/images/avatar.png'
+      status:''
     }
   },
   components:{
@@ -105,30 +101,29 @@ export default {
   position: relative;
   box-sizing: border-box;
   padding-top:30.92vw;
-  .headPortrait{
-        width:14.66vw;
-        height:14.66vw;
-        margin-right: 4.266vw;
-        img{
-            width:100%;
-        }
-    }
   .detail{
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    line-height: normal;
     h1{
-      font-size:4.8vw;
+      width:55vw;
+      font-size:3.733vw;
       color:#363636;
       font-weight: bold;
+      margin-bottom: 2.66vw;
     }
     p{
+      width:55vw;
       font-size:3.733vw;
-      color:#909090
+      color:#909090;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     span{
-      font-size:4vw;
+      font-size:3.733vw;
       color:#909090;
       font-weight: bold;
       padding-right:1.33vw;

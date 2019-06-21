@@ -8,7 +8,8 @@
              <img :src="img" alt="">
            </div>
             <div class="detail">
-              <h1>{{item.username}}<span>{{item.shopName}}</span></h1>
+              <h1>{{item.username}}</h1>
+              <span>{{item.shopName}}</span>
               <p>意向客户数：<b>{{item.countOpport}}</b></p>
             </div>
         </li>
@@ -113,25 +114,26 @@ export default {
         }
     }
   .detail{
+    line-height: normal;
     h1{
       font-size:4.8vw;
       color:#363636;
       font-weight: bold;
       display: flex;
       align-items: flex-end;
-      span{
+      
+    }
+    span{
         font-size:3.733vw;
         color:#909090;
         font-weight: normal;
-        padding-left: 2.66vw;
         display: inline-block;
-        width:46vw;
+        width:65vw;
         text-overflow: ellipsis;
         overflow:hidden;
         white-space: nowrap;
         /*-webkit-overflow-scrolling: touch; */
       }
-    }
     p{
       font-size:3.733vw;
       color:#363636;

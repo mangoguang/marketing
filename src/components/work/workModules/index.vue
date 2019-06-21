@@ -44,8 +44,7 @@ export default {
           alert('功能暂未开放！')
           break
         case 1:
-          //this.$router.push({path: '/dailyReport'})
-          this.$router.push({path: '/storeDailyReport'})
+          this._getPosition(this._localAjax().typename)?this.$router.push({path: '/storeDailyReport'}):this.$router.push({path: '/dailyReport'})  
           break
         case 2:
           this.$router.push({path: '/employeeList'})

@@ -438,7 +438,11 @@ export var router = new VueRouter({
   {
     path:'/employeeDailyReport',
     name:'employeeDailyReport',
-    component:employeeDailyReport
+    component:employeeDailyReport,
+    props: (route) => ({
+      id:route.query.userId,
+      username: route.query.username
+    }) 
   },
   //经销商
   {

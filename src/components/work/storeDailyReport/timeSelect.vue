@@ -9,6 +9,7 @@
         year-format="{value} 年"
         month-format="{value} 月"
         date-format="{value} 日"
+        :endDate="new Date()"
          @confirm="handleConfirm"
         >
         </mt-datetime-picker>
