@@ -5,10 +5,10 @@
 <style lang="scss" scoped>
 h3{
   position: relative;
-  font-size: 16px;
-  font-size: 300;
+  font-size: 4.266vw;
   color: #007fff;
-  line-height: 3em;
+  line-height: 10.66vw;
+  height:10.66vw;
   padding-left: 4vw;
   border-bottom: 1px solid #e1e1e1;
 }

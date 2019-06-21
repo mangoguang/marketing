@@ -42,6 +42,7 @@ const preShare = () => import('../pages/Gallery/preShare')
 const storeCustomer = () => import('../pages/customer/storeCustomer')
 const employeeList = () => import("../pages/work/employeeList")
 const storeDailyReport = () => import('../pages/work/storeDailyReport')
+const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
 //经销商模块
 const shopList = () => import("../pages/work/shopList")
 Vue.use(VueRouter)
@@ -433,6 +434,11 @@ export var router = new VueRouter({
     path:'/storeDailyReport',
     name:'storeDailyReport',
     component:storeDailyReport
+  },
+  {
+    path:'/employeeDailyReport',
+    name:'employeeDailyReport',
+    component:employeeDailyReport
   },
   //经销商
   {

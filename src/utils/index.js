@@ -425,6 +425,10 @@ class IndexModel extends Request {
   getShopList(obj){
     return mango.getAjax('/v3/app/boss/shop/list', obj)
   }
+  //获取员工日报
+  getStaffDailyList(obj){
+    return mango.getAjax('/v3/app/getstaffdailylist', obj)
+  }
    
 }
 

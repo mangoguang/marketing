@@ -4,7 +4,9 @@
       <search-input ref='search' v-model.trim="key" placeholder="请输入员工名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <ul v-if="list.length>0">
         <li is="employeeLi" v-for="(item,index) in list" :key="index" :icon="true">
-           <div class="headPortrait" slot="headPortrait"></div>
+           <div class="headPortrait" slot="headPortrait">
+             <img :src="img" alt="">
+           </div>
             <div class="detail">
               <h1>{{item.username}}<span>{{item.shopName}}</span></h1>
               <p>意向客户数：<b>{{item.countOpport}}</b></p>
@@ -31,7 +33,8 @@ export default {
     return {
       key:'',
       top:'',
-      status:''
+      status:'',
+      img:'./static/images/avatar.png'
     }
   },
   components:{
@@ -102,9 +105,10 @@ export default {
    .headPortrait{
         width:14.66vw;
         height:14.66vw;
-        background: red;
-        border-radius: 50%;
-        margin-right:2.66vw;
+        margin-right: 4.266vw;
+        img{
+            width:100%;
+        }
     }
   .detail{
     h1{

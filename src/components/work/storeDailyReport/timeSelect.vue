@@ -1,6 +1,6 @@
 <template>
     <div class="timePicker">
-        <div class="time">2019年3月15日</div>
+        <div class="time">{{date}}</div>
         <img :src="img" alt="" @click="openPicker">
         <mt-datetime-picker
         ref='date'
@@ -19,30 +19,34 @@ import Vue from 'vue'
 import { DatetimePicker } from 'mint-ui'
 Vue.component(DatetimePicker.name, DatetimePicker)
 import mango from '../../../js'
+import mixin from '../../../utils/mixin'
 export default {
     name:'',
     props:['list'],
+    mixins:[mixin],
     data(){
         return {
             pickerVisible:new Date(),
-            img:'./static/images/date.png'
+            img:'./static/images/date.png',
+            date:''
         }
     },
     created(){
-      
+      this.date=this.getCurDate(new Date())[0]
     },
     methods:{
        openPicker(){
            this.$refs.date.open();
        },
        handleConfirm(){
-            console.log(this.pickerVisible);
+            //console.log(this.pickerVisible);
             let year=new Date(this.pickerVisible).getFullYear();
             let month=new Date(this.pickerVisible).getMonth()+1;
             let day=new Date(this.pickerVisible).getDate();
-           
-            this.$emit('getPickerDate',``)
+            this.date=`${year}年${month}月${day}日`
+            this.$emit('getPickerDate',`${year}-${month<10?`0${month}`:month}-${day}`)
        }
+      
         
     }
 }

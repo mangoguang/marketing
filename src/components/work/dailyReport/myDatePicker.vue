@@ -4,7 +4,7 @@
       <div class="prev-month" @click="prevMonth">
         <img src="../../../assets/imgs/prev.png" alt="">
       </div>
-      <div class="show-date">{{year}}.{{parseInt(month)<10?'0'+month:month}}</div>
+      <div class="show-date">{{`${year}.${month<10?`0${month}`:month}`}}</div>
       <div class="next-month" @click="nextMonth">
          <img src="../../../assets/imgs/next.png" alt="">
       </div>
