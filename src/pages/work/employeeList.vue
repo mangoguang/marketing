@@ -74,9 +74,11 @@ export default {
    },
    getData(obj){
      indexModel.getEmployeeList(obj).then((res) => {
-       if(res.status===1){
+       console.log(res);
+       if(res.status==1){
          if(res.data.length>0){
             this.setList(res.data)
+            
             this.status=''
          }else{
            this.status='暂无记录'
@@ -115,11 +117,19 @@ export default {
       font-size:4.8vw;
       color:#363636;
       font-weight: bold;
+      display: flex;
+      align-items: flex-end;
       span{
         font-size:3.733vw;
         color:#909090;
         font-weight: normal;
         padding-left: 2.66vw;
+        display: inline-block;
+        width:46vw;
+        text-overflow: ellipsis;
+        overflow:hidden;
+        white-space: nowrap;
+        /*-webkit-overflow-scrolling: touch; */
       }
     }
     p{

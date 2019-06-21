@@ -4,7 +4,7 @@ const state = {
 
 const mutations = {
   setList:(state,array) => {
-    state.list=list
+    state.list=array
   }
 }
 
