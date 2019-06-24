@@ -7,7 +7,7 @@
       <div class="daily">
           <H3>{{curDay}}数据</H3>
           <DailyUl
-          :list="list" class="dailyStyle"/>
+          :list="dailyList" class="dailyStyle"/>
       </div>
     </div>
   </div>
@@ -17,14 +17,12 @@
 <script>
 import DailyUl from '../daily/dailyUl'
 import H3 from '../dailyReport/h3'
-
 export default {
   name: 'curReport',
   components:{
     DailyUl,
     H3
   },
-  props:['list', 'curDay'],
   data(){
     return{
       tabList:[
@@ -36,7 +34,18 @@ export default {
           name:'个人数据',
           status:false
         }
-      ]
+      ],
+      dailyList: {
+          "cus": 0,   //接待客户数
+          "cusBusiness": 0,    //成交客户数
+          "guestSingleValue": 0,    //客单值
+          "opp": 0,     //新增意向数
+          "tourist": 0,    //游客数
+          "trackRecord": 0,   //跟进客户
+          "turnoverRatio": 0, // 成交率
+          "volumeBusiness": 0   //成交金额
+      },
+      curDay:'2019年6月21日'
     }
   },
   created() {

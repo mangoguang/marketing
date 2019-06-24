@@ -121,7 +121,6 @@ export default {
       font-weight: bold;
       display: flex;
       align-items: flex-end;
-      
     }
     span{
         font-size:3.733vw;

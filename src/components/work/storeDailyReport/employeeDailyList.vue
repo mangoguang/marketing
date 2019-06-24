@@ -1,8 +1,8 @@
 <template>
     <div class="perDailyList" :style="{marginTop:_localAjax().typename!=='Store Manager'?'19.12vw':'30.82vw'}">
       <timeSelect @getPickerDate="getPickerDate"/>
-      <ul v-for="(item,index) in list" :key="index" @click="getDaily(item.dailyOk,item.userId)">
-          <li is="employeeLi" >
+      <ul v-for="(item,index) in list" :key="index" @click="getDaily(item.dailyOk,item.userId,item.userName)">
+          <li is="employeeLi" :icon="item.dailyOk">
             <div slot="headPortrait" class="headPortrait">
                 <img :src="img" alt="">
             </div>
@@ -67,12 +67,12 @@ export default {
                }
            })
        },
-       getDaily(isDailyOk,id){
+       getDaily(isDailyOk,id,name){
            console.log('isDailyOk',isDailyOk);
-           isDailyOk?this.go(id):mango.tip('未提交日报')
+           isDailyOk?this.go(id,name):mango.tip('未提交日报')
        },
-       go(id){
-           this.$router.push({path:'/employeeDailyReport'})
+       go(id,name){
+           this.$router.push({path:'/employeeDailyReport',query:{userId:id,username:name}})
        }
         
     }

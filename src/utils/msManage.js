@@ -90,7 +90,8 @@ export {addItem}
 
 //base64解码
 function b64DecodeUnicode(str) {
-  return decodeURIComponent(atob(str).split('').map(function(c) {
+  let nstr=str.replace(/\--/g,"+");
+  return decodeURIComponent(atob(nstr).split('').map(function(c) {
     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
   }).join(''));
 }

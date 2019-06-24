@@ -113,6 +113,7 @@ export default {
       color:#363636;
       font-weight: bold;
       margin-bottom: 2.66vw;
+      word-break: break-all;
     }
     p{
       width:55vw;
