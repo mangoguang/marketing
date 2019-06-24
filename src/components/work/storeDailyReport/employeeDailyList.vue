@@ -1,6 +1,8 @@
 <template>
-    <div class="perDailyList" :style="{marginTop:_localAjax().typename!=='Store Manager'?'19.12vw':'30.82vw'}">
-      <timeSelect @getPickerDate="getPickerDate"/>
+    <div ref="perDailyList" class="perDailyList" :style="{marginTop:_localAjax().typename!=='Store Manager'?'19.12vw':'30.82vw'}">
+      <div class="timeBox" :style="{top:`${top}vw`}">
+          <timeSelect @getPickerDate="getPickerDate"/>
+      </div>
       <ul v-for="(item,index) in list" :key="index" @click="getDaily(item)">
           <li is="employeeLi" :icon="item.dailyOk">
             <div slot="headPortrait" class="headPortrait">
@@ -39,7 +41,9 @@ export default {
            img:'./static/images/avatar.png',
            date:'',
            status:'',
-           list:[]
+           list:[],
+           top:'',
+           scroll:0
         }
     },
     components:{
@@ -47,8 +51,12 @@ export default {
         employeeLi
     },
     created(){
-      this.date=this.getCurDate(new Date())[1]
-      this.getStaffDailyList({date:this.date})
+        this.isIphoneX()
+        this.date=this.getCurDate(new Date())[1]
+        this.getStaffDailyList({date:this.date})
+    },
+    mounted(){
+        this.listen()
     },
     methods:{
        getPickerDate(date){
@@ -59,7 +67,11 @@ export default {
            indexModel.getStaffDailyList(obj).then((res) => {
                console.log(res);
                if(res.status===1){
-                 this.list=res.data;  
+                 this.list=res.data;
+                 if(this.scroll>0){
+                     this.$refs.perDailyList.scrollTop = 0;
+                     this.scroll=0
+                 }
                }
            }).catch((reject) => {
                if(reject===510){
@@ -73,7 +85,33 @@ export default {
        },
        go(id,name,date){
            let time=date.split(' ')[0]
-           this.$router.push({path:'/employeeDailyReport',query:{userId:id,username:name,date:time}})
+           this.$router.push({path:`/employeeDailyReport/${id}/${name}/${time}`})
+       },
+       isIphoneX(){
+           let phone = this.phoneSize()
+           if(phone==='iphonex'){
+               if(this._localAjax().typename!=='Store Manager'){
+                    this.top='22.35'
+               }else{
+                   this.top='34.08'
+               }
+               
+           }else{
+                if(this._localAjax().typename!=='Store Manager'){
+                    this.top='16.35' 
+               }else{
+                   this.top='28.08'
+               }
+               
+           }
+       },
+       handleScroll(e){
+            this.scroll = e.target.scrollTop
+            console.log(this.scroll)
+       },
+       listen(){
+           this.$refs.perDailyList.addEventListener('scroll',this.handleScroll,true)
+           this.$refs.perDailyList.scrollTop = this.scroll
        }
         
     }
@@ -89,6 +127,21 @@ $green:#59DC6F;
 $red:#FF2D55;
 .perDailyList{
     margin-top:30.82vw;
+    padding-top:16vw;
+    height:100vh;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+    .employeeLi{
+        box-shadow: 0 1px 3px rgba(136, 136, 136, 0.2);
+    }
+    .timeBox{
+        position: fixed;
+        top:10.66vw;
+        left:0;
+        right:0;
+        z-index: 100;
+        background: #f8f8f8;
+    }
     .headPortrait{
         width:14.66vw;
         height:14.66vw;
@@ -133,6 +186,7 @@ $red:#FF2D55;
                 font-size: $fontSize14
             }
         }
+        
        
     }
 }

@@ -16,11 +16,7 @@
 
 
 <script>
-import myDatePicker from '../../components/work/dailyReport/myDatePicker'
 import banner from '../../components/banner'
-import CurReport from '../../components/work/dailyReport/curReport'
-import DailySummary from '../../components/work/dailyReport/dailySummary'
-import DailyPlan from '../../components/work/dailyReport/dailyPlan'
 import tabUI from '../../components/work/storeDailyReport/tabUI'
 import employeeDailyList from '../../components/work/storeDailyReport/employeeDailyList'
 import storeDailyReport from '../../components/work/storeDailyReport/storeDailyReport'
@@ -32,11 +28,7 @@ const indexModel = new IndexModel()
 export default {
   name: 'dailyReporxt',
   components:{
-    myDatePicker,
     banner,
-    CurReport,
-    DailySummary,
-    DailyPlan,
     tabUI,
     employeeDailyList,
     storeDailyReport

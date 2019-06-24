@@ -1,18 +1,20 @@
 <template>
     <div class="employee">
-      <mybanner title="门店详情" style="background:#fff;border:none" ref='banner'></mybanner>
+      <mybanner title="门店列表" style="background:#fff;border:none" ref='banner'></mybanner>
       <search-input ref='search' v-model.trim="key" placeholder="请输入门店名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
-      <ul v-if="list.length>0">
-        <li is="employeeLi" v-for="(item,index) in list" :key="index" :icon='true'>
-            <div class="detail">
-                <div>
-                  <h1>{{item.shopName}}</h1>
-                  <p>地址：{{item.address}}</p>
-                </div>
-                <span>店长：<b>{{item.storeManagers[0]}}</b></span>
-            </div>
-        </li>
-      </ul>
+      <div v-if="list.length>0">
+        <ul v-for="(item,index) in list" :key="index"  @click="go(item.id,item.shopName)">
+          <li is="employeeLi"  :icon='true'>
+              <div class="detail">
+                  <div>
+                    <h1>{{item.shopName}}</h1>
+                    <p>地址：{{item.address}}</p>
+                  </div>
+                  <span>店长：<b>{{item.storeManagers[0]}}</b></span>
+              </div>
+          </li>
+        </ul>
+      </div>
       <div class="noData" v-else>{{status}}</div>
     </div>
 </template>
@@ -89,6 +91,9 @@ export default {
          this.getData(obj)
        }
      })
+   },
+   go(id,name){
+     this.$router.push({path:`/shopDetail/${id}/${name}`})
    }
   }
 };
@@ -101,6 +106,9 @@ export default {
   position: relative;
   box-sizing: border-box;
   padding-top:30.92vw;
+  .employeeLi{
+    box-shadow: 0 1px 3px rgba(136, 136, 136, 0.2);
+  }
   .detail{
     display: flex;
     flex-direction: row;

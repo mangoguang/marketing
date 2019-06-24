@@ -437,6 +437,10 @@ class IndexModel extends Request {
   getPerDaily(obj){
     return mango.getAjax('/v3/app/getdaily',obj)
   }
+  //根据门店id获取门店工作台报表
+  getPerStore(obj){
+    return mango.getAjax('/v3/app/shopworkbench',obj)
+  }
    
 }
 

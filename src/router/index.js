@@ -45,6 +45,7 @@ const storeDailyReport = () => import('../pages/work/storeDailyReport')
 const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
 //经销商模块
 const shopList = () => import("../pages/work/shopList")
+const shopDetail = () => import("../pages/work/storeDetail")
 Vue.use(VueRouter)
 
 
@@ -436,20 +437,22 @@ export var router = new VueRouter({
     component:storeDailyReport
   },
   {
-    path:'/employeeDailyReport',
+    path:'/employeeDailyReport/:id/:username/:date',
     name:'employeeDailyReport',
     component:employeeDailyReport,
-    props: (route) => ({
-      id:route.query.userId,
-      username: route.query.username,
-      date:route.query.date
-    }) 
+    props:true
   },
   //经销商
   {
     path:'/shopList',
     name:'shopList',
     component:shopList
+  },
+  {
+    path:'/shopDetail/:id/:name',
+    name:'shopDetail',
+    component:shopDetail,
+    props:true
   }
 ],
   scrollBehavior (to, from, savedPosition) {

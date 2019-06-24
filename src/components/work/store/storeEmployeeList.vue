@@ -1,35 +1,36 @@
 <template>
     <div class="employee">
-      <mybanner title="员工" style="background:#fff;border:none" ref='banner'></mybanner>
-      <search-input ref='search' v-model.trim="key" placeholder="请输入员工名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
-      <ul v-if="list.length>0">
-        <li is="employeeLi" v-for="(item,index) in list" :key="index" :icon="true">
+      <search-input ref='search' v-model.trim="key" placeholder="请输入员工名称" @input="search" :style="{top:`${top}vw`}"></search-input>
+      <ul>
+        <li is="employeeLi" :icon="true">
            <div class="headPortrait" slot="headPortrait">
              <img :src="img" alt="">
            </div>
             <div class="detail">
-              <h1>{{item.username}}</h1>
-              <span>{{item.shopName}}</span>
-              <p>意向客户数：<b>{{item.countOpport}}</b></p>
+              <div>
+                  <h1>666</h1>
+                  <p><img src="../../../assets/imgs/phone2.png" alt=""><b>15962448853</b></p>
+              </div>
+              <span>店长</span>
             </div>
         </li>
       </ul>
-      <div class="noData" v-else>{{status}}</div>
+      <div class="noData" >{{status}}</div>
     </div>
 </template>
 <script>
 import Vue from 'vue'
 import { Toast,Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
-import mybanner from '../../components/banner'
-import searchInput from '../../components/search/searchInput'
-import employeeLi from '../../components/work/employee/employeeLi'
+import searchInput from '../../search/searchInput'
+import employeeLi from '../employee/employeeLi'
 import { mapState, mapMutations } from 'vuex'
-import mango from '../../js'
-import { IndexModel } from '../../utils'
-import { Debounce } from '../../utils/public'
+import mango from '../../../js'
+import { IndexModel } from '../../../utils'
+import { Debounce } from '../../../utils/public'
 const indexModel=new IndexModel()
 export default {
+  props:['id'],
   data () {
     return {
       key:'',
@@ -39,13 +40,12 @@ export default {
     }
   },
   components:{
-     mybanner,
      searchInput,
      employeeLi
   },
   computed:{
     ...mapState({
-      list:state => state.employeeList.list
+      list:state => state.storeEmployeeList.list
     })
   }, 
   created(){
@@ -56,13 +56,13 @@ export default {
       this.isIPhoneX();
   },
   methods:{
-    ...mapMutations('employeeList',['setList']),
+    ...mapMutations('storeEmployeeList',['setList']),
    isIPhoneX(){
       let phone=this.phoneSize()
       if(phone==="iphonex"){
-        this.top='6'
+        this.top='34.466'
       }else{
-        this.top='0'
+        this.top='28.466'
        
       }
     },
@@ -104,7 +104,13 @@ export default {
   overflow-x: hidden;
   position: relative;
   box-sizing: border-box;
-  padding-top:30.92vw;
+  padding-top:42.653vw;
+  .searchBox{
+    position: fixed;
+    left:0;
+    right:0;
+    z-index: 100;
+  }
   .employeeLi{
     box-shadow: 0 1px 3px rgba(136, 136, 136, 0.2);
   }
@@ -117,7 +123,9 @@ export default {
         }
     }
   .detail{
-    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     h1{
       font-size:4.8vw;
       color:#363636;
@@ -125,23 +133,25 @@ export default {
       display: flex;
       align-items: flex-end;
     }
-    span{
-        font-size:3.733vw;
-        color:#909090;
-        font-weight: normal;
-        display: inline-block;
-        width:65vw;
-        text-overflow: ellipsis;
-        overflow:hidden;
-        white-space: nowrap;
-        /*-webkit-overflow-scrolling: touch; */
-      }
+    
     p{
       font-size:3.733vw;
       color:#363636;
-      b{
-        color:#FF964B;
+      img{
+        width:3.466vw;
+        vertical-align: middle;
       }
+      b{
+        color:#909090;
+        padding-left:2px;
+        font-weight: normal;
+      }
+    }
+    span{
+      padding-right:2.133vw;
+      color:#363636;
+      font-size: 4.266vw;
+      font-weight: 600;
     }
   }
   .noData{
