@@ -5,7 +5,8 @@
     </ul>
     <div class="dailyBox">
       <div class="daily">
-          <H3>{{curDay}}数据</H3>
+          <H3 v-if="tabList[0].status">所属门店{{curDay}}数据</H3>
+          <H3 v-else>{{username+curDay}}数据</H3>
           <DailyUl
           :list="dailyList" class="dailyStyle"/>
       </div>
@@ -17,12 +18,15 @@
 <script>
 import DailyUl from '../daily/dailyUl'
 import H3 from '../dailyReport/h3'
+import { IndexModel } from '../../../utils'
+const indexModel = new IndexModel()
 export default {
   name: 'curReport',
   components:{
     DailyUl,
     H3
   },
+  props:['username','id','date'],
   data(){
     return{
       tabList:[
@@ -45,11 +49,12 @@ export default {
           "turnoverRatio": 0, // 成交率
           "volumeBusiness": 0   //成交金额
       },
-      curDay:'2019年6月21日'
+      curDay:'',
+      date:''
     }
   },
   created() {
-  
+    this.getCurDay()
   },
   mounted() {
 
@@ -65,7 +70,45 @@ export default {
         return item;
       })
       this.tabList = arr
-    } 
+      let obj={
+        userId:this.id,
+        startDate:this.date,
+        endDate:this.date
+      }
+      i===0?this.getPerStoreReport(obj):this.getPerReport(obj)
+    },
+    getPerStoreReport(obj){
+      indexModel.getPerStoreReport(obj).then((res) => {
+        if(res.status===1){
+          this.dailyList=res.data
+        }
+      }).catch((reject) => {
+        if(reject === 510){
+          this.getPerStoreReport(obj)
+        }
+      })
+    },
+    getPerReport(obj){
+      indexModel.getDailyStoreReport(obj).then((res) => {
+        if(res.status===1){
+          this.dailyList=res.data
+        }
+      }).catch((reject) => {
+        if(reject === 510){
+          this.getPerReport(obj)
+        }
+      })
+    },
+    getCurDay(){
+      let arr=this.date.split('-')
+      this.curDay=`${arr[0]}年${arr[1]}月${arr[2]}日`
+      this.getPerStoreReport({
+        userId:this.id,
+        startDate:this.date,
+        endDate:this.date
+      }) 
+      
+    }
   }
 }
 </script>

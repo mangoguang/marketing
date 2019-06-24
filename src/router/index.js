@@ -441,7 +441,8 @@ export var router = new VueRouter({
     component:employeeDailyReport,
     props: (route) => ({
       id:route.query.userId,
-      username: route.query.username
+      username: route.query.username,
+      date:route.query.date
     }) 
   },
   //经销商

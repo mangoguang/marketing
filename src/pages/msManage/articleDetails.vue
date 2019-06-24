@@ -113,9 +113,12 @@ export default {
           let imgReg=/<img.*?(?:>|\/>)/gi;
           let srcReg=/src=[\'\"]?([^\'\"]*)[\'\"]?/i;
           let arr=this.myhtml.match(imgReg);
-          for(let i=0;i<arr.length;i++){
-            this.imgSrc.push(arr[i].match(srcReg)[1]);
+          if(arr){
+            for(let i=0;i<arr.length;i++){
+              this.imgSrc.push(arr[i].match(srcReg)[1]);
+            }
           }
+          
         }
         this.collection = res.data.collect
       })

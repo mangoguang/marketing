@@ -1,7 +1,7 @@
 <template>
     <div >
         <banner :title='`${username}日报`' class="header"></banner>
-        <tabCurReport/>
+        <tabCurReport :username='username' :id="id" :date="date"/>
         <div class="summary">
                 <!-- 当日总结 -->
             <DailySummary
@@ -23,7 +23,7 @@ import { IndexModel } from '../../utils'
 const indexModel = new IndexModel()
 export default {
     name:'employeeDailyReport',
-    props:['id','username'],
+    props:['id','username','date'],
     data(){
         return {
             dailySummaryTextarea:'',
@@ -38,10 +38,22 @@ export default {
       DailyPlan
     },
     created(){
-     
+     this.getPerDaily()
     },
     methods:{
-      
+      getPerDaily(){
+            indexModel.getPerDaily({userId:this.id,date:this.date}).then((res) => {
+                console.log(res);
+                if(res.status===1){
+                    this.dailySummaryTextarea=res.data.summarize
+                    this.dailyPlanTextarea=res.data.plan
+                }
+            }).catch((reject) => {
+                if(reject===510){
+                    this.getPerDaily()
+                }
+            })
+      }
      
         
     }
