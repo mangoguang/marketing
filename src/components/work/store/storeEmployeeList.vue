@@ -49,7 +49,7 @@ export default {
     })
   }, 
   created(){
-    this.getData({username:''})
+    this.getData({shopId:this.id})
   },
   
   mounted(){
@@ -74,12 +74,11 @@ export default {
     
    },
    getData(obj){
-     indexModel.getEmployeeList(obj).then((res) => {
+     indexModel.getStoreEmployeeList(obj).then((res) => {
        console.log(res);
        if(res.status==1){
          if(res.data.length>0){
             this.setList(res.data)
-            
             this.status=''
          }else{
            this.status='暂无记录'

@@ -61,10 +61,10 @@ export default {
       let bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
       let bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
       if (!(bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM)){
-        alert('pc')
+        //alert('pc')
         flag=false
       }else{
-        alert('phone')
+        //alert('phone')
         flag=true
       }
       return flag

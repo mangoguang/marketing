@@ -49,24 +49,24 @@ export default {
     } 
   }
   input:-moz-input-placeholder{
-    font-size: 4vw;
+    font-size: 15px;
     color:#909090;
   }
   input::-moz-input-placeholder{
-    font-size: 4vw;
+    font-size: 15px;
     color:#909090;
   }
   input::-ms-input-placeholder{
-    font-size: 4vw;
+    font-size: 15px;
     color:#909090;
   }
   input::-webkit-input-placeholder{
-    font-size: 4vw;
+    font-size: 15px;
     color:#909090;
   }
   input{
     color:#363636;
-    font-size: 3.466vw;
+    font-size: 15px;
     padding:0 1.333vw;
     flex:1;
     border:none;
