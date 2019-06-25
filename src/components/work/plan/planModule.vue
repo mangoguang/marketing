@@ -4,7 +4,7 @@
             <span @click="more">更多</span>
         </mytitle>
         <weekHeader/>
-        <weekDay/>
+        <weekDay @getSelectDate="getSelectDate" />
     </div>
 </template>
 <script>
@@ -26,6 +26,9 @@ export default {
     methods:{
         more(){
             console.log('更多')
+        },
+        getSelectDate(date){
+            this.selectDate=date
         }
     }
 }

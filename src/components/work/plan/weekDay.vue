@@ -1,12 +1,11 @@
 <template>
     <ul class="weekDay">
-        <li class="hasPlan"><span class="active">1</span></li>
-        <li><span>1</span></li>
-        <li><span>1</span></li>
-        <li><span>1</span></li>
-        <li><span>1</span></li>
-        <li><span>1</span></li>
-        <li><span>1</span></li>
+        <li class="hasPlan" v-for="(item,index) in list" :key="index">
+          <span :class="item===activeDay?'active':''" :id="item" @click="getSelectDate(item)">
+            {{parseInt(item.split('-')[2])}}
+          </span>
+        </li>
+       
     </ul>
 </template>
 <script>
@@ -21,21 +20,47 @@ export default {
             dayIndex:'',
             year:null,
             month:null,
-            day:null
+            day:null,
+            oneDayLong:24*60*60*1000,
+            week:{},
+            list:[],
+            activeDay:''
         }
     },
     created(){
         this.getDate()
     },
     methods:{
+        ChangeTime(time){
+            let year=new Date(time).getFullYear();
+            let month=new Date(time).getMonth()+1;
+            let day=new Date(time).getDate();
+            return `${year}-${month>10?month:`0${month}`}-${day>10?day:`0${day}`}`
+        },
         getDate(){
-            let oneDayLong=24*60*60*1000;
-            this.year=new Date().getFullYear();
-            this.month=new Date().getMonth()+1;
-            this.day=new Date().getDate();
-            this.dayIndex=new Date().getDay();
-            this.nowDay=`${this.year}-${this.month>10?this.month:`0${this.month}`}-${this.day>10?this.day:`0${this.day}`}`
+          this.year=new Date().getFullYear();
+          this.month=new Date().getMonth()+1;
+          this.day=new Date().getDate();
+          this.dayIndex=new Date().getDay();
+          this.activeDay=`${this.year}-${this.month>10?this.month:`0${this.month}`}-${this.day>10?this.day:`0${this.day}`}`
+          this.startDay=new Date().getTime()-this.dayIndex*this.oneDayLong;
+          this.endDay=new Date().getTime()+(6-this.dayIndex)*this.oneDayLong;
+          this.week={startDay:this.ChangeTime(this.startDay),endDay:this.ChangeTime(this.endDay)}
+          this.getWeekList(this.startDay)
+        },
+        getWeekList(startTime){
+          let list=[];
+          for(let i=0;i<7;i++){
+            let day=this.ChangeTime(startTime+i*this.oneDayLong)
+            list.push(day)
+          }
+          this.list=list
+        },
+        getSelectDate(date){
+          this.activeDay=date
+          this.$emit('getSelectDate',date)
         }
+
     }
 }
 </script>
