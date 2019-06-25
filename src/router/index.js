@@ -459,15 +459,12 @@ export var router = new VueRouter({
     name:'shopDetail',
     component:shopDetail,
     props:true
-<<<<<<< HEAD
-=======
   },
   //4s
   {
     path:'/index4s',
     name:'index4s',
     component:index4s
->>>>>>> 0bba52fd2e0db5adc12aa4366fbdfa0cc259cef6
   }
 ],
   scrollBehavior (to, from, savedPosition) {
