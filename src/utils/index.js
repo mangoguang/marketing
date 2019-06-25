@@ -401,7 +401,51 @@ class IndexModel extends Request {
   changePassword(obj,type) {
     return mango.getAjax('/v1/app/password',obj,type)
   }
- 
+  //检查姓氏是否存在
+  checkLastName(obj) {
+    return mango.getAjax('/v2/app/check/lastname', obj)
+  }
+ //检查手机或微信是否存在
+ checkCustomer(obj){
+  return mango.getAjax('/v3/app/customer/check', obj)
+ }
+  //门店店长-门店客户
+  getStoreCustomer(obj){
+    return mango.getAjax('/v3/app/customers', obj)
+   }
+   //门店店长-根据用户id获取工作台报表（id为店长时查询报表数据为门店总数据）
+  getDailyStoreReport(obj){
+    return mango.getAjax('/v3/app/staffDaily', obj)
+  }
+  //门店店长-获取员工列表
+  getEmployeeList(obj){
+    return mango.getAjax('/v3/app/shop/employee/list', obj)
+  }
+  //经销商-获取门店列表
+  getShopList(obj){
+    return mango.getAjax('/v3/app/boss/shop/list', obj)
+  }
+  //获取员工日报
+  getStaffDailyList(obj){
+    return mango.getAjax('/v3/app/getstaffdailylist', obj)
+  }
+  //根据员工id获取所属门店工作台报表
+  getPerStoreReport(obj){
+    return mango.getAjax('/v3/app/shopworkbenchbyuser',obj)
+  }
+  //获取员工个人日报信息
+  getPerDaily(obj){
+    return mango.getAjax('/v3/app/getdaily',obj)
+  }
+  //根据门店id获取门店工作台报表
+  getPerStore(obj){
+    return mango.getAjax('/v3/app/shopworkbench',obj)
+  }
+  //根据门店id获取门店员工列表
+  getStoreEmployeeList(obj){
+    return mango.getAjax('/v2/app/check/shopuser',obj)
+  }
+   
 }
 
 export { IndexModel }

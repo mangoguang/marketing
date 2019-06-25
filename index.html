@@ -12,5 +12,15 @@
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script type="text/javascript">
+      window.apiready = function(){
+        let deviceID=api.deviceId;
+        let version=api.appVersion;
+        localStorage.setItem('deviceId',deviceID)
+        //alert(localStorage.getItem('deviceId'))
+        //alert(deviceID)
+        //alert(version)
+      }
+    </script>
   </body>
 </html>

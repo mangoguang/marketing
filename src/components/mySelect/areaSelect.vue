@@ -61,7 +61,9 @@ export default {
           textAlign: 'center'
         }
       ],
-      pickerArr:[]
+      pickerArr:[],
+      city:[],
+      country:[]
     }
   },
   computed:{
@@ -91,30 +93,41 @@ export default {
       
       if(that.key){
         let id=values[0].id;
+        console.log(id);
         //根据省id获取市
         indexModel.getArea('DR_CITY').then(res => {
+          console.log(res);
           if(res.code===0){
-          picker.setSlotValues(1,that.getReference(id,res.data));
+            if(that.getReference(id,res.data).length>0){
+              picker.setSlotValues(1,that.getReference(id,res.data));
+               //根据市id获取区县
+                /* indexModel.getArea('DR_COUNTY').then(res => {
+                  if(res.code===0){
+                    let cityId=values[1].id;
+                    console.log('city:',cityId)
+                    picker.setSlotValues(2,that.getReference(cityId,res.data));
+                        
+                  }
+                }).catch((reject) => {
+                  if (reject === 510) {
+                    this.onValuesChange(picker,values)
+                  }
+                }) */
+                let cityId=values[1].id;
+                console.log('city:',cityId)
+                picker.setSlotValues(2,that.getReference(cityId,this.country));
+            }else{
+              picker.setSlotValues(1,[])
+              picker.setSlotValues(2,[])
+            }
           }
         }).catch((reject) => {
         if (reject === 510) {
           this.onValuesChange(picker,values)
         }
       })
-        //根据市id获取区县
-        indexModel.getArea('DR_COUNTY').then(res => {
-          if(res.code===0){
-            let cityId=values[1].id;
-            console.log('city:',cityId)
-            picker.setSlotValues(2,that.getReference(cityId,res.data));
-          }
-        }).catch((reject) => {
-          if (reject === 510) {
-            this.onValuesChange(picker,values)
-          }
-        })
-        that.pickerArr=picker.getValues();
     
+        that.pickerArr=picker.getValues();
       }
   
     },
@@ -124,27 +137,23 @@ export default {
     },
     update(){
       let that=this;
-      let cityName;
-      let cityCode;
+      let cityNameArr=[];
+      let cityCodeArr=[];
+      let cityName,cityCode;
       if(that.pickerArr.length>0){
-        cityName=`${that.pickerArr[0].name} ${that.pickerArr[1].name} ${that.pickerArr[2].name}`;
-        cityCode=`${that.pickerArr[0].code}-${that.pickerArr[1].code}-${that.pickerArr[2].code}`;
+        for(let i=0;i<that.pickerArr.length;i++){
+          if(that.pickerArr[i]){
+            cityNameArr.push(that.pickerArr[i].name)
+            cityCodeArr.push(that.pickerArr[i].code)
+          }
+        }
+        cityName=cityNameArr.join(' ');
+        cityCode=cityCodeArr.join('-');
       }else{
         cityName=`${that.slots[0].values[0].name} ${that.slots[2].values[0].name} ${that.slots[4].values[0].name}`;
         cityCode=`${that.slots[0].values[0].code}-${that.slots[2].values[0].code}-${that.slots[4].values[0].code}`;
       }
-      // let cityNameAttr=cityName.split(' ');
-      // let cityCodeAttr=cityCode.split('-');
-      // let obj = {
-      //     provinceName:cityNameAttr[0],
-      //     provinceCode:cityCodeAttr[0],
-      //     cityName:cityNameAttr[1],
-      //     cityCode:cityCodeAttr[1],
-      //     countryName:cityNameAttr[2],
-      //     countyCode:cityCodeAttr[2]
-      //   }
       that.$emit('update',cityName,cityCode);
-      //this.setAreaVal(obj)
       that.popupVisible=false;
     },
     getProvinceArr(){
@@ -156,12 +165,16 @@ export default {
           //根据省id获取市
           indexModel.getArea('DR_CITY').then(res => {
             if(res.code===0){
+            this.city=res.data;
             this.slots[2].values=this.getReference(id,res.data)
+
             }
           });
           //根据市id获取区县
           indexModel.getArea('DR_COUNTY').then(res => {
             if(res.code===0){
+              this.country=res.data;
+              console.log('3',res.data)
               let cityId=this.slots[2].values[0].id;
               this.slots[4].values=this.getReference(cityId,res.data)
             }
@@ -188,6 +201,7 @@ export default {
       var newArr=arr.filter(function(item,index,array){
         return (item.parent===id);
       });
+      console.log('11',newArr)
       return newArr;
     }
   }
@@ -213,7 +227,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    span{
+    &>span{
       display: inline-block;
       width:22.4vw;
     }
@@ -266,6 +280,15 @@ export default {
   }
 }
 .area{
+  label{
+    font-size: 14px;
+    &>span{
+      width:auto;
+      padding-right:5vw;
+      display: table-cell;
+      vertical-align: middle;
+    }
+  }
   input:-moz-input-placeholder{
    font-size: 3.73vw;
     color:#909090;

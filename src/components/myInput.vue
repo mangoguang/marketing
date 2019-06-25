@@ -9,7 +9,7 @@
       :id="`${inputID}`" 
       :type="type" 
       :class="`${inputType}`"
-      v-on:focus='focusInput()'  
+      @focus='focusInput()'  
       @blur="blurInput()"
       v-on:input="$emit('input',$event.target.value)"
       :value='value'
@@ -53,15 +53,17 @@ export default {
   },
   methods:{
     focusInput : function(){
+      this.$emit('myFocus')
       if(this.value.length){
         this.inputType = 'inputStatus1'
         this.labelType = 'labelStatus2'
       }else{
         this.inputType = 'inputStatus1'
         this.labelType = 'labelStatus1'
-      }  
+      }
     },
     blurInput:function(){
+      this.$emit('myBlur')
       if(this.value.length){
         this.inputType = 'inputStatus1'
         this.labelType = 'labelStatus2'

@@ -21,7 +21,7 @@ export default {
 
   },
   created(){
-
+   console.log(this._localAjax().typename)
   },
   methods:{
     
@@ -44,5 +44,6 @@ export default {
       color: #363636;
     }
   }
+ 
 </style>
 

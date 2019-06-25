@@ -5,7 +5,7 @@
         v-for="(item, index) in timeBtns" 
         :key="`timeBtns${index}`"
         @click="selectTime(index)"
-        :class="{on: item.status}">{{item.name}}</button>
+        :class="{on:item.status}">{{item.name}}</button>
     </li>
     <li
     class="last">
@@ -29,7 +29,7 @@ export default {
   data() {
     return{
       btnIndex: 0,
-      timeBtns: mango.btnList(['今日', '本周', '本月', '本年'], 0),
+      timeBtns:mango.btnList(['今日', '本周', '本月', '本年'], 0),
       ajaxData: {}
     }
   },

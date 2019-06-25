@@ -10,8 +10,8 @@
         <li>
           <intention-select v-bind="formInfo.intention" :value="goodsValue" :id="customerId" :url="path" :showIcon="selectIcon"/>
         </li>
-        <li @click="openStore">
-         <store-select v-bind="formInfo.store" :value="shopName"  :showIcon="selectIcon"/>
+        <li>
+         <store-select v-bind="formInfo.store" :value="shopName"  />
         </li>
         <li>
           <date-select day='end' v-bind="formInfo.time" :value="form.arrivalDate" @update="updateTime" :showIcon="selectIcon"/>
@@ -81,6 +81,7 @@
         <span slot='update'>确定</span>
         <span slot='cancel'>取消</span>
       </yan-layer-prompt>
+      <!-- <div @click="changeToken" style="text-align: center;line-height: 10vw;">测试</div> -->
     </div>
 </template>
 
@@ -291,6 +292,12 @@ export default {
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
     ...mapMutations(['updateAddress','setClassify','setCheckedList','updateSearchProductList','setFiles','setPicVal','setAddressId']),
+    changeToken() {
+      let token = JSON.parse(localStorage.getItem('token'))
+      token.access_token = '1234567891234567891234567'
+      token.refresh_token = '2e0ce02f-6076-43d2-b935-5e329faedd0'
+      localStorage.setItem('token', JSON.stringify(token))
+    },
     getShop(){
       let shops=JSON.parse(localStorage.getItem('shops'));
       console.log(shops);

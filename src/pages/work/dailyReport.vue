@@ -1,7 +1,7 @@
 <template>
   <div class="dailyReport">
     <banner :title='"日报"' class="header">
-      <button @click="newPlan" class="newDailyReport">+</button>
+      <button @click="newPlan" class="newDailyReport" >+</button>
     </banner>
     <!-- 日历组件 -->
     <myDatePicker
@@ -136,11 +136,13 @@ export default {
     },
     // 获取选择日期的数据
     getCurMonthData(month) {
+      console.log(month);
       indexModel.getCurMonthData({
         date: month
       }).then((res) => {
         res = res.data
         if (res) {
+          console.log(res);
           this.curMonthData = res
           if (this.curNum) {
             // 显示选择日期的当日总结和明日计划
@@ -178,6 +180,7 @@ export default {
     getDailyData(data) {
       indexModel.getDailyReport(data).then((res) => {
         if (res.data) {
+          console.log(res)
           // 更改数据
           this.dailyList = res.data
         }

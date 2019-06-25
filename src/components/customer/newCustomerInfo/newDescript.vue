@@ -6,24 +6,38 @@
         <!--select表示直接选择照片-->
       </li>
       <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>
-        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name"  maxlength="5">
+        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name"  maxlength="30">
       </li>
       <li is="sexSelect" :sexVal="newCustomerInfo.sex"  @sexChange="sexChange" class="sex"></li>
        <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
         <span :style="newCustomerInfo.birthday?'color: #363636':color ">{{newCustomerInfo.birthday || '请选择客户生日'}}</span>
       </li>
       <li is="ageSelect"   @ageChange="ageChange"></li>
-      <li is="customerLi" :leftText="'客户电话'">
-        <input v-model="newCustomerInfo.phone" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户电话"  oninput="if(value.length>11)value=value.slice(0,11)">
-      </li>
-      <li is="customerLi" :leftText="'客户微信'">
-        <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  oninput="if(value.length>25)value=value.slice(0,25)">
-      </li>
+      <template v-if="$route.query.phone">
+        <li is="customerLi" :leftText="'客户电话'">
+          <input v-model="newCustomerInfo.phone" type="number" readonly>
+        </li>
+      </template>
+      <template v-else>
+        <li is="customerLi" :leftText="'客户电话'">
+          <input v-model="newCustomerInfo.phone" type="number" placeholder="请填写客户电话"  oninput="if(value.length>11)value=value.slice(0,11)">
+        </li>
+      </template>
+       <template v-if="$route.query.wechat">
+        <li is="customerLi" :leftText="'客户微信'">
+          <input v-model="newCustomerInfo.weChat" type="text" readonly>
+        </li>
+      </template>
+      <template v-else>
+        <li is="customerLi" :leftText="'客户微信'">
+          <input v-model="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  oninput="if(value.length>20)value=value.slice(0,20)">
+        </li>
+      </template>
       <li is="customerLi" :leftText="'客户  QQ'">
-        <input v-model="newCustomerInfo.qq" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写客户 QQ"  oninput="if(value.length>15)value=value.slice(0,15)">
+        <input v-model="newCustomerInfo.qq" type="text"  onkeypress="if(event.keyCode == 101){return false}" oninput="if(value.length>15)value=value.slice(0,15)"  placeholder="请填写客户 QQ" >
       </li>
       <li is="customerLi" :leftText="'客户职业'">
-        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业"  oninput="if(value.length>30)value=value.slice(0,30)">
+        <input v-model="newCustomerInfo.duty" type="text" placeholder="请填写客户职业" oninput="if(value.length>30)value=value.slice(0,30)">
       </li>
       <template v-if="areaType">
         <li is="customerLi" :leftText="'客户地区'"  :icon="true" @click.native="toAddress">
@@ -31,12 +45,15 @@
         </li>
       </template>
       <template v-else>
-        <li class="area"><area-select is='areaSelect' v-model='area' @update="updateArea" readonly placeholder="请选择客户地区" label='客户地区' :required="true" :showIcon="true"/></li>
+        <li class="area"><area-select  is='areaSelect' v-model='area' @update="updateArea" readonly placeholder="请选择客户地区" label='客户地区' :required="true" :showIcon="true"/></li>
         <li is="customerLi" :leftText="'客户地址'" :start='"*"'>
           <input v-model="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>200)value=value.slice(0,200)">
         </li>
       </template>
-      <li is="shopSelect" :type='"descript"'></li>
+       <!-- <li is="shopSelect" :type='"descript"' :name="shopName"></li> -->
+      <li is="customerLi" :leftText="'所属门店'" >
+        <span class='shop'>{{ shopName }}</span>
+      </li>
       <li class="textarea">
         <h3>客户描述</h3>
         <textarea v-model="newCustomerInfo.remark" placeholder="描述一下情况吧" oninput="if(value.length>200)value=value.slice(0,200)"></textarea>
@@ -110,9 +127,10 @@ export default {
       countyName: '',
       color: 'color: #999',
       customerImage: '',
-      shop: '',
+      shops: '',
       shopId: '',
-      area:''
+      area:'',
+      shopName:''
     }
   },
   watch: {
@@ -121,8 +139,8 @@ export default {
       if(this.fromName === 'NewCustomer') {
         this.setInitData()
       }
-      let val = this.getShopVal()
-      this.getShopId(val)
+      // let val = this.getShopVal()
+      // this.getShopId(val)
     },
     list() {
       this.hasList()
@@ -142,8 +160,7 @@ export default {
   },
   mounted() {
     //获取本地缓存信息
-    let shops = localStorage.getItem('shops')
-    this.shops = JSON.parse(shops)
+    this.initShop();
     this.initArea();
   },
   created() {
@@ -161,6 +178,12 @@ export default {
       'initDescriptShopList',
       'getDescriptShopVal'
     ]),
+    onlyNumber(e){
+      if(/[^\d]/g.test(e.target.value)){
+        e.target.value=e.target.value.replace(/[^\d]/g,'');
+      }
+     
+   },
     initArea(){
       if(!this.newCustomerInfo.provinceName){
         return;
@@ -191,13 +214,30 @@ export default {
       this.newCustomerInfo.duty = this.list.duty
       //设置年龄选框
        if(this.list.age) {
-        this.newCustomerInfo.age = this.list.age
+        this.$set(this.newCustomerInfo,'age',this.list.age)
         this.setAgeVal(this.list.age)
       }
-      this.newCustomerInfo.phone = this.list.phone
-      this.newCustomerInfo.weChat = this.list.weChat
-      this.newCustomerInfo.qq = this.list.qq
-      this.newCustomerInfo.remark = this.list.remark
+      if(this.list.phone==='0'){
+        this.$set(this.newCustomerInfo,'phone','')
+      }else{
+        this.$set(this.newCustomerInfo,'phone',this.list.phone)
+      }
+      
+      this.$set(this.newCustomerInfo,'weChat',this.list.weChat)
+      this.$set(this.newCustomerInfo,'qq',this.list.qq)
+      this.$set(this.newCustomerInfo,'remark',this.list.remark)
+      this.$set(this.newCustomerInfo,'orgId',this.list.orgId)
+      let shops = localStorage.getItem('shops')
+      this.shops = JSON.parse(shops)
+        if(this.shops&&this.shops.length){
+          this.shops.map((item,index) => {
+            if(item.crmId===this.newCustomerInfo.orgId){
+              this.shopName=item.name;
+            }
+          })
+        }
+      
+
     },
     //获取门店的值
     getShopVal() {
@@ -291,9 +331,10 @@ export default {
     setInitData() {
       this.setNewCustomerInfo({})
       //初始化门店的值
-      let shopsList = btnList(this.shops,0)
-      this.initDescriptShopList(shopsList)
-      this.getDescriptShopVal()
+      // let shopsList = btnList(this.shops,0)
+      // this.initDescriptShopList(shopsList)
+      // this.getDescriptShopVal()
+      this.initShop();
       this.$set(this.newCustomerInfo,'imgLen',0)
       this.$set(this.newCustomerInfo,'imgs','')
       this.setAgeVal('')
@@ -307,6 +348,23 @@ export default {
         this.newCustomerInfo.weChat = this.$route.query.wechat
       }
      
+    },
+    initShop(){
+      let shops = localStorage.getItem('shops')
+      this.shops = JSON.parse(shops)
+      if(this.$route.query.orgId){
+        let orgId=this.$route.query.orgId;
+        console.log('orgId',orgId);
+        this.newCustomerInfo.orgId = orgId;
+        // this.newCustomerInfo.shopId = orgId;
+        if(this.shops&&this.shops.length){
+          this.shops.map((item,index) => {
+            if(item.crmId===orgId){
+              this.shopName=item.name;
+            }
+          })
+        }
+      }
     },
     // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {

@@ -44,7 +44,7 @@ export default {
     changeToken() {
       let token = JSON.parse(localStorage.getItem('token'))
       token.access_token = '1234567891234567891234567'
-      // token.refresh_token = '2e0ce02f-6076-43d2-b935-5e329faedd0'
+      token.refresh_token = '2e0ce02f-6076-43d2-b935-5e329faedd0'
       localStorage.setItem('token', JSON.stringify(token))
     }
   }

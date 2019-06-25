@@ -75,7 +75,7 @@ Vue.use(Vuex)
 Vue.component(DatetimePicker.name, DatetimePicker)
 export default {
   name: 'rightContainer',
-  props:[''],
+  props:['type'],
   data () {
     return {
       paramsObj: {},
@@ -92,7 +92,8 @@ export default {
   computed: {
     ...mapState({
       rightContainerStatus: state => state.rightContainer.rightContainerStatus,
-      customerAjaxParams: state => state.customer.customerAjaxParams
+      customerAjaxParams: state => state.customer.customerAjaxParams,
+      cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams
     }),
     // startDateVal() {
     //   return mango.indexTime(this.startTime, 'day')
@@ -106,22 +107,38 @@ export default {
       return Math.ceil((end - start)/86400000)
     }
   },
-  // watch:{
-  //   rightContainerStatus() {
-  //     console.log(123,this.rightContainerStatus)
-  //   }
-  // },
+ watch:{
+   'cusomerAjaxParams':{
+      handler(newVal, oldVal) {
+        if(newVal.key!==''){
+          this.initStartDateVal();
+          this.endDateVal= mango.indexTime(new Date(), 'day');
+          mango.changeBtnStatus(this.urgencyBtns, '')
+          mango.changeBtnStatus(this.keyBtns, '')
+        }
+      },
+      immediate: true,
+      deep: true
+
+   }
+  },
   created() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     this.initStartDateVal()
+    
   },
   mounted(){
     this.isIPhoneX()
     let str = new Date()
     // console.log(333, str.getTime())
     // 对象深拷贝
-    this.paramsObj = deepclone(this.customerAjaxParams)
+    if(this.type==='store'){
+      this.paramsObj = Object.assign({},this.cusomerAjaxParams)
+    }else{
+      this.paramsObj = deepclone(this.customerAjaxParams)
+    }
+    
   },
   methods:{
     ...mapMutations([
@@ -130,6 +147,7 @@ export default {
       'setAllLoaded',
       'setCustomerList'  
     ]),
+    ...mapMutations('storeCustomer',['setStoreCustomerAjaxParams']),
     // 初始化起始日期
     initStartDateVal() {
       let date = new Date()
@@ -144,20 +162,37 @@ export default {
     },
     //重置
     resizeCustomerList() {
+      this.initStartDateVal();
+      this.endDateVal= mango.indexTime(new Date(), 'day');
       mango.changeBtnStatus(this.urgencyBtns, '')
       mango.changeBtnStatus(this.keyBtns, '')
-      this.$set(this.customerAjaxParams,'i','')
-      this.$set(this.customerAjaxParams,'u','')
-      this.$set(this.customerAjaxParams, 'sd', '')
-      this.$set(this.customerAjaxParams, 'ed', '')
-      this.$set(this.customerAjaxParams, 'l', '')
+      if(this.type==='store'){
+        this.$set(this.cusomerAjaxParams,'i','')
+        this.$set(this.cusomerAjaxParams,'u','')
+        this.$set(this.cusomerAjaxParams, 'sd', '')
+        this.$set(this.cusomerAjaxParams, 'ed', '')
+        this.$set(this.cusomerAjaxParams, 'l', '')
+        this.$emit('getPramas',0)
+      }else{
+        this.$set(this.customerAjaxParams,'i','')
+        this.$set(this.customerAjaxParams,'u','')
+        this.$set(this.customerAjaxParams, 'sd', '')
+        this.$set(this.customerAjaxParams, 'ed', '')
+        this.$set(this.customerAjaxParams, 'l', '')
+      }
+      
       this.setRightContainerStatus('hideRightContainer')
     },
     // 隐藏右侧边栏
     hideRightContainer() {
       this.$set(this.paramsObj, 'sd', this.startDateVal)
       this.$set(this.paramsObj, 'ed', this.endDateVal)
-      this.setCustomerAjaxParams(this.paramsObj)
+      if(this.type==='store'){
+        //this.setStoreCustomerAjaxParams(this.paramsObj)
+        this.$emit('getPramas',1,this.paramsObj)
+      }else{
+        this.setCustomerAjaxParams(this.paramsObj)
+      }
       this.setRightContainerStatus('hideRightContainer')
     },
     hideRightBar() {

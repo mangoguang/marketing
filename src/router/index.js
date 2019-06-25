@@ -38,7 +38,21 @@ const recommend = () => import('../pages/Gallery/recommend')
 const share = () => import('../pages/Gallery/share')
 const preShare = () => import('../pages/Gallery/preShare')
 
+//店长模块
+const storeCustomer = () => import('../pages/customer/storeCustomer')
+const employeeList = () => import("../pages/work/employeeList")
+const storeDailyReport = () => import('../pages/work/storeDailyReport')
+const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
+//经销商模块
+const shopList = () => import("../pages/work/shopList")
+const shopDetail = () => import("../pages/work/storeDetail")
+
+
+//4S模块
+const index4s = () => import('../pages/4S/index/index.vue')
+
 Vue.use(VueRouter)
+
 
 
 
@@ -411,6 +425,46 @@ export var router = new VueRouter({
     path: '/newAddress',
     name: 'newAddress',
     component: () => import('../pages/customer/newCustomer/newAddress')
+  },
+  //店长
+  {
+    path:'/storeCustomer',
+    name:'storeCustomer',
+    component: storeCustomer
+  },
+  {
+    path:'/employeeList',
+    name:'employeeList',
+    component:employeeList
+  },
+  {
+    path:'/storeDailyReport',
+    name:'storeDailyReport',
+    component:storeDailyReport
+  },
+  {
+    path:'/employeeDailyReport/:id/:username/:date',
+    name:'employeeDailyReport',
+    component:employeeDailyReport,
+    props:true
+  },
+  //经销商
+  {
+    path:'/shopList',
+    name:'shopList',
+    component:shopList
+  },
+  {
+    path:'/shopDetail/:id/:name',
+    name:'shopDetail',
+    component:shopDetail,
+    props:true
+  },
+  //4s
+  {
+    path:'/index4s',
+    name:'index4s',
+    component:index4s
   }
 ],
   scrollBehavior (to, from, savedPosition) {

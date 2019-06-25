@@ -5,3 +5,54 @@ $fontSubCol: #999;
 $fontSize: 14px;
 $btnHeight: 9vw;
 $bgCol: #f8f8f8;
+$bgDarkCol:#007AFF;
+$bgLightCol:#5AC8FA;
+$slGreenCol:rgba(43, 255, 233, .5);
+@mixin input-style ($font,$col){
+    input:-moz-input-placeholder{
+        font-size: $font;
+        color:$col;
+      }
+      input::-moz-input-placeholder{
+        font-size: $font;
+        color:$col;
+      }
+      input::-ms-input-placeholder{
+        font-size: $font;
+        color:$col;
+      }
+      input::-webkit-input-placeholder{
+        font-size: $font;
+        color:$col;
+      }
+    
+}
+@mixin textarea-style ($font,$col){
+    textarea::-moz-placeholder{
+        font-size: $font;
+        color:$col;
+      }
+       textarea:-moz-placeholder{
+        font-size: $font;
+        color:$col;
+      }
+      textarea::-ms-input-placeholder{
+        font-size: $font;
+        color:$col;
+      }
+      textarea::-webkit-input-placeholder{
+        font-size: $font;
+        color:$col;
+      }  
+}
+@mixin flex-center (){
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+@mixin hr-border($height){
+    border: none;
+    border-bottom:$height #fff solid;
+    border-radius:$height/2;
+    margin:0; 
+}

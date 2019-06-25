@@ -68,8 +68,7 @@ export default {
     })
   },
   mounted() {
-    let shops = localStorage.getItem('shops')
-    this.shops = JSON.parse(shops)
+    
     this.isIPhoneX()
     /* let inputs=document.getElementsByTagName("input");
     for(let i=0;i<inputs.length;i++){
@@ -100,16 +99,32 @@ export default {
       ]),
     initData() {
       this.setNewCustomerInfo({})
-      let shopsList = btnList(this.shops,0)
+      /* let shopsList = btnList(this.shops,0) */
+      //this.$set(this.newCustomerInfo,'orgId',this.$route.query.orgId)
+      //let shopId=this.initShop();
+      //this.$set(this.newCustomerInfo,'shopId',shopId)
       this.$set(this.newCustomerInfo,'imgLen', 0)
       this.$set(this.newCustomerInfo,'imgs', '')
-      this.initShopList(shopsList)
+      //this.initShopList(shopsList)
       this.getShopVal()
       this.setCheckedList([])
       this.$set(this.newCustomerInfo,'urgency','false')
       this.$set(this.newCustomerInfo,'level','A')
       this.$set(this.newCustomerInfo,'dataFiles', new FormData())
       this.setNewCustomerInfo(this.newCustomerInfo)
+    },
+    initShop(){
+      let shopId;
+      let shops = localStorage.getItem('shops')
+      this.shops = JSON.parse(shops)
+      if(this.shops&&this.shops.length){
+        this.shops.map((item,index) => {
+          if(item.crmId===this.$route.query.orgId){
+            shopId=item.id;
+          }
+        })
+        return shopId;
+      }
     },
     clearData() {
       this.setNewCustomerInfo({})
@@ -301,7 +316,7 @@ export default {
     this.setColorPref('')
     this.setHouseType('')
     this.setElevatorVal('')
-    this.setAddressId('')
+    //this.setAddressId('')
     this.setFollowVal('')
     this.setFollowTiming('')
   }
