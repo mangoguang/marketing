@@ -7,8 +7,12 @@
       </div>
     </ContentBox>
     <ContentBox class="wrapper" :title="'评分报表'">
-      <div class="iconBox-wrapper">
-        <iconBox :contentData='contentData'/>
+      <div class="iconBox-wrapper" >  
+        <router-link :to='{
+                      name:recordLink.pathname,
+                      params: recordLink.params}'>   
+          <iconBox :contentData='contentData'/>
+        </router-link>
       </div>
     </ContentBox>
   </div>
@@ -31,6 +35,12 @@ export default {
       starData: {
         imgUrl: './static/images/4s/star1.png',
         text: '检查记录'
+      },
+      recordLink: {
+        pathname: 'record',
+        params: {
+          name: '123'
+        }
       }
     };
   }
