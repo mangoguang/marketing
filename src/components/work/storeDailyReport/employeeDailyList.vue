@@ -67,7 +67,9 @@ export default {
            indexModel.getStaffDailyList(obj).then((res) => {
                console.log(res);
                if(res.status===1){
-                 this.list=res.data;
+                
+                this.list=res.data
+                
                  if(this.scroll>0){
                      this.$refs.perDailyList.scrollTop = 0;
                      this.scroll=0
@@ -85,7 +87,8 @@ export default {
        },
        go(id,name,date){
            let time=date.split(' ')[0]
-           this.$router.push({path:`/employeeDailyReport/${id}/${name}/${time}`})
+           //this.$router.push({path:`/employeeDailyReport/${id}/${name}/${time}`})
+           this.$router.push({name:'employeeDailyReport',params:{id:id,username:name,date:time}})
        },
        isIphoneX(){
            let phone = this.phoneSize()

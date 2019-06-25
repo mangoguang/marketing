@@ -1,17 +1,21 @@
 <template>
     <div class="employee">
       <search-input ref='search' v-model.trim="key" placeholder="请输入员工名称" @input="search" :style="{top:`${top}vw`}"></search-input>
-      <ul>
+      <ul v-for="(item,index) in list" :key="index" @click="go(item.id,item.username)">
         <li is="employeeLi" :icon="true">
            <div class="headPortrait" slot="headPortrait">
              <img :src="img" alt="">
            </div>
             <div class="detail">
               <div>
-                  <h1>666</h1>
-                  <p><img src="../../../assets/imgs/phone2.png" alt=""><b>15962448853</b></p>
+                  <h1>{{item.username}}</h1>
+                  <p>
+                    <img src="../../../assets/imgs/phone2.png" alt="">
+                    <b v-if="item.phone">{{item.phone}}</b>
+                    <b v-else>无</b>
+                  </p>
               </div>
-              <span>店长</span>
+              <span>{{item.positionType}}</span>
             </div>
         </li>
       </ul>
@@ -49,7 +53,7 @@ export default {
     })
   }, 
   created(){
-    this.getData({shopId:this.id})
+    this.getData({shopId:this.id,userName:''})
   },
   
   mounted(){
@@ -69,7 +73,7 @@ export default {
    search(){
     var that=this;
       Debounce(function(){
-       that.getData({username:that.key})
+       that.getData({shopId:that.id,userName:that.key})
       },500)()
     
    },
@@ -77,11 +81,11 @@ export default {
      indexModel.getStoreEmployeeList(obj).then((res) => {
        console.log(res);
        if(res.status==1){
+         this.setList(res.data)
          if(res.data.length>0){
-            this.setList(res.data)
             this.status=''
          }else{
-           this.status='暂无记录'
+            this.status='暂无记录'
          }
         
        }else{
@@ -92,6 +96,9 @@ export default {
          this.getData(obj)
        }
      })
+   },
+   go(userId,userName){
+     this.$router.push({name:'employeeDetail',params:{id:userId,name:userName}})
    }
   }
 };

@@ -20,7 +20,7 @@ import { mapState } from 'vuex';
 const indexModel = new IndexModel();
 export default {
   name: 'storeData',
-  props: ['id'],
+  props: ['id','type'],
   components: {TimeSelect, DailyUl},
   data() {
     return{
@@ -44,8 +44,14 @@ export default {
   },
   watch: {
     dateInterVal(val) {
-        let temp=Object.assign({},{shopId:this.id},val)
-        this.getPerStore(temp)
+        
+        if(this.type==='shop'){
+            let temp=Object.assign({},{shopId:this.id},val)
+            this.getPerStore(temp)
+        }else{
+            let temp=Object.assign({},{userId:this.id},val)
+            this.getPerEmployee(temp)
+        }
     }
   },
   mounted(){
@@ -55,8 +61,14 @@ export default {
   },
   methods:{
     changeDateInterVal(obj) {
-      let temp=Object.assign({},{shopId:this.id},obj)
-      this.getPerStore(temp)
+      if(this.type==='shop'){
+           let temp=Object.assign({},{shopId:this.id},obj)
+           this.getPerStore(temp)
+      }else{
+          let temp=Object.assign({},{userId:this.id},obj)
+          this.getPerEmployee(temp)
+      }
+     
     },
     getPerStore(obj) {
       indexModel.getDailyReport(obj).then((res) => {
@@ -70,15 +82,36 @@ export default {
         }
       })
     },
+    getPerEmployee(obj){
+        indexModel.getDailyStoreReport(obj).then((res) => {
+        if (res.data) {
+          // 更改数据
+          this.dailyList = res.data
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getPerEmployee(obj)
+        }
+      })
+    },
     initData(){
         let date = new Date()
         const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
         this.curDay = `${year}-${month}-${day}`
-        this.getPerStore({
-            shopId:this.id,
-            startDate: this.curDay,
-            endDate: this.curDay
-        })
+        if(this.type==="shop"){
+            this.getPerStore({
+                shopId:this.id,
+                startDate: this.curDay,
+                endDate: this.curDay
+            })
+        }else{
+            this.getPerEmployee({
+                userId:this.id,
+                startDate: this.curDay,
+                endDate: this.curDay
+            })
+        }
+        
       
     }
    

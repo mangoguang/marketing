@@ -46,9 +46,8 @@ const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
 //经销商模块
 const shopList = () => import("../pages/work/shopList")
 const shopDetail = () => import("../pages/work/storeDetail")
+const employeeDetail = () => import("../pages/work/employeeDetail")
 Vue.use(VueRouter)
-
-
 
 export var router = new VueRouter({
   routes: [{
@@ -452,6 +451,12 @@ export var router = new VueRouter({
     path:'/shopDetail/:id/:name',
     name:'shopDetail',
     component:shopDetail,
+    props:true
+  },
+  {
+    path:'/employeeDetail/:id/:name',
+    name:'employeeDetail',
+    component:employeeDetail,
     props:true
   }
 ],

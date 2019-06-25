@@ -1,11 +1,11 @@
 <template>
   <div class="storeDetail">
-    <banner title="门店详情" class="header"></banner>
+    <banner :title="`${name}详情`" class="header"></banner>
     <tabUI :list="tabList" @getIndex="getIndex" />
     <div class="content" v-if="tabList[0].status">
-      <storeData :id="id" type="shop"/>
+      <storeData :id="id"/>
     </div>
-    <storeEmployeeList :id="id" v-else/>
+   <div v-else>999999</div>
   </div>
 </template>
 
@@ -13,23 +13,21 @@
 import banner from '../../components/banner'
 import tabUI from '../../components/work/storeDailyReport/tabUI'
 import storeData from '../../components/work/store/storeData'
-import storeEmployeeList from '../../components/work/store/storeEmployeeList'
 import { IndexModel } from "../../utils/"
 import mango from "../../js"
 import { mapMutations } from 'vuex';
 const indexModel = new IndexModel()
 export default {
-  name: 'storeDetail',
+  name: 'employeeDetail',
   components:{
     banner,
     tabUI,
-    storeData,
-    storeEmployeeList
+    storeData
   },
   props:['id','name'],
   data(){
     return{
-      tabList:[{title:'门店数据',status:true},{title:'门店员工',status:false}]
+      tabList:[{title:'员工数据',status:true},{title:'意向客户',status:false}]
     }
   },
   computed: {

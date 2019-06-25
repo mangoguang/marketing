@@ -2,18 +2,20 @@
     <div class="employee">
       <mybanner title="员工" style="background:#fff;border:none" ref='banner'></mybanner>
       <search-input ref='search' v-model.trim="key" placeholder="请输入员工名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
-      <ul v-if="list.length>0">
-        <li is="employeeLi" v-for="(item,index) in list" :key="index" :icon="true">
-           <div class="headPortrait" slot="headPortrait">
-             <img :src="img" alt="">
-           </div>
-            <div class="detail">
-              <h1>{{item.username}}</h1>
-              <span>{{item.shopName}}</span>
-              <p>意向客户数：<b>{{item.countOpport}}</b></p>
+      <div  v-if="list.length>0">
+        <ul v-for="(item,index) in list" :key="index" @click="go(item.id,item.username)">
+          <li is="employeeLi"  :icon="true">
+            <div class="headPortrait" slot="headPortrait">
+              <img :src="img" alt="">
             </div>
-        </li>
-      </ul>
+              <div class="detail">
+                <h1>{{item.username}}</h1>
+                <span>{{item.shopName}}</span>
+                <p>意向客户数：<b>{{item.countOpport}}</b></p>
+              </div>
+          </li>
+        </ul>
+      </div>
       <div class="noData" v-else>{{status}}</div>
     </div>
 </template>
@@ -77,9 +79,8 @@ export default {
      indexModel.getEmployeeList(obj).then((res) => {
        console.log(res);
        if(res.status==1){
+          this.setList(res.data)
          if(res.data.length>0){
-            this.setList(res.data)
-            
             this.status=''
          }else{
            this.status='暂无记录'
@@ -93,6 +94,9 @@ export default {
          this.getData(obj)
        }
      })
+   },
+   go(userId,userName){
+     this.$router.push({name:'employeeDetail',params:{id:userId,name:userName}})
    }
   }
 };

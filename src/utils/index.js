@@ -443,7 +443,7 @@ class IndexModel extends Request {
   }
   //根据门店id获取门店员工列表
   getStoreEmployeeList(obj){
-    return mango.getAjax('/v2/app/check/shopuser',obj)
+    return mango.getAjax('/v3/app/shopuser',obj)
   }
    
 }
