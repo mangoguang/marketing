@@ -4,6 +4,11 @@
     <ContentBox class="wrapper" :title="'日常检查'">
       <div class="iconBox-wrapper">
         <iconBox :contentData='starData' :starImg='true'/>
+        <iconBox :contentData='starData' :starImg='true'/>
+        <iconBox :contentData='starData' :starImg='true'/>
+        <iconBox :contentData='starData' :starImg='true'/>
+        <iconBox :contentData='starData' :starImg='true'/>
+        <iconBox :contentData='starData' :starImg='true'/>
       </div>
     </ContentBox>
     <ContentBox class="wrapper" :title="'评分报表'">
@@ -43,8 +48,8 @@ export default {
   .iconBox-wrapper {
     width: 100%;
     box-sizing: border-box;
-    padding-left: 2.4vw;
-    padding-top: 4vw;
+    // padding-left: 2.4vw;
+    // padding-top: 4vw;
     display: flex;
     flex-wrap: wrap;
     align-items: center;

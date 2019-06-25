@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="index">
-    <div>头部</div>
+    <Header />
     <div>门店选择下拉框</div>
     <myContent />
   </div>
@@ -9,13 +9,15 @@
 
 <script>
 import myContent from '../../../components/4s/index/content'
+import Header from '../../../components/4s/index/header'
 export default {
   components : {
-    myContent
+    myContent,
+    Header
   },
   data () {
     return {
-   
+  
     }
   }
 }

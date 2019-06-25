@@ -20,7 +20,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .contentBox {
-  width: 89.86vw;
+  width: 90vw;
   min-height: 34.13vw;
   background: #fff;
   border-radius: 1.33vw;

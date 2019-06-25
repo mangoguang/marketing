@@ -1,8 +1,15 @@
 <!--  -->
 <template>
   <div class="iconBox_wrapper">
-    <div v-if="starImg" >
-      <img :src="contentData.imgUrl" alt="" class="starImg">
+    <div
+    class="starImg"
+    v-if="starImg"
+    :style="{
+      background: 'url(./static/images/4s/starCheck/star1Bg.png) no-repeat',
+      backgroundSize: '100%'
+    }"
+    >
+      1
     </div>
     <div class="icon" v-else>
       <img :src="contentData.imgUrl" alt="">
@@ -17,18 +24,19 @@ export default {
   data () {
     return {
 
-    };
+    }
   }
 }
 </script>
 <style lang='scss' scoped>
 .iconBox_wrapper {
+  width: 25%;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-right: 8vw;
-  margin-bottom: 4vw;
+  // margin-right: 8vw;
+  // margin-bottom: 4vw;
   .icon {
     width: 10.26vw;
     height: 10.26vw;
@@ -46,6 +54,10 @@ export default {
   .starImg {
     width: 10.8vw;
     height: 10vw;
+    color: #fff;
+    text-align: center;
+    line-height: 9vw;
+    font-size: 18px;
   }
   .text {
     color: #2d2d2d;
