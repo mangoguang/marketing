@@ -9,6 +9,10 @@
     <div class="titleBar">
       <div class="title">{{ articleDetails.title }}</div>
       <!-- <span>{{ articleDetails.createTime }}</span> -->
+      <div style="color:#909090;font-size:14px">
+        作者：{{articleDetails.author}}&nbsp;&nbsp;
+        <span v-if="articleDetails.createTime">{{articleDetails.createTime.split(' ')[0].split('-').join('.')}}</span>
+      </div>
     </div>
     <div class="content" v-html="myhtml" @click.stop="showImage">
     </div>
