@@ -47,6 +47,7 @@ export default {
     height: 16vw;
     background: url('../../../static/images/work/bg.png') no-repeat;
     background-size: 100% 100%;
+    z-index: 11;
     h2{
       font-size: 8vw;
       color: #fff;

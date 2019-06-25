@@ -2,8 +2,9 @@
   <div class="work">
     <WorkHeader :title="'工作'" />
     <WorkModules />
-    <Footer/>
+    <Footer style="z-index:10"/>
     <Daily />
+    <planModule/>
     <!-- <div @click="changeToken" style="text-align: center;line-height: 10vw;">测试</div> -->
   </div>
 </template>
@@ -16,6 +17,7 @@ import WorkHeader from '../../components/work/header'
 import Footer from '../../components/Footer'
 import WorkModules from '../../components/work/workModules/'
 import Daily from '../../components/work/daily/'
+import planModule from '../../components/work/plan/planModule'
 import { IndexModel } from "../../utils/"
 import {checkLogin} from '../../utils/token/toLogin'
 const indexModel = new IndexModel()
@@ -26,7 +28,8 @@ export default {
     WorkHeader,
     Footer,
     WorkModules,
-    Daily
+    Daily,
+    planModule
   },
   props:[],
   data(){

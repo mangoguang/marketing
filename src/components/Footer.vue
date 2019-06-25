@@ -44,8 +44,6 @@
             <p class="iconCharP">客户</p>
           </a>
       </li>
-     
-
       <li id="4" v-if="_localAjax().typename === 'Sleep Consultant' || 
                               _localAjax().typename === 'Store Manager' || 
                               _localAjax().typename === 'Boss&Consultant' ||
