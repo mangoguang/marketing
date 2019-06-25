@@ -26,7 +26,12 @@ export default {
         { title: '日报', icon: 'dailyReportIcon' },
         { title: '员工', icon: 'employee' },
         { title: '门店', icon: 'store' },
+<<<<<<< HEAD
         { title: '订单查询', icon: 'orderSearchIcon' }
+=======
+        { title: '订单查询', icon: 'orderSearchIcon' },
+        { title: '4S星级认证', icon: 'orderSearchIcon' }
+>>>>>>> 0bba52fd2e0db5adc12aa4366fbdfa0cc259cef6
       ]
     }
   },
@@ -54,6 +59,9 @@ export default {
           break
         case 4:
           this.$router.push({path: '/orderSearch'})
+          break
+        case 5:
+          this.$router.push({path: '/index4s'})
           break
         default:
           return

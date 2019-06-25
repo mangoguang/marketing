@@ -46,7 +46,13 @@ const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
 //经销商模块
 const shopList = () => import("../pages/work/shopList")
 const shopDetail = () => import("../pages/work/storeDetail")
+
+
+//4S模块
+const index4s = () => import('../pages/4S/index/index.vue')
+
 Vue.use(VueRouter)
+
 
 
 
@@ -453,6 +459,15 @@ export var router = new VueRouter({
     name:'shopDetail',
     component:shopDetail,
     props:true
+<<<<<<< HEAD
+=======
+  },
+  //4s
+  {
+    path:'/index4s',
+    name:'index4s',
+    component:index4s
+>>>>>>> 0bba52fd2e0db5adc12aa4366fbdfa0cc259cef6
   }
 ],
   scrollBehavior (to, from, savedPosition) {
