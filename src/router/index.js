@@ -47,6 +47,8 @@ const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
 const shopList = () => import("../pages/work/shopList")
 const shopDetail = () => import("../pages/work/storeDetail")
 const employeeDetail = () => import("../pages/work/employeeDetail")
+const workPlan  = () => import("../pages/work/workPlan")
+const newWorkPlan = () => import("../pages/work/newWorkPlan")
 Vue.use(VueRouter)
 
 export var router = new VueRouter({
@@ -458,6 +460,20 @@ export var router = new VueRouter({
     name:'employeeDetail',
     component:employeeDetail,
     props:true
+  },
+  {
+    path:'/workPlan',
+    name:'workPlan',
+    component:workPlan
+  },
+  {
+    path:'/newWorkPlan',
+    name:'newWorkPlan',
+    component:newWorkPlan,
+    meta:{
+      keepAlive:true,
+      isUseCache:true
+    }
   }
 ],
   scrollBehavior (to, from, savedPosition) {

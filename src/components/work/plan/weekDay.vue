@@ -5,17 +5,19 @@
             {{parseInt(item.split('-')[2])}}
           </span>
         </li>
-       
+        
     </ul>
 </template>
 <script>
+import { IndexModel } from '../../../utils'
+const indexModel = new IndexModel()
 export default {
     props:[],
     name:'weekDay',
     data(){
         return {
-            startDay:"",
-            endDay:"",
+            startDate:"",
+            endDate:"",
             nowDay:"",
             dayIndex:'',
             year:null,
@@ -43,10 +45,11 @@ export default {
           this.day=new Date().getDate();
           this.dayIndex=new Date().getDay();
           this.activeDay=`${this.year}-${this.month>10?this.month:`0${this.month}`}-${this.day>10?this.day:`0${this.day}`}`
-          this.startDay=new Date().getTime()-this.dayIndex*this.oneDayLong;
-          this.endDay=new Date().getTime()+(6-this.dayIndex)*this.oneDayLong;
-          this.week={startDay:this.ChangeTime(this.startDay),endDay:this.ChangeTime(this.endDay)}
-          this.getWeekList(this.startDay)
+          this.startDate=new Date().getTime()-this.dayIndex*this.oneDayLong;
+          this.endDate=new Date().getTime()+(6-this.dayIndex)*this.oneDayLong;
+          this.week={startDate:this.ChangeTime(this.startDate),endDate:this.ChangeTime(this.endDate)}
+          this.getWeekList(this.startDate)
+          this.getPlanList(this.week);
         },
         getWeekList(startTime){
           let list=[];
@@ -59,6 +62,15 @@ export default {
         getSelectDate(date){
           this.activeDay=date
           this.$emit('getSelectDate',date)
+        },
+        getPlanList(obj){
+            indexModel.getPlanList(obj).then((res) => {
+                console.log(res)
+            }).catch((reject) => {
+                if(reject===510){
+                    this.getPlanList(obj)
+                }
+            })
         }
 
     }
@@ -76,10 +88,9 @@ export default {
        text-align: center;
        color:#363636;
        font-size: 4.8vw;
-       position: relative;
        padding:2.66vw 0;
    }
-   li:after{
+   span:after{
             content: '';
             display: block;
             width:6px;
@@ -89,7 +100,7 @@ export default {
             text-align: center;
             position: absolute;
             left:50%;
-            bottom:0;
+            bottom:-3vw;
             transform: translate(-50%)
     }
     span{
@@ -98,14 +109,18 @@ export default {
         height:8.53vw;
         border-radius: 50%;
         background: transparent;
+        position: relative;
     }
     span.active{
         background:#007AFF;
         color:#fff;
     }
-    li.hasPlan:after{
-        background: #007AFF    
-    }
+    li.hasPlan{
+        span:after{
+            background: #007AFF    
+        }
+    }   
+    
    
 }
 </style>

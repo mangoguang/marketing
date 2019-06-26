@@ -1,16 +1,24 @@
 <template>
-    <div class="plan">
-        <mytitle title="工作计划" :mid="`${selectDate.split('-').join('.')}`">
+    <div class="planBox">
+        <div class="plan">
+            <mytitle title="工作计划" :mid="`${selectDate.split('-').join('.')}`">
             <span @click="more">更多</span>
-        </mytitle>
-        <weekHeader/>
-        <weekDay @getSelectDate="getSelectDate" />
+            </mytitle>
+            <weekHeader/>
+            <weekDay @getSelectDate="getSelectDate" />
+        </div>
+        <div class="planList">
+            <planTime/>
+            <button type="button" class="newPlan" @click="newPlan"></button>
+        </div>
+        
     </div>
 </template>
 <script>
 import mytitle from './myTitle'
 import weekHeader from './weekHeader'
 import weekDay from './weekDay'
+import planTime from './planTime'
 export default {
     name:'planModule',
     data(){
@@ -21,24 +29,46 @@ export default {
     components:{
         mytitle,
         weekHeader,
-        weekDay
+        weekDay,
+        planTime
     },
     methods:{
         more(){
-            console.log('更多')
+            this.$router.push({path:'/workPlan'})
         },
         getSelectDate(date){
             this.selectDate=date
+        },
+        newPlan(){
+            this.$router.push({path:'/newWorkPlan'})
         }
     }
 }
 </script>
 <style lang="scss" scoped>
-.plan{
+.planBox{
     margin:6.66vw 4.8vw 22.66vw;
+}
+.plan{
     border-radius:2vw;
     background: #fff;
     padding-bottom: 4.8vw;
     position: relative;
+}
+.planList{
+    border-radius:2vw;
+    background: #fff;
+    margin-top:1.33vw;
+    position: relative;
+    .newPlan{
+        position: absolute;
+        top:0;
+        right:0;
+        width:14.13vw;
+        height:14.13vw;
+        background:url('../../../assets/imgs/add.png') center center;
+        background-size: 100% 100%;
+        opacity: 0.6;
+    }
 }
 </style>

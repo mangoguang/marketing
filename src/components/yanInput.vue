@@ -1,7 +1,7 @@
 <template>
   <div class="inputBox">
       <label>
-          <span>{{label}}</span>
+          <span>{{label}}<span class="yan-red" v-show="required">*</span></span>
           <input :id="id" type="text" :value="value" :style="color" 
           :readonly='readonly' :placeholder="placeholder"  @input="$emit('input',$event.target.value)"
           :maxlength='maxlength'>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props:['id','value','label','placeholder','showIcon','readonly','color','maxlength'],
+  props:['id','value','label','placeholder','showIcon','readonly','color','maxlength','required'],
   data(){
     return{
 
@@ -42,6 +42,11 @@ export default {
     span{
       display: inline-block;
       width:22.4vw;
+    }
+    .yan-red{
+      display: inline;
+      color:#FB222B;
+      font-size: 4vw;
     }
     
     

@@ -52,6 +52,7 @@ import store from './modules/components/storeCustomer/storeCustomer'
 import employeeList from './modules/employee/employeeList'
 import shopList from './modules/store/shopList'
 import storeEmployeeList from './modules/store/storeEmployeeList'
+import plan from './modules/work/plan'
 export default new Vuex.Store({
   state,
   mutations,
@@ -105,6 +106,7 @@ export default new Vuex.Store({
     store,
     employeeList,
     shopList,
-    storeEmployeeList
+    storeEmployeeList,
+    plan
   }
 })
