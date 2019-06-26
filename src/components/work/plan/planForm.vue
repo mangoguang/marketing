@@ -16,11 +16,11 @@
             <li>
                <yan-input v-bind="info.address"/> 
             </li>
-            <li>
-               <yan-input v-bind="info.startTime" @click="openStartTime"/> 
+            <li  @click="openStartTime">
+               <yan-input v-bind="info.startTime"/> 
             </li>
-            <li>
-               <yan-input v-bind="info.endTime" @click="openEndTime"/> 
+            <li @click="openEndTime">
+               <yan-input v-bind="info.endTime" /> 
             </li>
             <li>
                 <yan-textarea v-bind="info.remark"/>
@@ -28,14 +28,14 @@
         </ul>
         <mt-datetime-picker
             ref="startTimePicker"
-            type="time"
+            type="datetime"
             v-model="startTimeValue"
             @confirm="startTimeConfirm"
             >
         </mt-datetime-picker>
         <mt-datetime-picker
             ref="endTimePicker"
-            type="time"
+            type="datetime"
             v-model="endTimeValue"
             @confirm="endTimeConfirm"
             >
@@ -76,10 +76,10 @@ export default {
             this.$refs.endTimePicker.open()
         },
         startTimeConfirm(){
-
+            console.log(this.startTimeValue)
         },
         endTimeConfirm(){
-
+            console.log(this.endTimeValue)
         }
     }
 }
