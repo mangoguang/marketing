@@ -11,7 +11,8 @@
       </div>
       <div class="pre_record">
         <p class="pre_text">历史记录</p>
-        <recordCard />
+        <recordCard class="recordCard"/>
+        <recordCard class="recordCard"/>
       </div>
     </div>
   </div>
@@ -86,6 +87,8 @@ export default {
       }
     }
   }
-  
+  .recordCard {
+    margin-bottom: 4vw;
+  }
 }
 </style>

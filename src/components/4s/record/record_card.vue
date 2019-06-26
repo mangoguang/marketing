@@ -12,18 +12,22 @@
         <span>评分</span>
         <span></span>
       </div>
-      <li class="content_li" v-for="(item,index) in showList" :key='item + index'>
+
+      <li class="content_li" 
+        v-for="(item,index) in showList" :key='item + index'
+        @click="toDetails(item)">
         <span>{{item.beginDate}}</span>
         <span>{{item.endDate}}</span>
         <span :style='item.score === "未完成"? 
               styleSheets.unfinish : item.score === "未评"? 
               styleSheets.unscore : styleSheets.score '>
-          {{item.score}}
+              {{item.score}}
         </span>
         <span>
           <img src="../../../assets/imgs/4s/arrow.png" alt="">
         </span>
       </li>
+
       <div class="show_more" @click="showMore" v-if="list.length > 3">
         <span>{{moreText}}</span>
         <img :style="key? rotateDown:rotateUp" src="../../../assets/imgs/4s/down.png" alt="" >
@@ -99,14 +103,25 @@ export default {
     this.getInitList()
   },
   methods: {
+    //初始展示的数据
     getInitList() {
       const len = this.list && this.list.length
       this.showList = len > 3 ? this.list.slice(0,3) : this.list
     },
+    //点击加载更多/收起
     showMore() {
       this.key = !this.key
       this.showList = this.key? this.list : this.list.slice(0,3)
       this.moreText = this.key? '点击收起' : '点击更多'
+    },
+    //跳转记录详情
+    toDetails(item) {
+      this.$router.push({
+        name: 'recordDetails',
+        params: {
+          name: '123'
+        }
+      })
     }
   }
 }

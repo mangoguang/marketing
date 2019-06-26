@@ -49,8 +49,9 @@ const shopDetail = () => import("../pages/work/storeDetail")
 
 
 //4S模块
-const index4s = () => import('../pages/4S/index/index.vue')
-const record = () => import('../pages/4S/record/record.vue')
+const index4s = () => import('../pages/4S/index/index')
+const record = () => import('../pages/4S/record/record')
+const recordDetails = () => import('../pages/4S/record/recordDetails')
 
 Vue.use(VueRouter)
 
@@ -471,6 +472,11 @@ export var router = new VueRouter({
     path:'/record',
     name:'record',
     component:record
+  },
+  {
+    path:'/recordDetails',
+    name:'recordDetails',
+    component:recordDetails
   }
 ],
   scrollBehavior (to, from, savedPosition) {
