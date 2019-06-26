@@ -8,12 +8,15 @@
     </ContentBox>
     <ContentBox class="wrapper" :title="'评分报表'">
       <div class="iconBox-wrapper" >  
-        <router-link :to='{
-                      name:recordLink.pathname,
-                      params: recordLink.params}'>   
-          <iconBox :contentData='contentData'/>
-        </router-link>
+        <div class="icon-box">
+           <router-link :to='{
+                        name:recordLink.pathname,
+                        params: recordLink.params}'>  
+            <iconBox :contentData='contentData'/>
+          </router-link>
+        </div>
       </div>
+      
     </ContentBox>
   </div>
 </template>
@@ -43,6 +46,11 @@ export default {
         }
       }
     };
+  },
+  methods: {
+    test() {
+      this.$router.push({path: '/record'})
+    }
   }
 }
 </script>
@@ -58,6 +66,10 @@ export default {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+  }
+  .icon-box {
+    margin-right: 8vw;
+    margin-bottom: 4vw;
   }
 }
  

@@ -1,7 +1,9 @@
 <!--  -->
 <template>
   <div class="contentBox">
-    <h1>{{title}}</h1>
+    <div class="border-bottom">
+      <p class="title">{{title}}</p>
+    </div>
     <div class="content">
       <slot></slot>
     </div>
@@ -24,25 +26,14 @@ export default {
   min-height: 34.13vw;
   background: #fff;
   border-radius: 1.33vw;
-  h1 {
+  .title {
     font-weight: normal;
     color: #666;
     line-height: 10.66vw;
     font-size: 3.7vw;
     padding-left: 2.4vw;
-    position: relative;
     box-sizing: border-box;
+    width: 100%;
   }
-  h1::after {
-    content: '';
-      position:absolute;
-      left:0;
-      bottom:0;
-      width:100%;
-      height:1px;
-      background: #ededed;
-      transform-origin:0 0;
-      transform:scaleY(0.5)
-    }
 }
 </style>

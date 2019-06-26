@@ -6,7 +6,9 @@ import mango from './js'
 import api from './js/api.js'
 import VueTouch from 'vue-touch'
 import VueLazyload from 'vue-lazyload'
+
 import 'mint-ui/lib/style.min.css'
+import './index.scss'
 // import '../mockjs/index' 	
 import base from './Global/index'
 Vue.use(base)

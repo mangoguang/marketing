@@ -27,8 +27,6 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin-right: 8vw;
-  margin-bottom: 4vw;
   .icon {
     width: 10.26vw;
     height: 10.26vw;
