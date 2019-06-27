@@ -35,10 +35,14 @@ export default {
       // 门店等级
       storeClass: 3
     };
+  },
+  methods: {
+    test() {
+      this.$router.push({path: '/record'})
+    }
   }
 }
 </script>
 <style lang='scss' scoped>
-
  
 </style>

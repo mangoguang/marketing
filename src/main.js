@@ -6,7 +6,9 @@ import mango from './js'
 import api from './js/api.js'
 import VueTouch from 'vue-touch'
 import VueLazyload from 'vue-lazyload'
+
 import 'mint-ui/lib/style.min.css'
+import './index.scss'
 // import '../mockjs/index' 	
 import base from './Global/index'
 Vue.use(base)
@@ -31,7 +33,7 @@ import {
 } from './router/index.js'
 // 添加rem计算
 (function (doc, win) {
-  console.log('vue3',  Vue)
+  // console.log('vue3',  Vue)
   
   var docEl = doc.documentElement
   var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'

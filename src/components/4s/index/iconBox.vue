@@ -114,6 +114,7 @@ export default {
     img {
       width: 4.53vw;
       height: 4.13vw;
+      margin-left: 1vw;
     }
   }
   .starImg {
