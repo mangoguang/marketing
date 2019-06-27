@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="index">
-    <Header />
+    <Header :storeClass="soreClass" />
     <div>门店选择下拉框</div>
     <myContent />
   </div>
@@ -17,7 +17,7 @@ export default {
   },
   data () {
     return {
-  
+      soreClass: 5
     }
   }
 }
