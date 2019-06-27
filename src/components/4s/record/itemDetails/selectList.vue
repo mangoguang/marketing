@@ -40,9 +40,13 @@ export default {
       this.showStatus = !this.showStatus
     },
     handleItemSelect(index) {
+      this.showStatus = !this.showStatus
+      if(this.activeIndex === index) {
+        return
+      }
       this.activeIndex = index
       this.activeItem = this.list[index]
-      this.showStatus = !this.showStatus
+      this.$emit('getActiveData',this.list[index])
     }
   }
 }

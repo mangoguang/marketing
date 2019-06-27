@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="score_wrapper">
-    <circleProgress :score="99" :star="'五星评分'"/>
+    <circleProgress :score="99" :star="starData"/>
     <div class="time">
       <p>检查时间2019年06月05日</p>
       <p>第一周</p>
@@ -15,11 +15,15 @@ export default {
   components: {
     circleProgress
   },
+  props: ['starData'],
   data () {
     return {
 
     };
+  },
+  methods: {
   }
+
 }
 </script>
 <style lang='scss' scoped>

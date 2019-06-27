@@ -5,7 +5,7 @@
       <banner :title="'店面SI标准一阶段'" :left='true'/>
     </div>
     <div class="content">
-      <select-list :list="list"/>
+      <select-list :list="list" @getActiveData="getActiveData"/>
       12313123131231312313
     </div>
   </div>
@@ -34,6 +34,12 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    //获取下啦选择框的值
+    getActiveData(val) {
+      console.log(val)
+    }
   }
 }
 </script>
