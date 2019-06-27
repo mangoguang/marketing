@@ -449,6 +449,26 @@ class IndexModel extends Request {
   getPlanList(obj){
     return mango.getAjax('/v3/app/workplan/workplanlist',obj)
   }
+  //查询客户列表
+  getCustomerList(obj){
+    return mango.getAjax('/v3/app/customers2',obj)
+  }
+  //查询客户意向列表
+  getOppList(obj){
+    return mango.getAjax('/v3/app/customer/opportunitylist',obj)
+  }
+  //保存工作计划
+  saveWorkPlan(obj) {
+    return mango.getJsonPostAjax('/v3/app/workplan/save',obj)
+    /* return mango.getPostAjax({
+      path: '/v3/app/workplan/save',
+      data: obj
+    }) */
+    /* return this.getPostData({
+      url: '/v3/app/workplan/save',
+      data: obj
+    }) */
+  }
 }
 
 export { IndexModel }

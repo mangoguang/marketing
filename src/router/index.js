@@ -49,6 +49,8 @@ const shopDetail = () => import("../pages/work/storeDetail")
 const employeeDetail = () => import("../pages/work/employeeDetail")
 const workPlan  = () => import("../pages/work/workPlan")
 const newWorkPlan = () => import("../pages/work/newWorkPlan")
+const searchCustomer = () => import("../pages/work/searchCustomer")
+const searchIntention = () => import("../pages/work/searchIntention")
 Vue.use(VueRouter)
 
 export var router = new VueRouter({
@@ -472,8 +474,19 @@ export var router = new VueRouter({
     component:newWorkPlan,
     meta:{
       keepAlive:true,
-      isUseCache:true
-    }
+      isUseCache:false
+    },
+    props:(route) => ({id: route.query.id})
+  },
+  {
+    path:'/searchCustomer',
+    name:'searchCustomer',
+    component:searchCustomer
+  },
+  {
+    path:'/searchIntention',
+    name:'searchIntention',
+    component:searchIntention
   }
 ],
   scrollBehavior (to, from, savedPosition) {

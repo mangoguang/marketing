@@ -1,6 +1,6 @@
 <template>
     <ul class="planTimeList">
-        <li>
+        <li @click="go">
             <span>09:00</span>
             <div>
                 <p>电话邀约陈先生到店开月度复盘会议 </p>
@@ -49,7 +49,11 @@ export default {
         }
     },
     methods:{
-
+        go(){
+            this.$router.push({
+                path:'/newWorkPlan',query:{id:'123'}
+            })
+        }
     }
 }
 </script>

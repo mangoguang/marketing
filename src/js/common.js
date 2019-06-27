@@ -340,6 +340,70 @@ export default class Common {
       })
     })
   }
+  getJsonPostAjax(path, data, jsonData) {
+    let token = JSON.parse(localStorage.getItem('token'))
+    // console.log('token',token)
+    return new Promise((resolve, reject) => {
+      // let thatType = type == 'post' ? 'post' : 'get'
+      let url = `${this.port}${path}`
+      
+      let sign = this.getSign(jsonData || data, token.access_token)
+      console.log('sign',sign)
+      // 显示加载动画
+      this.loading('open')
+       axios({
+        method: 'post',
+        // async: false,
+        timeout: 30000,
+        url: url,
+        data:data,
+         headers: {
+          'Content-Type':'application/json',
+          "Authorization": `Bearer ${token.access_token}`,
+          'sign': sign
+        },
+        transformRequest: [function(data) {
+          data = JSON.stringify(data)
+          return data
+        }]
+
+      })
+      .then((res) => {
+        this.loading('close')
+        if (res.data) {
+          resolve(res.data)
+        } else {
+          resolve(false)
+        }
+      })
+      .catch((error) => {
+        // console.log('请求失败！：', error.response, error.request)
+        this.loading('close')
+        if (error.response) { // 如果服务器响应
+          if (error.response.status === 510) {
+            console.log('非法令牌，需要刷新。', token)
+            // 检测token是否存在
+            if (token.access_token && token.access_token.length < 48) { // 有效token
+              console.log('开始刷新令牌')
+              refreshToken.call(this).then(res => {
+                reject(510)
+              })
+            } else {
+              toLogin()
+            }
+          } else {
+            //console.log(error.response)
+            this.tip('请求失败!')
+            //this.tip(error.response.msg)
+          }
+        } else if (error.request) {
+          this.tip('网络异常!')
+        } else {
+          this.tip('网络异常!')
+        }
+      })
+    })
+  }
 
   getPostAjax ({path, data}) {
     console.log(123123, path)
@@ -366,6 +430,7 @@ export default class Common {
       })
     })
   }
+
   // getAjax(_vue, port, params, pathVersion,type) {
   //   let _this = this
   //   return new Promise((resolve, reject) => {

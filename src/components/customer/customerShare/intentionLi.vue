@@ -29,7 +29,7 @@
         <span>{{ turnDate(list.closeTime) }}</span>
       </div>
     </div>
-    <div class="details">
+    <div class="details" v-if="type==='select'?false:true">
       <span class="text">详情</span>
       <img src="../../../assets/imgs/arrow.png" alt="">
     </div>
@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  props:['list'],
+  props:['list','type'],
   data() {
     return {
       
