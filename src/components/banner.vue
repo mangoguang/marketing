@@ -5,7 +5,7 @@
     <div class="icon-back" @click='cilck'>
       <div class="icon"></div>
     </div>
-    <span>{{title}}</span>
+    <span class="my_title" :class="left? 'myLeftStyle':''">{{title}}</span>
     <slot></slot>
     <!-- <more-details class="details"  v-show='MoreBtn'/> -->
   </div>
@@ -18,7 +18,7 @@ import VueRouter from 'vue-router'
 // import MoreDetails from './Gallery/productDetails/moreDetail'
 export default {
   name: 'routerLink',
-  props:['title','MoreBtn'],
+  props:['title','MoreBtn','left'],
   // components: {MoreDetails},
   data () {
     return {
@@ -54,7 +54,7 @@ export default {
 .banner{
   // font-family: PINGPANG;
   font-weight: 600;
-  z-index: 99;
+  z-index: 999;
   height: 16.466vw;
   width: 100vw;
   box-sizing: border-box;
@@ -88,7 +88,7 @@ export default {
       margin-top: 1vw;
     }
   }
-  span{
+  .my_title{
     width: 100%;
     text-align: center;
     padding-right: 10.4vw;
@@ -107,6 +107,13 @@ export default {
     color: #007aff;
     font-weight: bold;
     z-index: 1000;
+  }
+  .myLeftStyle {
+    color: #222444;
+    font-size: 4.8vw;
+    font-weight: 500;
+    padding-left: 2vw;
+    text-align: left;
   }
 }
 </style>

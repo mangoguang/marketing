@@ -38,7 +38,7 @@ export default {
   height: 35.33vw;
   box-sizing: border-box;
   position: fixed;
-  z-index: 99;
+  z-index: 999;
   padding-top: 14vw;
   left: 0;
   top: 0;
