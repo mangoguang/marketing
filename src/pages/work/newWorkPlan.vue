@@ -1,8 +1,8 @@
 <template>
     <div class="newWorkPlan">
-        <banner :title="!id?'新建工作计划':'计划详情'" class="header">
+        <banner :title="title" class="header">
             <button type="button" class="save" @click="save" v-if="edit">保存</button>
-            <button type="button" class="save" @click="edit" v-else>编辑</button>
+            <button type="button" class="save" @click="editPlan" v-else>编辑</button>
         </banner>
         <planForm v-if="edit"/>
         <planFormReadonly v-else/>
@@ -21,7 +21,8 @@ export default {
     props:['id'],
     data(){
         return {
-           edit:true
+           edit:true,
+           title:''
         }
     },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
     components:{
@@ -35,13 +36,18 @@ export default {
         })
     },
     activated(){
-        if(!this.id){
-            if(!this.$route.meta.isUseCache){
-                this.setPlan({})
+        if(!this.$route.meta.isUseCache){
+            if(!this.id){
+                this.setPlan({id:''})
                 this.edit=true
+                this.title="新建工作计划"
+            }else{
+                this.edit=false
+                this.setPlan({id:this.id})
+                this.title="计划详情"
+                this.getDetail(this.plan.id)
             }
-        }else{
-            this.edit=false
+           
         }
 
         
@@ -55,23 +61,66 @@ export default {
         save(){
             if(this.valid(this.plan)){
                 let obj = this.getParams(this.plan)
-                /* let form = new FormData()
+                let form = new FormData()
                 let keys = []
                 for(let key in obj){
                     form.append(key,obj[key])
                     keys.push(key)
-                } */
-                indexModel.saveWorkPlan(obj).then((res) => {
-                    console.log(res)
-                }).catch((reject) => {
-                    if(reject === 510){
-                        this.save()
-                    }
-                })
+                }
+                if(!this.plan.id){
+                    indexModel.saveWorkPlan(form,keys,obj).then((res) => {
+                        console.log(res)
+                        mango.tip(res.msg)
+                        if(res.data){
+                            this.getDetail(res.data)
+                        }
+                    }).catch((reject) => {
+                        if(reject === 510){
+                            this.save()
+                        }
+                    })
+                }else{
+                    indexModel.updateWorkPlan(form,keys,obj).then((res) => {
+                        console.log(res);
+                        mango.tip(res.msg)
+                        if(this.plan.id){
+                            this.getDetail(this.plan.id)
+                        }
+                    }).catch((reject) => {
+                        if(reject===510){
+                            this.save()
+                        }
+                    })
+                }
+               
             }
         },
-        editPlan(obj){
-            
+        getDetail(id){
+            indexModel.getPlanDetail(id).then((res) => {
+                console.log(res)
+                if(res.status){
+                    this.$set(this.plan,'planName',res.data.planName)
+                    this.$set(this.plan,'address',res.data.address)
+                    this.$set(this.plan,'startTime',res.data.startTime)
+                    this.$set(this.plan,'endTime',res.data.endTime)
+                    this.$set(this.plan,'customerId',res.data.customerId)
+                    this.$set(this.plan,'customerName',res.data.customerName)
+                    this.$set(this.plan,'opportunityId',res.data.opportunityId)
+                    this.$set(this.plan,'remark',res.data.remark)
+                    this.$set(this.plan,'id',res.data.id)
+                    this.$set(this.plan,'goodsName',res.data.goodNames)
+                    this.edit=false
+                    this.title="计划详情"
+                }
+            }).catch((reject) => {
+                if(reject===510){
+                    this.getDetail(id)
+                }
+            })
+        },
+        editPlan(){
+            this.title="编辑工作计划"
+            this.edit=true
         },
         getParams(obj){
             let tempObj = {}
@@ -83,7 +132,8 @@ export default {
                 customerId:obj.customerId,
                 customerName:obj.customerName,
                 opportunityId:obj.opportunityId,
-                remark:obj.remark
+                remark:obj.remark,
+                id:obj.id
             }
             for(let key in temp){
                 if(temp[key] || temp[key]===0){

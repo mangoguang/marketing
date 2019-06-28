@@ -4,12 +4,12 @@
             <button type="button" class="addPlan" @click="newPlan">+</button>
         </banner>
         <div class="planContent" v-show="!showList">
-            <monthDay/>
-            <planTime/>
+            <monthDay @getMonthDate="getMonthDate" :dateList="dateList" @getSelectDate="getSelectDate"/>
+            <planTime :list="list"/>
             <button type="button" class="switch" ref="switch" @click="switchList"><span>切换至列表</span></button>
         </div>
         <div class="planContent" v-show="showList">
-            <planList/>
+            <planList :dateList="dateList" :month="month" :year="year" :day="day"/>
             <button type="button" class="switchCalendar" ref="switchCalendar" @click="switchList"><span>切换至日历</span></button>
         </div>
         
@@ -20,11 +20,19 @@ import banner from '../../components/banner'
 import monthDay from '../../components/work/plan/monthDay'
 import planTime from '../../components/work/plan/planTime'
 import planList from '../../components/work/plan/planList'
+import { IndexModel } from '../../utils'
+const indexModel = new IndexModel()
 export default {
     name:'workPlan',
     data(){
         return {
-            showList:false
+            showList:false,
+            selectDate:'',
+            dateList:[],
+            list:[],
+            year:null,
+            month:null,
+            day:null
         }
     },
     components:{
@@ -32,6 +40,14 @@ export default {
         monthDay,
         planTime,
         planList
+    },
+    created(){
+        this.year = new Date().getFullYear();
+        this.month = new Date().getMonth()+1;
+        this.day = new Date(this.year,this.month,0).getDate()
+    },
+    computed:{
+        
     },
     mounted(){
         this.$refs.switch.addEventListener('touchstart',function(){
@@ -55,7 +71,46 @@ export default {
         },
         newPlan(){
             this.$router.push({path:'/newWorkPlan'})
+        },
+        getPlanList(obj){
+            indexModel.getPlanList(obj).then((res) => {
+                //console.log(res)
+                if(obj.startDate===obj.endDate){
+                    if(res.data.length>0){
+                        this.list=res.data
+                    }else{
+                        console.log(this.list)
+                        this.list=[]
+                    }
+                }else{
+                    if(res.data.length>0){
+                        this.dateList=res.data
+                    }else{
+                        this.dateList=[]
+                    }
+                }
+                
+            }).catch((reject) => {
+                if(reject===510){
+                    this.getPlanList(obj)
+                }
+            })
+        },
+        getMonthDate(dateObj){
+            this.year = dateObj.startDate.split('-')[0]
+            this.month = dateObj.startDate.split('-')[1]
+            this.day = new Date(this.year,this.month,0).getDate()
+            this.getPlanList(dateObj)
+        },
+        getSelectDate(date){
+            this.selectDate=date
+            this.getPlanList({
+                startDate:date,
+                endDate:date
+            })
         }
+
+
     }
 }
 </script>
