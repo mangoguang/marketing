@@ -6,7 +6,7 @@
     </div>
     <div class="content">
       <select-list :list="list" @getActiveData="getActiveData"/>
-      12313123131231312313
+      <swiperPic />
     </div>
   </div>
 </template>
@@ -14,10 +14,12 @@
 <script>
 import banner from '../../../components/banner'
 import selectList from '../../../components/4s/record/itemDetails/selectList'
+import swiperPic from '../../../components/4s/record/itemDetails/swiperPic'
 export default {
   components: {
     banner,
-    selectList
+    selectList,
+    swiperPic
   },
   data () {
     return {
