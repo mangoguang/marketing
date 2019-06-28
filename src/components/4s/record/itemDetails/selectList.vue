@@ -1,6 +1,7 @@
 <!--  -->
 <template>
   <div class="selectList">
+    <div class="mask" v-show="showStatus"></div>
     <div class="list_show" @click="handleNavSelect">
       <span class="text">{{ activeItem.text }}</span>
       <span class="icon" :class="showStatus?'rotate':''">
@@ -58,6 +59,15 @@ export default {
   margin: 0 auto;
   text-align: center;
   position: relative;
+  .mask {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    background: transparent;
+  }
   .list_show {
     width: 100%;
     height: 13.33vw;
@@ -67,6 +77,7 @@ export default {
     justify-content: space-between;
     box-sizing: border-box;
     margin-top: 7.06vw;
+    z-index: 1000;
     ::after {
       content: '';
       position: absolute;
@@ -107,6 +118,7 @@ export default {
     }
   }
   .list_content {
+    z-index: 1000;
     width: 71.13vw;
     position: absolute;
     margin-top: 1vw;
