@@ -51,7 +51,18 @@ const workPlan  = () => import("../pages/work/workPlan")
 const newWorkPlan = () => import("../pages/work/newWorkPlan")
 const searchCustomer = () => import("../pages/work/searchCustomer")
 const searchIntention = () => import("../pages/work/searchIntention")
+
+
+//4S模块
+const index4s = () => import('../pages/4S/index/index')
+const record = () => import('../pages/4S/record/record')
+const recordDetails = () => import('../pages/4S/record/recordDetails')
+const itemDetails = () => import('../pages/4S/record/itemDetails')
+
 Vue.use(VueRouter)
+
+
+
 
 export var router = new VueRouter({
   routes: [{
@@ -487,6 +498,27 @@ export var router = new VueRouter({
     path:'/searchIntention',
     name:'searchIntention',
     component:searchIntention
+  },
+  //4s
+  {
+    path:'/index4s',
+    name:'index4s',
+    component:index4s
+  },
+  {
+    path:'/record',
+    name:'record',
+    component:record
+  },
+  {
+    path:'/recordDetails',
+    name:'recordDetails',
+    component:recordDetails
+  },
+  {
+    path:'/itemDetails',
+    name:'itemDetails',
+    component:itemDetails
   }
 ],
   scrollBehavior (to, from, savedPosition) {
