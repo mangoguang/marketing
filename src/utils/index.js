@@ -458,16 +458,16 @@ class IndexModel extends Request {
     return mango.getAjax('/v3/app/customer/opportunitylist',obj)
   }
   //保存工作计划
-  saveWorkPlan(obj) {
-    return mango.getJsonPostAjax('/v3/app/workplan/save',obj)
-    /* return mango.getPostAjax({
-      path: '/v3/app/workplan/save',
-      data: obj
-    }) */
-    /* return this.getPostData({
-      url: '/v3/app/workplan/save',
-      data: obj
-    }) */
+  saveWorkPlan(obj,key,jsonData) {
+    return mango.getFormAjax('/v3/app/workplan/save',obj,key,jsonData)
+  }
+  //根据工作计划id查看详情
+  getPlanDetail(id){
+    return mango.getAjax('/v3/app/workplan/workplandetail',{id:id})
+  }
+  //修改工作计划
+  updateWorkPlan(obj,key,jsonData){
+    return mango.getFormAjax('/v3/app/workplan/update',obj,key,jsonData)
   }
 }
 

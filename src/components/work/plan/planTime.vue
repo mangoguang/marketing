@@ -1,41 +1,13 @@
 <template>
     <ul class="planTimeList">
-        <li @click="go">
-            <span>09:00</span>
+        <li @click="go(item.id)" v-for="(item,index) in list" :key="index">
+            <span>{{item.startTime.split(' ')[1]}}</span>
             <div>
-                <p>电话邀约陈先生到店开月度复盘会议 </p>
+                <p>{{item.planName}}</p>
                 <img src="../../../assets/imgs/rightside.png" alt="" class="icon">
             </div>
         </li>
-        <li>
-            <span>09:00</span>
-            <div>
-                <p>电话邀约陈先生到店开月度复盘会议 </p>
-                <img src="../../../assets/imgs/rightside.png" alt="" class="icon">
-            </div>
-        </li>
-        <li>
-            <span>09:00</span>
-            <div>
-                <p>电话邀约陈先生到店开月度复盘会议 </p>
-                <img src="../../../assets/imgs/rightside.png" alt="" class="icon">
-            </div>
-        </li>
-          <li>
-            <span>09:00</span>
-            <div>
-                <p>电话邀约陈先生到店开月度复盘会议 </p>
-                <img src="../../../assets/imgs/rightside.png" alt="" class="icon">
-            </div>
-        </li>
-        <li>
-            <span>09:00</span>
-            <div>
-                <p>电话邀约陈先生到店开月度复盘会议 </p>
-                <img src="../../../assets/imgs/rightside.png" alt="" class="icon">
-            </div>
-        </li> 
-        <li class="nonePlan">
+        <li class="nonePlan" v-if="!list||!list.length">
            当前日期暂无工作计划 
         </li>
     </ul>
@@ -43,15 +15,19 @@
 <script>
 export default {
     name:'planTime',
+    props:['list'],
     data(){
         return {
 
         }
     },
+    created(){
+        console.log(this.list)
+    },
     methods:{
-        go(){
+        go(id){
             this.$router.push({
-                path:'/newWorkPlan',query:{id:'123'}
+                path:'/newWorkPlan',query:{id:id}
             })
         }
     }
@@ -83,6 +59,7 @@ export default {
                 overflow: hidden;
                 font-size: 14px;
                 color:#666;
+                text-align: left;
             }
             ::after{
                 content: '';

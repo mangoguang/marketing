@@ -21,9 +21,26 @@ export default {
       show:false
     }
   },
+  watch:{
+    value(newValue,oldValue){
+      if(!newValue){
+        this.show=false
+      }
+    }
+  },
   methods:{
     open(){
-      this.show=!this.show;
+      if(!this.value){
+        this.show=false
+      }else{
+        if(this.show){
+          this.show=false
+        }else{
+          this.show=true
+        }
+
+      }
+      
     }
   }
 }

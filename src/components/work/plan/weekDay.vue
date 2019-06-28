@@ -1,6 +1,6 @@
 <template>
     <ul class="weekDay">
-        <li class="hasPlan" v-for="(item,index) in list" :key="index">
+        <li :class="compareDate(`${item}`)?'hasPlan':''" v-for="(item,index) in list" :key="index">
           <span :class="item===activeDay?'active':''" :id="item" @click="getSelectDate(item)">
             {{parseInt(item.split('-')[2])}}
           </span>
@@ -12,7 +12,7 @@
 import { IndexModel } from '../../../utils'
 const indexModel = new IndexModel()
 export default {
-    props:[],
+    props:['dateList'],
     name:'weekDay',
     data(){
         return {
@@ -49,7 +49,9 @@ export default {
           this.endDate=new Date().getTime()+(6-this.dayIndex)*this.oneDayLong;
           this.week={startDate:this.ChangeTime(this.startDate),endDate:this.ChangeTime(this.endDate)}
           this.getWeekList(this.startDate)
-          this.getPlanList(this.week);
+          this.$emit('getWeekParams',this.week)
+          this.$emit('getSelectDate',this.activeDay)
+          
         },
         getWeekList(startTime){
           let list=[];
@@ -63,15 +65,13 @@ export default {
           this.activeDay=date
           this.$emit('getSelectDate',date)
         },
-        getPlanList(obj){
-            indexModel.getPlanList(obj).then((res) => {
-                console.log(res)
-            }).catch((reject) => {
-                if(reject===510){
-                    this.getPlanList(obj)
-                }
+        compareDate(date){
+            let arr = this.dateList.map((item,index) => {
+                return item.startTime.split(' ')[0]
             })
+            return arr.includes(date)
         }
+
 
     }
 }

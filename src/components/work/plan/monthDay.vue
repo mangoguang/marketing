@@ -11,7 +11,7 @@
     </div>
     <weekHeader />
     <ul class="weekDay">
-          <li class="hasPlan" v-for="(item,index) in 42" :key="index">
+          <li :class="compareDate(`${year}-${month<10?`0${month}`:month}-${item-BeginDay}`)?'hasPlan':''" v-for="(item,index) in 42" :key="index">
             <span 
             :class="`${year}-${month<10?`0${month}`:month}-${item-BeginDay}`===selectDate?'active':''" 
             v-if="item-BeginDay>0&&item-BeginDay <= endDay"
@@ -30,7 +30,7 @@ export default {
   components:{
     weekHeader
   },
-  props:[''],
+  props:['dateList'],
   data(){
     return{
       year: null,
@@ -62,6 +62,8 @@ export default {
       this.day=new Date().getDate()
       this.curDay=`${this.year}-${this.month<10?`0${this.month}`:this.month}-${this.day<10?`0${this.day}`:this.day}`
       this.selectDate=`${this.year}-${this.month<10?`0${this.month}`:this.month}-${this.day<10?`0${this.day}`:this.day}`
+      this.$emit('getSelectDate',this.selectDate)
+      this.getMonthDate(this.year,this.month)
     },
     prev(){
       if(this.month===1){
@@ -69,8 +71,10 @@ export default {
         this.month=12
       }else{
         this.month--
-        
       }
+      this.selectDate=`${this.year}-${this.month<10?`0${this.month}`:this.month}-${this.day<10?`0${this.day}`:this.day}`
+      this.$emit('getSelectDate', this.selectDate)
+      this.getMonthDate(this.year,this.month)
     },
     next(){
       if(this.month===12){
@@ -79,9 +83,27 @@ export default {
       }else{
         this.month++
       }
+      this.selectDate=`${this.year}-${this.month<10?`0${this.month}`:this.month}-${this.day<10?`0${this.day}`:this.day}`
+      this.$emit('getSelectDate',this.selectDate)
+      this.getMonthDate(this.year,this.month)
     },
     getSelectDate(date){
       this.selectDate=date
+      this.$emit('getSelectDate',date)
+    },
+    getMonthDate(year,month){
+      let str=`${year}-${month<10?`0${month}`:month}`
+      let dateObj = {
+        startDate:`${str}-01`,
+        endDate:`${str}-31`
+      }
+      this.$emit('getMonthDate',dateObj)
+    },
+    compareDate(date){
+        let arr = this.dateList.map((item,index) => {
+            return item.startTime.split(' ')[0]
+        })
+        return arr.includes(date)
     }
     
   }
