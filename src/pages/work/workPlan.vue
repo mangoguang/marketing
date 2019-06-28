@@ -103,6 +103,9 @@ export default {
             this.getPlanList(dateObj)
         },
         getSelectDate(date){
+            if(this.selectDate===date){
+                return;
+            }
             this.selectDate=date
             this.getPlanList({
                 startDate:date,
