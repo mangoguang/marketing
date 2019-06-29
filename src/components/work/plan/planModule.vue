@@ -41,6 +41,9 @@ export default {
             this.$router.push({path:'/workPlan'})
         },
         getSelectDate(date){
+            if(this.selectDate===date){
+                return;
+            }
             this.selectDate=date
             this.getPlanList({
                 startDate:date,

@@ -26,7 +26,7 @@ export default {
         planTime
     },
     methods:{
-         compareDate(date){
+        compareDate(date){
             let arr = this.dateList.map((item,index) => {
                 return item.startTime.split(' ')[0]
             })
