@@ -3,13 +3,14 @@
   <div class="selectPic">
     <swiper :options="swiperOption" ref="mySwiper">
       <swiper-slide v-for="(item,index) in list" :key="index"
-                    :style="{backgroundColor:item.color}">
+                    :style="{backgroundColor:item.color}"
+                    >
                     <div>
-                      <img  preview :preview-text="item.color"
+                      <img  :preview='isPreview' :preview-text="item.color"
                             :src="item.text" alt=""
                             v-if='item.type=== "image"'>
                        <video-player  class="video-player vjs-custom-skin player"
-                                      ref="videoPlayer"
+                                      ref="myVideoPlayer"
                                       v-else
                                       :playsinline="true"
                                       :options="playerOptions"
@@ -37,8 +38,10 @@ export default {
   data () {
     return {
       activeIndex: 0,
+      isPreview: true,        //能否全屏
       swiperOption: {
-         threshold : 50, //拖动的临界值，大于才能被拖动
+        slideToClickedSlide: true,
+        threshold : 50, //拖动的临界值，大于才能被拖动
         lazy: {				//图片懒加载
           loadPrevNext: true,
           oadPrevNextAmount: 1
@@ -58,12 +61,16 @@ export default {
         },
         // loop : true,
         on: {
-          click: function () {
-            const realIndex = this.realIndex;
-            if(vm.activeIndex === realIndex) {
-              return
-            }
-            vm.handleClickSlide(realIndex);
+          click: function (e) {
+            // console.log(vm.activeIndex,this.clickedIndex)
+            // if(vm.activeIndex !== this.clickedIndex) {
+            // }else {
+            //   vm.isPreview = true
+            //   vm.$previewRefresh()
+            // }
+          },
+          slideChange: function() {
+            vm.handleClickSlide(this.realIndex);
           }
         }
       },
@@ -108,6 +115,14 @@ export default {
         }
       }
     
+    }
+  },
+  computed: {
+    player() {
+      return this.$refs.videoPlayer.player
+    },
+    swiper() {
+      return this.$refs.mySwiper.swiper
     }
   },
   mounted() {
