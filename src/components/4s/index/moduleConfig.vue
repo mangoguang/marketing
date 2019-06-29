@@ -1,9 +1,12 @@
 <!--  -->
 <template>
   <div class="moduleConfig">
-    <ContentBox class="wrapper" :title="'日常检查'">
+    <ContentBox class="wrapper" :title="'模块配置'">
       <div class="iconBox-wrapper">
-        <iconBox/>
+        <iconBox1 
+        :icon="'lock'"
+        :title="'权限配置'"
+        />
       </div>
     </ContentBox>
   </div>
@@ -11,11 +14,11 @@
 
 <script>
 import ContentBox from './contentBox'
-import iconBox from './iconBox'
+import iconBox1 from './iconBox1'
 export default {
   components : {
     ContentBox,
-    iconBox
+    iconBox1
   },
   data () {
     return {

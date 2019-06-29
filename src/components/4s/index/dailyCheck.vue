@@ -5,7 +5,6 @@
       <div class="iconBox-wrapper">
         <iconBox
         v-for="(item, index) in 5"
-        :type="'dailyCheck'"
         :storeClass="storeClass"
         :index="index"
         :key="`iconBox${index}`"
@@ -27,6 +26,9 @@ export default {
     return {
       storeClass: 3
     }
+  },
+  methods: {
+
   }
 }
 </script>
