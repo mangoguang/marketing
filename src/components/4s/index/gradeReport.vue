@@ -4,11 +4,15 @@
     <ContentBox class="wrapper" :title="'评分报表'">
       <div class="iconBox-wrapper" >  
         <div class="icon-box">
-           <router-link :to='{
-                        name:recordLink.pathname,
-                        params: recordLink.params}'>  
-            <iconBox   :type="'gradeReport'"/>
-          </router-link>
+            <iconBox  :type="'gradeReport'"
+                      :iconData="data1"
+                      @click.native="handleClick(data1.link)"
+                      />
+            <iconBox  :type="'gradeReport'"
+                      :iconData="data2"
+                      @click.native="handleClick(data2.link)"
+                      :hasNew="'tips'"
+                      />
         </div>
       </div>
       
@@ -26,16 +30,26 @@ export default {
   },
   data () {
     return {
-      recordLink: {
-        pathname: 'record',
-        params: {
-          name: '123'
-        }
+      data1: {
+        icon: './static/images/4s/starCheck/write.png',
+        bgIcon: './static/images/4s/starCheck/btnBg.png',
+        text: '检查记录',
+        link: 'recordJxs'
+      },
+      data2: {
+        icon: './static/images/4s/star_re.png',
+        bgIcon: './static/images/4s/starResult.png',
+        text: '评星结果',
+        link: 'judgeStar'
       }
     };
   },
   methods: {
-   
+    handleClick(linkName) {
+      this.$router.push({
+        name: linkName
+      })
+    }
   }
 }
 </script>
@@ -50,6 +64,11 @@ export default {
     // display: flex;
     // flex-wrap: wrap;
     // align-items: center;
+  }
+  .icon-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
   }
 }
 

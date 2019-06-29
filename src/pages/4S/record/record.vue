@@ -2,7 +2,7 @@
 <template>
   <div class="record"  :style="{'margin-top':`${top}vw`}">
     <div class="header">
-      <recordHeader />
+      <recordHeader :hasShop="true"/>
     </div>
     <div class="record_content" :style="{'margin-top':`${top}vw`}">
       <div class="new_record">

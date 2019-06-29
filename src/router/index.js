@@ -53,6 +53,9 @@ const index4s = () => import('../pages/4S/index/index')
 const record = () => import('../pages/4S/record/record')
 const recordDetails = () => import('../pages/4S/record/recordDetails')
 const itemDetails = () => import('../pages/4S/record/itemDetails')
+const recordJxs = () => import('../pages/4S/record/recordJxs')
+const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
+const starCheck = () => import('../pages/4S/starCheck/starCheck')
 
 Vue.use(VueRouter)
 
@@ -475,6 +478,11 @@ export var router = new VueRouter({
     component:record
   },
   {
+    path:'/recordJxs',
+    name:'recordJxs',
+    component:recordJxs
+  },
+  {
     path:'/recordDetails',
     name:'recordDetails',
     component:recordDetails
@@ -483,7 +491,18 @@ export var router = new VueRouter({
     path:'/itemDetails',
     name:'itemDetails',
     component:itemDetails
+  },
+  {
+    path:'/judgeStar',
+    name:'judgeStar',
+    component:judgeStar
+  },
+  {
+    path:'/starCheck',
+    name:'starCheck',
+    component:starCheck
   }
+  
 ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {  
