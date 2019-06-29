@@ -6,17 +6,18 @@
                     :style="{backgroundColor:item.color}"
                     >
                     <div>
-                      <img  :preview='isPreview' :preview-text="item.color"
-                            :src="item.text" alt=""
-                            v-if='item.type=== "image"'>
-                       <video-player  class="video-player vjs-custom-skin player"
-                                      ref="myVideoPlayer"
-                                      v-else
-                                      :playsinline="true"
-                                      :options="playerOptions"
-                                      @play="onPlayerPlay($event)"
-                                      >
-                        </video-player>
+                         <img  v-if='item.type=== "image"'
+                              :preview='isPreview' :preview-text="item.color"
+                              :src="item.text" alt=""
+                              >
+                          <video-player v-else
+                                        class="video-player vjs-custom-skin player"
+                                        ref="myVideoPlayer"
+                                        :playsinline="true"
+                                        :options="playerOptions"
+                                        @play="onPlayerPlay($event)"
+                                        >
+                          </video-player>
                     </div>
     </swiper-slide>
     </swiper>
@@ -53,7 +54,7 @@ export default {
         centeredSlides: true,
         slidesPerView: 'auto',
         coverflowEffect: {
-          rotate: 30,
+          rotate: 40,
           stretch: 40,
           depth: 100,
           modifier: 1,
@@ -64,7 +65,8 @@ export default {
           click: function (e) {
             // console.log(vm.activeIndex,this.clickedIndex)
             // if(vm.activeIndex !== this.clickedIndex) {
-            // }else {
+            // }
+            // else {
             //   vm.isPreview = true
             //   vm.$previewRefresh()
             // }
@@ -98,7 +100,7 @@ export default {
         loop: false, // 导致视频一结束就重新开始。
         preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
         language: 'zh-CN',
-        aspectRatio: '2:3', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        aspectRatio: '3:4', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [{
           src: 'http://vjs.zencdn.net/v/oceans.mp4',
@@ -149,26 +151,27 @@ export default {
 <style lang='scss' scoped>
   .selectPic {
     width: 100vw;
-    height: 60vw;
+    height: 92.6vw;
     padding: 12.5vw;
     box-sizing: border-box;
   }
   .swiper-slide {
     background-position: center;
     background-size: cover;
-    width: 200px;
-    height: 300px;
+    width: 52.1vw;
+    height: 69vw;
     opacity: 0.5;
     border-radius: 1.3vw;
     img {
       width: 100%;
-      height: auto;
+      height: 100%;
       border-radius: 1.3vw;
     }
   }
   .swiper-slide-active {
     opacity: 1;
-    width: 200px;
+    width: 52.1vw;
+    height: 70vw;
   }
   .player {
     background-color: #efefef;

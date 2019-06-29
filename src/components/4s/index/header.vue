@@ -2,7 +2,7 @@
 <template>
   <div :class="`header class${storeClass}`">
     <div class="headerBox">
-      <button type="button"></button>
+      <button type="button" @click="handleBack"></button>
     </div>
     <h3>4S星级认证</h3>
   </div>
@@ -16,6 +16,11 @@ export default {
   data () {
     return {
 
+    }
+  },
+  methods: {
+    handleBack() {
+      this.$router.go(-1)
     }
   }
 }

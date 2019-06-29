@@ -63,7 +63,7 @@ export default {
     width: 100vw;
     height: 100vh;
     position: fixed;
-    z-index: 999;
+    z-index: 98;
     top: 0;
     left: 0;
     background: transparent;
@@ -77,7 +77,7 @@ export default {
     justify-content: space-between;
     box-sizing: border-box;
     margin-top: 7.06vw;
-    z-index: 1000;
+    z-index: 98;
     ::after {
       content: '';
       position: absolute;
@@ -118,7 +118,7 @@ export default {
     }
   }
   .list_content {
-    z-index: 1000;
+    z-index: 98;
     width: 71.13vw;
     position: absolute;
     margin-top: 1vw;

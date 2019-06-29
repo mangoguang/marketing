@@ -57,6 +57,8 @@ export default {
 .details_wrapper {
   width: 100vw;
   box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
   .details_header {
     width: 100vw;
     height: 35.33vw;
@@ -72,6 +74,10 @@ export default {
     }
   }
   .details_content {
+    width: 100vw;
+    height: calc(100vh - 35.33vw);
+    box-sizing: border-box;
+    overflow: scroll;
     .line {
       height: 2.66vw;
       width: 100vw;
