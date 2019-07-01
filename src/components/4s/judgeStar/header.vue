@@ -1,22 +1,25 @@
 <!--  -->
 <template>
-  <div class="starHeader">
-    <star-header :title="'三星检查'">
+  <div class="judge_header">
+    <judge-header :title="'评星结果'">
       <egg-sort />
+      <egg-filter />
       <egg-searchBox @click.native="toSearchIndex"/>
-    </star-header>
+    </judge-header>
   </div>
 </template>
 
 <script>
-import starHeader from '../record/header'
+import judgeHeader from '../record/header'
 import eggSort from '../filter/sort'
+import eggFilter from '../filter/filter'
 import eggSearchBox from '../search/searchBox'
 
 export default {
   components: {
-    starHeader,
+    judgeHeader,
     eggSort,
+    eggFilter,
     eggSearchBox
   },
   data () {
@@ -34,7 +37,5 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.starHeader {
- 
-}
+
 </style>

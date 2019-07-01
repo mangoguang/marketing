@@ -1,13 +1,15 @@
 <!--  -->
 <template>
   <div class="starFilter">
-    <filter-icon :filterText="'排序'"
-                />
+    <div class="sortIcon">
+      <filter-icon :filterText="'筛选'"
+                    />
+    </div>
   </div>
 </template>
 
 <script>
-import filterIcon from './filterIcon'
+import filterIcon from './filterItem'
 
 export default {
   components: {
@@ -21,5 +23,9 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-
+.sortIcon {
+  position: absolute;
+  bottom: 0;
+  left: 40.86vw;
+}
 </style>

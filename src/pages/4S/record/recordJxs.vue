@@ -1,10 +1,10 @@
 <!--  -->
 <template>
   <div class="record"  :style="{'margin-top':`${top}vw`}">
-    <div class="header">
+    <div class="header" :style="{'height':`${headerHeight}vw`}">
       <recordHeader :title="'检查记录'"/>
     </div>
-    <div class="record_content" :style="{'margin-top':`${top}vw`}">
+    <div class="record_content" :style="{'margin-top':`${top}vw,height:${height}`}">
       <record-jxs-card />
     </div>
   </div>
@@ -20,7 +20,9 @@ export default {
   },
   data () {
     return {
-      top: ''
+      top: '',
+      height: '',
+      headerHeight: ''
     };
   },
   mounted(){
@@ -31,6 +33,7 @@ export default {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
         this.top = "-5.86";
+        this.headerHeight = 29.5
       }
     }
   }

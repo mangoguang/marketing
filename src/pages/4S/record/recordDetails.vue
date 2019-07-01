@@ -1,13 +1,13 @@
 <!--  -->
 <template>
   <div class="details_wrapper" :style="{'margin-top':`${top}vw`}">
-    <div class="details_header">
+    <div class="details_header" :style="{'height':`${headerHeight}vw`}">
       <star-header />
       <star-nav class="star_nav" :style="{'top':`${starTop}vw`}"
                 :star='3'
                 @changeStar='changeStar'/>
     </div>
-    <div class="details_content" :style="{'margin-top':`${top}vw`}">
+    <div class="details_content" :style="{'margin-top':`${top}vw,height:${height}`}">
       <circle-view  :starData="starData"/>
       <div class="line"></div>
       <record-content />
@@ -30,6 +30,8 @@ export default {
   data () {
     return {
       top: '',
+      height: '',
+      headerHeight: '',
       starTop: '',
       starData: '三星'
     };
@@ -48,6 +50,7 @@ export default {
       if (phone === "iphonex") {
         this.top = "-5.86";
         this.starTop = '20'
+        this.headerHeight = 29.5
       }
     }
   }

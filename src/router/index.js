@@ -59,6 +59,7 @@ const check = () => import('../pages/4S/starCheck/check')
 const recordJxs = () => import('../pages/4S/record/recordJxs')
 const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
 const starCheckW = () => import('../pages/4S/starCheckWrapper/starCheckW')
+const searchIndex = () => import('../pages/4S/search')
 
 Vue.use(VueRouter)
 
@@ -520,6 +521,11 @@ export var router = new VueRouter({
     path:'/starCheckW',
     name:'starCheckW',
     component:starCheckW
+  },
+  {
+    path:'/searchIndex',
+    name:'searchIndex',
+    component:searchIndex
   }
 ],
   scrollBehavior (to, from, savedPosition) {
