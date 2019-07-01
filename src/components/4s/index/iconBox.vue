@@ -1,8 +1,10 @@
-<!--  -->
+<!-- 传row参数为true时图标跟文本水平排列 -->
+
 <template>
   <!-- 星级检查图标 -->
-  <div @click="toCheck" class="iconBox_wrapper" v-if="type === 'dailyCheck'">
+  <div  class="iconBox_wrapper" v-if="type === 'dailyCheck'">
     <div
+      @click="toCheck"
       class="starImg"
       :style="{
       background: `url(./static/images/4s/starCheck/star${(index + 1) <= storeClass ? `${index + 1}Bg` : `${index + 1}Bg_no`}.png) no-repeat`,
@@ -43,6 +45,7 @@
 </template>
 
 <script>
+import getClassCN from '../../../utils/getClassCN'
 export default {
   props: ["type", "storeClass", "index",'iconData','hasNew'],
   data() {
@@ -111,14 +114,14 @@ export default {
   }
   .starImg {
     width: 10.8vw;
-    height: 10vw;
+    height: 10.8vw;
     color: #fff;
     text-align: center;
     line-height: 10vw;
     font-size: 18px;
   }
   .text {
-    color: #2d2d2d;
+    color: #939393;
     font-weight: 500;
     font-size: 3.46vw;
   }
@@ -146,6 +149,19 @@ export default {
     span {
       font-size: 1vw;
     }
+  }
+}
+.d2{
+  .text {
+    color: #2d2d2d;
+  }
+}
+.row{
+  width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  .text{
+    font-size: 24px;
   }
 }
 </style>

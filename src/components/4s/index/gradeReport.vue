@@ -22,11 +22,11 @@
 
 <script>
 import ContentBox from './contentBox'
-import iconBox from './iconBox'
+import IconBox from './iconBox'
 export default {
   components : {
     ContentBox,
-    iconBox
+    IconBox
   },
   data () {
     return {
@@ -60,10 +60,6 @@ export default {
   .iconBox-wrapper {
     width: 100%;
     box-sizing: border-box;
-    // padding-left: 2.4vw;
-    // display: flex;
-    // flex-wrap: wrap;
-    // align-items: center;
   }
   .icon-box {
     display: flex;

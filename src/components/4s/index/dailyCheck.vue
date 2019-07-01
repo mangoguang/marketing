@@ -4,8 +4,8 @@
     <ContentBox class="wrapper" :title="'日常检查'">
       <div class="iconBox-wrapper">
         <iconBox
-        v-for="(item, index) in 5"
         :type="'dailyCheck'"
+        v-for="(item, index) in 5"
         :storeClass="storeClass"
         :index="index"
         :key="`iconBox${index}`"
@@ -13,7 +13,6 @@
         <iconBox  :type="'gradeReport'"
                   :iconData="data1"
                   :hasNew="'news'"
-                  @click.native="handleClick(data1.link)"
                   />
       </div>
     </ContentBox>
@@ -40,11 +39,15 @@ export default {
     }
   },
   methods: {
-    handleClick(linkName) {
-      this.$router.push({
-        name: linkName
-      })
+    handleClick() {
+      console.log(123)
+      // this.$router.push({
+      //   name: linkName
+      // })
     }
+  },
+  methods: {
+
   }
 }
 </script>

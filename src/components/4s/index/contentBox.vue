@@ -36,5 +36,10 @@ export default {
     box-sizing: border-box;
     width: 100%;
   }
+  .title {
+    line-height: 3em;
+    padding-left: 4vw;
+    color:#666;
+  }
 }
 </style>

@@ -53,6 +53,9 @@ const index4s = () => import('../pages/4S/index/index')
 const record = () => import('../pages/4S/record/record')
 const recordDetails = () => import('../pages/4S/record/recordDetails')
 const itemDetails = () => import('../pages/4S/record/itemDetails')
+const starCheck = () => import('../pages/4S/starCheck/')
+const checkTip = () => import('../pages/4S/starCheck/checkTip')
+const check = () => import('../pages/4S/starCheck/check')
 const recordJxs = () => import('../pages/4S/record/recordJxs')
 const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
 const starCheckW = () => import('../pages/4S/starCheckWrapper/starCheckW')
@@ -454,7 +457,7 @@ export var router = new VueRouter({
     component:employeeDailyReport,
     props:true
   },
-  //经销商
+  //经销商s
   {
     path:'/shopList',
     name:'shopList',
@@ -492,6 +495,22 @@ export var router = new VueRouter({
     name:'itemDetails',
     component:itemDetails
   },
+  // 星级检查
+  {
+    path:'/starCheck',
+    name:'starCheck',
+    component: starCheck
+  },
+  {
+    path:'/checkTip',
+    name:'checkTip',
+    component: checkTip
+  },
+  {
+    path:'/check',
+    name:'check',
+    component: check
+  },
   {
     path:'/judgeStar',
     name:'judgeStar',
@@ -502,7 +521,6 @@ export var router = new VueRouter({
     name:'starCheckW',
     component:starCheckW
   }
-  
 ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {  

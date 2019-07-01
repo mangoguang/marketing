@@ -8,7 +8,7 @@
     <GradeReport :type="'gradeReport'" />
     
     <!-- 配置权限 -->
-    <ModuleConfig />
+    <!-- <ModuleConfig /> -->
   </div>
 </template>
 

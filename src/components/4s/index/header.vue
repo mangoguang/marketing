@@ -2,7 +2,7 @@
 <template>
   <div :class="`header class${storeClass}`">
     <div class="headerBox">
-      <button type="button" @click="handleBack"></button>
+      <button @click="back" type="button"></button>
     </div>
     <h3>4S星级认证</h3>
   </div>
@@ -19,7 +19,7 @@ export default {
     }
   },
   methods: {
-    handleBack() {
+    back() {
       this.$router.go(-1)
     }
   }
@@ -41,9 +41,9 @@ export default {
     button{
       display: block;
       background: url(../../../assets/imgs/4s/back.png) no-repeat center;
-      background-size: 100%;
-      width: 2.66vw;
-      height:4.66vw;
+      background-size: 2.66vw auto;
+      width: 4.66vw;
+      height:8vw;
       margin-top: 1vw;
       margin-left: 3vw;
     }
