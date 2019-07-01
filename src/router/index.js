@@ -55,7 +55,7 @@ const recordDetails = () => import('../pages/4S/record/recordDetails')
 const itemDetails = () => import('../pages/4S/record/itemDetails')
 const recordJxs = () => import('../pages/4S/record/recordJxs')
 const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
-const starCheck = () => import('../pages/4S/starCheck/starCheck')
+const starCheckW = () => import('../pages/4S/starCheckWrapper/starCheckW')
 
 Vue.use(VueRouter)
 
@@ -498,9 +498,9 @@ export var router = new VueRouter({
     component:judgeStar
   },
   {
-    path:'/starCheck',
-    name:'starCheck',
-    component:starCheck
+    path:'/starCheckW',
+    name:'starCheckW',
+    component:starCheckW
   }
   
 ],

@@ -2,7 +2,7 @@
 <template>
   <div class="record"  :style="{'margin-top':`${top}vw`}">
     <div class="header">
-      <recordHeader />
+      <recordHeader :title="'检查记录'"/>
     </div>
     <div class="record_content" :style="{'margin-top':`${top}vw`}">
       <record-jxs-card />

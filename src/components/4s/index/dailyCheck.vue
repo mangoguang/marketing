@@ -35,7 +35,7 @@ export default {
         icon: './static/images/4s/star_re.png',
         bgIcon: './static/images/4s/starCheck.png',
         text: '星级检查',
-        link: 'starCheck'
+        link: 'starCheckW'
       }
     }
   },

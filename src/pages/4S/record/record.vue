@@ -2,7 +2,9 @@
 <template>
   <div class="record"  :style="{'margin-top':`${top}vw`}">
     <div class="header">
-      <recordHeader :hasShop="true"/>
+      <recordHeader :title="'检查记录'">
+        <div class="shopText">名师家博览馆慕思店</div>
+      </recordHeader>
     </div>
     <div class="record_content" :style="{'margin-top':`${top}vw`}">
       <div class="new_record">
@@ -53,6 +55,14 @@ export default {
   .header {
     width: 100vw;
     height: 35.33vw;
+    .shopText {
+      position: absolute;
+      right: 6.4vw;
+      bottom: 3vw;
+      color: rgba($color: #fff, $alpha: 0.5);
+      font-weight: 500;
+      font-size: 3.46vw;
+    }
   }
   .record_content {
     width: 100vw;
