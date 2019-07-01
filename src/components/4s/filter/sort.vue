@@ -2,26 +2,26 @@
 <template>
   <div class="starSort">
     <div class="sortIcon">
-      <filter-icon  :filterText="sortText" 
+      <egg-filter-icon  :filterText="sortText" 
                     :changeStatus="changeStatus"
                     @click.native="handleClick"/>
     </div>
     <div  class="sortContentWrapper" 
           :style="{'top':`${top}vw`}"
           v-show="status">
-      <sort-content @selectIndex="selectIndex"/>
+      <egg-sort-content @selectIndex="selectIndex"/>
     </div>
   </div>
 </template>
 
 <script>
-import filterIcon from './filterItem'
-import sortContent from './sortContent'
+import eggFilterIcon from './filterItem'
+import eggSortContent from './sortContent'
 
 export default {
   components: {
-    filterIcon,
-    sortContent
+    eggFilterIcon,
+    eggSortContent
   },
   data () {
     return {

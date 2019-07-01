@@ -3,7 +3,6 @@
   <div class="starHeader">
     <star-header :title="'三星检查'">
       <egg-sort />
-      <egg-searchBox @click.native="toSearchIndex"/>
     </star-header>
   </div>
 </template>
@@ -11,25 +10,16 @@
 <script>
 import starHeader from '../record/header'
 import eggSort from '../filter/sort'
-import eggSearchBox from '../search/searchBox'
 
 export default {
   components: {
     starHeader,
-    eggSort,
-    eggSearchBox
+    eggSort
   },
   data () {
     return {
 
     };
-  },
-  methods: {
-    toSearchIndex() {
-      this.$router.push({
-        name: 'searchIndex'
-      })
-    }
   }
 }
 </script>

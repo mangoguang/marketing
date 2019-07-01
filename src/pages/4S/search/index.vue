@@ -3,7 +3,7 @@
   <div class="searchIndex">
     <searchInp @getValue="getValue"/>
     <ul v-if="status">
-      <shopItem v-for="i in 2" :key="i"/>
+      <!-- <shopItem v-for="i in 2" :key="i"/> -->
     </ul>
     <div class="no_data" v-else>暂无相关记录</div>
   </div>
