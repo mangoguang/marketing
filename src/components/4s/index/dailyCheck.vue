@@ -9,6 +9,11 @@
         :index="index"
         :key="`iconBox${index}`"
         />
+        <iconBox  :type="'gradeReport'"
+                  :iconData="data1"
+                  :hasNew="'news'"
+                  @click.native="handleClick(data1.link)"
+                  />
       </div>
     </ContentBox>
   </div>
@@ -24,7 +29,20 @@ export default {
   },
   data () {
     return {
-      storeClass: 3
+      storeClass: 3,
+      data1: {
+        icon: './static/images/4s/star_re.png',
+        bgIcon: './static/images/4s/starCheck.png',
+        text: '星级检查',
+        link: 'starCheck'
+      }
+    }
+  },
+  methods: {
+    handleClick(linkName) {
+      this.$router.push({
+        name: linkName
+      })
     }
   },
   methods: {

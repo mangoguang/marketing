@@ -8,7 +8,7 @@
                 @changeStar='changeStar'/>
     </div>
     <div class="details_content" :style="{'margin-top':`${top}vw`}">
-      <circle-view />
+      <circle-view  :starData="starData"/>
       <div class="line"></div>
       <record-content />
     </div>
@@ -30,7 +30,8 @@ export default {
   data () {
     return {
       top: '',
-      starTop: ''
+      starTop: '',
+      starData: '三星'
     };
   },
   mounted(){
@@ -39,6 +40,7 @@ export default {
   methods:{
     //选择星级  1星不可选
     changeStar(val) {
+      this.starData = val
       console.log(val)
     },
     isIPhoneX() {
@@ -55,6 +57,8 @@ export default {
 .details_wrapper {
   width: 100vw;
   box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
   .details_header {
     width: 100vw;
     height: 35.33vw;
@@ -70,6 +74,10 @@ export default {
     }
   }
   .details_content {
+    width: 100vw;
+    height: calc(100vh - 35.33vw);
+    box-sizing: border-box;
+    overflow: scroll;
     .line {
       height: 2.66vw;
       width: 100vw;
