@@ -4,12 +4,16 @@
     <ContentBox class="wrapper" :title="'日常检查'">
       <div class="iconBox-wrapper">
         <iconBox
-        v-for="(item, index) in 5"
         :type="'dailyCheck'"
+        v-for="(item, index) in 5"
         :storeClass="storeClass"
         :index="index"
         :key="`iconBox${index}`"
         />
+        <iconBox  :type="'gradeReport'"
+                  :iconData="data1"
+                  :hasNew="'news'"
+                  />
       </div>
     </ContentBox>
   </div>
@@ -25,8 +29,25 @@ export default {
   },
   data () {
     return {
-      storeClass: 3
+      storeClass: 3,
+      data1: {
+        icon: './static/images/4s/star_re.png',
+        bgIcon: './static/images/4s/starCheck.png',
+        text: '星级检查',
+        link: 'starCheckW'
+      }
     }
+  },
+  methods: {
+    handleClick() {
+      console.log(123)
+      // this.$router.push({
+      //   name: linkName
+      // })
+    }
+  },
+  methods: {
+
   }
 }
 </script>

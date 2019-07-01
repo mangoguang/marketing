@@ -1,31 +1,54 @@
 <!--  -->
 <template>
-  <div class="gradReport">
-    <ContentBox class="wrapper" :title="'日常检查'">
-      <div class="iconBox-wrapper">
-        <iconBox
-          :type="'gradeReport'"
-        />
+  <div>
+    <ContentBox class="wrapper" :title="'评分报表'">
+      <div class="iconBox-wrapper" >  
+        <div class="icon-box">
+            <iconBox  :type="'gradeReport'"
+                      :iconData="data1"
+                      @click.native="handleClick(data1.link)"
+                      />
+            <iconBox  :type="'gradeReport'"
+                      :iconData="data2"
+                      @click.native="handleClick(data2.link)"
+                      :hasNew="'tips'"
+                      />
+        </div>
       </div>
+      
     </ContentBox>
   </div>
 </template>
 
 <script>
 import ContentBox from './contentBox'
-import iconBox from './iconBox'
+import IconBox from './iconBox'
 export default {
   components : {
     ContentBox,
-    iconBox
+    IconBox
   },
   data () {
     return {
-      starData: {
-        imgUrl: './static/images/4s/star1.png',
-        text: '检查记录'
+      data1: {
+        icon: './static/images/4s/starCheck/write.png',
+        bgIcon: './static/images/4s/starCheck/btnBg.png',
+        text: '检查记录',
+        link: 'recordJxs'
       },
-      storeClass: 3
+      data2: {
+        icon: './static/images/4s/star_re.png',
+        bgIcon: './static/images/4s/starResult.png',
+        text: '评星结果',
+        link: 'judgeStar'
+      }
+    };
+  },
+  methods: {
+    handleClick(linkName) {
+      this.$router.push({
+        name: linkName
+      })
     }
   }
 }
@@ -37,11 +60,13 @@ export default {
   .iconBox-wrapper {
     width: 100%;
     box-sizing: border-box;
-    // padding-left: 2.4vw;
-    // display: flex;
-    // flex-wrap: wrap;
-    // align-items: center;
+  }
+  .icon-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
   }
 }
+
  
 </style>

@@ -7,6 +7,24 @@ import api from './js/api.js'
 import VueTouch from 'vue-touch'
 import VueLazyload from 'vue-lazyload'
 
+//图片预览
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+var options={
+  fullscreenEl:false, //关闭全屏按钮
+  showHideOpacity:true
+}
+Vue.use(preview,options)
+
+//视频组件
+// import 'video.js/dist/video-js.css'
+
+// require('video.js/dist/video-js.css')   // 这个是videoJs的样式
+// require('vue-video-player/src/custom-theme.css') // 这个是vue-video-player的样式
+import VideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+Vue.use(VideoPlayer);
+
 import 'mint-ui/lib/style.min.css'
 import './index.scss'
 // import '../mockjs/index' 	

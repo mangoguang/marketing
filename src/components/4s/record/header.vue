@@ -4,13 +4,14 @@
     <div class="back_icon" @click="goBack">
       <img src="../../../assets/imgs/4s/backicon.png" alt="">
     </div>
-    <div class="title">检查记录</div>
-    <div class="shopText">名师家博览馆慕思店</div>
+    <div class="title">{{title}}</div>
+    <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
+  props: ['title'],
   data () {
     return {
       top: ''
