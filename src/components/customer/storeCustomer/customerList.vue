@@ -16,7 +16,7 @@
                 <li>{{item.followDate}}</li>
             </ul>
         </mt-loadmore>
-        <button type="button" class="new" :style="{bottom:bottom}" @click="newCustomer"></button>
+        <button type="button" class="new" v-if="type!=='per'" :style="{bottom:bottom}" @click="newCustomer"></button>
     </div>
 </template>
 <script>
@@ -29,6 +29,7 @@ import {btnList} from '../../../utils/gallery'
 import { IndexModel } from '../../../utils' 
 const indexModel = new IndexModel()
 export default {
+    props:['type','id'],
     data(){
         return {
             top:'',
@@ -67,7 +68,13 @@ export default {
         }
     },
     created(){
-        this.getCustomerList(this.cusomerAjaxParams)
+        let temp;
+        if(this.id){
+            temp = Object.assign(this.cusomerAjaxParams,{userId:this.id})
+        }else{
+            temp = this.cusomerAjaxParams
+        }
+        this.getCustomerList(temp)
     },
     mounted(){
         this.isIphone();   
@@ -75,23 +82,39 @@ export default {
     methods:{
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
         ...mapMutations(['setBtn','initShopList','getShopVal']),
-        ...mapMutations('storeCustomer',['setCustomerList','setCustomerAllLoaded','setCustomerScroll','setCustomerPage','initCustomerList']),
+        ...mapMutations('storeCustomer',['setStoreCustomerAjaxParams','setCustomerList','setCustomerAllLoaded','setCustomerScroll','setCustomerPage','initCustomerList']),
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
-               this.top="59.326vw";
-               this.paddingTop="63.986vw"
-               this.bottom="28vw"
-                this.paddingBottom='21.07vw'
+                if(this.type==='per'){
+                    this.top="56.461vw";
+                    this.paddingTop="60.78vw"
+                    this.bottom="0"
+                    this.paddingBottom='0'
+                }else{
+                    this.top="59.326vw";
+                    this.paddingTop="63.986vw"
+                    this.bottom="28vw"
+                    this.paddingBottom='21.07vw'
+                }
+              
             }else{
-                this.top="53.326vw";
-                this.paddingTop="63.986vw"
-                this.bottom="32vw"
-                this.paddingBottom='16.53vw'
+                if(this.type==='per'){
+                    this.top="50.461vw";
+                    this.paddingTop="60.78vw"
+                    this.bottom="0"
+                    this.paddingBottom='0'
+                }else{
+                    this.top="53.326vw";
+                    this.paddingTop="63.986vw"
+                    this.bottom="32vw"
+                    this.paddingBottom='16.53vw'
+                }
+                
             }  
         },
         initData(){
-            this.setCustomerScroll(0)
+                this.setCustomerScroll(0)
                 this.setCustomerAllLoaded(false)
                 let obj={
                     type:'New',
@@ -102,8 +125,11 @@ export default {
                     u:'',
                     l:'',
                     page: 1,
-                    limit: 30
+                    limit: 30,
+                    userId:this.id?this.id:''
                 }
+                this.setStoreCustomerAjaxParams(obj)
+                console.log('1111',obj)
                 this.getCustomerList(obj,'init')
         },
         listenScroll(){

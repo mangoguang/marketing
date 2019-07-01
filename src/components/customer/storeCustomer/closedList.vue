@@ -26,6 +26,7 @@ Vue.component(Loadmore.name, Loadmore);
 import { IndexModel } from '../../../utils'
 const indexModel = new IndexModel()
 export default {
+    props:['type','id'],
     data(){
         return {
           top:'',
@@ -58,7 +59,13 @@ export default {
         }
     },
     created(){
-        this.getList(this.params)
+        let temp;
+        if(this.id){
+            temp = Object.assign(this.params,{userId:this.id})
+        }else{
+            temp = this.params
+        }
+        this.getList(temp)
     },
     mounted(){
         this.isIphone();
@@ -70,13 +77,27 @@ export default {
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
-               this.top="59.326vw";
-               this.paddingTop="63.986vw"
-               this.paddingBottom='21.07vw'
+                if(this.type==='per'){
+                    this.top="56.461vw";
+                    this.paddingTop="60.78vw"
+                    this.paddingBottom='0'
+                }else{
+                    this.top="59.326vw";
+                    this.paddingTop="63.986vw"
+                    this.paddingBottom='21.07vw'
+                }
+              
             }else{
-                this.top="53.326vw";
-                this.paddingTop="63.986vw"
-                this.paddingBottom="16.53vw"
+                if(this.type==='per'){
+                    this.top="50.461vw";
+                    this.paddingTop="60.78vw"
+                    this.paddingBottom='0'
+                }else{
+                    this.top="53.326vw";
+                    this.paddingTop="63.986vw"
+                    this.paddingBottom="16.53vw"
+                }
+                
             }  
         },
         initData(){
@@ -88,7 +109,8 @@ export default {
                 sd:'',          //跟进日期
                 ed:'',
                 page: 1,  //页数
-                limit: 30    //每页条数
+                limit: 30,    //每页条数
+                userId:this.id?this.id:''
             }
             this.setClosedParams(obj)
             this.getList(obj,'init')
@@ -123,8 +145,6 @@ export default {
         linkTo(id){
             this.$router.push({path:"/customerInfo",query:{id:id}})
         }
-      
-      
        
     }
 }

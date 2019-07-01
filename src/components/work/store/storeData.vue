@@ -71,7 +71,7 @@ export default {
      
     },
     getPerStore(obj) {
-      indexModel.getDailyReport(obj).then((res) => {
+      indexModel.getPerStore(obj).then((res) => {
         if (res.data) {
           // 更改数据
           this.dailyList = res.data
