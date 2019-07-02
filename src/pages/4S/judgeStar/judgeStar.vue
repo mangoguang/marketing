@@ -10,17 +10,22 @@
                       :color='item.color'
                       @click.native="handleDetailsClick(index)"/>
     </ul>
+    <div class="eggNodeCard"> 
+      <egg-node-card />
+    </div>
   </div>
 </template>
 
 <script>
 import judgeHeader from '../../../components/4s/judgeStar/header'
 import eggListItem from '../../../components/4s/judgeStar/listItem'
+import eggNodeCard from '../../../components/4s/judgeStar/node_card'
 
 export default {
   components: {
     judgeHeader,
-    eggListItem
+    eggListItem,
+    eggNodeCard
   },
   data () {
     return {
@@ -75,6 +80,15 @@ export default {
     width: 100vw;
     height: calc(100vh - 35.33vw);
     overflow: scroll;
+  }
+  .eggNodeCard {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba($color: #000000, $alpha: 0.3);
+    z-index: 999;
   }
 }
 </style>
