@@ -113,39 +113,74 @@ export default {
         this.initData()
       }else{
         this.isShow=false
-        this.getDailyData({
-            startDate: this.curDay,
-            endDate: this.curDay
-        })
+        if(this._localAjax().typename === 'Boss&Consultant' ||this._localAjax().typename === 'Boss&Manager' ||this._localAjax().typename === 'Dealer Boss'){
+          this.getDailyData({
+              startDate: this.curDay,
+              endDate: this.curDay,
+              QueryYourself:0
+          })
+        }else{
+          this.getDailyData({
+              startDate: this.curDay,
+              endDate: this.curDay,
+              QueryYourself:1
+          })
+        }
+        
       }
     },
     getData(val){
       if(this.isShow&&this.tabList[0].status){
         this.getParamsAjax(val)
       }else{
-        this.getDailyData(val)
+        if(this._localAjax().typename === 'Boss&Consultant' ||this._localAjax().typename === 'Boss&Manager' ||this._localAjax().typename === 'Dealer Boss'){
+          let temp=Object.assign({},{QueryYourself:0},val)
+          this.getDailyData(temp)
+        }else{
+          let temp=Object.assign({},{QueryYourself:1},val)
+          this.getDailyData(temp)
+        }
+       
       }
     },
     getParamsAjax(val){
-      let userId=this._localAjax().userId;
-      let temp=Object.assign({},{userId:userId},val)
-      this.getDailyStoreReport(temp)
+      //let userId=this._localAjax().userId;
+      //let temp=Object.assign({},{userId:userId},val)
+      let temp=Object.assign({},{QueryYourself:0},val)
+      //this.getDailyStoreReport(temp)
+       this.getDailyData(temp)
     },
     initData(){
         if(this.isShow&&this.tabList[0].status){
           this.initParamsData()
         }else{
-         this.getDailyData({
-            startDate: this.curDay,
-            endDate: this.curDay
-          })
+          if(this._localAjax().typename === 'Boss&Consultant' ||this._localAjax().typename === 'Boss&Manager' ||this._localAjax().typename === 'Dealer Boss'){
+            this.getDailyData({
+              startDate: this.curDay,
+              endDate: this.curDay,
+              QueryYourself:0
+            })
+          }else{
+            this.getDailyData({
+              startDate: this.curDay,
+              endDate: this.curDay,
+              QueryYourself:1
+            })
+          }
+         
         }
     },
     initParamsData(){
-      this.getDailyStoreReport({
+      /* this.getDailyStoreReport({
             userId:this._localAjax().userId,
             startDate: this.curDay,
             endDate: this.curDay
+      }) */
+      this.getDailyData({
+            startDate: this.curDay,
+            endDate: this.curDay,
+            QueryYourself:0
+
       })
     }
   }

@@ -330,7 +330,7 @@ export default {
             height:100vh;
             background: rgba(0,0,0,.5);
             display: none;
-            border-top:1px solid #e1e1e1;
+            /* border-top:0.26vw solid #e1e1e1; */
             ul{
                 color:#909090;
                 font-size: 4vw;

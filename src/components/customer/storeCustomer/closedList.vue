@@ -80,7 +80,7 @@ export default {
                 if(this.type==='per'){
                     this.top="56.461vw";
                     this.paddingTop="60.78vw"
-                    this.paddingBottom='0'
+                    this.paddingBottom='11.73vw'
                 }else{
                     this.top="59.326vw";
                     this.paddingTop="63.986vw"
