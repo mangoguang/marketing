@@ -4,7 +4,7 @@
     <li class="starNav_title" 
         v-for="(item,index) in list" :key='item + index'
         @click="selectStar(index)"
-        :class="index === activeStar? 'activity' : ''">
+        :style="index === activeStar? activeColor : ''">
       <span >{{ item }}</span>
       <span class="text">|</span>
     </li>
@@ -18,13 +18,26 @@ export default {
     return {
       list: ['五星','四星','三星','二星','一星'],
       activeStar: 0,
-      timeoutId: null
+      timeoutId: null,
+      activeColor: {
+        color: '#007aff'
+      }
     };
   },
   created() {
     this.setStar()
+    this.setActivityColor()
   },
   methods: {
+    //设置颜色
+    setActivityColor() {
+      const color = this.$route.query && this.$route.query.color 
+      if(color) {
+        this.activeColor = {
+          color
+        }
+      }
+    },
     //初始的时候展示几颗星
     setStar() {
       const len = this.list.length 
@@ -70,8 +83,8 @@ export default {
       margin: 0 3.73vw;
     }
   }
-  .activity {
-    color: #007aff;
-  }
+  // .activity {
+  //   color: #007aff;
+  // }
 }
 </style>

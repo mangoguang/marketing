@@ -2,22 +2,21 @@
 <template>
   <div class="starCheckW" :style="{'margin-top':`${top}vw`}">
     <div class="header" :style="{'height':`${headerHeight}vw`}">
-      <StarHeader />
+      <egg-atest-header @getStatus="getStatus"/>
     </div>
     <ul class="content" :style="{'margin-top':`${top}vw,height: ${height}`}">
-      <shopItem v-for="i in 8" :key="i"/>
+      <egg-atest-card />
     </ul>
   </div>
 </template>
 
 <script>
-import StarHeader from '../../../components/4s/daliyCheck/starHeader'
-import shopItem from '../../../components/4s/starCheck/shopItem'
-
+import eggAtestHeader from '../../../components/4s/starAtest/atestHeader'
+import eggAtestCard from '../../../components/4s/starAtest/atest_card'
 export default {
   components: {
-    StarHeader,
-    shopItem
+    eggAtestHeader,
+    eggAtestCard
   },
   data () {
     return {
@@ -30,6 +29,9 @@ export default {
       this.isIPhoneX()
     },
     methods:{
+      getStatus(val) {
+        console.log(val)
+      },
       isIPhoneX() {
         let phone = this.phoneSize();
         if (phone === "iphonex") {

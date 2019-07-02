@@ -6,7 +6,7 @@
         <img src="../../../assets/imgs/4s/via.png" alt="">
       </div>
       <div class="name">广东深圳新国</div>
-      <star-card class="starCard" :starLevel='2'/>
+      <star-card class="starCard" :starLevel='2' :text="'检查'"/>
     </div>
     <ul class="content">
       <li class="shop_li" 

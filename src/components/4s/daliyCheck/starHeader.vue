@@ -2,28 +2,24 @@
 <template>
   <div class="starHeader">
     <star-header :title="'三星检查'">
-      <star-sort />
-      <!-- <div>搜索</div> -->
+      <egg-sort />
     </star-header>
   </div>
 </template>
 
 <script>
 import starHeader from '../record/header'
-import starSort from './starSort'
+import eggSort from '../filter/sort'
 
 export default {
   components: {
     starHeader,
-    starSort
+    eggSort
   },
   data () {
     return {
 
     };
-  },
-  methods: {
-    
   }
 }
 </script>

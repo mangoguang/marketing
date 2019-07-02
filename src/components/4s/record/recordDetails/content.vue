@@ -3,11 +3,11 @@
   <li class="rec_content border-bottom">
     <div class="left-box">
       <div class="now_score">
-        <span class="num">19</span>
+        <span class="num" :style="{color: activeColor}">19</span>
         <span class="fen">分</span>
       </div>
-      <div class="all_score">
-        <span>总分26</span>
+      <div class="all_score" :style="{border: `1px solid ${activeColor}`}">
+        <span :style="{color: activeColor}">总分26</span>
       </div>
     </div>
     <div class="center-box">
@@ -33,8 +33,19 @@
 export default {
   data () {
     return {
-
+      activeColor: ''
     };
+  },
+  mounted() {
+    this.getActiviColor()
+  },
+  methods: {
+    getActiviColor() {
+      const color = this.$route.query && this.$route.query.color
+      if(color) {
+        this.activeColor = '#F88675'
+      }
+    }
   }
 }
 </script>
@@ -62,26 +73,12 @@ export default {
       }
     }
     .all_score {
-      // border: 1px solid rgba(3, 122, 254, 0.99);
-      // border-radius: 0.8vw;
       text-align: center;
       color: #007aff;
       font-size: 2.4vw;
       font-weight: 500;
-      position: relative;
-       ::after {
-        content: '';
-        position: absolute;
-        top:0;
-        left:0;
-        box-sizing:border-box;
-        width:200%;
-        height:200%;
-        transform-origin:0 0 ;
-        transform:scale(0.5);
-        border:1px solid rgba(3, 122, 254, 0.99);
-        border-radius: 6px;
-      }
+      border:1px solid #007aff;
+      border-radius: 0.8vw;
     }
   }
   .center-box {

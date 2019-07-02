@@ -10,10 +10,11 @@
         :index="index"
         :key="`iconBox${index}`"
         />
-        <iconBox :type="'gradeReport'"
-        :iconData="data1"
-        :hasNew="'news'"
-        />
+        <iconBox  :type="'gradeReport'"
+                  :iconData="data1"
+                  :hasNew="'news'"
+                  @click.native="handleClick(data1.link)"
+                  />
       </div>
     </ContentBox>
   </div>
@@ -39,15 +40,11 @@ export default {
     }
   },
   methods: {
-    handleClick() {
-      console.log(123)
-      // this.$router.push({
-      //   name: linkName
-      // })
+    handleClick(linkName) {
+      this.$router.push({
+        name: linkName
+      })
     }
-  },
-  methods: {
-
   }
 }
 </script>
