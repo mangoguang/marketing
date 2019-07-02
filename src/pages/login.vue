@@ -339,30 +339,35 @@ export default {
             })
             console.log('nameStrs',nameStrs)
              //判断了经销商和导购或者经销商和店长
-            if(regManager.test(nameStrs) && regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
+            if(regBoss.test(nameStrs) && regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
               name = 'Boss&Manager'
-              return name
+              return name;
+            }else if(regBoss.test(nameStrs) && regManager.test(nameStrs)) {
+              name = 'Boss&Manager'
+              return name;
             }else if(regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
               name = 'Boss&Consultant'
-              return name
-            }else if(regManager.test(nameStrs) && regBoss.test(nameStrs)) {
-              name = 'Boss&Manager'
-              return name
+              return name;
+            }else if(regBoss.test(nameStrs)){
+              name = 'Dealer Boss'
+              return name;
             }else if(regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
               name = 'Store Manager'
-              return name
+              return name;
             }else if(regManager.test(nameStrs)){
               name = 'Store Manager'
-              return name
+              return name;
             }else if(regConsultant.test(nameStrs)) {
               name = 'Sleep Consultant'
-              return name
+              return name;
             }
           }else {
             name = 'other'
+            return name;
           }
         }else {
           name = name[0]
+          return name;
         }
       }
       return name
