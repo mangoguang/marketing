@@ -4,7 +4,7 @@
     <judge-header :title="'评星结果'">
       <egg-sort />
       <egg-filter />
-      <egg-searchBox @click.native="toSearchIndex"/>
+      <!-- <egg-searchBox @click.native="toSearchIndex"/> -->
     </judge-header>
   </div>
 </template>
@@ -28,11 +28,11 @@ export default {
     };
   },
   methods: {
-    toSearchIndex() {
-      this.$router.push({
-        name: 'searchIndex'
-      })
-    }
+    // toSearchIndex() {
+    //   this.$router.push({
+    //     name: 'searchIndex'
+    //   })
+    // }
   }
 }
 </script>

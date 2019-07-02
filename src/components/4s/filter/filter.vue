@@ -1,11 +1,11 @@
 <!--  -->
 <template>
-  <div class="starFilter">
+  <div class="starFilter" >
     <div class="filterIcon">
       <egg-filter-icon :filterText="'筛选'" 
-                        @click.native="handleClick"/>
+                        @click.native="handleCloseClick"/>
     </div>
-    <div class="filterContent" v-show="status">
+    <div class="filterContent" v-show="status" @click.self="handleCloseClick">
       <egg-filter-content @getVal="getVal"/>
     </div>
   </div>
@@ -26,7 +26,7 @@ export default {
     };
   },
   methods: {
-    handleClick() {
+    handleCloseClick() {
       this.status = !this.status
     },
     getVal(val) {

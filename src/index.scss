@@ -15,6 +15,12 @@
   }
 }
 
+.omit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 // .topTri {      //三角形
 //   height: 0;
 //   width: 0;

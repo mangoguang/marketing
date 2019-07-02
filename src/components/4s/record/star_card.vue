@@ -7,13 +7,13 @@
       <img  v-for="(item,index) in (5 - level)" :key="item + index"
               src="../../../assets/imgs/4s/star_white.png" alt="">
       </div>
-      <div class="level_text">{{getNumText(level)}}星检查</div>
+      <div class="level_text">{{getNumText(level)}}星{{text}}</div>
     </div>
 </template>
 
 <script>
 export default {
-  props: ['starLevel'],
+  props: ['starLevel','text'],
   data () {
     return {
       level: ''
