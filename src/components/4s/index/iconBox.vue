@@ -2,7 +2,7 @@
 
 <template>
   <!-- 星级检查图标 -->
-  <div  class="iconBox_wrapper" v-if="type === 'dailyCheck'">
+  <div :class="`iconBox_wrapper ${row ? 'row' : ''}`" v-if="type === 'dailyCheck'">
     <div
       @click="toCheck"
       class="starImg"
@@ -47,7 +47,7 @@
 <script>
 import getClassCN from '../../../utils/getClassCN'
 export default {
-  props: ["type", "storeClass", "index",'iconData','hasNew'],
+  props: ["type", "storeClass", "index",'iconData','hasNew', 'row'],
   data() {
     return {
       storeClassCN: this.getClassCN()
@@ -57,6 +57,7 @@ export default {
     toCheck() {
       if (this.index + 1 <= this.storeClass) {
         console.log("跳转" + (this.index + 1));
+        this.$router.push({path: '/starCheck'})
       } else {
         console.log("未达等级");
       }
@@ -162,6 +163,7 @@ export default {
   justify-content: center;
   .text{
     font-size: 24px;
+    padding-left: 3vw;
   }
 }
 </style>

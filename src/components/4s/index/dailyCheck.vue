@@ -10,10 +10,10 @@
         :index="index"
         :key="`iconBox${index}`"
         />
-        <iconBox  :type="'gradeReport'"
-                  :iconData="data1"
-                  :hasNew="'news'"
-                  />
+        <iconBox :type="'gradeReport'"
+        :iconData="data1"
+        :hasNew="'news'"
+        />
       </div>
     </ContentBox>
   </div>

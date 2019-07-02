@@ -26,8 +26,12 @@ export default {
   display: flex;
   justify-content: space-around;
   height: 10.67vw;
-  padding-top: 35.33vw;
+  position: fixed;
+  top: 35.33vw;
+  width: 100%;
+  z-index: 1;
   color: #767A7F;
+  background: #f8f8f8;
   line-height: 10.67vw;
   .totalPoints{
     position: relative;

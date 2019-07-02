@@ -7,6 +7,7 @@
     :index="0"
     :key="`iconBox${'1'}`"
     :row="true"
+    :type="'dailyCheck'"
     />
     <BigCategory />
   </div>
