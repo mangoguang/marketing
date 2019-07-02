@@ -6,12 +6,13 @@
     </div>
     <ul class="content" :style="{'margin-top':`${top}vw,height: ${height}`}">
       <egg-list-item  v-for="(item,index) in list" :key='item + index'
-                      :status="item.status"
-                      :color='item.color'
-                      @click.native="handleDetailsClick(index)"/>
+                      :state="item.state"
+                      :status='item.status'
+                      :star="item.star"
+                      @click.native="handleDetailsClick(index,item.star)"/>
     </ul>
-    <div class="eggNodeCard"> 
-      <egg-node-card />
+    <div class="eggNodeCard" v-show="showStatus"> 
+      <egg-node-card  @getClick='getClick' :star="star"/>
     </div>
   </div>
 </template>
@@ -34,26 +35,35 @@ export default {
       headerHeight: '',
       list: [
         {
-          status: '区域未通过',
-          color: '#ff001e'
+          state: '区域未通过',
+          status: 0,
+          star: 2
         },
         {
-          status: '区域未验收',
-          color:'#F9357F'
+          state: '区域未验收',
+          status:0,
+          star: 3
         },
         {
-          status: '已认证',
-          color: '#007AFF'
+          state: '已认证',
+          status: 1,
+          star: 4
         }
-      ]
+      ],
+      showStatus: false,
+      star: ''
     };
   },
    mounted(){
       this.isIPhoneX()
     },
     methods:{
-      handleDetailsClick(index) {
-
+      handleDetailsClick(index,star) {
+        this.showStatus = !this.showStatus
+        this.star = star
+      },
+      getClick(val) {
+        this.showStatus = !this.showStatus
       },
       isIPhoneX() {
         let phone = this.phoneSize();

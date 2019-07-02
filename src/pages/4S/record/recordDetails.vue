@@ -20,6 +20,7 @@ import starHeader from '../../../components/4s/record/recordDetails/header'
 import starNav from '../../../components/4s/record/recordDetails/starNav'
 import CircleView from '../../../components/4s/record/recordDetails/CircleView'
 import recordContent from '../../../components/4s/record/recordDetails/contentWrapper'
+
 export default {
   components: {
     starHeader,

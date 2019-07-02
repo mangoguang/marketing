@@ -2,8 +2,8 @@
 <template>
   <div class="listItem">
     <div class="header">
-      <h1 :style="{color: color}">{{status}}</h1>
-      <eggStarCard class="star_card" :starLevel='2' :text="'认证'"/>
+      <h1 :style="{color: status? '#007aff' : '#FF001E'}">{{state}}</h1>
+      <eggStarCard class="star_card" :starLevel='star' :text="'认证'"/>
     </div>
     <div class="name omit">
       <span>经销商：广东广州王泉</span>
@@ -13,7 +13,7 @@
         <span class="left_text">{{ item.text }}:</span>
         <span class="right_text" 
               v-if="item.type === 'score'"
-              :style="{color: color}">
+              :style="{color: status? '#007aff' : '#FF001E'}">
               {{ item.score }}
         </span>
         <span class="right_date" v-else>{{ item.date }}</span>
@@ -28,7 +28,7 @@ export default {
   components: {
     eggStarCard
   },
-  props: ['status','color'],
+  props: ['state','status','star'],
   data () {
     return {
       list: [
@@ -38,7 +38,12 @@ export default {
           score: '84'
         },
         {
-          text: '门店评分',
+          text: '区域评分',
+          type: 'score',
+          score: '--'
+        },
+        {
+          text: '4s评分',
           type: 'score',
           score: '--'
         },
@@ -60,7 +65,7 @@ export default {
 <style lang='scss' scoped>
 .listItem {
   width: 94.66vw;
-  height: 55.46vw;
+  // height: 55.46vw;
   background: #fff;
   box-shadow:0px 0px 1.2vw 0px rgba(204,204,204,0.3);
   border-radius:2.4vw;
@@ -123,5 +128,11 @@ export default {
       color: #0e0e0e;
     }
   }
+}
+.red{
+  color: #FF001E
+}
+.blue {
+  color: #007aff;
 }
 </style>
