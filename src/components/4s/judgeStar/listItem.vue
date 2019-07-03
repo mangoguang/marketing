@@ -2,7 +2,7 @@
 <template>
   <div class="listItem">
     <div class="header">
-      <h1 :style="{color: status? '#007aff' : '#FF001E'}">{{state}}</h1>
+      <h1 :style="{color: status? '#02b757' : '#fc0000'}">{{state}}</h1>
       <eggStarCard class="star_card" :starLevel='star' :text="'认证'"/>
     </div>
     <div class="name omit">
@@ -13,7 +13,7 @@
         <span class="left_text">{{ item.text }}:</span>
         <span class="right_text" 
               v-if="item.type === 'score'"
-              :style="{color: status? '#007aff' : '#FF001E'}">
+              :style="{color: status? '#02b757' : '#fc0000'}">
               {{ item.score }}
         </span>
         <span class="right_date" v-else>{{ item.date }}</span>

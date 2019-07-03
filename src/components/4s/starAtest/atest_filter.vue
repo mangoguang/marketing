@@ -89,6 +89,7 @@ export default {
     top: 47.31vw;
     left: 0;
     background: rgba($color: #000, $alpha: 0.3);
+    z-index: 99;
   }
   .filterContent {
     position: fixed;

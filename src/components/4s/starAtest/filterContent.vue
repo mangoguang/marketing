@@ -8,12 +8,12 @@
           <p>起始日</p>
           <strong>{{startDateVal}}</strong>
         </li>
-        <li><span>至</span></li>
+        <li><div class="center">至</div></li>
         <li @click="openDatePicker('end')">
           <p>结束日</p>
           <strong>{{endDateVal}}</strong>
         </li>
-        <li><span>共{{countTime + 1}}日</span></li>
+        <li><div class="center">共{{countTime + 1}}日</div></li>
       </ul>
     </div>
     <div class="filter" >
@@ -36,18 +36,16 @@
                         @click.native="handleSituationClick(index)"/>
       </ul>
     </div>
-    <li>
         <!-- 日期插件 -->
-        <mt-datetime-picker
-          ref="datePicker"
-          type="date"
-          v-model="pickerValue"
-          year-format="{value} 年"
-          month-format="{value} 月"
-          day-format="{value} 日"
-          @confirm="handleConfirm">
-        </mt-datetime-picker>
-      </li>
+    <mt-datetime-picker
+      ref="datePicker"
+      type="date"
+      v-model="pickerValue"
+      year-format="{value} 年"
+      month-format="{value} 月"
+      day-format="{value} 日"
+      @confirm="handleConfirm">
+    </mt-datetime-picker>
     <div class="btn">
       <button class="reset" @click="handleReset">重置</button>
       <button class="comfirm" @click="handleComfirm">完成</button>
@@ -74,13 +72,12 @@ export default {
       pickerValue: new Date(),
       startDateVal: '',
       endDateVal: mango.indexTime(new Date(), 'day'),
-       dateType: ''
+      dateType: ''
     };
   },
   computed: {
     countTime() {
       let [start, end] = [(new Date(this.startDateVal)).getTime(), (new Date(this.endDateVal)).getTime()]
-      // console.log('time:', start/86400000, end/86400000)
       return Math.ceil((end - start)/86400000)
     }
   },
@@ -105,7 +102,7 @@ export default {
       this.situationActiveIndex = index
     },
     handleReset() {
-       this.initStartDateVal();
+      this.initStartDateVal();
       this.endDateVal= mango.indexTime(new Date(), 'day');
 
       this.starActiveIndex = - 1
@@ -122,7 +119,9 @@ export default {
         starlist: this.starlist,
         starActiveIndex: this.starActiveIndex,
         handleList: this.handleList,
-        situationActiveIndex: this.situationActiveIndex
+        situationActiveIndex: this.situationActiveIndex,
+        startDay: this.startDateVal,
+        endDay: this.endDateVal
       }
     },
     initStartDateVal() {
@@ -233,9 +232,10 @@ export default {
     font-size:2.93vw; 
     line-height: 3vw;
   }
-  span {
+  .center {
     color: #999;
     font-size:2.93vw; 
+    padding-top: 3.8vw;
   }
   strong {
     color: #363636;
