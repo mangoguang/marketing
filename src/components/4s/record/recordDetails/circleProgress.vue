@@ -11,7 +11,7 @@
         <span class="num">{{this.scoreArr[0]}}</span>
         <span class="num1">{{this.scoreArr[1]}}</span>
       </p>
-      <p class="num_star">{{star || '一星评分'}} </p>
+      <p class="num_star">{{star + '评分' || '一星评分'}} </p>
     </div>
   </div>
 </template>

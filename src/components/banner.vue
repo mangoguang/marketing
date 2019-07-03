@@ -54,7 +54,7 @@ export default {
 .banner{
   // font-family: PINGPANG;
   font-weight: 600;
-  z-index: 999;
+  z-index: 99;
   height: 16.466vw;
   width: 100vw;
   box-sizing: border-box;

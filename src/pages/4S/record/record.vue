@@ -2,9 +2,11 @@
 <template>
   <div class="record"  :style="{'margin-top':`${top}vw`}">
     <div class="header">
-      <recordHeader />
+      <recordHeader :title="'检查记录'">
+        <div class="shopText">名师家博览馆慕思店</div>
+      </recordHeader>
     </div>
-    <div class="content" :style="{'margin-top':`${top}vw`}">
+    <div class="record_content" :style="{'margin-top':`${top}vw`}">
       <div class="new_record">
         <p>最新记录</p>
         <recordCard />
@@ -47,13 +49,26 @@ export default {
 <style lang='scss' scoped>
 .record {
   background: #fff;
-  min-height: 100vh;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden;
   .header {
     width: 100vw;
     height: 35.33vw;
+    .shopText {
+      position: absolute;
+      right: 6.4vw;
+      bottom: 3vw;
+      color: rgba($color: #fff, $alpha: 0.5);
+      font-weight: 500;
+      font-size: 3.46vw;
+    }
   }
-  .content {
+  .record_content {
     width: 100vw;
+    height: calc(100vh - 35.33vw);
+    box-sizing: border-box;
+    overflow: scroll;
     padding: 0 2.13vw;
     box-sizing: border-box;
     text-align: center;
@@ -61,7 +76,7 @@ export default {
     line-height: 10.66vw;
     .pre_record {
       width: 100%;
-      height: 10vw;
+      
       .pre_text {
         position: relative;
         &::before{
@@ -86,9 +101,10 @@ export default {
         }
       }
     }
-  }
-  .recordCard {
+    .recordCard {
     margin-bottom: 4vw;
   }
+  }
+
 }
 </style>
