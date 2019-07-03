@@ -68,13 +68,14 @@ export default {
         }
     },
     created(){
-        let temp;
+        this.initData()
+        /* let temp;
         if(this.id){
             temp = Object.assign(this.cusomerAjaxParams,{userId:this.id})
         }else{
             temp = this.cusomerAjaxParams
         }
-        this.getCustomerList(temp)
+        this.getCustomerList(temp) */
     },
     mounted(){
         this.isIphone();   

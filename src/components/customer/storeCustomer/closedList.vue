@@ -59,13 +59,14 @@ export default {
         }
     },
     created(){
-        let temp;
+        /* let temp;
         if(this.id){
             temp = Object.assign(this.params,{userId:this.id})
         }else{
             temp = this.params
         }
-        this.getList(temp)
+        this.getList(temp) */
+        this.initData()
     },
     mounted(){
         this.isIphone();

@@ -64,7 +64,7 @@ export default {
         }
     },
     created(){
-        this.getList(this.params);
+        this.getList(this.params,'init');
     },
     mounted(){
         this.isIphone();
