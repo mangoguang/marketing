@@ -443,9 +443,32 @@ class IndexModel extends Request {
   }
   //根据门店id获取门店员工列表
   getStoreEmployeeList(obj){
-    return mango.getAjax('/v2/app/check/shopuser',obj)
+    return mango.getAjax('/v3/app/shopuser',obj)
   }
-   
+  //查询工作计划
+  getPlanList(obj){
+    return mango.getAjax('/v3/app/workplan/workplanlist',obj)
+  }
+  //查询客户列表
+  getCustomerList(obj){
+    return mango.getAjax('/v3/app/customers2',obj)
+  }
+  //查询客户意向列表
+  getOppList(obj){
+    return mango.getAjax('/v3/app/customer/opportunitylist',obj)
+  }
+  //保存工作计划
+  saveWorkPlan(obj,key,jsonData) {
+    return mango.getFormAjax('/v3/app/workplan/save',obj,key,jsonData)
+  }
+  //根据工作计划id查看详情
+  getPlanDetail(id){
+    return mango.getAjax('/v3/app/workplan/workplandetail',{id:id})
+  }
+  //修改工作计划
+  updateWorkPlan(obj,key,jsonData){
+    return mango.getFormAjax('/v3/app/workplan/update',obj,key,jsonData)
+  }
 }
 
 export { IndexModel }

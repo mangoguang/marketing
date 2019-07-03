@@ -52,6 +52,7 @@ import store from './modules/components/storeCustomer/storeCustomer'
 import employeeList from './modules/employee/employeeList'
 import shopList from './modules/store/shopList'
 import storeEmployeeList from './modules/store/storeEmployeeList'
+import plan from './modules/work/plan'
 import eggRecordDetails from './modules/4s/recordDetails' 
 export default new Vuex.Store({
   state,
@@ -107,6 +108,7 @@ export default new Vuex.Store({
     employeeList,
     shopList,
     storeEmployeeList,
+    plan,
     eggRecordDetails
   }
 })

@@ -46,6 +46,11 @@ const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
 //经销商模块
 const shopList = () => import("../pages/work/shopList")
 const shopDetail = () => import("../pages/work/storeDetail")
+const employeeDetail = () => import("../pages/work/employeeDetail")
+const workPlan  = () => import("../pages/work/workPlan")
+const newWorkPlan = () => import("../pages/work/newWorkPlan")
+const searchCustomer = () => import("../pages/work/searchCustomer")
+const searchIntention = () => import("../pages/work/searchIntention")
 
 
 //4S模块
@@ -470,6 +475,37 @@ export var router = new VueRouter({
     name:'shopDetail',
     component:shopDetail,
     props:true
+  },
+  {
+    path:'/employeeDetail/:id/:name',
+    name:'employeeDetail',
+    component:employeeDetail,
+    props:true
+  },
+  {
+    path:'/workPlan',
+    name:'workPlan',
+    component:workPlan
+  },
+  {
+    path:'/newWorkPlan',
+    name:'newWorkPlan',
+    component:newWorkPlan,
+    meta:{
+      keepAlive:true,
+      isUseCache:false
+    },
+    props:(route) => ({id: route.query.id})
+  },
+  {
+    path:'/searchCustomer',
+    name:'searchCustomer',
+    component:searchCustomer
+  },
+  {
+    path:'/searchIntention',
+    name:'searchIntention',
+    component:searchIntention
   },
   //4s
   {

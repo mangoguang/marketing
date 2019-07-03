@@ -76,8 +76,8 @@ export default {
    getData(obj){
      indexModel.getShopList(obj).then((res) => {
        if(res.status===1){
+          this.setList(res.data)
          if(res.data.length>0){
-            this.setList(res.data)
             this.status=''
          }else{
            this.status='暂无记录'
@@ -93,7 +93,7 @@ export default {
      })
    },
    go(id,name){
-     this.$router.push({path:`/shopDetail/${id}/${name}`})
+      this.$router.push({name:'shopDetail',params:{id:id,name:name}})
    }
   }
 };

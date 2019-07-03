@@ -1,7 +1,8 @@
 <template>
   <div class="remark">
     <p>{{label}}<span class="yan-red" v-show="required">*</span></p>
-    <textarea name="" id="" :maxlength='maxlength' :placeholder="placeholder"  :readonly='readonly' :value="value" @input="$emit('input',$event.target.value)"></textarea>
+    <p v-if="readonly" class="value">{{value}}</p>
+    <textarea v-else name="" id="" :maxlength='maxlength' :placeholder="placeholder"  :readonly='readonly' :value="value" @input="$emit('input',$event.target.value)"></textarea>
   </div>
 </template>
 
@@ -23,7 +24,7 @@ export default {
       color:#363636;
       font-size:4vw;
       padding-left: 4.266vw;
-      margin-top:4vw;
+      margin-top:2.666vw;
       margin-bottom:2.666vw;
        .yan-red{
         color:#FB222B;
@@ -59,6 +60,14 @@ export default {
       padding:4.266vw;
       box-sizing: border-box;
       overflow: scroll;
+    }
+    .value{
+      padding:4.266vw;
+      text-align: justify;
+      word-break: break-all;
+      background: #fff;
+      border-top:1px solid #e1e1e1;
+      border-bottom:1px solid #e1e1e1;
     }
   }
 </style>

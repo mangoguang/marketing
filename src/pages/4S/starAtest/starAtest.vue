@@ -5,7 +5,9 @@
       <egg-atest-header @getStatus="getStatus"/>
     </div>
     <ul class="content" :style="{'margin-top':`${top}vw,height: ${height}`}">
-      <egg-atest-card />
+      <egg-atest-filter v-show="status === 'record'"/>
+      <egg-atest-card v-show="status === 'atest'"/>
+      <egg-atest-record-card v-show="status === 'record'"/>
     </ul>
   </div>
 </template>
@@ -13,16 +15,22 @@
 <script>
 import eggAtestHeader from '../../../components/4s/starAtest/atestHeader'
 import eggAtestCard from '../../../components/4s/starAtest/atest_card'
+import eggAtestRecordCard from '../../../components/4s/starAtest/atest_record_card'
+import eggAtestFilter from '../../../components/4s/starAtest/atest_filter'
+
 export default {
   components: {
     eggAtestHeader,
-    eggAtestCard
+    eggAtestCard,
+    eggAtestRecordCard,
+    eggAtestFilter
   },
   data () {
     return {
       top: '',
       height: '',
-      headerHeight: ''
+      headerHeight: '',
+      status: 'atest'
     };
   },
    mounted(){
@@ -30,7 +38,7 @@ export default {
     },
     methods:{
       getStatus(val) {
-        console.log(val)
+        this.status = val === '发起申请'? 'atest' : 'record'
       },
       isIPhoneX() {
         let phone = this.phoneSize();
