@@ -22,7 +22,7 @@ export default {
   props: ['intentionVal'],
   data() {
     return {
-      keyBtns: mango.btnList(['A', 'B', 'C']),
+      keyBtns: mango.btnList(['A', 'B', 'C','D']),
       val: ''
     }
   },
@@ -49,7 +49,7 @@ export default {
       if(this.keyBtns[i].status) {
         return
       }
-      this.val = i === 0? "A" : i === 1? 'B' : 'C'
+      this.val = i === 0? "A" : i === 1? 'B' : i === 2 ? 'C':'D'
       this.intentionVal(this.val)
       mango.changeBtnStatus(this.keyBtns, i)
     }
@@ -83,7 +83,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     li {
-      width: 21.33vw;
+      width: 15vw;
       height: 10.66vw;
       border-radius: 1.6vw;
       background: #fff;

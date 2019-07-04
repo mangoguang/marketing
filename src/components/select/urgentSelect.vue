@@ -76,7 +76,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     li {
-      width: 21.33vw;
+      width: 15vw;
       height: 10.66vw;
       border-radius: 1.6vw;
       background: #fff;

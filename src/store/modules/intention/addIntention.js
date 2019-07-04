@@ -78,7 +78,7 @@ const state = {
       label:'备注信息',
       placeholder:'添加备注信息'
     },
-    classify:["A","B","C"],
+    classify:["A","B","C","D"],
     urgency:['是','否']
   },
   titleModule:{
