@@ -15,18 +15,16 @@
 
 <script>
 export default {
+  props: ['list'],
   data () {
     return {
-      list: ['检查时间升序','检查时间降序'],
       activeIndex: 0
     };
   },
   methods: {
     handleClick(index) {
       this.activeIndex = index
-      const list = this.list
       const data = {
-        list,
         index
       }
       this.$emit('selectIndex',data)

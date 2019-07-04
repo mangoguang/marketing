@@ -3,13 +3,14 @@
   <div class="starSort">
     <div class="sortIcon">
       <egg-filter-icon  :filterText="sortText" 
-                    :changeStatus="changeStatus"
-                    @click.native="handleClick"/>
+                        :changeStatus="changeStatus"
+                        @click.native="handleClick"/>
     </div>
     <div  class="sortContentWrapper" 
           :style="{'top':`${top}vw`}"
           v-show="status">
-      <egg-sort-content @selectIndex="selectIndex"/>
+      <egg-sort-content @selectIndex="selectIndex"
+                        :list="list"/>
     </div>
   </div>
 </template>
@@ -28,12 +29,13 @@ export default {
       selectData: {},
       status: false,
       sortText: '检查时间升序',
+      list: ['检查时间升序','检查时间降序'],
       top:''
     };
   },
   computed: {
     changeStatus() {
-      return this.selectData  
+      return this.sortSelectData  
     }
   },
   created() {
@@ -41,13 +43,13 @@ export default {
   },
   methods: {
     handleClick() {
-      this.selectData = {}
+      this.sortSelectData = {}
       this.status = !this.status
     },
     selectIndex(val) {
-      this.selectData = val       //选择的数据
-      const {index, list} = val
-      this.sortText = list[index]
+      this.sortSelectData = val       //选择的数据
+      const {index} = val
+      this.sortText = this.list[index]
       this.status = !this.status
     },
     isIPhoneX() {
