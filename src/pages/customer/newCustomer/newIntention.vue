@@ -60,8 +60,10 @@ export default {
   beforeRouteLeave(to, from, next) {
      if(to.name == '/CustomerInfo'){
        this.clearData()
+       this.setCheckedList([])
       }else if(to.name == '/enquiryInfo') {
         this.clearData()
+        this.setCheckedList([])
       }
     next(vm => {
      

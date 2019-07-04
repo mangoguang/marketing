@@ -7,7 +7,7 @@
         :style="{'top': top}"
         />
     <div class="titleBar">
-      <div class="title">{{ articleDetails.title }}</div>
+      <div class="title"><img v-show="logoImageUrl!==''" :src="logoImageUrl"/>{{articleDetails.title}}</div>
       <!-- <span>{{ articleDetails.createTime }}</span> -->
       <div v-if="articleDetails.author" style="color:#909090;font-size:14px">
         作者：{{articleDetails.author}}&nbsp;&nbsp;
@@ -36,7 +36,8 @@ export default {
       articleDetails: '',
       top: '',
       account: '',
-      imgSrc:[]
+      imgSrc:[],
+      logoImageUrl:''
     }
   },
   created() {
@@ -110,6 +111,7 @@ export default {
       const id = this.articleId
       indexModel.getArticleDetail(id, this.account).then(res => {
         this.articleDetails = res.data
+        this.logoImageUrl = res.data.logoImageUrl
         if(res.data.remark) {
           let temp = res.data.remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
@@ -194,6 +196,17 @@ export default {
       margin: 0 auto;
       font-weight: bold;
       margin-bottom:1.4vw;
+      img{
+          display: inline-block;
+          width: 4.8vw;
+          height: 4.8vw;
+         // background: red;
+          vertical-align:-3px;
+          margin-right:2px;
+          background-repeat: no-repeat;
+          background-position: center center;
+          background-size: 4.8vw 4.8vw;
+      }
     }
     span {
       color: #909090;

@@ -101,7 +101,7 @@ export default {
     },
     compareDate(date){
         let arr = this.dateList.map((item,index) => {
-            return item.startTime.split(' ')[0]
+            return item.dateTime
         })
         return arr.includes(date)
     }

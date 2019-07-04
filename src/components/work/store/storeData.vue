@@ -49,7 +49,7 @@ export default {
             let temp=Object.assign({},{shopId:this.id},val)
             this.getPerStore(temp)
         }else{
-            let temp=Object.assign({},{userId:this.id},val)
+            let temp=Object.assign({},{userId:this.id,QueryYourself:1},val)
             this.getPerEmployee(temp)
         }
     }
@@ -65,13 +65,13 @@ export default {
            let temp=Object.assign({},{shopId:this.id},obj)
            this.getPerStore(temp)
       }else{
-          let temp=Object.assign({},{userId:this.id},obj)
+          let temp=Object.assign({},{userId:this.id,QueryYourself:1},obj)
           this.getPerEmployee(temp)
       }
      
     },
     getPerStore(obj) {
-      indexModel.getDailyReport(obj).then((res) => {
+      indexModel.getPerStore(obj).then((res) => {
         if (res.data) {
           // 更改数据
           this.dailyList = res.data
@@ -108,7 +108,8 @@ export default {
             this.getPerEmployee({
                 userId:this.id,
                 startDate: this.curDay,
-                endDate: this.curDay
+                endDate: this.curDay,
+                QueryYourself:1
             })
         }
         
