@@ -37,6 +37,7 @@ export default {
   .icon {
     width: 2.26vw;
     height: auto;
+    margin-left: 1.4vw;
   }
   .rotate {
     transform: rotate(180deg)

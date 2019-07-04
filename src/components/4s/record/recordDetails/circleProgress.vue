@@ -2,14 +2,18 @@
 <template>
   <div class="circleProgress">
     <div class="clip" :class="score>=50? 'auto' : ''">
-      <div class="left" :class="score>=50? '' : 'width-none'"></div>
-      <div class="right" :style="RightStyle"></div>
+      <div  class="left" 
+            :class="score>=50? '' : 'width-none'"
+            :style="{borderColor: activeColor}" ></div>
+      <div  class="right" 
+            :style="RightStyle"
+            ></div>
     </div>
     <div class="bottom"></div>
     <div class="num_box">
-      <p>
-        <span class="num">{{this.scoreArr[0]}}</span>
-        <span class="num1">{{this.scoreArr[1]}}</span>
+      <p >
+        <span class="num" :style="{color: textColor}">{{this.scoreArr[0]}}</span>
+        <span class="num1" :style="{color: textColor}">{{this.scoreArr[1]}}</span>
       </p>
       <p class="num_star">{{star + '评分' || '一星评分'}} </p>
     </div>
@@ -22,20 +26,31 @@ export default {
   data () {
     return {
       RightStyle: {},
-      scoreArr: ''
+      scoreArr: '',
+      activeColor: '',
+      textColor: ''
     };
   },
   created() {
+    this.getActiveColor()
     this.initRotate()
   },
   methods: {
+    getActiveColor() {
+      const color = this.$route.query && this.$route.query.color
+      if(color) {
+        this.activeColor = color
+        this.textColor = '#2d2d2d'
+      }
+    },
     initRotate() {
       if(!this.score) {
         this.scoreArr= [0]
         return
       }
       this.RightStyle = {
-        transform: 'rotate('+ 3.3*this.score + 'deg)'
+        transform: 'rotate('+ 3.3*this.score + 'deg)',
+        borderColor: this.activeColor
       }
       this.scoreArr = this.score >= 10 && this.score < 100? [parseInt(this.score/10) ,this.score%10]:[this.score]
     }
@@ -129,5 +144,8 @@ div{
   z-index: 99;
   border-radius: 50%;
   box-sizing: border-box;
+}
+.borderColor {
+  color: '#F88675'
 }
 </style>

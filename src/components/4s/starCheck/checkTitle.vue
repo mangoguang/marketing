@@ -22,11 +22,11 @@ export default {
   methods: {
     close() {
       this.status = false
-      this.$emit('changeStatus', index, true)
+      this.$emit('changeStatus', this.index, false)
     },
     open() {
       this.status = true
-      this.$emit('changeStatus', index, true)
+      this.$emit('changeStatus', this.index, true)
     }
   }
 }

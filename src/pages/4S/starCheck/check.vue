@@ -1,24 +1,36 @@
 <!--  -->
 <template>
   <div class="check">
-    <RecordHeader />
-    <div v-for="(item, index) in bigCategoryList" :key="`bigCategoryList${index}`">
-      <SubHeader
-      v-if="index === 0"
-      :text="item.title"
-      :totalPoints="total.totalPoints"
-      :deductMarks="total.deductMarks"
-      />
-      <CheckTitle 
-      v-else
-      :title="item.title"
-      :index="index"
-      @changeStatus="changeStatus"
-      />
-      <CheckContent
-      :list="item.checkList"
-      :status="statusList[index]"
-      />
+    <RecordHeader :title="'店面SI标准一阶段'" />
+    <div class="contentBox">
+      <div
+      v-for="(item, index) in bigCategoryList"
+      :key="`bigCategoryList${index}`"
+      :class="{paddingTop10: index === 0}"
+      >
+        <SubHeader
+        class="firstTitle"
+        v-if="index === 0"
+        :text="item.title"
+        :totalPoints="total.totalPoints"
+        :deductMarks="total.deductMarks"
+        />
+        <CheckTitle
+        v-else
+        :title="item.title"
+        :index="index"
+        @changeStatus="changeStatus"
+        />
+        <CheckContent
+        :list="item.checkList"
+        :status="statusList[index]"
+        />
+      </div>
+      <!-- 底部按钮 -->
+      <div>
+        <button>重置</button>
+        <button>提交</button>
+      </div>
     </div>
   </div>
 </template>
@@ -43,6 +55,7 @@ export default {
       },
       bigCategoryList: [
         {
+          status: true,
           title: 'SI/VI应用规范及维护',
           checkList: [
             {
@@ -60,6 +73,7 @@ export default {
             }
           ]
         }, {
+          status: false,
           title: 'SI/VI检查',
           checkList: [
             {
@@ -77,6 +91,7 @@ export default {
             }
           ]
         }, {
+          status: false,
           title: '形象检查',
           checkList: [
             {
@@ -105,9 +120,10 @@ export default {
     }
   },
   methods: {
+    // 控制评分细则的显示/隐藏
     changeStatus(index, status) {
-      console.log(index, status)
-    } 
+      this.bigCategoryList[index].status = status
+    }
   },
   mounted() {
     console.log('success', this.statusList)
@@ -116,6 +132,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 .check {
-
+  .contentBox{
+    padding-top: 46vw;
+  }
 }
 </style>

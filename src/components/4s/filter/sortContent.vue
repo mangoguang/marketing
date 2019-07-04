@@ -15,18 +15,16 @@
 
 <script>
 export default {
+  props: ['list'],
   data () {
     return {
-      list: ['全部','申请时间升序','申请时间降序'],
       activeIndex: 0
     };
   },
   methods: {
     handleClick(index) {
       this.activeIndex = index
-      const list = this.list
       const data = {
-        list,
         index
       }
       this.$emit('selectIndex',data)
@@ -37,12 +35,13 @@ export default {
 <style lang='scss' scoped>
 .sortContent {
   width: 100vw;
-  // background: #f8f8f8;
-  // opacity: 0.23;
+  height: 100vh;
   .content {
+    width: 100vw;
     background: #f8f8f8;
     padding: 0 4.4vw;
     box-sizing: border-box;
+    position: absolute;
     .li {
       line-height: 10.66vw;
       color: #909090;
