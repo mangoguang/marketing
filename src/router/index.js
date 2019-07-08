@@ -51,7 +51,8 @@ const workPlan  = () => import("../pages/work/workPlan")
 const newWorkPlan = () => import("../pages/work/newWorkPlan")
 const searchCustomer = () => import("../pages/work/searchCustomer")
 const searchIntention = () => import("../pages/work/searchIntention")
-
+//公告
+const noticeList = () => import("../pages/work/noticeList")
 
 //4S模块
 const index4s = () => import('../pages/4S/index/index')
@@ -506,6 +507,13 @@ export var router = new VueRouter({
     path:'/searchIntention',
     name:'searchIntention',
     component:searchIntention
+  },
+  //公告
+  {
+    path:'/noticeList',
+    name:'noticeList',
+    component:noticeList
+
   },
   //4s
   {

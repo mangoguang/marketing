@@ -469,6 +469,14 @@ class IndexModel extends Request {
   updateWorkPlan(obj,key,jsonData){
     return mango.getFormAjax('/v3/app/workplan/update',obj,key,jsonData)
   }
+  //查询公告列表
+  getNoticeList(obj){
+    return mango.getAjax('/v3/app/notice/noticelist',obj)
+  }
+  //查询公告详情
+  getNoticedDetail(obj){
+    return mango.getAjax('/v3/app/notice/noticedetail',obj)
+  }
 }
 
 export { IndexModel }
