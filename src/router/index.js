@@ -61,6 +61,7 @@ const itemDetails = () => import('../pages/4S/record/itemDetails')
 const starCheck = () => import('../pages/4S/starCheck/')
 const checkTip = () => import('../pages/4S/starCheck/checkTip')
 const check = () => import('../pages/4S/starCheck/check')
+const checkDetail = () => import('../pages/4S/starCheck/checkDetail')
 const recordJxs = () => import('../pages/4S/record/recordJxs')
 const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
 const starCheckW = () => import('../pages/4S/starCheckWrapper/starCheckW')
@@ -548,6 +549,11 @@ export var router = new VueRouter({
     path:'/check',
     name:'check',
     component: check
+  },
+  {
+    path:'/checkDetail',
+    name:'checkDetail',
+    component: checkDetail
   },
   {
     path:'/judgeStar',

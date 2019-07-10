@@ -27,9 +27,9 @@
         />
       </div>
       <!-- 底部按钮 -->
-      <div>
-        <button>重置</button>
-        <button>提交</button>
+      <div class="btnBot">
+        <button @click="reset" :class="{on: !btnBotStatus}">重置</button>
+        <button @click="submit" :class="{on: btnBotStatus}">提交</button>
       </div>
     </div>
   </div>
@@ -53,6 +53,7 @@ export default {
         totalPoints: 23,
         deductMarks: 9
       },
+      btnBotStatus: true,
       bigCategoryList: [
         {
           status: true,
@@ -123,6 +124,14 @@ export default {
     // 控制评分细则的显示/隐藏
     changeStatus(index, status) {
       this.bigCategoryList[index].status = status
+    },
+    // 重置表单
+    reset() {
+      this.btnBotStatus = false
+    },
+    // 提交表单
+    submit() {
+      this.btnBotStatus = true
     }
   },
   mounted() {
@@ -133,7 +142,32 @@ export default {
 <style lang='scss' scoped>
 .check {
   .contentBox{
+    position: relative;
     padding-top: 46vw;
+    padding-bottom: 13.34vw;
+    box-sizing: border-box;
+    min-height: 100vh;
+  }
+  .btnBot{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    align-self: flex-end;
+    height: 13.34vw;
+    display: flex;
+    button{
+      width: 50%;
+      box-sizing: border-box;
+      border: 1px solid #007AFF;
+      background: #fff;
+      font-size: 16px;
+      color: #007AFF;
+    }
+    button.on{
+      background: #007AFF;
+      color: #fff;
+    }
   }
 }
 </style>
