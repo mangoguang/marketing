@@ -51,7 +51,6 @@ export default {
           this.getWeekList(this.startDate)
           this.$emit('getWeekParams',this.week)
           this.$emit('getSelectDate',this.activeDay)
-          
         },
         getWeekList(startTime){
           let list=[];

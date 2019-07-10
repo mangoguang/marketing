@@ -305,6 +305,9 @@ class IndexModel extends Request {
   getCusotmerList(obj) {
     return mango.getAjax('/v3/app/customer/list', obj)
   }
+  getCusotmerList2(obj) {
+    return mango.getAjax('/v3/app/customer/listbyuserId', obj)
+  }
   //获取参考系
   getArea(type){
     return mango.getAjax('/v2/app/reference',{type:type})

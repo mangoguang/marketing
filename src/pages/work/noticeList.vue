@@ -4,7 +4,7 @@
       <search-input ref='search' v-model.trim="key" placeholder="请输入搜索内容" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <tabUI :list="tabList" @getIndex="getIndex" :style="{top:`${tabTop}vw`}"/>
       <div class="list">
-
+        <noticeList />
       </div>
     </div>
 </template>
@@ -15,6 +15,7 @@ Vue.component(Loadmore.name, Loadmore)
 import mybanner from '../../components/banner'
 import searchInput from '../../components/search/searchInput'
 import tabUI from '../../components/work/storeDailyReport/tabUI'
+import noticeList from "../../components/work/notice/noticeList"
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../js'
 import { IndexModel } from '../../utils'
@@ -34,7 +35,8 @@ export default {
   components:{
      mybanner,
      searchInput,
-     tabUI
+     tabUI,
+     noticeList
   },
   computed:{
    

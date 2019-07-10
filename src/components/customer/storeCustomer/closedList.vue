@@ -130,7 +130,7 @@ export default {
             this.$refs.loadmore4.onBottomLoaded()
         },
         getList(obj,str){
-            indexModel.getCusotmerList(obj).then((res) => {
+            indexModel.getCusotmerList2(obj).then((res) => {
                 if(res.status===1){
                     obj.page===res.data.pages?this.setClosedAllLoaded(true):this.setClosedAllLoaded(false);
                     str==='init'?this.initClosedList(res.data.records):this.setClosedList(res.data.records);
