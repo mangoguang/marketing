@@ -42,7 +42,8 @@ export default {
       console.log('success1', index)
       switch(index) {
         case 0:
-          alert('功能暂未开放！')
+          //alert('功能暂未开放！')
+          this.$router.push({path:'/noticeList'})
           break
         case 1:
           this._getPosition(this._localAjax().typename)?this.$router.push({path: '/storeDailyReport'}):this.$router.push({path: '/dailyReport'})  

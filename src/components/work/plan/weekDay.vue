@@ -37,14 +37,14 @@ export default {
             let year=new Date(time).getFullYear();
             let month=new Date(time).getMonth()+1;
             let day=new Date(time).getDate();
-            return `${year}-${month>10?month:`0${month}`}-${day>10?day:`0${day}`}`
+            return `${year}-${month>9?month:`0${month}`}-${day>9?day:`0${day}`}`
         },
         getDate(){
           this.year=new Date().getFullYear();
           this.month=new Date().getMonth()+1;
           this.day=new Date().getDate();
           this.dayIndex=new Date().getDay();
-          this.activeDay=`${this.year}-${this.month>10?this.month:`0${this.month}`}-${this.day>10?this.day:`0${this.day}`}`
+          this.activeDay=`${this.year}-${this.month>9?this.month:`0${this.month}`}-${this.day>9?this.day:`0${this.day}`}`
           this.startDate=new Date().getTime()-this.dayIndex*this.oneDayLong;
           this.endDate=new Date().getTime()+(6-this.dayIndex)*this.oneDayLong;
           this.week={startDate:this.ChangeTime(this.startDate),endDate:this.ChangeTime(this.endDate)}
