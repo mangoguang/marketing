@@ -180,6 +180,7 @@ export default {
       // padding-left: 9.06vw;
       // padding-right: 2.13vw;
       box-sizing: border-box;
+      margin-bottom: 1vw;
     }
     .content_li {
       font-size: 3.2vw;
@@ -189,6 +190,7 @@ export default {
       color: #0e0e0e;
       padding-left: 4.06vw;
       padding-right: 2.66vw;
+      margin-bottom: 1vw;
       box-sizing: border-box;
       &:nth-child(2n + 1) {
         background:  #f8f8f8;
@@ -197,7 +199,7 @@ export default {
       .imgIcon {
         width: 1vw;
         height: 1.86vw;
-        margin-left: 3vw;
+        margin-left: 2vw;
         // box-sizing: border-box;
       }
     }
