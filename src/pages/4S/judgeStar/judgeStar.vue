@@ -1,4 +1,4 @@
-<!--  -->
+<!-- 评星 -->
 <template>
   <div class="judgeStar" :style="{'margin-top':`${top}vw`}">
     <div class="header" :style="{'height':`${headerHeight}vw`}">
