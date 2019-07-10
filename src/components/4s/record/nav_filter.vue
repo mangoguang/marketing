@@ -1,14 +1,12 @@
 <!--  -->
 <template>
   <ul class="starNav_wapper">
-    123231
-    <!-- <li class="starNav_title" 
+    <li class="starNav_title" 
         v-for="(item,index) in list" :key='item + index'
         @click="selectStar(index)"
         :style="index === activeStar? activeColor : ''">
-      <span >{{ item }}</span>
-      <span class="text">|</span>
-    </li> -->
+      <span>{{ item }}</span>
+    </li>
   </ul>
 </template>
 
@@ -21,7 +19,7 @@ export default {
       activeStar: 0,
       timeoutId: null,
       activeColor: {
-        color: '#007aff'
+        color: '#FFCB38'
       }
     };
   },
@@ -54,25 +52,20 @@ export default {
     },
     //真正要执行的代码
     performProcessiong(index) {
-      this.$emit('changeStar',this.list[index])
+      this.$emit('filterVal',this.list[index])
     }
   }
 }
 </script>
 <style lang='scss' scoped>
 .starNav_wapper {
-  width: 100vw;
-  height: 10vw;
   box-sizing: border-box;
-  padding-left: 8.66vw;
   display: flex;
   .starNav_title {
-    color: #838383;
+    color: #fff;
     font-size: 3.73vw;
     line-height: 10vw;
-    .text {
-      margin: 0 3.73vw;
-    }
+    margin-right: 4.8vw;
   }
   // .activity {
   //   color: #007aff;

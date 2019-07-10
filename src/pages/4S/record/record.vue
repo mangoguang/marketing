@@ -3,7 +3,7 @@
   <div class="record"  :style="{'margin-top':`${top}vw`}">
     <div class="header" :style="{'height':`${headerHeight}vw`}">
       <recordHeader :title="'检查记录'">
-        <egg-nav-filter class="nav_filter"/>
+        <egg-nav-filter class="nav_filter" @filterVal="filterVal"/>
         <div class="shopText">名师家博览馆慕思店</div>
       </recordHeader>
     </div>
@@ -41,6 +41,9 @@ export default {
     this.isIPhoneX()
   },
   methods:{
+    filterVal(val) {
+      console.log(val)
+    },
     isIPhoneX() {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
@@ -71,8 +74,7 @@ export default {
     .nav_filter {
       position: absolute;
       left: 6.4vw;
-      bottom: 3vw;
-      z-index:999;
+      bottom: 1vw;
     }
   }
   .record_content {
