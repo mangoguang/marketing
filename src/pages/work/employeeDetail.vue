@@ -5,7 +5,9 @@
     <div class="content" v-if="tabList[0].status">
       <storeData :id="id"/>
     </div>
-   <div v-else>999999</div>
+   <div v-else >
+     <employeeIntention :id="id"/>
+   </div>
   </div>
 </template>
 
@@ -13,6 +15,7 @@
 import banner from '../../components/banner'
 import tabUI from '../../components/work/storeDailyReport/tabUI'
 import storeData from '../../components/work/store/storeData'
+import employeeIntention from '../customer/storeCustomer/employeeIntention'
 import { IndexModel } from "../../utils/"
 import mango from "../../js"
 import { mapMutations } from 'vuex';
@@ -22,7 +25,8 @@ export default {
   components:{
     banner,
     tabUI,
-    storeData
+    storeData,
+    employeeIntention
   },
   props:['id','name'],
   data(){

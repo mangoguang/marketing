@@ -4,7 +4,7 @@
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="load" :auto-fill="false"> 
       <li v-for="(item, index) in artList" :key="index" @click.prevent="toArticle(index)" >
         <div class="list_left">
-          <h1>{{item.title}}</h1>
+          <h1><img v-show="item.logoImageUrl!==''" :src="item.logoImageUrl"/>{{item.title}}</h1>
           <div class="list_bottom">
             <span v-if="item.top" class="top">置顶</span>
             <span class="time">{{item.createTime}}&nbsp;&nbsp;{{item.author}}</span>
@@ -289,7 +289,7 @@ export default {
         this.page = len
         console.log(this.page);
         let obj = this.getCategoriesId(this.page, this.limit)
-        obj = this.setType(obj)
+        obj = this.setType(obj);
         this.getArticlesList(obj);
       }
     }
@@ -328,6 +328,17 @@ export default {
         //font-weight: bold;
         flex: 0.8;
         line-height: 1.5em;
+        img{
+              display: inline-block;
+              width: 4.8vw;
+              height: 4.8vw;
+              background: red;
+              vertical-align:-3px;
+              margin-right:2px;
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 4.8vw 4.8vw;
+          }
       }
       .list_bottom {
         flex: 0.2;

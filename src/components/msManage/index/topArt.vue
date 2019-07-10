@@ -6,7 +6,7 @@
     <ul>
       <li v-for="(item, index) in list" :key="index" @click.prevent="toArticle(index)" >
           <div class="list_left">
-            <h1>{{item.title}}</h1>
+            <h1><img v-show="item.logoImageUrl!==''" :src="item.logoImageUrl"/>{{item.title}}</h1>
             <div class="list_bottom">
               <!-- <span class="top">置顶</span> -->
               <span class="time">{{item.createTime}}&nbsp;&nbsp;{{item.author}}</span>
@@ -69,6 +69,7 @@ export default {
       border-bottom: .53vw solid #363636;
       text-align: center;
        line-height: normal;
+       
     }
   }
   ul {
@@ -94,6 +95,17 @@ export default {
           //font-weight: bold;
           flex: 0.8;
           line-height: 1.5em;
+          img{
+              display: inline-block;
+              width: 4.8vw;
+              height: 4.8vw;
+              background: red;
+              vertical-align:-3px;
+              margin-right:2px;
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 4.8vw 4.8vw;
+          }
         }
         .list_bottom {
           flex: 0.2;

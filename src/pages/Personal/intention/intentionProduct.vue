@@ -46,6 +46,41 @@ export default {
   },
   mounted(){
    console.log(this.checkedList);
+    let temp = [];
+   for(let i = 0;i<this.checkedList.length;i++){
+     temp.push(this.checkedList[i].crmId);
+   }
+   let temp2 = [];
+   if(temp.length>0){
+     temp.map((item,index) => {
+       if(temp2.indexOf(item)==-1){
+         temp2.push(item);
+       }
+     })
+     let temp3 = [];
+     
+     if(temp2.length>0){
+       temp2.map((item,index) => {
+         let n = 0;
+         let goodsName;
+         let id;
+          this.checkedList.map((sitem,sindex) => {
+            if(item===sitem.crmId){
+                n+=parseInt(sitem.quantity)
+                goodsName = sitem.goodsName
+                id = sitem.id
+            }
+          })
+          temp3.push({
+            crmId:item,
+            goodsName:goodsName,
+            id:id,
+            quantity:n
+          })
+       })
+       this.setCheckedList(temp3);
+     }
+   } 
   },
   methods:{
    ...mapMutations(['addGoodsNum','cutGoodsNum','delGoods','setCheckedList']),

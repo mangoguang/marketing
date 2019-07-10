@@ -77,7 +77,7 @@ export default {
                 //console.log(res)
                 if(obj.startDate===obj.endDate){
                     if(res.data.length>0){
-                        this.list=res.data
+                        this.list=res.data[0].dataList
                     }else{
                         console.log(this.list)
                         this.list=[]

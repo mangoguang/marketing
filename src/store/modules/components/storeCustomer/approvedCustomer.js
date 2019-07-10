@@ -6,7 +6,8 @@ const state = {
     sd:'',          //跟进日期
     ed:'',
     page: 1,  //页数
-    limit: 30    //每页条数
+    limit: 30,    //每页条数
+    userId:''
   },
   list:[],
   allLoaded:false,

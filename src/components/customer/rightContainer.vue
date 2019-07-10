@@ -84,7 +84,7 @@ export default {
       endDateVal: mango.indexTime(new Date(), 'day'),
       dateType: '',
       urgencyBtns: mango.btnList(['是', '否']),
-      keyBtns: mango.btnList(['A', 'B', 'C']),
+      keyBtns: mango.btnList(['A', 'B', 'C','D']),
       ajaxData:[],
       marginTop:''
     }
@@ -215,7 +215,7 @@ export default {
         this.paramsObj.l = ''
         mango.changeBtnStatus(this.keyBtns, -1)
       }else {
-        this.paramsObj.l = i === 0? "A" : i === 1? 'B' : 'C'
+        this.paramsObj.l = i === 0? "A" : i === 1? 'B' : i === 2 ? 'C':'D'
         mango.changeBtnStatus(this.keyBtns, i)
       }
       // console.log(this.paramsObj.l)
@@ -314,7 +314,7 @@ export default {
           li{
           }
           button{
-            padding: 0 10vw;
+            padding: 0 7vw;
             line-height: 3em;
             border-radius: 2vw;
             background: $bgCol;

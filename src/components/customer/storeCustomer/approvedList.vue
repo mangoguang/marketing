@@ -27,6 +27,7 @@ Vue.component(Loadmore.name, Loadmore);
 import { IndexModel } from '../../../utils'
 const indexModel = new IndexModel()
 export default {
+    props:['type','id'],
     data(){
         return {
           top:'',
@@ -48,7 +49,7 @@ export default {
     },
     watch:{
         subHeaderStatus(){
-            if(this.headerStatus[1].status){
+            if(this.subHeaderStatus[1].status){
                 this.listenScroll()
                 this.initData()
             }
@@ -72,13 +73,27 @@ export default {
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
-               this.top="59.326vw";
-               this.paddingTop="63.986vw"
-               this.paddingBottom='21.07vw'
+                if(this.type==='per'){
+                    this.top="56.461vw";
+                    this.paddingTop="60.78vw"
+                    this.paddingBottom='11.73vw'
+                }else{
+                    this.top="59.326vw";
+                    this.paddingTop="63.986vw"
+                    this.paddingBottom='21.07vw'
+                }
+              
             }else{
-                this.top="53.326vw";
-                this.paddingTop="63.986vw"
-                this.paddingBottom='16.53vw'
+                if(this.type==='per'){
+                    this.top="50.461vw";
+                    this.paddingTop="60.78vw"
+                    this.paddingBottom='0'
+                }else{
+                    this.top="53.326vw";
+                    this.paddingTop="63.986vw"
+                    this.paddingBottom='16.53vw'
+                }
+                
             }  
         },
         listenScroll(){
@@ -98,7 +113,8 @@ export default {
                 sd:'',          //跟进日期
                 ed:'',
                 page: 1,  //页数
-                limit: 30    //每页条数
+                limit: 30,   //每页条数
+                userId:this.id?this.id:''
             }
             this.setApprovedParams(obj)
             this.getList(obj,'init')
@@ -126,6 +142,7 @@ export default {
             this.$router.push({path:"/enquiryInfo",query:{id:id}})
         }
     }
+  
 }
 </script>
 <style lang="scss" scoped>

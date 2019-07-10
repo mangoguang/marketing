@@ -8,7 +8,8 @@ const state = {
     u:'',     //1:紧急，0不紧急
     l:'',    //
     page: 1,  //页数
-    limit: 30    //每页条数
+    limit: 30,    //每页条数
+    userId:''
   },
   list:[],
   allLoaded:false,

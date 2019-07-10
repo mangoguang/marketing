@@ -780,6 +780,7 @@ export default {
   beforeRouteLeave(to,from,next){
     if(to.name==="/CustomerInfo"||to.name==="/enquiryInfo"){
       from.meta.isUseCache=false;
+      this.setCheckedList([])
       next();
     }
     next();
