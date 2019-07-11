@@ -53,7 +53,7 @@ const searchCustomer = () => import("../pages/work/searchCustomer")
 const searchIntention = () => import("../pages/work/searchIntention")
 //公告
 const noticeList = () => import("../pages/work/noticeList")
-
+const noticeDetails = () => import("../pages/work/noticeDetails")
 //4S模块
 const index4s = () => import('../pages/4S/index/index')
 const record = () => import('../pages/4S/record/record')
@@ -513,7 +513,12 @@ export var router = new VueRouter({
     path:'/noticeList',
     name:'noticeList',
     component:noticeList
-
+  },
+  {
+    path:'/noticeDetails',
+    name:'noticeDetails',
+    component:noticeDetails,
+    props:(route) => ({id: route.query.id})
   },
   //4s
   {

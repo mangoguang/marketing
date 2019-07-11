@@ -1,18 +1,22 @@
 <template>
-    <li class="noticeLi">
+    <li class="noticeLi" @click="go(item.id)">
         <h1>{{item.titleName}}</h1>
         <p>
             <span v-if="item.sort===1">置顶&nbsp;&nbsp;</span>
-            {{item.createTime.split(' ')[0].split('-').join('.')}}&nbsp;&nbsp;{{(parseFloat(item.throughput)/10000).toFixed(2)+"万"}}
-            &nbsp;&nbsp;
-            <img src="../../../assets/imgs/visit.png" alt="">
+            {{item.createTime.split(' ')[0].split('-').join('.')}}&nbsp;&nbsp;<span v-if="item.throughput>=10000">{{(parseFloat(item.throughput)/10000).toFixed(2)+"万"}}</span>
+            <img src="../../../assets/imgs/visit.png" alt="" v-if="item.throughput>=10000">
         </p>
     </li>
 </template>
 <script>
 export default {
     name:'noticeLi',
-    props:['item']
+    props:['item'],
+    methods:{
+        go(id){
+            this.$router.push({path:'/noticeDetails',query:{id:id}})
+        }
+    }
 }
 </script>
 <style lang="scss" scoped>

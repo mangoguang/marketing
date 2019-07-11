@@ -119,7 +119,7 @@ export default {
           publisher:0,
           titleName:this.key,
           page:1,
-          limit:1
+          limit:30
         }
         this.setParams(obj)
         this.getNoticeList(this.params)
@@ -128,7 +128,7 @@ export default {
           titleName:this.key,
           publisher:1,
           page:1,
-          limit:1
+          limit:30
         }
         this.setBossParams(obj)
         this.getNoticeList(this.bossParams)
