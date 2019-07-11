@@ -15,7 +15,7 @@ export default {
             }
             let arr = date.split(' ')[0].split('-');
             let time = date.split(' ')[1]
-            return `${arr[0]}年${arr[1]}月${arr[2]}日 ${time}`
+            return `${arr[0]}年${parseInt(arr[1])}月${parseInt(arr[2])}日 ${time}`
 
         }
     }
