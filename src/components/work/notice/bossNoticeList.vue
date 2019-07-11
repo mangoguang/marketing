@@ -1,9 +1,9 @@
 <template>
     <div>
-        <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="headOffice" :auto-fill="false"> 
+        <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="bossAllLoaded" ref="boss" :auto-fill="false"> 
             <ul class="noticeList">
                <li is="noticeLi" v-for="(item,index) in dataList" :key="index" :item="item"></li>
-               <li class="noData" v-show="allLoaded">没有更多数据了</li>
+               <li class="noData" v-show="bossAllLoaded">没有更多数据了</li>
             </ul>
         </mt-loadmore>
     </div>
@@ -29,25 +29,25 @@ export default {
     },
     computed:{
          ...mapState({
-            list:state => state.noticeList.list,
-            params:state => state.noticeList.params,
-            allLoaded:state => state.noticeList.allLoaded,
-            scroll:state => state.noticeList.scroll,
+            bossList:state => state.noticeList.bossList,
+            bossParams:state => state.noticeList.bossParams,
+            bossAllLoaded:state => state.noticeList.bossAllLoaded,
+            bossScroll:state => state.noticeList.bossScroll,
             tabList:state => state.noticeList.tabList
         })
     },
     methods:{
-        ...mapMutations('noticeList',['setList','initList','paramsAddPage',
-        'setScroll','setAllLoaded','setParams','setTabList']),
+        ...mapMutations('noticeList',['setBossList','initBossList','bossAddPage',
+        'setBossScroll','setBossAllLoaded','setBossParams','setTabList']),
         loadBottom(){
-            this.$refs.headOffice.onBottomLoaded()
-            this.paramsAddPage()
-            this.getNoticeList(this.params)
+            this.$refs.boss.onBottomLoaded()
+            this.bossAddPage()
+            this.getNoticeList(this.bossParams)
         },
         getNoticeList(obj){
             indexModel.getNoticeList(obj).then((res) => {
-                obj.page===1?this.initList(res.data.list):this.setList(res.data.list)
-                res.data.totalPage===0?this.setAllLoaded(true):obj.page===res.data.totalPage?this.setAllLoaded(true):this.setAllLoaded(false)
+                obj.page===1?this.initBossList(res.data.list):this.setBossList(res.data.list)
+                res.data.totalPage===0?this.setBossAllLoaded(true):obj.page===res.data.totalPage?this.setBossAllLoaded(true):this.setBossAllLoaded(false)
             }).catch((reject) => {
                 if(reject === 510) {
                     this.getNoticeList(obj)

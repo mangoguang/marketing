@@ -3,7 +3,7 @@
         <h1>{{item.titleName}}</h1>
         <p>
             <span v-if="item.sort===1">置顶&nbsp;&nbsp;</span>
-            {{item.createTime}}&nbsp;&nbsp;{{(parseFloat(item.throughput)/10000).toFixed(2)+"万"}}
+            {{item.createTime.split(' ')[0].split('-').join('.')}}&nbsp;&nbsp;{{(parseFloat(item.throughput)/10000).toFixed(2)+"万"}}
             &nbsp;&nbsp;
             <img src="../../../assets/imgs/visit.png" alt="">
         </p>

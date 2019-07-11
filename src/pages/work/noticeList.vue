@@ -4,7 +4,8 @@
       <search-input ref='search' v-model.trim="key" placeholder="请输入搜索内容" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <tabUI :list="tabList" @getIndex="getIndex" :style="{top:`${tabTop}vw`}"/>
       <div class="list">
-        <noticeList />
+        <noticeList :dataList="list" v-if="tabList[0].status"/>
+        <bossNoticeList :dataList="bossList" v-else />
       </div>
     </div>
 </template>
@@ -16,6 +17,7 @@ import mybanner from '../../components/banner'
 import searchInput from '../../components/search/searchInput'
 import tabUI from '../../components/work/storeDailyReport/tabUI'
 import noticeList from "../../components/work/notice/noticeList"
+import bossNoticeList from "../../components/work/notice/bossNoticeList"
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../js'
 import { IndexModel } from '../../utils'
@@ -26,29 +28,45 @@ export default {
     return {
       key:'',
       top:'',
-      tabTop:'',
-      tabList:[{title:'总部',status:true},{title:'经销商',status:false}]
-
-      
+      tabTop:''
+    }
+  },
+  watch:{
+    tabList(){
+      this.initData('')
     }
   },
   components:{
      mybanner,
      searchInput,
      tabUI,
-     noticeList
+     noticeList,
+     bossNoticeList
   },
   computed:{
-   
+   ...mapState({
+     list:state => state.noticeList.list,
+     bossList:state => state.noticeList.bossList,
+     params:state => state.noticeList.params,
+     bossParams:state => state.noticeList.bossParams,
+     allLoaded:state => state.noticeList.allLoaded,
+     bossAllLoaded:state => state.noticeList.bossAllLoaded,
+     scroll:state => state.noticeList.scroll,
+     bossScroll:state => state.noticeList.bossScroll,
+     tabList:state => state.noticeList.tabList
+   })
   }, 
   created(){
  
   },
   
   mounted(){
-      this.isIPhoneX();
+    this.isIPhoneX();
+    this.initData('')
   },
   methods:{
+    ...mapMutations('noticeList',['setList','initList','setBossList','initBossList','paramsAddPage','bossAddPage',
+    'setBossScroll','setScroll','setAllLoaded','setBossAllLoaded','setParams','setBossParams','setTabList']),
    isIPhoneX(){
       let phone=this.phoneSize()
       if(phone==="iphonex"){
@@ -60,9 +78,11 @@ export default {
       }
     },
    search(){
-    var that=this;
+      var that=this;
       Debounce(function(){
-       
+        if(that.key!==''){
+          that.initData(that.key)
+        }
       },500)()
     
    },
@@ -75,16 +95,44 @@ export default {
         }
         return item;
       })
-      this.tabList=array;
+      this.setTabList(array)
    },
    getNoticeList(obj){
      indexModel.getNoticeList(obj).then((res) => {
-       console.log(res);
+       if(obj.publisher===0){
+         obj.page===1?this.initList(res.data.list):this.setList(res.data.list)
+         res.data.totalPage===0?this.setAllLoaded(true):obj.page===res.data.totalPage?this.setAllLoaded(true):this.setAllLoaded(false)
+       }else{
+         obj.page===1?this.initBossList(res.data.list):this.setBossList(res.data.list)
+         res.data.totalPage===0?this.setBossAllLoaded(true):obj.page===res.data.totalPage?this.setBossAllLoaded(true):this.setBossAllLoaded(false)
+       }
      }).catch((reject) => {
        if(reject === 510) {
          this.getNoticeList(obj)
        }
      })
+   },
+   initData(val){
+      this.key=val
+      if(this.tabList[0].status){
+        let obj = {
+          publisher:0,
+          titleName:this.key,
+          page:1,
+          limit:1
+        }
+        this.setParams(obj)
+        this.getNoticeList(this.params)
+      }else{
+        let obj = {
+          titleName:this.key,
+          publisher:1,
+          page:1,
+          limit:1
+        }
+        this.setBossParams(obj)
+        this.getNoticeList(this.bossParams)
+      }
    }
 
   }
