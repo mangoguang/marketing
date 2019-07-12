@@ -5,7 +5,9 @@
       <egg-sort-icon @click.native="handleSortClick" 
                       :sortText="sortText"
                       :changeStatus="changeStatus"/>
-      <div class="sortContentWrapper" v-show="sortStatus">
+      <div  class="sortContentWrapper" 
+            v-show="sortStatus"
+            :style="{'top':`${top}vw`}">
         <egg-sort-content @selectIndex="selectIndex"
                           :list="list"/>
       </div>
@@ -40,13 +42,17 @@ export default {
       sortSelectData: {},
       sortText: '申请时间升序',
       sortStatus: false,
-      filterStatus: false
+      filterStatus: false,
+      top:''
     };
   },
   computed: {
     changeStatus() {
       return this.sortSelectData  
     }
+  },
+  created() {
+    this.isIPhoneX()
   },
   methods: {
     //点击排序按钮
@@ -68,6 +74,12 @@ export default {
     },
     handleCloseClick() {
       this.filterStatus = !this.filterStatus
+    },
+    isIPhoneX() {
+      let phone = this.phoneSize();
+      if (phone === "iphonex") {
+        this.top = "41.3";
+      }
     }
   }
 }
@@ -86,7 +98,7 @@ export default {
   box-sizing: border-box;
   .sortContentWrapper {
     position: fixed;
-    top: 47.31vw;
+    top: 47vw;
     left: 0;
     background: rgba($color: #000, $alpha: 0.3);
     z-index: 99;
