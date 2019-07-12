@@ -79,7 +79,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       vm.fromName = from.name
-      if(from.name === 'chooseShop' || from.name === 'searchProduct' || from.name === 'intentionProduct') {
+      if(from.name === 'chooseShop' || from.name === 'searchProduct' || from.name === 'intentionProduct' || from.name === '/previewImg') {
           vm.isShowDemand = true
           vm.isShowDeal = true
       }else {
@@ -269,10 +269,15 @@ export default {
           //头像的formdata
           this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
           //附件
-          if(this.newCustomerInfo.imgs) {
+          /* if(this.Files.length>0) {
             const imgs = this.newCustomerInfo.imgs
             for(var key in imgs) {
               formdata.append('record.dataFile',imgs[key])
+            }
+          } */
+          if(this.Files.length>0){
+            for(let i=0;i<this.Files.length;i++){
+                formdata.append('record.dataFile',this.Files[i]);
             }
           }
           
