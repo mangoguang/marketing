@@ -3,6 +3,7 @@
   <ul :class="`checkContent ${status ? 'open' : 'close'}`">
     <li
     v-for="(item, index) in list"
+    @click="toCheckDetail(index)"
     :key="`checkContent${index}`"
     :class="{done: item.status}"
     >{{item.text}}</li>
@@ -17,6 +18,11 @@ export default {
   data () {
     return {
       
+    }
+  },
+  methods: {
+    toCheckDetail(index) {
+      this.$router.push({path: '/checkDetail'})
     }
   }
 }

@@ -1,21 +1,21 @@
-<!--  -->
+<!-- 检查记录 -->
 <template>
   <div class="record"  :style="{'margin-top':`${top}vw`}">
     <div class="header" :style="{'height':`${headerHeight}vw`}">
       <recordHeader :title="'检查记录'">
+        <egg-nav-filter class="nav_filter" @filterVal="filterVal"/>
         <div class="shopText">名师家博览馆慕思店</div>
       </recordHeader>
     </div>
     <div class="record_content" :style="{'margin-top':`${top}vw,height:${height}`}">
       <div class="new_record">
-        <p>最新记录</p>
         <recordCard />
       </div>
-      <div class="pre_record">
+      <!-- <div class="pre_record">
         <p class="pre_text">历史记录</p>
         <recordCard class="recordCard"/>
         <recordCard class="recordCard"/>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -23,10 +23,12 @@
 <script>
 import recordHeader from '../../../components/4s/record/header'
 import recordCard from '../../../components/4s/record/record_card'
+import eggNavFilter from '../../../components/4s/record/nav_filter'
 export default {
   components: {
     recordHeader,
-    recordCard
+    recordCard,
+    eggNavFilter
   },
   data () {
     return {
@@ -39,6 +41,9 @@ export default {
     this.isIPhoneX()
   },
   methods:{
+    filterVal(val) {
+      console.log(val)
+    },
     isIPhoneX() {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
@@ -66,6 +71,11 @@ export default {
       font-weight: 500;
       font-size: 3.46vw;
     }
+    .nav_filter {
+      position: absolute;
+      left: 6.4vw;
+      bottom: 1vw;
+    }
   }
   .record_content {
     width: 100vw;
@@ -77,6 +87,7 @@ export default {
     text-align: center;
     font-size: 3.2vw;
     line-height: 10.66vw;
+    padding-top: 3.33vw;
     .pre_record {
       width: 100%;
       

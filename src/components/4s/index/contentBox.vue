@@ -26,7 +26,7 @@ export default {
   min-height: 34.13vw;
   background: #fff;
   border-radius: 1.33vw;
-  margin: 4.4vw;
+  margin: 0 4.4vw 4.4vw 4.4vw;
   h1 {
     font-weight: normal;
     color: #666;
