@@ -43,9 +43,11 @@ export default {
   mounted() {
     
   },
+  
   methods:{
+    ...mapMutations('storeHeader',['setSubHeaderStatus']),
     getIndex(i){
-      console.log(i)
+     /*  console.log(i) */
       let array=this.tabList.map((item,index) => {
         if(index===i){
           item.status=true
@@ -56,6 +58,34 @@ export default {
       })
       this.tabList=array;
     }
+  },
+  beforeRouteEnter(to,from,next){
+    if(from.name==='/CustomerInfo' || from.name === '/enquiryInfo'){
+      console.log('customerInfo');
+      next(vm => {
+        vm.getIndex(1)
+      })
+    }else{
+      next(vm => {
+        vm.getIndex(0)
+        let array = [
+          {
+            name:'意向客户',
+            status:true
+          },
+          {
+            name:'成交客户',
+            status:false
+          },
+          {
+            name:'战败客户',
+            status:false
+          }
+        ]
+        vm.setSubHeaderStatus(array);
+      })
+    }
+    
   }
 }
 </script>

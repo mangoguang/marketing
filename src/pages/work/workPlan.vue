@@ -11,8 +11,7 @@
         <div class="planContent" v-show="showList">
             <planList :dateList="dateList" :month="month" :year="year" :day="day"/>
             <button type="button" class="switchCalendar" ref="switchCalendar" @click="switchList"><span>切换至日历</span></button>
-        </div>
-        
+        </div>        
     </div>
 </template>
 <script>
@@ -41,10 +40,30 @@ export default {
         planTime,
         planList
     },
+    beforeRouteEnter(to,from,next){
+       if(from.name === "work"){
+            next(vm => {
+                vm.year = new Date().getFullYear();
+                vm.month = new Date().getMonth()+1;
+                vm.day = new Date(vm.year,vm.month,0).getDate()
+                vm.showList = false
+            })
+        }else{
+            next(vm => {
+                vm.getPlanList({
+                    startDate:`${vm.year}-${vm.month<10?`0${vm.month}`:vm.month}-01`,
+                    endDate:`${vm.year}-${vm.month<10?`0${vm.month}`:vm.month}-31`
+                })
+                vm.getPlanList({
+                    startDate:vm.selectDate,
+                    endDate:vm.selectDate
+                })
+            })
+           
+        }
+    },
     created(){
-        this.year = new Date().getFullYear();
-        this.month = new Date().getMonth()+1;
-        this.day = new Date(this.year,this.month,0).getDate()
+        
     },
     computed:{
         

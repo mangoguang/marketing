@@ -6,7 +6,7 @@
         :list='item' 
         @click.native='toIntentionDetails(index)'/>
     </ul>
-    <button @click="newCustomer" class="new"></button>
+    <button @click="newCustomer" class="new" ></button>
   </div>
 </template>
 
@@ -16,6 +16,11 @@ import { mapMutations } from 'vuex'
 export default {
   props: ['list','phone','orgId'],
   components: { intentionLi },
+  data(){
+    return {
+      edit:''
+    }
+  },
   methods: {
      ...mapMutations(['setCheckedList']),
     toIntentionDetails(index) {

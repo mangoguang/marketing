@@ -18,7 +18,7 @@
       </div>
     </div>
     <!-- 意向信息-->
-    <intentionMsg v-show="customerTabStatus[1].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
+    <intentionMsg  v-show="customerTabStatus[1].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
       }else {
         vm.setUpLoadUrl('')
       }
+      
     })
   },
   data(){
@@ -65,7 +66,8 @@ export default {
       shpoId:'',
       index: '',
       phone:'',
-      wechat:''
+      wechat:'',
+      edit:''
     }
   },
   computed: {
