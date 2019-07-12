@@ -147,7 +147,7 @@ export default {
             this.$refs.loadmore2.onBottomLoaded();
         },
         getCustomerList(obj,str){
-            indexModel.getCusotmerList(obj).then((res) => {
+            indexModel.getCusotmerList2(obj).then((res) => {
                 if(res.status===1){
                     if(obj.page===res.data.pages){
                         this.setCustomerAllLoaded(true)

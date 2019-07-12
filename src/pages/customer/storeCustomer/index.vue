@@ -82,7 +82,8 @@ export default {
                     u:obj.u,
                     l:obj.l,
                     page:1,
-                    limit:30
+                    limit:30,
+                    userId:''
                 }
             }else{
                 temp=Object.assign({},this.cusomerAjaxParams)
@@ -92,7 +93,7 @@ export default {
             this.getCustomerList(temp);
         },
         getCustomerList(obj){
-            indexModel.getCusotmerList(obj).then((res) => {
+            indexModel.getCusotmerList2(obj).then((res) => {
                 if(res.status===1){
                     if(obj.type==='New'){
                         obj.page===res.data.pages?this.setCustomerAllLoaded(true):this.setCustomerAllLoaded(false)
@@ -127,7 +128,8 @@ export default {
                     sd:obj.startTime,
                     ed:obj.endTime,
                     page:1,
-                    limit:30
+                    limit:30,
+                    userId:''
                 }
                  this.setApprovedParams(temp)
                  this.getCustomerList(temp)
@@ -140,7 +142,8 @@ export default {
                     sd:obj.startTime,
                     ed:obj.endTime,
                     page:1,
-                    limit:30
+                    limit:30,
+                    userId:''
                 }
                 this.setClosedParams(temp)
                 this.getCustomerList(temp)

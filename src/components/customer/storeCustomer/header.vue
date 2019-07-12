@@ -254,7 +254,8 @@ export default {
                         u:'',     //1:紧急，0不紧急
                         l:'',    //
                         page: 1,  //页数
-                        limit: 30    //每页条数
+                        limit: 30,    //每页条数
+                        userId:''
                     }
                     this.setStoreCustomerAjaxParams(obj)
                     this.getCustomerList(obj)
@@ -268,7 +269,8 @@ export default {
                         sd:'',          //跟进日期
                         ed:'',
                         page: 1,  //页数
-                        limit: 30    //每页条数
+                        limit: 30,    //每页条数
+                        userId:''
                     }
                     this.setApprovedParams(obj)
                     this.getCustomerList(obj)
@@ -282,7 +284,8 @@ export default {
                         sd:'',          //跟进日期
                         ed:'',
                         page: 1,  //页数
-                        limit: 30    //每页条数
+                        limit: 30,    //每页条数
+                        userId:''
                     }
                     this.setClosedParams(obj)
                     this.getCustomerList(obj)
@@ -305,13 +308,14 @@ export default {
                 u:'',     //1:紧急，0不紧急
                 l:'',    //
                 page: 1,  //页数
-                limit: 30    //每页条数
+                limit: 30,    //每页条数
+                userId:''
             }
             this.setStoreCustomerAjaxParams(obj)
             this.getCustomerList(obj)
         },
         getCustomerList(obj){
-            indexModel.getCusotmerList(obj).then((res) => {
+            indexModel.getCusotmerList2(obj).then((res) => {
                 if(res.status===1){
                     if(obj.type==='New'){
                         obj.page===res.data.pages?this.setCustomerAllLoaded(true):this.setCustomerAllLoaded(false)

@@ -305,6 +305,9 @@ class IndexModel extends Request {
   getCusotmerList(obj) {
     return mango.getAjax('/v3/app/customer/list', obj)
   }
+  getCusotmerList2(obj) {
+    return mango.getAjax('/v3/app/customer/listbyuserId', obj)
+  }
   //获取参考系
   getArea(type){
     return mango.getAjax('/v2/app/reference',{type:type})
@@ -468,6 +471,14 @@ class IndexModel extends Request {
   //修改工作计划
   updateWorkPlan(obj,key,jsonData){
     return mango.getFormAjax('/v3/app/workplan/update',obj,key,jsonData)
+  }
+  //查询公告列表
+  getNoticeList(obj){
+    return mango.getAjax('/v3/app/notice/noticelist',obj)
+  }
+  //查询公告详情
+  getNoticedDetail(obj){
+    return mango.getAjax('/v3/app/notice/noticedetail',obj)
   }
 }
 

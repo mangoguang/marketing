@@ -125,7 +125,7 @@ export default {
             this.$refs.loadmore3.onBottomLoaded();
         },
         getList(obj,str){
-            indexModel.getCusotmerList(obj).then((res) => {
+            indexModel.getCusotmerList2(obj).then((res) => {
                 if(res.status===1){
                     obj.page===res.data.pages?this.setApprovedAllLoaded(true):this.setApprovedAllLoaded(false);
                     str==='init'?this.initApprovedList(res.data.records):this.setApprovedList(res.data.records);

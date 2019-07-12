@@ -54,6 +54,7 @@ import shopList from './modules/store/shopList'
 import storeEmployeeList from './modules/store/storeEmployeeList'
 import plan from './modules/work/plan'
 import eggRecordDetails from './modules/4s/recordDetails' 
+import noticeList from './modules/notice/noticeList' 
 export default new Vuex.Store({
   state,
   mutations,
@@ -109,6 +110,7 @@ export default new Vuex.Store({
     shopList,
     storeEmployeeList,
     plan,
-    eggRecordDetails
+    eggRecordDetails,
+    noticeList
   }
 })
