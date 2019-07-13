@@ -1,14 +1,19 @@
 <template>
     <div class="addAdress">
       <mybanner :title="title" :style="{background:'#f8f8f8'}" >
-        <button type="button" @click="addRecord" v-if="isRecord">保存</button>
+        <template v-if="$route.query.edit==='no'?false:true">
+          <button type="button" @click="addRecord" v-if="isRecord">保存</button>
 
-        <button type="button" @click="close" v-if="this.form.status==='New'&&!isRecord" style="color:#FF3B30">意向关闭</button>
-         <button type="button" @click="closeReason" v-if="this.form.status==='Closed'" style="color:#FF3B30">战败原因</button>
+          <button type="button" @click="close" v-if="form.status==='New'&&!isRecord" style="color:#FF3B30">意向关闭</button>
+         <button type="button" @click="closeReason" v-if="form.status==='Closed'" style="color:#FF3B30">战败原因</button>
+        </template>
+        
       </mybanner>
       <div>
         <title-bar :text="titleModule.info">
-          <button type="button" v-if="this.form.status==='New'" @click="modify">修改</button>
+           <template v-if="$route.query.edit==='no'?false:true">
+          <button type="button" v-if="form.status==='New'" @click="modify">修改</button>
+           </template>
         </title-bar>
         <ul class="list">
           <li>
@@ -75,11 +80,13 @@
         </div>
         <div>
           <title-bar :text="titleModule.report">
-            <button type="button" v-if="this.form.status==='New'" @click="addRecord">添加记录</button>
+            <template v-if="$route.query.edit==='no'?false:true">
+            <button type="button" v-if="form.status==='New'" @click="addRecord">添加记录</button>
+            </template>
           </title-bar>
           <record-pannel :recordList="form.recordList"/>
         </div>
-        <div v-if="this.form.status==='Approved'">
+        <div v-if="form.status==='Approved'">
           <title-bar :text="titleModule.order"/>
           <order-info class="order" :orderList="item" v-for="(item,index) in form.orderList" :key="index"/>
         </div>

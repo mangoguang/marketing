@@ -133,9 +133,9 @@ export default {
         async linkTo(id){
             let status=await this.getStatus(id);
             if(status){
-                this.$router.push({path:'/enquiryInfo',query:{id:id}})
+                this.$router.push({path:'/enquiryInfo',query:{id:id,edit:'no'}})
             }else{
-                this.$router.push({path:'/customerInfo',query:{id:id}})
+                this.$router.push({path:'/customerInfo',query:{id:id,edit:'no'}})
             }
         }
     }

@@ -144,7 +144,11 @@ export default {
             })
         },
         linkTo(id){
-            this.$router.push({path:"/customerInfo",query:{id:id}})
+            if(this.$route.name==='employeeDetail'){
+                this.$router.push({path:"/customerInfo",query:{id:id,edit:'no'}})
+            }else{
+                this.$router.push({path:"/customerInfo",query:{id:id}})
+            }
         }
        
     }
