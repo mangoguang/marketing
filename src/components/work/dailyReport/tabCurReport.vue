@@ -49,8 +49,7 @@ export default {
           "turnoverRatio": 0, // 成交率
           "volumeBusiness": 0   //成交金额
       },
-      curDay:'',
-      date:''
+      curDay:''
     }
   },
   created() {
