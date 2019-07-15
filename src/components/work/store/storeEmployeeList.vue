@@ -15,7 +15,7 @@
                     <b v-else>无</b>
                   </p>
               </div>
-              <span>{{item.positionType}}</span>
+              <!-- <span>{{item.positionType}}</span> -->
             </div>
         </li>
       </ul>
