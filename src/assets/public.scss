@@ -39,8 +39,11 @@
       min-height: 17.33vw;
       margin-bottom:1.33vw;
       justify-content: space-between;
+      width:100vw;
+      box-sizing: border-box;
       li:first-child{
-          flex:0 0 28vw;
+         flex:0 0 28vw;
+         position: relative;
           @include flex-center;
           span{
             padding-left:2.66vw;
@@ -62,6 +65,7 @@
       }
       li:nth-child(2){
         flex:0 0 28vw;
+        position: relative;
         color:#909090;
         word-break: break-all;
         text-overflow: ellipsis;
@@ -74,7 +78,8 @@
         
       }
       li:last-child{
-          flex:0 0 2.08vw;
+         width:89px;
+          position: relative;
           text-align: right;
           white-space: nowrap;
       }
