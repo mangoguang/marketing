@@ -12,7 +12,7 @@
                     <span>{{item.username}}</span>
                     <b :class="`urgency${item.urgency}`"></b>
                 </li>
-                <li>{{item.goodsName}}</li>
+                <li>{{item.phone}}</li>
                 <li>{{item.followDate}}</li>
             </ul>
             
