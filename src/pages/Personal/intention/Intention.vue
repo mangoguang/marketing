@@ -5,8 +5,9 @@
           <button type="button" @click="addRecord" v-if="isRecord">保存</button>
 
           <button type="button" @click="close" v-if="form.status==='New'&&!isRecord" style="color:#FF3B30">意向关闭</button>
-         <button type="button" @click="closeReason" v-if="form.status==='Closed'" style="color:#FF3B30">战败原因</button>
+         
         </template>
+        <button type="button" @click="closeReason" v-if="form.status==='Closed'" style="color:#FF3B30">战败原因</button>
         
       </mybanner>
       <div>
