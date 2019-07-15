@@ -46,6 +46,8 @@ export default {
       next(vm => {
         vm.getIndex(1)
       })
+    }else{
+      next()
     }
   },
   methods:{
