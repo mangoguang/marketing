@@ -4,7 +4,7 @@
     <ul>
       <li v-for = "(item,index) in ListItem" :key='index' @click="routeTo(index)">
         <span v-if="index!==3">{{item}}</span>
-        <div v-else class="version"><span>{{item}}</span><span style="color:#666">版本&nbsp;1.0.1</span></div>
+        <div v-else class="version"><span>{{item}}</span><span style="color:#666" >版本&nbsp;1.1.2</span></div>
         <div class="icon-right">
           <img src="../../assets/imgs/rightside.png" alt="">
         </div>
@@ -84,7 +84,8 @@ export default {
         type:false,
         btnNum:2
       },
-      isMerge:false
+      isMerge:false,
+      version:""
     }
   },
   created(){
