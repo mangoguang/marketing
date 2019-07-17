@@ -41,6 +41,7 @@ export default {
     justify-content: space-between;
     flex-direction: flex-start;
     flex-wrap: wrap;
+    
   }
 </style>
 

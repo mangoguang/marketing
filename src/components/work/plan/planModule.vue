@@ -6,6 +6,7 @@
             </mytitle>
             <weekHeader/>
             <weekDay @getSelectDate="getSelectDate" @getWeekParams="getWeekParams" :dateList="dateList"/>
+            <p>点击日期查看工作</p>
         </div>
         <div class="planList">
             <planTime :list="list"/>
@@ -89,8 +90,14 @@ export default {
 .plan{
     border-radius:2vw;
     background: #fff;
-    padding-bottom: 4.8vw;
+    padding-bottom: 2.66vw;
     position: relative;
+    p{
+        text-align: center;
+        color:#909090;
+        font-size: 12px;
+        margin-top:2.66vw;
+    }
 }
 .planList{
     border-radius:2vw;
