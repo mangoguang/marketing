@@ -6,11 +6,14 @@
         <div class="planContent" v-show="!showList">
             <monthDay @getMonthDate="getMonthDate" :dateList="dateList" @getSelectDate="getSelectDate"/>
             <planTime :list="list"/>
-            <button type="button" class="switch" ref="switch" @click="switchList"><span>切换至列表</span></button>
+            <div class="btn-box">
+                <button type="button" class="switch" ref="switch" @click="switchList"><span>切换至列表</span></button>
+            </div>
+            
         </div>
         <div class="planContent" v-show="showList">
             <planList :dateList="dateList" :month="month" :year="year" :day="day"/>
-            <button type="button" class="switchCalendar" ref="switchCalendar" @click="switchList"><span>切换至日历</span></button>
+            <div class="btn-box"><button type="button" class="switchCalendar" ref="switchCalendar" @click="switchList"><span>切换至日历</span></button></div>
         </div>        
     </div>
 </template>
@@ -145,6 +148,7 @@ export default {
     text-align: center;
    .planContent{
        margin-top:19.12vw;
+       padding-bottom: 16vw;
    }
     .header{
     background: #fff;
@@ -198,6 +202,12 @@ export default {
       background-image:url('../../assets/imgs/date_02.png');
       background-color:#FF4800;
       color:#fff;
+  }
+  .btn-box{
+      position: fixed;
+      bottom:0;
+      left:0;
+      right:0;
   }
 }
  

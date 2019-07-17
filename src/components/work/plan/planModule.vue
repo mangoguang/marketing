@@ -112,7 +112,7 @@ export default {
         height:14.13vw;
         background:url('../../../assets/imgs/add.png') center center;
         background-size: 100% 100%;
-        opacity: 0.6;
+        /* opacity: 0.6; */
     }
 }
 </style>
