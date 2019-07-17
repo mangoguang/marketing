@@ -373,7 +373,11 @@ export default {
           // mango.loading('close')
           if(res.status){
             MessageBox.alert('保存成功！').then(action => {
-              this.$router.replace({path: '/customer'})
+              if(this._localAjax().typename === 'Boss&Manager'||this._localAjax().typename === 'Store Manager'){
+                this.$router.replace({path: '/storeCustomer'})
+              }else{
+                this.$router.replace({path: '/customer'})
+              }
               this.setFiles([]);
               this.setPicVal([]);
             })

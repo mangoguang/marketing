@@ -163,7 +163,7 @@ export default {
       text-align: left;
   }
   .switch{
-      width:33.866vw;
+      width:34.866vw;
       height:8.8vw;
       border-radius: 4.4vw;
       border:1px solid #007AFF;
@@ -182,7 +182,7 @@ export default {
   }
   .switchCalendar{
         margin:0 9.06vw;
-        width:33.866vw;
+        width:34.866vw;
         height:8.8vw;
         border-radius: 4.4vw;
         border:1px solid #FF4800;
