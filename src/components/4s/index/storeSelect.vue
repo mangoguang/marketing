@@ -1,7 +1,7 @@
 <!--  -->
 <template>
-  <div :class="`storeSelect on`">
-    <h3><span>{{shops[0].name}}</span></h3>
+  <div :class="`storeSelect ${storeSelectShow ? 'on' : ''}`">
+    <h3><span @click="showStoreList">{{shops[0].name}}</span></h3>
     <ul>
       <li
       v-for="(item, index) in shops"
@@ -15,6 +15,7 @@
 export default {
   data () {
     return {
+      storeSelectShow: false,
       // shops: JSON.parse(localStorage.getItem('shops'))
       shops: [
         {
@@ -55,7 +56,9 @@ export default {
 
   },
   methods: {
-
+    showStoreList() {
+      this.storeSelectShow = !this.storeSelectShow
+    }
   }
 }
 </script>
@@ -63,6 +66,8 @@ export default {
 .storeSelect {
   // background: #fff;
   position: relative;
+  overflow: hidden;
+  background: #f8f8f8;
   span{
     display: inline-block;
     padding-right: 5vw;
@@ -87,17 +92,22 @@ export default {
   }
   ul{
     position: absolute;
+    height: 100vh;
     text-align: left;
-    background: #fff;
+    z-index: 1000;
+    background: rgba(0, 0, 0, .2);
     li{
       padding: 0 4.4vw;
       color: #909090;
+      background: #fff;
     }
   }
 }
 .on{
+  display: block;
   height: 10.67vw;
   background: #fff;
+  overflow: visible;
 }
 
  
