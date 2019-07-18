@@ -1,7 +1,7 @@
 <template>
   <div class="share">
     <Banner :title="'产品分享'"/>
-    <div class="saveTips" v-show="successSave">保存成功</div>
+    <div class="saveTips" v-show="successSave" :style="{top:top}">保存成功</div>
     <div class="canvas" ref="creatImg">
       <div class="imgBg">
         <img src="../../assets/imgs/shareBg.png" alt="">
@@ -61,7 +61,8 @@ export default {
       imageData: "",
       pageUrl: "",
       test: "",
-      changeUrl: ""
+      changeUrl: "",
+      top:''
     };
   },
   computed: {
@@ -70,6 +71,7 @@ export default {
     })
   },
   created() {
+    this.isIphoneX()
     this.msg = this.$route.query.list;
     this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
   },
@@ -77,6 +79,15 @@ export default {
     this.getCode();
   },
   methods: {
+    isIphoneX(){
+      let phone = this.phoneSize()
+      console.log(phone)
+      if(phone === 'iphonex'){
+        this.top="21.466vw"
+      }else{
+        this.top="16.466vw"
+      }
+    },
     //生成二维码
     getCode() {
       let qrcode = new QRCode("qrcode", {
@@ -269,7 +280,7 @@ export default {
     color: #136f23;
     font-size: 3.46vw;
     position: absolute;
-    top: 22vw;
+    top: 16.466vw;
     left: 0;
     text-align: center;
     z-index: 10;
