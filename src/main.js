@@ -10,11 +10,11 @@ import VueLazyload from 'vue-lazyload'
 //图片预览
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
-var options={
-  fullscreenEl:false, //关闭全屏按钮
-  showHideOpacity:true
+var options = {
+  fullscreenEl: false, //关闭全屏按钮
+  showHideOpacity: true
 }
-Vue.use(preview,options)
+Vue.use(preview, options)
 
 //视频组件
 // import 'video.js/dist/video-js.css'
@@ -28,10 +28,14 @@ Vue.use(VideoPlayer);
 import 'mint-ui/lib/style.min.css'
 import './index.scss'
 // import '../mockjs/index' 	
-import base from './Global/index'
-Vue.use(base)
+// import base from './Global/index'
+// Vue.use(base)
+import './Global/index'
+
 Vue.config.devtools = true
-Vue.use(VueTouch, {name: 'v-touch'})
+Vue.use(VueTouch, {
+  name: 'v-touch'
+})
 // 自定义指令
 // 注册一个全局自定义指令 `v-focus`
 // Vue.directive('focus', {
@@ -42,8 +46,8 @@ Vue.use(VueTouch, {name: 'v-touch'})
 //   }
 // })
 VueTouch.config.swipe = {
-  threshold: 100, 
-  direction: 'horizontal'//手指左右滑动距离
+  threshold: 100,
+  direction: 'horizontal' //手指左右滑动距离
 }
 Vue.use(VueLazyload)
 import {
@@ -52,7 +56,7 @@ import {
 // 添加rem计算
 (function (doc, win) {
   // console.log('vue3',  Vue)
-  
+
   var docEl = doc.documentElement
   var resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize'
   var recalc = function () {
@@ -67,7 +71,7 @@ import {
 // console.log('api对象：', window.$api.appId)
 /* eslint-disable no-new */
 if (mango.version === 'app') {
-  window.apiready = function(){
+  window.apiready = function () {
     new Vue({
       el: '#app',
       router,

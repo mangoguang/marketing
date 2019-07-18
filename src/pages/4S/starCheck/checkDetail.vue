@@ -3,26 +3,25 @@
   <div class="checkDetail">
     <mybanner :title='title' />
     <form action="">
-      <textarea name="reason" id="" cols="30" rows="10" placeholder="请填写扣分原因"></textarea>
+      <textarea name="reason"
+                id=""
+                cols="30"
+                rows="10"
+                placeholder="请填写扣分原因"></textarea>
       <ul class="imgBox">
-        <li
-        id="div1"
-        draggable="true"
-        ondragstart="drag(event)"
-        >111</li>
-        <li
-        ondrop="drop(event)"
-        ondragover="allowDrop(event)"
-        >222</li>
+        <li id="div1"
+            draggable="true"
+            ondragstart="drag(event)">111</li>
+        <li ondrop="drop(event)"
+            ondragover="allowDrop(event)">222</li>
       </ul>
       <div class="rangeBox">
         <span>扣{{rangeValue}}分</span>
-        <mt-range
-          v-model="rangeValue"
-          :min="10"
-          :max="90"
-          :step="10"
-          :bar-height="12">
+        <mt-range v-model="rangeValue"
+                  :min="10"
+                  :max="90"
+                  :step="10"
+                  :bar-height="12">
         </mt-range>
       </div>
       <button>保存</button>
@@ -37,33 +36,45 @@ import { Range } from 'mint-ui';
 
 Vue.component(Range.name, Range);
 export default {
-  components : {
+  components: {
     mybanner
   },
   data () {
     return {
       title: '店面',
-      rangeValue: 10
+      rangeValue: 50
     }
   },
   methods: {
-    drag(ev) {
-      ev.dataTransfer.setData("Text",ev.target.id)
+    drag (ev) {
+      ev.dataTransfer.setData("Text", ev.target.id)
     },
-    allowDrop(ev) {
+    allowDrop (ev) {
       ev.preventDefault()
     },
-    drop(ev) {
+    drop (ev) {
       ev.preventDefault();
-      var data=ev.dataTransfer.getData("Text");
+      var data = ev.dataTransfer.getData("Text");
       ev.target.appendChild(document.getElementById(data));
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+/deep/ .mt-range-runway {
+  border-radius: 6px !important;
+}
+/deep/ .mt-range-progress {
+  border-radius: 6px 0 0 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 187, 2, 1),
+    rgba(255, 161, 91, 1),
+    rgba(255, 106, 93, 1)
+  );
+}
 .checkDetail {
-  form{
+  form {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -71,30 +82,30 @@ export default {
     padding-top: 16.466vw;
     height: 100vh;
     box-sizing: border-box;
-    .imgBox{
-      li{
+    .imgBox {
+      li {
         width: 20vw;
         height: 20vw;
         background: blue;
       }
     }
-    .rangeBox{
+    .rangeBox {
       width: 92vw;
       margin: 0 4vw;
-      span{
+      span {
         display: block;
         width: 12.8vw;
         height: 8.1vw;
         font-size: 12px;
         line-height: 6.6vw;
-        color: #E4675B;
+        color: #e4675b;
         text-align: center;
         background: url(../../../assets/imgs/4s/starCheck/msg.png) no-repeat;
         background-size: 100%;
         margin-left: 39.6vw;
       }
     }
-    button{
+    button {
       position: absolute;
       bottom: 0;
       left: 0;
