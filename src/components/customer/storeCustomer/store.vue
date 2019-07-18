@@ -6,7 +6,7 @@
             <li>创建人</li>
         </ul>
         <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore1" :auto-fill="false">
-                <ul class="content" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId)">
+                <ul class="content-Item" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId)">
                     <li>{{item.username}}</li>
                     <li v-if="item.sex==='Mr.'">男</li>
                     <li v-else-if="item.sex==='Ms.'">女</li>
@@ -173,7 +173,7 @@ export default {
 
         }
     }
-    .content{
+    .content-Item{
         @include flex-center;
         color:$fontCol;
         font-size:4.533vw;

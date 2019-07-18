@@ -6,7 +6,7 @@
             <li>战败时间</li>
         </ul>
         <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore4" :auto-fill="false">
-           <ul class="content" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId)">
+           <ul class="content-Item" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId)">
                 <li>
                     <i :class="`important${item.level}`"></i>
                     <span>{{item.username}}</span>

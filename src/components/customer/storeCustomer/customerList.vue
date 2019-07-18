@@ -6,7 +6,7 @@
             <li>最近跟进</li>
         </ul>
         <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="customerAllLoaded" ref="loadmore2" :auto-fill="false">
-            <ul class="content" v-for="(item,index) in customerList" :key="index" @click="linkTo(item.accntId)">
+            <ul class="content-Item" v-for="(item,index) in customerList" :key="index" @click="linkTo(item.accntId)">
                 <li>
                     <i :class="`important${item.level}`"></i>
                     <span>{{item.username}}</span>
