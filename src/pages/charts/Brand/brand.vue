@@ -39,7 +39,9 @@
     <ul>
       <li v-for="(item, index) in categoryData.series" :key="`${index}11`">
         <div v-if="!categoryShow" class="barBox">
-          <chartsTit :text="`各${typeName}数量占比-${item.name}`"></chartsTit>
+          <chartsTit :text="`各${typeName}数量占比-${item.name}`">
+           
+          </chartsTit>
           <Pie
           v-if="!categoryPieShow[index]"
           :yAxisData="categoryData.yAxisData"
@@ -53,7 +55,9 @@
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
-          <chartsTit :text="`各${typeName}数量对比`"></chartsTit>
+          <chartsTit :text="`各${typeName}数量对比`">
+             <h6>单位：件</h6>
+          </chartsTit>
           <!-- <div ref="categoryContainer" ></div> -->
           <Bar
           v-if="!categoryShow"

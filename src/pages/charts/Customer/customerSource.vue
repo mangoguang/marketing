@@ -4,7 +4,9 @@
     />
     <SelectComponent></SelectComponent>
     <div class="barBox">
-      <chartsTit :text="'客户来源-整体'"></chartsTit>
+      <chartsTit :text="'客户来源-整体'">
+        <h6>单位：人次</h6>
+      </chartsTit>
       <div v-show="!customerSourceShow" ref="customerSourceContainer" ></div>
       <noData v-show="customerSourceShow"></noData>
       <!-- <Bar
@@ -14,7 +16,9 @@
       :height="100"></Bar> -->
     </div>
     <div class="barBox">
-      <chartsTit :text="'客户来源-各店'"></chartsTit>
+      <chartsTit :text="'客户来源-各店'">
+        <h6>单位：人次</h6>
+      </chartsTit>
       <div v-show="!areaCustomerSourceShow" ref="areaCustomerSourceContainer"></div>
       <noData v-show="areaCustomerSourceShow"></noData>
       <!-- <Bar

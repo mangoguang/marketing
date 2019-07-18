@@ -3,7 +3,9 @@
     <mybanner :title='title'/>
     <SelectComponent></SelectComponent>
     <div class="barBox">
-      <chartsTit :text="'坪效-整体'"></chartsTit>
+      <chartsTit :text="'坪效-整体'">
+         <h6>单位：元</h6>
+      </chartsTit>
       <div v-show="!areaEffectivenessShow" :style="{height: `100vw`}" ref="areaEffectivenessContainer" ></div>
       <noData v-show="areaEffectivenessShow"></noData>
       <!-- <Bar
@@ -12,7 +14,9 @@
       :height="100"></Bar> -->
     </div>
     <div class="barBox">
-      <chartsTit :text="'坪效-各店'"></chartsTit>
+      <chartsTit :text="'坪效-各店'">
+        <h6>单位：元</h6>
+      </chartsTit>
       <div v-show="!areaEffectivenessShopShow" ref="areaEffectivenessShopContainer" ></div>
       <noData v-show="areaEffectivenessShopShow"></noData>
       <!-- <Bar
