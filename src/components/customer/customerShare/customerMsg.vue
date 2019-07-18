@@ -37,7 +37,7 @@
         <span class='unspan' v-else>未收集</span>
       </li>
     </ul>
-    <btn @click.native="edit()" :text="'编辑资料'" class="myBtn"></btn>
+    <btn @click.native="edit()" :text="'编辑资料'" class="myBtn" v-if="isedit==='no'?false:true"></btn>
   </div>
 </template>
 
@@ -45,7 +45,7 @@
 import customerLi from '../customerLi'
 import btn from "../../btn";
 export default {
-  props: ['list', 'editMsg'],
+  props: ['list', 'editMsg','isedit'],
   components: {customerLi, btn},
   data() {
     return {
@@ -61,6 +61,9 @@ export default {
      this.editMsg(true)
    },
    toAddress() {
+     if(this.isedit==='no'){
+       return;
+     }
       this.$router.push({path:`/address/${this.$route.query.id}`})
     },
     //获取门店

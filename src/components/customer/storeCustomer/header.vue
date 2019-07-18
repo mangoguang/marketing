@@ -383,7 +383,7 @@ export default {
         
     }
     .tabBox{
-        color:rgba(255,255,255,.5);
+        color:rgba(255,255,255,1);
         .tab{
             @include flex-center;
             font-size:4.266vw;

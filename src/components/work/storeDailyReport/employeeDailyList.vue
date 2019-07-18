@@ -161,6 +161,7 @@ $red:#FF2D55;
             color:$color;
             font-size: $fontSize18;
             font-weight: bold;
+            width:52vw;
             span{
                 font-size: $fontSize14;
                 color:#909090;

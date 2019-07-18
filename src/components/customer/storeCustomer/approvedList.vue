@@ -12,7 +12,7 @@
                     <span>{{item.username}}</span>
                     <b :class="`urgency${item.urgency}`"></b>
                 </li>
-                <li>{{item.goodsName}}</li>
+                <li>{{item.phone}}</li>
                 <li>{{item.followDate}}</li>
             </ul>
             
@@ -139,7 +139,12 @@ export default {
             })
         },
         linkTo(id){
-            this.$router.push({path:"/enquiryInfo",query:{id:id}})
+            //this.$router.push({path:"/enquiryInfo",query:{id:id}})
+            if(this.$route.name==='employeeDetail'){
+                this.$router.push({path:"/enquiryInfo",query:{id:id,edit:'no'}})
+            }else{
+                this.$router.push({path:"/enquiryInfo",query:{id:id}})
+            }
         }
     }
   

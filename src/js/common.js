@@ -12,8 +12,8 @@ export default class Common {
    // this.port = 'http://172.16.10.107'
    //this.port = "http://10.11.8.7"
    //this.port = "http://172.16.4.201"
-  // this.port="http://10.11.8.17"
-  this.port = "https://mobiletest.derucci.net/cd-sys-web"
+  //this.port="http://10.11.8.17"
+this.port = "https://mobiletest.derucci.net/cd-sys-web"
   //this.port = 'https://agency.derucci.com'
     // this.port="http://172.16.9.212/"
     // this.port = "http://172.16.12.86/"
@@ -193,9 +193,9 @@ export default class Common {
               toLogin()
             }
           } else {
-            this.tip('请求失败!')
-            //console.log(error.response)
-            //this.tip(error.response.msg)
+            //this.tip('请求失败!')
+            console.log(error.response.data.msg)
+            this.tip(error.response.data.msg)
           }
         } else if (error.request) {
           this.tip('网络异常!')
@@ -268,9 +268,9 @@ export default class Common {
               toLogin()
             }
           } else {
-            this.tip('请求失败!')
+            //this.tip('请求失败!')
             //console.log(error.response)
-            //this.tip(error.response.msg)
+            this.tip(error.response.data.msg)
           }
         } else if (error.request) {
           this.tip('网络异常!')
@@ -329,8 +329,8 @@ export default class Common {
             }
           } else {
             //console.log(error.response)
-            this.tip('请求失败!')
-            //this.tip(error.response.msg)
+            //this.tip('请求失败!')
+            this.tip(error.response.data.msg)
           }
         } else if (error.request) {
           this.tip('网络异常!')
@@ -393,8 +393,8 @@ export default class Common {
             }
           } else {
             //console.log(error.response)
-            this.tip('请求失败!')
-            //this.tip(error.response.msg)
+            //this.tip('请求失败!')
+            this.tip(error.response.data.msg)
           }
         } else if (error.request) {
           this.tip('网络异常!')

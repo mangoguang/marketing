@@ -164,7 +164,13 @@ export default {
             })
         },
         linkTo(id){
-            this.$router.push({path:"/customerInfo",query:{id:id}})
+            //console.log(this.$route.name)
+            if(this.$route.name==='employeeDetail'){
+                this.$router.push({path:"/customerInfo",query:{id:id,edit:'no'}})
+            }else{
+                this.$router.push({path:"/customerInfo",query:{id:id}})
+            }
+           
         },
         newCustomer() {
             this.setBtn([])

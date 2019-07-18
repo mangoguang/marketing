@@ -80,6 +80,17 @@ export default {
       })
       this.tabList=array;
     }
+  },
+  beforeRouteEnter(to,from,next){
+    if(from.name==='employeeDailyReport'){
+      next(vm => {
+        vm.getIndex(1)
+      })
+    }else{
+      next(vm => {
+        vm.getIndex(0)
+      })
+    }
   }
 }
 </script>

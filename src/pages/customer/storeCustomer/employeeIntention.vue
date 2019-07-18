@@ -54,7 +54,7 @@ export default {
     created(){
         checkLogin()
         this.checkLogin()
-        let array = this.subHeaderStatus;
+        /* let array = this.subHeaderStatus;
         let arr = array.map((item,index) => {
             index!==0?this.showFilter=false:'';
             if(index==0){
@@ -64,8 +64,9 @@ export default {
             }
             return item;
         })
-        this.setSubHeaderStatus(arr);
+        this.setSubHeaderStatus(arr); */
     },
+    
     mounted(){
 
     },

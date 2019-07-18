@@ -9,6 +9,7 @@
         @changeDateInterVal="changeDateInterVal" class="time" :key="status"/>
         <DailyUl
         :list="dailyList"  class="dailyUI"/>
+        <p>成交率=成交客户数/接待客户数</p>
       </div>
       
     </div>
@@ -195,6 +196,17 @@ export default {
       margin: 0 4.8vw;
       border-radius: 2vw;
       border-bottom: 1px solid #e1e1e1;
+      position: relative;
+      p{
+        position: absolute;
+        top:32vw;
+        right:6.4vw;
+        background: rgba(0, 122, 255, .2);
+        border-radius: 1.33vw;
+        color:#666;
+        font-size: 12px;
+        padding:0 1.33vw;
+      }
     }
     .time{
       background: #fff;

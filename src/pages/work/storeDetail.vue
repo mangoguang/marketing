@@ -41,6 +41,15 @@ export default {
   mounted() {
     
   },
+  beforeRouteEnter(to,from,next){
+    if(from.name==="employeeDetail"){
+      next(vm => {
+        vm.getIndex(1)
+      })
+    }else{
+      next()
+    }
+  },
   methods:{
     getIndex(i){
       console.log(i)

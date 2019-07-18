@@ -28,13 +28,12 @@
                               _localAjax().typename === 'Boss&Consultant' ||
                               _localAjax().typename === 'Boss&Manager' ">
           <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
-                              _localAjax().typename === 'Boss&Consultant' ||
-                              _localAjax().typename === 'Boss&Manager' "
+                              _localAjax().typename === 'Boss&Consultant'"
                         to="/Customer" @click.native="changeActive" replace>
             <div class="iconSalary"></div>
             <p class="iconCharP">客户</p>
           </router-link>
-          <router-link  v-else-if=" _localAjax().typename === 'Store Manager'"
+          <router-link  v-else-if=" _localAjax().typename === 'Store Manager'|| _localAjax().typename === 'Boss&Manager'"
                         to="/storeCustomer" @click.native="changeActive" replace>
             <div class="iconSalary"></div>
             <p class="iconCharP">客户</p>

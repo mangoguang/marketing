@@ -65,7 +65,7 @@ export default function(data, vertical, salesVal, title,radio) {
             position: seriesPosition,
             formatter:radio?function(params){
               if(params.value){
-                return parseFloat(params.value)*100+"%"
+                return (parseFloat((params.value).toFixed(4))*100)+"%"
               }else{
                 return ''
               }

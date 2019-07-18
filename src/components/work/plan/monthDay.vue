@@ -40,9 +40,8 @@ export default {
       curDay:''
     }
   },
-  created() {
+  activated(){
     this.getDate()
-    
   },
   computed: {
     BeginDay(){

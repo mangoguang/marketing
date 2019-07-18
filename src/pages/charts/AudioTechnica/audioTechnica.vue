@@ -325,6 +325,7 @@ export default {
           this.key3 = true
           res = res.data
           mango.sortYears(res)
+          console.log('整提',res)
           //res.yAxisData = [mango.chartsBotTit(res)]
           _this.achieveRatioTotalData = res
         }

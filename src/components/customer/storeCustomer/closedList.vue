@@ -12,7 +12,7 @@
                     <span>{{item.username}}</span>
                     <b :class="`urgency${item.urgency}`"></b>
                 </li>
-                <li>{{item.goodsName}}</li>
+                <li>{{item.phone}}</li>
                 <li>{{item.closeTime.split(' ')[0]}}</li>
             </ul>
         </mt-loadmore>
@@ -144,7 +144,11 @@ export default {
             })
         },
         linkTo(id){
-            this.$router.push({path:"/customerInfo",query:{id:id}})
+            if(this.$route.name==='employeeDetail'){
+                this.$router.push({path:"/customerInfo",query:{id:id,edit:'no'}})
+            }else{
+                this.$router.push({path:"/customerInfo",query:{id:id}})
+            }
         }
        
     }

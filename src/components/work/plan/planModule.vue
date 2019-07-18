@@ -6,10 +6,11 @@
             </mytitle>
             <weekHeader/>
             <weekDay @getSelectDate="getSelectDate" @getWeekParams="getWeekParams" :dateList="dateList"/>
+            <p>点击日期查看工作</p>
         </div>
         <div class="planList">
             <planTime :list="list"/>
-            <button type="button" class="newPlan" @click="newPlan"></button>
+            <button type="button" class="newPlan" @click="newPlan" :style="{bottom:bottom}"></button>
         </div>
         
     </div>
@@ -27,7 +28,8 @@ export default {
         return {
             selectDate:'',
             list:[],
-            dateList:[]
+            dateList:[],
+            bottom:''
         }
     },
     components:{
@@ -35,6 +37,9 @@ export default {
         weekHeader,
         weekDay,
         planTime
+    },
+    created(){
+      /*   this.isIphoneX() */
     },
     methods:{
         more(){
@@ -78,7 +83,15 @@ export default {
         },
         getWeekParams(dateObj){
             this.getPlanList(dateObj)
-        }
+        },
+        isIphoneX(){
+           let phone = this.phoneSize()
+           if(phone==='iphonex'){
+                this.bottom='28vw'
+           }else{
+               this.bottom='32vw'
+           }
+       }
     }
 }
 </script>
@@ -89,8 +102,14 @@ export default {
 .plan{
     border-radius:2vw;
     background: #fff;
-    padding-bottom: 4.8vw;
+    padding-bottom: 2.66vw;
     position: relative;
+    p{
+        text-align: center;
+        color:#909090;
+        font-size: 12px;
+        margin-top:2.66vw;
+    }
 }
 .planList{
     border-radius:2vw;
@@ -98,14 +117,16 @@ export default {
     margin-top:1.33vw;
     position: relative;
     .newPlan{
+       /*  position: fixed; */
         position: absolute;
         top:0;
-        right:0;
+       /*  right:3.73vw; */
+       right:0;
         width:14.13vw;
         height:14.13vw;
         background:url('../../../assets/imgs/add.png') center center;
         background-size: 100% 100%;
-        opacity: 0.6;
+        /* opacity: 0.6; */
     }
 }
 </style>

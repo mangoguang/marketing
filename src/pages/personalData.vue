@@ -40,7 +40,7 @@
             <span>{{account}}</span>
           </div>
       </li>
-       <li>
+       <li v-show="_localAjax().typename !== 'Dealer Boss'">
         <span style="align-self:flex-start;">所属门店</span>
         <div class="cell" style="flex-direction: column;">
           <span v-for="(item,index) in shopList" :key="index">{{item.name}}</span>

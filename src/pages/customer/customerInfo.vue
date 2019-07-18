@@ -11,14 +11,14 @@
     </ul>
     <!-- 客户信息-->
     <div v-show="customerTabStatus[0].status">
-      <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
+      <customer-msg :isedit="edit" :list="list" :editMsg='editMsg' v-if='!editStatus'/>
       <div v-else style="margin-top:2.666vw;" >
         <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
     <!-- 意向信息-->
-    <intentionMsg v-show="customerTabStatus[1].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
+    <intentionMsg :isedit="edit" v-show="customerTabStatus[1].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
       }else {
         vm.setUpLoadUrl('')
       }
+      
     })
   },
   data(){
@@ -65,9 +66,11 @@ export default {
       shpoId:'',
       index: '',
       phone:'',
-      wechat:''
+      wechat:'',
+      edit:''
     }
   },
+  
   computed: {
     ...mapState({
       customerTabStatus: state => state.tabStatus.customerTabStatus,
@@ -363,6 +366,7 @@ export default {
   //
   activated() {
     // isUseCache为false时才重新刷新获取数据
+    this.$route.query.edit==='no'?this.edit='no':this.edit='yes'
     if(!this.$route.meta.isUseCache){  
       this.editStatus = false
       let shops = localStorage.getItem('shops')

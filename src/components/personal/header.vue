@@ -48,7 +48,10 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     let shop = localStorage.getItem('shops')
-    this.shop = JSON.parse(shop)[0].name
+    if(JSON.parse(shop).length>0){
+      this.shop = JSON.parse(shop)[0].name
+    }
+    
   },
   mounted(){
     this.isIPhoneX()

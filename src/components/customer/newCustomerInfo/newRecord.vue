@@ -25,8 +25,9 @@
         </remark>
       </li>
     </ul>
-    <!-- <upLoad ref="upload" :path="path" picLen='5' :clear="isClear"/> -->
-    <upLoad />
+    <p class="title">附件图片</p>
+    <upLoad ref="upload"  picLen='5' />
+    <!-- <upLoad /> -->
     <p class="bottom">到底啦</p>
     <!-- <div class="btnsBox">
       <big-btn :text="'上一步'" @click.native="preModule"></big-btn>
@@ -52,8 +53,8 @@ import { DatetimePicker, MessageBox } from 'mint-ui'
 import followSelect from '../../select/followSelect'
 import nextDate from '../../select/nextDate'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
-import upLoad from './upload'
-// import upLoad from '../../upload/filesUpload'
+/* import upLoad from './upload' */
+import upLoad from '../../upload/filesUpload'
 Vue.component(DatetimePicker.name, DatetimePicker)
 import remark from '../remark'
 import myRange from '../myRange'
@@ -109,7 +110,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setNewCustomerInfo", 'setFollowVal', 'setFollowTiming']),
+    ...mapMutations(["setNewCustomerInfo", 'setFollowVal', 'setFollowTiming','setFiles','setPicVal']),
     // changeMyRangeVal(val) {
     //   // console.log('mtrange:', val)
     //   this.newCustomerInfo.percent = val
@@ -123,6 +124,8 @@ export default {
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.setFollowVal('到店沟通')
       this.setFollowTiming('')
+      this.setFiles([])
+      this.setPicVal([])
     },
    
     selectFollowTime() {
@@ -204,6 +207,12 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../../assets/common.scss";
+.title{
+    font-size: 14px;
+    color: #363636;
+    padding: 0 5vw;
+    line-height: 2.6em;
+}
   .newRecord{
     li{
       // padding: 0 5vw;

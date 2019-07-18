@@ -487,7 +487,11 @@ export var router = new VueRouter({
   {
     path:'/workPlan',
     name:'workPlan',
-    component:workPlan
+    component:workPlan,
+    meta:{
+      keepAlive:true,
+      isUseCache:false
+    }
   },
   {
     path:'/newWorkPlan',

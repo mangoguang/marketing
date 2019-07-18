@@ -6,13 +6,15 @@
         <div class="planContent" v-show="!showList">
             <monthDay @getMonthDate="getMonthDate" :dateList="dateList" @getSelectDate="getSelectDate"/>
             <planTime :list="list"/>
-            <button type="button" class="switch" ref="switch" @click="switchList"><span>切换至列表</span></button>
+            <div class="btn-box">
+                <button type="button" class="switch" ref="switch" @click="switchList"><span>切换至列表</span></button>
+            </div>
+            
         </div>
         <div class="planContent" v-show="showList">
             <planList :dateList="dateList" :month="month" :year="year" :day="day"/>
-            <button type="button" class="switchCalendar" ref="switchCalendar" @click="switchList"><span>切换至日历</span></button>
-        </div>
-        
+            <div class="btn-box"><button type="button" class="switchCalendar" ref="switchCalendar" @click="switchList"><span>切换至日历</span></button></div>
+        </div>        
     </div>
 </template>
 <script>
@@ -41,10 +43,30 @@ export default {
         planTime,
         planList
     },
+    beforeRouteEnter(to,from,next){
+       if(from.name === "work"){
+            next(vm => {
+                vm.year = new Date().getFullYear();
+                vm.month = new Date().getMonth()+1;
+                vm.day = new Date(vm.year,vm.month,0).getDate()
+                vm.showList = false
+            })
+        }else{
+            next(vm => {
+                vm.getPlanList({
+                    startDate:`${vm.year}-${vm.month<10?`0${vm.month}`:vm.month}-01`,
+                    endDate:`${vm.year}-${vm.month<10?`0${vm.month}`:vm.month}-31`
+                })
+                vm.getPlanList({
+                    startDate:vm.selectDate,
+                    endDate:vm.selectDate
+                })
+            })
+           
+        }
+    },
     created(){
-        this.year = new Date().getFullYear();
-        this.month = new Date().getMonth()+1;
-        this.day = new Date(this.year,this.month,0).getDate()
+        
     },
     computed:{
         
@@ -126,6 +148,7 @@ export default {
     text-align: center;
    .planContent{
        margin-top:19.12vw;
+       padding-bottom: 16vw;
    }
     .header{
     background: #fff;
@@ -144,7 +167,7 @@ export default {
       text-align: left;
   }
   .switch{
-      width:33.866vw;
+      width:34.866vw;
       height:8.8vw;
       border-radius: 4.4vw;
       border:1px solid #007AFF;
@@ -163,7 +186,7 @@ export default {
   }
   .switchCalendar{
         margin:0 9.06vw;
-        width:33.866vw;
+        width:34.866vw;
         height:8.8vw;
         border-radius: 4.4vw;
         border:1px solid #FF4800;
@@ -179,6 +202,12 @@ export default {
       background-image:url('../../assets/imgs/date_02.png');
       background-color:#FF4800;
       color:#fff;
+  }
+  .btn-box{
+      position: fixed;
+      bottom:0;
+      left:0;
+      right:0;
   }
 }
  
