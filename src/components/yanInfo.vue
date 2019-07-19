@@ -53,6 +53,7 @@ export default {
       height:0;
       overflow:hidden;
       transition: height .5s;
+      word-break: break-all;
   }
   .inputBox{
     border:none;

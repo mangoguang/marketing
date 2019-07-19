@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Indicator, Toast } from 'mint-ui'
 //let baseUrl = 'https://op.derucci.com'
 let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
 //let baseUrl = 'http://10.11.8.17:8088'
@@ -15,13 +16,16 @@ export {baseUrl}
 class Request {
   getData ({ url, params, method = 'GET' }) {
     return new Promise((resolve, reject) => {
+      this.loading('open')
       axios({
         url: baseUrl + url,
         params: params,
         method: method
       }).then(res => {
+        this.loading('close')
         resolve(res.data)
       }).catch(err => {
+        this.loading('close')
         reject(err)
       })
     })
@@ -67,6 +71,20 @@ class Request {
         reject(err)
       })
     })
+  }
+  loading(str) {
+    if (str === 'open') {
+      Indicator.open({
+        text: '数据请求中...',
+        spinnerType: 'fading-circle'
+      })
+      // let loadingTime = setTimeout(function() {
+      //   Indicator.close()
+      //   clearTimeout(loadingTime)
+      // }, 15000)
+    } else {
+      Indicator.close()
+    }
   }
 }
 export {Request}

@@ -6,7 +6,7 @@
     <!-- 整体进店数 -->
     <li class="barBox">
       <chartsTit :text="'进店数-整体'">
-        <!-- <h6>单位：万</h6> -->
+       <h6>单位：人次</h6>
       </chartsTit>
       <div v-show="!storeGetInTotalShow" :style="{height: `100vw`}" ref="storeGetInTotalContainer" ></div>
       <noData v-show="storeGetInTotalShow"></noData>
@@ -14,6 +14,7 @@
     <!-- 各门店进店数 -->
     <li class="barBox">
       <chartsTit :text="'进店数-各门店'">
+        <h6>单位：人次</h6>
       </chartsTit>
       <div v-show="!perStoreGetInShow" ref="perStoreGetInContainer" ></div>
       <noData v-show="perStoreGetInShow"></noData>
@@ -35,6 +36,7 @@
     <!-- 整体客单值 -->
     <li class="barBox">
       <chartsTit :text="'均单值-整体'">
+        <h6>单位：元</h6>
       </chartsTit>
       <div v-show="!orderFormTotalShow" :style="{height: `100vw`}" ref="orderFormTotalContainer" ></div>
       <noData v-show="orderFormTotalShow"></noData>
@@ -42,6 +44,7 @@
     <!-- 各门店客单值 -->
     <li class="barBox">
       <chartsTit :text="'均单值-各门店'">
+        <h6>单位：元</h6>
       </chartsTit>
       <div v-show="!perOrderFormShow" ref="perOrderFormContainer" ></div>
       <noData v-show="perOrderFormShow"></noData>
