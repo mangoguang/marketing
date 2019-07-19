@@ -33,5 +33,6 @@ export default {
 <style lang='scss' scoped>
 .index {
   width: 100vw;
+  overflow: hidden;
 }
 </style>
