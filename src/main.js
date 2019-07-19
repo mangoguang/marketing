@@ -31,6 +31,8 @@ import './index.scss'
 // import base from './Global/index'
 // Vue.use(base)
 import './Global/index'
+import permission from '@/directive/permission'
+Vue.use(permission)
 
 Vue.config.devtools = true
 Vue.use(VueTouch, {

@@ -3,7 +3,7 @@
   <div :class="`storeSelect ${storeSelectShow ? 'on' : ''}`">
     <h3><span @click="showStoreList">{{shops[selectIndex].name}}</span></h3>
     <ul>
-      <li @click="bindSelect(index)"
+      <li @click="bindSelect(index,item.id)"
           v-for="(item, index) in shops"
           :key="`shops${index}`"><span>{{item.name}}</span></li>
     </ul>
@@ -12,56 +12,31 @@
 
 <script>
 export default {
+  props: {
+    shops: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    }
+  },
   data () {
     return {
       selectIndex: 0,
-      storeSelectShow: false,
-      // shops: JSON.parse(localStorage.getItem('shops'))
-      shops: [
-        {
-          "aliasName": "禅城慕思（凯奇/3D/歌蒂娅/0769）",
-          "crmId": "1-1IW3WN",
-          "id": "1129280494186131457",
-          "name": "1佛山市禅城区美居（凯奇/3D/0769/歌蒂娅/兰博基尼）专卖店",
-          "parentId": ""
-        },
-        {
-          "aliasName": "禅城慕思（凯奇/3D/歌蒂娅/0769）",
-          "crmId": "1-1IW3WN",
-          "id": "1129280494186131457",
-          "name": "2佛山市禅城区美居（凯奇/3D/0769/歌蒂娅/兰博基尼）专卖店",
-          "parentId": ""
-        },
-        {
-          "aliasName": "禅城慕思（凯奇/3D/歌蒂娅/0769）",
-          "crmId": "1-1IW3WN",
-          "id": "1129280494186131457",
-          "name": "3佛山市禅城区美居",
-          "parentId": ""
-        },
-        {
-          "aliasName": "禅城慕思（凯奇/3D/歌蒂娅/0769）",
-          "crmId": "1-1IW3WN",
-          "id": "1129280494186131457",
-          "name": "4佛山市禅城区美居",
-          "parentId": ""
-        }
-      ]
+      storeSelectShow: false
     }
   },
   created () {
-
-  },
-  mounted () {
 
   },
   methods: {
     showStoreList () {
       this.storeSelectShow = !this.storeSelectShow
     },
-    bindSelect (index) {
+    bindSelect (index, id) {
       this.selectIndex = index
       this.storeSelectShow = false
+      this.$emit('onGetStoreId', id)
     }
   }
 }
@@ -97,6 +72,7 @@ export default {
   ul {
     position: absolute;
     height: 100vh;
+    width: 100%;
     text-align: left;
     z-index: 1000;
     background: rgba(0, 0, 0, 0.2);

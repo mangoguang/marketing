@@ -1,44 +1,40 @@
 <!-- status参数为真时表示已评分 -->
 <template>
   <div class="bigCategory">
-    <BigCategoryBox
-    v-for="(item, index) in bigCategoryList"
-    @click.native="toCheck"
-    :key="`bigCategoryBox${index}`"
-    :status="item.status"
-    :text="item.text"
-    />
+    <BigCategoryBox v-for="(item, index) in categories"
+                    @click.native="$router.push({ path: '/check' ,query:{id:$route.query.id}})"
+                    :key="index"
+                    :status="item.status"
+                    :text="item.name" />
   </div>
 </template>
 
 <script>
 import BigCategoryBox from './bigCategoryBox'
+import { secondcategories } from '@/api/4s'
 export default {
   props: [],
-  components: {BigCategoryBox},
+  components: { BigCategoryBox },
   data () {
     return {
-      bigCategoryList: [
-        {
-          text: '店面SI标准一阶段',
-          status: true
-        }, {
-          text: '员工形象',
-          status: true
-        }, {
-          text: '店面环境',
-          status: false
-        }, {
-          text: '数据管理',
-          status: false
-        }
-      ]
+      categories: []
     }
   },
+  async created () {
+    let { code, categories } = await secondcategories({ id: this.$route.query.id })
+    categories.map((item, index) => {
+      if (index == 0) {
+        this.$set(item, 'status', true)
+      } else {
+        this.$set(item, 'status', false)
+      }
+    })
+    this.categories = categories
+  },
   methods: {
-   toCheck() {
-     this.$router.push({path: '/check'})
-   } 
+    // toCheck () {
+    //   this.$router.push({ path: '/check' })
+    // }
   }
 }
 </script>
