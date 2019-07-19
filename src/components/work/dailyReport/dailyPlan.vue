@@ -44,6 +44,8 @@ export default {
   },
   methods:{
     changeTextarea(e) {
+      e.target.value=e.target.value.replace(/[\uff00-\uffff]/g,'')
+      this.textareaVal=this.textareaVal.replace(/[\uff00-\uffff]/g,'')
       this.$emit('changeDailyPlanTextarea', e.target.value)
     }
   }

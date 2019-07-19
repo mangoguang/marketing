@@ -44,7 +44,33 @@ export default {
   },
   methods:{
     changeTextarea(e) {
+    
+      e.target.value=e.target.value.replace(/[\uff00-\uffff]/g,'')
+      console.log('ppp',this.charToUnicode(e.target.value))
+      let value = this.charToUnicode(e.target.value)
+      console.log('uuuu',this.unicodeToChar(value).charAt(0))
+      this.textareaVal=this.textareaVal.replace(/[\uff00-\uffff]/g,'')
       this.$emit('changeDailySummaryTextarea', e.target.value)
+    },
+    charToUnicode(str) {
+        let temp;
+        for(let i = 0;i<str.length;i++){
+          temp+='\\u' + str[i].charCodeAt(0).toString(16);
+        }
+        return temp;
+    },
+    unicodeToChar(str){
+        if(str && str.indexOf('\\u')!==-1) {
+          var valArr = str.split('\\u'),result = '';
+          for (var j = 0,length = valArr.length;j < length;j++){
+            result += String.fromCharCode(parseInt(valArr[j], 16));
+          }
+          //如果不截取，则会出现空白字符，如何也消除不了
+          return  result;
+        }else{
+          alert('不是unicode字符，无需解码!')
+        }
+    
     }
   }
 }
