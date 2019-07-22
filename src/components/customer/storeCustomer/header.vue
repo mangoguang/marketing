@@ -29,18 +29,20 @@
                         </div>
                     </li>
                     <li>
-                        <span @click="showRightContainer">筛选</span>
+                        <span @click="showRightContainer" class="last">筛选</span>
                     </li>
                 </ul>
                 <ul class="filter" v-else>
                     <li>
                         <span v-if="subHeaderStatus[1].status">全部&nbsp;&nbsp;({{approvedNum}})</span>
-                        <span v-else>全部&nbsp;&nbsp;({{closedNum}})</span>
+                        <span v-else-if="subHeaderStatus[2].status">全部&nbsp;&nbsp;({{closedNum}})</span>
+                        <span v-else>全部&nbsp;&nbsp;({{allCustomerNum}})</span>
                     </li>
-                    <li>
-                        <span @click="showRightTimeSelect">筛选</span>
+                    <li v-if="!subHeaderStatus[3].status">
+                        <span @click="showRightTimeSelect" class="last">筛选</span>
                     </li>
                 </ul>
+                
                 <div :class="showFilter&&subHeaderStatus[0].status?`filterList show`:'filterList'" :style="{top:`${top}`}">
                      <ul v-show="subHeaderStatus[0].status">
                         <li v-for="(item,index) in filterList" :key="index"  @click="closeFilter(item.val)">
@@ -88,7 +90,8 @@ export default {
             list:state => state.store.list,
             params:state => state.store.params,
             allLoaded:state => state.store.allLoaded,
-            storeNum:state => state.store.storeNum
+            storeNum:state => state.store.storeNum,
+            allCustomerNum:state => state.allCustomer.allCustomerNum
         })
           
     },
@@ -126,6 +129,8 @@ export default {
         'setApprovedList','setApprovedScroll','setApprovedPage','setApprovedAllLoaded','initApprovedList']),
         ...mapMutations('storeClosed',['setClosedNum','setClosedParams','setClosedList','setClosedAllLoaded',
          'setClosedScroll','setClosedPage','initClosedList']),
+         ...mapMutations('allCustomer',['setAllCustomerNum','setAllCustomerParams','setAllCustomerList',
+         'setAllCustomerAllLoaded','setAllCustomerScroll','setAllCustomerPage','initAllCustomerList']),
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
@@ -199,6 +204,9 @@ export default {
                }
                if(this.subHeaderStatus[2].status){
                   type='Closed'
+               }
+               if(this.subHeaderStatus[3].status){
+                  type='all'
                }
                return type
             }   
@@ -290,6 +298,19 @@ export default {
                     this.setClosedParams(obj)
                     this.getCustomerList(obj)
                     break
+                case 'all':
+                    this.setAllCustomerScroll(0)
+                    this.setAllCustomerAllLoaded(false)
+                    obj = {
+                        type:'',   //New:意向客户，Approved:成交客户，Closed:战败客户
+                        key:val,    //搜索关键字，电话或名字、微信
+                        page: 1,  //页数
+                        limit: 30,    //每页条数
+                        userId:''
+                    }
+                    this.setAllCustomerParams(obj)
+                    this.getCustomerList(obj)
+                    break
                 default:
                     break
             }
@@ -324,10 +345,14 @@ export default {
                         obj.page===res.data.pages?this.setApprovedAllLoaded(true):this.setApprovedAllLoaded(false)
                         this.initApprovedList(res.data.records)
                         this.setApprovedNum(res.data.total)
-                    }else{
+                    }else if(obj.type==='Closed'){
                         obj.page===res.data.pages?this.setClosedAllLoaded(true):this.setClosedAllLoaded(false)
                         this.initClosedList(res.data.records)
                         this.setClosedNum(res.data.total)
+                    }else{
+                        obj.page===res.data.pages?this.setAllCustomerAllLoaded(true):this.setAllCustomerAllLoaded(false)
+                        this.initAllCustomerList(res.data.records)
+                        this.setAllCustomerNum(res.data.total)
                     }
                 }
                 
@@ -411,10 +436,11 @@ export default {
             @include flex-center;
             font-size:4vw;
             height:10.666vw;
-            padding-left:3.2vw;
+            padding:0 3.2vw;
             background:rgba(0, 48, 100, .2);
             li{
-                margin-right:4.533vw;
+                /* margin-right:4.533vw; */
+                flex:1;
                 span{
                     background:none;
                     padding:1.066vw 1.866vw;
@@ -443,7 +469,7 @@ export default {
                 background-size: 2.133vw auto;
             }
             li:last-child{
-                span{
+                span.last{
                     padding-left:4.266vw;
                     padding-right:4vw;
                     background:url("../../../assets/imgs/filter.png") no-repeat right center;

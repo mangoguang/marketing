@@ -48,6 +48,7 @@ import storeHeader from './modules/components/storeCustomer/header'
 import storeApproved from './modules/components/storeCustomer/approvedCustomer'
 import storeClosed from './modules/components/storeCustomer/closedCustomer'
 import storeCustomer from './modules/components/storeCustomer/customer'
+import allCustomer from './modules/components/storeCustomer/allCustomer'
 import store from './modules/components/storeCustomer/storeCustomer'
 import employeeList from './modules/employee/employeeList'
 import shopList from './modules/store/shopList'
@@ -105,6 +106,7 @@ export default new Vuex.Store({
     storeApproved,
     storeClosed,
     storeCustomer,
+    allCustomer,
     store,
     employeeList,
     shopList,
