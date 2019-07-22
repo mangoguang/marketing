@@ -2,67 +2,65 @@
 
 <template>
   <!-- 星级检查图标 -->
-  <div :class="`iconBox_wrapper ${row ? 'row' : ''}`" v-if="type === 'dailyCheck'">
-    <div
-      @click="toCheck"
-      class="starImg"
-      :style="{
-      background: `url(./static/images/4s/starCheck/star${(index + 1) <= storeClass ? `${index + 1}Bg` : `${index + 1}Bg_no`}.png) no-repeat`,
-      backgroundSize: '100% 100%'
-    }"
-    >{{index + 1}}</div>
+  <div :class="`iconBox_wrapper ${row ? 'row' : ''}`"
+       v-if="type === 'dailyCheck'">
+    <div class="starImg"
+         :style="{
+      background: `url(./static/images/4s/starCheck/star${(index + 1) <= storeClass ? `${index + 1}Bg` : `${index + 1}Bg_no`}.png) center center / 100% 100%  no-repeat`,
+
+    }">{{index + 1}}</div>
     <p class="text">{{ `${storeClassCN}星检查` }}</p>
   </div>
   <!-- 评分报表图标 -->
-  <div class="iconBox_wrapper" v-else-if="type === 'gradeReport'">
-    <div
-      class="starImg"
-      :style="{
+  <div class="iconBox_wrapper"
+       v-else-if="type === 'gradeReport'">
+    <div class="starImg"
+         :style="{
       background: `url(${iconData.icon}) no-repeat,url(${iconData.bgIcon})`,
       backgroundSize: '40% auto,100% 100%',
       backgroundPosition: 'center'
-    }"
-    ></div>
-    <div class="tips_icon" v-if="hasNew === 'tips'"></div>
-    <div class="news_icon" v-if="hasNew === 'news'">
+    }"></div>
+    <div class="tips_icon"
+         v-if="hasNew === 'tips'"></div>
+    <div class="news_icon"
+         v-if="hasNew === 'news'">
       <span>4</span>
     </div>
     <p class="text">{{iconData.text}}</p>
   </div>
 
   <!-- 权限配置图标 -->
-  <div class="iconBox_wrapper" v-else>
-    <div
-      class="starImg"
-      :style="{
+  <div class="iconBox_wrapper"
+       v-else>
+    <div class="starImg"
+         :style="{
       background: `url(./static/images/4s/starCheck/config.png) no-repeat`,
       backgroundSize: '100% 100%',
       backgroundPosition: 'center'
-    }"
-    ></div>
+    }"></div>
     <p class="text">{{ '配置权限' }}</p>
   </div>
 </template>
 
 <script>
-import getClassCN from '../../../utils/getClassCN'
+// import getClassCN from '../../../utils/getClassCN'
 export default {
-  props: ["type", "storeClass", "index",'iconData','hasNew', 'row'],
-  data() {
+  props: ["type", "storeClass", "index", 'iconData', 'hasNew', 'row'],
+  data () {
     return {
       storeClassCN: this.getClassCN()
     };
   },
   methods: {
-    toCheck() {
+    toCheck () {
       if (this.index + 1 <= this.storeClass) {
         console.log("跳转" + (this.index + 1));
-        this.$router.push({path: '/starCheck'})
+        this.$router.push({ path: '/starCheck' })
       } else {
         console.log("未达等级");
       }
     },
-    getClassCN() {
+    getClassCN () {
       switch (this.index) {
         case 0:
           this.storeClassCN = "一";
@@ -81,7 +79,7 @@ export default {
       }
     }
   },
-  mounted() {
+  mounted () {
     this.getClassCN();
   }
 };
@@ -140,7 +138,7 @@ export default {
     width: 4vw;
     height: 4vw;
     border-radius: 50%;
-    background: url('../../../assets/imgs/4s/news.png') no-repeat center;
+    background: url("../../../assets/imgs/4s/news.png") no-repeat center;
     position: absolute;
     right: 6vw;
     top: 0;
@@ -152,16 +150,16 @@ export default {
     }
   }
 }
-.d2{
+.d2 {
   .text {
     color: #2d2d2d;
   }
 }
-.row{
+.row {
   width: 100%;
   flex-direction: row;
   justify-content: center;
-  .text{
+  .text {
     font-size: 24px;
     padding-left: 3vw;
   }

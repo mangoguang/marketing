@@ -1,16 +1,18 @@
-import { Request } from '../Request/request'
+import {
+  Request
+} from '../Request/request'
 import mango from '../js/'
 
 
 class IndexModel extends Request {
   //获取令牌
-  getToken(account,password) {
+  getToken(account, password) {
     return mango.getPostAjax({
       path: '/oauth/token',
       data: {
-        grant_type:'password',        //固定填 password
-        username: account,   //登录账号
-        password: password    //MD5(密码)
+        grant_type: 'password', //固定填 password
+        username: account, //登录账号
+        password: password //MD5(密码)
       }
     })
   }
@@ -19,7 +21,7 @@ class IndexModel extends Request {
     return mango.getPostAjax({
       path: '/oauth/token',
       data: {
-        grant_type:'refresh_token',  
+        grant_type: 'refresh_token',
         refresh_token: reToken
       }
     })
@@ -55,13 +57,13 @@ class IndexModel extends Request {
     })
   }
   //首页搜索接口
-  getArticleSearch(keyword,account,classify) {
+  getArticleSearch(keyword, account, classify) {
     return this.getData({
       url: '/api/train/repository/v1/getRepositoryByKey',
       params: {
         key: keyword,
         account: account,
-        classify:classify       //1代表金管家2代表学院
+        classify: classify //1代表金管家2代表学院
       }
     })
   }
@@ -70,7 +72,7 @@ class IndexModel extends Request {
     return this.getData({
       url: '/api/train/repository/v1/getCategoryList',
       params: {
-        id: categoryId 
+        id: categoryId
       }
     })
   }
@@ -119,7 +121,7 @@ class IndexModel extends Request {
       url: '/api/question/repository/v1//getQuestionList',
       params: {
         key: key,
-        account:account,
+        account: account,
         page: 1,
         limit: 200
       }
@@ -129,14 +131,14 @@ class IndexModel extends Request {
   getQuestionCategoryList() {
     return this.getData({
       url: '/api/question/repository/v1/getCategoryList'
-    }) 
+    })
   }
   //常见问题列表接口
-  questionList(id,page,limit) {
+  questionList(id, page, limit) {
     return this.getData({
       url: '/api/question/repository/v1//getQuestionList',
       params: {
-        categoryId: id,  //  问题分类id
+        categoryId: id, //  问题分类id
         page: page,
         limit: limit
       }
@@ -214,7 +216,7 @@ class IndexModel extends Request {
     })
   }
   //收藏/分享接口
-  galleryCollect(obj) {        //3收藏，4分享
+  galleryCollect(obj) { //3收藏，4分享
     return this.getData({
       url: '/api/user/collect/v1/collect',
       params: obj
@@ -235,9 +237,9 @@ class IndexModel extends Request {
     })
   }
   //获取收藏文章/问题/产品接口
-  getCollect(obj){
+  getCollect(obj) {
     return this.getData({
-      url:'/api/user/collect/v1/getcollect',
+      url: '/api/user/collect/v1/getcollect',
       params: obj
     })
   }
@@ -253,7 +255,7 @@ class IndexModel extends Request {
   //获取个人日报概览数据
   getDailyData(obj) {
     return this.getTokenData({
-      url:'/v2/app/daily',
+      url: '/v2/app/daily',
       params: obj
     })
   }
@@ -295,7 +297,7 @@ class IndexModel extends Request {
     return mango.getAjax('/v3/app/order/list', obj)
   }
   getOrderDetails(orderId) {
-    return mango.getAjax('/v3/app/order',{
+    return mango.getAjax('/v3/app/order', {
       orderId: orderId
     })
   }
@@ -309,177 +311,192 @@ class IndexModel extends Request {
     return mango.getAjax('/v3/app/customer/listbyuserId', obj)
   }
   //获取参考系
-  getArea(type){
-    return mango.getAjax('/v2/app/reference',{type:type})
+  getArea(type) {
+    return mango.getAjax('/v2/app/reference', {
+      type: type
+    })
   }
   //获取地址列表
-  getAddressList(id){
-    return mango.getAjax('/v2/app/address/list',{customerId:id})
+  getAddressList(id) {
+    return mango.getAjax('/v2/app/address/list', {
+      customerId: id
+    })
   }
   //获取地址详情
-  getAddress(id){
-    return mango.getAjax('/v2/app/address',{addressId:id})
+  getAddress(id) {
+    return mango.getAjax('/v2/app/address', {
+      addressId: id
+    })
   }
 
   //更新地址
-  updateAddress(obj){
-    return mango.getAjax('/v2/app/address/update',obj,'post')
+  updateAddress(obj) {
+    return mango.getAjax('/v2/app/address/update', obj, 'post')
   }
   //更新地址状态
-  updateAddressStatus(obj){
-    return mango.getAjax('/v2/app/address/status',obj,'post')
+  updateAddressStatus(obj) {
+    return mango.getAjax('/v2/app/address/status', obj, 'post')
   }
   //保存反馈信息
-  feedback(obj,key,jsonData){
-    return mango.getFormAjax('/v2/api/feedback',obj,key,jsonData)
+  feedback(obj, key, jsonData) {
+    return mango.getFormAjax('/v2/api/feedback', obj, key, jsonData)
     //return mango.port+'/v2/app/feedback';
   }
   //保存反馈信息
-  getProduct(key){
-    return mango.getAjax('/v2/app/product',{key:key})
+  getProduct(key) {
+    return mango.getAjax('/v2/app/product', {
+      key: key
+    })
   }
-  
+
   //获取参考系
   getType(type) {
-    return mango.getAjax('/v2/app/reference',{
+    return mango.getAjax('/v2/app/reference', {
       type: type
     })
   }
   //获取省市区
   getCity(type, code) {
-    return mango.getAjax('/v1/api/public/address',{
+    return mango.getAjax('/v1/api/public/address', {
       type: type,
       parentCode: code
     })
   }
   //新建客户
-  newCustomer(obj,type) {
-    return mango.getAjax('/v3/app/customer/update',obj,type)
+  newCustomer(obj, type) {
+    return mango.getAjax('/v3/app/customer/update', obj, type)
   }
   //保存游客
-  getVisitor(obj,type) {
-    return mango.getAjax('/v3/app/customer/tourist', obj,type)
+  getVisitor(obj, type) {
+    return mango.getAjax('/v3/app/customer/tourist', obj, type)
   }
   //编辑客户信息
   updataCustomer(obj) {
-    return mango.getAjax('/v3/app/customer/update',obj,'post')
+    return mango.getAjax('/v3/app/customer/update', obj, 'post')
   }
   //获取客户详情
   getCustomerDetails(id) {
-    return mango.getAjax('/v3/app/customer/details',{
+    return mango.getAjax('/v3/app/customer/details', {
       type: 'order',
-      customerId:id
+      customerId: id
     })
   }
   //更新意向
-  updateOpportunity(obj,key,jsonData){
-    return mango.getFormAjax('/v3/app/opportunity/update',obj,key,jsonData)
+  updateOpportunity(obj, key, jsonData) {
+    return mango.getFormAjax('/v3/app/opportunity/update', obj, key, jsonData)
   }
 
   //获取意向详情
-  getOpportunity(id){
-    return mango.getAjax('/v3/app/opportunity',{opportunityId:id})
+  getOpportunity(id) {
+    return mango.getAjax('/v3/app/opportunity', {
+      opportunityId: id
+    })
   }
 
   //关闭意向
-  closeOpportunity(obj){
-    return mango.getAjax('/v3/app/opportunity/close',obj,'post')
+  closeOpportunity(obj) {
+    return mango.getAjax('/v3/app/opportunity/close', obj, 'post')
   }
 
   //新建跟踪记录
-  updateTrackrecord(obj,key,jsonData){
-    return mango.getFormAjax('/v3/app/trackrecord/update',obj,key,jsonData)
+  updateTrackrecord(obj, key, jsonData) {
+    return mango.getFormAjax('/v3/app/trackrecord/update', obj, key, jsonData)
   }
 
 
   //编辑客户//新建客户
-  updateCustomer(obj,key,jsonData) {
-    return mango.getFormAjax('/v3/app/customer/update',obj,key,jsonData)
+  updateCustomer(obj, key, jsonData) {
+    return mango.getFormAjax('/v3/app/customer/update', obj, key, jsonData)
   }
-   /* 
+  /* 
     个人模块  
   */
 
   //修改密码
-  changePassword(obj,type) {
-    return mango.getAjax('/v1/app/password',obj,type)
+  changePassword(obj, type) {
+    return mango.getAjax('/v1/app/password', obj, type)
   }
   //检查姓氏是否存在
   checkLastName(obj) {
     return mango.getAjax('/v2/app/check/lastname', obj)
   }
- //检查手机或微信是否存在
- checkCustomer(obj){
-  return mango.getAjax('/v3/app/customer/check', obj)
- }
+  //检查手机或微信是否存在
+  checkCustomer(obj) {
+    return mango.getAjax('/v3/app/customer/check', obj)
+  }
   //门店店长-门店客户
-  getStoreCustomer(obj){
+  getStoreCustomer(obj) {
     return mango.getAjax('/v3/app/customers', obj)
-   }
-   //门店店长-根据用户id获取工作台报表（id为店长时查询报表数据为门店总数据）
-  getDailyStoreReport(obj){
+  }
+  //门店店长-根据用户id获取工作台报表（id为店长时查询报表数据为门店总数据）
+  getDailyStoreReport(obj) {
     return mango.getAjax('/v3/app/staffDaily', obj)
   }
   //门店店长-获取员工列表
-  getEmployeeList(obj){
+  getEmployeeList(obj) {
     return mango.getAjax('/v3/app/shop/employee/list', obj)
   }
   //经销商-获取门店列表
-  getShopList(obj){
+  getShopList(obj) {
     return mango.getAjax('/v3/app/boss/shop/list', obj)
   }
   //获取员工日报
-  getStaffDailyList(obj){
+  getStaffDailyList(obj) {
     return mango.getAjax('/v3/app/getstaffdailylist', obj)
   }
   //根据员工id获取所属门店工作台报表
-  getPerStoreReport(obj){
-    return mango.getAjax('/v3/app/shopworkbenchbyuser',obj)
+  getPerStoreReport(obj) {
+    return mango.getAjax('/v3/app/shopworkbenchbyuser', obj)
   }
   //获取员工个人日报信息
-  getPerDaily(obj){
-    return mango.getAjax('/v3/app/getdaily',obj)
+  getPerDaily(obj) {
+    return mango.getAjax('/v3/app/getdaily', obj)
   }
   //根据门店id获取门店工作台报表
-  getPerStore(obj){
-    return mango.getAjax('/v3/app/shopworkbench',obj)
+  getPerStore(obj) {
+    return mango.getAjax('/v3/app/shopworkbench', obj)
   }
   //根据门店id获取门店员工列表
-  getStoreEmployeeList(obj){
-    return mango.getAjax('/v3/app/shopuser',obj)
+  getStoreEmployeeList(obj) {
+    return mango.getAjax('/v3/app/shopuser', obj)
   }
   //查询工作计划
-  getPlanList(obj){
-    return mango.getAjax('/v3/app/workplan/workplanlist',obj)
+  getPlanList(obj) {
+    return mango.getAjax('/v3/app/workplan/workplanlist', obj)
   }
   //查询客户列表
-  getCustomerList(obj){
-    return mango.getAjax('/v3/app/customers2',obj)
+  getCustomerList(obj) {
+    return mango.getAjax('/v3/app/customers2', obj)
   }
   //查询客户意向列表
-  getOppList(obj){
-    return mango.getAjax('/v3/app/customer/opportunitylist',obj)
+  getOppList(obj) {
+    return mango.getAjax('/v3/app/customer/opportunitylist', obj)
   }
   //保存工作计划
-  saveWorkPlan(obj,key,jsonData) {
-    return mango.getFormAjax('/v3/app/workplan/save',obj,key,jsonData)
+  saveWorkPlan(obj, key, jsonData) {
+    return mango.getFormAjax('/v3/app/workplan/save', obj, key, jsonData)
   }
   //根据工作计划id查看详情
-  getPlanDetail(id){
-    return mango.getAjax('/v3/app/workplan/workplandetail',{id:id})
+  getPlanDetail(id) {
+    return mango.getAjax('/v3/app/workplan/workplandetail', {
+      id: id
+    })
   }
   //修改工作计划
-  updateWorkPlan(obj,key,jsonData){
-    return mango.getFormAjax('/v3/app/workplan/update',obj,key,jsonData)
+  updateWorkPlan(obj, key, jsonData) {
+    return mango.getFormAjax('/v3/app/workplan/update', obj, key, jsonData)
   }
   //查询公告列表
-  getNoticeList(obj){
-    return mango.getAjax('/v3/app/notice/noticelist',obj)
+  getNoticeList(obj) {
+    return mango.getAjax('/v3/app/notice/noticelist', obj)
   }
   //查询公告详情
-  getNoticedDetail(obj){
-    return mango.getAjax('/v3/app/notice/noticedetail',obj)
+  getNoticedDetail(obj) {
+    return mango.getAjax('/v3/app/notice/noticedetail', obj)
   }
 }
 
-export { IndexModel }
+export {
+  IndexModel
+}
+export const indexModel = new IndexModel()
