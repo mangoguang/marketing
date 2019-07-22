@@ -169,9 +169,12 @@ export default {
       // 获取当前选择的日期数的整数值
       const num = parseInt(this.curNum)
       let arr = []
+      let arr2 = []
       if (res) {
         // 获取res数组里面的日期。
         arr = res.map(element => parseInt(element.createTime.substr(8, 2)))
+        arr2 = res.map(element => parseInt(element.createTime.substr(0, 10)))
+        console.log(arr2);
       } else {
         return
       }
