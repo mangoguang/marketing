@@ -180,8 +180,15 @@ export default {
       }
       const index = arr.indexOf(num)
       if (index >= 0) {
-        this.dailySummaryTextarea = Base64.decode(res[index].summarize)
-        this.dailyPlanTextarea = Base64.decode(res[index].plan)
+        let date = `${this.curDate[0]}/${this.curDate[1]}/${this.curDate[2]}`
+        if(new Date(date)< new Date('2019/7/22')){
+          this.dailySummaryTextarea = res[index].summarize
+          this.dailyPlanTextarea = res[index].plan
+        }else{
+          this.dailySummaryTextarea = Base64.decode(res[index].summarize)
+          this.dailyPlanTextarea = Base64.decode(res[index].plan)
+        }
+        
         this.$emit('changeDailySummaryTextarea', this.dailySummaryTextarea)
         this.$emit('changeDailyPlanTextarea',this.dailyPlanTextarea)
       }
