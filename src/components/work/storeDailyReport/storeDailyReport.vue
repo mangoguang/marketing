@@ -35,6 +35,7 @@ import mango from "../../../js"
 import Bus from '../../../utils/Bus'
 import { mapMutations } from 'vuex';
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
   name: 'perdailyReporxt',
   components:{
@@ -176,8 +177,8 @@ export default {
       }
       const index = arr.indexOf(num)
       if (index >= 0) {
-        this.dailySummaryTextarea = res[index].summarize
-        this.dailyPlanTextarea = res[index].plan
+        this.dailySummaryTextarea = Base64.decode(res[index].summarize)
+        this.dailyPlanTextarea = Base64.decode(res[index].plan)
         this.$emit('changeDailySummaryTextarea', this.dailySummaryTextarea)
         this.$emit('changeDailyPlanTextarea',this.dailyPlanTextarea)
       }

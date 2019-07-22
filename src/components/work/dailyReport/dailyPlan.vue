@@ -17,7 +17,7 @@
 import DailyUl from '../daily/dailyUl'
 import H3 from '../dailyReport/h3'
 import Textarea from '../dailyReport/textarea'
-
+let Base64 = require('js-base64').Base64
 export default {
   name: 'dailyPlan',
   components:{

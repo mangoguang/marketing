@@ -36,6 +36,7 @@ import { IndexModel } from "../../utils/"
 import mango from "../../js"
 import Bus from '../../utils/Bus'
 import { mapMutations } from 'vuex';
+let Base64 = require('js-base64').Base64
 const indexModel = new IndexModel()
 export default {
   name: 'dailyReporxt',
@@ -173,8 +174,8 @@ export default {
       }
       const index = arr.indexOf(num)
       if (index >= 0) {
-        this.dailySummaryTextarea = res[index].summarize
-        this.dailyPlanTextarea = res[index].plan
+        this.dailySummaryTextarea = Base64.decode(res[index].summarize)
+        this.dailyPlanTextarea = Base64.decode(res[index].plan)
       }
     },
     getDailyData(data) {

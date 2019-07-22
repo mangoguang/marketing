@@ -33,6 +33,7 @@ import mango from "../../js"
 import { IndexModel } from "../../utils/"
 import { doubleDigit } from "../../utils/common/"
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
   name: 'newPlan',
   components: {
@@ -94,8 +95,8 @@ export default {
         return
       }
       indexModel.savePlan({
-        summarize: this.dailySummaryTextarea,
-        plan: this.dailyPlanTextarea,
+        summarize: Base64.encode(this.dailySummaryTextarea),
+        plan: Base64.encode(this.dailyPlanTextarea),
         date: this.curDay         //获取当前日期
       }).then((res) => {
         if (res) {

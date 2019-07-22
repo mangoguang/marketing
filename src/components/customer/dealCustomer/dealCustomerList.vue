@@ -401,6 +401,11 @@ export default {
       background-size: auto 100%;
       // background-position: center;
     }
+    .importantD{
+      background: url(../../../assets/imgs/D.png) no-repeat;
+      background-size: auto 100%;
+      // background-position: center;
+    }
   }
 }
 </style>

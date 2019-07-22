@@ -17,7 +17,7 @@ import DailyUl from '../daily/dailyUl'
 import H3 from '../dailyReport/h3'
 import Textarea from '../dailyReport/textarea'
 import { mapState } from 'vuex';
-
+let Base64 = require('js-base64').Base64
 export default {
   name: 'dailySummary',
   components:{
@@ -45,11 +45,11 @@ export default {
   methods:{
     changeTextarea(e) {
     
-      e.target.value=e.target.value.replace(/[\uff00-\uffff]/g,'')
-      console.log('ppp',this.charToUnicode(e.target.value))
-      let value = this.charToUnicode(e.target.value)
-      console.log('uuuu',this.unicodeToChar(value).charAt(0))
-      this.textareaVal=this.textareaVal.replace(/[\uff00-\uffff]/g,'')
+      //e.target.value=e.target.value.replace(/[\uff00-\uffff]/g,'')
+      //console.log('ppp',Base64.encode(e.target.value))
+      //let value =Base64.encode(e.target.value)
+      //console.log('uuuu',Base64.decode(value))
+      //this.textareaVal=this.textareaVal.replace(/[\uff00-\uffff]/g,'')
       this.$emit('changeDailySummaryTextarea', e.target.value)
     },
     charToUnicode(str) {
