@@ -1,18 +1,22 @@
 <!--  -->
 <template>
-  <div class="starCheckW" :style="{'margin-top':`${top}vw`}">
-    <div class="header" :style="{'height':`${headerHeight}vw`}">
-      <egg-atest-header @getStatus="getStatus"/>
+  <div class="starCheckW"
+       :style="{'margin-top':`${top}vw`}">
+    <div class="header"
+         :style="{'height':`${headerHeight}vw`}">
+      <egg-atest-header @getStatus="getStatus" />
     </div>
-    <ul class="content" :style="{'margin-top':`${top}vw,height: ${height}`}">
-      <egg-atest-filter v-show="status === 'record'"/>
-      <egg-atest-card v-show="status === 'atest'" 
-                      @getMeg="getMeg"/>
-      <egg-atest-record-card v-show="status === 'record'" @getBackOut="getBackOut"/>
+    <ul class="content"
+        :style="{'margin-top':`${top}vw,height: ${height}`}">
+
+      <egg-atest-card v-show="status === 'atest'"
+                      @getMeg="getMeg" />
+      <egg-atest-record-card v-if="status === 'record'"
+                             @getBackOut="getBackOut" />
     </ul>
-    <eggTipsBox @getTipsVal="getTipsVal" 
+    <eggTipsBox @getTipsVal="getTipsVal"
                 v-show="tipsStatus"
-                :tipsData="tipsData"/>
+                :tipsData="tipsData" />
   </div>
 </template>
 
@@ -20,7 +24,7 @@
 import eggAtestHeader from '../../../components/4s/starAtest/atestHeader'
 import eggAtestCard from '../../../components/4s/starAtest/atest_card'
 import eggAtestRecordCard from '../../../components/4s/starAtest/atest_record_card'
-import eggAtestFilter from '../../../components/4s/starAtest/atest_filter'
+// import eggAtestFilter from '../../../components/4s/starAtest/atest_filter'
 import eggTipsBox from '../../../components/4s/tipsBox/tipsBox'
 
 export default {
@@ -28,7 +32,7 @@ export default {
     eggAtestHeader,
     eggAtestCard,
     eggAtestRecordCard,
-    eggAtestFilter,
+    // eggAtestFilter,
     eggTipsBox
   },
   data () {
@@ -44,7 +48,7 @@ export default {
         btn: 'cancle',
         content: '撤销申请后，需重新填写资料申请《星级认证》，多次重复操作，系统将限制时间申请，请谨慎操作。是否确定撤销？'
       },
-       tipsData: {
+      tipsData: {
         imgUrl: './static/images/4s/warn.png',
         title: '提示',
         btn: 'confrim',
@@ -54,41 +58,42 @@ export default {
       tel: ''
     };
   },
-   mounted(){
-      this.isIPhoneX()
+  mounted () {
+    this.isIPhoneX()
+  },
+  methods: {
+    getStatus (val) {
+      this.status = val === '发起申请' ? 'atest' : 'record'
     },
-    methods:{
-      getStatus(val) {
-        this.status = val === '发起申请'? 'atest' : 'record'
-      },
-      //撤销返回信息
-      getBackOut(val) {
-         this.tipsStatus = !this.tipsStatus
-      },
-      //提示返回信息
-      getTipsVal(val) {
-        console.log(val)
-        this.tipsStatus = !this.tipsStatus
-      },
-      //对接人信息
-      getMeg(val) {
-        const {name,tel} = val
-        if(this.name === name && this.tel === tel) {
-          return
-        }
-        this.name = name
-        this.tel = tel
-        console.log(val)
-      },
-      isIPhoneX() {
-        let phone = this.phoneSize();
-        if (phone === "iphonex") {
-          this.top = "-5.86";
-          this.height = `calc(100vh - 29.5vw)`
-          this.headerHeight = 29.5
-        }
+    //撤销返回信息
+    getBackOut (val) {
+      this.tipsData.content = val
+      this.tipsStatus = !this.tipsStatus
+    },
+    //提示返回信息
+    getTipsVal (val) {
+      console.log(val)
+      this.tipsStatus = !this.tipsStatus
+    },
+    //对接人信息
+    getMeg (val) {
+      const { name, tel } = val
+      if (this.name === name && this.tel === tel) {
+        return
+      }
+      this.name = name
+      this.tel = tel
+      console.log(val)
+    },
+    isIPhoneX () {
+      let phone = this.phoneSize();
+      if (phone === "iphonex") {
+        this.top = "-5.86";
+        this.height = `calc(100vh - 29.5vw)`
+        this.headerHeight = 29.5
       }
     }
+  }
 }
 </script>
 <style lang='scss' scoped>

@@ -1,6 +1,7 @@
 export default {
   state: {
     type: 'check',
+    categories: [],
     submitScoreData: { //提交打分数据
       "levelId": "", //星级id，一星检查id
       "shopId": "", //门店id
@@ -17,6 +18,10 @@ export default {
   },
   mutations: {
     setType: (state, str) => state.type = str,
-    setShopId: (state, shopId) => state.submitScoreData.shopId = shopId //记录门店
+    setShopId: (state, shopId) => state.submitScoreData.shopId = shopId, //记录门店
+    setCategories: (state, categories) => state.categories = categories
+  },
+  getters: {
+    getCategories: (state) => state.categories
   }
 }

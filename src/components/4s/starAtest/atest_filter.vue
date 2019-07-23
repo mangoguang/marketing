@@ -1,26 +1,29 @@
 <!--  -->
 <template>
+
   <div class="atest_filter">
     <div class="sort">
-      <egg-sort-icon @click.native="handleSortClick" 
-                      :sortText="sortText"
-                      :changeStatus="changeStatus"/>
-      <div  class="sortContentWrapper" 
-            v-show="sortStatus"
-            :style="{'top':`${top}vw`}">
+      <egg-sort-icon @click.native="handleSortClick"
+                     :sortText="sortText"
+                     :changeStatus="changeStatus" />
+      <div class="sortContentWrapper"
+           v-show="sortStatus"
+           :style="{'top':`${top}vw`}">
         <egg-sort-content @selectIndex="selectIndex"
-                          :list="list"/>
+                          :list="list" />
       </div>
     </div>
-    <div class="filter" v-show="!sortStatus">
-       <egg-filter-icon @click.native="handleCloseClick"/>
-       <div class="filterContent" 
-            v-show="filterStatus" 
-            @click.self="handleCloseClick">
-          <egg-filter-content @getVal="getFilterVal"/>
-        </div>
+    <div class="filter"
+         v-show="!sortStatus">
+      <egg-filter-icon @click.native="handleCloseClick" />
+      <div class="filterContent"
+           v-show="filterStatus"
+           @click.self="handleCloseClick">
+        <egg-filter-content @getVal="getFilterVal" />
+      </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -38,49 +41,58 @@ export default {
   },
   data () {
     return {
-      list: ['申请时间升序','申请时间降序'],
+      list: ['申请时间升序', '申请时间降序'],
       sortSelectData: {},
       sortText: '申请时间升序',
       sortStatus: false,
       filterStatus: false,
-      top:''
+      top: ''
     };
   },
   computed: {
-    changeStatus() {
-      return this.sortSelectData  
+    changeStatus () {
+      return this.sortSelectData
     }
   },
-  created() {
+  created () {
     this.isIPhoneX()
   },
   methods: {
     //点击排序按钮
-    handleSortClick() {
+    handleSortClick () {
       this.sortSelectData = JSON.parse(JSON.stringify(this.sortSelectData))
       this.sortStatus = !this.sortStatus
     },
     //排序选择的数据
-    selectIndex(val) {
+    selectIndex (val) {
       console.log(val)
       this.sortSelectData = val       //选择的数据
-      const {index} = val
+      const { index } = val
       this.sortText = this.list[index]
       this.sortStatus = !this.sortStatus
+      var dec = val.index == 0 ? 'desc' : 'asc'
+      this.$emit('onDesc', dec)
     },
-    getFilterVal(val) {
+    getFilterVal (val) {
       console.log(val)
       this.filterStatus = !this.filterStatus
+      if (val.situationActiveIndex == -1 && val.starActiveIndex == -1) {
+        this.$emit('onFilterReset')
+        return
+      }
+      this.$emit('onFilterData', val)
     },
-    handleCloseClick() {
+    handleCloseClick () {
       this.filterStatus = !this.filterStatus
+
     },
-    isIPhoneX() {
+    isIPhoneX () {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
         this.top = "41.3";
       }
     }
+
   }
 }
 </script>

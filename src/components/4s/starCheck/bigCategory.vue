@@ -2,7 +2,7 @@
 <template>
   <div class="bigCategory">
     <BigCategoryBox v-for="(item, index) in categories"
-                    @click.native="$router.push({ path: '/check' ,query:{id:$route.query.id}})"
+                    @click.native="$router.push({ path: '/check' ,query:{id:item.id}})"
                     :key="index"
                     :status="item.status"
                     :text="item.name" />
@@ -12,6 +12,7 @@
 <script>
 import BigCategoryBox from './bigCategoryBox'
 import { secondcategories } from '@/api/4s'
+import { mapGetters } from 'vuex'
 export default {
   props: [],
   components: { BigCategoryBox },
@@ -21,17 +22,10 @@ export default {
     }
   },
   async created () {
-    let { code, categories } = await secondcategories({ id: this.$route.query.id })
-    categories.map((item, index) => {
-      if (index == 0) {
-        this.$set(item, 'status', true)
-      } else {
-        this.$set(item, 'status', false)
-      }
-    })
-    this.categories = categories
+    this.categories = this.getCategories()
   },
   methods: {
+    ...mapGetters(['getCategories'])
     // toCheck () {
     //   this.$router.push({ path: '/check' })
     // }

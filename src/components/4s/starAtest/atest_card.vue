@@ -69,7 +69,7 @@
           <div class="footer"></div>
         </div>
         <div class="atest">
-          <button @click="bindApply(item)">发起申请</button>
+          <button @click="bindApply(index)">发起申请</button>
         </div>
       </div>
     </mt-loadmore>
@@ -79,7 +79,7 @@
 <script>
 import { distributorList, distributorApply } from '@/api/4s'
 import Vue from 'vue'
-import { Loadmore } from 'mint-ui';
+import { Loadmore, Toast } from 'mint-ui';
 Vue.component(Loadmore.name, Loadmore);
 export default {
   data () {
@@ -102,8 +102,12 @@ export default {
         item.isEdit = true
         item.isReadOnly = true
       })
+
       this.dataList = page == 1 ? data.list : this.dataList.concat(data.list)
       this.allLoaded = false;
+      if (data.totalPage == 1) {
+        this.allLoaded = true
+      }
     },
     loadTop () {
       this.page = 1;
@@ -139,9 +143,23 @@ export default {
       }
       this.$emit('getMeg', val)
     },
-    async  bindApply (item) {
+    async  bindApply (index) {
+      let item = this.dataList[index]
       let { province, empowerCity } = item
-      let { code, data } = await distributorApply({ province, empowerCity, agentName: item.nameVal, agentPhone: item.telVal, starLevel: item.approveLevel })
+      if (!item.nameVal) {
+        Toast('请填写对接人姓名');
+        return
+      }
+      if (!item.telVal) {
+        Toast('请填写对接人电话');
+        return
+      }
+      let { code, msg, data } = await distributorApply({ province, empowerCity, agentName: item.nameVal, agentPhone: item.telVal, starLevel: item.approveLevel })
+      if (code == 0) {
+        item.nameVal = ''
+        item.telVal = ''
+      }
+      Toast(msg);
     }
   }
 }

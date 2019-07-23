@@ -2,14 +2,20 @@ import {
   baseUrl
 } from '@/js/common'
 
-import sha1 from 'js-sha1'
-
 import axios from 'axios'
 import qs from 'qs'
 import {
   Indicator,
   Toast
 } from 'mint-ui'
+import {
+  getSign
+} from '@/utils/tools.js'
+
+import {
+  router
+} from '@/router'
+
 axios.defaults.timeout = 500000
 let token = JSON.parse(localStorage.getItem('token')) || {}
 axios.defaults.headers = {
@@ -46,6 +52,11 @@ axios.interceptors.response.use(
   },
   error => {
     Indicator.close();
+    if (error.response.status == 510) {
+      router.push({
+        path: '/Login'
+      })
+    }
     return Promise.reject(error)
   }
 )
@@ -61,30 +72,4 @@ export const http = (options) => {
     'sign': getSign(options.params, token.access_token)
   }
   return axios(options)
-}
-
-
-// 参数加密
-function getSign(obj, token) {
-
-  let [temp, arr] = [{},
-    []
-  ]
-  for (let key in obj) {
-    arr.push(key)
-  }
-  arr = arr.sort()
-  for (let i in arr) {
-    temp[arr[i]] = obj[arr[i]]
-  }
-
-  obj = temp
-  let str = ''
-  for (let key in obj) {
-    if (obj[key] || (obj[key] === 0 || obj[key] === '0')) {
-      str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
-    }
-  }
-  // console.log('生成的sign字符串', str)
-  return sha1.hex(str + token)
 }

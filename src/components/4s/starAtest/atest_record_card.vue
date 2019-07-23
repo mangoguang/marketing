@@ -1,59 +1,184 @@
 <!--  -->
 <template>
-  <div class="atest_record_card">
-    <div class="header">
-      <div class="via">
-        <img src="../../../assets/imgs/4s/via.png" alt="">
-      </div>
-      <div class="message">
-        <p class="name">广东广州和秋明</p>
-        <p class="level">认证星级：三星</p>
-      </div>
-      <div class="date">
-        <span>06-04 15:00</span>
-      </div>
-    </div>
-    <div class="status">
-      <p class="turnBack" @click="handleBackout">撤销</p>
-      <p class="pass">已申请</p>
-    </div>
-    <div class="score_wrapper border-bottom">
-      <div class="score_box">
-        <div class="wrapper">
-          <span class="text">门店评分：</span>
-          <span class="score">82</span>
+  <div class="apply-list">
+    <eggAtestFilter @onFilterData="onFilterData"
+                    @onFilterReset="onFilterReset"
+                    @onDesc="onDesc" />
+    <mt-loadmore :top-method="loadTop"
+                 :bottom-method="loadBottom"
+                 :bottom-all-loaded="allLoaded"
+                 ref="loadmore"
+                 :autoFill="false"
+                 :bottomDistance="30">
+      <div class="atest_record_card"
+           v-for="(item,index) in comDataList"
+           :key="index">
+        <div class="header">
+          <div class="via">
+            <img src="../../../assets/imgs/4s/via.png"
+                 alt="">
+          </div>
+          <div class="message">
+            <p class="name">{{item.distributor}}</p>
+            <p class="level">认证星级：{{item.approveLevel}}</p>
+          </div>
+          <div class="date">
+            <span>{{item.createTime}}</span>
+          </div>
         </div>
-        <div class="wrapper">
-          <span class="text">区域评分：</span>
-          <span class="score">82</span>
+        <div class="status">
+          <p class="turnBack"
+             v-if="item.status==1"
+             @click="handleBackout(item.id)">撤销</p>
+          <p class="pass"
+             :class="{'red':item.status==2,'ok':item.status==7}">{{item.statusString}}</p>
         </div>
-        <div class="wrapper">
-          <span class="text">4s评分：</span>
-          <span class="score">82</span>
+        <div class="score_wrapper border-bottom">
+          <div class="score_box">
+            <div class="wrapper">
+              <span class="text">门店评分：</span>
+              <span class="score">82</span>
+            </div>
+            <div class="wrapper">
+              <span class="text">区域评分：</span>
+              <span class="score">82</span>
+            </div>
+            <div class="wrapper">
+              <span class="text">4s评分：</span>
+              <span class="score">82</span>
+            </div>
+          </div>
+          <div class="score_box"
+               v-if="item.status==2">
+            <span class="text">退回原因：不符合规范</span>
+          </div>
         </div>
       </div>
-      <div class="score_box">
-        <span class="text">退回原因：不符合规范</span>
-      </div>
-    </div>
+    </mt-loadmore>
+    <div class="no-data"
+         v-if="noData">暂无数据</div>
   </div>
 </template>
 
 <script>
+import eggAtestFilter from '@/components/4s/starAtest/atest_filter'
+import { Loadmore, Toast } from 'mint-ui';
+import { distributorApplys, distributorCancel } from '@/api/4s'
+import { parseTime, geMonthLastDay } from '@/utils/tools.js'
 export default {
+  components: {
+    eggAtestFilter
+  },
   data () {
     return {
-
+      allLoaded: false,
+      dataList: [],
+      params: {
+        page: 1,
+        limit: 10,
+        starLevel: 1,
+        status: 1,
+        startDate: parseTime(new Date(), '{y}-{m}') + '-01',
+        endDate: parseTime(geMonthLastDay(), '{y}-{m}-{d}'),
+        sort: 'desc'
+      },
+      level: ['一星', '二星', '三星', '四星', '五星'],
+      status: ['已申请', '已退回', '已撤销', '已受理', '已评分', '未通过', '认证通过'],
+      noData: false
     };
   },
+  created () {
+    this._initData(this.params)
+
+  },
+  computed: {
+    comDataList () {
+      let list = this.dataList
+
+      list.map(item => {
+        item.approveLevel = this.level[item.approveLevel - 1] || '未知'
+        item.statusString = this.status[item.status - 1] || '未知'
+      })
+      return list
+    }
+  },
   methods: {
-    handleBackout() {
-      this.$emit('getBackOut',true)
+    //撤销申请
+    async  handleBackout (id) {
+      let { code, msg, data } = await distributorCancel({ id })
+      if (code != 0) {
+        this.$emit('getBackOut', msg)
+        return
+      }
+      Toast(msg)
+    },
+    //排序
+    onDesc (val) {
+      this.params.sort = val
+      this._initData(this.params)
+    },
+    //重置筛选
+    onFilterReset () {
+      this.params = {
+        page: 1,
+        limit: 10,
+        starLevel: 1,
+        status: 1,
+        startDate: '2019-06-01',
+        endDate: '2019-07-30',
+        sort: 'desc'
+      }
+      this._initData(this.params)
+    },
+    //筛选条件
+    onFilterData (data) {
+      var status = data.handleList[data.situationActiveIndex]
+      var level = data.starlist[data.starActiveIndex]
+      this.params = {
+        page: 1,
+        limit: 10,
+        starLevel: this.level.indexOf(level) + 1,
+        status: this.status.indexOf(status) + 1,
+        startDate: data.startDay,
+        endDate: data.endDay,
+        sort: 'desc'
+      }
+      this._initData(this.params)
+    },
+    //上拉刷新
+    loadTop () {
+      this.params.page = 1;
+      this._initData(this.params)
+      this.$refs.loadmore.onTopLoaded();
+    },
+    //下拉加载更多
+    loadBottom () {
+      this.params.page++
+      this._initData(this.params)
+      this.allLoaded = true;// 若数据已全部获取完毕
+      this.$refs.loadmore.onBottomLoaded();
+    },
+    //加载列表数据
+    async  _initData (params) {
+      let { data } = await distributorApplys(params)
+      if (data.totalPage == 1) {
+        this.allLoaded = true
+      }
+      this.dataList = data.list
+      if (params.page == 1 && data.list.length == 0) {
+        this.noData = true
+      }
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.no-data {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  padding-top: 20px;
+}
 .atest_record_card {
   width: 91.46vw;
   // height: 35.33vw;
@@ -64,7 +189,7 @@ export default {
     justify-content: space-between;
     margin-top: 5.06vw;
     .via {
-       flex: 0.15;
+      flex: 0.15;
       img {
         width: 12vw;
         height: auto;
@@ -89,7 +214,7 @@ export default {
       color: #666;
       font-size: 3.2vw;
     }
-  };
+  }
   .status {
     width: 100%;
     font-size: 4vw;
@@ -101,6 +226,12 @@ export default {
     align-items: center;
     .pass {
       color: #007aff;
+    }
+    .red {
+      color: #ff2d55;
+    }
+    .ok {
+      color: #4cd964;
     }
     .turnBack {
       text-align: center;
@@ -138,6 +269,6 @@ export default {
   color: #ff2d55;
 }
 .comfirm {
-  color: #4CD964;
+  color: #4cd964;
 }
 </style>

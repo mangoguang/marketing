@@ -8,47 +8,54 @@
           <p>起始日</p>
           <strong>{{startDateVal}}</strong>
         </li>
-        <li><div class="center">至</div></li>
+        <li>
+          <div class="center">至</div>
+        </li>
         <li @click="openDatePicker('end')">
           <p>结束日</p>
           <strong>{{endDateVal}}</strong>
         </li>
-        <li><div class="center">共{{countTime + 1}}日</div></li>
+        <li>
+          <div class="center">共{{countTime + 1}}日</div>
+        </li>
       </ul>
     </div>
-    <div class="filter" >
+    <div class="filter">
       <h5 class="title">认证星级</h5>
       <ul class="filter-box">
-        <egg-filterBtn  class="filter_item"
-                        v-for="(item, index) in starlist" :key='item + index' 
-                        :text="item"
-                        :class="{active: starActiveIndex === index}"
-                        @click.native="handleStarClick(index)"/>
+        <egg-filterBtn class="filter_item"
+                       v-for="(item, index) in starlist"
+                       :key='item + index'
+                       :text="item"
+                       :class="{active: starActiveIndex === index}"
+                       @click.native="handleStarClick(index)" />
       </ul>
     </div>
-    <div class="filter" >
+    <div class="filter">
       <h5 class="title">处理情况</h5>
       <ul class="filter-box">
-        <egg-filterBtn  class="filter_item"
-                        v-for="(item, index) in handleList" :key='item + index' 
-                        :text="item"
-                        :class="{active: situationActiveIndex === index}"
-                        @click.native="handleSituationClick(index)"/>
+        <egg-filterBtn class="filter_item"
+                       v-for="(item, index) in handleList"
+                       :key='item + index'
+                       :text="item"
+                       :class="{active: situationActiveIndex === index}"
+                       @click.native="handleSituationClick(index)" />
       </ul>
     </div>
-        <!-- 日期插件 -->
-    <mt-datetime-picker
-      ref="datePicker"
-      type="date"
-      v-model="pickerValue"
-      year-format="{value} 年"
-      month-format="{value} 月"
-      day-format="{value} 日"
-      @confirm="handleConfirm">
+    <!-- 日期插件 -->
+    <mt-datetime-picker ref="datePicker"
+                        type="date"
+                        v-model="pickerValue"
+                        year-format="{value} 年"
+                        month-format="{value} 月"
+                        date-format="{value} 日"
+                        @confirm="handleConfirm">
     </mt-datetime-picker>
     <div class="btn">
-      <button class="reset" @click="handleReset">重置</button>
-      <button class="comfirm" @click="handleComfirm">完成</button>
+      <button class="reset"
+              @click="handleReset">重置</button>
+      <button class="comfirm"
+              @click="handleComfirm">完成</button>
     </div>
   </div>
 </template>
@@ -56,7 +63,7 @@
 <script>
 import mango from '../../../js'
 import eggFilterBtn from '../filter/filterBtn'
-import { DatetimePicker } from 'mint-ui'
+import { DatetimePicker, Toast } from 'mint-ui'
 import Vue from 'vue'
 Vue.component(DatetimePicker.name, DatetimePicker)
 export default {
@@ -65,8 +72,8 @@ export default {
   },
   data () {
     return {
-      starlist: ['一星','二星','三星','四星','五星'],
-      handleList: ['已申请','已退回','认证通过','未通过','已撤销','已评分','已受理'],
+      starlist: ['一星', '二星', '三星', '四星', '五星'],
+      handleList: ['已申请', '已退回', '认证通过', '未通过', '已撤销', '已评分', '已受理'],
       starActiveIndex: -1,
       situationActiveIndex: -1,
       pickerValue: new Date(),
@@ -76,45 +83,53 @@ export default {
     };
   },
   computed: {
-    countTime() {
+    countTime () {
       let [start, end] = [(new Date(this.startDateVal)).getTime(), (new Date(this.endDateVal)).getTime()]
-      return Math.ceil((end - start)/86400000)
+      return Math.ceil((end - start) / 86400000)
     }
   },
-  created() {
-     this.initStartDateVal()
+  created () {
+    this.initStartDateVal()
   },
   methods: {
     //星级
-    handleStarClick(index) {
-      if(this.starActiveIndex == index) {
+    handleStarClick (index) {
+      if (this.starActiveIndex == index) {
         this.starActiveIndex = -1
         return
       }
       this.starActiveIndex = index
     },
     //处理情况
-    handleSituationClick(index) {
-      if(this.situationActiveIndex == index) {
+    handleSituationClick (index) {
+      if (this.situationActiveIndex == index) {
         this.situationActiveIndex = -1
         return
       }
       this.situationActiveIndex = index
     },
-    handleReset() {
+    handleReset () {
       this.initStartDateVal();
-      this.endDateVal= mango.indexTime(new Date(), 'day');
+      this.endDateVal = mango.indexTime(new Date(), 'day');
 
       this.starActiveIndex = - 1
       this.situationActiveIndex = -1
       const data = this.getData()
-      this.$emit('getVal',data)
+      this.$emit('getVal', data)
     },
-    handleComfirm() {
+    handleComfirm () {
       const data = this.getData()
-      this.$emit('getVal',data)
+      if (data.starActiveIndex == -1) {
+        Toast('请选择星级')
+        return
+      }
+      if (data.situationActiveIndex == -1) {
+        Toast('请选择处理情况')
+        return
+      }
+      this.$emit('getVal', data)
     },
-    getData() {
+    getData () {
       return {
         starlist: this.starlist,
         starActiveIndex: this.starActiveIndex,
@@ -124,35 +139,35 @@ export default {
         endDay: this.endDateVal
       }
     },
-    initStartDateVal() {
+    initStartDateVal () {
       let date = new Date()
       date = mango.indexTime(date, 'day')
       date = `${date.slice(0, 8)}01`
       this.startDateVal = date
     },
     // 打开日期插件
-    openDatePicker(type) {
+    openDatePicker (type) {
       this.dateType = type
       this.$refs.datePicker.open()
     },
-    handleConfirm(date) {
+    handleConfirm (date) {
       let [start, end, dateVal] = [null, null, null]
       if (this.dateType === 'start') {
         start = new Date(date).getTime()
         // console.log(mango.indexTime(date, 'day'), this.startDateVal)
-        if(mango.indexTimeB(date)[1] === mango.indexTimeB(new Date(this.endDateVal))[1]) {
-        }else{
+        if (mango.indexTimeB(date)[1] === mango.indexTimeB(new Date(this.endDateVal))[1]) {
+        } else {
           if ((start - new Date(this.endDateVal).getTime()) > 0) {
-            alert('起始日不能大于结束日')
+            Toast('起始日不能大于结束日')
             return
           }
         }
       } else {
         end = new Date(date).getTime()
-        if(mango.indexTimeB(date)[1] === mango.indexTimeB(new Date(this.startDateVal))[1]) {
-        }else{
+        if (mango.indexTimeB(date)[1] === mango.indexTimeB(new Date(this.startDateVal))[1]) {
+        } else {
           if ((new Date(this.startDateVal).getTime() - end) > 0) {
-            alert('结束日不能小于起始日')
+            Toast('结束日不能小于起始日')
             return
           }
         }
@@ -174,7 +189,7 @@ export default {
   .filter {
     .title {
       color: #999;
-      font-size:3.73vw; 
+      font-size: 3.73vw;
     }
     .filter-box {
       margin-top: 2.4vw;
@@ -189,7 +204,7 @@ export default {
     }
     .active {
       background: #b2d7ff;
-      color: #007aff
+      color: #007aff;
     }
   }
   .btn {
@@ -200,7 +215,7 @@ export default {
     position: fixed;
     bottom: 0;
     right: 0;
-    .reset{
+    .reset {
       width: 50%;
       height: 100%;
       background: #b2d7ff;
@@ -214,7 +229,7 @@ export default {
     }
   }
 }
-.time-box{
+.time-box {
   width: 71.2vw;
   height: 16vw;
   border-radius: 1.6vw;
@@ -227,14 +242,14 @@ export default {
   li {
     height: 8vw;
   }
-  p{
+  p {
     color: #999;
-    font-size:2.93vw; 
+    font-size: 2.93vw;
     line-height: 3vw;
   }
   .center {
     color: #999;
-    font-size:2.93vw; 
+    font-size: 2.93vw;
     padding-top: 3.8vw;
   }
   strong {

@@ -25,13 +25,25 @@ export const guideStar = params => {
 }
 
 /**
- *  首页 - 店长（导购）获取所有一级分类、所有门店、当前门店星级
+ *   首页 - 店长（导购）获取门店列表（username:19040049）
  * @param {*} params 
  */
-export const gradeHome = params => {
-  return mango.getAjax('/v2/api/cert/grade/home', params)
+export const gradeShops = params => {
+  return http({
+    url: '/v2/api/cert/grade/shops',
+    method: 'get',
+    params
+  })
 }
 
+//店长（导购）获取一级和二级评分分类（username:19040049）
+export const gradeCategories = params => {
+  return http({
+    url: '/v2/api/cert/grade/categories',
+    method: 'get',
+    params
+  })
+}
 
 /**
  *  店长（导购）通过一级分类获取二级评分分类
@@ -45,8 +57,15 @@ export const secondcategories = params => {
  *  app - 经销商申请认证列表
  * @param {*} params 
  */
+// export const distributorList = params => {
+//   return mango.getJsonPostAjax('/v2/api/4s/cert/approve/distributor/list', params)
+// }
+
 export const distributorList = params => {
-  return mango.getJsonPostAjax('/v2/api/4s/cert/approve/distributor/list', params)
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/list',
+    params
+  })
 }
 
 /**
@@ -54,5 +73,32 @@ export const distributorList = params => {
  * @param {*} params 
  */
 export const distributorApply = params => {
-  return http.getJsonPostAjax('/v2/api/4s/cert/approve/distributor/apply', params)
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/apply',
+    params
+  })
+}
+
+
+/**
+ *  app - 经销商申请记录列表
+ * @param {*} params 
+ */
+export const distributorApplys = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/logList',
+    params
+  })
+}
+
+
+/**
+ *  app - 撤销申请
+ * @param {*} params 
+ */
+export const distributorCancel = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/cancel',
+    params
+  })
 }

@@ -22,7 +22,7 @@ import DailyCheck from '@/components/4s/index/dailyCheck'
 import GradeReport from '@/components/4s/index/gradeReport'
 import ModuleConfig from '@/components/4s/index/moduleConfig'
 import eggStarAttestation from '@/components/4s/index/starAttestation'
-import { gradeHome, guideStar } from '@/api/4s'
+import { gradeShops, gradeCategories } from '@/api/4s'
 import { Toast } from 'mint-ui'
 import { mapMutations } from 'vuex'
 export default {
@@ -42,12 +42,12 @@ export default {
     }
   },
   async created () {
-    this.initData()
+    this._initData()
   },
   methods: {
     ...mapMutations(['setShopId']),
-    async  initData () {
-      let { code, msg, shops, categories } = await gradeHome()
+    async  _initData () {
+      let { code, msg, shops } = await gradeShops()
       if (code != 0) {
         Toast({
           message: msg,
@@ -57,6 +57,11 @@ export default {
         return
       }
       this.shops = shops
+
+      this._getCategories(shops[0].id)
+    },
+    async _getCategories (shopId) {
+      let { code, categories, msg } = await gradeCategories({ shopId })
       this.categories = categories
     },
     onGetStoreId (val) {

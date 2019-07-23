@@ -6,10 +6,10 @@
       <div class="iconBox-wrapper">
         <iconBox :type="'dailyCheck'"
                  v-for="(item, index) in 5"
-                 :storeClass="5"
+                 :storeClass="categories.length"
                  :index="index"
                  :key="index"
-                 @click.native="$router.push({path:'/starCheck',query:{level:index,name:item.name,id:item.id}})" />
+                 @click.native="bindNavigator(index)" />
         <iconBox :type="'gradeReport'"
                  :iconData="data1"
                  :hasNew="'news'"
@@ -22,6 +22,8 @@
 <script>
 import ContentBox from './contentBox'
 import iconBox from './iconBox'
+
+import { mapMutations } from 'vuex'
 
 export default {
   props: ['categories'],
@@ -42,7 +44,13 @@ export default {
   },
 
   methods: {
-
+    ...mapMutations(['setCategories']),
+    bindNavigator (index) {
+      if (index >= this.categories.length) return
+      var item = this.categories[index]
+      this.$router.push({ path: '/starCheck', query: { level: index } })
+      this.setCategories(item.subCategoryList)
+    },
     handleClick (linkName) {
       this.$router.push({
         path: '/starCheck'
