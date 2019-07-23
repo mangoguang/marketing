@@ -59,7 +59,9 @@
         <img src="../../assets/imgs/filter.png" alt="" class="filterImg">
       </button>
     </div>
- 
+     <div class="bot-total" v-show="headerStatus[3].status">
+      <p><slot></slot></p>
+    </div>
   </header>
 </template>
 <!-- </keep-alive> -->
@@ -94,8 +96,8 @@ export default {
       rightContainerStatus: state => state.rightContainer.rightContainerStatus,
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
-      dealCustomerList: state => state.dealCustomerList.dealCustomerList
-      
+      dealCustomerList: state => state.dealCustomerList.dealCustomerList,
+      allCustomerList: state => state.allCustomerList.allCustomerList
     })
   },
   watch: {
@@ -139,7 +141,8 @@ export default {
       'setRightTimeSelect',
       'setRightHeadTitle',
       'setOrderList',
-      'setDealCustomerList'
+      'setDealCustomerList',
+      'setAllCustomerList'
     ]),
     //搜索
     search(event) {
@@ -230,7 +233,7 @@ export default {
     },
     // 选择页面模块
     moduleSelect(i) {
-      this.setHeaderStatus(mango.btnList(['意向客户', '成交客户', '战败客户'], i))
+      this.setHeaderStatus(mango.btnList(['意向客户', '成交客户', '战败客户','所有客户'], i))
     },
     // ajax请求客户列表
     getCustomerList() {
@@ -271,8 +274,16 @@ export default {
                 res.data.total == null ? "0" : res.data.total
               })`
             );
-          }else {
+          }else if(type === 'Closed'){
             this.setDealCustomerList(res.data)
+            this.$emit(
+              "changeResultTit",
+              `全部客户 (${
+                res.data.total == null ? "0" : res.data.total
+              })`
+            );
+          }else{
+            this.setAllCustomerList(res.data)
             this.$emit(
               "changeResultTit",
               `全部客户 (${
@@ -291,7 +302,7 @@ export default {
     //获得当前的头部导航栏状态
     getType() {
       let type;
-      type = this.headerStatus[0].status? 'New' : this.headerStatus[1].status? 'Approved' : 'Closed'
+      type = this.headerStatus[0].status? 'New' : this.headerStatus[1].status? 'Approved' : this.headerStatus[2].status?'Closed':''
       return type;
     },
     isIPhoneX : function(fn){

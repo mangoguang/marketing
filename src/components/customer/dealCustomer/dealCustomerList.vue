@@ -8,8 +8,14 @@
           :key="`customerList${index}`"
           @click="getDetails(index)"
         >
-          <i :class="`important${item.level}`"></i>
-          <span class="name">{{item.username}}</span>
+         <div class="name">
+            <i :class="`important${item.level}`"></i>
+              <!-- <span
+              :class="{active : compareTime[index]}"
+            >{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span> -->
+            <span>{{item.username}}</span>
+            <strong :class="`urgency${item.urgency}`"></strong>
+          </div>
           <!-- <span class="name">{{`*${item.username.slice(1, 5)}`}}</span> -->
           <!-- <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span> -->
           <span class="phone">{{item.phone}}</span>
@@ -359,6 +365,24 @@ export default {
       .name {
         color: #363636;
         flex: 0.45;
+        display: flex;
+        align-items: center;
+        strong {
+          height: 4vw;
+          width: 3.73vw;
+          margin-top: -7vw;
+          margin-left: 1vw;
+        }
+        .urgencyfalse {
+          // background: url(../../assets/imgs/jinji1.png) no-repeat;
+          background-size: 100% 100%;
+          // background-position: center;
+        }
+        .urgencytrue {
+          background: url(../../../assets/imgs/jinji.png) no-repeat;
+          background-size: 100% 100%;
+          // background-position: center;
+        }
       }
       .phone {
         flex: 0.5;
@@ -398,6 +422,11 @@ export default {
     }
     .importantC{
       background: url(../../../assets/imgs/C.png) no-repeat;
+      background-size: auto 100%;
+      // background-position: center;
+    }
+    .importantD{
+      background: url(../../../assets/imgs/D.png) no-repeat;
       background-size: auto 100%;
       // background-position: center;
     }

@@ -3,6 +3,7 @@
     <div class="search_box">
       <Search class="searchComp" id="debounce"
         v-model.trim="searchVal"
+        @input="search"
         :deleteVal='deleteVal'
       />
       <button class="cancle" @click="cancleBtn">取消</button>
@@ -81,7 +82,7 @@ export default {
     this.isIPhoneX()
   },
   mounted() {
-    this.monitorInpub()
+    //this.monitorInpub()
   },
   methods: {
     //监听输入框变化
@@ -94,6 +95,13 @@ export default {
           debounceAjax(e.target.value)
         }
       })
+    },
+    search(){
+      let ajaxRequest = this.getRequest()
+      let debounceAjax = this.debounce(ajaxRequest, 200)
+      if(this.searchVal!== '') {
+          debounceAjax(this.searchVal)
+      }
     },
     getRequest() {
        if(this.searchType == 'question') {

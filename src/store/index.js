@@ -8,6 +8,7 @@ import customer from './modules/customer'
 import select from './modules/components/select'
 import rightContainer from './modules/components/rightContainer'
 import dealCustomerList from './modules/components/dealCustomerList'
+import allCustomerList from './modules/components/allCustomerList'
 import dealOrderInfoDetails from './modules/components/dealOrderInfoDetails'
 import orderInfoDetails from './modules/components/orderInfoDetails'
 import followTrackDetails from './modules/components/followTrackDetails'
@@ -48,6 +49,7 @@ import storeHeader from './modules/components/storeCustomer/header'
 import storeApproved from './modules/components/storeCustomer/approvedCustomer'
 import storeClosed from './modules/components/storeCustomer/closedCustomer'
 import storeCustomer from './modules/components/storeCustomer/customer'
+import allCustomer from './modules/components/storeCustomer/allCustomer'
 import store from './modules/components/storeCustomer/storeCustomer'
 import employeeList from './modules/employee/employeeList'
 import shopList from './modules/store/shopList'
@@ -64,6 +66,7 @@ export default new Vuex.Store({
     select,
     rightContainer,
     dealCustomerList,
+    allCustomerList,
     dealOrderInfoDetails,
     orderInfoDetails,
     customerHeader,
@@ -105,6 +108,7 @@ export default new Vuex.Store({
     storeApproved,
     storeClosed,
     storeCustomer,
+    allCustomer,
     store,
     employeeList,
     shopList,

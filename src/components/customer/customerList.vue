@@ -4,7 +4,7 @@
       ref="customer"
       class="customerList">
       <TopBar :topBarTitle='topbar'/>
-      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false" >
+      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore1" :auto-fill="false" >
         <li
           class="customerContent"
           v-for="(item, index) in customerList.records"
@@ -116,7 +116,7 @@ export default {
       // console.log('接口参数：', this.customerAjaxParams, this.customerList)
       this.customerAjaxParams.page ++
       mango.getAjax('/v3/app/customer/list', this.customerAjaxParams).then((res) => {
-        this.$refs.loadmore.onBottomLoaded()
+        this.$refs.loadmore1.onBottomLoaded()
         res = res.data
         if (res) {
           if (res.records) {

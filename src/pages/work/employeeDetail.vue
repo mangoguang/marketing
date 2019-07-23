@@ -80,13 +80,19 @@ export default {
           {
             name:'战败客户',
             status:false
+          },
+          {
+            name:'所有客户',
+            status:false
           }
         ]
         vm.setSubHeaderStatus(array);
       })
     }
-    
   }
+  
+  
+  
 }
 </script>
 

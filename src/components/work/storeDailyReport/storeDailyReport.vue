@@ -35,6 +35,7 @@ import mango from "../../../js"
 import Bus from '../../../utils/Bus'
 import { mapMutations } from 'vuex';
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
   name: 'perdailyReporxt',
   components:{
@@ -168,16 +169,26 @@ export default {
       // 获取当前选择的日期数的整数值
       const num = parseInt(this.curNum)
       let arr = []
+      let arr2 = []
       if (res) {
         // 获取res数组里面的日期。
         arr = res.map(element => parseInt(element.createTime.substr(8, 2)))
+        arr2 = res.map(element => parseInt(element.createTime.substr(0, 10)))
+        console.log(arr2);
       } else {
         return
       }
       const index = arr.indexOf(num)
       if (index >= 0) {
-        this.dailySummaryTextarea = res[index].summarize
-        this.dailyPlanTextarea = res[index].plan
+        let date = `${this.curDate[0]}/${this.curDate[1]}/${this.curDate[2]}`
+        if(new Date(date)< new Date('2019/7/22')){
+          this.dailySummaryTextarea = res[index].summarize
+          this.dailyPlanTextarea = res[index].plan
+        }else{
+          this.dailySummaryTextarea = Base64.decode(res[index].summarize)
+          this.dailyPlanTextarea = Base64.decode(res[index].plan)
+        }
+        
         this.$emit('changeDailySummaryTextarea', this.dailySummaryTextarea)
         this.$emit('changeDailyPlanTextarea',this.dailyPlanTextarea)
       }

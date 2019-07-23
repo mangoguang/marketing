@@ -15,6 +15,7 @@ import planFormReadonly from '../../components/work/plan/planFormReadonly'
 import { mapState , mapMutations } from 'vuex'
 import { IndexModel } from '../../utils'
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 import mango from '../../js'
 export default {
     name:'workPlan',
@@ -106,7 +107,7 @@ export default {
                     this.$set(this.plan,'customerId',res.data.customerId)
                     this.$set(this.plan,'customerName',res.data.customerName)
                     this.$set(this.plan,'opportunityId',res.data.opportunityId)
-                    this.$set(this.plan,'remark',res.data.remark)
+                    this.$set(this.plan,'remark',Base64.decode(res.data.remark))
                     this.$set(this.plan,'id',res.data.id)
                     this.$set(this.plan,'goodsName',res.data.goodNames)
                     this.edit=false
@@ -132,7 +133,7 @@ export default {
                 customerId:obj.customerId,
                 customerName:obj.customerName,
                 opportunityId:obj.opportunityId,
-                remark:obj.remark,
+                remark:Base64.encode(obj.remark),
                 id:obj.id
             }
             for(let key in temp){

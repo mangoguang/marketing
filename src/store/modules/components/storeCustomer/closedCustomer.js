@@ -27,7 +27,7 @@ const mutations = {
    state.scroll=n;
  },
  setClosedPage:(state) => {
-   state.approvedParams.page++
+   state.params.page++
  },
  initClosedList:(state,array) => {
    state.list=array

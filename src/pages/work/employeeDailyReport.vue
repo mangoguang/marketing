@@ -21,6 +21,7 @@ import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
 import { IndexModel } from '../../utils'
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
     name:'employeeDailyReport',
     props:['id','username','date'],
@@ -45,8 +46,15 @@ export default {
             indexModel.getPerDaily({userId:this.id,date:this.date}).then((res) => {
                 console.log(res);
                 if(res.status===1){
-                    this.dailySummaryTextarea=res.data.summarize
-                    this.dailyPlanTextarea=res.data.plan
+                    let date = this.date.replace(/\-/g,'/')
+                    if(new Date(date)< new Date('2019/7/22')){
+                        this.dailySummaryTextarea=res.data.summarize
+                        this.dailyPlanTextarea=res.data.plan
+                    }else{
+                        this.dailySummaryTextarea=Base64.decode(res.data.summarize)
+                        this.dailyPlanTextarea=Base64.decode(res.data.plan)
+                    }
+                    
                 }
             }).catch((reject) => {
                 if(reject===510){

@@ -5,6 +5,7 @@
         <customerList v-show="headerStatus[1].status&&subHeaderStatus[0].status"/>
         <approvedList v-show="headerStatus[1].status&&subHeaderStatus[1].status"/>
         <closedList v-show="headerStatus[1].status&&subHeaderStatus[2].status"/>
+        <allCustomerList v-show="headerStatus[1].status&&subHeaderStatus[3].status"/>
         <RightContainer type="store" @getPramas="getPramas"/>
         <RightTimeSelect v-show='rightTimeSelect' @getTime="getTime"/>
         <Footer />
@@ -20,6 +21,7 @@ import store from "../../../components/customer/storeCustomer/store"
 import customerList from "../../../components/customer/storeCustomer/customerList"
 import approvedList from "../../../components/customer/storeCustomer/approvedList"
 import closedList from "../../../components/customer/storeCustomer/closedList"
+import allCustomerList from "../../../components/customer/storeCustomer/allCustomerList"
 import mango from "../../../js";
 import {checkLogin} from '../../../utils/token/toLogin'
 import { IndexModel } from "../../../utils"
@@ -50,7 +52,8 @@ export default {
         store,
         customerList,
         approvedList,
-        closedList
+        closedList,
+        allCustomerList
     },
     created(){
         checkLogin()
@@ -67,6 +70,8 @@ export default {
         ...mapMutations('storeClosed',['setClosedNum','setClosedParams','setClosedList','setClosedAllLoaded',
          'setClosedScroll','setClosedPage','initClosedList']),
         ...mapMutations('storeCustomer',['initCustomerList','setStoreCustomerAjaxParams','setCustomerList','setCustomerAllLoaded','setCustomerScroll','setCustomerPage']),
+        ...mapMutations('allCustomer',['setAllCustomerNum','setAllCustomerParams','setAllCustomerList',
+         'setAllCustomerAllLoaded','setAllCustomerScroll','setAllCustomerPage','initAllCustomerList']),
         getPramas(n,obj){
             console.log(222,obj)
             this.setCustomerScroll(0)
@@ -102,10 +107,14 @@ export default {
                         obj.page===res.data.pages?this.setApprovedAllLoaded(true):this.setApprovedAllLoaded(false)
                         this.initApprovedList(res.data.records)
                         this.setApprovedNum(res.data.total)
-                    }else{
+                    }else if(obj.type==='Closed'){
                         obj.page===res.data.pages?this.setClosedAllLoaded(true):this.setClosedAllLoaded(false)
                         this.initClosedList(res.data.records)
                         this.setClosedNum(res.data.total)
+                    }else{
+                        obj.page===res.data.pages?this.setAllCustomerAllLoaded(true):this.setAllCustomerAllLoaded(false)
+                        this.initAllCustomerList(res.data.records)
+                        this.setAllCustomerNum(res.data.total)
                     }
                     
                 }
