@@ -1,24 +1,39 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
-import { Indicator, Toast } from 'mint-ui'
+import {
+  Indicator,
+  Toast
+} from 'mint-ui'
 import refreshToken from '../utils/token/refreshToken'
 import toLogin from '../utils/token/toLogin'
 import VueRouter from 'vue-router'
+
+
+//  let baseUrl = 'http://10.11.8.250'
+// let baseUrl = 'http://172.16.10.107'
+//let baseUrl = "http://10.11.8.7"
+//let baseUrl = "http://172.16.4.201"
+//let baseUrl="http://10.11.8.17"
+// let baseUrl = "https://mobiletest.derucci.net/cd-sys-web"
+//let baseUrl = 'https://agency.derucci.com'
+// let baseUrl="http://172.16.9.212/"
+// let baseUrl = "http://172.16.12.86/"
+// let baseUrl = 'http://10.11.8.181/'
+// let baseUrl = 'http://10.11.8.7:8086/'
+// let baseUrl = 'http://10.11.8.186:8080' //
+let baseUrl = 'http://10.11.8.8:8080' //王哲力
+// let baseUrl = 'http://10.11.8.186:8080' //刘照君
+
+export {
+  baseUrl
+}
+
+
 export default class Common {
   constructor() {
-    
-   
-    //  this.port = 'http://10.11.8.250'
-   // this.port = 'http://172.16.10.107'
-   //this.port = "http://10.11.8.7"
-   //this.port = "http://172.16.4.201"
-  //this.port="http://10.11.8.17"
-this.port = "https://mobiletest.derucci.net/cd-sys-web"
-  //this.port = 'https://agency.derucci.com'
-    // this.port="http://172.16.9.212/"
-    // this.port = "http://172.16.12.86/"
-    // this.port = 'http://10.11.8.181/'
-    // this.port = 'http://10.11.8.7:8086/'
+
+    this.port = baseUrl
+
     this.path = `${this.port}v1/app/report/`
     this.v2path = `${this.port}v2/app/`
     this.apipath = `${this.port}v1/api/public/`
@@ -37,7 +52,7 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
   }
   //根据对象属性，进行数组对象的排序
   compare(property) {
-    return function(obj1, obj2) {
+    return function (obj1, obj2) {
       let [val1, val2] = [obj1[property], obj2[property]]
       if (val1 < val2) {
         return -1
@@ -61,7 +76,9 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
     for (let i = 0; i < newSeries[0].length; i++) {
       for (let j = 0; j < newSeries[0].length - i; j++) {
         if (parseInt(newSeries[0][j]) > parseInt(newSeries[0][j + 1])) {
-          let [tempSeries, tempYAxisData] = [[], yAxisData[j]]
+          let [tempSeries, tempYAxisData] = [
+            [], yAxisData[j]
+          ]
           // 对series参数的两个数组进行排序
           for (let k = 0; k < series.length; k++) {
             tempSeries[k] = newSeries[k][j]
@@ -83,7 +100,9 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
     for (let i = 0; i < newSeries[1].length; i++) {
       for (let j = 0; j < newSeries[1].length - i; j++) {
         if (parseInt(newSeries[1][j]) > parseInt(newSeries[1][j + 1])) {
-          let [tempSeries, tempYAxisData] = [[], yAxisData[j]]
+          let [tempSeries, tempYAxisData] = [
+            [], yAxisData[j]
+          ]
           // 对series参数的两个数组进行排序
           for (let k = 0; k < series.length; k++) {
             tempSeries[k] = newSeries[k][j]
@@ -107,7 +126,9 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
   getSign(obj, token) {
     // 对象排序
     function sortObj(obj) {
-      let [temp, arr] = [{}, []]
+      let [temp, arr] = [{},
+        []
+      ]
       for (let key in obj) {
         arr.push(key)
       }
@@ -130,7 +151,7 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
   getFormSign(obj, token, keys) {
     let str = ''
     keys = keys.sort()
-    for (let i= 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
       if (obj.get(keys[i]) || (obj.get(keys[i]) === 0 || obj.get(keys[i]) === '0')) {
         str = str === '' ? `${keys[i]}=${obj.get(keys[i])}` : `${str}&${keys[i]}=${obj.get(keys[i])}`
       }
@@ -151,41 +172,20 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
       // 显示加载动画，并在10秒后隐藏
       this.loading('open')
       axios({
-        method: thatType,
-        async: false,
-        timeout: 30000,
-        url: url,
-        contentType: "application/json",
-        headers: {
-          "Authorization": `Bearer ${token.access_token}`,
-          'sign': sign
-        },
-        params: params
-      })
-      .then((res) => {
-        if (res.code === 510) { // token失效
-          if (token.access_token && token.access_token.length < 48) { // 有效token
-            refreshToken.call(this).then(res => {
-              reject(510)
-            })
-          } else {
-            toLogin()
-          }
-        } else {
-          _this.loading('close')
-          res = res.data
-          resolve(res)
-        }
-      })
-      .catch((error) => {
-        // console.log('请求失败！：', error.response, error.request)
-        _this.loading('close')
-        if (error.response) { // 如果服务器响应
-          if (error.response.status === 510) {
-            console.log('非法令牌，需要刷新。', token)
-            // 检测token是否存在
+          method: thatType,
+          async: false,
+          timeout: 30000,
+          url: url,
+          contentType: "application/json",
+          headers: {
+            "Authorization": `Bearer ${token.access_token}`,
+            'sign': sign
+          },
+          params: params
+        })
+        .then((res) => {
+          if (res.code === 510) { // token失效
             if (token.access_token && token.access_token.length < 48) { // 有效token
-              console.log('开始刷新令牌')
               refreshToken.call(this).then(res => {
                 reject(510)
               })
@@ -193,16 +193,37 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
               toLogin()
             }
           } else {
-            //this.tip('请求失败!')
-            console.log(error.response.data.msg)
-            this.tip(error.response.data.msg)
+            _this.loading('close')
+            res = res.data
+            resolve(res)
           }
-        } else if (error.request) {
-          this.tip('网络异常!')
-        } else {
-          this.tip('网络异常!')
-        }
-      })
+        })
+        .catch((error) => {
+          // console.log('请求失败！：', error.response, error.request)
+          _this.loading('close')
+          if (error.response) { // 如果服务器响应
+            if (error.response.status === 510) {
+              console.log('非法令牌，需要刷新。', token)
+              // 检测token是否存在
+              if (token.access_token && token.access_token.length < 48) { // 有效token
+                console.log('开始刷新令牌')
+                refreshToken.call(this).then(res => {
+                  reject(510)
+                })
+              } else {
+                toLogin()
+              }
+            } else {
+              //this.tip('请求失败!')
+              console.log(error.response.data.msg)
+              this.tip(error.response.data.msg)
+            }
+          } else if (error.request) {
+            this.tip('网络异常!')
+          } else {
+            this.tip('网络异常!')
+          }
+        })
     })
   }
 
@@ -219,48 +240,20 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
       //   clearTimeout(loadingTimeOut)
       // }, 15000)
       axios({
-        method: 'post',
-        // async: false,
-        url: url,
-        data: data,
-        timeout: 30000,
-        headers: {
-          "Authorization": `Bearer ${token.access_token}`,
-          'sign': sign,
-          'Content-Type': 'multipart/form-data'
-        }
-      })
-      .then((res) => {
-        if (res.code === 510) { // token失效
-          if (token.access_token && token.access_token.length < 48) { // 有效token
-            refreshToken.call(this).then(res => {
-              reject(510)
-            })
-          } else {
-            toLogin()
+          method: 'post',
+          // async: false,
+          url: url,
+          data: data,
+          timeout: 30000,
+          headers: {
+            "Authorization": `Bearer ${token.access_token}`,
+            'sign': sign,
+            'Content-Type': 'multipart/form-data'
           }
-        } else {
-          _this.loading('close')
-          res = res.data
-          resolve(res)
-        }
-        // _this.loading('close')
-        // if (res.data) {
-        //   resolve(res.data)
-        // } else {
-        //   resolve(false)
-        // }
-      })
-      .catch((error) => {
-        console.log(222,JSON.stringify(error))
-        // console.log('请求失败！：', error.response, error.request)
-        _this.loading('close')
-        if (error.response) { // 如果服务器响应
-          if (error.response.status === 510) {
-            console.log('非法令牌，需要刷新。', token)
-            // 检测token是否存在
+        })
+        .then((res) => {
+          if (res.code === 510) { // token失效
             if (token.access_token && token.access_token.length < 48) { // 有效token
-              console.log('开始刷新令牌')
               refreshToken.call(this).then(res => {
                 reject(510)
               })
@@ -268,76 +261,104 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
               toLogin()
             }
           } else {
-            //this.tip('请求失败!')
-            //console.log(error.response)
-            this.tip(error.response.data.msg)
+            _this.loading('close')
+            res = res.data
+            resolve(res)
           }
-        } else if (error.request) {
-          this.tip('网络异常!')
-        } else {
-          this.tip('网络异常!')
-        }
-      })
+          // _this.loading('close')
+          // if (res.data) {
+          //   resolve(res.data)
+          // } else {
+          //   resolve(false)
+          // }
+        })
+        .catch((error) => {
+          console.log(222, JSON.stringify(error))
+          // console.log('请求失败！：', error.response, error.request)
+          _this.loading('close')
+          if (error.response) { // 如果服务器响应
+            if (error.response.status === 510) {
+              console.log('非法令牌，需要刷新。', token)
+              // 检测token是否存在
+              if (token.access_token && token.access_token.length < 48) { // 有效token
+                console.log('开始刷新令牌')
+                refreshToken.call(this).then(res => {
+                  reject(510)
+                })
+              } else {
+                toLogin()
+              }
+            } else {
+              //this.tip('请求失败!')
+              //console.log(error.response)
+              this.tip(error.response.data.msg)
+            }
+          } else if (error.request) {
+            this.tip('网络异常!')
+          } else {
+            this.tip('网络异常!')
+          }
+        })
     })
   }
- 
+
   getFormAjax(path, data, keys, jsonData) {
     let token = JSON.parse(localStorage.getItem('token'))
     // console.log('token',token)
     return new Promise((resolve, reject) => {
       // let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
-      
+
       let sign = this.getSign(jsonData || data, token.access_token)
-      console.log('sign',sign)
+      console.log('sign', sign)
       // 显示加载动画
       this.loading('open')
-       axios({
-        method: 'post',
-        // async: false,
-        timeout: 30000,
-        url: url,
-        data:data,
-         headers: {
-          'Content-Type':'multipart/form-data',
-          "Authorization": `Bearer ${token.access_token}`,
-          'sign': sign
-        } 
-      })
-      .then((res) => {
-        this.loading('close')
-        if (res.data) {
-          resolve(res.data)
-        } else {
-          resolve(false)
-        }
-      })
-      .catch((error) => {
-        // console.log('请求失败！：', error.response, error.request)
-        this.loading('close')
-        if (error.response) { // 如果服务器响应
-          if (error.response.status === 510) {
-            console.log('非法令牌，需要刷新。', token)
-            // 检测token是否存在
-            if (token.access_token && token.access_token.length < 48) { // 有效token
-              console.log('开始刷新令牌')
-              refreshToken.call(this).then(res => {
-                reject(510)
-              })
-            } else {
-              toLogin()
-            }
-          } else {
-            //console.log(error.response)
-            //this.tip('请求失败!')
-            this.tip(error.response.data.msg)
+      axios({
+          method: 'post',
+          // async: false,
+          timeout: 30000,
+          url: url,
+          data: data,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            "Authorization": `Bearer ${token.access_token}`,
+            'sign': sign
           }
-        } else if (error.request) {
-          this.tip('网络异常!')
-        } else {
-          this.tip('网络异常!')
-        }
-      })
+        })
+        .then((res) => {
+          this.loading('close')
+          if (res.data) {
+            resolve(res.data)
+          } else {
+            resolve(false)
+          }
+        })
+        .catch((error) => {
+          // console.log('请求失败！：', error.response, error.request)
+          this.loading('close')
+          if (error.response) { // 如果服务器响应
+            if (error.response.status === 510) {
+              console.log('非法令牌，需要刷新。', token)
+              // 检测token是否存在
+              if (token.access_token && token.access_token.length < 48) { // 有效token
+                console.log('开始刷新令牌')
+                refreshToken.call(this).then(res => {
+                  reject(510)
+                })
+              } else {
+                toLogin()
+              }
+            } else {
+              //console.log(error.response)
+              //this.tip('请求失败!')
+              this.tip(error.response.data.msg)
+            }
+          } else if (error.request) {
+            this.tip('网络异常!')
+          } else {
+            this.tip('网络异常!')
+          }
+        })
     })
   }
   getJsonPostAjax(path, data, jsonData) {
@@ -346,66 +367,69 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
     return new Promise((resolve, reject) => {
       // let thatType = type == 'post' ? 'post' : 'get'
       let url = `${this.port}${path}`
-      
+
       let sign = this.getSign(jsonData || data, token.access_token)
-      console.log('sign',sign)
+      console.log('sign', sign)
       // 显示加载动画
       this.loading('open')
-       axios({
-        method: 'post',
-        // async: false,
-        timeout: 30000,
-        url: url,
-        data:data,
-         headers: {
-          'Content-Type':'application/json',
-          "Authorization": `Bearer ${token.access_token}`,
-          'sign': sign
-        },
-        transformRequest: [function(data) {
-          data = JSON.stringify(data)
-          return data
-        }]
+      axios({
+          method: 'post',
+          // async: false,
+          timeout: 30000,
+          url: url,
+          data: data,
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${token.access_token}`,
+            'sign': sign
+          },
+          transformRequest: [function (data) {
+            data = JSON.stringify(data)
+            return data
+          }]
 
-      })
-      .then((res) => {
-        this.loading('close')
-        if (res.data) {
-          resolve(res.data)
-        } else {
-          resolve(false)
-        }
-      })
-      .catch((error) => {
-        // console.log('请求失败！：', error.response, error.request)
-        this.loading('close')
-        if (error.response) { // 如果服务器响应
-          if (error.response.status === 510) {
-            console.log('非法令牌，需要刷新。', token)
-            // 检测token是否存在
-            if (token.access_token && token.access_token.length < 48) { // 有效token
-              console.log('开始刷新令牌')
-              refreshToken.call(this).then(res => {
-                reject(510)
-              })
-            } else {
-              toLogin()
-            }
+        })
+        .then((res) => {
+          this.loading('close')
+          if (res.data) {
+            resolve(res.data)
           } else {
-            //console.log(error.response)
-            //this.tip('请求失败!')
-            this.tip(error.response.data.msg)
+            resolve(false)
           }
-        } else if (error.request) {
-          this.tip('网络异常!')
-        } else {
-          this.tip('网络异常!')
-        }
-      })
+        })
+        .catch((error) => {
+          // console.log('请求失败！：', error.response, error.request)
+          this.loading('close')
+          if (error.response) { // 如果服务器响应
+            if (error.response.status === 510) {
+              console.log('非法令牌，需要刷新。', token)
+              // 检测token是否存在
+              if (token.access_token && token.access_token.length < 48) { // 有效token
+                console.log('开始刷新令牌')
+                refreshToken.call(this).then(res => {
+                  reject(510)
+                })
+              } else {
+                toLogin()
+              }
+            } else {
+              //console.log(error.response)
+              //this.tip('请求失败!')
+              this.tip(error.response.data.msg)
+            }
+          } else if (error.request) {
+            this.tip('网络异常!')
+          } else {
+            this.tip('网络异常!')
+          }
+        })
     })
   }
 
-  getPostAjax ({path, data}) {
+  getPostAjax({
+    path,
+    data
+  }) {
     console.log(123123, path)
     let url = `${this.port}${path}`
     return new Promise((resolve, reject) => {
@@ -413,9 +437,9 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
         method: 'post',
         url: url,
         data: data,
-        transformRequest: [function(data) {
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data) {
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
@@ -526,43 +550,43 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
       return time
     } else {
       return this.indexTime()
-    } 
+    }
   }
   //获取时间   安卓和ios的时间格式不同	年月日/月日年
-  indexTimeB(date){
-    if(date){
+  indexTimeB(date) {
+    if (date) {
       date = date.toLocaleDateString().split('/')
-      var year,mouth,day,a,b
+      var year, mouth, day, a, b
       var c = []
-      date.forEach((item,index) => {
-        if(item > 1000){
+      date.forEach((item, index) => {
+        if (item > 1000) {
           year = date[index]
-          if(index == 0){
+          if (index == 0) {
             mouth = date[index + 1]
-            if(mouth < 10) {
+            if (mouth < 10) {
               mouth = `0${mouth}`
             }
             day = date[index + 2]
-            if(day < 10) {
+            if (day < 10) {
               day = `0${day}`
             }
-            c.push(year,mouth,day)
-          }else {
+            c.push(year, mouth, day)
+          } else {
             mouth = date[index - 2]
             day = date[index - 1]
-            if(day < 10) {
+            if (day < 10) {
               day = `0${day}`
             }
-            if(mouth < 10) {
+            if (mouth < 10) {
               mouth = `0${mouth}`
             }
-            c.push(year,mouth,day)
+            c.push(year, mouth, day)
           }
         }
       })
       a = year + '年' + mouth + '月' + day + '日'
       b = c.join('-')
-      return [a,b]
+      return [a, b]
     }
   }
   btnList(names, i) {
@@ -579,9 +603,9 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
     })
   }
   //数组对象去重a
-  getUniqueData(arr){
-    if(!arr){
-       return
+  getUniqueData(arr) {
+    if (!arr) {
+      return
     }
     let result = [];
     let obj = {};
@@ -594,17 +618,17 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
     return result
   }
   //过滤器
-  getNewArr(a,b,c,d){     //c=y,a=series[0],b=series[1],d=ids
+  getNewArr(a, b, c, d) { //c=y,a=series[0],b=series[1],d=ids
     var len = c.length
     var arr = []
     var arr1 = []
     var arr2 = []
     var arr3 = []
-    for(var i = 0; i < len; i ++) {
-      if(a[i] == 0 && b[i] == 0) {
-        
-      }else {
-        if(d){
+    for (var i = 0; i < len; i++) {
+      if (a[i] == 0 && b[i] == 0) {
+
+      } else {
+        if (d) {
           arr3.push(d[i])
         }
         arr.push(c[i])
@@ -612,20 +636,20 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
         arr2.push(b[i])
       }
     }
-    return [arr,arr1,arr2,arr3]
+    return [arr, arr1, arr2, arr3]
   }
   //客户来源过滤
-  getCustomerNewArr(a,b,c,d,e){     //c=series[2],a=series[0],b=series[1],d=series[3],e=y
-    var len = e.length	            //arr=y,arr1=series[0],arr2=series[1],arr3=series[2],arr4=series[3]
+  getCustomerNewArr(a, b, c, d, e) { //c=series[2],a=series[0],b=series[1],d=series[3],e=y
+    var len = e.length //arr=y,arr1=series[0],arr2=series[1],arr3=series[2],arr4=series[3]
     var arr = []
     var arr1 = []
     var arr2 = []
     var arr3 = []
     var arr4 = []
-    for(var i = 0; i < len; i ++) {
-      if(a[i] == 0 && b[i] == 0 && c[i] == 0 && d[i] == 0) {
-        
-      }else {
+    for (var i = 0; i < len; i++) {
+      if (a[i] == 0 && b[i] == 0 && c[i] == 0 && d[i] == 0) {
+
+      } else {
         arr4.push(d[i])
         arr.push(e[i])
         arr1.push(a[i])
@@ -633,15 +657,15 @@ this.port = "https://mobiletest.derucci.net/cd-sys-web"
         arr3.push(c[i])
       }
     }
-    return [arr,arr1,arr2,arr3,arr4]
+    return [arr, arr1, arr2, arr3, arr4]
   }
   //时间戳比较
-  compareTimeStamp(t1,t2) {
+  compareTimeStamp(t1, t2) {
     const time1 = new Date(t1).getTime()
     const time2 = new Date(t2).getTime()
-    if(time1 < time2) {
+    if (time1 < time2) {
       return true
-    }else {
+    } else {
       return false
     }
   }

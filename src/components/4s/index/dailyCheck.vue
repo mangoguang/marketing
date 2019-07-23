@@ -5,7 +5,7 @@
                 :title="'日常检查'">
       <div class="iconBox-wrapper">
         <iconBox :type="'dailyCheck'"
-                 v-for="(item, index) in categories"
+                 v-for="(item, index) in 5"
                  :storeClass="5"
                  :index="index"
                  :key="index"
@@ -13,7 +13,6 @@
         <iconBox :type="'gradeReport'"
                  :iconData="data1"
                  :hasNew="'news'"
-                 v-permission="['督导']"
                  @click.native="handleClick(data1.link)" />
       </div>
     </ContentBox>
@@ -23,6 +22,7 @@
 <script>
 import ContentBox from './contentBox'
 import iconBox from './iconBox'
+
 export default {
   props: ['categories'],
   components: {
@@ -40,7 +40,9 @@ export default {
       }
     }
   },
+
   methods: {
+
     handleClick (linkName) {
       this.$router.push({
         path: '/starCheck'

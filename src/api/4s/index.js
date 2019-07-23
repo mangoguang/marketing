@@ -3,9 +3,12 @@ import {
 } from '@/Request/request'
 import mango from '@/js/'
 
+import {
+  http, //带token
+  httpDef //默认
+} from './http'
+
 const request = new Request()
-
-
 
 //获取星级
 export const userinfo = params => {
@@ -36,4 +39,20 @@ export const gradeHome = params => {
  */
 export const secondcategories = params => {
   return mango.getAjax('/v2/api/cert/grade/secondcategories', params)
+}
+
+/**
+ *  app - 经销商申请认证列表
+ * @param {*} params 
+ */
+export const distributorList = params => {
+  return mango.getJsonPostAjax('/v2/api/4s/cert/approve/distributor/list', params)
+}
+
+/**
+ *  app - 发起申请
+ * @param {*} params 
+ */
+export const distributorApply = params => {
+  return http.getJsonPostAjax('/v2/api/4s/cert/approve/distributor/apply', params)
 }

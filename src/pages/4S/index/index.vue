@@ -5,10 +5,9 @@
     <StoreSelect :shops="shops"
                  @onGetStoreId="onGetStoreId" />
     <!-- 日常检查 -->
-    <DailyCheck :categories="categories"
-                v-permission="['门店店长']" />
+    <DailyCheck :categories="categories" />
     <!--星级认证-->
-    <egg-star-attestation v-permission="['经销商']" />
+    <egg-star-attestation />
     <!-- 评分报表 -->
     <GradeReport :type="'gradeReport'" />
     <!-- 配置权限 -->
