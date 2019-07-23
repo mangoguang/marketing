@@ -4,11 +4,13 @@
     <Header @changeResultTit='changHead'>
       <span v-show="headerStatus[1].status">{{orderResultTit}}</span>
       <span v-show="headerStatus[2].status">{{dealResultTit}}</span>
+      <span v-show="headerStatus[3].status">{{allResultTit}}</span>
     </Header>
     <!-- 客户列表 -->
     <CustomerList v-show="headerStatus[0].status" class="CustomerList1"/>
-    <EnquiryOrder @changeResultTit="changeOrderResultTit" v-show=" headerStatus[1].status" class="CustomerList"/>
-    <DealCustomerList @changeResultTit="changeDealResultTit" v-show=" headerStatus[2].status" class="CustomerList"/>
+    <EnquiryOrder @changeResultTit="changeOrderResultTit" v-show="headerStatus[1].status" class="CustomerList"/>
+    <DealCustomerList @changeResultTit="changeDealResultTit" v-show="headerStatus[2].status" class="CustomerList"/>
+    <allCustomerList @changeResultTit="changeAllResultTit" v-show="headerStatus[3].status" class="CustomerList"/>
     <!-- 右侧边栏 -->
     <RightContainer/>
     <RightTimeSelect v-show='rightTimeSelect'/>
@@ -29,6 +31,7 @@ import Footer from "../../components/Footer";
 import Header from "../../components/customer/header";
 import CustomerList from "../../components/customer/customerList";
 import DealCustomerList from "../../components/customer/dealCustomer/dealCustomerList";
+import allCustomerList from "../../components/customer/allCustomer/allCustomerList";
 import EnquiryOrder from "../../components/customer/enquiryOrder/enquiryOrder";
 import RightContainer from "../../components/customer/rightContainer";
 import RightTimeSelect from "../../components/customer/rightTimeSelect";
@@ -43,12 +46,14 @@ export default {
     RightContainer,
     DealCustomerList,
     EnquiryOrder,
-    RightTimeSelect
+    RightTimeSelect,
+    allCustomerList
   },
   data() {
     return {
       orderResultTit: "",
-      dealResultTit:''
+      dealResultTit:'',
+      allResultTit:""
     };
   },
   computed: {
@@ -87,12 +92,17 @@ export default {
     changeDealResultTit(str) {
       this.dealResultTit = str;
     },
+    changeAllResultTit(str){
+      this.allResultTit = str
+    },
     //头部搜索改变slot的值
     changHead(val) {
       if(this.headerStatus[1].status) {
         this.orderResultTit = val
       }else if(this.headerStatus[2].status){
         this.dealResultTit = val
+      }else if(this.headerStatus[3].status){
+         this.allResultTit = val
       }
     }
   }

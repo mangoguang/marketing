@@ -64,6 +64,7 @@
 import {mapState,mapMutations} from 'vuex'
 import { IndexModel } from '../../../utils'
 const indexModel=new IndexModel()
+import mango from "../../../js";
 export default {
     data(){
         return {
@@ -226,6 +227,7 @@ export default {
                     this.initStoreList(res.data.records);
                     if(obj.page===res.data.pages){
                         this.setAllLoaded(true)
+                         mango.tip('没有更多数据了')
                     }else{
                         this.setAllLoaded(false)
                     }   
@@ -339,18 +341,38 @@ export default {
             indexModel.getCusotmerList2(obj).then((res) => {
                 if(res.status===1){
                     if(obj.type==='New'){
-                        obj.page===res.data.pages?this.setCustomerAllLoaded(true):this.setCustomerAllLoaded(false)
+                        if(obj.page===res.data.pages){
+                            this.setCustomerAllLoaded(true)
+                            //mango.tip('没有更多数据了')
+                        }else{
+                            this.setCustomerAllLoaded(false)
+                        }
                         this.initCustomerList(res.data.records)
                     }else if(obj.type==='Approved'){
-                        obj.page===res.data.pages?this.setApprovedAllLoaded(true):this.setApprovedAllLoaded(false)
+                        if(obj.page===res.data.pages){
+                            this.setApprovedAllLoaded(true)
+                            //mango.tip('没有更多数据了')
+                        }else{
+                            this.setApprovedAllLoaded(false)
+                        }
                         this.initApprovedList(res.data.records)
                         this.setApprovedNum(res.data.total)
                     }else if(obj.type==='Closed'){
-                        obj.page===res.data.pages?this.setClosedAllLoaded(true):this.setClosedAllLoaded(false)
+                        if(obj.page===res.data.pages){
+                            this.setClosedAllLoaded(true)
+                            //mango.tip('没有更多数据了')
+                        }else{
+                            this.setClosedAllLoaded(false)
+                        }
                         this.initClosedList(res.data.records)
                         this.setClosedNum(res.data.total)
                     }else{
-                        obj.page===res.data.pages?this.setAllCustomerAllLoaded(true):this.setAllCustomerAllLoaded(false)
+                        if(obj.page===res.data.pages){
+                            this.setAllCustomerAllLoaded(true)
+                             //mango.tip('没有更多数据了')
+                        }else{
+                            this.setAllCustomerAllLoaded(false)
+                        }
                         this.initAllCustomerList(res.data.records)
                         this.setAllCustomerNum(res.data.total)
                     }

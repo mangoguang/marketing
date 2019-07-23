@@ -8,6 +8,7 @@ import customer from './modules/customer'
 import select from './modules/components/select'
 import rightContainer from './modules/components/rightContainer'
 import dealCustomerList from './modules/components/dealCustomerList'
+import allCustomerList from './modules/components/allCustomerList'
 import dealOrderInfoDetails from './modules/components/dealOrderInfoDetails'
 import orderInfoDetails from './modules/components/orderInfoDetails'
 import followTrackDetails from './modules/components/followTrackDetails'
@@ -65,6 +66,7 @@ export default new Vuex.Store({
     select,
     rightContainer,
     dealCustomerList,
+    allCustomerList,
     dealOrderInfoDetails,
     orderInfoDetails,
     customerHeader,

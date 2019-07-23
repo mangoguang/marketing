@@ -13,7 +13,6 @@
                     <li v-else>未知</li>
                     <li>{{item.createBy}}</li>
                 </ul>
-                
         </mt-loadmore>
     </div>
 </template>
@@ -24,6 +23,7 @@ import { Loadmore } from 'mint-ui';
 Vue.component(Loadmore.name, Loadmore);
 import { IndexModel } from '../../../utils'
 const indexModel=new IndexModel()
+import mango from "../../../js";
 export default {
     data(){
         return {
@@ -105,6 +105,7 @@ export default {
                 if(res.status===1){
                     if(res.data.pages===this.params.page){
                         this.setAllLoaded(true)
+                        //mango.tip('没有更多数据了')
                     }else{
                         this.setAllLoaded(false)
                     }

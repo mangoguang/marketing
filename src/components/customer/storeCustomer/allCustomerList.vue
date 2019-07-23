@@ -6,7 +6,7 @@
             <li>手机号码</li>
         </ul>
         <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore4" :auto-fill="false">
-           <ul class="content-Item" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId)">
+           <ul class="content-Item" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId,item.status)">
                 <li>{{item.username}}</li>
                 <li v-if="item.sex==='Mr.'">男</li>
                 <li v-else-if="item.sex==='Ms.'">女</li>
@@ -23,6 +23,7 @@ import { Loadmore } from 'mint-ui';
 Vue.component(Loadmore.name, Loadmore);
 import { IndexModel } from '../../../utils'
 const indexModel = new IndexModel()
+import mango from "../../../js";
 export default {
     props:['type','id'],
     data(){
@@ -44,7 +45,7 @@ export default {
     },
     watch:{
         subHeaderStatus(){
-            if(this.subHeaderStatus[2].status){
+            if(this.subHeaderStatus[3].status){
                 this.listenScroll()
                 this.initData()
             }
@@ -56,13 +57,6 @@ export default {
         }
     },
     created(){
-        /* let temp;
-        if(this.id){
-            temp = Object.assign(this.params,{userId:this.id})
-        }else{
-            temp = this.params
-        }
-        this.getList(temp) */
         this.initData()
     },
     mounted(){
@@ -127,7 +121,12 @@ export default {
         getList(obj,str){
             indexModel.getCusotmerList2(obj).then((res) => {
                 if(res.status===1){
-                    obj.page===res.data.pages?this.setAllCustomerAllLoaded(true):this.setAllCustomerAllLoaded(false);
+                    if(obj.page===res.data.pages){
+                        this.setAllCustomerAllLoaded(true)
+                        //mango.tip("没有更多数据了")
+                    }else{
+                        this.setAllCustomerAllLoaded(false)
+                    }
                     str==='init'?this.initAllCustomerList(res.data.records):this.setAllCustomerList(res.data.records);
                     this.setAllCustomerNum(res.data.total)
                 }
@@ -138,11 +137,11 @@ export default {
                 }
             })
         },
-        linkTo(id){
-            if(this.$route.name==='employeeDetail'){
-                this.$router.push({path:"/customerInfo",query:{id:id,edit:'no'}})
+        linkTo(id,status){
+            if(status==='Approved'){
+                this.$router.push({path:'/enquiryInfo',query:{id:id}})
             }else{
-                this.$router.push({path:"/customerInfo",query:{id:id}})
+                this.$router.push({path:'/customerInfo',query:{id:id}})
             }
         }
        

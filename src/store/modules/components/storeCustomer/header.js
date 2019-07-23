@@ -27,6 +27,21 @@ const state = {
       status:false
     }
   ],
+  subHeaderStatus2:[
+    {
+      name:'意向客户',
+      status:true
+    },
+    {
+      name:'成交客户',
+      status:false
+    },
+    {
+      name:'战败客户',
+      status:false
+    }
+  
+  ],
   filterList:[
     {
       name:'全部',
@@ -49,7 +64,8 @@ const state = {
 
 const mutations = {
   setHeaderStatus:(state,array) => {state.headerStatus=array},
-  setSubHeaderStatus:(state,array) => {state.subHeaderStatus=array}
+  setSubHeaderStatus:(state,array) => {state.subHeaderStatus=array},
+  setSubHeaderStatus2:(state,array) => {state.subHeaderStatus2=array}
 }
 
 const actions = {

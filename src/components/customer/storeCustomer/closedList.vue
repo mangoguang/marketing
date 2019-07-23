@@ -25,6 +25,7 @@ import { Loadmore } from 'mint-ui';
 Vue.component(Loadmore.name, Loadmore);
 import { IndexModel } from '../../../utils'
 const indexModel = new IndexModel()
+import mango from "../../../js";
 export default {
     props:['type','id'],
     data(){
@@ -132,7 +133,12 @@ export default {
         getList(obj,str){
             indexModel.getCusotmerList2(obj).then((res) => {
                 if(res.status===1){
-                    obj.page===res.data.pages?this.setClosedAllLoaded(true):this.setClosedAllLoaded(false);
+                    if(obj.page===res.data.pages){
+                        this.setClosedAllLoaded(true)
+                        //mango.tip('没有更多数据了')
+                    }else{
+                        this.setClosedAllLoaded(false)
+                    }
                     str==='init'?this.initClosedList(res.data.records):this.setClosedList(res.data.records);
                     this.setClosedNum(res.data.total)
                 }

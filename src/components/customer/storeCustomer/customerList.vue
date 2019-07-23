@@ -151,6 +151,7 @@ export default {
                 if(res.status===1){
                     if(obj.page===res.data.pages){
                         this.setCustomerAllLoaded(true)
+                         //mango.tip('没有更多数据了')
                     }else{
                         this.setCustomerAllLoaded(false)
                     }

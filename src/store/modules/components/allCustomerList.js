@@ -1,12 +1,14 @@
-import mango from '../../../js'
+
+
+
 const state = {
-  headerStatus: mango.btnList(['意向客户', '成交客户', '战败客户','所有客户'], 0),
-  searchKey: ''
+  allCustomerList: [],
+  allLength:0
 }
 
 const mutations = {
-  setHeaderStatus: (state, arr) => state.headerStatus = arr,
-  setSearchKey: (state, str) => state.searchKey = str
+  setAllCustomerList: (state, arr) => state.allCustomerList = arr,
+  setAllLength: (state, arr) => state.allLength = arr
 }
 
 const actions = {
