@@ -193,7 +193,7 @@ export default {
       right:0;
       z-index: 10;
       :first-child{
-            flex:0.35;
+            flex:0.4;
             
         }
         :nth-child(2){
@@ -201,7 +201,7 @@ export default {
             text-align: center;
         }
         :last-child{
-            flex:0.45;
+            flex:0.4;
             text-align: right;
 
         }
@@ -216,8 +216,10 @@ export default {
         min-height: 17.33vw;
         margin-bottom:1.33vw;
         :first-child{
-            flex:0.35;
-            /* white-space: nowrap; */
+            flex:0.4;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
         :nth-child(2){
             flex:0.2;
@@ -225,7 +227,7 @@ export default {
             text-align: center;
         }
         :last-child{
-            flex:0.45;
+            flex:0.4;
             text-align: right;
         }
         

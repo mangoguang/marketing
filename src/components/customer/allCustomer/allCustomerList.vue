@@ -200,7 +200,7 @@ export default {
     // border-bottom: 1px solid #e1e1e1;
     color: #999;
     font-size: 4.26vw;
-    line-height: 11.73vw;
+    /* line-height: 11.73vw; */
     padding-bottom: 40vw;
     box-sizing: border-box;
     background: #f8f8f8;
@@ -210,7 +210,7 @@ export default {
       padding-right: 3.86vw;
       // border-top: 1px solid #e1e1e1;
       align-items: center;
-      height: 17.33vw;
+      min-height: 17.33vw;
       margin-top: 1vw;
       background: #fff;
       padding-left: 4.266vw;
@@ -219,6 +219,13 @@ export default {
         flex:1;
         display: flex;
         align-items: center;
+       span{
+          width:30vw;
+          display: inline-block;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+       }
       }
       .sex{
          flex:1;

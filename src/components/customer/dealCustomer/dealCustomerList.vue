@@ -348,7 +348,7 @@ export default {
     // border-bottom: 1px solid #e1e1e1;
     color: #999;
     font-size: 4.26vw;
-    line-height: 11.73vw;
+    //line-height: 11.73vw;
     padding-bottom: 40vw;
     box-sizing: border-box;
     background: #f8f8f8;
@@ -358,7 +358,7 @@ export default {
       padding-right: 3.86vw;
       // border-top: 1px solid #e1e1e1;
       align-items: center;
-      height: 17.33vw;
+      min-height: 17.33vw;
       margin-top: 1vw;
       background: #fff;
       padding-left: 4.266vw;
@@ -367,11 +367,21 @@ export default {
         flex: 0.45;
         display: flex;
         align-items: center;
+        span{
+          padding-left:2.66vw;
+          width:15vw;
+          display: inline-block;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
         strong {
           height: 4vw;
           width: 3.73vw;
-          margin-top: -7vw;
-          margin-left: 1vw;
+          /* margin-top: -1vw; */
+          margin-left: -1vw;
+          flex-shrink: 0;
+          align-self: flex-start;
         }
         .urgencyfalse {
           // background: url(../../assets/imgs/jinji1.png) no-repeat;
@@ -386,10 +396,13 @@ export default {
       }
       .phone {
         flex: 0.5;
+        flex-shrink: 0;
       }
       .date {
         flex: 0.4;
         color: #363636;
+        flex-shrink: 0;
+        text-align: right;
       }
       // span:nth-child(4) {
       //   flex: 0.5;
@@ -406,28 +419,29 @@ export default {
       // margin-bottom: 3vw;
     }
     i{
-      width: 10.6vw;
+      width: 5.33vw;
       height: 4vw;
-      margin-right: -3vw;
+      // margin-right: -3vw;
+      flex-shrink: 0;
     }
     .importantA{
       background: url(../../../assets/imgs/A.png) no-repeat;
-      background-size: auto 100%;
+      background-size: 100% 100%;
       // background-position: center;
     }
     .importantB{
       background: url(../../../assets/imgs/B.png) no-repeat;
-      background-size: auto 100%;
+      background-size: 100% 100%;
       // background-position: center;
     }
     .importantC{
       background: url(../../../assets/imgs/C.png) no-repeat;
-      background-size: auto 100%;
+      background-size: 100% 100%;
       // background-position: center;
     }
     .importantD{
       background: url(../../../assets/imgs/D.png) no-repeat;
-      background-size: auto 100%;
+     background-size: 100% 100%;
       // background-position: center;
     }
   }
