@@ -14,6 +14,7 @@
                     <li>{{item.createBy}}</li>
                 </ul>
         </mt-loadmore>
+        
     </div>
 </template>
 <script>
@@ -184,7 +185,7 @@ export default {
         margin-bottom:1.33vw;
         :first-child{
             flex:0.4;
-            white-space: nowrap;
+            /* white-space: nowrap; */
         }
         :nth-child(2){
             flex:0.2;

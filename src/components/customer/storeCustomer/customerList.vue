@@ -9,8 +9,7 @@
             <ul class="content-Item" v-for="(item,index) in customerList" :key="index" @click="linkTo(item.accntId)">
                 <li>
                     <i :class="`important${item.level}`"></i>
-                    <span>{{item.username}}</span>
-                    <b :class="`urgency${item.urgency}`"></b>
+                    <span>{{item.username}}<b :class="`urgency${item.urgency}`"></b></span>
                 </li>
                 <li>{{item.goodsName}}</li>
                 <li>{{item.followDate}}</li>

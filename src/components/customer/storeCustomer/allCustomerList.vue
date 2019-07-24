@@ -14,6 +14,7 @@
                 <li>{{item.phone}}</li>
             </ul>
         </mt-loadmore>
+        <button type="button" class="new" v-if="type!=='per'" :style="{bottom:bottom}" @click="newCustomer"></button>
     </div>
 </template>
 <script>
@@ -21,6 +22,7 @@ import Vue from 'vue'
 import {mapState,mapMutations} from 'vuex'
 import { Loadmore } from 'mint-ui';
 Vue.component(Loadmore.name, Loadmore);
+import {btnList} from '../../../utils/gallery'
 import { IndexModel } from '../../../utils'
 const indexModel = new IndexModel()
 import mango from "../../../js";
@@ -30,7 +32,8 @@ export default {
         return {
           top:'',
           paddingTop:'',
-          paddingBottom:''
+          paddingBottom:'',
+          bottom:''
         }
     },
     computed:{
@@ -63,20 +66,23 @@ export default {
         this.isIphone();
     },
     methods:{
+        ...mapMutations(['setBtn','initShopList','getShopVal']),
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
         ...mapMutations('allCustomer',['setAllCustomerNum','setAllCustomerParams','setAllCustomerList',
          'setAllCustomerAllLoaded','setAllCustomerScroll','setAllCustomerPage','initAllCustomerList']),
         isIphone(){
-            let phone=this.phoneSize()
+            let phone=this.phoneSize()  
             if(phone==='iphonex'){
                 if(this.type==='per'){
                     this.top="56.461vw";
                     this.paddingTop="60.78vw"
                     this.paddingBottom='11.73vw'
+                     this.bottom="0"
                 }else{
                     this.top="59.326vw";
                     this.paddingTop="63.986vw"
                     this.paddingBottom='21.07vw'
+                    
                 }
               
             }else{
@@ -84,10 +90,12 @@ export default {
                     this.top="50.461vw";
                     this.paddingTop="60.78vw"
                     this.paddingBottom='0'
+                     this.bottom="0"
                 }else{
                     this.top="53.326vw";
                     this.paddingTop="63.986vw"
                     this.paddingBottom="16.53vw"
+                    this.bottom="28vw"
                 }
                 
             }  
@@ -143,6 +151,14 @@ export default {
             }else{
                 this.$router.push({path:'/customerInfo',query:{id:id}})
             }
+        },
+        newCustomer() {
+            this.setBtn([])
+            let shops = localStorage.getItem('shops')
+            let shopsList = btnList(JSON.parse(shops),0)
+            this.initShopList(shopsList)
+            this.getShopVal()
+            this.$router.push({path: './newCustomer'})
         }
        
     }
@@ -150,6 +166,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '../../../assets/common.scss';
+.new{
+    width:14.13vw;
+    height:14.13vw;
+    background: url('../../../assets/imgs/add.png') no-repeat center center;
+    background-size:100% 100%;
+    position: fixed;
+    bottom:32vw;
+    right:3.73vw;
+}
 .box{
   height:100vh;
   overflow: scroll;
@@ -192,7 +217,7 @@ export default {
         margin-bottom:1.33vw;
         :first-child{
             flex:0.35;
-            white-space: nowrap;
+            /* white-space: nowrap; */
         }
         :nth-child(2){
             flex:0.2;

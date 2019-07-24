@@ -48,20 +48,24 @@
           span{
             padding-left:2.66vw;
             padding-right: 1.33vw;
+            position: relative;
+            b{
+              display: inline-block;
+              width:4vw;
+              height:4vw;
+              position: absolute;
+              top:3px;
+              right:-4vw;
+            }
+            b.urgencytrue{
+              background: url('../../../assets/imgs/jinji.png') no-repeat center center;
+              background-size: 100% 100%;
+            }
+            b.urgencyfalse{
+              display: none;
+            }
           }
-          b{
-            display: inline-block;
-            width:4vw;
-            height:4vw;
-            margin-top:-3vw;
-          }
-          b.urgencytrue{
-            background: url('../../../assets/imgs/jinji.png') no-repeat center center;
-            background-size: 100% 100%;
-          }
-          b.urgencyfalse{
-            display: none;
-          }
+          
       }
       li:nth-child(2){
         flex:0 0 28vw;
@@ -87,22 +91,23 @@
         display: inline-block;
         width:5.33vw;
         height:4vw;
+        flex-shrink: 0;
       }
       i.importantA{
         background:url("../../../assets/imgs/A.png") no-repeat center center;
-        background-size: 100% 100%;
+        background-size:100% 100%;
       }
       i.importantB{
         background:url("../../../assets/imgs/B.png") no-repeat center center;
-        background-size: 100% 100%;
+        background-size:100% 100%;
       }
       i.importantC{
         background:url("../../../assets/imgs/C.png") no-repeat center center;
-        background-size: 100% 100%;
+        background-size:100% 100%;
       }
       i.importantD{
         background:url("../../../assets/imgs/D.png") no-repeat center center;
-        background-size: 100% 100%;
+        background-size:100% 100%;
       }
       
   }

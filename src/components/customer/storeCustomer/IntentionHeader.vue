@@ -2,7 +2,7 @@
     <header class="header"  ref="header" :style="{top:top}">
        <div class="tabBox">
             <ul class="subTab">
-                <li v-for="(item,sindex) in subHeaderStatus" @click="changeStatus(sindex)" v-show="sindex!==3" :key="`subHeaderStatus${sindex}`" :class="item.status?'on':''">
+                <li v-for="(item,sindex) in subHeaderStatus" @click="changeStatus(sindex)"  :key="`subHeaderStatus${sindex}`" :class="item.status?'on':''">
                     <span>{{item.name}}</span>
                 </li> 
             </ul>
@@ -20,10 +20,11 @@
                 <ul class="filter" v-else>
                     <li>
                         <span v-if="subHeaderStatus[1].status">全部&nbsp;&nbsp;({{approvedNum}})</span>
-                        <span v-else>全部&nbsp;&nbsp;({{closedNum}})</span>
+                        <span v-else-if="subHeaderStatus[2].status">全部&nbsp;&nbsp;({{closedNum}})</span>
+                        <span v-else>全部&nbsp;&nbsp;({{allCustomerNum}})</span>
                     </li>
-                    <li>
-                        <span @click="showRightTimeSelect">筛选</span>
+                    <li v-if="!subHeaderStatus[3].status">
+                        <span @click="showRightTimeSelect" class="last">筛选</span>
                     </li>
                 </ul>
                 <div :class="showFilter&&subHeaderStatus[0].status?`filterList show`:'filterList'" >
@@ -69,7 +70,8 @@ export default {
             sort:state => state.storeHeader.sort,
             approvedNum:state => state.storeApproved.approvedNum,
             closedNum:state => state.storeClosed.closedNum,
-            cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams
+            cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams,
+            allCustomerNum:state => state.allCustomer.allCustomerNum
         })
           
     },
@@ -101,6 +103,8 @@ export default {
         'setApprovedList','setApprovedScroll','setApprovedPage','setApprovedAllLoaded','initApprovedList']),
         ...mapMutations('storeClosed',['setClosedNum','setClosedParams','setClosedList','setClosedAllLoaded',
          'setClosedScroll','setClosedPage','initClosedList']),
+          ...mapMutations('allCustomer',['setAllCustomerNum','setAllCustomerParams','setAllCustomerList',
+         'setAllCustomerAllLoaded','setAllCustomerScroll','setAllCustomerPage','initAllCustomerList']),
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
@@ -195,7 +199,7 @@ export default {
                         }
                         this.initApprovedList(res.data.records)
                         this.setApprovedNum(res.data.total)
-                    }else{
+                    }else if(obj.type==='Closed'){
                         if(obj.page===res.data.pages){
                             this.setClosedAllLoaded(true)
                              //mango.tip('没有更多数据了')
@@ -204,6 +208,15 @@ export default {
                         }
                         this.initClosedList(res.data.records)
                         this.setClosedNum(res.data.total)
+                    }else{
+                        if(obj.page===res.data.pages){
+                            this.setAllCustomerAllLoaded(true)
+                             //mango.tip('没有更多数据了')
+                        }else{
+                            this.setAllCustomerAllLoaded(false)
+                        }
+                        this.initAllCustomerList(res.data.records)
+                        this.setAllCustomerNum(res.data.total)
                     }
                 }
                 
@@ -295,7 +308,7 @@ export default {
             background:#EFEFF4;
             
             li{
-                margin-right:4.533vw;
+                /* margin-right:4.533vw; */
                 span{
                     background:none;
                     padding:1.066vw 1.866vw;
@@ -329,7 +342,7 @@ export default {
                 background-size: 2.133vw auto;
             }
             li:last-child{
-                span{
+                span.last{
                     padding-left:4.266vw;
                     padding-right:4vw;
                     background:url("../../../assets/imgs/filter2.png") no-repeat right center;
