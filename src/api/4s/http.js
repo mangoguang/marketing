@@ -65,11 +65,16 @@ axios.interceptors.response.use(
 export const httpDef = axios
 
 //需要token
-export const http = (options) => {
+export const http = (options, isFile) => {
   axios.defaults.headers = {
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     "Authorization": `Bearer ${token.access_token}`,
     'sign': getSign(options.params, token.access_token)
+  }
+  if (isFile) {
+    var instance = axios.create()
+    return instance.post(options.url, options.params);
+
   }
   return axios(options)
 }

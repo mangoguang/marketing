@@ -11,7 +11,7 @@
     <!-- 评分报表 -->
     <GradeReport :type="'gradeReport'" />
     <!-- 配置权限 -->
-    <ModuleConfig />
+    <!-- <ModuleConfig /> -->
   </div>
 </template>
 
@@ -63,6 +63,7 @@ export default {
     async _getCategories (shopId) {
       let { code, categories, msg } = await gradeCategories({ shopId })
       this.categories = categories
+      this.setShopId(categories[0].id)
     },
     onGetStoreId (val) {
       this.setShopId(val)

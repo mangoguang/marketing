@@ -73,6 +73,8 @@
         </div>
       </div>
     </mt-loadmore>
+    <div class="no-data"
+         v-if="noData">暂无数据</div>
   </div>
 </template>
 
@@ -89,7 +91,8 @@ export default {
       telVal: '',
       dataList: [],
       allLoaded: false,
-      page: 1
+      page: 1,
+      noData: false
     };
   },
   created () {
@@ -108,6 +111,10 @@ export default {
       if (data.totalPage == 1) {
         this.allLoaded = true
       }
+      if (page == 1 && data.list.length == 0) {
+        this.noData = true
+      }
+
     },
     loadTop () {
       this.page = 1;
@@ -165,6 +172,12 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.no-data {
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+  padding-top: 20px;
+}
 .atest_card {
   width: 94.66vw;
   margin: 0 auto;

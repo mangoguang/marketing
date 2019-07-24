@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="starHeader">
-    <star-header :title="'三星检查'">
+    <star-header :title="'星级检查'">
       <egg-sort />
     </star-header>
   </div>
@@ -25,6 +25,5 @@ export default {
 </script>
 <style lang='scss' scoped>
 .starHeader {
- 
 }
 </style>

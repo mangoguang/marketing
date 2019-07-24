@@ -5,7 +5,7 @@ import mango from '@/js/'
 
 import {
   http, //带token
-  httpDef //默认
+  httpDef
 } from './http'
 
 const request = new Request()
@@ -46,21 +46,33 @@ export const gradeCategories = params => {
 }
 
 /**
- *  店长（导购）通过一级分类获取二级评分分类
+ *  3 店长（导购）通过二级分类id获取三级评分分类及其评分细项（username:19040049）
  * @param {*} params 
  */
-export const secondcategories = params => {
-  return mango.getAjax('/v2/api/cert/grade/secondcategories', params)
+export const gradeSecondcategories = params => {
+  return http({
+    url: '/v2/api/cert/grade/subcategories',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ *  4 上传视频或图片
+ * @param {*} params 
+ */
+export const uploadFile = params => {
+  return http({
+    url: '/upload/file',
+    method: 'post',
+    params
+  }, true)
 }
 
 /**
  *  app - 经销商申请认证列表
  * @param {*} params 
  */
-// export const distributorList = params => {
-//   return mango.getJsonPostAjax('/v2/api/4s/cert/approve/distributor/list', params)
-// }
-
 export const distributorList = params => {
   return http({
     url: '/v2/api/4s/cert/approve/distributor/list',

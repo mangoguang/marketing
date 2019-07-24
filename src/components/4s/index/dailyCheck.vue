@@ -44,16 +44,17 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setCategories']),
+    ...mapMutations(['setCategories', 'setLevelId']),
     bindNavigator (index) {
       if (index >= this.categories.length) return
       var item = this.categories[index]
       this.$router.push({ path: '/starCheck', query: { level: index } })
       this.setCategories(item.subCategoryList)
+      this.setLevelId(item.id)
     },
     handleClick (linkName) {
       this.$router.push({
-        path: '/starCheck'
+        path: '/starCheckW'
       })
     }
   }

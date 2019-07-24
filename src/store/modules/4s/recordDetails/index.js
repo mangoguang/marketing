@@ -19,9 +19,12 @@ export default {
   mutations: {
     setType: (state, str) => state.type = str,
     setShopId: (state, shopId) => state.submitScoreData.shopId = shopId, //记录门店
-    setCategories: (state, categories) => state.categories = categories
+    setLevelId: (state, levelId) => state.submitScoreData.levelId = levelId, //记录星级
+    setCategories: (state, categories) => state.categories = categories,
+    setCategoryList: (state, categoryList) => state.categoryList = categoryList
   },
   getters: {
-    getCategories: (state) => state.categories
+    getCategories: (state) => state.categories,
+    getShopId: (state) => state.submitScoreData.shopId
   }
 }

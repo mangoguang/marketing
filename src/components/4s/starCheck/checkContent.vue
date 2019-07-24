@@ -1,35 +1,34 @@
 <!--  -->
 <template>
   <ul :class="`checkContent ${status ? 'open' : 'close'}`">
-    <li
-    v-for="(item, index) in list"
-    @click="toCheckDetail(index)"
-    :key="`checkContent${index}`"
-    :class="{done: item.status}"
-    >{{item.text}}</li>
+    <li v-for="(item, index) in list"
+        @click="toCheckDetail(index)"
+        :key="`checkContent${index}`"
+        :class="{done: item.status}">{{item.name}}</li>
   </ul>
 </template>
 
 <script>
 export default {
   props: ['list', 'status'],
-  components : {
+  components: {
   },
   data () {
     return {
-      
+
     }
   },
   methods: {
-    toCheckDetail(index) {
-      this.$router.push({path: '/checkDetail'})
+    toCheckDetail (index) {
+
+      this.$router.push({ path: '/checkDetail' })
     }
   }
 }
 </script>
 <style lang='scss' scoped>
 .checkContent {
-  li{
+  li {
     position: relative;
     color: #2d2d2d;
     padding: 0 4vw;
@@ -37,9 +36,9 @@ export default {
     line-height: 3em;
     background: #fff;
   }
-  li::after{
+  li::after {
     display: block;
-    content: '';
+    content: "";
     width: 100%;
     height: 1px;
     position: absolute;
@@ -48,13 +47,14 @@ export default {
     background: #f8f8f8;
     transform: scaleY(0.5);
   }
-  li.done{
-    background: url(../../../assets/imgs/4s/starCheck/yes_blue.png) no-repeat, #fff;
+  li.done {
+    background: url(../../../assets/imgs/4s/starCheck/yes_blue.png) no-repeat,
+      #fff;
     background-size: 4.2vw auto;
     background-position: right 4vw top 50%;
   }
 }
-.close{
+.close {
   display: none;
 }
 </style>
