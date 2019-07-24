@@ -18,7 +18,7 @@
           <span class="sex" v-else>未知</span>
           <span class="phone">{{item.phone}}</span>
         </li>
-        <li><button @click="newCustomer" class="new"></button></li>
+        <button @click="newCustomer" class="new"></button>
       </mt-loadmore>
     </ul>
   </div>
@@ -223,11 +223,13 @@ export default {
       .sex{
          flex:1;
          text-align: center;
+         flex-shrink: 0;
       }
       .phone {
         flex:1;
         color: #363636;
         text-align: right;
+        flex-shrink: 0;
       }
       
     }
