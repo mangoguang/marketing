@@ -18,6 +18,7 @@
           <span class="sex" v-else>未知</span>
           <span class="phone">{{item.phone}}</span>
         </li>
+        <li><button @click="newCustomer" class="new"></button></li>
       </mt-loadmore>
     </ul>
   </div>
@@ -32,6 +33,7 @@ import mango from "../../../js";
 import TopBar from '../topBar'
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
+import {btnList} from '../../../utils/gallery'
 export default {
   name: "allCustomerList",
   props: ["changeResultTit"],
@@ -91,7 +93,10 @@ export default {
       "setAllCustomerList",
        "setTabStatus",
        'setAllScroll',
-       'setAllLength'
+       'setAllLength',
+       'setBtn',
+        'initShopList',
+        'getShopVal'
        
        ]),
     handleScroll(e) {
@@ -164,6 +169,15 @@ export default {
       }else{
           this.$router.push({path:'/customerInfo',query:{id:id}})
       }
+    },
+    //门店vuex清空。恢复第一个.游客！
+    newCustomer() {
+      this.setBtn([])
+      let shops = localStorage.getItem('shops')
+      let shopsList = btnList(JSON.parse(shops),0)
+      this.initShopList(shopsList)
+      this.getShopVal()
+      this.$router.push({path: './newCustomer'})
     }
   }
 };
