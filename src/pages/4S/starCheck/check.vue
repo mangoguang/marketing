@@ -15,7 +15,8 @@
                     :title="item.name"
                     :index="index"
                     @changeStatus="changeStatus" />
-        <CheckContent @click.native="bindSetCategoryId(item.categoryId,index)"
+        <CheckContent @click.native="bindSetCategoryId(item.id,index)"
+                      @onGetStandardId="onGetStandardId"
                       :list="item.standardList"
                       :status="item.status" />
       </div>
@@ -36,8 +37,8 @@ import SubHeader from '../../../components/4s/starCheck/subHeader'
 import CheckContent from '../../../components/4s/starCheck/checkContent'
 import CheckTitle from '../../../components/4s/starCheck/checkTitle'
 import { Toast } from 'mint-ui'
-import { gradeSecondcategories } from '@/api/4s'
-import { mapGetters } from 'vuex'
+import { gradeSecondcategories, gradeSubmit } from '@/api/4s'
+import { mapGetters, mapMutations, mapState } from 'vuex'
 
 export default {
   components: {
@@ -54,8 +55,9 @@ export default {
       },
       btnBotStatus: true,
       bigCategoryList: [
-
-      ]
+      ],
+      subData: {},
+      selectIndex: 0
     }
   },
   computed: {
@@ -66,13 +68,23 @@ export default {
     }
   },
   created () {
+    this.subData = this.submitScoreData
     this._initData()
   },
+  computed: mapState({ submitScoreData: state => state.eggRecordDetails.submitScoreData }),
   methods: {
-    ...mapGetters(['getShopId', 'setCategoryList']),
+    ...mapMutations(['setSubmitScoreData', 'setCategoryListIndex', 'setStandardListIndex']),
     bindSetCategoryId (categoryId, index) {
-      this.setCategoryList()
-      console.log(1)
+      this.selectIndex = index
+      this.subData.categoryList[index].categoryId = categoryId
+
+    },
+    onGetStandardId (item) {
+      this.subData.categoryList[this.selectIndex].standardList[item.index].standardId = item.standardId //设置当前选中分类细项id
+      this.setSubmitScoreData(this.subData) //提交分类id，打分细项id
+      this.setCategoryListIndex(this.selectIndex) //记录三级分类索引
+      this.setStandardListIndex(item.index) //记录分类细项列表索引
+
     },
     // 控制评分细则的显示/隐藏
     changeStatus (index, status) {
@@ -83,12 +95,15 @@ export default {
       this.btnBotStatus = false
     },
     // 提交表单
-    submit () {
+    async  submit () {
       this.btnBotStatus = true
+      var params = this.submitScoreData
+      console.log(JSON.stringify(this.submitScoreData))
+      let { code, data } = await gradeSubmit(params)
     },
     async  _initData () {
       let params = {
-        shopId: this.getShopId(),
+        shopId: this.subData.shopId,
         categoryId: this.$route.query.id
       }
 

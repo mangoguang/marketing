@@ -65,6 +65,8 @@ Vue.component(Range.name, Range);
 
 import { uploadFile } from '@/api/4s'
 import { async, Promise } from 'q';
+
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     mybanner
@@ -79,13 +81,25 @@ export default {
       textareaVal: ''
     }
   },
+  computed: mapState({
+    submitScoreData: state => state.eggRecordDetails.submitScoreData,
+    categoryListIndex: state => state.eggRecordDetails.categoryListIndex,
+    standardListIndex: state => state.eggRecordDetails.standardListIndex
+  }),
   methods: {
+    ...mapMutations(['setSubmitScoreData']),
     bindSave () {
       if (!this.textareaVal) {
         Toast('填写扣分原因')
         return
       }
-
+      let { rangeValue, textareaVal, picVal } = this
+      let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
+      standardList.reason = textareaVal //扣分原因
+      standardList.urls = picVal  //上传文件
+      standardList.deduct = rangeValue //分数
+      this.setSubmitScoreData(this.submitScoreData)
+      this.$router.go(-1)
     },
     //文件上传
     _uploadFile (e) {

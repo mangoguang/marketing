@@ -2,7 +2,7 @@
 <template>
   <ul :class="`checkContent ${status ? 'open' : 'close'}`">
     <li v-for="(item, index) in list"
-        @click="toCheckDetail(index)"
+        @click="toCheckDetail(item.id,index)"
         :key="`checkContent${index}`"
         :class="{done: item.status}">{{item.name}}</li>
   </ul>
@@ -19,8 +19,8 @@ export default {
     }
   },
   methods: {
-    toCheckDetail (index) {
-
+    toCheckDetail (standardId, index) {
+      this.$emit('onGetStandardId', { standardId, index })
       this.$router.push({ path: '/checkDetail' })
     }
   }

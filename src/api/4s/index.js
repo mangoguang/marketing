@@ -70,6 +70,23 @@ export const uploadFile = params => {
 }
 
 /**
+ *  5 店长（导购）提交打分数据（username:19040049）
+ * @param {*} params 
+ */
+var newAxios = httpDef.create({
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
+})
+export const gradeSubmit = params => {
+  return newAxios({
+    url: '/v2/api/cert/grade/submit',
+    method: "post",
+    params
+  })
+}
+
+/**
  *  app - 经销商申请认证列表
  * @param {*} params 
  */
