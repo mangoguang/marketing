@@ -365,7 +365,7 @@ export default {
       padding-left: 4.266vw;
       .name {
         color: #363636;
-        flex: 0.45;
+        flex: 0.5;
         display: flex;
         align-items: center;
         strong {
