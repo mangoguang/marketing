@@ -5,7 +5,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>最近跟进时间</h3>
+            <h3 :style="{'paddingTop': `${paddingTop}`}">最近跟进时间</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>
@@ -86,7 +86,8 @@ export default {
       urgencyBtns: mango.btnList(['是', '否']),
       keyBtns: mango.btnList(['A', 'B', 'C','D']),
       ajaxData:[],
-      marginTop:''
+      marginTop:'',
+      paddingTop:''
     }
   },
   computed: {
@@ -255,9 +256,11 @@ export default {
           (screen.height == 896 && screen.width == 414)
         ) {
           this.marginTop = "-5.86";
+          this.paddingTop = "12vw"
           
         } else {
           this.marginTop = "";
+          this.paddingTop = ""
         }
       }
     }

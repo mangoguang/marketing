@@ -4,7 +4,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>{{rightHeadTitle}}</h3>
+            <h3 :style="{'paddingTop': `${paddingTop}vw`}">{{rightHeadTitle}}</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>
@@ -60,7 +60,8 @@ export default {
       headTitle: '',
       ajaxData: [],
       account: '',
-      marginTop:''
+      marginTop:'',
+      paddingTop:''
     }
   },
   computed: {
@@ -162,9 +163,10 @@ export default {
           (screen.height == 896 && screen.width == 414)
         ) {
           this.marginTop = "-5.86";
-          
+          this.paddingTop = '12'
         } else {
           this.marginTop = "";
+          this.paddingTop = ''
         }
       }
     }
