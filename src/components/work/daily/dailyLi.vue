@@ -21,6 +21,7 @@ export default {
     strong{
       font-size: 18px;
       line-height: 1em;
+      font-weight: normal;
     }
     h5{
       font-weight: 300;

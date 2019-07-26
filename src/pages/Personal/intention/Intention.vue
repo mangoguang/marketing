@@ -482,7 +482,7 @@ export default {
     margin-bottom:2.666vw;
     li{
       padding-left:4.266vw;
-      :first-child{
+      &>:first-child{
          border-bottom: 1px solid #e1e1e1;
       }
     }
