@@ -11,7 +11,8 @@
                 <li v-if="item.sex==='Mr.'">男</li>
                 <li v-else-if="item.sex==='Ms.'">女</li>
                 <li v-else>未知</li>
-                <li>{{item.phone}}</li>
+                <li v-if="item.phone!=='0'">{{item.phone}}</li>
+                <li v-else>未收集</li>
             </ul>
         </mt-loadmore>
         <button type="button" class="new" v-if="type!=='per'" :style="{bottom:bottom}" @click="newCustomer"></button>

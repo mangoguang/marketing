@@ -12,7 +12,8 @@
                     <span>{{item.username}}</span>
                     <b :class="`urgency${item.urgency}`"></b>
                 </li>
-                <li>{{item.phone}}</li>
+                <li v-if="item.phone!=='0'">{{item.phone}}</li>
+                <li v-else>未收集</li>
                 <li>{{item.followDate}}</li>
             </ul>
             

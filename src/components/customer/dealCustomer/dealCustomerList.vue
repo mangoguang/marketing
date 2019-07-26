@@ -18,7 +18,8 @@
           </div>
           <!-- <span class="name">{{`*${item.username.slice(1, 5)}`}}</span> -->
           <!-- <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span> -->
-          <span class="phone">{{item.phone}}</span>
+          <span class="phone" v-if="item.phone!=='0'">{{item.phone}}</span>
+          <span class="phone" v-else>未收集</span>
           <!-- <span class="date">{{item.followDate}}</span> -->
           <span class="date">{{item.closeTime.split(" ")[0]}}</span>
         </li>
@@ -348,7 +349,7 @@ export default {
     // border-bottom: 1px solid #e1e1e1;
     color: #999;
     font-size: 4.26vw;
-    //line-height: 11.73vw;
+    line-height: 11.73vw;
     padding-bottom: 40vw;
     box-sizing: border-box;
     background: #f8f8f8;
@@ -358,7 +359,7 @@ export default {
       padding-right: 3.86vw;
       // border-top: 1px solid #e1e1e1;
       align-items: center;
-      min-height: 17.33vw;
+      height: 17.33vw;
       margin-top: 1vw;
       background: #fff;
       padding-left: 4.266vw;
@@ -367,21 +368,11 @@ export default {
         flex: 0.45;
         display: flex;
         align-items: center;
-        span{
-          padding-left:2.66vw;
-          width:15vw;
-          display: inline-block;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          overflow: hidden;
-        }
         strong {
           height: 4vw;
           width: 3.73vw;
-          /* margin-top: -1vw; */
-          margin-left: -1vw;
-          flex-shrink: 0;
-          align-self: flex-start;
+          margin-top: -7vw;
+          margin-left: 1vw;
         }
         .urgencyfalse {
           // background: url(../../assets/imgs/jinji1.png) no-repeat;
@@ -396,12 +387,10 @@ export default {
       }
       .phone {
         flex: 0.5;
-        flex-shrink: 0;
       }
       .date {
         flex: 0.4;
         color: #363636;
-        flex-shrink: 0;
         text-align: right;
       }
       // span:nth-child(4) {
@@ -419,29 +408,28 @@ export default {
       // margin-bottom: 3vw;
     }
     i{
-      width: 5.33vw;
+      width: 10.6vw;
       height: 4vw;
-      // margin-right: -3vw;
-      flex-shrink: 0;
+      margin-right: -3vw;
     }
     .importantA{
       background: url(../../../assets/imgs/A.png) no-repeat;
-      background-size: 100% 100%;
+      background-size: auto 100%;
       // background-position: center;
     }
     .importantB{
       background: url(../../../assets/imgs/B.png) no-repeat;
-      background-size: 100% 100%;
+      background-size: auto 100%;
       // background-position: center;
     }
     .importantC{
       background: url(../../../assets/imgs/C.png) no-repeat;
-      background-size: 100% 100%;
+      background-size: auto 100%;
       // background-position: center;
     }
     .importantD{
       background: url(../../../assets/imgs/D.png) no-repeat;
-     background-size: 100% 100%;
+      background-size: auto 100%;
       // background-position: center;
     }
   }
