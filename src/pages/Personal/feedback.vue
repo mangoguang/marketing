@@ -32,6 +32,7 @@ import upload from '../../components/upload/filesUpload'
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../js'
 import { IndexModel } from '../../utils'
+let Base64 = require('js-base64').Base64
 const indexModel=new IndexModel()
 export default {
   data () {
@@ -123,7 +124,7 @@ export default {
       let tempObj={};
       let temp={
         'phone':this.phone,
-        'feedbackInfo':this.remark
+        'feedbackInfo':Base64.encode(this.remark)
       }
       for(let key in temp){
         if(temp[key]||temp[key]===0){

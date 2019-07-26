@@ -80,6 +80,7 @@ export default {
   },
   mounted() {
     this.curDay = this.getToday()
+    this.curDate = this.curDay.split(/年|月|日/)
     let date = new Date()
     const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
     this.curNum = parseInt(date.getDate())

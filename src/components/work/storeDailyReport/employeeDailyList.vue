@@ -1,5 +1,5 @@
 <template>
-    <div ref="perDailyList" class="perDailyList" :style="{marginTop:_localAjax().typename!=='Store Manager'?'19.12vw':'30.82vw'}">
+    <div ref="perDailyList" class="perDailyList" :style="{marginTop:_localAjax().typename!=='Store Manager'?'19.12vw':'31.619vw'}">
       <div class="timeBox" :style="{top:`${top}vw`}">
           <timeSelect @getPickerDate="getPickerDate"/>
       </div>
@@ -96,14 +96,14 @@ export default {
                if(this._localAjax().typename!=='Store Manager'){
                     this.top='22.35'
                }else{
-                   this.top='34.08'
+                   this.top='34.612'
                }
                
            }else{
                 if(this._localAjax().typename!=='Store Manager'){
                     this.top='16.35' 
                }else{
-                   this.top='28.08'
+                   this.top='28.612'
                }
                
            }

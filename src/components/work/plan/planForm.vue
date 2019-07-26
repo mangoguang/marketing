@@ -2,7 +2,7 @@
     <div class="planForm">
         <ul>
             <li>
-               <yan-input v-bind="info.planName" v-model="plan.planName" :required="true"/> 
+               <yan-input v-bind="info.planName" v-model="plan.planName" maxlength='300' :required="true"/> 
             </li>
             <li @click="searchCustomer">
                <yan-input v-bind="info.customerName"  v-model="plan.customerName" readonly :showIcon="true"/> 
@@ -11,7 +11,7 @@
                <yan-input v-bind="info.goodsName" v-model="plan.goodsName" readonly :showIcon="true"/> 
             </li>
             <li>
-               <yan-input v-bind="info.address" v-model="plan.address"/> 
+               <yan-input v-bind="info.address" v-model="plan.address" maxlength='500'/> 
             </li>
             <li  @click="openStartTime">
                <yan-input v-bind="info.startTime" :value="format(plan.startTime)" :required="true" readonly :showIcon="true"/> 
