@@ -14,7 +14,7 @@
                         </div>
                     </li>
                     <li>
-                        <span @click="showRightContainer">筛选</span>
+                        <span @click="showRightContainer" class="last">筛选</span>
                     </li>
                 </ul>
                 <ul class="filter" v-else>
