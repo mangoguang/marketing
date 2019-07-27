@@ -3,7 +3,9 @@
   <div class="checkTitle">
     <h5 :class="status ? 'open' : 'close'">
       <button @click="open">{{title}}</button>
-      <button @click="close">收起</button>
+      <button class="btn2"
+              @click="close">收起</button>
+
     </h5>
   </div>
 </template>
@@ -11,7 +13,7 @@
 <script>
 export default {
   props: ['title', 'index'],
-  components : {
+  components: {
 
   },
   data () {
@@ -20,11 +22,11 @@ export default {
     }
   },
   methods: {
-    close() {
+    close () {
       this.status = false
       this.$emit('changeStatus', this.index, false)
     },
-    open() {
+    open () {
       this.status = true
       this.$emit('changeStatus', this.index, true)
     }
@@ -33,31 +35,31 @@ export default {
 </script>
 <style lang='scss' scoped>
 .checkTitle {
-  h5{
-    button{
+  h5 {
+    button {
       line-height: 10.67vw;
       font-size: 14px;
-      color: #767A7F;
+      color: #767a7f;
       padding: 0 4vw;
     }
   }
-  h5.open{
+  h5.open {
     display: flex;
     justify-content: space-between;
-    button:nth-child(2) {
-      color: #007AFF;
+    button.btn2 {
+      color: #007aff;
     }
   }
-  h5.close{
+  h5.close {
     text-align: center;
-    button{
+    button {
       padding-right: 5vw;
-      color: #007AFF;
+      color: #007aff;
       background: url(../../../assets/imgs/4s/starCheck/more_blue.png) no-repeat;
       background-size: 3.5vw auto;
       background-position: right 0 top 50%;
     }
-    button:nth-child(2) {
+    button.btn2 {
       display: none;
     }
   }

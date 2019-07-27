@@ -1,7 +1,10 @@
 <!--  -->
 <template>
   <div class="check">
-    <RecordHeader :title="'店面SI标准一阶段'" />
+    <RecordHeader :title="$route.query.name">
+      <div class="tips"
+           @click="$router.push('/checkTip')"></div>
+    </RecordHeader>
     <div class="contentBox">
       <div v-for="(item, index) in bigCategoryList"
            :key="`bigCategoryList${index}`"
@@ -15,16 +18,15 @@
                     :title="item.name"
                     :index="index"
                     @changeStatus="changeStatus" />
-        <CheckContent @click.native="bindSetCategoryId(item.id,index)"
-                      @onGetStandardId="onGetStandardId"
-                      :list="item.standardList"
+        <CheckContent :paprentIndex="index"
+                      :standardList="item.standardList"
                       :status="item.status" />
       </div>
       <!-- 底部按钮 -->
       <div class="btnBot">
-        <button @click="reset"
+        <button @click="bindReset"
                 :class="{on: !btnBotStatus}">重置</button>
-        <button @click="submit"
+        <button @click="bindSubmit"
                 :class="{on: btnBotStatus}">提交</button>
       </div>
     </div>
@@ -39,6 +41,7 @@ import CheckTitle from '../../../components/4s/starCheck/checkTitle'
 import { Toast } from 'mint-ui'
 import { gradeSecondcategories, gradeSubmit } from '@/api/4s'
 import { mapGetters, mapMutations, mapState } from 'vuex'
+import { setTimeout } from 'timers';
 
 export default {
   components: {
@@ -57,53 +60,61 @@ export default {
       bigCategoryList: [
       ],
       subData: {},
-      selectIndex: 0
+      selectIndex: 0,
+      isPageCheck: false
     }
   },
-  computed: {
-    statusList () {
-      return this.bigCategoryList.map((item) => {
-        return item.status
-      })
+  beforeRouteLeave (to, from, next) {
+    if (to.name == 'checkDetail') {
+      from.meta.keepAlive = true
+    } else {
+      from.meta.keepAlive = false
     }
+    next()
   },
   created () {
-    this.subData = this.submitScoreData
     this._initData()
   },
-  computed: mapState({ submitScoreData: state => state.eggRecordDetails.submitScoreData }),
+  computed: mapState({
+    submitScoreData: state => state.eggRecordDetails.submitScoreData,
+    subcategories: state => state.eggRecordDetails.subcategories
+  }),
+  activated () {
+    this.bigCategoryList = this.subcategories
+  },
   methods: {
-    ...mapMutations(['setSubmitScoreData', 'setCategoryListIndex', 'setStandardListIndex']),
-    bindSetCategoryId (categoryId, index) {
-      this.selectIndex = index
-      this.subData.categoryList[index].categoryId = categoryId
-
-    },
-    onGetStandardId (item) {
-      this.subData.categoryList[this.selectIndex].standardList[item.index].standardId = item.standardId //设置当前选中分类细项id
-      this.setSubmitScoreData(this.subData) //提交分类id，打分细项id
-      this.setCategoryListIndex(this.selectIndex) //记录三级分类索引
-      this.setStandardListIndex(item.index) //记录分类细项列表索引
-
-    },
+    ...mapMutations(['setSubmitScoreData', 'setSubcategories']),
     // 控制评分细则的显示/隐藏
     changeStatus (index, status) {
       this.bigCategoryList[index].status = status
     },
     // 重置表单
-    reset () {
+    bindReset () {
       this.btnBotStatus = false
+      this.submitScoreData.categoryList.map(item => {
+        item.standardList = []
+      })
+      this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
+      this.subcategories.map(item => {
+        item.standardList.map(items => {
+          items.status = false
+        })
+      })
+      this.setSubcategories(this.subcategories)
     },
     // 提交表单
-    async  submit () {
+    async  bindSubmit () {
       this.btnBotStatus = true
-      var params = this.submitScoreData
-      console.log(JSON.stringify(this.submitScoreData))
-      let { code, data } = await gradeSubmit(params)
+      var params = this.submitScoreData// JSON.stringify(this.submitScoreData)
+      let { code, msg, data } = await gradeSubmit(params)
+      Toast(msg)
+      if (code != 0) return
+      this.$router.go(-1)
+
     },
     async  _initData () {
       let params = {
-        shopId: this.subData.shopId,
+        shopId: this.submitScoreData.shopId,
         categoryId: this.$route.query.id
       }
 
@@ -112,15 +123,24 @@ export default {
         Toast(msg)
         return
       }
+
       var totalPoints = 0
       var deductMarks = 0
+      let categoryList = []
       categories.map((item, index) => {
         (index == 0) ? item.status = true : item.status = false
         totalPoints += item.total
         deductMarks += item.deductLimit
+        categoryList.push({ categoryId: item.id, standardList: [] })
+        item.standardList.map(items => {
+          items.status = false
+        })
       })
+      this.submitScoreData.categoryList = categoryList
+      this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
       this.total.totalPoints = totalPoints;
       this.total.deductMarks = deductMarks;
+      this.setSubcategories(categories)
       this.bigCategoryList = categories
     }
   }
@@ -129,6 +149,16 @@ export default {
 <style lang='scss' scoped>
 .check {
   padding-bottom: 30px;
+  .tips {
+    position: absolute;
+    top: 52px;
+    right: 24px;
+    // transform: translateX(-50%);
+    width: 19px;
+    height: 37px;
+    background: url(../../../assets/imgs/4s/tips.png) no-repeat center center /
+      19px 19px;
+  }
   .contentBox {
     position: relative;
     padding-top: 46vw;

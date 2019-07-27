@@ -19,7 +19,7 @@ import {
 axios.defaults.timeout = 500000
 let token = JSON.parse(localStorage.getItem('token')) || {}
 axios.defaults.headers = {
-  'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+  'Content-Type': 'application/x-www-form-urlencoded'
 }
 axios.defaults.baseURL = baseUrl
 if (process.env.NODE_ENV === 'production') {
@@ -29,12 +29,17 @@ if (process.env.NODE_ENV === 'production') {
 
 // http request 拦截器
 axios.interceptors.request.use((config) => {
-    config.data = qs.stringify(config.data)
+    if (config.headers['Content-Type'] == 'application/x-www-form-urlencoded') {
+      config.data = qs.stringify(config.data)
+    }
+    if (config.headers['Content-Type'] == 'application/json') {
+      config.data = JSON.stringify(config.data)
+    }
+
     Indicator.open({
       text: '数据请求中...',
       spinnerType: 'fading-circle'
     });
-
     return config
   },
   error => {
@@ -52,7 +57,7 @@ axios.interceptors.response.use(
   },
   error => {
     Indicator.close();
-    if (error.response.status == 510) {
+    if (error && error.response && error.response.status == 510) {
       router.push({
         path: '/Login'
       })
@@ -61,13 +66,13 @@ axios.interceptors.response.use(
   }
 )
 
-//默认
+//默认的
 export const httpDef = axios
 
 //需要token
 export const http = (options, isFile) => {
   axios.defaults.headers = {
-    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    'Content-Type': 'application/x-www-form-urlencoded',
     "Authorization": `Bearer ${token.access_token}`,
     'sign': getSign(options.params, token.access_token)
   }

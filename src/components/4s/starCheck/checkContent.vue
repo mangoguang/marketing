@@ -1,27 +1,54 @@
 <!--  -->
 <template>
   <ul :class="`checkContent ${status ? 'open' : 'close'}`">
-    <li v-for="(item, index) in list"
-        @click="toCheckDetail(item.id,index)"
+    <li v-for="(item, index) in standardList"
+        @click="toCheckDetail(item,index)"
         :key="`checkContent${index}`"
         :class="{done: item.status}">{{item.name}}</li>
   </ul>
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapState } from 'vuex'
 export default {
-  props: ['list', 'status'],
+  props: ['standardList', 'status', 'paprentIndex'],
   components: {
   },
   data () {
     return {
-
     }
   },
+  computed: {
+    ...mapState({
+      submitScoreData: state => state.eggRecordDetails.submitScoreData
+    })
+  },
   methods: {
-    toCheckDetail (standardId, index) {
-      this.$emit('onGetStandardId', { standardId, index })
-      this.$router.push({ path: '/checkDetail' })
+    ...mapMutations(['setSubmitScoreData', 'setCategoryListIndex', 'setStandardListIndex']),
+    toCheckDetail (item, index) {
+
+      let standardListObj = { standardId: item.id }
+      let submitScoreData = this.submitScoreData.categoryList[this.paprentIndex].standardList
+      let includeIndex = -1 //已经填写过打分获取下标值
+      let chaildIndex = -1 //将要提交打分的下标值
+      submitScoreData.map((items, index) => {
+        if (item && items.standardId == item.id) {
+          includeIndex = index
+        }
+      })
+      if (includeIndex == -1) {
+        submitScoreData.push(standardListObj)  //设置当前选中分类细项id
+        chaildIndex = submitScoreData.indexOf(standardListObj)
+      } else {
+        chaildIndex = includeIndex
+      }
+
+      this.setSubmitScoreData(this.submitScoreData) //提交分类id，打分细项id
+      this.setCategoryListIndex(this.paprentIndex) //记录三级分类索引
+      this.setStandardListIndex(chaildIndex) //记录分类细项列表索引
+
+
+      this.$router.push({ path: '/checkDetail', query: { name: item.name, standardListIndex: index } })
     }
   }
 }

@@ -3,6 +3,7 @@ export default {
     const {
       value
     } = binding
+    //角色数组 [{'Store Manager':'店长'},{'Sleep Consultant':'导购'},{'Dealer Boss':'经销商'},{'':'督导'}]
     const roles = JSON.parse(localStorage.getItem('ajaxData')).positionList.typeName
 
     if (value && value instanceof Array && value.length > 0) {

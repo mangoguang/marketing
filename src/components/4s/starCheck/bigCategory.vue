@@ -2,7 +2,7 @@
 <template>
   <div class="bigCategory">
     <BigCategoryBox v-for="(item, index) in categories"
-                    @click.native="$router.push({ path: '/check' ,query:{id:item.id}})"
+                    @click.native="bindNavigatorCheck(item)"
                     :key="index"
                     :status="item.status"
                     :text="item.name" />
@@ -18,17 +18,18 @@ export default {
   components: { BigCategoryBox },
   data () {
     return {
-      categories: []
+      categories: [],
+      categoryList: []
     }
   },
   async created () {
     this.categories = this.getCategories()
   },
   methods: {
-    ...mapGetters(['getCategories'])
-    // toCheck () {
-    //   this.$router.push({ path: '/check' })
-    // }
+    ...mapGetters(['getCategories']),
+    bindNavigatorCheck (item) {
+      this.$router.push({ path: '/check', query: { id: item.id, name: item.name } })
+    }
   }
 }
 </script>

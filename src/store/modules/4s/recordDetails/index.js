@@ -5,16 +5,19 @@ export default {
     submitScoreData: { //提交打分数据
       "levelId": "", //星级id，一星检查id
       "shopId": "", //门店id
-      "categoryList": [{
-        "categoryId": "", //分类id
-        "standardList": [{
-          "standardId": "", //打分细项id
-          "deduct": 0, //扣分分数
-          "reason": "", //扣分理由
-          "urls": [] //上传文件url集合
-        }]
-      }]
+      "categoryList": [
+        // {
+        //   "categoryId": "", //分类id
+        //   "standardList": [{
+        //     "standardId": "", //打分细项id
+        //     "deduct": 0, //扣分分数
+        //     "reason": "", //扣分理由
+        //     "urls": [] //上传文件url集合
+        //   }]
+        // }
+      ]
     },
+    subcategories: [], //三级列表数据
     categoryListIndex: 0,
     standardListIndex: 0
   },
@@ -25,10 +28,11 @@ export default {
     setCategories: (state, categories) => state.categories = categories, //日常检查二级列表
     setSubmitScoreData: (state, submitScoreData) => state.submitScoreData = submitScoreData, //提交打分数据
     setCategoryListIndex: (state, categoryListIndex) => state.categoryListIndex = categoryListIndex, //三级列表选中索引
-    setStandardListIndex: (state, standardListIndex) => state.standardListIndex = standardListIndex //三级列表选中具体项索引
+    setStandardListIndex: (state, standardListIndex) => state.standardListIndex = standardListIndex, //三级列表选中具体项索引
+    setSubcategories: (state, subcategories) => state.subcategories = subcategories
   },
   getters: {
-    getCategories: (state) => state.categories //日常检查二级列表
-
+    getCategories: (state) => state.categories, //日常检查二级列表
+    getSubmitScoreData: (state) => state.submitScoreData
   }
 }
