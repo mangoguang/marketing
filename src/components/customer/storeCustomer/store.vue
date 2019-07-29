@@ -46,7 +46,7 @@ export default {
     },
     watch:{
         headerStatus(){
-            if(this.headerStatus[0].status){
+            if(this.headerStatus[1].status){
                  this.listenScroll();
                  this.setStoreScroll(0)
                  this.setAllLoaded(false)

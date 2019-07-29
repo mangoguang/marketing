@@ -13,15 +13,15 @@
                     <hr :style="{borderColor:item.status?'#fff':'transparent'}"/>
                 </li> 
             </ul>
-            <ul class="subTab" v-show="headerStatus[1].status">
-                <li v-for="(item,sindex) in subHeaderStatus" @click="changeStatus(sindex,'subHeaderStatus')" :key="`subHeaderStatus${sindex}`" :class="headerStatus[1].status&&item.status?'on':''">
+            <ul class="subTab" v-show="headerStatus[0].status">
+                <li v-for="(item,sindex) in subHeaderStatus" @click="changeStatus(sindex,'subHeaderStatus')" :key="`subHeaderStatus${sindex}`" :class="headerStatus[0].status&&item.status?'on':''">
                     <span>{{item.name}}</span>
                 </li> 
             </ul>
-            <div class="lastNum" v-show="headerStatus[0].status" :style="{bottom:bottom}">
+            <div class="lastNum" v-show="headerStatus[1].status" :style="{bottom:bottom}">
                     共{{storeNum}}名
             </div>
-           <div v-show="headerStatus[1].status">
+           <div v-show="headerStatus[0].status">
                 <ul class="filter" v-if="subHeaderStatus[0].status">
                     <li @click="showFilterList">
                         <div v-for="(item,index) in filterList" :key="index">
@@ -98,7 +98,7 @@ export default {
     },
     watch:{
         headerStatus(){
-            if(this.headerStatus[0].status){
+            if(this.headerStatus[1].status){
                 this.showFilter=false
                 this.searchCustomer('')
             }
@@ -192,10 +192,10 @@ export default {
         this.setRightContainerStatus('show')
         },
         getType(){
-            if(this.headerStatus[0].status){
+            if(this.headerStatus[1].status){
                 return 'store'
             }
-            if(this.headerStatus[1].status){
+            if(this.headerStatus[0].status){
                 let type;
                if(this.subHeaderStatus[0].status){
                    type='New'

@@ -51,7 +51,7 @@ export default {
     },
     watch:{
         headerStatus(){
-            if(this.headerStatus[1].status&&this.subHeaderStatus[0].status){
+            if(this.headerStatus[0].status&&this.subHeaderStatus[0].status){
                 this.initData()
             }
         },
