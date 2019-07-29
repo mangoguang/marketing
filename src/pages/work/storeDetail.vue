@@ -77,7 +77,7 @@ export default {
     border: none;
   }
   .content{
-    margin-top:33vw;
+    padding-top:33vw;
   }
   
 }

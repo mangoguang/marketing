@@ -4,7 +4,7 @@ const state = {
   contact:'',
   contactObj:{
     label:'联系方式',
-    placeholder:'请留下您的联系方式'
+    placeholder:'请留下您的手机号码'
   },
   messageBox:{
     showMessageBox:false,
