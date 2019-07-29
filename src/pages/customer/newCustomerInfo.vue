@@ -242,6 +242,11 @@ export default {
         MessageBox.alert('姓氏不存在')
         return;
       }
+      let addressReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,200}$/;
+      if(!addressReg.test(this.newCustomerInfo.address)){
+        MessageBox.alert('客户地址只能输入中英文或数字')
+        return;
+      }
       let check;
       if(this.$route.query.wechat&&this.newCustomerInfo.phone){
        check=await this.checkPhone()
@@ -265,29 +270,35 @@ export default {
           if(!checkQQ){
             return
           }
-          let formdata = new FormData()
-          //头像的formdata
-          this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
-          //附件
-          /* if(this.Files.length>0) {
-            const imgs = this.newCustomerInfo.imgs
-            for(var key in imgs) {
-              formdata.append('record.dataFile',imgs[key])
-            }
-          } */
-          if(this.Files.length>0){
-            for(let i=0;i<this.Files.length;i++){
-                formdata.append('record.dataFile',this.Files[i]);
-            }
+          let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+          if(this.newCustomerInfo.duty!==''&&!dutyReg.test(this.newCustomerInfo.duty)){
+            MessageBox.alert('客户职业只能输入中英文或数字')
+            return
           }
+              let formdata = new FormData()
+              //头像的formdata
+              this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
+              //附件
+              /* if(this.Files.length>0) {
+                const imgs = this.newCustomerInfo.imgs
+                for(var key in imgs) {
+                  formdata.append('record.dataFile',imgs[key])
+                }
+              } */
+              if(this.Files.length>0){
+                for(let i=0;i<this.Files.length;i++){
+                    formdata.append('record.dataFile',this.Files[i]);
+                }
+              }
+              
+              let obj = this.updateParams(this.newCustomerInfo)
+              let arr = []
+              for(var key in obj) {
+                formdata.append(key,obj[key])
+                arr.push(key)
+              }
+              this.getData(formdata, arr, obj)
           
-          let obj = this.updateParams(this.newCustomerInfo)
-          let arr = []
-          for(var key in obj) {
-            formdata.append(key,obj[key])
-            arr.push(key)
-          }
-          this.getData(formdata, arr, obj)
       }
     },
     checkQQ(){

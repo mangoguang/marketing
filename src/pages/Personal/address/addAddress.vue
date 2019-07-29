@@ -182,6 +182,11 @@ export default {
        mango.tip('地址不能超过200字');
        return false;
      }
+      let addressReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+      if(!addressReg.test(this.form.address)){
+        mango.tip('地址只能输入中英文或数字')
+        return false
+      }
      if(this.form.remark.length>200){
        this.form.remark=this.form.remark.substring(0,200);
        mango.tip('备注不能超过200字');
