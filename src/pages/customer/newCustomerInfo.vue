@@ -244,7 +244,7 @@ export default {
       }
       let addressReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,200}$/;
       if(!addressReg.test(this.newCustomerInfo.address)){
-        MessageBox.alert('客户地址只能输入中英文或数字')
+        MessageBox.alert('客户地址只能输入中英文或数字,不能包含空格')
         return;
       }
       let check;
@@ -272,27 +272,27 @@ export default {
           }
           let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
           if(this.newCustomerInfo.duty!==''&&!dutyReg.test(this.newCustomerInfo.duty)){
-            MessageBox.alert('客户职业只能输入中英文或数字')
+            MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
             return
           }
           if(this.newCustomerInfo.remark!==''&&!dutyReg.test(this.newCustomerInfo.remark)){
-            MessageBox.alert('客户描述只能输入中英文或数字')
+            MessageBox.alert('客户描述只能输入中英文或数字,不能包含空格')
             return
           }
           if(this.newCustomerInfo.competingGoods!==''&&!dutyReg.test(this.newCustomerInfo.competingGoods)){
-            MessageBox.alert('竞品产品只能输入中英文或数字')
+            MessageBox.alert('竞品产品只能输入中英文或数字,不能包含空格')
             return
           }
           if(this.newCustomerInfo.remark2!==''&&!dutyReg.test(this.newCustomerInfo.remark2)){
-            MessageBox.alert('意向信息里备注只能输入中英文或数字')
+            MessageBox.alert('意向信息里备注只能输入中英文或数字,不能包含空格')
             return
           }
           if(this.newCustomerInfo.situation!==''&&!dutyReg.test(this.newCustomerInfo.situation)){
-            MessageBox.alert('跟进情况只能输入中英文或数字')
+            MessageBox.alert('跟进情况只能输入中英文或数字,不能包含空格')
             return
           }
           if(this.newCustomerInfo.plan!==''&&!dutyReg.test(this.newCustomerInfo.plan)){
-            MessageBox.alert('下一步跟进计划只能输入中英文或数字')
+            MessageBox.alert('下一步跟进计划只能输入中英文或数字,不能包含空格')
             return
           }
               let formdata = new FormData()

@@ -136,14 +136,23 @@ export default {
           }  
         }
       }
+      let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
       if(this.form.report.length>300){
         this.form.report=this.form.report.substring(0,300);
         mango.tip('跟进情况不能超过300字');
         return false;
       }
+      if(!dutyReg.test(this.form.report)){
+        mango.tip('跟进情况只能输入中英文或数字,不能包含空格');
+        return false;
+      }
       if(this.form.plan.length>300){
         this.form.plan=this.form.plan.substring(0,300);
         mango.tip('跟进计划不能超过300字');
+        return false;
+      }
+      if(!dutyReg.test(this.form.plan)){
+        mango.tip('跟进计划只能输入中英文或数字,不能包含空格');
         return false;
       }
       return true;

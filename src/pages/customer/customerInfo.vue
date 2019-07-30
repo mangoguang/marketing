@@ -190,11 +190,11 @@ export default {
         }
         let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
         if(this.newCustomerInfo.duty!==''&&!dutyReg.test(this.newCustomerInfo.duty)){
-          MessageBox.alert('客户职业只能输入中英文或数字')
+          MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
           return;
         }
         if(this.newCustomerInfo.remark!==''&&!dutyReg.test(this.newCustomerInfo.remark)){
-          MessageBox.alert('客户描述只能输入中英文或数字')
+          MessageBox.alert('客户描述只能输入中英文或数字,不能包含空格')
           return;
         }
         this.saveData();

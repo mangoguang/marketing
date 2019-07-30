@@ -65,7 +65,7 @@
           <discount-select v-bind="formInfo.discount" :value="argreeDiscountTxt" @update="updateDiscount" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark" :maxlength='200' :readonly='readonly' v-model="form.remark"></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :maxlength='200' :readonly='readonly' v-model.trim="form.remark"></yan-textarea>
       <div class="select">
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="form.level" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
@@ -479,7 +479,7 @@ export default {
       } */
       let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
       if(this.form.competingGoods!==''&&!dutyReg.test(this.form.competingGoods)){
-        mango.tip('竞品产品只能输入中英文或数字');
+        mango.tip('竞品产品只能输入中英文或数字,不能包含空格');
         return false;
       }
       var reg=/^\d{1,}\.{0,1}\d{0,}$/;
@@ -492,7 +492,7 @@ export default {
         return false;
       }
       if(this.form.remark!==''&&!dutyReg.test(this.form.remark)){
-        mango.tip('备注信息只能输入中英文或数字');
+        mango.tip('备注信息只能输入中英文或数字,不能包含空格');
         return false;
       }
       if(this.form.deliverDate!==''){

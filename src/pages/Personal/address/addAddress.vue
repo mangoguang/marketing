@@ -16,7 +16,7 @@
           <elevator-select v-bind="formInfo.elevatorInfo" v-model="elevator" @update="updateElevator" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark" :maxlength='200'/>
+      <yan-textarea v-bind="formInfo.remarkInfo" v-model.trim="form.remark" :maxlength='200'/>
       <btn text='保存' @click.native='jump'/>
       
     </div>
@@ -184,7 +184,7 @@ export default {
      }
       let addressReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
       if(!addressReg.test(this.form.address)){
-        mango.tip('地址只能输入中英文或数字')
+        mango.tip('地址只能输入中英文或数字,不能包含空格')
         return false
       }
      if(this.form.remark.length>200){
@@ -193,7 +193,7 @@ export default {
        return false;
      }
       if(!addressReg.test(this.form.remark)){
-        mango.tip('备注只能输入中英文或数字')
+        mango.tip('备注只能输入中英文或数字,不能包含空格')
         return false
       }
      return true;

@@ -9,7 +9,7 @@
       
       <li class="noPadding">
         <remark :title="'跟进情况'" :start='"start"'>
-          <textarea v-model="newCustomerInfo.situation" name="" id="" placeholder="描述一下跟进情况" oninput="if(value.length>300)value=value.slice(0,300)"></textarea>
+          <textarea v-model.trim="newCustomerInfo.situation" name="" id="" placeholder="描述一下跟进情况" oninput="if(value.length>300)value=value.slice(0,300)"></textarea>
         </remark>
       </li>
       <!-- <li>
@@ -21,7 +21,7 @@
       <li class="timeLi top" is="nextDate"></li>
       <li class="noPadding" >
         <remark :title="'下一步计划'">
-          <textarea v-model="newCustomerInfo.plan" name="" id="" placeholder="请填写下一步跟进计划" oninput="if(value.length>300)value=value.slice(0,300)"></textarea>
+          <textarea v-model.trim="newCustomerInfo.plan" name="" id="" placeholder="请填写下一步跟进计划" oninput="if(value.length>300)value=value.slice(0,300)"></textarea>
         </remark>
       </li>
     </ul>

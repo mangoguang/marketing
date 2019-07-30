@@ -140,19 +140,19 @@ export default {
         // let formdata = this.newCustomerInfo.dataFiles
         let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
         if(this.newCustomerInfo.competingGoods!==''&&!dutyReg.test(this.newCustomerInfo.competingGoods)){
-            MessageBox.alert('竞品产品只能输入中英文或数字')
+            MessageBox.alert('竞品产品只能输入中英文或数字,不能包含空格')
             return
           }
           if(this.newCustomerInfo.remark2!==''&&!dutyReg.test(this.newCustomerInfo.remark2)){
-            MessageBox.alert('备注信息只能输入中英文或数字')
+            MessageBox.alert('备注信息只能输入中英文或数字,不能包含空格')
             return
           }
           if(this.newCustomerInfo.situation!==''&&!dutyReg.test(this.newCustomerInfo.situation)){
-            MessageBox.alert('跟进情况只能输入中英文或数字')
+            MessageBox.alert('跟进情况只能输入中英文或数字,不能包含空格')
             return
           }
           if(this.newCustomerInfo.plan!==''&&!dutyReg.test(this.newCustomerInfo.plan)){
-            MessageBox.alert('下一步跟进计划只能输入中英文或数字')
+            MessageBox.alert('下一步跟进计划只能输入中英文或数字,不能包含空格')
             return
           }
         let formdata = new FormData()
