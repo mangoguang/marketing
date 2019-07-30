@@ -477,6 +477,11 @@ export default {
         mango.tip('需求日期不能为空');
         return false;
       } */
+      let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+      if(this.form.competingGoods!==''&&!dutyReg.test(this.form.competingGoods)){
+        mango.tip('竞品产品只能输入中英文或数字');
+        return false;
+      }
       var reg=/^\d{1,}\.{0,1}\d{0,}$/;
       if(this.form.budget!==''&&!reg.test(this.form.budget)){
         mango.tip('预算金额必须为数字');
@@ -484,6 +489,10 @@ export default {
       }
       if(this.form.depositPaid!==''&&!reg.test(this.form.depositPaid)){
         mango.tip('已交定金必须为数字');
+        return false;
+      }
+      if(this.form.remark!==''&&!dutyReg.test(this.form.remark)){
+        mango.tip('备注信息只能输入中英文或数字');
         return false;
       }
       if(this.form.deliverDate!==''){

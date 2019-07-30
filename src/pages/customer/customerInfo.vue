@@ -189,13 +189,16 @@ export default {
           return;
         }
         let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
-        console.log('职业',!this.newCustomerInfo.duty&&!dutyReg.test(this.newCustomerInfo.duty))
         if(this.newCustomerInfo.duty!==''&&!dutyReg.test(this.newCustomerInfo.duty)){
           MessageBox.alert('客户职业只能输入中英文或数字')
           return;
-        }else{
-          this.saveData();
         }
+        if(this.newCustomerInfo.remark!==''&&!dutyReg.test(this.newCustomerInfo.remark)){
+          MessageBox.alert('客户描述只能输入中英文或数字')
+          return;
+        }
+        this.saveData();
+        
        
     },
     async checkQQ(){

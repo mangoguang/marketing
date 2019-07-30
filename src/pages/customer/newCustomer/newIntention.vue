@@ -138,7 +138,23 @@ export default {
       let temp = this.whichFollowData(this.newCustomerInfo)
       if(temp) {
         // let formdata = this.newCustomerInfo.dataFiles
-        
+        let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+        if(this.newCustomerInfo.competingGoods!==''&&!dutyReg.test(this.newCustomerInfo.competingGoods)){
+            MessageBox.alert('竞品产品只能输入中英文或数字')
+            return
+          }
+          if(this.newCustomerInfo.remark2!==''&&!dutyReg.test(this.newCustomerInfo.remark2)){
+            MessageBox.alert('备注信息只能输入中英文或数字')
+            return
+          }
+          if(this.newCustomerInfo.situation!==''&&!dutyReg.test(this.newCustomerInfo.situation)){
+            MessageBox.alert('跟进情况只能输入中英文或数字')
+            return
+          }
+          if(this.newCustomerInfo.plan!==''&&!dutyReg.test(this.newCustomerInfo.plan)){
+            MessageBox.alert('下一步跟进计划只能输入中英文或数字')
+            return
+          }
         let formdata = new FormData()
         // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
         //   for(let i = 0; i < file.length; i++){
@@ -146,7 +162,7 @@ export default {
         // }
         
         if(this.newCustomerInfo.imgs) {
-          const imgs = this.newCustomerInfo.imgs
+          const imgs = this.newCustomerInfo.imgs 
           for(var key in imgs) {
             formdata.append('record.dataFile',imgs[key])
           }

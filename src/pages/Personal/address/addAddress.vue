@@ -192,6 +192,10 @@ export default {
        mango.tip('备注不能超过200字');
        return false;
      }
+      if(!addressReg.test(this.form.remark)){
+        mango.tip('备注只能输入中英文或数字')
+        return false
+      }
      return true;
    }
       
