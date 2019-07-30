@@ -29,7 +29,7 @@
           <span>地址管理</span>
       </li>
       <li is="customerLi" class="customerLi2" :leftText="'客户描述'">
-        <span v-if='list.remark'>{{ list.remark }}</span>
+        <span v-if='list.remark'>{{ turnRemark(list.remark) }}</span>
         <span class='unspan' v-else>未收集</span>
       </li>
       <li is="customerLi" :leftText="'所属门店'">
@@ -44,6 +44,8 @@
 <script>
 import customerLi from '../customerLi'
 import btn from "../../btn";
+import mango from '../../../js'
+let Base64 = require('js-base64').Base64
 export default {
   props: ['list', 'editMsg','isedit'],
   components: {customerLi, btn},
@@ -65,6 +67,10 @@ export default {
        return;
      }
       this.$router.push({path:`/address/${this.$route.query.id}`})
+    },
+    turnRemark(str){
+      let string = mango.textDecode(str)
+      return string
     },
     //获取门店
     getShopId(id) {

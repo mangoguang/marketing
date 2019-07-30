@@ -4,6 +4,7 @@ import { Indicator, Toast } from 'mint-ui'
 import refreshToken from '../utils/token/refreshToken'
 import toLogin from '../utils/token/toLogin'
 import VueRouter from 'vue-router'
+let Base64 = require('js-base64').Base64
 export default class Common {
   constructor() {
     
@@ -644,5 +645,24 @@ export default class Common {
     }else {
       return false
     }
+  }
+  //转义字符
+  textDecode(str){
+    let string;
+    if(!str){
+      string=''
+    }else{
+      if(str.slice(0,3)==="99猪"){
+        console.log('原来的',str)
+        let newStr=str.slice(3,);
+        console.log('之后的',newStr)
+        string = Base64.decode(newStr)
+        console.log('最后的',string)
+      }else{
+        string = str
+      }
+    }
+    return string
+
   }
 }

@@ -19,6 +19,7 @@ import newDemand from '../../../components/customer/newCustomerInfo/newDemand'
 import newRecord from '../../../components/customer/newCustomerInfo/newRecord'
 import myBanner from '../../../components/banner'
 import mango from '../../../js'
+let Base64 = require('js-base64').Base64
 export default {
   components: { newDemand, myBanner, newRecord },
   data () {
@@ -134,6 +135,10 @@ export default {
       this.setFiles([]);
       this.setPicVal([]);
     },
+    changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
+    },
     submit() {
       let temp = this.whichFollowData(this.newCustomerInfo)
       if(temp) {
@@ -143,16 +148,20 @@ export default {
             MessageBox.alert('竞品产品只能输入中英文或数字,不能包含空格')
             return
           }
-          if(this.newCustomerInfo.remark2!==''&&!dutyReg.test(this.newCustomerInfo.remark2)){
-            MessageBox.alert('备注信息只能输入中英文或数字,不能包含空格')
+           let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+          if(this.newCustomerInfo.remark2!==''&&remarkReg.test(this.newCustomerInfo.remark2)){
+            this.newCustomerInfo.remark2=this.changeStr(this.newCustomerInfo.remark2)
+            MessageBox.alert('备注信息不支持表情')
             return
           }
-          if(this.newCustomerInfo.situation!==''&&!dutyReg.test(this.newCustomerInfo.situation)){
-            MessageBox.alert('跟进情况只能输入中英文或数字,不能包含空格')
+          if(this.newCustomerInfo.situation!==''&&remarkReg.test(this.newCustomerInfo.situation)){
+            this.newCustomerInfo.situation=this.changeStr(this.newCustomerInfo.situation)
+            MessageBox.alert('跟进情况不支持表情')
             return
           }
-          if(this.newCustomerInfo.plan!==''&&!dutyReg.test(this.newCustomerInfo.plan)){
-            MessageBox.alert('下一步跟进计划只能输入中英文或数字,不能包含空格')
+          if(this.newCustomerInfo.plan!==''&&remarkReg.test(this.newCustomerInfo.plan)){
+            this.newCustomerInfo.plan=this.changeStr(this.newCustomerInfo.plan)
+            MessageBox.alert('下一步跟进计划不支持表情')
             return
           }
         let formdata = new FormData()
@@ -298,15 +307,15 @@ export default {
         'opportunity.budget':obj.budget,    //预算
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
         'opportunity.argreeDiscount': parseInt(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
-        'opportunity.remark': obj.remark2,
+        'opportunity.remark': obj.remark2&&obj.remark2!==''?`99猪${Base64.encode(obj.remark2)}`:'',
         'opportunity.urgency': obj.urgency,   //是否紧急
         'opportunity.level': obj.level,   //等级
         'record.source': obj.source2,
         'record.followDate': obj.followDate,
         'record.residentTime': obj.residentTime2,   //跟进时长
         'record.nextDate': obj.nextDate,
-        'record.situation': obj.situation,
-        'record.plan': obj.plan
+        'record.situation': obj.situation&&obj.situation!==''?`99猪${Base64.encode(obj.situation)}`:'',
+        'record.plan': obj.plan&&obj.plan!==''?`99猪${Base64.encode(obj.plan)}`:''
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

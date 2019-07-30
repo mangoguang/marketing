@@ -132,6 +132,7 @@ import { Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../../js'
 import { IndexModel } from '../../../utils'
+let Base64 = require('js-base64').Base64
 const indexModel=new IndexModel()
 export default {
   data () {
@@ -277,7 +278,7 @@ export default {
           this.form.competingGoods=res.data.competingGoods==''?'未收集':res.data.competingGoods;
           this.form.colorPrefName=res.data.colorPrefName==''?'未收集':res.data.colorPrefName;
           this.form.deliverDate=res.data.deliverDate==''?'未收集':res.data.deliverDate;
-          this.form.remark=res.data.remark==''?'未备注':res.data.remark;
+          this.form.remark=res.data.remark==''?'未备注':mango.textDecode(res.data.remark);
           this.budget=res.data.budget;
           this.depositPaid=res.data.depositPaid;
           this.argreeDiscount=res.data.argreeDiscount;
@@ -313,7 +314,7 @@ export default {
             },
             {
               title:'战败原因：',
-              value:res.data.closeReason
+              value:mango.textDecode(res.data.closeReason)
             }
           ];
           let addressId=res.data.addressId===''?'未收集':this.getAddress(res.data.addressId);
@@ -352,7 +353,7 @@ export default {
           }else{
               let obj={
                 opportunityId:this.oppId,
-                closeReason:this.failReason,
+                closeReason:`99猪${Base64.encode(this.failReason)}`,
                 type:type
               }
               nobj=Object.assign({},obj);    

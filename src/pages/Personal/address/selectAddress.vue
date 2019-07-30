@@ -27,6 +27,7 @@ import mySelect from '../../../components/mySelect/select'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
 import { IndexModel } from '../../../utils'
+let Base64 = require('js-base64').Base64
 const indexModel=new IndexModel()
 export default {
   data () {
@@ -63,6 +64,10 @@ export default {
   methods:{
    ...mapMutations(['updateAddress','setAddressId']),
    ...mapMutations('selectAddress',['updateHasRecord','updatePath']),
+   turnAddress(str){
+     let string = Base64.decode(str)
+     return string
+   },
    jump(){
      this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId}});
    },

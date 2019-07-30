@@ -58,7 +58,7 @@ import {returnDate} from '../../utils/customer'
 import {IndexModel} from '../../utils/index'
 import {btnList} from '../../utils/gallery'
 const indexModel = new IndexModel() 
-
+let Base64 = require('js-base64').Base64
 export default {
   name:'newCustomerInfo',
   components:{myBanner, newDemand, newDescript, newRecord},
@@ -275,26 +275,31 @@ export default {
             MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
             return
           }
-          if(this.newCustomerInfo.remark!==''&&!dutyReg.test(this.newCustomerInfo.remark)){
-            MessageBox.alert('客户描述只能输入中英文或数字,不能包含空格')
+          let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+          if(this.newCustomerInfo.remark!==''&&remarkReg.test(this.newCustomerInfo.remark)){
+            this.newCustomerInfo.remark=this.changeStr(this.newCustomerInfo.remark)
+            MessageBox.alert('客户描述不支持表情')
             return
           }
           if(this.newCustomerInfo.competingGoods!==''&&!dutyReg.test(this.newCustomerInfo.competingGoods)){
             MessageBox.alert('竞品产品只能输入中英文或数字,不能包含空格')
             return
           }
-          if(this.newCustomerInfo.remark2!==''&&!dutyReg.test(this.newCustomerInfo.remark2)){
-            MessageBox.alert('意向信息里备注只能输入中英文或数字,不能包含空格')
+         if(this.newCustomerInfo.remark2!==''&&remarkReg.test(this.newCustomerInfo.remark2)){
+           this.newCustomerInfo.remark2=this.changeStr(this.newCustomerInfo.remark2)
+            MessageBox.alert('意向信息里备注不支持表情')
             return
           }
-          if(this.newCustomerInfo.situation!==''&&!dutyReg.test(this.newCustomerInfo.situation)){
-            MessageBox.alert('跟进情况只能输入中英文或数字,不能包含空格')
+          if(this.newCustomerInfo.situation!==''&&remarkReg.test(this.newCustomerInfo.situation)){
+            this.newCustomerInfo.situation=this.changeStr(this.newCustomerInfo.situation)
+            MessageBox.alert('跟进情况不支持表情')
             return
           }
-          if(this.newCustomerInfo.plan!==''&&!dutyReg.test(this.newCustomerInfo.plan)){
-            MessageBox.alert('下一步跟进计划只能输入中英文或数字,不能包含空格')
+          if(this.newCustomerInfo.plan!==''&&remarkReg.test(this.newCustomerInfo.plan)){
+            this.newCustomerInfo.plan=this.changeStr(this.newCustomerInfo.plan)
+            MessageBox.alert('下一步跟进计划不支持表情')
             return
-          }
+          } 
               let formdata = new FormData()
               //头像的formdata
               this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
@@ -320,6 +325,10 @@ export default {
               this.getData(formdata, arr, obj)
           
       }
+    },
+    changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
     },
     checkQQ(){
         let check;
@@ -476,7 +485,7 @@ export default {
         qq:obj.qq,
         weChat: obj.weChat,
         duty: obj.duty,
-        remark: obj.remark,
+        remark: obj.remark&&obj.remark!==''?`99猪${Base64.encode(obj.remark)}`:'',
         "orgId": obj.orgId,
         'address.province': obj.province,
         'address.city': obj.city,
@@ -497,15 +506,15 @@ export default {
         'opportunity.budget':obj.budget,    //预算
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
         'opportunity.argreeDiscount': parseFloat(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
-        'opportunity.remark': obj.remark2,
+        'opportunity.remark': obj.remark2&&obj.remark2!==''?`99猪${Base64.encode(obj.remark2)}`:'',
         'opportunity.urgency': obj.urgency || false,   //是否紧急
         'opportunity.level': obj.level || 'A',   //等级
         'record.source': obj.source2,
         'record.followDate': obj.followDate,
         'record.residentTime': obj.residentTime2,   //跟进时长
         'record.nextDate': obj.nextDate,
-        'record.situation': obj.situation,
-        'record.plan': obj.plan
+        'record.situation': obj.situation&&obj.situation!==''?`99猪${Base64.encode(obj.situation)}`:'',
+        'record.plan': obj.plan&&obj.plan!==''?`99猪${Base64.encode(obj.plan)}`:''
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

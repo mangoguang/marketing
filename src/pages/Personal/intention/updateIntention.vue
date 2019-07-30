@@ -110,6 +110,7 @@ import { Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../../js'
 import { IndexModel } from '../../../utils'
+let Base64 = require('js-base64').Base64
 const indexModel=new IndexModel()
 export default {
   data () {
@@ -382,7 +383,7 @@ export default {
           this.colorPrefName=res.data.colorPrefName==''?'':res.data.colorPrefName;
           this.form.colorPref=res.data.colorPref;
           this.form.deliverDate=res.data.deliverDate==''?'':res.data.deliverDate;
-          this.form.remark=res.data.remark==''?'':res.data.remark;
+          this.form.remark=mango.textDecode(res.data.remark);
           this.form.budget=res.data.budget;
           this.form.depositPaid=res.data.depositPaid;
           this.form.argreeDiscount=res.data.argreeDiscount;
@@ -491,8 +492,10 @@ export default {
         mango.tip('已交定金必须为数字');
         return false;
       }
-      if(this.form.remark!==''&&!dutyReg.test(this.form.remark)){
-        mango.tip('备注信息只能输入中英文或数字,不能包含空格');
+      let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+      if(this.form.remark!==''&&remarkReg.test(this.form.remark)){
+        this.form.remark=this.form.remark.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+        mango.tip('备注信息不支持表情');
         return false;
       }
       if(this.form.deliverDate!==''){
@@ -573,7 +576,7 @@ export default {
       'opportunity.budget':obj.budget,
       'opportunity.depositPaid':obj.depositPaid,
       'opportunity.argreeDiscount':obj.argreeDiscount,
-      'opportunity.remark':obj.remark,
+      'opportunity.remark':obj.remark!==''?`99猪${Base64.encode(obj.remark)}`:'',
       'opportunity.urgency':obj.urgency,
       'opportunity.level':obj.level
       }
@@ -602,7 +605,7 @@ export default {
           }else{
               let obj={
                 opportunityId:this.form.oppId,
-                closeReason:this.failReason,
+                closeReason:`99猪${Base64.encode(this.failReason)}`,
                 type:type
               }
               nobj=Object.assign({},obj);    

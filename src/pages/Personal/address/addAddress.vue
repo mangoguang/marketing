@@ -39,6 +39,7 @@ import mango from "../../../js"
 import { resize } from '../../../utils/public'
 import { IndexModel } from '../../../utils' 
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
   data () {
     return {
@@ -101,7 +102,7 @@ export default {
       indexModel.getAddress(id).then(res => {
         if(res.code===0){
           this.form.address=res.data.address;
-          this.form.remark=res.data.remark;
+          this.form.remark=mango.textDecode(res.data.remark);
           this.form.apartmentType=res.data.apartmentType;
           this.form.elevator=res.data.elevator==='Y'?'Y':'';
           this.form.country=res.data.country;
@@ -140,7 +141,18 @@ export default {
    updateAddress(){
      if(this.valid()){
        console.log(':::', this.form);
-        indexModel.updateAddress(this.form).then(res => {
+       let obj={
+          address:this.form.address,
+          remark:this.form.remark!==''?`99猪${Base64.encode(this.form.remark)}`:'', 
+          apartmentType:this.form.apartmentType,
+          elevator:this.form.elevator,
+          customerId:this.form.customerId,
+          country:this.form.country,
+          province:this.form.province,
+          city:this.form.city,
+          district:this.form.district
+       }
+        indexModel.updateAddress(obj).then(res => {
           if(res.code===0){
             mango.tip(res.msg);
             this.$router.back(-1);
@@ -156,6 +168,10 @@ export default {
      }
     
    },
+   changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
+    },
    valid(){
      if(this.customerId==''){
        mango.tip('客户id为空');
@@ -192,8 +208,10 @@ export default {
        mango.tip('备注不能超过200字');
        return false;
      }
-      if(!addressReg.test(this.form.remark)){
-        mango.tip('备注只能输入中英文或数字,不能包含空格')
+     let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+      if(remarkReg.test(this.form.remark)){
+        this.form.remark = this.changeStr(this.form.remark)
+        mango.tip('备注不支持表情')
         return false
       }
      return true;

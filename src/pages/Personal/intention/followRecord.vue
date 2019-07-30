@@ -136,14 +136,15 @@ export default {
           }  
         }
       }
-      let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+      let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
       if(this.form.report.length>300){
         this.form.report=this.form.report.substring(0,300);
         mango.tip('跟进情况不能超过300字');
         return false;
       }
-      if(!dutyReg.test(this.form.report)){
-        mango.tip('跟进情况只能输入中英文或数字,不能包含空格');
+      if(remarkReg.test(this.form.report)){
+        this.form.report=this.changeStr(this.form.report)
+        mango.tip('跟进情况不支持表情');
         return false;
       }
       if(this.form.plan.length>300){
@@ -151,11 +152,16 @@ export default {
         mango.tip('跟进计划不能超过300字');
         return false;
       }
-      if(!dutyReg.test(this.form.plan)){
-        mango.tip('跟进计划只能输入中英文或数字,不能包含空格');
+      if(remarkReg.test(this.form.plan)){
+        this.form.plan=this.changeStr(this.form.plan)
+        mango.tip('跟进计划不支持表情');
         return false;
       }
       return true;
+    },
+    changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
     },
    update(){
       if(this.valid()){
@@ -214,8 +220,8 @@ export default {
       'record.residentTime':obj.residentTime,
       'record.followDate':obj.time,
       'record.nextDate':obj.nextTime,
-      'record.situation':obj.report,
-      'record.plan':obj.plan
+      'record.situation':obj.report!==''?`99猪${Base64.encode(obj.report)}`:'',
+      'record.plan':obj.plan!==''?`99猪${Base64.encode(obj.plan)}`:''
     }
     for(let key in temp){
       if(temp[key]||temp[key]===0){

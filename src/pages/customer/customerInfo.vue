@@ -193,10 +193,12 @@ export default {
           MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
           return;
         }
-        if(this.newCustomerInfo.remark!==''&&!dutyReg.test(this.newCustomerInfo.remark)){
-          MessageBox.alert('客户描述只能输入中英文或数字,不能包含空格')
-          return;
-        }
+          let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+          if(this.newCustomerInfo.remark!==''&&remarkReg.test(this.newCustomerInfo.remark)){
+            this.newCustomerInfo.remark=this.newCustomerInfo.remark.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+            MessageBox.alert('客户描述不支持表情')
+            return
+          }
         this.saveData();
         
        
@@ -337,7 +339,7 @@ export default {
         "qq":obj.qq,
         "weChat": obj.weChat,
         "duty": obj.duty,
-        "remark": obj.remark,
+        "remark": obj.remark!==''?`99猪${Base64.encode(obj.remark)}`:'',
         "customerId": this.$route.query.id,
         "orgId": obj.orgId || this.list.orgId
       }

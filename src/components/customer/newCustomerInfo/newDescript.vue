@@ -100,6 +100,7 @@ import variable from '../../../js/variable'
 import shopSelect from '../../select/shopSelect'
 import {turnParams,changeFormData} from '../../../utils/customer'
 import {btnList} from '../../../utils/gallery'
+let Base64 = require('js-base64').Base64
 export default {
   name:'customerDescript',
   props: ['btns', 'select', 'fromName', 'list', 'areaType'],
@@ -225,7 +226,8 @@ export default {
       
       this.$set(this.newCustomerInfo,'weChat',this.list.weChat)
       this.$set(this.newCustomerInfo,'qq',this.list.qq)
-      this.$set(this.newCustomerInfo,'remark',this.list.remark)
+      
+      this.$set(this.newCustomerInfo,'remark',mango.textDecode(this.list.remark))
       this.$set(this.newCustomerInfo,'orgId',this.list.orgId)
       let shops = localStorage.getItem('shops')
       this.shops = JSON.parse(shops)
