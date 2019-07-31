@@ -196,7 +196,7 @@ export default {
     },
     //微信和朋友圈
     shareWeixin(Vscene, title) {
-      alert("分享出去链接"+this.pageUrl)
+      //alert("分享出去链接"+this.pageUrl)
       var wx = api.require("wx");
       wx.shareWebpage(
         {
@@ -256,20 +256,20 @@ export default {
       );
     } */
     shareWeibo(title){
-      alert("分享出去链接"+this.pageUrl)
+      //alert("分享出去链接"+this.pageUrl)
       var weiboPlus = api.require('weiboPlus');
       weiboPlus.shareWebPage({
-          text:this.pageUrl,
+          //text:this.pageUrl,
           title:title,
           description:this.msg.remark,
           thumb:this.imgUrl,
           contentUrl:this.pageUrl
       }, function(ret,err) {
-          if (ret.status) {
+          /* if (ret.status) {
             alert('分享成功');
           }else{
             alert('分享失败');
-          }
+          } */
       });
     }
   }
