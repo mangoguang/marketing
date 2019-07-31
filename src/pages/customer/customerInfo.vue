@@ -88,6 +88,7 @@ export default {
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
+          
           this.phone = this.list.phone==='0'?'': this.list.phone
           this.wechat = this.list.weChat
         }

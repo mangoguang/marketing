@@ -32,7 +32,7 @@
       </div>
     </div>
     <!-- 意向信息-->
-    <intentionMsg v-show="dealTabStatus[2].status" :list='list.opportunityList' :phone="phone"/>
+    <intentionMsg v-show="dealTabStatus[2].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
     <!-- <EnquiryOrderInfo v-show="dealTabStatus[1].status"/> -->
     <!-- <div class="line"></div> -->
     <!-- <orderInfoDetails/> -->
@@ -102,6 +102,7 @@ export default {
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
+          console.log('123',res.data)
           let arr = this.changeStatus(this.list.orderList)
           this.list.orderList = arr
           this.getShopName(this.list.orgId)
