@@ -71,7 +71,8 @@ export default {
   },
   created() {
     this.msg = this.$route.query.list;
-    this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    this.pageUrl = baseUrl +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    //this.pageUrl = "https://mobiletest.derucci.net"+"#/productDetails?id=" +this.msg.id +"&musi=1";
   },
   mounted() {
     this.getCode();
@@ -97,6 +98,7 @@ export default {
         width: 61.33*2 + 'vw',
         height: 77.33*2 + 'vw'
       }).then(canvas => {
+        console.log(canvas);
         this.url = canvas.toDataURL();
         // if (this.url) {
         //   this.test = this.url;
@@ -137,8 +139,10 @@ export default {
           }
         })
         .then(res => {
+          alert('后台返回的图片路径'+res.data.url)
           this.loadImgUrl = res.data.url;
           if(this.loadImgUrl) {
+            alert('图片路径'+this.loadImgUrl)
             this.savePicture();
           }
         });
@@ -150,9 +154,9 @@ export default {
         {
           url: this.loadImgUrl,
           savePath: "fs://album" + timestamp + ".jpg"
-          // report: true,
-          // cache: true,
-          // allowResume: true
+          //report: true,
+          //cache: true,
+          //allowResume: true
         },
         (ret, err) => {
           if (ret) {
@@ -192,6 +196,7 @@ export default {
     },
     //微信和朋友圈
     shareWeixin(Vscene, title) {
+      alert("分享出去链接"+this.pageUrl)
       var wx = api.require("wx");
       wx.shareWebpage(
         {
@@ -221,7 +226,7 @@ export default {
         type: "QFriend"
       });
     },
-    shareWeibo(title) {
+    /* shareWeibo(title) {
       var sinaWeiBo = api.require("sinaWeiBo");
       sinaWeiBo.sendRequest(
         {
@@ -249,6 +254,30 @@ export default {
           }
         }
       );
+    } */
+    shareWeibo(title){
+      var weibo = api.require('weibo');
+      weibo.shareWebPage({
+          text: this.pageUrl,
+          title: title,
+          description: this.msg.remark,
+          thumb: this.imgUrl,
+          contentUrl:this.pageUrl
+      }, function(ret, err) {
+          if (ret.status) {
+            api.alert({
+              title: "发表微博",
+              msg: "发表成功",
+              buttons: ["确定"]
+            });
+          } else {
+            api.alert({
+              title: "发表失败",
+              msg: err.msg,
+              buttons: ["确定"]
+            });
+          }
+      });
     }
   }
 };
