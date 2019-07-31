@@ -256,14 +256,15 @@ export default {
       );
     } */
     shareWeibo(title){
-      var weibo = api.require('weiboPlus');
+      alert("分享出去链接"+this.pageUrl)
+      var weiboPlus = api.require('weiboPlus');
       weiboPlus.shareWebPage({
           text:this.pageUrl,
-          title: title,
-          description: this.msg.remark,
-          thumb: this.imgUrl,
+          title:title,
+          description:this.msg.remark,
+          thumb:this.imgUrl,
           contentUrl:this.pageUrl
-      }, function(ret, err) {
+      }, function(ret,err) {
           if (ret.status) {
             alert('分享成功');
           }else{
