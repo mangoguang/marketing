@@ -220,8 +220,8 @@ export default {
       'record.residentTime':obj.residentTime,
       'record.followDate':obj.time,
       'record.nextDate':obj.nextTime,
-      'record.situation':obj.report!==''?`99猪${Base64.encode(obj.report)}`:'',
-      'record.plan':obj.plan!==''?`99猪${Base64.encode(obj.plan)}`:''
+      'record.situation':obj.report!==''?mango.textEncode(obj.report):'',
+      'record.plan':obj.plan!==''?mango.textEncode(obj.plan):''
     }
     for(let key in temp){
       if(temp[key]||temp[key]===0){

@@ -353,7 +353,7 @@ export default {
           }else{
               let obj={
                 opportunityId:this.oppId,
-                closeReason:`99猪${Base64.encode(this.failReason)}`,
+                closeReason:mango.textEncode(this.failReason),
                 type:type
               }
               nobj=Object.assign({},obj);    

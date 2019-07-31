@@ -576,7 +576,7 @@ export default {
       'opportunity.budget':obj.budget,
       'opportunity.depositPaid':obj.depositPaid,
       'opportunity.argreeDiscount':obj.argreeDiscount,
-      'opportunity.remark':obj.remark!==''?`99猪${Base64.encode(obj.remark)}`:'',
+      'opportunity.remark':obj.remark!==''?mango.textEncode(obj.remark):'',
       'opportunity.urgency':obj.urgency,
       'opportunity.level':obj.level
       }
@@ -605,7 +605,7 @@ export default {
           }else{
               let obj={
                 opportunityId:this.form.oppId,
-                closeReason:`99猪${Base64.encode(this.failReason)}`,
+                closeReason:mango.textEncode(this.failReason),
                 type:type
               }
               nobj=Object.assign({},obj);    

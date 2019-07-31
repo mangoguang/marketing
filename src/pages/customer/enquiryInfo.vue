@@ -364,7 +364,7 @@ export default {
         qq:obj.qq,
         weChat: obj.weChat,
         duty: obj.duty,
-        remark: obj.remark!==''?`99猪${Base64.encode(obj.remark)}`:'',
+        remark: obj.remark!==''?mango.textEncode(obj.remark):'',
         customerId: this.$route.query.id,
         orgId: obj.orgId || this.list.orgId
       }

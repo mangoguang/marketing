@@ -485,7 +485,7 @@ export default {
         qq:obj.qq,
         weChat: obj.weChat,
         duty: obj.duty,
-        remark: obj.remark&&obj.remark!==''?`99猪${Base64.encode(obj.remark)}`:'',
+        remark: obj.remark&&obj.remark!==''?mango.textEncode(obj.remark):'',
         "orgId": obj.orgId,
         'address.province': obj.province,
         'address.city': obj.city,
@@ -506,15 +506,15 @@ export default {
         'opportunity.budget':obj.budget,    //预算
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
         'opportunity.argreeDiscount': parseFloat(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
-        'opportunity.remark': obj.remark2&&obj.remark2!==''?`99猪${Base64.encode(obj.remark2)}`:'',
+        'opportunity.remark': obj.remark2&&obj.remark2!==''?mango.textEncode(obj.remark2):'',
         'opportunity.urgency': obj.urgency || false,   //是否紧急
         'opportunity.level': obj.level || 'A',   //等级
         'record.source': obj.source2,
         'record.followDate': obj.followDate,
         'record.residentTime': obj.residentTime2,   //跟进时长
         'record.nextDate': obj.nextDate,
-        'record.situation': obj.situation&&obj.situation!==''?`99猪${Base64.encode(obj.situation)}`:'',
-        'record.plan': obj.plan&&obj.plan!==''?`99猪${Base64.encode(obj.plan)}`:''
+        'record.situation': obj.situation&&obj.situation!==''?mango.textEncode(obj.situation):'',
+        'record.plan': obj.plan&&obj.plan!==''?mango.textEncode(obj.plan):''
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

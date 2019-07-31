@@ -143,7 +143,7 @@ export default {
        console.log(':::', this.form);
        let obj={
           address:this.form.address,
-          remark:this.form.remark!==''?`99猪${Base64.encode(this.form.remark)}`:'', 
+          remark:this.form.remark!==''?mango.textEncode(this.form.remark):'', 
           apartmentType:this.form.apartmentType,
           elevator:this.form.elevator,
           customerId:this.form.customerId,
