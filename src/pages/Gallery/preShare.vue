@@ -256,26 +256,18 @@ export default {
       );
     } */
     shareWeibo(title){
-      var weibo = api.require('weibo');
-      weibo.shareWebPage({
-          text: this.pageUrl,
+      var weibo = api.require('weiboPlus');
+      weiboPlus.shareWebPage({
+          text:this.pageUrl,
           title: title,
           description: this.msg.remark,
           thumb: this.imgUrl,
           contentUrl:this.pageUrl
       }, function(ret, err) {
           if (ret.status) {
-            api.alert({
-              title: "发表微博",
-              msg: "发表成功",
-              buttons: ["确定"]
-            });
-          } else {
-            api.alert({
-              title: "发表失败",
-              msg: err.msg,
-              buttons: ["确定"]
-            });
+            alert('分享成功');
+          }else{
+            alert('分享失败');
           }
       });
     }
