@@ -71,8 +71,11 @@ export default {
   },
   created() {
     this.msg = this.$route.query.list;
-    this.pageUrl = baseUrl +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
-    //this.pageUrl = "https://mobiletest.derucci.net"+"#/productDetails?id=" +this.msg.id +"&musi=1";
+    if(baseUrl==='https://op.derucci.com'){
+      this.pageUrl = baseUrl +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    }else{
+      this.pageUrl = "https://mobiletest.derucci.net"+"#/productDetails?id=" +this.msg.id +"&musi=1";
+    }
   },
   mounted() {
     this.getCode();
@@ -92,13 +95,14 @@ export default {
     },
     //点击保存图片
     saveImg() {
+      var width = (61.33/100)*document.body.clientWidth
+      var height = (77.33/100)*document.body.clientWidth
       html2canvas(this.$refs.creatImg, {
         backgroundColor: null,
         dpi: window.devicePixelRatio,
-        width: 61.33*2 + 'vw',
-        height: 77.33*2 + 'vw'
+        width: width,
+        height: height
       }).then(canvas => {
-        console.log(canvas);
         this.url = canvas.toDataURL();
         // if (this.url) {
         //   this.test = this.url;
@@ -139,10 +143,10 @@ export default {
           }
         })
         .then(res => {
-          alert('后台返回的图片路径'+res.data.url)
+          //alert('后台返回的图片路径'+res.data.url)
           this.loadImgUrl = res.data.url;
           if(this.loadImgUrl) {
-            alert('图片路径'+this.loadImgUrl)
+            //alert('图片路径'+this.loadImgUrl)
             this.savePicture();
           }
         });
@@ -259,7 +263,7 @@ export default {
       //alert("分享出去链接"+this.pageUrl)
       var weiboPlus = api.require('weiboPlus');
       weiboPlus.shareWebPage({
-          //text:this.pageUrl,
+          text:this.pageUrl,
           title:title,
           description:this.msg.remark,
           thumb:this.imgUrl,
