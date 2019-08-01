@@ -177,7 +177,7 @@ export default {
       const index = arr.indexOf(num)
       if (index >= 0) {
         let date = `${this.curDate[0]}/${this.curDate[1]}/${this.curDate[2]}`
-        if(new Date(date)< new Date('2019/7/22')){
+        if(new Date(date)< mango.setReportTime()){
           this.dailySummaryTextarea = res[index].summarize
           this.dailyPlanTextarea = res[index].plan
         }else{

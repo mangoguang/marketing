@@ -20,6 +20,7 @@ import tabCurReport from '../../components/work/dailyReport/tabCurReport'
 import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
 import { IndexModel } from '../../utils'
+import mango from '../../js'
 const indexModel = new IndexModel()
 let Base64 = require('js-base64').Base64
 export default {
@@ -47,7 +48,7 @@ export default {
                 console.log(res);
                 if(res.status===1){
                     let date = this.date.replace(/\-/g,'/')
-                    if(new Date(date)< new Date('2019/7/22')){
+                    if(new Date(date)< mango.setReportTime()){
                         this.dailySummaryTextarea=res.data.summarize
                         this.dailyPlanTextarea=res.data.plan
                     }else{

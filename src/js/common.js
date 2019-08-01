@@ -672,4 +672,8 @@ export default class Common {
       return `99猪${Base64.encode(str)}`
     }
   }
+  //配置日报时间点
+  setReportTime(){
+    return new Date('2019/7/22')
+  }
 }
