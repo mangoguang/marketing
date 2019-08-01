@@ -73,7 +73,11 @@ export default {
   created() {
     this.isIphoneX()
     this.msg = this.$route.query.list;
-    this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    if(baseUrl==='https://op.derucci.com'){
+      this.pageUrl ="https://op.derucci.com" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    }else{
+      this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    }
   },
   mounted() {
     this.getCode();
@@ -102,6 +106,7 @@ export default {
     },
     //点击保存图片
     saveImg() {
+      
       html2canvas(this.$refs.creatImg, {
         backgroundColor: null,
         dpi: window.devicePixelRatio,
