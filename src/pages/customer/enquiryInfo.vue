@@ -32,7 +32,7 @@
       </div>
     </div>
     <!-- 意向信息-->
-    <intentionMsg :isedit="edit" v-show="dealTabStatus[2].status" :list='list.opportunityList' :phone="phone"/>
+    <intentionMsg :isedit="edit" v-show="dealTabStatus[2].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
     <!-- <EnquiryOrderInfo v-show="dealTabStatus[1].status"/> -->
     <!-- <div class="line"></div> -->
     <!-- <orderInfoDetails/> -->
