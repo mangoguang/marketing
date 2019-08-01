@@ -493,9 +493,14 @@ export default {
         return false;
       }
       let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+       let reg2=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
       if(this.form.remark!==''&&remarkReg.test(this.form.remark)){
         this.form.remark=this.form.remark.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
         mango.tip('备注信息不支持表情');
+        return false;
+      }
+      if(this.form.remark!==''&&!reg2.test(this.form.remark)){
+        mango.tip('备注信息不支持特殊符号');
         return false;
       }
       if(this.form.deliverDate!==''){

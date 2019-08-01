@@ -29,7 +29,7 @@
           <span>地址管理</span>
       </li>
       <li is="customerLi" class="customerLi2" :leftText="'客户描述'">
-        <span v-if='list.remark'>{{ list.remark }}</span>
+        <span v-if='list.remark'>{{ list.remark.replace(/\\n/g,"\r\n") }}</span>
         <span class='unspan' v-else>未收集</span>
       </li>
       <li is="customerLi" :leftText="'所属门店'">

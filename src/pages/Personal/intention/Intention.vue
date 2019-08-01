@@ -278,7 +278,7 @@ export default {
           this.form.competingGoods=res.data.competingGoods==''?'未收集':res.data.competingGoods;
           this.form.colorPrefName=res.data.colorPrefName==''?'未收集':res.data.colorPrefName;
           this.form.deliverDate=res.data.deliverDate==''?'未收集':res.data.deliverDate;
-          this.form.remark=res.data.remark==''?'未备注':res.data.remark;
+          this.form.remark=res.data.remark==''?'未备注':res.data.remark.replace(/\\n/g,"\r\n");
           this.budget=res.data.budget;
           this.depositPaid=res.data.depositPaid;
           this.argreeDiscount=res.data.argreeDiscount;

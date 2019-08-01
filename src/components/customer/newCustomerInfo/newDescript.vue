@@ -226,8 +226,7 @@ export default {
       
       this.$set(this.newCustomerInfo,'weChat',this.list.weChat)
       this.$set(this.newCustomerInfo,'qq',this.list.qq)
-      
-      this.$set(this.newCustomerInfo,'remark',this.list.remark)
+      this.$set(this.newCustomerInfo,'remark',this.list.remark.replace(/\\n/g,"\r\n"))
       this.$set(this.newCustomerInfo,'orgId',this.list.orgId)
       let shops = localStorage.getItem('shops')
       this.shops = JSON.parse(shops)

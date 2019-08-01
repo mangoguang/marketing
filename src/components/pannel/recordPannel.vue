@@ -29,10 +29,10 @@
               </li>
             </ul>
             <yan-textarea label="跟进情况" readonly value="未收集" v-if="item.situation===''"/>
-            <yan-textarea label="跟进情况" readonly :value="item.situation" v-else/>
+            <yan-textarea label="跟进情况" readonly :value="turnStr(item.situation)" v-else/>
             <yanInput label="下次跟进" readonly class="next" :value="item.nextDate"/>
             <yan-textarea label="下一步计划" readonly value="未收集" v-if="item.plan===''"/>
-             <yan-textarea label="下一步计划" readonly :value="item.plan" v-else/>
+             <yan-textarea label="下一步计划" readonly :value="turnStr(item.plan)" v-else/>
             <p class="title" v-if="item.imgUrl.length>0">附件图片</p>
             <div class="img-box" v-if="item.imgUrl.length>0">
                <ul class="img-list" >
@@ -86,7 +86,7 @@ export default {
   },
   methods:{
     turnStr(str){
-      let string = mango.textDecode(str)
+      let string = str.replace(/\\n/g,"\r\n")//mango.textDecode(str)
       return string
     },
     open(i){
