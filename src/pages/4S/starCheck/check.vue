@@ -17,6 +17,7 @@
         <CheckTitle v-else
                     :title="item.name"
                     :index="index"
+                    :status="item.status"
                     @changeStatus="changeStatus" />
         <CheckContent :paprentIndex="index"
                       :standardList="item.standardList"
@@ -92,6 +93,8 @@ export default {
     })
 
     this.bigCategoryList = this.subcategories
+
+    console.log(this.bigCategoryList)
     this.total.totalPoints = totalPoints;
     this.total.deductMarks = this.deductMarks;
 
@@ -141,7 +144,7 @@ export default {
     },
     async  _initData () {
       let params = {
-        shopId: this.submitScoreData.shopId,
+        shopId: this.$route.query.shopId,
         categoryId: this.$route.query.id
       }
 
@@ -176,6 +179,11 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.check /deep/ .record_header {
+  height: auto;
+  padding-bottom: 5px;
+}
+
 .check {
   padding-bottom: 30px;
   .tips {
@@ -190,7 +198,7 @@ export default {
   }
   .contentBox {
     position: relative;
-    padding-top: 46vw;
+    padding-top: 36vw;
     padding-bottom: 13.34vw;
     box-sizing: border-box;
     min-height: 100vh;

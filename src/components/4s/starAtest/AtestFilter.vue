@@ -110,7 +110,7 @@ export default {
   box-sizing: border-box;
   .sortContentWrapper {
     position: fixed;
-    top: 47vw;
+    top: 37vw;
     left: 0;
     background: rgba($color: #000, $alpha: 0.3);
     z-index: 99;

@@ -5,9 +5,9 @@
     <StoreSelect :shops="shops"
                  @onGetStoreId="onGetStoreId" />
     <!-- 日常检查 -->
-    <DailyCheck :categories="categories" />
+    <DailyCheck :shopId="shopId" />
     <!--星级认证-->
-    <egg-star-attestation />
+    <starAttestation />
     <!-- 评分报表 -->
     <GradeReport :type="'gradeReport'" />
     <!-- 配置权限 -->
@@ -21,9 +21,10 @@ import StoreSelect from '../../../components/4s/index/storeSelect'
 import DailyCheck from '@/components/4s/index/dailyCheck'
 import GradeReport from '@/components/4s/index/gradeReport'
 import ModuleConfig from '@/components/4s/index/moduleConfig'
-import eggStarAttestation from '@/components/4s/index/starAttestation'
-import { gradeShops, gradeCategories } from '@/api/4s'
+import starAttestation from '@/components/4s/index/starAttestation'
+import { gradeShops } from '@/api/4s'
 import { Toast } from 'mint-ui'
+
 import { mapMutations } from 'vuex'
 export default {
   components: {
@@ -32,13 +33,14 @@ export default {
     DailyCheck,
     GradeReport,
     ModuleConfig,
-    eggStarAttestation
+    starAttestation
   },
   data () {
     return {
       soreClass: 5,
       shops: [{ name: '' }],
-      categories: []
+      categories: [],
+      shopId: 0
     }
   },
   async created () {
@@ -57,16 +59,14 @@ export default {
         return
       }
       this.shops = shops
+      this.shopId = shops[0].id
+      this.setShopId(shops[0].id)
+    },
 
-      this._getCategories(shops[0].id)
-    },
-    async _getCategories (shopId) {
-      let { code, categories, msg } = await gradeCategories({ shopId })
-      this.categories = categories
-      this.setShopId(categories[0].id)
-    },
     onGetStoreId (val) {
       this.setShopId(val)
+      this.shopId = val
+
     }
   }
 }

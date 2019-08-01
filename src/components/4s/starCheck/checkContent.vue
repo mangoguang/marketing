@@ -1,6 +1,7 @@
 <!--  -->
 <template>
-  <ul :class="`checkContent ${status ? 'open' : 'close'}`">
+  <ul class="checkContent"
+      :class="status ? 'open' : 'close'">
     <li v-for="(item, index) in standardList"
         @click="toCheckDetail(item,index)"
         :key="`checkContent${index}`"

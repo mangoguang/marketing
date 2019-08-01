@@ -128,3 +128,16 @@ export const distributorCancel = params => {
     params
   })
 }
+
+
+/**
+ *  5 检查记录 - 列表
+ * @param {*} params 
+ */
+export const checkList = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/checkList',
+    method: 'post',
+    params
+  })
+}

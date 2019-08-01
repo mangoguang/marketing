@@ -1,7 +1,7 @@
 <!-- status参数为真时表示已评分 -->
 <template>
   <div class="bigCategory">
-    <BigCategoryBox v-for="(item, index) in categories"
+    <BigCategoryBox v-for="(item, index) in subCategoryList"
                     @click.native="bindNavigatorCheck(item)"
                     :key="index"
                     :status="item.status"
@@ -14,7 +14,7 @@ import BigCategoryBox from './bigCategoryBox'
 import { secondcategories } from '@/api/4s'
 import { mapGetters } from 'vuex'
 export default {
-  props: [],
+  props: ['subCategoryList'],
   components: { BigCategoryBox },
   data () {
     return {
@@ -28,7 +28,7 @@ export default {
   methods: {
     ...mapGetters(['getCategories']),
     bindNavigatorCheck (item) {
-      this.$router.push({ path: '/check', query: { id: item.id, name: item.name } })
+      this.$router.push({ path: '/check', query: { id: item.id, name: item.name, shopId: this.$route.query.shopId } })
     }
   }
 }
@@ -39,6 +39,7 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   // padding: 0 2vw;
-  margin-top: 6vw;
+  margin-top: 0;
+  padding: 0 18px;
 }
 </style>

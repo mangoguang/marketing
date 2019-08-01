@@ -7,74 +7,77 @@
                  ref="loadmore"
                  :autoFill="false"
                  :bottomDistance="30">
-      <div class="atest_card"
-           v-for="(item,index) in dataList"
-           :key="index">
-        <div class="header">
-          <div class="left_text">
-            <p class="name">{{item.distributor}}</p>
-            <p claas='star'>认证星级：{{item.approveLevel||'-'}}</p>
-          </div>
-          <div class="right_text">
-            <img src="../../../assets/imgs/4s/via.png"
-                 alt="">
-          </div>
-        </div>
-        <div class="time">
-          <p>检查周期：{{item.cycleCheckTotal}}周</p>
-          <p>累计周期：{{item.accumulativeCycle}}周</p>
-          <p>开始时间：{{item.checkStartTime}}</p>
-        </div>
-        <div class="buttMan">
-          <div class="head_line"></div>
-          <div class="head">
-            <span>对接人信息</span>
-            <div class="edit_btn"
-                 @click="handleEdit(index)"
-                 v-if="item.isEdit">
-              <img src="../../../assets/imgs/4s/edit.png"
+      <ul class="content">
+        <div class="atest_card"
+             v-for="(item,index) in dataList"
+             :key="index">
+          <div class="header">
+            <div class="left_text">
+              <p class="name">{{item.distributor}}</p>
+              <p claas='star'>认证星级：{{item.approveLevel||'-'}}</p>
+            </div>
+            <div class="right_text">
+              <img src="../../../assets/imgs/4s/via.png"
                    alt="">
             </div>
-            <div class="edit"
-                 v-else>
-              <div class="closeBtn"
-                   @click="handleCloseBtn(index)">
-                <img src="../../../assets/imgs/4s/error.png"
+          </div>
+          <div class="time">
+            <p>检查周期：{{item.cycleCheckTotal}}周</p>
+            <p>累计周期：{{item.accumulativeCycle}}周</p>
+            <p>开始时间：{{item.checkStartTime}}</p>
+          </div>
+          <div class="buttMan">
+            <div class="head_line"></div>
+            <div class="head">
+              <span>对接人信息</span>
+              <div class="edit_btn"
+                   @click="handleEdit(index)"
+                   v-if="item.isEdit">
+                <img src="../../../assets/imgs/4s/edit.png"
                      alt="">
               </div>
-              <div class="comfirmBtn"
-                   @click="handleComfirmBtn(index)">
-                <img src="../../../assets/imgs/4s/correct.png"
-                     alt="">
+              <div class="edit"
+                   v-else>
+                <div class="closeBtn"
+                     @click="handleCloseBtn(index)">
+                  <img src="../../../assets/imgs/4s/error.png"
+                       alt="">
+                </div>
+                <div class="comfirmBtn"
+                     @click="handleComfirmBtn(index)">
+                  <img src="../../../assets/imgs/4s/correct.png"
+                       alt="">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="content">
-            <div class="name">
-              <label for="name">姓名:</label>
-              <input type="text"
-                     id="name"
-                     v-model="item.nameVal"
-                     :readonly="item.isReadOnly"
-                     :ref="'inputName'+index">
+            <div class="content">
+              <div class="name">
+                <label for="name">姓名:</label>
+                <input type="text"
+                       id="name"
+                       v-model="item.nameVal"
+                       :readonly="item.isReadOnly"
+                       :ref="'inputName'+index">
+              </div>
+              <div class="tel">
+                <label for="tel">电话:</label>
+                <input type="number"
+                       id="tel"
+                       v-model="item.telVal"
+                       :readonly="item.isReadOnly">
+              </div>
             </div>
-            <div class="tel">
-              <label for="tel">电话:</label>
-              <input type="number"
-                     id="tel"
-                     v-model="item.telVal"
-                     :readonly="item.isReadOnly">
-            </div>
+            <div class="footer"></div>
           </div>
-          <div class="footer"></div>
+          <div class="atest">
+            <button @click="bindApply(index)">发起申请</button>
+          </div>
         </div>
-        <div class="atest">
-          <button @click="bindApply(index)">发起申请</button>
-        </div>
-      </div>
+        <div class="no-data"
+             v-if="noData">暂无数据</div>
+      </ul>
     </mt-loadmore>
-    <div class="no-data"
-         v-if="noData">暂无数据</div>
+
   </div>
 </template>
 
@@ -172,6 +175,9 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.content {
+  height: 100vh;
+}
 .no-data {
   text-align: center;
   font-size: 12px;

@@ -12,22 +12,22 @@
 
 <script>
 export default {
-  props: ['title', 'index'],
+  props: ['title', 'index', 'status'],
   components: {
 
   },
   data () {
     return {
-      status: false
+      // status: false
     }
   },
   methods: {
     close () {
-      this.status = false
+      // this.status = false
       this.$emit('changeStatus', this.index, false)
     },
     open () {
-      this.status = true
+      // this.status = true
       this.$emit('changeStatus', this.index, true)
     }
   }

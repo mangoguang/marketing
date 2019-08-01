@@ -1,10 +1,13 @@
 <!--  -->
 <template>
-  <div class="record"  :style="{'margin-top':`${top}vw`}">
-    <div class="header" :style="{'height':`${headerHeight}vw`}">
-      <recordHeader :title="'检查记录'"/>
+  <div class="record"
+       :style="{'margin-top':`${top}vw`}">
+    <div class="header"
+         :style="{'height':`${headerHeight}vw`}">
+      <recordHeader :title="'检查记录'" />
     </div>
-    <div class="record_content" :style="{'margin-top':`${top}vw,height:${height}`}">
+    <div class="record_content"
+         :style="{'margin-top':`${top}vw,height:${height}`}">
       <record-jxs-card />
     </div>
   </div>
@@ -13,6 +16,8 @@
 <script>
 import recordHeader from '../../../components/4s/record/header'
 import recordJxsCard from '../../../components/4s/record/recordJxs_card'
+
+import { checkList } from '@/api/4s'
 export default {
   components: {
     recordHeader,
@@ -25,16 +30,22 @@ export default {
       headerHeight: ''
     };
   },
-  mounted(){
+  created () {
+    this._initData()
+  },
+  mounted () {
     this.isIPhoneX()
   },
-  methods:{
-    isIPhoneX() {
+  methods: {
+    isIPhoneX () {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
         this.top = "-5.86";
         this.headerHeight = 29.5
       }
+    },
+    async  _initData () {
+      let { code } = await checkList()
     }
   }
 }
@@ -47,7 +58,11 @@ export default {
   overflow: hidden;
   .header {
     width: 100vw;
-    height: 35.33vw;
+    padding-top: 93px;
+    /deep/ .record_header {
+      height: auto;
+      padding-bottom: 5px;
+    }
   }
   .record_content {
     width: 100vw;

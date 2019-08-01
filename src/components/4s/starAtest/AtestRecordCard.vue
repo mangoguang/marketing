@@ -1,9 +1,9 @@
 <!--  -->
 <template>
   <div class="apply-list">
-    <eggAtestFilter @onFilterData="onFilterData"
-                    @onFilterReset="onFilterReset"
-                    @onDesc="onDesc" />
+    <atest-filter @onFilterData="onFilterData"
+                  @onFilterReset="onFilterReset"
+                  @onDesc="onDesc" />
     <mt-loadmore :top-method="loadTop"
                  :bottom-method="loadBottom"
                  :bottom-all-loaded="allLoaded"
@@ -57,17 +57,25 @@
     </mt-loadmore>
     <div class="no-data"
          v-if="noData">暂无数据</div>
+    <TipsBox @getTipsVal="getTipsVal"
+             v-show="tipsStatus"
+             :tipsData="tipsData" />
   </div>
 </template>
 
 <script>
-import eggAtestFilter from '@/components/4s/starAtest/atest_filter'
+import AtestFilter from '@/components/4s/starAtest/AtestFilter'
+import TipsBox from '@/components/4s/tipsBox/tipsBox'
 import { Loadmore, Toast } from 'mint-ui';
+import Vue from 'vue'
+Vue.component(Loadmore.name, Loadmore);
 import { distributorApplys, distributorCancel } from '@/api/4s'
 import { parseTime, geMonthLastDay } from '@/utils/tools.js'
+
 export default {
   components: {
-    eggAtestFilter
+    AtestFilter,
+    TipsBox
   },
   data () {
     return {
@@ -84,7 +92,14 @@ export default {
       },
       level: ['一星', '二星', '三星', '四星', '五星'],
       status: ['已申请', '已退回', '已撤销', '已受理', '已评分', '未通过', '认证通过'],
-      noData: false
+      noData: false,
+      tipsStatus: false, //弹窗
+      tipsData: { //弹窗内容
+        imgUrl: './static/images/4s/warn.png',
+        title: '提示',
+        btn: 'confrim',
+        content: '今日撤销已达到三次上限，无法再次操作撤销'
+      }
     };
   },
   created () {
@@ -103,11 +118,14 @@ export default {
     }
   },
   methods: {
+    getTipsVal () {
+      this.tipsStatus = !this.tipsStatus
+    },
     //撤销申请
     async  handleBackout (id) {
       let { code, msg, data } = await distributorCancel({ id })
       if (code != 0) {
-        this.$emit('getBackOut', msg)
+        this.tipsStatus = !this.tipsStatus
         return
       }
       Toast(msg)

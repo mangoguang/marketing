@@ -30,7 +30,11 @@ export default {
   border-radius: 2vw;
   padding: 1vw 3vw;
   box-sizing: border-box;
-  margin: 4vw 0 0 4vw;
+  margin-right: 11px;
+  margin-bottom: 11px;
+  &:nth-child(3n) {
+    margin-right: 0;
+  }
   p {
     font-size: 14px;
     color: #363636;

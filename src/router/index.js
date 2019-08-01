@@ -65,7 +65,6 @@ const check = () => import('../pages/4S/starCheck/check')
 const checkDetail = () => import('../pages/4S/starCheck/checkDetail')
 const recordJxs = () => import('../pages/4S/record/recordJxs')
 const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
-const starCheckW = () => import('../pages/4S/starCheckWrapper/starCheckW')
 const searchIndex = () => import('../pages/4S/search')
 const starAtest = () => import('../pages/4S/starAtest/starAtest')
 
@@ -586,9 +585,9 @@ export var router = new VueRouter({
       component: judgeStar
     },
     {
-      path: '/starCheckW',
-      name: 'starCheckW',
-      component: starCheckW
+      path: '/leader-check',
+      name: 'LeaderCheck',
+      component: () => import('@/pages/4S/leader-check/')
     },
     {
       path: '/searchIndex',
@@ -599,6 +598,11 @@ export var router = new VueRouter({
       path: '/starAtest',
       name: 'starAtest',
       component: starAtest
+    },
+    {
+      path: '/apply-record',
+      name: 'ApplyRecord',
+      component: () => import('@/pages/4S/starAtest/ApplyRecord')
     }
   ],
   scrollBehavior(to, from, savedPosition) {

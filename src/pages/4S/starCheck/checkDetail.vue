@@ -107,14 +107,14 @@ export default {
         return
       }
       let { rangeValue, textareaVal, picVal } = this
-      console.log(rangeValue)
+
       let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
 
       standardList.reason = textareaVal //扣分原因
       standardList.urls = picVal  //上传文件
       standardList.deduct = rangeValue //分数
       let totle = this.deductMarks + rangeValue
-      console.log(this.deductMarks)
+
 
       if (totle > this.totalPoints) {
         Toast('扣分不能超过总分')
