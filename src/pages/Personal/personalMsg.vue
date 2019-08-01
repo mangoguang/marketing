@@ -103,7 +103,11 @@ export default {
     let account=JSON.parse(localStorage.getItem('ajaxData')).account;
     let crmAccount=JSON.parse(localStorage.getItem('crmAccount')).crmAccount;
     if(account!==crmAccount){
-      this.isMerge=true
+      if(_localAjax().typename==='Dealer Boss'||_localAjax().typename==='Boss&Consultant'||_localAjax().typename==='Boss&Manager'){
+        this.isMerge=false
+      }else{
+        this.isMerge=true
+      }
     }else{
       this.isMerge=false
     }
