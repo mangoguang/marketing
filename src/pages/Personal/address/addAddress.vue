@@ -16,7 +16,7 @@
           <elevator-select v-bind="formInfo.elevatorInfo" v-model="elevator" @update="updateElevator" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark" :maxlength='200'/>
+      <yan-textarea v-bind="formInfo.remarkInfo" v-model.trim="form.remark" :maxlength='200'/>
       <btn text='保存' @click.native='jump'/>
       
     </div>
@@ -39,6 +39,7 @@ import mango from "../../../js"
 import { resize } from '../../../utils/public'
 import { IndexModel } from '../../../utils' 
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
   data () {
     return {
@@ -140,7 +141,18 @@ export default {
    updateAddress(){
      if(this.valid()){
        console.log(':::', this.form);
-        indexModel.updateAddress(this.form).then(res => {
+       let obj={
+          address:this.form.address,
+          remark:this.form.remark, 
+          apartmentType:this.form.apartmentType,
+          elevator:this.form.elevator,
+          customerId:this.form.customerId,
+          country:this.form.country,
+          province:this.form.province,
+          city:this.form.city,
+          district:this.form.district
+       }
+        indexModel.updateAddress(obj).then(res => {
           if(res.code===0){
             mango.tip(res.msg);
             this.$router.back(-1);
@@ -156,6 +168,10 @@ export default {
      }
     
    },
+   changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
+    },
    valid(){
      if(this.customerId==''){
        mango.tip('客户id为空');
@@ -182,11 +198,27 @@ export default {
        mango.tip('地址不能超过200字');
        return false;
      }
+      let addressReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+      let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+      if(!addressReg.test(this.form.address)){
+        mango.tip('地址只能输入中英文或数字,不能包含空格')
+        return false
+      }
      if(this.form.remark.length>200){
        this.form.remark=this.form.remark.substring(0,200);
        mango.tip('备注不能超过200字');
        return false;
      }
+     let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+      if(this.form.remark!==''&&remarkReg.test(this.form.remark)){
+        this.form.remark = this.changeStr(this.form.remark)
+        mango.tip('备注不支持表情')
+        return false
+      }
+      if(this.form.remark!==''&&!reg.test(this.form.remark)){
+        mango.tip('备注不支持特殊符号')
+        return false
+      }
      return true;
    }
       

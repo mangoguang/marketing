@@ -25,6 +25,7 @@ import mango from "../../js"
 import Bus from '../../utils/Bus'
 import { mapMutations } from 'vuex';
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
   name: 'dailyReporxt',
   components:{
@@ -45,7 +46,6 @@ export default {
 
   },
   created() {
-    
   },
   mounted() {
     

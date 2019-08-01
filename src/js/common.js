@@ -669,4 +669,34 @@ export default class Common {
       return false
     }
   }
+  //反转义字符
+  textDecode(str) {
+    let string;
+    if (!str) {
+      string = ''
+    } else {
+      if (str.slice(0, 3) === "99猪") {
+        //console.log('原来的',str)
+        let newStr = str.slice(3,);
+        //console.log('之后的',newStr)
+        string = Base64.decode(newStr)
+        //console.log('最后的',string)
+      } else {
+        string = str
+      }
+    }
+    return string
+  }
+  //转义字符
+  textEncode(str) {
+    if (!str) {
+      return ''
+    } else {
+      return `99猪${Base64.encode(str)}`
+    }
+  }
+  //配置日报时间点
+  setReportTime() {
+    return new Date('2019/7/22')
+  }
 }

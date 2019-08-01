@@ -1,11 +1,11 @@
 <template>
     <div>
         <Header />
-        <store v-show="headerStatus[0].status"/>
-        <customerList v-show="headerStatus[1].status&&subHeaderStatus[0].status"/>
-        <approvedList v-show="headerStatus[1].status&&subHeaderStatus[1].status"/>
-        <closedList v-show="headerStatus[1].status&&subHeaderStatus[2].status"/>
-        <allCustomerList v-show="headerStatus[1].status&&subHeaderStatus[3].status"/>
+        <store v-show="headerStatus[1].status"/>
+        <customerList v-show="headerStatus[0].status&&subHeaderStatus[0].status"/>
+        <approvedList v-show="headerStatus[0].status&&subHeaderStatus[1].status"/>
+        <closedList v-show="headerStatus[0].status&&subHeaderStatus[2].status"/>
+        <allCustomerList v-show="headerStatus[0].status&&subHeaderStatus[3].status"/>
         <RightContainer type="store" @getPramas="getPramas"/>
         <RightTimeSelect v-show='rightTimeSelect' @getTime="getTime"/>
         <Footer />

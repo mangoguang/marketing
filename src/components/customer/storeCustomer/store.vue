@@ -6,7 +6,7 @@
             <li>创建人</li>
         </ul>
         <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore1" :auto-fill="false">
-                <ul class="content-Item" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId)">
+                <ul class="content-Item" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId,item.status)">
                     <li>{{item.username}}</li>
                     <li v-if="item.sex==='Mr.'">男</li>
                     <li v-else-if="item.sex==='Ms.'">女</li>
@@ -14,6 +14,7 @@
                     <li>{{item.createBy}}</li>
                 </ul>
         </mt-loadmore>
+        
     </div>
 </template>
 <script>
@@ -45,7 +46,7 @@ export default {
     },
     watch:{
         headerStatus(){
-            if(this.headerStatus[0].status){
+            if(this.headerStatus[1].status){
                  this.listenScroll();
                  this.setStoreScroll(0)
                  this.setAllLoaded(false)
@@ -131,14 +132,21 @@ export default {
             })
             return status; 
         },
-        async linkTo(id){
+        linkTo(id,status){
+            if(status==='Approved'){
+                this.$router.push({path:'/enquiryInfo',query:{id:id,edit:'no'}})
+            }else{
+                this.$router.push({path:'/customerInfo',query:{id:id,edit:'no'}})
+            }
+        }
+       /*  async linkTo(id){
             let status=await this.getStatus(id);
             if(status){
                 this.$router.push({path:'/enquiryInfo',query:{id:id,edit:'no'}})
             }else{
                 this.$router.push({path:'/customerInfo',query:{id:id,edit:'no'}})
             }
-        }
+        } */
     }
 }
 </script>
@@ -185,6 +193,8 @@ export default {
         :first-child{
             flex:0.4;
             white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
         :nth-child(2){
             flex:0.2;

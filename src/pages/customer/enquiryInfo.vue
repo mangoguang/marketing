@@ -32,7 +32,7 @@
       </div>
     </div>
     <!-- 意向信息-->
-    <intentionMsg :isedit="edit" v-show="dealTabStatus[2].status" :list='list.opportunityList' :phone="phone"/>
+    <intentionMsg :isedit="edit" v-show="dealTabStatus[2].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
     <!-- <EnquiryOrderInfo v-show="dealTabStatus[1].status"/> -->
     <!-- <div class="line"></div> -->
     <!-- <orderInfoDetails/> -->
@@ -217,7 +217,24 @@ export default {
         if(!check){
           return;
         }
+        let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+        if(this.newCustomerInfo.duty!==''&&!dutyReg.test(this.newCustomerInfo.duty)){
+          MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
+          return;
+        }
+        let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+          let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+          if(this.newCustomerInfo.remark!==''&&remarkReg.test(this.newCustomerInfo.remark)){
+            this.newCustomerInfo.remark=this.newCustomerInfo.remark.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+            MessageBox.alert('客户描述不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.remark!==''&&!reg.test(this.newCustomerInfo.remark)){
+            MessageBox.alert('客户描述不支持特殊符号')
+            return
+          }
         this.saveData();
+        
     },
     async checkQQ(){
         let check;
@@ -352,7 +369,7 @@ export default {
         qq:obj.qq,
         weChat: obj.weChat,
         duty: obj.duty,
-        remark: obj.remark,
+        remark: obj.remark!==''?mango.textEncode(obj.remark):'',
         customerId: this.$route.query.id,
         orgId: obj.orgId || this.list.orgId
       }

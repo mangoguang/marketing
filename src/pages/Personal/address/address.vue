@@ -27,7 +27,8 @@ import customerAddress from '../../../components/mySwipe/customerAddress'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../../js'
-import { IndexModel } from '../../../utils' 
+import { IndexModel } from '../../../utils'
+let Base64 = require('js-base64').Base64 
 const indexModel = new IndexModel()
 export default {
   data () {
@@ -55,6 +56,10 @@ export default {
   },
   methods:{
    ...mapMutations('address',['updateAddress','delAddress']),
+   turnAddress(str){
+     let string = Base64.decode(str)
+     return string
+   },
    jump(){
      this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId}});
    },

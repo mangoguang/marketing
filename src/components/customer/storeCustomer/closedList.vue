@@ -11,8 +11,10 @@
                     <i :class="`important${item.level}`"></i>
                     <span>{{item.username}}</span>
                     <b :class="`urgency${item.urgency}`"></b>
+                    
                 </li>
-                <li>{{item.phone}}</li>
+                <li v-if="item.phone!=='0'">{{item.phone}}</li>
+                <li v-else>未收集</li>
                 <li>{{item.closeTime.split(' ')[0]}}</li>
             </ul>
         </mt-loadmore>

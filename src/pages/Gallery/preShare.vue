@@ -32,6 +32,7 @@ import html2canvas from "html2canvas";
 import { mapState } from "vuex";
 import Banner from "../../components/banner";
 import MShare from "../../components/Gallery/productDetails/productShare";
+import { Indicator } from 'mint-ui';
 export default {
   components: { MShare, Banner },
   data() {
@@ -73,7 +74,11 @@ export default {
   created() {
     this.isIphoneX()
     this.msg = this.$route.query.list;
-    this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    if(baseUrl==='https://op.derucci.com'){
+      this.pageUrl = baseUrl+"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    }else{
+      this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    }
   },
   mounted() {
     this.getCode();
@@ -102,11 +107,17 @@ export default {
     },
     //点击保存图片
     saveImg() {
+      Indicator.open({
+        text: '正在保存图片...',
+        spinnerType: 'fading-circle'
+      });
+      var width = (61.33/100)*document.body.clientWidth
+      var height = (77.33/100)*document.body.clientWidth
       html2canvas(this.$refs.creatImg, {
         backgroundColor: null,
         dpi: window.devicePixelRatio,
-        width: 61.33*2 + 'vw',
-        height: 77.33*2 + 'vw'
+        width:width,
+        height:height
       }).then(canvas => {
         this.url = canvas.toDataURL();
         // if (this.url) {
@@ -167,6 +178,7 @@ export default {
         },
         (ret, err) => {
           if (ret) {
+            Indicator.close();
             this.showTips();
           }
           api.saveMediaToAlbum(
@@ -232,34 +244,22 @@ export default {
         type: "QFriend"
       });
     },
-    shareWeibo(title) {
-      var sinaWeiBo = api.require("sinaWeiBo");
-      sinaWeiBo.sendRequest(
-        {
-          contentType: "web_page",
-          text: this.pageUrl,
-          media: {
-            title: title,
-            description: this.msg.remark,
-            webpageUrl: this.pageUrl
-          }
-        },
-        function(ret, err) {
-          if (ret.status) {
-            api.alert({
-              title: "发表微博",
-              msg: "发表成功",
-              buttons: ["确定"]
-            });
-          } else {
-            api.alert({
-              title: "发表失败",
-              msg: err.msg,
-              buttons: ["确定"]
-            });
-          }
-        }
-      );
+    shareWeibo(title){
+      //alert("分享出去链接"+this.pageUrl)
+      var weiboPlus = api.require('weiboPlus');
+      weiboPlus.shareWebPage({
+          text:this.pageUrl,
+          title:title,
+          description:this.msg.remark,
+          thumb:this.imgUrl,
+          contentUrl:this.pageUrl
+      }, function(ret,err) {
+          /* if (ret.status) {
+            alert('分享成功');
+          }else{
+            alert('分享失败');
+          } */
+      });
     }
   }
 };

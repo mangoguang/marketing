@@ -24,7 +24,8 @@
             >{{item.username}}</span>
             <strong :class="`urgency${item.urgency}`"></strong>
           </div>
-          <span class="phone">{{item.phone}}</span>
+          <span class="phone" v-if="item.phone!=='0'">{{item.phone}}</span>
+          <span class="phone" v-else>未收集</span>
           <span class="date" :class="{active : compareTime[index]}">{{item.followDate}}</span>
         </li>
       </mt-loadmore>

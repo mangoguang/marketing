@@ -2,16 +2,16 @@
     <div class="planForm">
         <ul>
             <li>
-               <yan-input v-bind="info.planName" v-model="plan.planName" :required="true"/> 
+               <yan-input v-bind="info.planName" v-model.trim="plan.planName" maxlength='50' :required="true"/> 
             </li>
             <li @click="searchCustomer">
-               <yan-input v-bind="info.customerName"  v-model="plan.customerName" readonly :showIcon="true"/> 
+               <yan-input v-bind="info.customerName"  v-model.trim="plan.customerName" readonly :showIcon="true"/> 
             </li>
             <li @click="searchIntention">
-               <yan-input v-bind="info.goodsName" v-model="plan.goodsName" readonly :showIcon="true"/> 
+               <yan-input v-bind="info.goodsName" v-model.trim="plan.goodsName" readonly :showIcon="true"/> 
             </li>
             <li>
-               <yan-input v-bind="info.address" v-model="plan.address"/> 
+               <yan-input v-bind="info.address" v-model.trim="plan.address" maxlength='30'/> 
             </li>
             <li  @click="openStartTime">
                <yan-input v-bind="info.startTime" :value="format(plan.startTime)" :required="true" readonly :showIcon="true"/> 
@@ -20,7 +20,7 @@
                <yan-input v-bind="info.endTime" :value="format(plan.endTime)" readonly :showIcon="true"/> 
             </li>
             <li>
-                <yan-textarea v-bind="info.remark" v-model="plan.remark"/>
+                <yan-textarea v-bind="info.remark" v-model.trim="plan.remark" maxlength='200'/>
             </li>
         </ul>
         <mt-datetime-picker

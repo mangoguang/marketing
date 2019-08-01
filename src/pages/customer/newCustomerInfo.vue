@@ -58,7 +58,7 @@ import {returnDate} from '../../utils/customer'
 import {IndexModel} from '../../utils/index'
 import {btnList} from '../../utils/gallery'
 const indexModel = new IndexModel() 
-
+let Base64 = require('js-base64').Base64
 export default {
   name:'newCustomerInfo',
   components:{myBanner, newDemand, newDescript, newRecord},
@@ -242,6 +242,11 @@ export default {
         MessageBox.alert('姓氏不存在')
         return;
       }
+      let addressReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,200}$/;
+      if(!addressReg.test(this.newCustomerInfo.address)){
+        MessageBox.alert('客户地址只能输入中英文或数字,不能包含空格')
+        return;
+      }
       let check;
       if(this.$route.query.wechat&&this.newCustomerInfo.phone){
        check=await this.checkPhone()
@@ -265,30 +270,84 @@ export default {
           if(!checkQQ){
             return
           }
-          let formdata = new FormData()
-          //头像的formdata
-          this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
-          //附件
-          /* if(this.Files.length>0) {
-            const imgs = this.newCustomerInfo.imgs
-            for(var key in imgs) {
-              formdata.append('record.dataFile',imgs[key])
-            }
-          } */
-          if(this.Files.length>0){
-            for(let i=0;i<this.Files.length;i++){
-                formdata.append('record.dataFile',this.Files[i]);
-            }
+          let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+          if(this.newCustomerInfo.duty!==''&&!dutyReg.test(this.newCustomerInfo.duty)){
+            MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
+            return
           }
           
-          let obj = this.updateParams(this.newCustomerInfo)
-          let arr = []
-          for(var key in obj) {
-            formdata.append(key,obj[key])
-            arr.push(key)
+          let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+          let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+          if(this.newCustomerInfo.remark!==''&&remarkReg.test(this.newCustomerInfo.remark)){
+            this.newCustomerInfo.remark=this.changeStr(this.newCustomerInfo.remark)
+            MessageBox.alert('客户描述不支持表情')
+            return
           }
-          this.getData(formdata, arr, obj)
+          
+          if(this.newCustomerInfo.remark!==''&&!reg.test(this.newCustomerInfo.remark)){
+            MessageBox.alert('客户描述不支持特殊符号')
+            return
+          }
+          if(this.newCustomerInfo.competingGoods!==''&&!dutyReg.test(this.newCustomerInfo.competingGoods)){
+            MessageBox.alert('竞品产品只能输入中英文或数字,不能包含空格')
+            return
+          }
+         if(this.newCustomerInfo.remark2!==''&&remarkReg.test(this.newCustomerInfo.remark2)){
+           this.newCustomerInfo.remark2=this.changeStr(this.newCustomerInfo.remark2)
+            MessageBox.alert('意向信息里备注不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.remark2!==''&&!reg.test(this.newCustomerInfo.remark2)){
+            MessageBox.alert('意向信息里备注不支持特殊符号')
+            return
+          }
+          if(this.newCustomerInfo.situation!==''&&remarkReg.test(this.newCustomerInfo.situation)){
+            this.newCustomerInfo.situation=this.changeStr(this.newCustomerInfo.situation)
+            MessageBox.alert('跟进情况不支持表情')
+            return
+          }
+           if(this.newCustomerInfo.situation!==''&&!reg.test(this.newCustomerInfo.situation)){
+            MessageBox.alert('跟进情况不支持特殊符号')
+            return
+          }
+          if(this.newCustomerInfo.plan!==''&&remarkReg.test(this.newCustomerInfo.plan)){
+            this.newCustomerInfo.plan=this.changeStr(this.newCustomerInfo.plan)
+            MessageBox.alert('下一步跟进计划不支持表情')
+            return
+          } 
+          if(this.newCustomerInfo.plan!==''&&!reg.test(this.newCustomerInfo.plan)){
+            MessageBox.alert('下一步跟进计划不支持特殊符号')
+            return
+          }
+              let formdata = new FormData()
+              //头像的formdata
+              this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
+              //附件
+              /* if(this.Files.length>0) {
+                const imgs = this.newCustomerInfo.imgs
+                for(var key in imgs) {
+                  formdata.append('record.dataFile',imgs[key])
+                }
+              } */
+              if(this.Files.length>0){
+                for(let i=0;i<this.Files.length;i++){
+                    formdata.append('record.dataFile',this.Files[i]);
+                }
+              }
+              
+              let obj = this.updateParams(this.newCustomerInfo)
+              let arr = []
+              for(var key in obj) {
+                formdata.append(key,obj[key])
+                arr.push(key)
+              }
+              this.getData(formdata, arr, obj)
+          
       }
+    },
+    changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
     },
     checkQQ(){
         let check;

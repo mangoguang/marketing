@@ -1,13 +1,13 @@
 
 <template>
   <ul>
-    <DailyLi :number="list.cus" :title="'进店数'"/>
-    <DailyLi :number="list.opp" :title="'新增意向'"/>
-    <DailyLi :number="list.tourist" :title="'游客数'"/>
-    <DailyLi :number="list.trackRecord" :title="'跟进客户'"/>
-    <DailyLi :number="list.cusBusiness" :title="'成交订单'"/>
-    <DailyLi :number="list.volumeBusiness" :title="'成交金额'"/>
-    <DailyLi :number="list.guestSingleValue" :title="'均单值'"/>
+    <DailyLi :number="turnUnit(list.cus)" :title="'进店数'"/>
+    <DailyLi :number="turnUnit(list.opp)" :title="'新增意向'"/>
+    <DailyLi :number="turnUnit(list.tourist)" :title="'游客数'"/>
+    <DailyLi :number="turnUnit(list.trackRecord)" :title="'跟进客户'"/>
+    <DailyLi :number="turnUnit(list.cusBusiness)" :title="'成交订单'"/>
+    <DailyLi :number="turnUnit(list.volumeBusiness)" :title="'成交金额'"/>
+    <DailyLi :number="turnUnit(list.guestSingleValue)" :title="'均单值'"/>
     <DailyLi :number="turnRatio(list.turnoverRatio)" :title="'成交率'"/>
     <!-- <DailyLi
     v-for="(item, index) in list"
@@ -30,6 +30,13 @@ export default {
   methods:{
     turnRatio(str){
       return (parseFloat(str)*100).toFixed(2)+"%"
+    },
+    turnUnit(str){
+      if(parseFloat(str)>10000){
+        return (parseFloat(str)/10000).toFixed(2)+"万"
+      }else{
+        return str
+      }
     }
   }
 }

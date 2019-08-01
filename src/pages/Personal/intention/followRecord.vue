@@ -136,9 +136,20 @@ export default {
           }  
         }
       }
+      let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+      let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
       if(this.form.report.length>300){
         this.form.report=this.form.report.substring(0,300);
         mango.tip('跟进情况不能超过300字');
+        return false;
+      }
+      if(remarkReg.test(this.form.report)){
+        this.form.report=this.changeStr(this.form.report)
+        mango.tip('跟进情况不支持表情');
+        return false;
+      }
+      if(!reg.test(this.form.report)){
+        mango.tip('跟进情况不支持特殊符号');
         return false;
       }
       if(this.form.plan.length>300){
@@ -146,7 +157,20 @@ export default {
         mango.tip('跟进计划不能超过300字');
         return false;
       }
+      if(this.form.plan!==''&&remarkReg.test(this.form.plan)){
+        this.form.plan=this.changeStr(this.form.plan)
+        mango.tip('跟进计划不支持表情');
+        return false;
+      }
+       if(this.form.plan!==''&&!reg.test(this.form.plan)){
+        mango.tip('跟进计划不支持特殊符号');
+        return false;
+      }
       return true;
+    },
+    changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
     },
    update(){
       if(this.valid()){

@@ -3,7 +3,7 @@
         <li @click="go(item.id)" v-for="(item,index) in list" :key="index">
             <span>{{item.startTime.split(' ')[1]}}</span>
             <div>
-                <p>{{item.planName}}</p>
+                <p>{{item | formatStr}}</p>
                 <img src="../../../assets/imgs/rightside.png" alt="" class="icon">
             </div>
         </li>
@@ -13,6 +13,7 @@
     </ul>
 </template>
 <script>
+let Base64 = require('js-base64').Base64
 export default {
     name:'planTime',
     props:['list'],
@@ -23,6 +24,16 @@ export default {
     },
     created(){
         console.log(this.list)
+        //this.format('8J+YiiDwn5mCIA==')
+    },
+    filters:{
+        formatStr:function(value){
+            //console.log(value)
+            // let date = value.startTime.split(' ')[0].replace(/\-/g,'/')
+            let str = Base64.decode(value.planName);
+            return str
+          
+        }
     },
     methods:{
         go(id){
@@ -30,6 +41,8 @@ export default {
                 path:'/newWorkPlan',query:{id:id}
             })
         }
+        
+        
     }
 }
 </script>

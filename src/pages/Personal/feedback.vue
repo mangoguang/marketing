@@ -32,6 +32,7 @@ import upload from '../../components/upload/filesUpload'
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../js'
 import { IndexModel } from '../../utils'
+let Base64 = require('js-base64').Base64
 const indexModel=new IndexModel()
 export default {
   data () {
@@ -123,7 +124,7 @@ export default {
       let tempObj={};
       let temp={
         'phone':this.phone,
-        'feedbackInfo':this.remark
+        'feedbackInfo':Base64.encode(this.remark)
       }
       for(let key in temp){
         if(temp[key]||temp[key]===0){
@@ -148,11 +149,11 @@ export default {
           mango.tip('反馈信息不能为空');
           return false;
       }
-      // let reg=/^1[34578]\d{9}$/;
-      // if(!reg.test(this.phone)){
-      //   mango.tip('请输入正确的手机号码');
-      //   return false;
-      // }
+      let reg=/^1[34578]\d{9}$/;
+      if(this.phone!==''&&!reg.test(this.phone)){
+         mango.tip('请输入正确的手机号码');
+         return false;
+      }
       return true;
     }
 

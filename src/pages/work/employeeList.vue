@@ -8,11 +8,11 @@
             <div class="headPortrait" slot="headPortrait">
               <img :src="img" alt="">
             </div>
-              <div class="detail">
-                <h1>{{item.username}}</h1>
-                <span>{{item.shopName}}</span>
-                <p>意向客户数：<b>{{item.countOpport}}</b></p>
-              </div>
+            <div class="detail">
+              <h1>{{item.username}}</h1>
+              <span>{{item.shopName}}</span>
+              <p>意向客户数：<b>{{item.countOpport}}</b></p>
+            </div>
           </li>
         </ul>
       </div>

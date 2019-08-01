@@ -19,6 +19,7 @@ import newDemand from '../../../components/customer/newCustomerInfo/newDemand'
 import newRecord from '../../../components/customer/newCustomerInfo/newRecord'
 import myBanner from '../../../components/banner'
 import mango from '../../../js'
+let Base64 = require('js-base64').Base64
 export default {
   components: { newDemand, myBanner, newRecord },
   data () {
@@ -134,11 +135,48 @@ export default {
       this.setFiles([]);
       this.setPicVal([]);
     },
+    changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
+    },
     submit() {
       let temp = this.whichFollowData(this.newCustomerInfo)
       if(temp) {
         // let formdata = this.newCustomerInfo.dataFiles
-        
+        let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+        if(this.newCustomerInfo.competingGoods!==''&&!dutyReg.test(this.newCustomerInfo.competingGoods)){
+            MessageBox.alert('竞品产品只能输入中英文或数字,不能包含空格')
+            return
+          }
+           let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+           let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+          if(this.newCustomerInfo.remark2!==''&&remarkReg.test(this.newCustomerInfo.remark2)){
+            this.newCustomerInfo.remark2=this.changeStr(this.newCustomerInfo.remark2)
+            MessageBox.alert('备注信息不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.remark2!==''&&!reg.test(this.newCustomerInfo.remark2)){
+            MessageBox.alert('备注信息不支持特殊符号')
+            return
+          }
+          if(this.newCustomerInfo.situation!==''&&remarkReg.test(this.newCustomerInfo.situation)){
+            this.newCustomerInfo.situation=this.changeStr(this.newCustomerInfo.situation)
+            MessageBox.alert('跟进情况不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.situation!==''&&!reg.test(this.newCustomerInfo.situation)){
+            MessageBox.alert('跟进情况不支持特殊符号')
+            return
+          }
+          if(this.newCustomerInfo.plan!==''&&remarkReg.test(this.newCustomerInfo.plan)){
+            this.newCustomerInfo.plan=this.changeStr(this.newCustomerInfo.plan)
+            MessageBox.alert('下一步跟进计划不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.plan!==''&&!reg.test(this.newCustomerInfo.plan)){
+            MessageBox.alert('下一步跟进计划不支持特殊符号')
+            return
+          }
         let formdata = new FormData()
         // let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
         //   for(let i = 0; i < file.length; i++){
@@ -146,7 +184,7 @@ export default {
         // }
         
         if(this.newCustomerInfo.imgs) {
-          const imgs = this.newCustomerInfo.imgs
+          const imgs = this.newCustomerInfo.imgs 
           for(var key in imgs) {
             formdata.append('record.dataFile',imgs[key])
           }

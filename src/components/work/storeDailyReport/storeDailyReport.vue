@@ -81,6 +81,7 @@ export default {
   },
   mounted() {
     this.curDay = this.getToday()
+    this.curDate = this.curDay.split(/年|月|日/)
     let date = new Date()
     const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
     this.curNum = parseInt(date.getDate())
@@ -173,15 +174,16 @@ export default {
       if (res) {
         // 获取res数组里面的日期。
         arr = res.map(element => parseInt(element.createTime.substr(8, 2)))
-        arr2 = res.map(element => parseInt(element.createTime.substr(0, 10)))
-        console.log(arr2);
+        arr2 = res.map(element => element.createTime.substr(0, 10))
+        console.log('日期',arr2);
       } else {
         return
       }
       const index = arr.indexOf(num)
       if (index >= 0) {
         let date = `${this.curDate[0]}/${this.curDate[1]}/${this.curDate[2]}`
-        if(new Date(date)< new Date('2019/7/22')){
+        console.log('日期',date)
+        if(new Date(date)< mango.setReportTime()){
           this.dailySummaryTextarea = res[index].summarize
           this.dailyPlanTextarea = res[index].plan
         }else{

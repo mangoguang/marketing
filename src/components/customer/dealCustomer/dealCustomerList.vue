@@ -18,7 +18,8 @@
           </div>
           <!-- <span class="name">{{`*${item.username.slice(1, 5)}`}}</span> -->
           <!-- <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span> -->
-          <span class="phone">{{item.phone}}</span>
+          <span class="phone" v-if="item.phone!=='0'">{{item.phone}}</span>
+          <span class="phone" v-else>未收集</span>
           <!-- <span class="date">{{item.followDate}}</span> -->
           <span class="date">{{item.closeTime.split(" ")[0]}}</span>
         </li>
@@ -364,7 +365,7 @@ export default {
       padding-left: 4.266vw;
       .name {
         color: #363636;
-        flex: 0.45;
+        flex: 0.5;
         display: flex;
         align-items: center;
         strong {
@@ -390,6 +391,7 @@ export default {
       .date {
         flex: 0.4;
         color: #363636;
+        text-align: right;
       }
       // span:nth-child(4) {
       //   flex: 0.5;

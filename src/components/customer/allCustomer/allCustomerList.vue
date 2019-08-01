@@ -18,6 +18,7 @@
           <span class="sex" v-else>未知</span>
           <span class="phone">{{item.phone}}</span>
         </li>
+        <button @click="newCustomer" class="new"></button>
       </mt-loadmore>
     </ul>
   </div>
@@ -32,6 +33,7 @@ import mango from "../../../js";
 import TopBar from '../topBar'
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
+import {btnList} from '../../../utils/gallery'
 export default {
   name: "allCustomerList",
   props: ["changeResultTit"],
@@ -91,7 +93,10 @@ export default {
       "setAllCustomerList",
        "setTabStatus",
        'setAllScroll',
-       'setAllLength'
+       'setAllLength',
+       'setBtn',
+        'initShopList',
+        'getShopVal'
        
        ]),
     handleScroll(e) {
@@ -164,6 +169,15 @@ export default {
       }else{
           this.$router.push({path:'/customerInfo',query:{id:id}})
       }
+    },
+    //门店vuex清空。恢复第一个.游客！
+    newCustomer() {
+      this.setBtn([])
+      let shops = localStorage.getItem('shops')
+      let shopsList = btnList(JSON.parse(shops),0)
+      this.initShopList(shopsList)
+      this.getShopVal()
+      this.$router.push({path: './newCustomer'})
     }
   }
 };
@@ -186,7 +200,7 @@ export default {
     // border-bottom: 1px solid #e1e1e1;
     color: #999;
     font-size: 4.26vw;
-    line-height: 11.73vw;
+    /* line-height: 11.73vw; */
     padding-bottom: 40vw;
     box-sizing: border-box;
     background: #f8f8f8;
@@ -196,7 +210,7 @@ export default {
       padding-right: 3.86vw;
       // border-top: 1px solid #e1e1e1;
       align-items: center;
-      height: 17.33vw;
+      min-height: 17.33vw;
       margin-top: 1vw;
       background: #fff;
       padding-left: 4.266vw;
@@ -205,15 +219,24 @@ export default {
         flex:1;
         display: flex;
         align-items: center;
+       span{
+          width:30vw;
+          display: inline-block;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+       }
       }
       .sex{
          flex:1;
          text-align: center;
+         flex-shrink: 0;
       }
       .phone {
         flex:1;
         color: #363636;
         text-align: right;
+        flex-shrink: 0;
       }
       
     }

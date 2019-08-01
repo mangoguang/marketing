@@ -82,7 +82,7 @@ export default {
       ifShow: 'hide',
       navShow: true,
       ajaxData: {},
-      customerClassifyList: mango.btnList(['全部', '紧急降序', '级别A到C', '级别C到A'], 0),
+      customerClassifyList: mango.btnList(['全部', '紧急降序', '级别A到D', '级别D到A'], 0),
       selectBtnText: '全部',
       searchKey: '',
       ajaxData:[],

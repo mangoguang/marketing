@@ -1,13 +1,14 @@
 const state = {
   headerStatus:[
     {
-      name:'门店客户',
+      name:'个人客户',
       status:true
     },
     {
-      name:'个人客户',
+      name:'门店客户',
       status:false
     }
+   
   ],
   subHeaderStatus:[
     {
@@ -52,11 +53,11 @@ const state = {
       val:'u'
     },
     {
-      name:'级别A到C',
+      name:'级别A到D',
       val:'la'
     },
     {
-      name:'级别C到A',
+      name:'级别D到A',
       val:'ld'
     }
   ]

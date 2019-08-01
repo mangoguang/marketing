@@ -2,7 +2,7 @@
   <li class="employeeLi">
     <div class="left">
       <slot name="headPortrait"></slot>
-      <div class="content"><slot></slot></div>
+      <div class="con"><slot></slot></div>
     </div>
     <img src="../../../assets/imgs/rightside.png" alt="" v-if="icon">
   </li>
@@ -51,7 +51,7 @@ export default {
       display: flex;
       flex-direction: row;
       align-items: center;
-      .content{
+      .con{
          flex:1;
       }
     }

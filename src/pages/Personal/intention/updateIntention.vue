@@ -65,7 +65,7 @@
           <discount-select v-bind="formInfo.discount" :value="argreeDiscountTxt" @update="updateDiscount" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark" :maxlength='200' :readonly='readonly' v-model="form.remark"></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :maxlength='200' :readonly='readonly' v-model.trim="form.remark"></yan-textarea>
       <div class="select">
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="form.level" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
@@ -110,6 +110,7 @@ import { Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../../js'
 import { IndexModel } from '../../../utils'
+let Base64 = require('js-base64').Base64
 const indexModel=new IndexModel()
 export default {
   data () {
@@ -382,7 +383,7 @@ export default {
           this.colorPrefName=res.data.colorPrefName==''?'':res.data.colorPrefName;
           this.form.colorPref=res.data.colorPref;
           this.form.deliverDate=res.data.deliverDate==''?'':res.data.deliverDate;
-          this.form.remark=res.data.remark==''?'':res.data.remark;
+          this.form.remark=res.data.remark;
           this.form.budget=res.data.budget;
           this.form.depositPaid=res.data.depositPaid;
           this.form.argreeDiscount=res.data.argreeDiscount;
@@ -477,6 +478,11 @@ export default {
         mango.tip('需求日期不能为空');
         return false;
       } */
+      let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+      if(this.form.competingGoods!==''&&!dutyReg.test(this.form.competingGoods)){
+        mango.tip('竞品产品只能输入中英文或数字,不能包含空格');
+        return false;
+      }
       var reg=/^\d{1,}\.{0,1}\d{0,}$/;
       if(this.form.budget!==''&&!reg.test(this.form.budget)){
         mango.tip('预算金额必须为数字');
@@ -484,6 +490,17 @@ export default {
       }
       if(this.form.depositPaid!==''&&!reg.test(this.form.depositPaid)){
         mango.tip('已交定金必须为数字');
+        return false;
+      }
+      let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+       let reg2=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+      if(this.form.remark!==''&&remarkReg.test(this.form.remark)){
+        this.form.remark=this.form.remark.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+        mango.tip('备注信息不支持表情');
+        return false;
+      }
+      if(this.form.remark!==''&&!reg2.test(this.form.remark)){
+        mango.tip('备注信息不支持特殊符号');
         return false;
       }
       if(this.form.deliverDate!==''){
@@ -803,7 +820,7 @@ export default {
     margin-bottom:2.666vw;
     li{
       padding-left:4.266vw;
-      :first-child{
+      &>:first-child{
          border-bottom: 1px solid #e1e1e1;
       }
     }

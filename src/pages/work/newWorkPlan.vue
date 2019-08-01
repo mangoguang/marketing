@@ -62,6 +62,7 @@ export default {
         save(){
             if(this.valid(this.plan)){
                 let obj = this.getParams(this.plan)
+                console.log(obj)
                 let form = new FormData()
                 let keys = []
                 for(let key in obj){
@@ -100,18 +101,19 @@ export default {
             indexModel.getPlanDetail(id).then((res) => {
                 console.log(res)
                 if(res.status){
-                    this.$set(this.plan,'planName',res.data.planName)
-                    this.$set(this.plan,'address',res.data.address)
+                    this.$set(this.plan,'planName',Base64.decode(res.data.planName))
+                    this.$set(this.plan,'address',res.data.address===''?'':Base64.decode(res.data.address))
                     this.$set(this.plan,'startTime',res.data.startTime)
                     this.$set(this.plan,'endTime',res.data.endTime)
                     this.$set(this.plan,'customerId',res.data.customerId)
                     this.$set(this.plan,'customerName',res.data.customerName)
                     this.$set(this.plan,'opportunityId',res.data.opportunityId)
-                    this.$set(this.plan,'remark',Base64.decode(res.data.remark))
+                    this.$set(this.plan,'remark',res.data.remark===''?'':Base64.decode(res.data.remark))
                     this.$set(this.plan,'id',res.data.id)
                     this.$set(this.plan,'goodsName',res.data.goodNames)
                     this.edit=false
                     this.title="计划详情"
+                    console.log('哈哈哈',Base64.decode('dW5kZWZpbmVk'))
                 }
             }).catch((reject) => {
                 if(reject===510){
@@ -126,14 +128,14 @@ export default {
         getParams(obj){
             let tempObj = {}
             let temp = {
-                planName:obj.planName,
-                address:obj.address,
+                planName:Base64.encode(obj.planName),
+                address:obj.address&&obj.address!==''?Base64.encode(obj.address):"",
                 startTime:obj.startTime,
                 endTime:obj.endTime,
                 customerId:obj.customerId,
                 customerName:obj.customerName,
                 opportunityId:obj.opportunityId,
-                remark:Base64.encode(obj.remark),
+                remark:obj.remark&&obj.remark!==''?Base64.encode(obj.remark):"",
                 id:obj.id
             }
             for(let key in temp){
