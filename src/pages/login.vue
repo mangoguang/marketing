@@ -236,13 +236,18 @@ export default {
           // 检测app账号跟crm账号是否一致
           //this.mergeBoxShow = res.account !== res.crmAccount
           if(res.account !== res.crmAccount){
-            let obj={
-              tip:`当前APP登录账号为${res.account}，CRM登录账号${res.crmAccount}，不一致，是否修改CRM登录账号为${res.account}，修改后使用${res.account}登录APP和CRM,是否确定修改？`,
-              btnNum:2,
-              type:false
+            if(typename==='Dealer Boss'||typename==='Boss&Consultant'||typename==='Boss&Manager'){
+              this.mergeBoxShow=false
+              this.$router.replace({ path: "/" })
+            }else{
+              let obj={
+                tip:`当前APP登录账号为${res.account}，CRM登录账号${res.crmAccount}，不一致，是否修改CRM登录账号为${res.account}，修改后使用${res.account}登录APP和CRM,是否确定修改？`,
+                btnNum:2,
+                type:false
+              }
+              this.mergeBox=obj
+              this.mergeBoxShow=true
             }
-            this.mergeBox=obj
-            this.mergeBoxShow=true
           }else{
             this.mergeBoxShow=false
             this.$router.replace({ path: "/" })
