@@ -74,7 +74,7 @@ export default {
     this.isIphoneX()
     this.msg = this.$route.query.list;
     if(baseUrl==='https://op.derucci.com'){
-      this.pageUrl ="https://op.derucci.com" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+      this.pageUrl = baseUrl+"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
     }else{
       this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
     }
@@ -106,12 +106,13 @@ export default {
     },
     //点击保存图片
     saveImg() {
-      
+      var width = (61.33/100)*document.body.clientWidth
+      var height = (77.33/100)*document.body.clientWidth
       html2canvas(this.$refs.creatImg, {
         backgroundColor: null,
         dpi: window.devicePixelRatio,
-        width: 61.33*2 + 'vw',
-        height: 77.33*2 + 'vw'
+        width:width,
+        height:height
       }).then(canvas => {
         this.url = canvas.toDataURL();
         // if (this.url) {
@@ -237,34 +238,22 @@ export default {
         type: "QFriend"
       });
     },
-    shareWeibo(title) {
-      var sinaWeiBo = api.require("sinaWeiBo");
-      sinaWeiBo.sendRequest(
-        {
-          contentType: "web_page",
-          text: this.pageUrl,
-          media: {
-            title: title,
-            description: this.msg.remark,
-            webpageUrl: this.pageUrl
-          }
-        },
-        function(ret, err) {
-          if (ret.status) {
-            api.alert({
-              title: "发表微博",
-              msg: "发表成功",
-              buttons: ["确定"]
-            });
-          } else {
-            api.alert({
-              title: "发表失败",
-              msg: err.msg,
-              buttons: ["确定"]
-            });
-          }
-        }
-      );
+    shareWeibo(title){
+      //alert("分享出去链接"+this.pageUrl)
+      var weiboPlus = api.require('weiboPlus');
+      weiboPlus.shareWebPage({
+          text:this.pageUrl,
+          title:title,
+          description:this.msg.remark,
+          thumb:this.imgUrl,
+          contentUrl:this.pageUrl
+      }, function(ret,err) {
+          /* if (ret.status) {
+            alert('分享成功');
+          }else{
+            alert('分享失败');
+          } */
+      });
     }
   }
 };
