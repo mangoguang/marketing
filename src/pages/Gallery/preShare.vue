@@ -32,6 +32,7 @@ import html2canvas from "html2canvas";
 import { mapState } from "vuex";
 import Banner from "../../components/banner";
 import MShare from "../../components/Gallery/productDetails/productShare";
+import { Indicator } from 'mint-ui';
 export default {
   components: { MShare, Banner },
   data() {
@@ -106,6 +107,10 @@ export default {
     },
     //点击保存图片
     saveImg() {
+      Indicator.open({
+        text: '正在保存图片...',
+        spinnerType: 'fading-circle'
+      });
       var width = (61.33/100)*document.body.clientWidth
       var height = (77.33/100)*document.body.clientWidth
       html2canvas(this.$refs.creatImg, {
@@ -175,6 +180,7 @@ export default {
         },
         (ret, err) => {
           if (ret) {
+            Indicator.close();
             this.showTips();
           }
           api.saveMediaToAlbum(
