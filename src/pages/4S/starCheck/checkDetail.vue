@@ -31,7 +31,7 @@
       <div class="rangeBox">
         <div class="range-rule">
           <span class="tips">扣{{rangeValue}}分</span>
-          <div class="top"><span>0</span><span>18</span></div>
+          <div class="top"><span>0</span><span>{{maxScore}}</span></div>
           <div class="rule">
             <div class="li"></div>
             <div class="li"></div>
@@ -44,7 +44,7 @@
         </div>
         <mt-range v-model="rangeValue"
                   :min="0"
-                  :max="18"
+                  :max="maxScore"
                   :step="1"
                   :bar-height="12">
         </mt-range>
@@ -78,28 +78,51 @@ export default {
       sheetVisible: false,
       picVal: [],
       FilesList: [],
-      textareaVal: ''
+      textareaVal: '',
+      maxScore: 0
     }
   },
   computed: mapState({
     submitScoreData: state => state.eggRecordDetails.submitScoreData,
     categoryListIndex: state => state.eggRecordDetails.categoryListIndex,
     standardListIndex: state => state.eggRecordDetails.standardListIndex,
-    subcategories: state => state.eggRecordDetails.subcategories
+    subcategories: state => state.eggRecordDetails.subcategories,
+    deductMarks: state => state.eggRecordDetails.deductMarks,
+    totalPoints: state => state.eggRecordDetails.totalPoints
   }),
+  created () {
+
+    let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
+    this.textareaVal = standardList.reason //扣分原因
+    this.picVal = standardList.urls || []   //上传文件
+    this.rangeValue = standardList.deduct || 0 //分数
+
+    this.maxScore = this.subcategories[this.categoryListIndex].total
+  },
   methods: {
-    ...mapMutations(['setSubmitScoreData', 'setSubcategories']),
+    ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setdeductMarks']),
     bindSave () {
       if (!this.textareaVal) {
         Toast('填写扣分原因')
         return
       }
       let { rangeValue, textareaVal, picVal } = this
+      console.log(rangeValue)
       let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
 
       standardList.reason = textareaVal //扣分原因
       standardList.urls = picVal  //上传文件
       standardList.deduct = rangeValue //分数
+      let totle = this.deductMarks + rangeValue
+      console.log(this.deductMarks)
+
+      if (totle > this.totalPoints) {
+        Toast('扣分不能超过总分')
+        return
+      }
+
+      this.setdeductMarks(totle)
+
       this.setSubmitScoreData(this.submitScoreData)
 
       this.subcategories[this.categoryListIndex].standardList[this.$route.query.standardListIndex].status = true

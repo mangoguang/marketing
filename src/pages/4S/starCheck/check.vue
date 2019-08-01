@@ -74,16 +74,30 @@ export default {
   },
   created () {
     this._initData()
+
+    this.setdeductMarks(0)
   },
   computed: mapState({
     submitScoreData: state => state.eggRecordDetails.submitScoreData,
-    subcategories: state => state.eggRecordDetails.subcategories
+    subcategories: state => state.eggRecordDetails.subcategories,
+    deductMarks: state => state.eggRecordDetails.deductMarks
   }),
   activated () {
+    let totalPoints = 0
+    let deductMarks = 0
+
+    this.subcategories.map((item, index) => {
+      totalPoints += item.total
+      deductMarks += item.deductLimit
+    })
+
     this.bigCategoryList = this.subcategories
+    this.total.totalPoints = totalPoints;
+    this.total.deductMarks = this.deductMarks;
+
   },
   methods: {
-    ...mapMutations(['setSubmitScoreData', 'setSubcategories']),
+    ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setTotalPoints', 'setdeductMarks']),
     // 控制评分细则的显示/隐藏
     changeStatus (index, status) {
       this.bigCategoryList[index].status = status
@@ -105,7 +119,20 @@ export default {
     // 提交表单
     async  bindSubmit () {
       this.btnBotStatus = true
-      var params = this.submitScoreData// JSON.stringify(this.submitScoreData)
+
+      let standardListNameArr = []
+      this.subcategories.map(item => {
+        item.standardList.map(items => {
+          if (!items.status) {
+            standardListNameArr.push(items.name)
+          }
+        })
+      })
+      if (standardListNameArr.length != 0) {
+        Toast(`请给${standardListNameArr[0]}评分`)
+        return
+      }
+      var params = this.submitScoreData
       let { code, msg, data } = await gradeSubmit(params)
       Toast(msg)
       if (code != 0) return
@@ -139,9 +166,11 @@ export default {
       this.submitScoreData.categoryList = categoryList
       this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
       this.total.totalPoints = totalPoints;
-      this.total.deductMarks = deductMarks;
+      this.total.deductMarks = this.deductMarks;
+      this.setTotalPoints(totalPoints)
       this.setSubcategories(categories)
       this.bigCategoryList = categories
+
     }
   }
 }

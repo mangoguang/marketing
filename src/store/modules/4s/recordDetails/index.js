@@ -18,8 +18,10 @@ export default {
       ]
     },
     subcategories: [], //三级列表数据
-    categoryListIndex: 0,
-    standardListIndex: 0
+    categoryListIndex: 0, //categoryList选中索引
+    standardListIndex: 0, //standardList选中索引
+    totalPoints: 0, //总分
+    deductMarks: 0 //扣分
   },
   mutations: {
     setType: (state, str) => state.type = str,
@@ -29,7 +31,9 @@ export default {
     setSubmitScoreData: (state, submitScoreData) => state.submitScoreData = submitScoreData, //提交打分数据
     setCategoryListIndex: (state, categoryListIndex) => state.categoryListIndex = categoryListIndex, //三级列表选中索引
     setStandardListIndex: (state, standardListIndex) => state.standardListIndex = standardListIndex, //三级列表选中具体项索引
-    setSubcategories: (state, subcategories) => state.subcategories = subcategories
+    setSubcategories: (state, subcategories) => state.subcategories = subcategories,
+    setTotalPoints: (state, totalPoints) => state.totalPoints = totalPoints,
+    setdeductMarks: (state, deductMarks) => state.deductMarks = deductMarks
   },
   getters: {
     getCategories: (state) => state.categories, //日常检查二级列表
