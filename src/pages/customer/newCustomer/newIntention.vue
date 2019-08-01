@@ -149,9 +149,14 @@ export default {
             return
           }
            let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+           let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
           if(this.newCustomerInfo.remark2!==''&&remarkReg.test(this.newCustomerInfo.remark2)){
             this.newCustomerInfo.remark2=this.changeStr(this.newCustomerInfo.remark2)
             MessageBox.alert('备注信息不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.remark2!==''&&!reg.test(this.newCustomerInfo.remark2)){
+            MessageBox.alert('备注信息不支持特殊符号')
             return
           }
           if(this.newCustomerInfo.situation!==''&&remarkReg.test(this.newCustomerInfo.situation)){
@@ -159,9 +164,17 @@ export default {
             MessageBox.alert('跟进情况不支持表情')
             return
           }
+          if(this.newCustomerInfo.situation!==''&&!reg.test(this.newCustomerInfo.situation)){
+            MessageBox.alert('跟进情况不支持特殊符号')
+            return
+          }
           if(this.newCustomerInfo.plan!==''&&remarkReg.test(this.newCustomerInfo.plan)){
             this.newCustomerInfo.plan=this.changeStr(this.newCustomerInfo.plan)
             MessageBox.alert('下一步跟进计划不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.plan!==''&&!reg.test(this.newCustomerInfo.plan)){
+            MessageBox.alert('下一步跟进计划不支持特殊符号')
             return
           }
         let formdata = new FormData()
@@ -307,15 +320,15 @@ export default {
         'opportunity.budget':obj.budget,    //预算
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
         'opportunity.argreeDiscount': parseInt(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
-        'opportunity.remark': obj.remark2&&obj.remark2!==''?mango.textEncode(obj.remark2):'',
+        'opportunity.remark': obj.remark2,
         'opportunity.urgency': obj.urgency,   //是否紧急
         'opportunity.level': obj.level,   //等级
         'record.source': obj.source2,
         'record.followDate': obj.followDate,
         'record.residentTime': obj.residentTime2,   //跟进时长
         'record.nextDate': obj.nextDate,
-        'record.situation': obj.situation&&obj.situation!==''?mango.textEncode(obj.situation):'',
-        'record.plan': obj.plan&&obj.plan!==''?mango.textEncode(obj.plan):''
+        'record.situation': obj.situation,
+        'record.plan': obj.plan
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

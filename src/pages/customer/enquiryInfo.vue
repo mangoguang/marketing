@@ -223,9 +223,14 @@ export default {
           return;
         }
         let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+          let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
           if(this.newCustomerInfo.remark!==''&&remarkReg.test(this.newCustomerInfo.remark)){
             this.newCustomerInfo.remark=this.newCustomerInfo.remark.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
             MessageBox.alert('客户描述不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.remark!==''&&!reg.test(this.newCustomerInfo.remark)){
+            MessageBox.alert('客户描述不支持特殊符号')
             return
           }
         this.saveData();

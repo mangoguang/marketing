@@ -275,10 +275,17 @@ export default {
             MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
             return
           }
+          
+          let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
           let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
           if(this.newCustomerInfo.remark!==''&&remarkReg.test(this.newCustomerInfo.remark)){
             this.newCustomerInfo.remark=this.changeStr(this.newCustomerInfo.remark)
             MessageBox.alert('客户描述不支持表情')
+            return
+          }
+          
+          if(this.newCustomerInfo.remark!==''&&!reg.test(this.newCustomerInfo.remark)){
+            MessageBox.alert('客户描述不支持特殊符号')
             return
           }
           if(this.newCustomerInfo.competingGoods!==''&&!dutyReg.test(this.newCustomerInfo.competingGoods)){
@@ -290,9 +297,17 @@ export default {
             MessageBox.alert('意向信息里备注不支持表情')
             return
           }
+          if(this.newCustomerInfo.remark2!==''&&!reg.test(this.newCustomerInfo.remark2)){
+            MessageBox.alert('意向信息里备注不支持特殊符号')
+            return
+          }
           if(this.newCustomerInfo.situation!==''&&remarkReg.test(this.newCustomerInfo.situation)){
             this.newCustomerInfo.situation=this.changeStr(this.newCustomerInfo.situation)
             MessageBox.alert('跟进情况不支持表情')
+            return
+          }
+           if(this.newCustomerInfo.situation!==''&&!reg.test(this.newCustomerInfo.situation)){
+            MessageBox.alert('跟进情况不支持特殊符号')
             return
           }
           if(this.newCustomerInfo.plan!==''&&remarkReg.test(this.newCustomerInfo.plan)){
@@ -300,6 +315,10 @@ export default {
             MessageBox.alert('下一步跟进计划不支持表情')
             return
           } 
+          if(this.newCustomerInfo.plan!==''&&!reg.test(this.newCustomerInfo.plan)){
+            MessageBox.alert('下一步跟进计划不支持特殊符号')
+            return
+          }
               let formdata = new FormData()
               //头像的formdata
               this.upLoadUrl? this.changeFormData(this.upLoadUrl,formdata,'dataFile') : ''
@@ -485,7 +504,7 @@ export default {
         qq:obj.qq,
         weChat: obj.weChat,
         duty: obj.duty,
-        remark: obj.remark&&obj.remark!==''?mango.textEncode(obj.remark):'',
+        remark: obj.remark,
         "orgId": obj.orgId,
         'address.province': obj.province,
         'address.city': obj.city,
@@ -506,15 +525,15 @@ export default {
         'opportunity.budget':obj.budget,    //预算
         'opportunity.depositPaid': obj.depositPaid,     //已缴定金
         'opportunity.argreeDiscount': parseFloat(obj.argreeDiscount)*10,    //协议折扣，例：80（百分之80折扣）
-        'opportunity.remark': obj.remark2&&obj.remark2!==''?mango.textEncode(obj.remark2):'',
+        'opportunity.remark': obj.remark2,
         'opportunity.urgency': obj.urgency || false,   //是否紧急
         'opportunity.level': obj.level || 'A',   //等级
         'record.source': obj.source2,
         'record.followDate': obj.followDate,
         'record.residentTime': obj.residentTime2,   //跟进时长
         'record.nextDate': obj.nextDate,
-        'record.situation': obj.situation&&obj.situation!==''?mango.textEncode(obj.situation):'',
-        'record.plan': obj.plan&&obj.plan!==''?mango.textEncode(obj.plan):''
+        'record.situation': obj.situation,
+        'record.plan': obj.plan
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

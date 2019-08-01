@@ -102,7 +102,7 @@ export default {
       indexModel.getAddress(id).then(res => {
         if(res.code===0){
           this.form.address=res.data.address;
-          this.form.remark=mango.textDecode(res.data.remark);
+          this.form.remark=res.data.remark;
           this.form.apartmentType=res.data.apartmentType;
           this.form.elevator=res.data.elevator==='Y'?'Y':'';
           this.form.country=res.data.country;
@@ -143,7 +143,7 @@ export default {
        console.log(':::', this.form);
        let obj={
           address:this.form.address,
-          remark:this.form.remark!==''?mango.textEncode(this.form.remark):'', 
+          remark:this.form.remark, 
           apartmentType:this.form.apartmentType,
           elevator:this.form.elevator,
           customerId:this.form.customerId,
@@ -199,6 +199,7 @@ export default {
        return false;
      }
       let addressReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+      let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
       if(!addressReg.test(this.form.address)){
         mango.tip('地址只能输入中英文或数字,不能包含空格')
         return false
@@ -209,9 +210,13 @@ export default {
        return false;
      }
      let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
-      if(remarkReg.test(this.form.remark)){
+      if(this.form.remark!==''&&remarkReg.test(this.form.remark)){
         this.form.remark = this.changeStr(this.form.remark)
         mango.tip('备注不支持表情')
+        return false
+      }
+      if(this.form.remark!==''&&!reg.test(this.form.remark)){
+        mango.tip('备注不支持特殊符号')
         return false
       }
      return true;

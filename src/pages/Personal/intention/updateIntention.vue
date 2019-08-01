@@ -383,7 +383,7 @@ export default {
           this.colorPrefName=res.data.colorPrefName==''?'':res.data.colorPrefName;
           this.form.colorPref=res.data.colorPref;
           this.form.deliverDate=res.data.deliverDate==''?'':res.data.deliverDate;
-          this.form.remark=mango.textDecode(res.data.remark);
+          this.form.remark=res.data.remark;
           this.form.budget=res.data.budget;
           this.form.depositPaid=res.data.depositPaid;
           this.form.argreeDiscount=res.data.argreeDiscount;
@@ -576,7 +576,7 @@ export default {
       'opportunity.budget':obj.budget,
       'opportunity.depositPaid':obj.depositPaid,
       'opportunity.argreeDiscount':obj.argreeDiscount,
-      'opportunity.remark':obj.remark!==''?mango.textEncode(obj.remark):'',
+      'opportunity.remark':obj.remark,
       'opportunity.urgency':obj.urgency,
       'opportunity.level':obj.level
       }
@@ -605,7 +605,7 @@ export default {
           }else{
               let obj={
                 opportunityId:this.form.oppId,
-                closeReason:mango.textEncode(this.failReason),
+                closeReason:this.failReason,
                 type:type
               }
               nobj=Object.assign({},obj);    

@@ -278,7 +278,7 @@ export default {
           this.form.competingGoods=res.data.competingGoods==''?'未收集':res.data.competingGoods;
           this.form.colorPrefName=res.data.colorPrefName==''?'未收集':res.data.colorPrefName;
           this.form.deliverDate=res.data.deliverDate==''?'未收集':res.data.deliverDate;
-          this.form.remark=res.data.remark==''?'未备注':mango.textDecode(res.data.remark);
+          this.form.remark=res.data.remark==''?'未备注':res.data.remark;
           this.budget=res.data.budget;
           this.depositPaid=res.data.depositPaid;
           this.argreeDiscount=res.data.argreeDiscount;
@@ -314,7 +314,7 @@ export default {
             },
             {
               title:'战败原因：',
-              value:mango.textDecode(res.data.closeReason)
+              value:res.data.closeReason
             }
           ];
           let addressId=res.data.addressId===''?'未收集':this.getAddress(res.data.addressId);
@@ -338,6 +338,8 @@ export default {
       this.isMsg=true;
     },
    layerUpdate(type){
+     let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+     let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
      if(type===''){
       mango.tip('请选择是否成单');
       return;
@@ -350,10 +352,16 @@ export default {
           }else if(this.failReason.length>300){
             mango.tip('流失原因不能超过300字');
             return;
+          }else if(this.failReason!==''&&remarkReg.test(this.failReason)){
+            mango.tip('流失原因不支持表情');
+            return;
+          }else if(this.failReason!==''&&!reg.test(this.failReason)){
+            mango.tip('流失原因不支持特殊符号');
+            return;
           }else{
               let obj={
                 opportunityId:this.oppId,
-                closeReason:mango.textEncode(this.failReason),
+                closeReason:this.failReason,
                 type:type
               }
               nobj=Object.assign({},obj);    
