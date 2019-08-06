@@ -127,7 +127,7 @@ export default {
       mergeBox:{
         tip:'',
         type:false,
-        btnNumbrella:2
+        btnNum:2
       },
       colorheight:'',
       botContentShow:true

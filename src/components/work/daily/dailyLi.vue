@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li @click="open">
     <strong>{{number}}</strong>
     <h5>{{title}}</h5>
   </li>
@@ -8,7 +8,12 @@
 <script>
 export default {
   name: 'dailyLi',
-  props: ['number', 'title']
+  props: ['number', 'title'],
+  methods:{
+    open(){
+      this.$emit('tips')
+    }
+  }
 }
 </script>
 

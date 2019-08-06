@@ -9,7 +9,6 @@
         @changeDateInterVal="changeDateInterVal" class="time" :key="status"/>
         <DailyUl
         :list="dailyList"  class="dailyUI"/>
-        <p>成交率=成交客户数/接待客户数</p>
       </div>
       
     </div>
