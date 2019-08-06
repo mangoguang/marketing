@@ -363,7 +363,7 @@ export default {
     },
     async checkPhone(){
       let check;
-       let phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/
+       let phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/
         if(!phoneReg.test(this.newCustomerInfo.phone)){
            MessageBox.alert('请填写正确的手机号')
            check=false

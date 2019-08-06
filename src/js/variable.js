@@ -140,7 +140,7 @@ let init = (function() {
 
     // 校验手机格式
     this.testPhone = (phone) => {
-      const phoneReg = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/
+      const phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/
       return phoneReg.test(phone)
     }
 
