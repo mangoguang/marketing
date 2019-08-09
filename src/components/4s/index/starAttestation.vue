@@ -1,16 +1,18 @@
 <!--  -->
 <template>
   <div>
-    <ContentBox class="wrapper" :title="'星级认证'">
-      <div class="iconBox-wrapper" >  
+    <ContentBox class="wrapper"
+                :title="'星级认证'">
+      <div class="iconBox-wrapper">
         <div class="icon-box">
-            <iconBox  :type="'gradeReport'"
-                      :iconData="data1"
-                      @click.native="handleClick(data1.link)"
-                      />
+          <iconBox v-for="item in iconList"
+                   :key="item.text"
+                   :type="'gradeReport'"
+                   :iconData="item"
+                   @click.native="handleClick(item.link)" />
         </div>
       </div>
-      
+
     </ContentBox>
   </div>
 </template>
@@ -19,22 +21,31 @@
 import ContentBox from './contentBox'
 import IconBox from './iconBox'
 export default {
-  components : {
+  components: {
     ContentBox,
     IconBox
   },
   data () {
     return {
-      data1: {
-        icon: './static/images/4s/atest.png',
-        bgIcon: './static/images/4s/starCheck.png',
-        text: '星级认证',
-        link: 'starAtest'
-      }
+      iconList: [
+        {
+          icon: './static/images/4s/atest.png',
+          bgIcon: './static/images/4s/starCheck.png',
+          text: '星级认证',
+          link: 'starAtest'
+        },
+        {
+          icon: './static/images/4s/star_re.png',
+          bgIcon: './static/images/4s/starResult.png',
+          text: '认证进度',
+          link: 'ApplyRecord'
+        }
+      ]
+
     };
   },
   methods: {
-    handleClick(linkName) {
+    handleClick (linkName) {
       this.$router.push({
         name: linkName
       })
@@ -44,8 +55,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 .wrapper {
-    margin: 0 auto;
-    margin: 4.4vw;
+  margin: 0 auto;
+  margin: 4.4vw;
   .iconBox-wrapper {
     width: 100%;
     box-sizing: border-box;
@@ -56,6 +67,4 @@ export default {
     align-items: center;
   }
 }
-
- 
 </style>

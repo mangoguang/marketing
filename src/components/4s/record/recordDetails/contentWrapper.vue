@@ -1,9 +1,10 @@
 <!--  -->
 <template>
   <ul class="recordContent">
-    <rec-conten 
-                v-for="(item, index) in list" :key="item + index"
-                @click.native="toCheckDetails(index)"/>
+    <rec-conten v-for="(item, index) in checkCategories"
+                :key="item + index"
+                @click.native="toCheckDetails(item)"
+                :item="item" />
   </ul>
 </template>
 
@@ -13,23 +14,24 @@ export default {
   components: {
     RecConten
   },
+  props: ['checkCategories'],
   data () {
     return {
-      list: [1,2,3,4,5]
+      list: [1, 2, 3, 4, 5]
     };
   },
   methods: {
-    toCheckDetails(index) {
+    toCheckDetails (item) {
+      let query = this.$route.query
+      query.name = item.name
+      query.categoryId = item.categoryId
       this.$router.push({
         name: 'itemDetails',
-        params: {
-          index: '123'
-        }
+        query
       })
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-
 </style>

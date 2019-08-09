@@ -5,14 +5,13 @@
     <StoreSelect :shops="shops"
                  @onGetStoreId="onGetStoreId" />
     <!-- 日常检查 -->
-    <DailyCheck :categories="categories"
-                v-permission="['门店店长']" />
+    <DailyCheck :shopId="shopId" />
     <!--星级认证-->
-    <egg-star-attestation v-permission="['经销商']" />
+    <starAttestation />
     <!-- 评分报表 -->
     <GradeReport :type="'gradeReport'" />
     <!-- 配置权限 -->
-    <ModuleConfig />
+    <!-- <ModuleConfig /> -->
   </div>
 </template>
 
@@ -22,9 +21,10 @@ import StoreSelect from '../../../components/4s/index/storeSelect'
 import DailyCheck from '@/components/4s/index/dailyCheck'
 import GradeReport from '@/components/4s/index/gradeReport'
 import ModuleConfig from '@/components/4s/index/moduleConfig'
-import eggStarAttestation from '@/components/4s/index/starAttestation'
-import { gradeHome, guideStar } from '@/api/4s'
+import starAttestation from '@/components/4s/index/starAttestation'
+import { gradeShops } from '@/api/4s'
 import { Toast } from 'mint-ui'
+
 import { mapMutations } from 'vuex'
 export default {
   components: {
@@ -33,22 +33,23 @@ export default {
     DailyCheck,
     GradeReport,
     ModuleConfig,
-    eggStarAttestation
+    starAttestation
   },
   data () {
     return {
       soreClass: 5,
       shops: [{ name: '' }],
-      categories: []
+      categories: [],
+      shopId: 0
     }
   },
   async created () {
-    this.initData()
+    this._initData()
   },
   methods: {
     ...mapMutations(['setShopId']),
-    async  initData () {
-      let { code, msg, shops, categories } = await gradeHome()
+    async  _initData () {
+      let { code, msg, shops } = await gradeShops()
       if (code != 0) {
         Toast({
           message: msg,
@@ -58,10 +59,14 @@ export default {
         return
       }
       this.shops = shops
-      this.categories = categories
+      this.shopId = shops[0].id
+      this.setShopId(shops[0].id)
     },
+
     onGetStoreId (val) {
       this.setShopId(val)
+      this.shopId = val
+
     }
   }
 }

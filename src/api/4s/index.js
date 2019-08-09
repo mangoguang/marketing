@@ -3,9 +3,12 @@ import {
 } from '@/Request/request'
 import mango from '@/js/'
 
+import {
+  http, //带token
+  httpDef
+} from './http'
+
 const request = new Request()
-
-
 
 //获取星级
 export const userinfo = params => {
@@ -22,18 +25,192 @@ export const guideStar = params => {
 }
 
 /**
- *  首页 - 店长（导购）获取所有一级分类、所有门店、当前门店星级
+ *   首页 - 店长（导购）获取门店列表（username:19040049）
  * @param {*} params 
  */
-export const gradeHome = params => {
-  return mango.getAjax('/v2/api/cert/grade/home', params)
+export const gradeShops = params => {
+  return http({
+    url: '/v2/api/cert/grade/shops',
+    method: 'get',
+    params
+  })
+}
+
+//店长（导购）获取一级和二级评分分类（username:19040049）
+export const gradeCategories = params => {
+  return http({
+    url: '/v2/api/cert/grade/categories',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ *  3 店长（导购）通过二级分类id获取三级评分分类及其评分细项（username:19040049）
+ * @param {*} params 
+ */
+export const gradeSecondcategories = params => {
+  return http({
+    url: '/v2/api/cert/grade/subcategories',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ *  4 上传视频或图片
+ * @param {*} params 
+ */
+export const uploadFile = params => {
+  return http({
+    url: '/upload/file',
+    method: 'post',
+    params
+  }, true)
+}
+
+/**
+ *  5 店长（导购）提交打分数据（username:19040049）
+ * @param {*} params 
+ */
+export const gradeSubmit = params => {
+  return httpDef.post('/v2/api/cert/grade/submit',
+    params, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+}
+
+/**
+ *  app - 经销商申请认证列表
+ * @param {*} params 
+ */
+export const distributorList = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/list',
+    params
+  })
+}
+
+/**
+ *  app - 发起申请
+ * @param {*} params 
+ */
+export const distributorApply = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/apply',
+    params
+  })
 }
 
 
 /**
- *  店长（导购）通过一级分类获取二级评分分类
+ *  app - 经销商申请记录列表
  * @param {*} params 
  */
-export const secondcategories = params => {
-  return mango.getAjax('/v2/api/cert/grade/secondcategories', params)
+export const distributorApplys = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/logList',
+    params
+  })
+}
+
+
+/**
+ *  app - 撤销申请
+ * @param {*} params 
+ */
+export const distributorCancel = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/cancel',
+    params
+  })
+}
+
+
+/**
+ *  5 检查记录 - 列表
+ * @param {*} params 
+ */
+export const distributorshops = params => {
+  return http({
+    url: '/v2/api/cert/checklog/distributorshops',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ *  2  督导获取门店历史检查记录（username:19040139）
+ * @param {*} params 
+ */
+export const checklogs = params => {
+  return http({
+    url: '/v2/api/cert/checklog/checklogs',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 6 检查记录 - 评星结果
+ * @param {*} params 
+ */
+export const resultList = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/resultList',
+    method: 'post',
+    params
+  })
+}
+
+/**
+ * 获取门店历史记录一级分类列表（username:19040139）
+ * @param {*} params 
+ */
+export const checkcategories = params => {
+  return http({
+    url: '/v2/api/cert/checklog/checkcategories',
+    method: 'get',
+    params
+  })
+}
+
+
+/**
+ * 获取门店详细星级评分（username:19040139）
+ * @param {*} params 
+ */
+export const checkloginfo = params => {
+  return http({
+    url: '/v2/api/cert/checklog/checkloginfo',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 获取评分标准项列表（username:19040139）
+ * @param {*} params 
+ */
+export const checklogStandards = params => {
+  return http({
+    url: '/v2/api/cert/checklog/standards',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 获取评分标准项扣分明细（username:19040139）
+ * @param {*} params 
+ */
+export const checklogStandardinfo = params => {
+  return http({
+    url: '/v2/api/cert/checklog/standardinfo',
+    method: 'get',
+    params
+  })
 }

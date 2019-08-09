@@ -1,8 +1,11 @@
 <!--  -->
 <template>
-  <div class="record_header" :style="{'margin-top':`${top}vw`}">
-    <div class="back_icon" @click="goBack">
-      <img src="../../../assets/imgs/4s/backicon.png" alt="">
+  <div class="record_header"
+       :style="{'margin-top':`${top}vw`}">
+    <div class="back_icon"
+         @click="goBack">
+      <img src="../../../assets/imgs/4s/backicon.png"
+           alt="">
     </div>
     <div class="title">{{title}}</div>
     <slot></slot>
@@ -17,14 +20,14 @@ export default {
       top: ''
     };
   },
-   mounted(){
+  mounted () {
     this.isIPhoneX()
   },
-  methods:{
-    goBack() {
+  methods: {
+    goBack () {
       this.$router.go(-1)
     },
-    isIPhoneX() {
+    isIPhoneX () {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
         this.top = "-5.86";
@@ -35,6 +38,7 @@ export default {
 </script>
 <style lang='scss' scoped>
 .record_header {
+  position: relative;
   background: #007aff;
   width: 100vw;
   height: 35.33vw;

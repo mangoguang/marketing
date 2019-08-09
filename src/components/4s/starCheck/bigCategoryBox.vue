@@ -2,9 +2,7 @@
 <template>
   <div class="bigCategoryBox">
     <p>{{text}}</p>
-    <button
-    :class="{haveDon: status}"
-    >{{status ? '已评分' : '去评分'}}</button>
+    <button :class="{haveDon: status}">{{status ? '已评分' : '去评分'}}</button>
   </div>
 </template>
 
@@ -32,30 +30,37 @@ export default {
   border-radius: 2vw;
   padding: 1vw 3vw;
   box-sizing: border-box;
-  margin: 4vw 0 0 4vw;
-  p{
+  margin-right: 11px;
+  margin-bottom: 11px;
+  &:nth-child(3n) {
+    margin-right: 0;
+  }
+  p {
     font-size: 14px;
     color: #363636;
     line-height: 1.6em;
     text-align: center;
     height: 5.876vw;
   }
-  button{
+  button {
     width: 16vw;
     height: 5.867vw;
     border-radius: 2.933vw;
-    color: #007AFF;
+    color: #007aff;
     margin: 0 auto;
     padding-right: 4.4vw;
-    background: url(../../../assets/imgs/4s/starCheck/arrowR.png) no-repeat, #b2d7ff;
+    background: url(../../../assets/imgs/4s/starCheck/arrowR.png) no-repeat,
+      #b2d7ff;
     background-size: 1.6vw auto;
     background-position: right 2vw top 50%;
+    font-size: 12px;
   }
-  button.haveDon{
-    color: #4CD964;
+  button.haveDon {
+    color: #4cd964;
     padding-left: 4.4vw;
     padding-right: 0;
-    background: url(../../../assets/imgs/4s/starCheck/yes.png) no-repeat, #cff4d2;
+    background: url(../../../assets/imgs/4s/starCheck/yes.png) no-repeat,
+      #cff4d2;
     background-size: 3.2vw auto;
     background-position: 1.6vw center;
   }

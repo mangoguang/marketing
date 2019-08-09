@@ -4,17 +4,16 @@
     <ContentBox class="wrapper"
                 :title="'日常检查'">
       <div class="iconBox-wrapper">
-        <iconBox :type="'dailyCheck'"
-                 v-for="(item, index) in categories"
-                 :storeClass="5"
+        <!-- <iconBox :type="'dailyCheck'"
+                 v-for="(item, index) in 5"
+                 :storeClass="categories.length"
                  :index="index"
                  :key="index"
-                 @click.native="$router.push({path:'/starCheck',query:{level:index,name:item.name,id:item.id}})" />
+                 @click.native="bindNavigator(index)" /> -->
         <iconBox :type="'gradeReport'"
-                 :iconData="data1"
-                 :hasNew="'news'"
-                 v-permission="['督导']"
-                 @click.native="handleClick(data1.link)" />
+                 :iconData="data"
+                 :hasNew="'tip'"
+                 @click.native="handleClick(data.link)" />
       </div>
     </ContentBox>
   </div>
@@ -23,8 +22,11 @@
 <script>
 import ContentBox from './contentBox'
 import iconBox from './iconBox'
+
+
+
 export default {
-  props: ['categories'],
+  props: ['shopId'],
   components: {
     ContentBox,
     iconBox
@@ -32,7 +34,7 @@ export default {
   data () {
     return {
       storeClass: 2,
-      data1: {
+      data: {
         icon: './static/images/4s/star_re.png',
         bgIcon: './static/images/4s/starCheck.png',
         text: '星级检查',
@@ -40,11 +42,19 @@ export default {
       }
     }
   },
+
   methods: {
     handleClick (linkName) {
-      this.$router.push({
-        path: '/starCheck'
-      })
+      let positionType = JSON.parse(localStorage.getItem('ajaxData')).positionList.positionType
+      if (this.$route.query.dudao) {
+        //督导
+        this.$router.push({
+          path: '/leader-check'
+        })
+        return
+      }
+      this.$router.push({ path: '/starCheck', query: { shopId: this.shopId } })
+
     }
   }
 }

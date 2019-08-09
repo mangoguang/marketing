@@ -1,25 +1,26 @@
 <!--  -->
 <template>
   <div class="selectPic">
-    <swiper :options="swiperOption" ref="mySwiper">
-      <swiper-slide v-for="(item,index) in list" :key="index"
-                    :style="{backgroundColor:item.color}"
-                    >
-                    <div>
-                         <img  v-if='item.type=== "image"'
-                              :preview='isPreview' :preview-text="item.color"
-                              :src="item.text" alt=""
-                              >
-                          <video-player v-else
-                                        class="video-player vjs-custom-skin player"
-                                        ref="myVideoPlayer"
-                                        :playsinline="true"
-                                        :options="playerOptions"
-                                        @play="onPlayerPlay($event)"
-                                        >
-                          </video-player>
-                    </div>
-    </swiper-slide>
+    <swiper :options="swiperOption"
+            ref="mySwiper">
+      <swiper-slide v-for="(item,index) in list"
+                    :key="index"
+                    :style="{backgroundColor:item.color}">
+        <div class="container">
+          <img v-if='item.type=== "image"'
+               :preview='isPreview'
+               :preview-text="item.color"
+               :src="item.text"
+               alt="">
+          <video-player v-else
+                        class="video-player vjs-custom-skin player"
+                        ref="myVideoPlayer"
+                        :playsinline="true"
+                        :options="playerOptions"
+                        @play="onPlayerPlay($event)">
+          </video-player>
+        </div>
+      </swiper-slide>
     </swiper>
   </div>
 </template>
@@ -42,13 +43,13 @@ export default {
       isPreview: true,        //能否全屏
       swiperOption: {
         slideToClickedSlide: true,
-        threshold : 50, //拖动的临界值，大于才能被拖动
+        threshold: 50, //拖动的临界值，大于才能被拖动
         lazy: {				//图片懒加载
           loadPrevNext: true,
           oadPrevNextAmount: 1
         },
-        slideActiveClass : 'swiper-slide-active',
-        preventClicksPropagation : false,//拖动释放不会触发click
+        slideActiveClass: 'swiper-slide-active',
+        preventClicksPropagation: false,//拖动释放不会触发click
         effect: 'coverflow',
         grabCursor: true,
         centeredSlides: true,
@@ -58,7 +59,7 @@ export default {
           stretch: 40,
           depth: 100,
           modifier: 1,
-          slideShadows : true
+          slideShadows: true
         },
         // loop : true,
         on: {
@@ -71,27 +72,27 @@ export default {
             //   vm.$previewRefresh()
             // }
           },
-          slideChange: function() {
+          slideChange: function () {
             vm.handleClickSlide(this.realIndex);
           }
         }
       },
       list: [{
-          text: './static/images/4s/1.png',
-          color: 'pink',
-          type: 'image'
-        },{
-          text: './static/images/4s/1.png',
-          color: '#ccc',
-          type: 'vedio'
-        },{
-          text: './static/images/4s/1.png',
-          color: '#007aff',
-          type: 'image'
-        },{
-          text: './static/images/4s/1.png',
-          color: '#666',
-          type: 'image'
+        text: './static/images/4s/1.png',
+        color: 'pink',
+        type: 'image'
+      }, {
+        text: './static/images/4s/1.png',
+        color: '#ccc',
+        type: 'vedio'
+      }, {
+        text: './static/images/4s/1.png',
+        color: '#007aff',
+        type: 'image'
+      }, {
+        text: './static/images/4s/1.png',
+        color: '#666',
+        type: 'image'
       }],
       playerOptions: {
         // playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
@@ -116,66 +117,96 @@ export default {
           fullscreenToggle: true  //全屏按钮
         }
       }
-    
+
     }
   },
   computed: {
-    player() {
+    player () {
       return this.$refs.videoPlayer.player
     },
-    swiper() {
+    swiper () {
       return this.$refs.mySwiper.swiper
     }
   },
-  mounted() {
+  mounted () {
     //如果图片是异步生成的，在图片数据更新后调用：
     // this.$previewRefresh()
     vm = this
   },
-  methods :{
+  methods: {
     //当前图片的索引
-    handleClickSlide(index) {
+    handleClickSlide (index) {
       this.activeIndex = index
       console.log('当前点击索引：', index);
-    } ,
+    },
     //点击播放的时候全屏
-    onPlayerPlay(player) {
-      if(!player.isFullscreen()){ 
-        player.requestFullscreen(); 
-        player.isFullscreen(true); 
+    onPlayerPlay (player) {
+      if (!player.isFullscreen()) {
+        player.requestFullscreen();
+        player.isFullscreen(true);
       }
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-  .selectPic {
-    width: 100vw;
-    height: 92.6vw;
-    padding: 12.5vw;
-    box-sizing: border-box;
-  }
-  .swiper-slide {
-    background-position: center;
-    background-size: cover;
-    width: 52.1vw;
-    height: 69vw;
-    opacity: 0.5;
+.selectPic {
+  width: 100vw;
+  height: 92.6vw;
+  padding: 12.5vw;
+  box-sizing: border-box;
+}
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 52.1vw;
+  height: 260px;
+  opacity: 0.5;
+  border-radius: 1.3vw;
+
+  .container {
+    display: flex;
+    align-items: center;
+    height: 260px;
+    overflow: hidden;
     border-radius: 1.3vw;
+    position: relative;
     img {
       width: 100%;
-      height: 100%;
-      border-radius: 1.3vw;
+      // height: 100%;
+      // border-radius: 1.3vw;
+      display: block;
     }
   }
-  .swiper-slide-active {
-    opacity: 1;
-    width: 52.1vw;
-    height: 70vw;
-  }
-  .player {
-    background-color: #efefef;
-    width: 100%;
-    height: 100%;
-  }
+}
+/deep/ .vjs-big-play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/deep/ .video-js .vjs-big-play-button .vjs-icon-placeholder:before,
+.video-js .vjs-modal-dialog,
+.vjs-button > .vjs-icon-placeholder:before,
+.vjs-modal-dialog .vjs-modal-dialog-content {
+  display: inline-block;
+  width: auto;
+  height: auto;
+}
+.swiper-slide-active {
+  opacity: 1;
+  width: 52.1vw;
+  height: 70vw;
+}
+.player {
+  background-color: #efefef;
+  width: 100%;
+  height: 100%;
+}
 </style>

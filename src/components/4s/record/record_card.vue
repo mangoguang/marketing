@@ -13,18 +13,18 @@
         <span>评分</span>
       </div>
 
-      <li class="content_li" 
-        v-for="(item,index) in list" :key='item + index'
-        @click="toDetails(item)">
-        <span style="color: #57452c">{{item.star}}</span>
-        <span>{{item.beginDate}}</span>
-        <span>{{item.endDate}}</span>
-        <span :style='item.score === "未完成"? 
-              styleSheets.unfinish : item.score === "未评"? 
-              styleSheets.unscore : item.score >80? 
-              styleSheets.score:styleSheets.downscore'>
-              {{item.score}}
-              <img class="imgIcon" src="../../../assets/imgs/4s/arrow.png" alt="">
+      <li class="content_li"
+          v-for="(item,index) in checkLogs"
+          :key='item + index'
+          @click="toDetails(item)">
+        <span style="color: #57452c">{{item.name}}</span>
+        <span>{{item.sTime}}</span>
+        <span>{{item.eTime}}</span>
+        <span :class="item.pass==1?'normal':'fail'">
+          {{item.passVal}}
+          <img class="imgIcon"
+               src="../../../assets/imgs/4s/arrow.png"
+               alt="">
         </span>
         <!-- <span>
         </span> -->
@@ -40,69 +40,11 @@
 
 <script>
 export default {
+  props: ['checkLogs'],
   data () {
     return {
       num: 2,
-      list: [{
-          star:'四星检查',
-          beginDate: '2018.04.20',
-          endDate: '2018.04.20',
-          score: '未完成'
-        },{
-          star:'三星检查',
-
-          beginDate: '2018.04.20',
-          endDate: '2018.04.20',
-          score: '未评'
-        },{
-          star:'四星检查',
-          beginDate: '2018.04.20',
-          endDate: '2018.04.20',
-          score: '88'
-        },
-        {
-          star:'三星检查',
-          beginDate: '2018.04.20',
-          endDate: '2018.04.20',
-          score: '78'
-        },
-        {
-          star:'二星检查',
-          beginDate: '2018.04.20',
-          endDate: '2018.04.20',
-          score: '28'
-        },
-        {
-          star:'四星检查',
-          beginDate: '2018.04.20',
-          endDate: '2018.04.20',
-          score: '88'
-        },
-        {
-          star:'三星检查',
-          beginDate: '2018.04.20',
-          endDate: '2018.04.20',
-          score: '88'
-        }
-      ],
       showList: [],
-      styleSheets: {
-        unfinish: {
-          color: '#fc0000'
-        },
-        unscore: {
-          paddingLeft: '3vw',
-          color: '#fc0000'
-        },
-        score: {
-          color: '#007aff',
-          paddingLeft: '5vw'
-        },
-        downscore: {
-          color: '#fc0000',
-          paddingLeft: '5vw'
-        }
-      },
       key: false,
       moreText: '点击更多',
       rotateDown: {
@@ -113,12 +55,12 @@ export default {
       }
     };
   },
-  created() {
+  created () {
     this.getInitList()
   },
   methods: {
     //初始展示的数据
-    getInitList() {
+    getInitList () {
       // const len = this.list && this.list.length
       // this.showList = len > 3 ? this.list.slice(0,3) : this.list
     },
@@ -129,11 +71,14 @@ export default {
     //   this.moreText = this.key? '点击收起' : '点击更多'
     // },
     //跳转记录详情
-    toDetails(item) {
+    toDetails (item) {
+      let { shopId, startTime, endTime } = item
       this.$router.push({
         name: 'recordDetails',
-        params: {
-          name: '123'
+        query: {
+          shopId,
+          startTime,
+          endTime
         }
       })
     }
@@ -143,8 +88,8 @@ export default {
 <style lang='scss' scoped>
 .record_card_wrapper {
   width: 100%;
-  box-shadow:0px 0px 1.33vw 0px rgba(204,204,204,0.6);
-  border-radius:2.66vw;
+  box-shadow: 0px 0px 1.33vw 0px rgba(204, 204, 204, 0.6);
+  border-radius: 2.66vw;
   box-sizing: border-box;
   padding: 2.4vw 1vw 1vw 1vw;
   background: #fff;
@@ -167,13 +112,13 @@ export default {
   .card_content {
     width: 100%;
     .bgcolor {
-      background:  #f8f8f8;
+      background: #f8f8f8;
       border-radius: 1.6vw;
     }
     .content_nav {
       font-size: 3.46vw;
       color: #999;
-      font-weight:500;
+      font-weight: 500;
       line-height: 8vw;
       display: flex;
       justify-content: space-around;
@@ -193,7 +138,7 @@ export default {
       margin-bottom: 1vw;
       box-sizing: border-box;
       &:nth-child(2n + 1) {
-        background:  #f8f8f8;
+        background: #f8f8f8;
         border-radius: 1.6vw;
       }
       .imgIcon {
@@ -201,6 +146,12 @@ export default {
         height: 1.86vw;
         margin-left: 2vw;
         // box-sizing: border-box;
+      }
+      .normal {
+        color: #007aff;
+      }
+      .fail {
+        color: #fc0000;
       }
     }
     .show_more {
