@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="content-list"
-         @click="bindSetLevelId(item.level)"
+         @click="bindSetLevelId(item.id)"
          v-for="(item) in categories"
          :key="item.id">
       <h2>{{item.name}}</h2>

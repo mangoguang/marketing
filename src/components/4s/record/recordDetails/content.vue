@@ -3,46 +3,50 @@
   <li class="rec_content border-bottom">
     <div class="left-box">
       <div class="now_score">
-        <span class="num" :style="{color: activeColor}">19</span>
+        <span class="num"
+              :style="{color: activeColor}">{{item.score}}</span>
         <span class="fen">分</span>
       </div>
-      <div class="all_score" :style="{border: `1px solid ${activeColor}`}">
-        <span :style="{color: activeColor}">总分26</span>
+      <div class="all_score"
+           :style="{border: `1px solid ${activeColor}`}">
+        <span :style="{color: activeColor}">总分{{item.total}}</span>
       </div>
     </div>
     <div class="center-box">
-      <h1 class="title">SI/VI应用规范及维护检查</h1>
+      <h1 class="title">{{item.name}}</h1>
       <ul class="details">
         <li>
           <span class="circle"></span>
-          <span>检查人: 陈小宝</span>
+          <span>检查人: {{item.inspector||'-'}}</span>
         </li>
         <li>
           <span class="circle"></span>
-          <span>检查时间: 2019-07-14</span>
+          <span>检查时间: {{item.inspectTime||'-'}}</span>
         </li>
       </ul>
     </div>
     <div class="right-box">
-      <img src="../../../../assets/imgs/4s/down.png" alt="">
+      <img src="../../../../assets/imgs/4s/down.png"
+           alt="">
     </div>
   </li>
 </template>
 
 <script>
 export default {
+  props: ['item'],
   data () {
     return {
       activeColor: ''
     };
   },
-  mounted() {
+  mounted () {
     this.getActiviColor()
   },
   methods: {
-    getActiviColor() {
+    getActiviColor () {
       const color = this.$route.query && this.$route.query.color
-      if(color) {
+      if (color) {
         this.activeColor = '#F88675'
       }
     }
@@ -77,7 +81,7 @@ export default {
       color: #007aff;
       font-size: 2.4vw;
       font-weight: 500;
-      border:1px solid #007aff;
+      border: 1px solid #007aff;
       border-radius: 0.8vw;
     }
   }
@@ -90,11 +94,11 @@ export default {
       font-weight: 500;
       white-space: nowrap;
       text-overflow: ellipsis;
-      overflow: hidden
+      overflow: hidden;
     }
     .details {
       box-sizing: border-box;
-      
+
       li {
         color: #666;
         font-size: 3.2vw;
@@ -113,14 +117,14 @@ export default {
     }
   }
   .right-box {
-    flex:0.06;
+    flex: 0.06;
     display: flex;
     align-items: center;
     justify-content: center;
     img {
       width: 2vw;
       height: 2vw;
-      transform: rotate(180deg)
+      transform: rotate(180deg);
     }
   }
 }

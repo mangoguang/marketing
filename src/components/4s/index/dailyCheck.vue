@@ -45,10 +45,16 @@ export default {
 
   methods: {
     handleClick (linkName) {
+      let positionType = JSON.parse(localStorage.getItem('ajaxData')).positionList.positionType
+      if (this.$route.query.dudao) {
+        //督导
+        this.$router.push({
+          path: '/leader-check'
+        })
+        return
+      }
       this.$router.push({ path: '/starCheck', query: { shopId: this.shopId } })
-      // this.$router.push({
-      //   path: '/leader-check'
-      // })
+
     }
   }
 }

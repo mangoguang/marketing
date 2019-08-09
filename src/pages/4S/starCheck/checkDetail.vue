@@ -102,10 +102,10 @@ export default {
   methods: {
     ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setdeductMarks']),
     bindSave () {
-      if (!this.textareaVal) {
-        Toast('填写扣分原因')
-        return
-      }
+      // if (!this.textareaVal) {
+      //   Toast('填写扣分原因')
+      //   return
+      // }
       let { rangeValue, textareaVal, picVal } = this
 
       let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]

@@ -134,10 +134,83 @@ export const distributorCancel = params => {
  *  5 检查记录 - 列表
  * @param {*} params 
  */
-export const checkList = params => {
+export const distributorshops = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/distributor/checkList',
+    url: '/v2/api/cert/checklog/distributorshops',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ *  2  督导获取门店历史检查记录（username:19040139）
+ * @param {*} params 
+ */
+export const checklogs = params => {
+  return http({
+    url: '/v2/api/cert/checklog/checklogs',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 6 检查记录 - 评星结果
+ * @param {*} params 
+ */
+export const resultList = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/distributor/resultList',
     method: 'post',
+    params
+  })
+}
+
+/**
+ * 获取门店历史记录一级分类列表（username:19040139）
+ * @param {*} params 
+ */
+export const checkcategories = params => {
+  return http({
+    url: '/v2/api/cert/checklog/checkcategories',
+    method: 'get',
+    params
+  })
+}
+
+
+/**
+ * 获取门店详细星级评分（username:19040139）
+ * @param {*} params 
+ */
+export const checkloginfo = params => {
+  return http({
+    url: '/v2/api/cert/checklog/checkloginfo',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 获取评分标准项列表（username:19040139）
+ * @param {*} params 
+ */
+export const checklogStandards = params => {
+  return http({
+    url: '/v2/api/cert/checklog/standards',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 获取评分标准项扣分明细（username:19040139）
+ * @param {*} params 
+ */
+export const checklogStandardinfo = params => {
+  return http({
+    url: '/v2/api/cert/checklog/standardinfo',
+    method: 'get',
     params
   })
 }

@@ -6,18 +6,25 @@
          :style="{'height':`${headerHeight}vw`}">
       <recordHeader :title="'检查记录'" />
     </div>
-    <div class="record_content"
+    <div v-if="dataList.length!=0"
+         class="record_content"
          :style="{'margin-top':`${top}vw,height:${height}`}">
-      <record-jxs-card />
+      <record-jxs-card v-for="(item,index) in dataList"
+                       :key="index"
+                       :item="item"
+                       @onToggleMore="onToggleMore"
+                       :parentIndex="index" />
     </div>
+    <div v-else
+         class="no-data">暂无数据</div>
   </div>
 </template>
 
 <script>
 import recordHeader from '../../../components/4s/record/header'
 import recordJxsCard from '../../../components/4s/record/recordJxs_card'
-
-import { checkList } from '@/api/4s'
+import { Toast } from 'mint-ui'
+import { distributorshops } from '@/api/4s'
 export default {
   components: {
     recordHeader,
@@ -27,7 +34,8 @@ export default {
     return {
       top: '',
       height: '',
-      headerHeight: ''
+      headerHeight: '',
+      dataList: [] //检查记录列表
     };
   },
   created () {
@@ -45,12 +53,29 @@ export default {
       }
     },
     async  _initData () {
-      let { code } = await checkList()
+      let { code, distributorShops, msg } = await distributorshops()
+      if (code != 0) {
+        Toast(msg)
+        return
+      }
+      distributorShops.map(item => {
+        item.more = false
+      })
+      this.dataList = distributorShops
+    },
+    onToggleMore (index) {
+      this.dataList[index].more = !this.dataList[index].more
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.no-data {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+  line-height: 50px;
+}
 .record {
   background: #f8f8f8;
   height: 100vh;

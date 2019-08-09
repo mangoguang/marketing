@@ -1,8 +1,9 @@
 <!--  -->
 <template>
   <ul class="starNav_wapper">
-    <li class="starNav_title" 
-        v-for="(item,index) in list" :key='item + index'
+    <li class="starNav_title"
+        v-for="(item,index) in list"
+        :key='item + index'
         @click="selectStar(index)"
         :style="index === activeStar? activeColor : ''">
       <span>{{ item }}</span>
@@ -15,7 +16,7 @@ export default {
   props: ['star'],
   data () {
     return {
-      list: ['全部','及格','不及格'],
+      list: ['全部', '及格', '不及格'],
       activeStar: 0,
       timeoutId: null,
       activeColor: {
@@ -23,36 +24,36 @@ export default {
       }
     };
   },
-  created() {
+  created () {
     this.setActivityColor()
   },
   methods: {
     //设置颜色
-    setActivityColor() {
-      const color = this.$route.query && this.$route.query.color 
-      if(color) {
+    setActivityColor () {
+      const color = this.$route.query && this.$route.query.color
+      if (color) {
         this.activeColor = {
           color
         }
       }
     },
     //点击切换
-    selectStar(index) {
-      if(this.activeStar === index) {
+    selectStar (index) {
+      if (this.activeStar === index) {
         return
       }
       this.activeStar = index
       this.processor(index)   //防抖
     },
-    processor(index) {
-      clearTimeout(this.timeoutId); 
-      this.timeoutId = setTimeout(() => { 
+    processor (index) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = setTimeout(() => {
         this.performProcessiong(index);
-      },500) 
+      }, 500)
     },
     //真正要执行的代码
-    performProcessiong(index) {
-      this.$emit('filterVal',this.list[index])
+    performProcessiong (index) {
+      this.$emit('filterVal', this.list[index])
     }
   }
 }

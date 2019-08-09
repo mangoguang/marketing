@@ -61,6 +61,8 @@ axios.interceptors.response.use(
       router.push({
         path: '/Login'
       })
+    } else {
+      Toast('请求失败，请检查网络')
     }
     return Promise.reject(error)
   }

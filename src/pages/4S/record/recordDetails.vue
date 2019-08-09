@@ -1,26 +1,31 @@
 <!--  -->
 <template>
-  <div class="details_wrapper" :style="{'margin-top':`${top}vw`}">
-    <div class="details_header" :style="{'height':`${headerHeight}vw`}">
+  <div class="details_wrapper"
+       :style="{'margin-top':`${top}vw`}">
+    <div class="details_header"
+         :style="{'height':`${headerHeight}vw`}">
       <star-header />
-      <star-nav class="star_nav" :style="{'top':`${starTop}vw`}"
-                :star='3'
-                @changeStar='changeStar'/>
+      <star-nav class="star_nav"
+                :starList='starList'
+                @changeStar='changeStar' />
     </div>
-    <div class="details_content" :style="{'margin-top':`${top}vw,height:${height}`}">
-      <circle-view  :starData="starData"/>
+    <div class="details_content"
+         :style="{'margin-top':`${top}vw,height:${height}`}">
+      <circle-view :starData="starData"
+                   :score="score"
+                   :cycle="cycle" />
       <div class="line"></div>
-      <record-content />
+      <record-content :checkCategories="checkCategories" />
     </div>
   </div>
 </template>
 
 <script>
-import starHeader from '../../../components/4s/record/recordDetails/header'
-import starNav from '../../../components/4s/record/recordDetails/starNav'
-import CircleView from '../../../components/4s/record/recordDetails/CircleView'
-import recordContent from '../../../components/4s/record/recordDetails/contentWrapper'
-
+import starHeader from '@/components/4s/record/recordDetails/header'
+import starNav from '@/components/4s/record/recordDetails/starNav'
+import CircleView from '@/components/4s/record/recordDetails/CircleView'
+import recordContent from '@/components/4s/record/recordDetails/contentWrapper'
+import { checkcategories, checkloginfo } from '@/api/4s'
 export default {
   components: {
     starHeader,
@@ -34,19 +39,43 @@ export default {
       height: '',
       headerHeight: '',
       starTop: '',
-      starData: '三星'
+      starData: '',
+      starList: [],
+      score: 0,
+      cycle: 0,
+      checkCategories: []
     };
   },
-  mounted(){
+  created () {
+    let params = this.$route.query
+
+    this._initData(params)
+  },
+  mounted () {
     this.isIPhoneX()
   },
-  methods:{
-    //选择星级  1星不可选
-    changeStar(val) {
-      this.starData = val
-      console.log(val)
+  methods: {
+    async  _getCheckLogInfo (params) {
+      let { code, msg, checkLogInfo } = await checkloginfo(params)
+      this.score = checkLogInfo.score
+      this.cycle = checkLogInfo.cycle
+      this.checkCategories = checkLogInfo.checkCategories
     },
-    isIPhoneX() {
+    async   _initData (params) {
+      let { code, msg, checkCategories } = await checkcategories(params)
+      checkCategories.map(item => {
+        item.name = item.name.replace('检查', '')
+      })
+      this.starList = checkCategories
+      params.levelId = checkCategories[0].levelId
+      this.starData = checkCategories[0].name
+      this._getCheckLogInfo(params)
+    },
+    //选择星级  1星不可选
+    changeStar (item) {
+      this.starData = item.name
+    },
+    isIPhoneX () {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
         this.top = "-5.86";
