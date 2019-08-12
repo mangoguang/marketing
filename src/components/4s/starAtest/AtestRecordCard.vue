@@ -12,7 +12,8 @@
                  :bottomDistance="30">
       <div class="atest_record_card"
            v-for="(item,index) in comDataList"
-           :key="index">
+           :key="index"
+           @click="bindApproveFlowInfo(item.id)">
         <div class="header">
           <div class="via">
             <img src="../../../assets/imgs/4s/via.png"
@@ -29,28 +30,28 @@
         <div class="status">
           <p class="turnBack"
              v-if="item.status==1"
-             @click="handleBackout(item.id)">撤销</p>
+             @click.stop="handleBackout(item.id)">撤销</p>
           <p class="pass"
-             :class="{'red':item.status==2,'ok':item.status==7}">{{item.statusString}}</p>
+             :class="{'red':item.status==2||item.status==3||item.status==6,'ok':item.status==7}">{{item.statusString}}</p>
         </div>
         <div class="score_wrapper border-bottom">
           <div class="score_box">
             <div class="wrapper">
               <span class="text">门店评分：</span>
-              <span class="score">82</span>
+              <span class="score">{{item.scoreShop||'-'}}</span>
             </div>
             <div class="wrapper">
               <span class="text">区域评分：</span>
-              <span class="score">82</span>
+              <span class="score">{{item.scoreregion||'-'}}</span>
             </div>
             <div class="wrapper">
               <span class="text">4s评分：</span>
-              <span class="score">82</span>
+              <span class="score">{{item.scorerCertifition||'-'}}</span>
             </div>
           </div>
           <div class="score_box"
                v-if="item.status==2">
-            <span class="text">退回原因：不符合规范</span>
+            <span class="text">{{item.remark||'-'}}</span>
           </div>
         </div>
       </div>
@@ -58,24 +59,31 @@
     <div class="no-data"
          v-if="noData">暂无数据</div>
     <TipsBox @getTipsVal="getTipsVal"
+             @handleCancle="handleCancle"
              v-show="tipsStatus"
              :tipsData="tipsData" />
+    <node-card v-if="showNodeCard"
+               :cofirmList="cofirmList"
+               @onNodeCardClose="showNodeCard=false" />
   </div>
 </template>
 
 <script>
 import AtestFilter from '@/components/4s/starAtest/AtestFilter'
 import TipsBox from '@/components/4s/tipsBox/tipsBox'
+import NodeCard from '@/components/4s/judgeStar/node_card'
 import { Loadmore, Toast } from 'mint-ui';
 import Vue from 'vue'
 Vue.component(Loadmore.name, Loadmore);
-import { distributorApplys, distributorCancel } from '@/api/4s'
+import { distributorApplys, distributorCancel, getApproveFlowInfo } from '@/api/4s'
 import { parseTime, geMonthLastDay } from '@/utils/tools.js'
+
 
 export default {
   components: {
     AtestFilter,
-    TipsBox
+    TipsBox,
+    NodeCard
   },
   data () {
     return {
@@ -85,7 +93,7 @@ export default {
         page: 1,
         limit: 10,
         starLevel: 1,
-        status: 1,
+        // status: 1,
         startDate: parseTime(new Date(), '{y}-{m}') + '-01',
         endDate: parseTime(geMonthLastDay(), '{y}-{m}-{d}'),
         sort: 'desc'
@@ -99,7 +107,10 @@ export default {
         title: '提示',
         btn: 'confrim',
         content: '今日撤销已达到三次上限，无法再次操作撤销'
-      }
+      },
+      showNodeCard: false, //认证进度弹窗
+      cofirmList: []
+
     };
   },
   created () {
@@ -118,17 +129,36 @@ export default {
     }
   },
   methods: {
-    getTipsVal () {
+    async   bindApproveFlowInfo (id) {
+      let { code, data } = await getApproveFlowInfo({ qualificationId: id })
+      let cofirmList = Object.keys(data).map(key => data[key])
+      this.cofirmList = cofirmList
+      this.showNodeCard = true
+    },
+    async  getTipsVal () {
+      this.tipsStatus = !this.tipsStatus
+      if (this.tipsData.btn == 'cancel') {
+        let { code, msg, data } = await distributorCancel({ id })
+        // if (code != 0) {
+        //   this.tipsStatus = !this.tipsStatus
+        //   return
+        // }
+        Toast(msg)
+      }
+    },
+    handleCancle () {
       this.tipsStatus = !this.tipsStatus
     },
     //撤销申请
     async  handleBackout (id) {
-      let { code, msg, data } = await distributorCancel({ id })
-      if (code != 0) {
-        this.tipsStatus = !this.tipsStatus
-        return
+      this.tipsData = { //弹窗内容
+        imgUrl: './static/images/4s/warn.png',
+        title: '撤销',
+        btn: 'cancle',
+        content: '撤销申请后，需重新填写资料申请 《星级认证》，多次重复操作，系统将 限制时间申请，请谨慎操作。 是否确定撤销？'
       }
-      Toast(msg)
+      this.tipsStatus = !this.tipsStatus
+
     },
     //排序
     onDesc (val) {
@@ -141,9 +171,9 @@ export default {
         page: 1,
         limit: 10,
         starLevel: 1,
-        status: 1,
-        startDate: '2019-06-01',
-        endDate: '2019-07-30',
+        // status: 1,
+        startDate: parseTime(new Date(), '{y}-{m}') + '-01',
+        endDate: parseTime(geMonthLastDay(), '{y}-{m}-{d}'),
         sort: 'desc'
       }
       this._initData(this.params)
@@ -167,6 +197,7 @@ export default {
     loadTop () {
       this.params.page = 1;
       this._initData(this.params)
+      this.allLoaded = false;
       this.$refs.loadmore.onTopLoaded();
     },
     //下拉加载更多
@@ -181,16 +212,28 @@ export default {
       let { data } = await distributorApplys(params)
       if (data.totalPage == 1) {
         this.allLoaded = true
+
       }
-      this.dataList = data.list
+      if (params.page > 1) {
+        this.dataList = this.dataList.concat(data.list)
+      } else {
+        this.dataList = data.list
+      }
+
       if (params.page == 1 && data.list.length == 0) {
         this.noData = true
+      } else {
+        this.noData = false
       }
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.apply-list {
+  overflow: hidden;
+  padding-top: 44px;
+}
 .no-data {
   text-align: center;
   font-size: 12px;

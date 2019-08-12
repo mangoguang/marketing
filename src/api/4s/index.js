@@ -214,3 +214,16 @@ export const checklogStandardinfo = params => {
     params
   })
 }
+
+
+/**
+ * app - 评星情况 -  进度弹框，认证进度
+ * @param {*} params 
+ */
+export const getApproveFlowInfo = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/getApproveFlowInfo',
+    method: 'get',
+    params
+  })
+}

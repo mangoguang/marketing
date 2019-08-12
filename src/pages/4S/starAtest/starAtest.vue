@@ -3,7 +3,8 @@
     <AtestHeader title="申请认证"
                  @onSearch="onSearch" />
     <div class="content">
-      <AtestCard @getMeg="getMeg" />
+      <AtestCard @getMeg="getMeg"
+                 ref="atestcard" />
     </div>
 
   </div>
@@ -30,7 +31,7 @@ export default {
   },
   methods: {
     onSearch (searchVal) {
-
+      this.$refs.atestcard._initData(1, searchVal)
     },
     //对接人信息
     getMeg (val) {
