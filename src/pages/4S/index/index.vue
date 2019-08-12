@@ -58,9 +58,12 @@ export default {
         });
         return
       }
-      this.shops = shops
-      this.shopId = shops[0].id
-      this.setShopId(shops[0].id)
+      if (shops.length > 0) {
+        this.shops = shops
+        this.shopId = shops[0].id
+        this.setShopId(shops[0].id)
+      }
+
     },
 
     onGetStoreId (val) {

@@ -23,16 +23,20 @@ export default {
 </script>
 <style lang='scss' scoped>
 .subHeader {
+  height: 54px;
   display: flex;
   justify-content: space-around;
-  height: 10.67vw;
   position: fixed;
   top: 25vw;
   width: 100%;
   z-index: 1;
-  color: #767a7f;
+  color: #007aff;
   background: #f8f8f8;
-  line-height: 10.67vw;
+  line-height: 54px;
+  font-size: 16px;
+  h5 {
+    font-size: 16px;
+  }
   .totalPoints {
     position: relative;
     color: #007aff;

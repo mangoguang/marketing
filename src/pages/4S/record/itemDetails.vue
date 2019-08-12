@@ -6,13 +6,13 @@
               :left='true' />
     </div>
     <div class="content">
-      <select-list :list="list"
+      <select-list :standards="standards"
                    @getActiveData="getActiveData" />
-      <swiperPic />
+      <swiperPic :sliders="standardinfo.urls" />
       <div class="rule-box">
         <div class="range-rule">
-          <span class="tips">扣0分</span>
-          <div class="top"><span>0</span><span>1</span></div>
+          <span class="tips">扣{{standardinfo.deduct}}分</span>
+          <div class="top"><span>0</span><span>{{$route.query.total}}</span></div>
           <div class="rule">
             <div class="li"></div>
             <div class="li"></div>
@@ -24,15 +24,14 @@
           </div>
           <div class="bottom">
             <div class="range"
-                 :style="{width:'50%'}"></div>
+                 :style="{width:rangeWidth}"></div>
           </div>
         </div>
       </div>
       <div class="reason">
         <p class="reason_title">扣分原因:</p>
-        <p class="reason_content">店面海报旧，海报位置不合理，卫生差不够干净
-          不合理不合理不合理不合理不合理不合理不合理
-          不合理，故扣9分。
+        <p class="reason_content">
+          {{standardinfo.reason}}
         </p>
       </div>
     </div>
@@ -43,7 +42,9 @@
 import banner from '../../../components/banner'
 import selectList from '../../../components/4s/record/itemDetails/selectList'
 import swiperPic from '../../../components/4s/record/itemDetails/swiperPic'
-import { checklogStandards } from '@/api/4s'
+import { checklogStandards, checklogStandardinfo } from '@/api/4s'
+import { Toast } from 'mint-ui'
+
 export default {
   components: {
     banner,
@@ -63,22 +64,46 @@ export default {
           text: '装修时间/到期时间',
           score: '2'
         }
-      ]
+      ],
+      standards: [{ name: '', standardId: '' }],
+      standardinfo: {
+        deduct: 0,
+        reason: '-',
+        urls: []
+      }
     };
   },
   created () {
-    console.log(this.$route)
     this._initData()
+  },
+  computed: {
+    rangeWidth () {
+      return this.standardinfo.deduct / this.$route.query.total * 100 + '%'
+    }
   },
   methods: {
     async  _initData () {
       let { shopId, categoryId, startTime, endTime } = this.$route.query
-      let { code, standards } = await checklogStandards({ shopId, categoryId, startTime, endTime })
-
+      let { code, standards } = await checklogStandards({ shopId, categoryId, startTime, endTime });
+      if (standards.length > 0) {
+        this.standards = standards
+      } else {
+        Toast('暂无数据');
+        this.$router.go(-1)
+      }
+      this._getStandardinfo({ shopId, startTime, endTime, standardId: standards[0] && standards[0].standardId || '' })
+    },
+    async _getStandardinfo (params) {
+      let { code, standardinfo } = await checklogStandardinfo(params)
+      if (standardinfo) {
+        this.standardinfo = standardinfo
+      }
     },
     //获取下啦选择框的值
     getActiveData (val) {
-      console.log(val)
+      let { shopId, categoryId, startTime, endTime } = this.$route.query
+      this._getStandardinfo({ shopId, startTime, endTime, standardId: val.standardId })
+
     }
   }
 }

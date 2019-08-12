@@ -5,6 +5,7 @@
                     @click.native="bindNavigatorCheck(item)"
                     :key="index"
                     :status="item.status"
+                    :isGrade="item.isGrade"
                     :text="item.name" />
   </div>
 </template>
@@ -28,7 +29,7 @@ export default {
   methods: {
     ...mapGetters(['getCategories']),
     bindNavigatorCheck (item) {
-      this.$router.push({ path: '/check', query: { id: item.id, name: item.name, shopId: this.$route.query.shopId } })
+      this.$router.push({ path: '/check', query: { id: item.id, name: item.name, shopId: this.$route.query.shopId, isGrade: item.isGrade } })
     }
   }
 }

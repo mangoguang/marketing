@@ -1,13 +1,15 @@
 <!--  -->
 <template>
-  <div class="">
+  <div class="loadmore-wrapper"
+       ref="wrapper"
+       :style="{ height: wrapperHeight + 'px' }">
     <mt-loadmore :top-method="loadTop"
                  :bottom-method="loadBottom"
                  :bottom-all-loaded="allLoaded"
+                 @bottom-status-change="bindBottomChange"
                  ref="loadmore"
-                 :autoFill="false"
                  :bottomDistance="30">
-      <ul class="content">
+      <ul class="content-box">
         <div class="atest_card"
              v-for="(item,index) in dataList"
              :key="index">
@@ -95,11 +97,15 @@ export default {
       dataList: [],
       allLoaded: false,
       page: 1,
-      noData: false
+      noData: false,
+      wrapperHeight: 0
     };
   },
   created () {
     this._initData()
+  },
+  mounted () {
+    this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
   },
   methods: {
     async  _initData (page = 1) {
@@ -129,6 +135,9 @@ export default {
       this._initData(this.page)
       this.allLoaded = true;// 若数据已全部获取完毕
       this.$refs.loadmore.onBottomLoaded();
+    },
+    bindBottomChange (status) {
+      console.log(status)
     },
     handleEdit (index) {
       let item = this.dataList[index]
@@ -175,8 +184,11 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-.content {
-  height: 100vh;
+.loadmore-wrapper {
+  overflow: scroll;
+}
+.content-box {
+  padding-bottom: 50px;
 }
 .no-data {
   text-align: center;

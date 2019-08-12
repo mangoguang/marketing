@@ -49,7 +49,7 @@ export const gradeCategories = params => {
  *  3 店长（导购）通过二级分类id获取三级评分分类及其评分细项（username:19040049）
  * @param {*} params 
  */
-export const gradeSecondcategories = params => {
+export const gradeSubcategories = params => {
   return http({
     url: '/v2/api/cert/grade/subcategories',
     method: 'get',

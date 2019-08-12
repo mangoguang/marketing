@@ -10,9 +10,7 @@
         :style="{'margin-top':`${top}vw,height: ${height}`}">
       <egg-list-item v-for="(item,index) in list"
                      :key='item + index'
-                     :state="item.state"
-                     :status='item.status'
-                     :star="item.star"
+                     :parentItem="parentItem"
                      @click.native="handleDetailsClick(index,item.star)" />
     </ul>
     <div class="eggNodeCard"
@@ -83,7 +81,8 @@ export default {
       }
     },
     async  _getDataList () {
-      let { code } = await resultList()
+      let { code, list } = await resultList()
+      this.list = list
     }
   }
 }

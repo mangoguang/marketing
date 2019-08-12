@@ -48,8 +48,8 @@ export default {
     isIPhoneX () {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
-        this.top = "-5.86";
-        this.headerHeight = 29.5
+        // this.top = "-5.86";
+        // this.headerHeight = 29.5
       }
     },
     async  _initData () {

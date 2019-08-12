@@ -11,11 +11,10 @@
            :class="{paddingTop10: index === 0}">
         <SubHeader class="firstTitle"
                    v-if="index === 0"
-                   :text="item.name"
+                   :text="'分数统计：'"
                    :totalPoints="total.totalPoints"
                    :deductMarks="total.deductMarks" />
-        <CheckTitle v-else
-                    :title="item.name"
+        <CheckTitle :title="item.name"
                     :index="index"
                     :status="item.status"
                     @changeStatus="changeStatus" />
@@ -24,7 +23,8 @@
                       :status="item.status" />
       </div>
       <!-- 底部按钮 -->
-      <div class="btnBot">
+      <div class="btnBot"
+           v-if="$route.query.isGrade!=1">
         <button @click="bindReset"
                 :class="{on: !btnBotStatus}">重置</button>
         <button @click="bindSubmit"
@@ -40,7 +40,7 @@ import SubHeader from '../../../components/4s/starCheck/subHeader'
 import CheckContent from '../../../components/4s/starCheck/checkContent'
 import CheckTitle from '../../../components/4s/starCheck/checkTitle'
 import { Toast } from 'mint-ui'
-import { gradeSecondcategories, gradeSubmit } from '@/api/4s'
+import { gradeSubcategories, gradeSubmit } from '@/api/4s'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 import { setTimeout } from 'timers';
 
@@ -148,7 +148,7 @@ export default {
         categoryId: this.$route.query.id
       }
 
-      let { code, msg, categories } = await gradeSecondcategories(params)
+      let { code, msg, categories } = await gradeSubcategories(params)
       if (code != 0) {
         Toast(msg)
         return
@@ -157,19 +157,34 @@ export default {
       var totalPoints = 0
       var deductMarks = 0
       let categoryList = []
+      let { isGrade } = this.$route.query
+      let totalScore = 0
       categories.map((item, index) => {
-        (index == 0) ? item.status = true : item.status = false
+        (index == 0 || isGrade == 1) ? item.status = true : item.status = false
         totalPoints += item.total
         deductMarks += item.deductLimit
-        categoryList.push({ categoryId: item.id, standardList: [] })
+        let standardList = []
         item.standardList.map(items => {
-          items.status = false
+          if (isGrade == 1) {
+            items.status = true
+          } else {
+            items.status = false
+          }
+          totalScore += items.deduct
+
+          let { id, deduct, reason, urls } = items
+          standardList.push({ standardId: id, deduct, reason, urls: urls || [] })
         })
+        categoryList.push({ categoryId: item.id, standardList })
       })
+      console.log(totalScore)
       this.submitScoreData.categoryList = categoryList
       this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
       this.total.totalPoints = totalPoints;
-      this.total.deductMarks = this.deductMarks;
+      this.total.deductMarks = (isGrade == 1) ? totalScore : this.deductMarks;
+      if (isGrade == 1) {
+        this.setdeductMarks(totalScore)
+      }
       this.setTotalPoints(totalPoints)
       this.setSubcategories(categories)
       this.bigCategoryList = categories
@@ -198,7 +213,7 @@ export default {
   }
   .contentBox {
     position: relative;
-    padding-top: 36vw;
+    padding-top: 148px;
     padding-bottom: 13.34vw;
     box-sizing: border-box;
     min-height: 100vh;

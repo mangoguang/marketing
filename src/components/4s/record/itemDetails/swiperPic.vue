@@ -3,16 +3,15 @@
   <div class="selectPic">
     <swiper :options="swiperOption"
             ref="mySwiper">
-      <swiper-slide v-for="(item,index) in list"
+      <swiper-slide v-for="(item,index) in sliders"
                     :key="index"
-                    :style="{backgroundColor:item.color}">
+                    :style="{backgroundColor:'#000'}">
         <div class="container">
-          <img v-if='item.type=== "image"'
+          <img v-if='/jpg|jpeg|png|bmp/g.test(item)'
                :preview='isPreview'
-               :preview-text="item.color"
                :src="item.text"
                alt="">
-          <video-player v-else
+          <video-player v-if="/mp4/g.test(item)"
                         class="video-player vjs-custom-skin player"
                         ref="myVideoPlayer"
                         :playsinline="true"
@@ -22,6 +21,8 @@
         </div>
       </swiper-slide>
     </swiper>
+    <div class="no-pic"
+         v-if="sliders.length==0">暂无图片</div>
   </div>
 </template>
 
@@ -32,6 +33,7 @@ import 'video.js/dist/video-js.css'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 export default {
+  props: ['sliders'],
   components: {
     swiper,
     swiperSlide,
@@ -150,6 +152,11 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.no-pic {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+}
 .selectPic {
   width: 100vw;
   height: 92.6vw;
@@ -196,8 +203,9 @@ export default {
 .vjs-button > .vjs-icon-placeholder:before,
 .vjs-modal-dialog .vjs-modal-dialog-content {
   display: inline-block;
-  width: auto;
-  height: auto;
+  // width: auto;
+  // height: auto;
+  line-height: 60px;
 }
 .swiper-slide-active {
   opacity: 1;

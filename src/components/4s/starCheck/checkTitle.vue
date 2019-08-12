@@ -34,10 +34,31 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+%border {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 1px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: #f8f8f8;
+  transform: scaleY(0.5);
+}
 .checkTitle {
+  height: 54px;
+  line-height: 54px;
+  background: #fff;
+  // border-bottom: 1px solid #f8f8f8;
+  position: relative;
+  &:after {
+    @extend %border;
+  }
   h5 {
     button {
-      line-height: 10.67vw;
+      // line-height: 10.67vw;
+      height: 54px;
+      line-height: 54px;
       font-size: 14px;
       color: #767a7f;
       padding: 0 4vw;

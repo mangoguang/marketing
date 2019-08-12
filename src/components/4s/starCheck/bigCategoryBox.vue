@@ -2,14 +2,14 @@
 <template>
   <div class="bigCategoryBox">
     <p>{{text}}</p>
-    <button :class="{haveDon: status}">{{status ? '已评分' : '去评分'}}</button>
+    <button :class="{haveDon: isGrade==1}">{{isGrade==1 ? '已评分' : '去评分'}}</button>
   </div>
 </template>
 
 <script>
 
 export default {
-  props: ['status', 'text'],
+  props: ['status', 'text', 'isGrade'],
   data () {
     return {
 

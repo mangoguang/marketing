@@ -4,16 +4,21 @@
     <div class="form">
       <div class="editor">
         <textarea v-model="textareaVal"
+                  v-if="isGrade!=1"
                   name="reason"
                   class="area"
                   placeholder="请填写扣分原因"></textarea>
+        <div class="editor-readonly"
+             v-else>{{textareaVal}}</div>
         <div class="upload">
           <div class="up-img"
                v-for="(item,index) in picVal"
                :key="index">
             <div class="up-del"
-                 @click="bindDeleteImg(index)"></div>
+                 @click="bindDeleteImg(index)"
+                 v-if="isGrade!=1"></div>
             <img :src="item"
+                 :preview='true'
                  alt="">
           </div>
 
@@ -21,14 +26,17 @@
                  ref="upload"
                  hidden
                  multiple="multiple"
-                 accept="image/*"
+                 accept="image/*,video/*"
                  @change="bindUpload">
 
           <div class="up-btn"
-               @click="sheetVisible=true"></div>
+               @click="sheetVisible=true"
+               v-if="isGrade!=1"></div>
         </div>
       </div>
-      <div class="rangeBox">
+
+      <div class="rangeBox"
+           v-if="!uploading">
         <div class="range-rule">
           <span class="tips">扣{{rangeValue}}分</span>
           <div class="top"><span>0</span><span>{{maxScore}}</span></div>
@@ -43,13 +51,15 @@
           </div>
         </div>
         <mt-range v-model="rangeValue"
+                  :disabled="isGrade==1"
                   :min="0"
                   :max="maxScore"
                   :step="1"
                   :bar-height="12">
         </mt-range>
       </div>
-      <button @click="bindSave">保存</button>
+      <button @click="bindSave"
+              v-if="isGrade!=1">保存</button>
     </div>
     <mt-actionsheet :actions="[{ name:'拍摄', method:getCamera }, { name:'从手机相册选择', method:getPhoto}]"
                     v-model="sheetVisible"></mt-actionsheet>
@@ -59,7 +69,7 @@
 <script>
 import Vue from 'vue'
 import mybanner from '../../../components/banner'
-import { Range, Actionsheet, Toast } from 'mint-ui';
+import { Range, Actionsheet, Toast, Indicator } from 'mint-ui';
 Vue.component(Actionsheet.name, Actionsheet);
 Vue.component(Range.name, Range);
 
@@ -79,7 +89,9 @@ export default {
       picVal: [],
       FilesList: [],
       textareaVal: '',
-      maxScore: 0
+      maxScore: 0,
+      isGrade: 0, //是否已评分
+      uploading: false
     }
   },
   computed: mapState({
@@ -91,7 +103,7 @@ export default {
     totalPoints: state => state.eggRecordDetails.totalPoints
   }),
   created () {
-
+    this.isGrade = this.$route.query.isGrade
     let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
     this.textareaVal = standardList.reason //扣分原因
     this.picVal = standardList.urls || []   //上传文件
@@ -161,7 +173,7 @@ export default {
               }
             }
 
-          } else if (/^mp4/.test(item.type)) {
+          } else if (/^video/.test(item.type)) {
             resolve(file)
           } else {
             Toast({
@@ -178,14 +190,22 @@ export default {
 
     },
     async  bindUpload (e) {
+
+      console.log(e)
       let file = await this._uploadFile(e)
+
       var formData = new FormData();
       formData.append('dataFile', file);
       formData.append('prefix', 'cert-check-log');
+      this.uploading = true
+      Indicator.open({
+        text: '图片上传中...',
+        spinnerType: 'fading-circle'
+      });
       let { data } = await uploadFile(formData)
-      console.log(data.url)
       this.picVal.push(data.url)
-      console.log(this.picVal)
+      this.uploading = false
+      Indicator.close();
 
     },
     // 压缩图片
@@ -332,6 +352,12 @@ export default {
       font-size: 14px;
       color: #2d2d2d;
       font-family: "Microsoft Yahei,PingFang-SC-Medium";
+    }
+    .editor-readonly {
+      width: 319px;
+      min-height: 50px;
+      font-size: 14px;
+      color: #2d2d2d;
     }
   }
   .form {

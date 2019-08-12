@@ -25,6 +25,7 @@ export default {
       let query = this.$route.query
       query.name = item.name
       query.categoryId = item.categoryId
+      query.total = item.total
       this.$router.push({
         name: 'itemDetails',
         query

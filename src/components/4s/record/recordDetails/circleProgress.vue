@@ -143,7 +143,7 @@ div {
   position: absolute;
   bottom: -7.6vw;
   left: 7.6vw;
-  z-index: 99;
+  z-index: 0;
   border-radius: 50%;
   box-sizing: border-box;
 }

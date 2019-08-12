@@ -30,7 +30,7 @@ export default {
     isIPhoneX () {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
-        this.top = "-5.86";
+        //this.top = "-5.86";
       }
     }
   }

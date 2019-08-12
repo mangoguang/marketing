@@ -49,7 +49,7 @@ export default {
       this.setStandardListIndex(chaildIndex) //记录分类细项列表索引
 
 
-      this.$router.push({ path: '/checkDetail', query: { name: item.name, standardListIndex: index } })
+      this.$router.push({ path: '/checkDetail', query: { name: item.name, standardListIndex: index, isGrade: this.$route.query.isGrade } })
     }
   }
 }

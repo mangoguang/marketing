@@ -55,9 +55,8 @@ export default {
 <style lang='scss' scoped>
 .starCheckW {
   background: #f5f5f5;
-  height: 100vh;
   box-sizing: border-box;
-  overflow: hidden;
+  // overflow: hidden;
   .header {
     width: 100vw;
     height: 35.33vw;

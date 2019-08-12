@@ -1,20 +1,26 @@
 <!--  -->
 <template>
   <div class="selectList">
-    <div class="mask" v-show="showStatus"></div>
-    <div class="list_show" @click="handleNavSelect">
-      <span class="text">{{ activeItem.text }}</span>
-      <span class="icon" :class="showStatus?'rotate':''">
-        <img src="../../../../assets/imgs/4s/down.png" alt="">
+    <div class="mask"
+         v-show="showStatus"></div>
+    <div class="list_show"
+         @click="handleNavSelect">
+      <span class="text">{{ standards[activeIndex].name }}</span>
+      <span class="icon"
+            :class="showStatus?'rotate':''">
+        <img src="../../../../assets/imgs/4s/down.png"
+             alt="">
       </span>
     </div>
-    <ul class="list_content" v-show="showStatus">
-      <li class="item"  
+    <ul class="list_content"
+        v-show="showStatus">
+      <li class="item"
           :class="activeIndex === index? 'active' : ''"
-          v-for="(item,index) in list" :key='index + item'
+          v-for="(item,index) in standards"
+          :key='index + item'
           @click="handleItemSelect(index)">
-        <span class="item-left">{{item.text}}</span>
-        <span class="item-right">{{item.score}}分</span>
+        <span class="item-left">{{item.name}}</span>
+        <span class="item-right">{{item.deduct}}分</span>
       </li>
     </ul>
   </div>
@@ -22,32 +28,24 @@
 
 <script>
 export default {
-  props: ['list'],
+  props: ['standards'],
   data () {
     return {
       showStatus: false,
-      activeIndex: 0,
-      activeItem: {}
+      activeIndex: 0
     };
   },
-  created() {
-    this.initActiveItem()
-  },
   methods: {
-    initActiveItem() {
-      this.activeItem = this.list && this.list[0]
-    },
-    handleNavSelect() {
+    handleNavSelect () {
       this.showStatus = !this.showStatus
     },
-    handleItemSelect(index) {
+    handleItemSelect (index) {
       this.showStatus = !this.showStatus
-      if(this.activeIndex === index) {
+      if (this.activeIndex === index) {
         return
       }
       this.activeIndex = index
-      this.activeItem = this.list[index]
-      this.$emit('getActiveData',this.list[index])
+      this.$emit('getActiveData', this.standards[index])
     }
   }
 }
@@ -79,16 +77,16 @@ export default {
     margin-top: 7.06vw;
     z-index: 98;
     ::after {
-      content: '';
+      content: "";
       position: absolute;
-      top:0;
-      left:0;
-      box-sizing:border-box;
-      border:1px solid #e1e1e1;
-      width:200%;
-      height:200%;
-      transform-origin:0 0 ;
-      transform:scale(0.5);
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
+      border: 1px solid #e1e1e1;
+      width: 200%;
+      height: 200%;
+      transform-origin: 0 0;
+      transform: scale(0.5);
       border-radius: 50px;
     }
     .text {
@@ -104,7 +102,7 @@ export default {
       width: 70%;
     }
     .icon {
-      flex:0.2;
+      flex: 0.2;
       img {
         width: 3vw;
         height: 3vw;
@@ -113,7 +111,7 @@ export default {
     }
     .rotate {
       img {
-       transform: rotate(90deg)
+        transform: rotate(90deg);
       }
     }
   }
@@ -123,11 +121,13 @@ export default {
     position: absolute;
     margin-top: 1vw;
     box-sizing: border-box;
-    background: rgba(237,237,237,0.9);
-    padding:  2vw 0;
+    background: rgba(237, 237, 237, 0.9);
+    padding: 2vw 0;
     top: 14vw;
     left: 0;
     border-radius: 1.33vw;
+    max-height: 60vh;
+    overflow: auto;
     .item {
       display: flex;
       justify-content: space-between;
@@ -145,17 +145,15 @@ export default {
       .item-right {
         color: #000;
         font-size: 3.46vw;
+        min-width: 23px;
       }
     }
     .active {
-      background: rgba(243,248,255,0.8);
+      background: rgba(243, 248, 255, 0.8);
       span {
-        color:#007aff !important;
+        color: #007aff !important;
       }
     }
   }
- 
 }
-
-
 </style>
