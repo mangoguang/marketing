@@ -20,7 +20,7 @@ import { mapState } from 'vuex';
 const indexModel = new IndexModel();
 export default {
   name: 'storeData',
-  props: ['id','type'],
+  props: ['id','type','shopId'],
   components: {TimeSelect, DailyUl},
   data() {
     return{
@@ -49,7 +49,7 @@ export default {
             let temp=Object.assign({},{shopId:this.id},val)
             this.getPerStore(temp)
         }else{
-            let temp=Object.assign({},{userId:this.id,QueryYourself:1},val)
+            let temp=Object.assign({},{userId:this.id,QueryYourself:1,shopId:this.shopId},val)
             this.getPerEmployee(temp)
         }
     }
@@ -65,7 +65,7 @@ export default {
            let temp=Object.assign({},{shopId:this.id},obj)
            this.getPerStore(temp)
       }else{
-          let temp=Object.assign({},{userId:this.id,QueryYourself:1},obj)
+          let temp=Object.assign({},{userId:this.id,QueryYourself:1,shopId:this.shopId},obj)
           this.getPerEmployee(temp)
       }
      
@@ -109,7 +109,8 @@ export default {
                 userId:this.id,
                 startDate: this.curDay,
                 endDate: this.curDay,
-                QueryYourself:1
+                QueryYourself:1,
+                shopId:this.shopId
             })
         }
         

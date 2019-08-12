@@ -3,9 +3,9 @@
     <banner title="门店详情" class="header"></banner>
     <tabUI :list="tabList" @getIndex="getIndex" />
     <div class="content" v-if="tabList[0].status">
-      <storeData :id="id" type="shop"/>
+      <storeData :id="id" type="shop" />
     </div>
-    <storeEmployeeList :id="id" v-else/>
+    <storeEmployeeList :id="id"  v-else/>
   </div>
 </template>
 

@@ -3,7 +3,7 @@
       <mybanner title="员工" style="background:#fff;border:none" ref='banner'></mybanner>
       <search-input ref='search' v-model.trim="key" placeholder="请输入员工名称" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <div  v-if="list.length>0">
-        <ul v-for="(item,index) in list" :key="index" @click="go(item.id,item.username)">
+        <ul v-for="(item,index) in list" :key="index" @click="go(item.id,item.username,item.shopId)">
           <li is="employeeLi"  :icon="true">
             <div class="headPortrait" slot="headPortrait">
               <img :src="img" alt="">
@@ -95,8 +95,8 @@ export default {
        }
      })
    },
-   go(userId,userName){
-     this.$router.push({name:'employeeDetail',params:{id:userId,name:userName}})
+   go(userId,userName,shopId){
+     this.$router.push({name:'employeeDetail',params:{id:userId,name:userName,shopId:shopId}})
    }
   }
 };

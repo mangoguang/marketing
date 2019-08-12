@@ -4,7 +4,7 @@
       <img :src="`./static/images/${list.status}.png`" alt="">
       <p v-show="list.status === 'New'">跟进中</p>
       <p v-show="list.status === 'Approved'">已成交</p>
-      <p v-show="list.status === 'Closed'">已战败</p>
+      <p v-show="list.status === 'Closed'">已流失</p>
     </div>
     <div class="content">
       <div class="title">
@@ -25,7 +25,7 @@
         <span>{{ turnDate(list.closeTime) }}</span>
       </div>
        <div class="date" v-show="list.status === 'Closed'">
-        <span>战败日期：</span>
+        <span>流失日期：</span>
         <span>{{ turnDate(list.closeTime) }}</span>
       </div>
     </div>

@@ -57,7 +57,7 @@ export default {
       topbar:{
         leftTitle: '客户信息',
         centerTitle: '电话',
-        rightTitle: '战败时间'
+        rightTitle: '流失时间'
       },
       parmas: {}
     };

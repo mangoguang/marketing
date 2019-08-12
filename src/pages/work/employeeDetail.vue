@@ -3,7 +3,7 @@
     <banner :title="`${name}详情`" class="header"></banner>
     <tabUI :list="tabList" @getIndex="getIndex" />
     <div class="content" v-if="tabList[0].status">
-      <storeData :id="id"/>
+      <storeData :id="id" :shopId="shopId"/>
     </div>
    <div v-else >
      <employeeIntention :id="id"/>
@@ -28,7 +28,7 @@ export default {
     storeData,
     employeeIntention
   },
-  props:['id','name'],
+  props:['id','name','shopId'],
   data(){
     return{
       tabList:[{title:'员工数据',status:true},{title:'意向客户',status:false}]
@@ -78,7 +78,7 @@ export default {
             status:false
           },
           {
-            name:'战败客户',
+            name:'流失客户',
             status:false
           },
           {

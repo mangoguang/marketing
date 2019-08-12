@@ -158,7 +158,7 @@ export default {
       if(this.headerStatus[1].status) {
         this.setRightHeadTitle('订单交单日期')
       }else{
-        this.setRightHeadTitle('战败时间')
+        this.setRightHeadTitle('流失时间')
       }
     },
     // 显示右侧边栏
@@ -233,7 +233,7 @@ export default {
     },
     // 选择页面模块
     moduleSelect(i) {
-      this.setHeaderStatus(mango.btnList(['意向客户', '成交客户', '战败客户','所有客户'], i))
+      this.setHeaderStatus(mango.btnList(['意向客户', '成交客户', '流失客户','所有客户'], i))
     },
     // ajax请求客户列表
     getCustomerList() {

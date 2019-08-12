@@ -3,7 +3,7 @@
         <ul class="top" :style="{top:top}">
              <li>客户信息</li>
             <li>电话</li>
-            <li>战败时间</li>
+            <li>流失时间</li>
         </ul>
         <mt-loadmore  :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore4" :auto-fill="false">
            <ul class="content-Item" v-for="(item,index) in list" :key="index" @click="linkTo(item.accntId)">
@@ -108,7 +108,7 @@ export default {
             this.setClosedScroll(0)
             this.setClosedAllLoaded(false)
             let obj={
-                type:'Closed',   //New:意向客户，Approved:成交客户，Closed:战败客户
+                type:'Closed',   //New:意向客户，Approved:成交客户，Closed:流失客户
                 key:'',    //搜索关键字，电话或名字、微信
                 sd:'',          //跟进日期
                 ed:'',

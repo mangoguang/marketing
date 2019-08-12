@@ -20,7 +20,7 @@ const state = {
       status:false
     },
     {
-      name:'战败客户',
+      name:'流失客户',
       status:false
     },
     {
@@ -38,7 +38,7 @@ const state = {
       status:false
     },
     {
-      name:'战败客户',
+      name:'流失客户',
       status:false
     }
   

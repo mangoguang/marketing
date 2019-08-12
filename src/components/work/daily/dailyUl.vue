@@ -7,7 +7,7 @@
     <DailyLi :number="turnUnit(list.trackRecord)" :title="'跟进客户'"/>
     <DailyLi :number="turnUnit(list.cusBusiness)" :title="'成交订单'"/>
     <DailyLi :number="turnUnit(list.volumeBusiness)" :title="'成交金额'"/>
-    <DailyLi :number="turnUnit(list.guestSingleValue)" :title="'均单值'"/>
+    <DailyLi :number="turnGuest(list.guestSingleValue)" :title="'均单值'"/>
     <DailyLi :number="turnRatio(list.turnoverRatio)" :title="'成交率'" @tips="tips"/>
     <!-- <DailyLi
     v-for="(item, index) in list"
@@ -15,7 +15,7 @@
     :number="item.number"
     :title="item.title" /> -->
     <message-box v-show="mergeBoxShow" v-bind="messageBox">
-      <p>成交率=成交客户数/接待客户数</p>
+      <p>成交率=成交订单数/进店数</p>
     <template v-slot:btn>
         <button type="button" @click="cancel">确定</button>
     </template>
@@ -44,6 +44,13 @@ export default {
     },
     turnUnit(str){
       if(parseFloat(str)>10000){
+        return Math.round((parseFloat(str)/10000))+"万"
+      }else{
+        return str
+      }
+    },
+    turnGuest(str){
+       if(parseFloat(str)>10000){
         return (parseFloat(str)/10000).toFixed(2)+"万"
       }else{
         return str

@@ -74,7 +74,7 @@
          <record-pannel :recordList="form.recordList"/>
       </div>
       <p class="last">到底啦</p>
-      <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
+      <yan-layer-prompt v-if="isPrompt" placeholder="请输入流失原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
         <span slot='update'>确定</span>
         <span slot='cancel'>取消</span>
       </yan-layer-prompt> -->

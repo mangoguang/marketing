@@ -152,7 +152,7 @@ export default {
             if(this.subHeaderStatus[1].status) {
                 this.setRightHeadTitle('订单交单日期')
             }else{
-                this.setRightHeadTitle('战败时间')
+                this.setRightHeadTitle('流失时间')
             }
         },
         // 显示右侧边栏
@@ -164,7 +164,7 @@ export default {
             this.setCustomerScroll(0)
             this.setCustomerAllLoaded(false)
             let obj = {
-                type:'New',   //New:意向客户，Approved:成交客户，Closed:战败客户
+                type:'New',   //New:意向客户，Approved:成交客户，Closed:流失客户
                 key:'',    //搜索关键字，电话或名字、微信
                 sort:val,      //u:紧急排序，la:意向分类升序，ld:意向分类倒序
                 sd:'',          //跟进日期

@@ -1,7 +1,7 @@
 <template>
   <div class="enquiryOrderInfo">
     <div class="address-icon"></div>
-    <div class="address">
+    <div class="address1">
       <ul>
         <li>
           <!-- 收货人：{{ `*${list.username ? list.username.slice(1, 10) : ''}` }} -->
@@ -88,7 +88,7 @@ export default {
   //height: 28vw;
   overflow: scroll;
   // justify-content: space-between;
-  .address {
+  .address1 {
     min-height: 20vw;
   }
   .address-icon {

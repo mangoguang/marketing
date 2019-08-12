@@ -479,7 +479,7 @@ export var router = new VueRouter({
     props:true
   },
   {
-    path:'/employeeDetail/:id/:name',
+    path:'/employeeDetail/:id/:name/:shopId',
     name:'employeeDetail',
     component:employeeDetail,
     props:true

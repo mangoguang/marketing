@@ -98,7 +98,7 @@ export default {
      })
    },
    go(userId,userName){
-     this.$router.push({name:'employeeDetail',params:{id:userId,name:userName}})
+     this.$router.push({name:'employeeDetail',params:{id:userId,name:userName,shopId:this.id}})
    }
   }
 };
