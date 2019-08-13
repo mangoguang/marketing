@@ -1,21 +1,21 @@
 <!--  -->
 <template>
   <div>
-    <ContentBox class="wrapper" :title="'评分报表'">
-      <div class="iconBox-wrapper" >  
+    <ContentBox class="wrapper"
+                :title="'评分报表'">
+      <div class="iconBox-wrapper">
         <div class="icon-box">
-            <iconBox  :type="'gradeReport'"
-                      :iconData="data1"
-                      @click.native="handleClick(data1.link)"
-                      />
-            <iconBox  :type="'gradeReport'"
+          <iconBox :type="'gradeReport'"
+                   :iconData="data1"
+                   @click.native="handleClick(data1.link)" />
+          <!-- <iconBox  :type="'gradeReport'"
                       :iconData="data2"
                       @click.native="handleClick(data2.link)"
                       :hasNew="'tips'"
-                      />
+                      /> -->
         </div>
       </div>
-      
+
     </ContentBox>
   </div>
 </template>
@@ -24,7 +24,7 @@
 import ContentBox from './contentBox'
 import IconBox from './iconBox'
 export default {
-  components : {
+  components: {
     ContentBox,
     IconBox
   },
@@ -45,7 +45,7 @@ export default {
     };
   },
   methods: {
-    handleClick(linkName) {
+    handleClick (linkName) {
       this.$router.push({
         name: linkName
       })
@@ -55,8 +55,8 @@ export default {
 </script>
 <style lang='scss' scoped>
 .wrapper {
-    margin: 0 auto;
-    margin: 4.4vw;
+  margin: 0 auto;
+  margin: 4.4vw;
   .iconBox-wrapper {
     width: 100%;
     box-sizing: border-box;
@@ -67,6 +67,4 @@ export default {
     align-items: center;
   }
 }
-
- 
 </style>

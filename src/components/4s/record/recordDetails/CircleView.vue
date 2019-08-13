@@ -1,10 +1,10 @@
 <!--  -->
 <template>
   <div class="score_wrapper">
-    <circleProgress :score="99" :star="starData"/>
+    <circleProgress :score="score"
+                    :star="starData" />
     <div class="time">
-      <p>检查时间2019年06月05日</p>
-      <p>第一周</p>
+      <p>第{{cycle}}月</p>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ export default {
   components: {
     circleProgress
   },
-  props: ['starData'],
+  props: ['starData', 'score', 'cycle'],
   data () {
     return {
 

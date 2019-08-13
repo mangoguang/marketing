@@ -1,11 +1,12 @@
 <!--  -->
 <template>
   <ul class="starNav_wapper">
-    <li class="starNav_title" 
-        v-for="(item,index) in list" :key='item + index'
-        @click="selectStar(index)"
+    <li class="starNav_title"
+        v-for="(item,index) in starList"
+        :key='item + index'
+        @click="selectStar(item,index)"
         :style="index === activeStar? activeColor : ''">
-      <span >{{ item }}</span>
+      <span>{{ item.name }}</span>
       <span class="text">|</span>
     </li>
   </ul>
@@ -13,10 +14,10 @@
 
 <script>
 export default {
-  props: ['star'],
+  props: ['starList'],
   data () {
     return {
-      list: ['五星','四星','三星','二星','一星'],
+      list: ['五星', '四星', '三星', '二星', '一星'],
       activeStar: 0,
       timeoutId: null,
       activeColor: {
@@ -24,46 +25,33 @@ export default {
       }
     };
   },
-  created() {
+  created () {
     this.setStar()
     this.setActivityColor()
   },
   methods: {
     //设置颜色
-    setActivityColor() {
-      const color = this.$route.query && this.$route.query.color 
-      if(color) {
+    setActivityColor () {
+      const color = this.$route.query && this.$route.query.color
+      if (color) {
         this.activeColor = {
           color
         }
       }
     },
     //初始的时候展示几颗星
-    setStar() {
-      const len = this.list.length 
-      if(!this.star) {
+    setStar () {
+      const len = this.list.length
+      if (!this.star) {
         this.list = this.list.slice(len - 1)
-      }else {
+      } else {
         this.list = this.list.slice(len - this.star)
       }
     },
     //点击切换
-    selectStar(index) {
-      if(this.activeStar === index) {
-        return
-      }
+    selectStar (item, index) {
       this.activeStar = index
-      this.processor(index)   //防抖
-    },
-    processor(index) {
-      clearTimeout(this.timeoutId); 
-      this.timeoutId = setTimeout(() => { 
-        this.performProcessiong(index);
-      },500) 
-    },
-    //真正要执行的代码
-    performProcessiong(index) {
-      this.$emit('changeStar',this.list[index])
+      this.$emit('changeStar', item)
     }
   }
 }

@@ -3,20 +3,25 @@
   <div class="listItem">
     <div class="header">
       <h1 :style="{color: status? '#02b757' : '#fc0000'}">{{state}}</h1>
-      <eggStarCard class="star_card" :starLevel='star' :text="'认证'"/>
+      <eggStarCard class="star_card"
+                   :starLevel='star'
+                   :text="'认证'" />
     </div>
     <div class="name omit">
       <span>经销商：广东广州王泉</span>
     </div>
     <ul class="ul">
-      <li class="li" v-for="(item,index) in list" :key='item + index'>
+      <li class="li"
+          v-for="(item,index) in list"
+          :key='item + index'>
         <span class="left_text">{{ item.text }}:</span>
-        <span class="right_text" 
+        <span class="right_text"
               v-if="item.type === 'score'"
               :style="{color: status? '#02b757' : '#fc0000'}">
-              {{ item.score }}
+          {{ item.score }}
         </span>
-        <span class="right_date" v-else>{{ item.date }}</span>
+        <span class="right_date"
+              v-else>{{ item.date }}</span>
       </li>
     </ul>
   </div>
@@ -28,7 +33,7 @@ export default {
   components: {
     eggStarCard
   },
-  props: ['state','status','star'],
+  props: ['parentItem'],
   data () {
     return {
       list: [
@@ -47,7 +52,7 @@ export default {
           type: 'score',
           score: '--'
         },
-         {
+        {
           text: '申请时间',
           type: 'time',
           date: '2019-04-05'
@@ -67,8 +72,8 @@ export default {
   width: 94.66vw;
   // height: 55.46vw;
   background: #fff;
-  box-shadow:0px 0px 1.2vw 0px rgba(204,204,204,0.3);
-  border-radius:2.4vw;
+  box-shadow: 0px 0px 1.2vw 0px rgba(204, 204, 204, 0.3);
+  border-radius: 2.4vw;
   margin: 0 auto;
   margin-top: 2.13vw;
   .header {
@@ -115,7 +120,7 @@ export default {
       flex: 0.75;
       padding-left: 3.73vw;
       box-sizing: border-box;
-      color:#666;
+      color: #666;
     }
     .right_text {
       flex: 0.25;
@@ -129,8 +134,8 @@ export default {
     }
   }
 }
-.red{
-  color: #FF001E
+.red {
+  color: #ff001e;
 }
 .blue {
   color: #007aff;

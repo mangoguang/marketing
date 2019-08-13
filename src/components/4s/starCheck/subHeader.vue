@@ -3,8 +3,8 @@
   <div class="subHeader">
     <h5>{{text}}</h5>
     <div>
-      <span class="totalPoints">总分  {{totalPoints}}</span>
-      <span class="deductMarks">扣分  {{deductMarks}}</span>
+      <span class="totalPoints">总分 {{totalPoints}}</span>
+      <span class="deductMarks">扣分 {{deductMarks}}</span>
     </div>
   </div>
 </template>
@@ -12,7 +12,7 @@
 <script>
 export default {
   props: ['text', 'totalPoints', 'deductMarks'],
-  components : {
+  components: {
   },
   data () {
     return {
@@ -23,34 +23,38 @@ export default {
 </script>
 <style lang='scss' scoped>
 .subHeader {
+  height: 54px;
   display: flex;
   justify-content: space-around;
-  height: 10.67vw;
   position: fixed;
-  top: 35.33vw;
+  top: 25vw;
   width: 100%;
   z-index: 1;
-  color: #767A7F;
+  color: #007aff;
   background: #f8f8f8;
-  line-height: 10.67vw;
-  .totalPoints{
+  line-height: 54px;
+  font-size: 16px;
+  h5 {
+    font-size: 16px;
+  }
+  .totalPoints {
     position: relative;
-    color: #007AFF;
+    color: #007aff;
     padding-right: 4vw;
   }
-  .totalPoints::after{
+  .totalPoints::after {
     display: block;
-    content: '';
+    content: "";
     width: 1px;
     height: 2.67vw;
     position: absolute;
     right: 0;
     top: 50%;
     margin-top: -1.33vw;
-    background: #007AFF;
+    background: #007aff;
   }
-  .deductMarks{
-    color: #FF0718;
+  .deductMarks {
+    color: #ff0718;
     padding-left: 4vw;
   }
 }

@@ -1,19 +1,24 @@
 <!--  -->
 <template>
   <div class="circleProgress">
-    <div class="clip" :class="score>=50? 'auto' : ''">
-      <div  class="left" 
-            :class="score>=50? '' : 'width-none'"
-            :style="{borderColor: activeColor}" ></div>
-      <div  class="right" 
-            :style="RightStyle"
-            ></div>
+    <div class="clip"
+         :class="score>=50? 'auto' : ''">
+      <div class="left"
+           :class="score>=50? '' : 'width-none'"
+           :style="{borderColor: activeColor}"></div>
+      <div class="right"
+           :style="RightStyle"></div>
     </div>
     <div class="bottom"></div>
     <div class="num_box">
-      <p >
-        <span class="num" :style="{color: textColor}">{{this.scoreArr[0]}}</span>
-        <span class="num1" :style="{color: textColor}">{{this.scoreArr[1]}}</span>
+      <p>
+        <span class="num"
+              :class="{num1:index!=0}"
+              v-for="(item,index) in scoreArr"
+              :key="item"
+              :style="{color: textColor}">{{item}}</span>
+        <!-- <span class="num1"
+              :style="{color: textColor}">{{scoreArr[1]}}</span> -->
       </p>
       <p class="num_star">{{star + '评分' || '一星评分'}} </p>
     </div>
@@ -22,46 +27,44 @@
 
 <script>
 export default {
-  props: ['score','star'],
+  props: ['score', 'star'],
   data () {
     return {
-      RightStyle: {},
-      scoreArr: '',
+
       activeColor: '',
       textColor: ''
     };
   },
-  created() {
+  created () {
     this.getActiveColor()
-    this.initRotate()
+  },
+  computed: {
+    scoreArr () {
+      return (this.score + '').split('')
+    },
+    RightStyle () {
+      return {
+        transform: 'rotate(' + 3.3 * this.score + 'deg)',
+        borderColor: this.activeColor
+      }
+    }
   },
   methods: {
-    getActiveColor() {
+    getActiveColor () {
       const color = this.$route.query && this.$route.query.color
-      if(color) {
+      if (color) {
         this.activeColor = color
         this.textColor = '#2d2d2d'
       }
-    },
-    initRotate() {
-      if(!this.score) {
-        this.scoreArr= [0]
-        return
-      }
-      this.RightStyle = {
-        transform: 'rotate('+ 3.3*this.score + 'deg)',
-        borderColor: this.activeColor
-      }
-      this.scoreArr = this.score >= 10 && this.score < 100? [parseInt(this.score/10) ,this.score%10]:[this.score]
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-div{
+div {
   box-sizing: border-box;
 }
-.circleProgress{
+.circleProgress {
   width: 30.4vw;
   height: 30.4vw;
   position: relative;
@@ -70,35 +73,34 @@ div{
   margin: 0 auto;
   margin-top: 7.33vw;
 }
-.num_box{
+.num_box {
   position: absolute;
   z-index: 99;
   top: 50%;
   left: 50%;
   background: #f8f8f8;
   border-radius: 50%;
-  width: 25.4vw; 
+  width: 25.4vw;
   height: 25.4vw;
   transform: translate(-50%, -50%);
   text-align: center;
 }
-  .num {
-    color: #007aff;
-    font-size: 13.3vw;
-  }
-  .num1 {
-    color: #007aff;
-    font-size: 9.06vw;
-  }
-  .num_star {
-    color: #666;
-    font-size: 3.2vw;
-    margin-top: -6vw;
-    opacity: 0.8;
-  }
+.num {
+  color: #007aff;
+  font-size: 13.3vw;
+}
+.num1 {
+  color: #007aff;
+  font-size: 9.06vw;
+}
+.num_star {
+  color: #666;
+  font-size: 3.2vw;
+  margin-top: -6vw;
+  opacity: 0.8;
+}
 
-
-.clip{
+.clip {
   width: 30.4vw;
   height: 30.4vw;
   position: absolute;
@@ -106,7 +108,7 @@ div{
   border-radius: 50%;
   clip: rect(0, 15.2vw, 30.4vw, 0);
 }
-.left{
+.left {
   width: 30.4vw;
   height: 30.4vw;
   position: absolute;
@@ -116,7 +118,7 @@ div{
   top: -5vw;
   left: -5vw;
 }
-.right{
+.right {
   width: 30.4vw;
   height: 30.4vw;
   position: absolute;
@@ -126,12 +128,12 @@ div{
   top: -5vw;
   left: -5vw;
 }
-.width-none{
+.width-none {
   width: 0;
   height: 0;
-  border:none
+  border: none;
 }
-.auto{
+.auto {
   clip: auto;
 }
 .bottom {
@@ -141,11 +143,11 @@ div{
   position: absolute;
   bottom: -7.6vw;
   left: 7.6vw;
-  z-index: 99;
+  z-index: 0;
   border-radius: 50%;
   box-sizing: border-box;
 }
 .borderColor {
-  color: '#F88675'
+  color: "#F88675";
 }
 </style>

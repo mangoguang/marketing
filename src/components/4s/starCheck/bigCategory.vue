@@ -1,10 +1,11 @@
 <!-- status参数为真时表示已评分 -->
 <template>
   <div class="bigCategory">
-    <BigCategoryBox v-for="(item, index) in categories"
-                    @click.native="$router.push({ path: '/check' ,query:{id:$route.query.id}})"
+    <BigCategoryBox v-for="(item, index) in subCategoryList"
+                    @click.native="bindNavigatorCheck(item)"
                     :key="index"
                     :status="item.status"
+                    :isGrade="item.isGrade"
                     :text="item.name" />
   </div>
 </template>
@@ -12,29 +13,24 @@
 <script>
 import BigCategoryBox from './bigCategoryBox'
 import { secondcategories } from '@/api/4s'
+import { mapGetters } from 'vuex'
 export default {
-  props: [],
+  props: ['subCategoryList'],
   components: { BigCategoryBox },
   data () {
     return {
-      categories: []
+      categories: [],
+      categoryList: []
     }
   },
   async created () {
-    let { code, categories } = await secondcategories({ id: this.$route.query.id })
-    categories.map((item, index) => {
-      if (index == 0) {
-        this.$set(item, 'status', true)
-      } else {
-        this.$set(item, 'status', false)
-      }
-    })
-    this.categories = categories
+    this.categories = this.getCategories()
   },
   methods: {
-    // toCheck () {
-    //   this.$router.push({ path: '/check' })
-    // }
+    ...mapGetters(['getCategories']),
+    bindNavigatorCheck (item) {
+      this.$router.push({ path: '/check', query: { id: item.id, name: item.name, shopId: this.$route.query.shopId, isGrade: item.isGrade } })
+    }
   }
 }
 </script>
@@ -44,6 +40,7 @@ export default {
   justify-content: flex-start;
   flex-wrap: wrap;
   // padding: 0 2vw;
-  margin-top: 6vw;
+  margin-top: 0;
+  padding: 0 18px;
 }
 </style>

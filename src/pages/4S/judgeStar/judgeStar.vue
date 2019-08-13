@@ -1,27 +1,31 @@
 <!-- 评星 -->
 <template>
-  <div class="judgeStar" :style="{'margin-top':`${top}vw`}">
-    <div class="header" :style="{'height':`${headerHeight}vw`}">
+  <div class="judgeStar"
+       :style="{'margin-top':`${top}vw`}">
+    <div class="header"
+         :style="{'height':`${headerHeight}vw`}">
       <judge-header />
     </div>
-    <ul class="content" :style="{'margin-top':`${top}vw,height: ${height}`}">
-      <egg-list-item  v-for="(item,index) in list" :key='item + index'
-                      :state="item.state"
-                      :status='item.status'
-                      :star="item.star"
-                      @click.native="handleDetailsClick(index,item.star)"/>
+    <ul class="content"
+        :style="{'margin-top':`${top}vw,height: ${height}`}">
+      <egg-list-item v-for="(item,index) in list"
+                     :key='item + index'
+                     :parentItem="parentItem"
+                     @click.native="handleDetailsClick(index,item.star)" />
     </ul>
-    <div class="eggNodeCard" v-show="showStatus"> 
-      <egg-node-card  @getClick='getClick' :star="star"/>
+    <div class="eggNodeCard"
+         v-show="showStatus">
+      <egg-node-card @getClick='getClick'
+                     :star="star" />
     </div>
   </div>
 </template>
 
 <script>
-import judgeHeader from '../../../components/4s/judgeStar/header'
-import eggListItem from '../../../components/4s/judgeStar/listItem'
-import eggNodeCard from '../../../components/4s/judgeStar/node_card'
-
+import judgeHeader from '@/components/4s/judgeStar/header'
+import eggListItem from '@/components/4s/judgeStar/listItem'
+import eggNodeCard from '@/components/4s/judgeStar/node_card'
+import { resultList } from '@/api/4s'
 export default {
   components: {
     judgeHeader,
@@ -41,7 +45,7 @@ export default {
         },
         {
           state: '区域未验收',
-          status:0,
+          status: 0,
           star: 3
         },
         {
@@ -54,26 +58,33 @@ export default {
       star: ''
     };
   },
-   mounted(){
-      this.isIPhoneX()
+  created () {
+    this._getDataList()
+  },
+  mounted () {
+    this.isIPhoneX()
+  },
+  methods: {
+    handleDetailsClick (index, star) {
+      this.showStatus = !this.showStatus
+      this.star = star
     },
-    methods:{
-      handleDetailsClick(index,star) {
-        this.showStatus = !this.showStatus
-        this.star = star
-      },
-      getClick(val) {
-        this.showStatus = !this.showStatus
-      },
-      isIPhoneX() {
-        let phone = this.phoneSize();
-        if (phone === "iphonex") {
-          this.top = "-5.86";
-          this.height = `calc(100vh - 29.5vw)`
-          this.headerHeight = 29.5
-        }
+    getClick (val) {
+      this.showStatus = !this.showStatus
+    },
+    isIPhoneX () {
+      let phone = this.phoneSize();
+      if (phone === "iphonex") {
+        this.top = "-5.86";
+        this.height = `calc(100vh - 29.5vw)`
+        this.headerHeight = 29.5
       }
+    },
+    async  _getDataList () {
+      let { code, list } = await resultList()
+      this.list = list
     }
+  }
 }
 </script>
 <style lang='scss' scoped>

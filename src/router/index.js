@@ -47,7 +47,7 @@ const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
 const shopList = () => import("../pages/work/shopList")
 const shopDetail = () => import("../pages/work/storeDetail")
 const employeeDetail = () => import("../pages/work/employeeDetail")
-const workPlan  = () => import("../pages/work/workPlan")
+const workPlan = () => import("../pages/work/workPlan")
 const newWorkPlan = () => import("../pages/work/newWorkPlan")
 const searchCustomer = () => import("../pages/work/searchCustomer")
 const searchIntention = () => import("../pages/work/searchIntention")
@@ -65,7 +65,6 @@ const check = () => import('../pages/4S/starCheck/check')
 const checkDetail = () => import('../pages/4S/starCheck/checkDetail')
 const recordJxs = () => import('../pages/4S/record/recordJxs')
 const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
-const starCheckW = () => import('../pages/4S/starCheckWrapper/starCheckW')
 const searchIndex = () => import('../pages/4S/search')
 const starAtest = () => import('../pages/4S/starAtest/starAtest')
 
@@ -76,179 +75,177 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
-    path: '/index',
-    name: 'index',
-    component: index
-  },{
-    path: '/ReportForms',
-    name: 'ReportForms',
-    component: ReportForms
-  },{
-    path: '/Login',
-    name: 'Login',
-    component: Login
-  }, {
-    /***报表模块***/
-    path: '/brand',
-    name: 'Brand',
-    component: resolve => require(['../pages/charts/Brand/brand'], resolve)
-  }, {  // 销售
-    path: '/sales',
-    name: 'Sales',
-    component: resolve => require(['../pages/charts/Sales/sales'], resolve)
-  },{
-    path: '/areaStoreSales',
-    name: '/AreaStoreSales',
-    component: resolve => require(['../pages/charts/Sales/areaStoreSales'],resolve)
-  },{
-    path: '/storeSales',
-    name: 'StoreSales',
-    component: resolve => require(['../pages/charts/Sales/storeSales'], resolve)
-  },{
-    path: '/personalSales',
-    name: '/PersonalSales',
-    component: resolve => require(['../pages/charts/Sales/personalSales'],resolve)
-  },{  // 铁三角
-    path: '/audioTechnica',
-    name: '/AudioTechnica',
-    component: resolve => require(['../pages/charts/AudioTechnica/audioTechnica'],resolve)
-  },{
-    path: '/Personal',
-    name: '/Personal',
-    component: resolve => require(['../pages/charts/AudioTechnica/personal'],resolve)
-  },{
-    path: '/areaEffectiveness',
-    name: '/AreaEffectiveness',
-    component: resolve => require(['../pages/charts/AreaEffectiveness/areaEffectiveness'],resolve)
-  },{
-    path: '/peopleWork',
-    name: '/PeopleWork',
-    component: resolve => require(['../pages/charts/PerCapita/PeopleWork'],resolve)
-  },{
-    path: '/customerSource',
-    name: '/CustomerSource',
-    component: resolve => require(['../pages/charts/Customer/customerSource'],resolve)
-  },
-  /**** 客户模块 ****/
-  {
-    path: '/customer',
-    name: '/Customer',
-    component: Customer
-  },
-  {
-    path: '/customerInfo',
-    name: '/CustomerInfo',
-    component: customerInfo,
-    meta: {        
-      isUseCache: false,  // 这个字段的意思稍后再说      
-      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
-    }
-  },
-  {
-    path: '/newCustomerInfo',
-    name: '/NewCustomerInfo',
-    component: newCustomerInfo
-  },
-  {
-    path: '/newCustomer',
-    name: 'NewCustomer',
-    component: newCustomer
-  },
-  {
-    path: '/dealDetails',
-    name: '/dealDetails',
-    component: dealDetails
-  },
-  {
-    path: '/trackDetails',
-    name: '/trackDetails',
-    component: trackDetails
-  },
-  {
-    path: '/newTrack',
-    name: '/newTrack',
-    component: newTrack
-  },
-  {
-    path: '/newCustomerDemand/:customerId',
-    name: '/newCustomerDemand',
-    component: newCustomerDemand
-  },
-  {
-    path: '/changeDemand',
-    name: '/changeDemand',
-    component: changeDemand
-  },
-  {
-    path: '/enquiryInfo',
-    name: '/enquiryInfo',
-    component: enquiryInfo,
-    meta: {        
-      isUseCache: false,  // 这个字段的意思稍后再说      
-      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
-    }
-  },
-  {
-    path: '/searchResult',
-    name: '/searchResult',
-    component: searchResult,
-    meta: {        
-      isUseCache: false,  // 这个字段的意思稍后再说      
-      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
-    }
-  },
-  {
-    path: '/newIntention',
-    name: 'newIntention',
-    component: newIntention
-  },
-  /****个人模块****/
-  {
-    path: '/personalCenter',
-    name: '/personalCenter',
-    component: personalMsg
-  },
-  {
-    path: '/dailyPaper',
-    name: '/dailyPaper',
-    component: dailyPaper
-  },
-  {
-    path: '/ForgetPwd',
-    name: '/ForgetPwd',
-    component: ForgetPwd
-  },{
-    path: '/ResetPwd',
-    name: '/ResetPwd',
-    component: ResetPwd
-  },{
-    path: '/aboutUs',
-    name: '/aboutUs',
-    component: aboutUs
-  },{
-    path: '/personalData',
-    name: '/personalData',
-    component: personalData
-  },
-  {
-    path: '/feedback',
-    name: '/feedback',
-    component: feedback,
-    meta:{
-      keepAlive:true,
-      isUseCache:false
-    }
-  },{
-    path: '/security',
-    name: 'security',
-    component: security
-  },{
-    path: '/resetMyPwd',
-    name: 'resetMyPwd',
-    component: resetMyPwd
-  },
-
-  {
+      path: '/index',
+      name: 'index',
+      component: index
+    }, {
+      path: '/ReportForms',
+      name: 'ReportForms',
+      component: ReportForms
+    }, {
+      path: '/Login',
+      name: 'Login',
+      component: Login
+    }, {
+      /***报表模块***/
+      path: '/brand',
+      name: 'Brand',
+      component: resolve => require(['../pages/charts/Brand/brand'], resolve)
+    }, { // 销售
+      path: '/sales',
+      name: 'Sales',
+      component: resolve => require(['../pages/charts/Sales/sales'], resolve)
+    }, {
+      path: '/areaStoreSales',
+      name: '/AreaStoreSales',
+      component: resolve => require(['../pages/charts/Sales/areaStoreSales'], resolve)
+    }, {
+      path: '/storeSales',
+      name: 'StoreSales',
+      component: resolve => require(['../pages/charts/Sales/storeSales'], resolve)
+    }, {
+      path: '/personalSales',
+      name: '/PersonalSales',
+      component: resolve => require(['../pages/charts/Sales/personalSales'], resolve)
+    }, { // 铁三角
+      path: '/audioTechnica',
+      name: '/AudioTechnica',
+      component: resolve => require(['../pages/charts/AudioTechnica/audioTechnica'], resolve)
+    }, {
+      path: '/Personal',
+      name: '/Personal',
+      component: resolve => require(['../pages/charts/AudioTechnica/personal'], resolve)
+    }, {
+      path: '/areaEffectiveness',
+      name: '/AreaEffectiveness',
+      component: resolve => require(['../pages/charts/AreaEffectiveness/areaEffectiveness'], resolve)
+    }, {
+      path: '/peopleWork',
+      name: '/PeopleWork',
+      component: resolve => require(['../pages/charts/PerCapita/PeopleWork'], resolve)
+    }, {
+      path: '/customerSource',
+      name: '/CustomerSource',
+      component: resolve => require(['../pages/charts/Customer/customerSource'], resolve)
+    },
+    /**** 客户模块 ****/
+    {
+      path: '/customer',
+      name: '/Customer',
+      component: Customer
+    },
+    {
+      path: '/customerInfo',
+      name: '/CustomerInfo',
+      component: customerInfo,
+      meta: {
+        isUseCache: false, // 这个字段的意思稍后再说      
+        keepAlive: true // 通过此字段判断是否需要缓存当前组件  
+      }
+    },
+    {
+      path: '/newCustomerInfo',
+      name: '/NewCustomerInfo',
+      component: newCustomerInfo
+    },
+    {
+      path: '/newCustomer',
+      name: 'NewCustomer',
+      component: newCustomer
+    },
+    {
+      path: '/dealDetails',
+      name: '/dealDetails',
+      component: dealDetails
+    },
+    {
+      path: '/trackDetails',
+      name: '/trackDetails',
+      component: trackDetails
+    },
+    {
+      path: '/newTrack',
+      name: '/newTrack',
+      component: newTrack
+    },
+    {
+      path: '/newCustomerDemand/:customerId',
+      name: '/newCustomerDemand',
+      component: newCustomerDemand
+    },
+    {
+      path: '/changeDemand',
+      name: '/changeDemand',
+      component: changeDemand
+    },
+    {
+      path: '/enquiryInfo',
+      name: '/enquiryInfo',
+      component: enquiryInfo,
+      meta: {
+        isUseCache: false, // 这个字段的意思稍后再说      
+        keepAlive: true // 通过此字段判断是否需要缓存当前组件  
+      }
+    },
+    {
+      path: '/searchResult',
+      name: '/searchResult',
+      component: searchResult,
+      meta: {
+        isUseCache: false, // 这个字段的意思稍后再说      
+        keepAlive: true // 通过此字段判断是否需要缓存当前组件  
+      }
+    },
+    {
+      path: '/newIntention',
+      name: 'newIntention',
+      component: newIntention
+    },
+    /****个人模块****/
+    {
+      path: '/personalCenter',
+      name: '/personalCenter',
+      component: personalMsg
+    },
+    {
+      path: '/dailyPaper',
+      name: '/dailyPaper',
+      component: dailyPaper
+    },
+    {
+      path: '/ForgetPwd',
+      name: '/ForgetPwd',
+      component: ForgetPwd
+    }, {
+      path: '/ResetPwd',
+      name: '/ResetPwd',
+      component: ResetPwd
+    }, {
+      path: '/aboutUs',
+      name: '/aboutUs',
+      component: aboutUs
+    }, {
+      path: '/personalData',
+      name: '/personalData',
+      component: personalData
+    },
+    {
+      path: '/feedback',
+      name: '/feedback',
+      component: feedback,
+      meta: {
+        keepAlive: true,
+        isUseCache: false
+      }
+    }, {
+      path: '/security',
+      name: 'security',
+      component: security
+    }, {
+      path: '/resetMyPwd',
+      name: 'resetMyPwd',
+      component: resetMyPwd
+    },{
     path: '/previewImg',
     name: '/previewImg',
     component:() => import('../pages/Personal/imgPreview')
@@ -492,117 +489,19 @@ export var router = new VueRouter({
       keepAlive:true,
       isUseCache:false
     }
-  },
-  {
-    path:'/newWorkPlan',
-    name:'newWorkPlan',
-    component:newWorkPlan,
-    meta:{
-      keepAlive:true,
-      isUseCache:false
-    },
-    props:(route) => ({id: route.query.id})
-  },
-  {
-    path:'/searchCustomer',
-    name:'searchCustomer',
-    component:searchCustomer
-  },
-  {
-    path:'/searchIntention',
-    name:'searchIntention',
-    component:searchIntention
-  },
-  //公告
-  {
-    path:'/noticeList',
-    name:'noticeList',
-    component:noticeList
-  },
-  {
-    path:'/noticeDetails',
-    name:'noticeDetails',
-    component:noticeDetails,
-    props:(route) => ({id: route.query.id})
-  },
-  //4s
-  {
-    path:'/index4s',
-    name:'index4s',
-    component:index4s
-  },
-  {
-    path:'/record',
-    name:'record',
-    component:record
-  },
-  {
-    path:'/recordJxs',
-    name:'recordJxs',
-    component:recordJxs
-  },
-  {
-    path:'/recordDetails',
-    name:'recordDetails',
-    component:recordDetails
-  },
-  {
-    path:'/itemDetails',
-    name:'itemDetails',
-    component:itemDetails
-  },
-  // 星级检查
-  {
-    path:'/starCheck',
-    name:'starCheck',
-    component: starCheck
-  },
-  {
-    path:'/checkTip',
-    name:'checkTip',
-    component: checkTip
-  },
-  {
-    path:'/check',
-    name:'check',
-    component: check
-  },
-  {
-    path:'/checkDetail',
-    name:'checkDetail',
-    component: checkDetail
-  },
-  {
-    path:'/judgeStar',
-    name:'judgeStar',
-    component:judgeStar
-  },
-  {
-    path:'/starCheckW',
-    name:'starCheckW',
-    component:starCheckW
-  },
-  {
-    path:'/searchIndex',
-    name:'searchIndex',
-    component:searchIndex
-  },
-  {
-    path:'/starAtest',
-    name:'starAtest',
-    component:starAtest
-  }
-],
-  scrollBehavior (to, from, savedPosition) {
-    if (savedPosition) {  
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
       // console.log(324242,savedPosition)      
-      return savedPosition    
-    } else {      
-      if (from.meta.keepAlive) {        
-          from.meta.savedPosition = document.body.scrollTop;      
-      }        
-      return { x: 0, y: to.meta.savedPosition || 0 }    
-    }  
+      return savedPosition
+    } else {
+      if (from.meta.keepAlive) {
+        from.meta.savedPosition = document.body.scrollTop;
+      }
+      return {
+        x: 0,
+        y: to.meta.savedPosition || 0
+      }
+    }
   }
 })
-

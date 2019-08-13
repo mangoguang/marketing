@@ -1,35 +1,45 @@
 <template>
   <div class="checkDetail">
-    <mybanner :title='title' />
+    <mybanner :title='$route.query.name' />
     <div class="form">
       <div class="editor">
-        <textarea name="reason"
+        <textarea v-model="textareaVal"
+                  v-if="isGrade!=1"
+                  name="reason"
                   class="area"
                   placeholder="请填写扣分原因"></textarea>
+        <div class="editor-readonly"
+             v-else>{{textareaVal}}</div>
         <div class="upload">
           <div class="up-img"
                v-for="(item,index) in picVal"
                :key="index">
             <div class="up-del"
-                 @click="bindDeleteImg(index)"></div>
-            <img :src="item.url"
+                 @click="bindDeleteImg(index)"
+                 v-if="isGrade!=1"></div>
+            <img :src="item"
+                 :preview='true'
                  alt="">
           </div>
 
           <input type="file"
                  ref="upload"
                  hidden
-                 accept="image/*"
+                 multiple="multiple"
+                 accept="image/*,video/*"
                  @change="bindUpload">
 
           <div class="up-btn"
-               @click="sheetVisible=true"></div>
+               @click="sheetVisible=true"
+               v-if="isGrade!=1"></div>
         </div>
       </div>
-      <div class="rangeBox">
+
+      <div class="rangeBox"
+           v-if="!uploading">
         <div class="range-rule">
           <span class="tips">扣{{rangeValue}}分</span>
-          <div class="top"><span>0</span><span>18</span></div>
+          <div class="top"><span>0</span><span>{{maxScore}}</span></div>
           <div class="rule">
             <div class="li"></div>
             <div class="li"></div>
@@ -41,13 +51,15 @@
           </div>
         </div>
         <mt-range v-model="rangeValue"
+                  :disabled="isGrade==1"
                   :min="0"
-                  :max="18"
+                  :max="maxScore"
                   :step="1"
                   :bar-height="12">
         </mt-range>
       </div>
-      <button>保存</button>
+      <button @click="bindSave"
+              v-if="isGrade!=1">保存</button>
     </div>
     <mt-actionsheet :actions="[{ name:'拍摄', method:getCamera }, { name:'从手机相册选择', method:getPhoto}]"
                     v-model="sheetVisible"></mt-actionsheet>
@@ -57,54 +69,177 @@
 <script>
 import Vue from 'vue'
 import mybanner from '../../../components/banner'
-import { Range, Actionsheet, Toast } from 'mint-ui';
+import { Range, Actionsheet, Toast, Indicator } from 'mint-ui';
 Vue.component(Actionsheet.name, Actionsheet);
 Vue.component(Range.name, Range);
+
+import { uploadFile } from '@/api/4s'
+import { async, Promise } from 'q';
+
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     mybanner
   },
   data () {
     return {
-      title: '店面',
+
       rangeValue: 0,
       sheetVisible: false,
       picVal: [],
-      FilesList: []
+      FilesList: [],
+      textareaVal: '',
+      maxScore: 0,
+      isGrade: 0, //是否已评分
+      uploading: false
     }
   },
+  computed: mapState({
+    submitScoreData: state => state.eggRecordDetails.submitScoreData,
+    categoryListIndex: state => state.eggRecordDetails.categoryListIndex,
+    standardListIndex: state => state.eggRecordDetails.standardListIndex,
+    subcategories: state => state.eggRecordDetails.subcategories,
+    deductMarks: state => state.eggRecordDetails.deductMarks,
+    totalPoints: state => state.eggRecordDetails.totalPoints
+  }),
+  created () {
+    this.isGrade = this.$route.query.isGrade
+    let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
+    this.textareaVal = standardList.reason //扣分原因
+    this.picVal = standardList.urls || []   //上传文件
+    this.rangeValue = standardList.deduct || 0 //分数
+
+    this.maxScore = this.subcategories[this.categoryListIndex].total
+  },
   methods: {
-    bindUpload (e) {
+    ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setdeductMarks']),
+    bindSave () {
+      // if (!this.textareaVal) {
+      //   Toast('填写扣分原因')
+      //   return
+      // }
+      let { rangeValue, textareaVal, picVal } = this
+
+      let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
+
+      standardList.reason = textareaVal //扣分原因
+      standardList.urls = picVal  //上传文件
+      standardList.deduct = rangeValue //分数
+      let totle = this.deductMarks + rangeValue
+
+
+      if (totle > this.totalPoints) {
+        Toast('扣分不能超过总分')
+        return
+      }
+
+      this.setdeductMarks(totle)
+
+      this.setSubmitScoreData(this.submitScoreData)
+
+      this.subcategories[this.categoryListIndex].standardList[this.$route.query.standardListIndex].status = true
+
+      this.setSubcategories(this.subcategories)
+
+
+      this.$router.go(-1)
+    },
+    //文件上传
+    _uploadFile (e) {
       var _this = this;
-      let files = e.target.files;
-      files = Array.prototype.slice.call(files);
+
+      let files = Array.from(e.target.files);
+      // files = Array.prototype.slice.call(files);
       if (!files.length) return;
 
-      let imgSize = 3 * 1024 * 1024;
-      files.map((item, index) => {
-        if (/^image/.test(item.type)) {
-          if (item.size > imgSize) {
+      let imgSize = 1 * 1024 * 1024;
+      return new Promise((resolve, reject) => {
+        files.map(async (item, index) => {
+          if (/^image/.test(item.type)) {
+            if (item.size < imgSize) { resolve(item); return }
+            let reader = new FileReader();
+            reader.readAsDataURL(item);
+            reader.onloadend = async function () {
+              let img = new Image();
+              img.src = this.result;
+              img.onload = async function () {
+                let data = _this.compress(img);
+                let blob = _this.dataURItoBlob(data);
+                console.log(blob)
+                console.log(data)
+                let file = new File([blob], item.name, { type: item.type })
+
+                resolve(file)
+              }
+            }
+
+          } else if (/^video/.test(item.type)) {
+            resolve(file)
+          } else {
             Toast({
-              message: `每张图片不能超过3M`,
+              message: `上传正确的格式`,
               position: 'middle',
               duration: 2000
             })
-            return;
           }
-          let reader = new FileReader();
-          reader.readAsDataURL(item);
-          reader.onloadend = function () {
-            _this.picVal.push({ name: item.name, url: this.result });
-            _this.FilesList.push(item);
-          }
-        } else {
-          Toast({
-            message: `上传正确的格式`,
-            position: 'middle',
-            duration: 2000
-          })
-        }
+
+
+        });
+      })
+
+
+    },
+    async  bindUpload (e) {
+
+      console.log(e)
+      let file = await this._uploadFile(e)
+
+      var formData = new FormData();
+      formData.append('dataFile', file);
+      formData.append('prefix', 'cert-check-log');
+      this.uploading = true
+      Indicator.open({
+        text: '图片上传中...',
+        spinnerType: 'fading-circle'
       });
+      let { data } = await uploadFile(formData)
+      this.picVal.push(data.url)
+      this.uploading = false
+      Indicator.close();
+
+    },
+    // 压缩图片
+    compress (img) {
+      let canvas = document.createElement("canvas");
+      let ctx = canvas.getContext("2d");
+      let initSize = img.src.length;
+      let width = img.width;
+      let height = img.height;
+      canvas.width = width;
+      canvas.height = height;
+      // 铺底色
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0, width, height);
+
+      //进行最小压缩
+      let ndata = canvas.toDataURL("image/jpeg", 0.1);
+      return ndata;
+    },
+    // base64转成bolb对象
+    dataURItoBlob (base64Data) {
+      var byteString;
+      if (base64Data.split(",")[0].indexOf("base64") >= 0) { byteString = atob(base64Data.split(",")[1]); }
+      else byteString = unescape(base64Data.split(",")[1]);
+      var mimeString = base64Data
+        .split(",")[0]
+        .split(":")[1]
+        .split(";")[0];
+      var ia = new Uint8Array(byteString.length);
+      for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+      }
+      return new Blob([ia], { type: mimeString });
     },
     getCamera () {
       this.$refs.upload.setAttribute("capture", 'camera');
@@ -217,6 +352,12 @@ export default {
       font-size: 14px;
       color: #2d2d2d;
       font-family: "Microsoft Yahei,PingFang-SC-Medium";
+    }
+    .editor-readonly {
+      width: 319px;
+      min-height: 50px;
+      font-size: 14px;
+      color: #2d2d2d;
     }
   }
   .form {
