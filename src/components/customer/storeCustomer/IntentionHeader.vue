@@ -191,7 +191,7 @@ export default {
                         }
                         
                         this.initCustomerList(res.data.records)
-                        this.setNewNum(rea.data.total)
+                        this.setNewNum(res.data.total)
                     }else if(obj.type==='Approved'){
                         if(obj.page===res.data.pages){
                             this.setApprovedAllLoaded(true)

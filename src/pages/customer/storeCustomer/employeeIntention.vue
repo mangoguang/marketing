@@ -86,7 +86,6 @@ export default {
         ...mapMutations('allCustomer',['setAllCustomerNum','setAllCustomerParams','setAllCustomerList',
          'setAllCustomerAllLoaded','setAllCustomerScroll','setAllCustomerPage','initAllCustomerList']),
         getPramas(n,obj){
-            console.log(222,obj)
             this.setCustomerScroll(0)
             this.setCustomerAllLoaded(false)
             let temp;
