@@ -83,7 +83,7 @@ export default {
     methods:{
         ...mapMutations('storeHeader',['setHeaderStatus','setSubHeaderStatus']),
         ...mapMutations(['setBtn','initShopList','getShopVal']),
-        ...mapMutations('storeCustomer',['setStoreCustomerAjaxParams','setCustomerList','setCustomerAllLoaded','setCustomerScroll','setCustomerPage','initCustomerList']),
+        ...mapMutations('storeCustomer',['setNewNum','setStoreCustomerAjaxParams','setCustomerList','setCustomerAllLoaded','setCustomerScroll','setCustomerPage','initCustomerList']),
         isIphone(){
             let phone=this.phoneSize()
             if(phone==='iphonex'){
@@ -156,6 +156,7 @@ export default {
                         this.setCustomerAllLoaded(false)
                     }
                     str==='init'?this.initCustomerList(res.data.records):this.setCustomerList(res.data.records)
+                    this.setNewNum(res.data.total)
                 }
                 
             }).catch((reject) => {

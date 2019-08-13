@@ -25,7 +25,7 @@
                 <ul class="filter" v-if="subHeaderStatus[0].status">
                     <li @click="showFilterList">
                         <div v-for="(item,index) in filterList" :key="index">
-                            <span class="filterli" v-if="item.val===cusomerAjaxParams.sort">{{item.name}}</span>
+                            <span class="filterli" v-if="item.val===cusomerAjaxParams.sort">{{item.name}}({{newNum}})</span>
                         </div>
                     </li>
                     <li>
@@ -85,6 +85,7 @@ export default {
             subHeaderStatus:state => state.storeHeader.subHeaderStatus,
             filterList:state => state.storeHeader.filterList,
             sort:state => state.storeHeader.sort,
+            newNum:state => state.storeCustomer.customerNum,
             approvedNum:state => state.storeApproved.approvedNum,
             closedNum:state => state.storeClosed.closedNum,
             cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams,
@@ -124,7 +125,7 @@ export default {
         ...mapMutations(['setRightTimeSelect','setRightHeadTitle','setRightContainerStatus']),
         ...mapMutations('store',['setStoreScroll','setStoreParmas','setStoreList',
         'setAllLoaded','initStoreList','setStoreNum']),
-        ...mapMutations('storeCustomer',['setCustomerList','setCustomerScroll',
+        ...mapMutations('storeCustomer',['setNewNum','setCustomerList','setCustomerScroll',
         'setCustomerAllLoaded','initCustomerList','setStoreCustomerAjaxParams','setSort']),
         ...mapMutations('storeApproved',['setApprovedNum','setApprovedParams',
         'setApprovedList','setApprovedScroll','setApprovedPage','setApprovedAllLoaded','initApprovedList']),
@@ -348,6 +349,7 @@ export default {
                             this.setCustomerAllLoaded(false)
                         }
                         this.initCustomerList(res.data.records)
+                        this.setNewNum(res.data.total)
                     }else if(obj.type==='Approved'){
                         if(obj.page===res.data.pages){
                             this.setApprovedAllLoaded(true)

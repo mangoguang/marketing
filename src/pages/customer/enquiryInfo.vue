@@ -369,7 +369,7 @@ export default {
         qq:obj.qq,
         weChat: obj.weChat,
         duty: obj.duty,
-        remark: obj.remark!==''?mango.textEncode(obj.remark):'',
+        remark: obj.remark,
         customerId: this.$route.query.id,
         orgId: obj.orgId || this.list.orgId
       }

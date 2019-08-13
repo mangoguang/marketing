@@ -69,11 +69,12 @@ export default {
         'setApprovedList','setApprovedScroll','setApprovedPage','setApprovedAllLoaded','initApprovedList']),
         ...mapMutations('storeClosed',['setClosedNum','setClosedParams','setClosedList','setClosedAllLoaded',
          'setClosedScroll','setClosedPage','initClosedList']),
-        ...mapMutations('storeCustomer',['initCustomerList','setStoreCustomerAjaxParams','setCustomerList','setCustomerAllLoaded','setCustomerScroll','setCustomerPage']),
+        ...mapMutations('storeCustomer',['setNewNum','initCustomerList','setStoreCustomerAjaxParams','setCustomerList','setCustomerAllLoaded','setCustomerScroll','setCustomerPage']),
         ...mapMutations('allCustomer',['setAllCustomerNum','setAllCustomerParams','setAllCustomerList',
          'setAllCustomerAllLoaded','setAllCustomerScroll','setAllCustomerPage','initAllCustomerList']),
         getPramas(n,obj){
             console.log(222,obj)
+           /*  this.setNewNum(0) */
             this.setCustomerScroll(0)
             this.setCustomerAllLoaded(false)
             let temp;
@@ -103,6 +104,7 @@ export default {
                     if(obj.type==='New'){
                         obj.page===res.data.pages?this.setCustomerAllLoaded(true):this.setCustomerAllLoaded(false)
                         this.initCustomerList(res.data.records)
+                        this.setNewNum(res.data.total)
                     }else if(obj.type==='Approved'){
                         obj.page===res.data.pages?this.setApprovedAllLoaded(true):this.setApprovedAllLoaded(false)
                         this.initApprovedList(res.data.records)

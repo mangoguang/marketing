@@ -13,10 +13,12 @@ const state = {
   },
   list:[],
   allLoaded:false,
-  scroll:0
+  scroll:0,
+  customerNum:0
 }
 
 const mutations = {
+  setNewNum:(state,n) => {state.customerNum = n},
  setSort:(state,str) => {state.customerAjaxParams.sort=str},
  setKey:(state,str) => {state.customerAjaxParams.key=str},
  setStoreCustomerAjaxParams:(state,obj) => {state.customerAjaxParams=obj},
