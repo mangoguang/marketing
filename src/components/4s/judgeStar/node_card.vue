@@ -67,11 +67,12 @@ export default {
     handleDetailClick (items) {
       if (items.status == 1) return
       this.$router.push({
-        path: 'recordDetails',
+        path: '/attest-detail',
         query: {
-          shopId: items.id,
-          startTime: items.createTime,
-          endTime: parseTime(new Date())
+          shopId: items.shopId,
+          qualificationId: items.id,    //认证id
+          starLevelId: items.starLevelId,   //星级1,2,3,4,5
+          type: items.type   //类型， 3：区域经理 评分项      4：4S
         }
       })
     }
@@ -112,7 +113,7 @@ export default {
     padding: 0 2.8vw;
     padding-top: 6.13vw;
     box-sizing: border-box;
-    max-height: 80vh;
+    max-height: 62vh;
     overflow: auto;
     padding-bottom: 45px;
     .node_li {

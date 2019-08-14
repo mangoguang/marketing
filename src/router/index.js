@@ -603,6 +603,16 @@ export var router = new VueRouter({
       path: '/apply-record',
       name: 'ApplyRecord',
       component: () => import('@/pages/4S/starAtest/ApplyRecord')
+    },
+    {
+      path: '/attest-detail',
+      name: 'AttestDetail',
+      component: () => import('@/pages/4S/starAtest/AttestDetail')
+    },
+    {
+      path: '/attest-item',
+      name: 'AttestItem',
+      component: () => import('@/pages/4S/starAtest/AttestItem')
     }
   ],
   scrollBehavior(to, from, savedPosition) {

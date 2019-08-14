@@ -227,3 +227,39 @@ export const getApproveFlowInfo = params => {
     params
   })
 }
+
+/**
+ * 验收评分 - 门店检查列表  - 检查详情 - 获取各星级评分详情
+ * @param {*} params 
+ */
+export const starGrade = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/approveCheckLog/starGrade',
+    method: 'post',
+    params
+  })
+}
+
+/**
+ * 验收评分 - 门店检查列表  - 检查详情 - 获取下拉框
+ * @param {*} params 
+ */
+export const gradeDetailList = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/approveCheckLog/gradeDetailList',
+    method: 'post',
+    params
+  })
+}
+
+/**
+ * 验收评分 - 门店检查列表  - 检查详情 - 获取细项扣分详情
+ * @param {*} params 
+ */
+export const gradeDetailInfo = params => {
+  return http({
+    url: '/v2/api/4s/cert/approve/approveCheckLog/gradeDetailInfo',
+    method: 'post',
+    params
+  })
+}

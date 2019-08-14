@@ -1,26 +1,28 @@
 <!--  -->
 <template>
-  <div class="circleProgress">
-    <div class="clip"
-         :class="score>=50? 'auto' : ''">
-      <div class="left"
-           :class="score>=50? '' : 'width-none'"
-           :style="{borderColor: activeColor}"></div>
-      <div class="right"
-           :style="RightStyle"></div>
-    </div>
-    <div class="bottom"></div>
-    <div class="num_box">
-      <p>
-        <span class="num"
-              :class="{num1:index!=0,fail:score<80}"
-              v-for="(item,index) in scoreArr"
-              :key="item">{{item}}</span>
-        <!-- <span class="num1"
+  <div class="wrapper">
+    <div class="circleProgress">
+      <div class="clip"
+           :class="score>=50? 'auto' : ''">
+        <div class="left"
+             :class="score>=50? '' : 'width-none'"
+             :style="{borderColor: activeColor}"></div>
+        <div class="right"
+             :style="RightStyle"></div>
+      </div>
+      <div class="bottom"></div>
+      <div class="num_box">
+        <p>
+          <span class="num"
+                :class="{num1:index!=0,fail:score<80}"
+                v-for="(item,index) in scoreArr"
+                :key="item">{{item}}</span>
+          <!-- <span class="num1"
               :style="{color: textColor}">{{scoreArr[1]}}</span> -->
-      </p>
-      <p class="num_star"
-         :class="score>=80?'on_star':'un_star'">{{score>=80?'及格':'不及格'}} </p>
+        </p>
+        <p class="num_star"
+           :class="score>=80?'on_star':'un_star'">{{score>=80?'及格':'不及格'}} </p>
+      </div>
     </div>
   </div>
 </template>
@@ -56,6 +58,11 @@ export default {
 div {
   box-sizing: border-box;
 }
+.wrapper {
+  height: 114px;
+  overflow: hidden;
+  margin-top: 7.33vw;
+}
 .circleProgress {
   width: 30.4vw;
   height: 30.4vw;
@@ -63,7 +70,6 @@ div {
   background-color: #dbdbdb;
   border-radius: 50%;
   margin: 0 auto;
-  margin-top: 7.33vw;
 }
 .num_box {
   position: absolute;

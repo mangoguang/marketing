@@ -3,7 +3,10 @@
   <div class="score_wrapper">
     <circleProgress :score="score"
                     :star="starData" />
-    <div class="time">
+    <div class="shop-name"
+         v-if="shopName">{{shopName}}</div>
+    <div class="time"
+         v-if="cycle">
       <p>第{{cycle}}月</p>
     </div>
   </div>
@@ -15,7 +18,7 @@ export default {
   components: {
     circleProgress
   },
-  props: ['starData', 'score', 'cycle'],
+  props: ['starData', 'score', 'cycle', 'shopName'],
   data () {
     return {
 
@@ -29,6 +32,7 @@ export default {
 <style lang='scss' scoped>
 .score_wrapper {
   width: 100vw;
+  padding-bottom: 15px;
   .time {
     text-align: center;
     color: #2e302d;
@@ -39,6 +43,15 @@ export default {
     position: relative;
     z-index: 100;
     margin-bottom: 2vw;
+    line-height: 1;
   }
+}
+.shop-name {
+  padding-top: 10px;
+  padding-bottom: 5px;
+  font-size: 14px;
+  color: #2d2d2d;
+  text-align: center;
+  line-height: 1;
 }
 </style>

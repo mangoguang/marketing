@@ -13,7 +13,8 @@
          :style="{'margin-top':`${top}vw,height:${height}`}">
       <circle-view :starData="starData"
                    :score="score"
-                   :cycle="cycle" />
+                   :cycle="cycle"
+                   :shopName="shopName" />
       <div class="line"></div>
       <record-content :checkCategories="checkCategories" />
     </div>
@@ -25,7 +26,9 @@ import starHeader from '@/components/4s/record/recordDetails/header'
 import starNav from '@/components/4s/record/recordDetails/starNav'
 import CircleView from '@/components/4s/record/recordDetails/CircleView'
 import recordContent from '@/components/4s/record/recordDetails/contentWrapper'
-import { checkcategories, checkloginfo } from '@/api/4s'
+import { starGrade, checkloginfo } from '@/api/4s'
+import { Toast } from 'mint-ui'
+import { setTimeout } from 'timers';
 export default {
   components: {
     starHeader,
@@ -40,10 +43,11 @@ export default {
       headerHeight: '',
       starTop: '',
       starData: '',
-      starList: [],
+      starList: [{ name: '五星' }, { name: '四星' }, { name: '三星' }, { name: '二星' }, { name: '一星' }],
       score: 0,
       cycle: 0,
-      checkCategories: []
+      checkCategories: [],
+      shopName: ''
     };
   },
   created () {
@@ -62,21 +66,35 @@ export default {
       this.checkCategories = checkLogInfo.checkCategories
     },
     async   _initData (params) {
-      let { code, msg, checkCategories } = await checkcategories(params)
-      checkCategories.map(item => {
-        item.name = item.name.replace('检查', '')
+      let { code, msg, data } = await starGrade(params)
+      if (code != 0) {
+        Toast(msg)
+        // setTimeout(() => { this.$router.go(-1) }, 2000)
+        return;
+      }
+      this.score = data.getTotal || 0
+      this.shopName = data.shopName || ''
+
+      data.gradeList.map(item => {
+        item.score = item.getTotal
+        item.inspector = item.createByName
+        item.inspectTime = item.createTime
       })
-      this.starList = checkCategories
-      params.levelId = checkCategories[0].levelId
-      this.starData = checkCategories[0].name
-      this._getCheckLogInfo(params)
+
+      this.checkCategories = data.gradeList
+
+      data.starList.map((item) => {
+        let arr = ['', '一星', '二星', '三星', '四星', '五星']
+        item.name = arr[item.starLevel]
+      })
+      this.starList = data.starList
     },
     //选择星级  1星不可选
     changeStar (item) {
       this.starData = item.name
       let params = this.$route.query
-      params.levelId = item.levelId
-      this._getCheckLogInfo(params)
+      params.starLevelId = item.starLevelId
+      this._initData(params)
     },
     isIPhoneX () {
       let phone = this.phoneSize();

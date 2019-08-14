@@ -45,7 +45,7 @@ export default {
 
   box-sizing: border-box;
   position: fixed;
-  z-index: 99;
+  z-index: 1;
   padding-top: 14vw;
   left: 0;
   top: 0;
