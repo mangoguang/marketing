@@ -91,6 +91,13 @@ export default {
       indexModel.brandCategory(brand).then(res => {
         if(res.data) {
           this.dataList.list = res.data.list
+          if(res.data.list.length>0){
+            let array=[]
+            res.data.list.map((item,index) => {
+                array.push({name:item.categoryName})
+            })
+            this.setInitNavList(array)
+          }
           this.listenScrollTop()
         }
       })
