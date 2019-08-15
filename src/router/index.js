@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+const index = () => import('../pages/index')
+const ReportForms = () => import('../pages/ReportForms')
+const Login = () => import('../pages/login')
 //客户模块
 const Customer = () => import('../pages/customer')
 const customerInfo = () => import('../pages/customer/customerInfo')
@@ -61,7 +64,6 @@ const check = () => import('../pages/4S/starCheck/check')
 const checkDetail = () => import('../pages/4S/starCheck/checkDetail')
 const recordJxs = () => import('../pages/4S/record/recordJxs')
 const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
-const starCheckW = () => import('../pages/4S/starCheckWrapper/starCheckW')
 const searchIndex = () => import('../pages/4S/search')
 const starAtest = () => import('../pages/4S/starAtest/starAtest')
 Vue.use(VueRouter)
@@ -572,11 +574,6 @@ export var router = new VueRouter({
     name:'judgeStar',
     component:judgeStar
   },
-  {
-    path:'/starCheckW',
-    name:'starCheckW',
-    component:starCheckW
-  }, 
   {
     path:'/searchIndex',
     name:'searchIndex',
