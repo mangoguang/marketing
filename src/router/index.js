@@ -245,7 +245,8 @@ export var router = new VueRouter({
       path: '/resetMyPwd',
       name: 'resetMyPwd',
       component: resetMyPwd
-    },{
+    },
+    {
     path: '/previewImg',
     name: '/previewImg',
     component:() => import('../pages/Personal/imgPreview')
@@ -489,7 +490,7 @@ export var router = new VueRouter({
       keepAlive:true,
       isUseCache:false
     }
-  ],
+  }],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       // console.log(324242,savedPosition)      

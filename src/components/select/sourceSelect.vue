@@ -78,6 +78,8 @@ export default {
           if(this.newCustomerInfo && this.newCustomerInfo.source) {
             this.color = 'color: #363636'
             this.setSourceVal(this.newCustomerInfo.source)
+            let code = getCode(this.newCustomerInfo.source,this.typeList)
+            this.$emit('codeChange', code)
             this.key = false
           }
         }

@@ -73,6 +73,8 @@ export default {
           if(this.newCustomerInfo && this.newCustomerInfo.buyReason) {
             this.color = 'color: #363636'
             this.setBuyReason(this.newCustomerInfo.buyReason)
+            let code = getCode(this.newCustomerInfo.buyReason,this.typeList)
+            this.$emit('brCodeChange', code)
             this.key = false
           }
         }

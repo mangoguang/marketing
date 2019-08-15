@@ -73,6 +73,8 @@ export default {
           if(this.newCustomerInfo && this.newCustomerInfo.colorPref) {
             this.color = 'color: #363636'
             this.setColorPref(this.newCustomerInfo.colorPref)
+            let code = getCode(this.newCustomerInfo.colorPref,this.typeList)
+            this.$emit('colorCodeChange', code)
             this.key = false
           }
         }

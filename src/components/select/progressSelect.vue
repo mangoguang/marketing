@@ -73,6 +73,8 @@ export default {
           if(this.newCustomerInfo && this.newCustomerInfo.progress) {
             this.color = 'color: #363636'
             this.setProgress(this.newCustomerInfo.progress)
+            let code = getCode(this.newCustomerInfo.progress,this.typeList)
+            this.$emit('pgCodeChange', code)
             this.key = false
           }
         }
