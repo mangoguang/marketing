@@ -524,65 +524,79 @@ export var router = new VueRouter({
   },
   //4s
   {
-    path:'/index4s',
-    name:'index4s',
-    component:index4s
+    path: '/index4s',
+    name: 'index4s',
+    component: index4s
   },
   {
-    path:'/record',
-    name:'record',
-    component:record
+    path: '/record',
+    name: 'record',
+    component: record
   },
   {
-    path:'/recordJxs',
-    name:'recordJxs',
-    component:recordJxs
+    path: '/recordJxs',
+    name: 'recordJxs',
+    component: recordJxs
   },
   {
-    path:'/recordDetails',
-    name:'recordDetails',
-    component:recordDetails
+    path: '/recordDetails',
+    name: 'recordDetails',
+    component: recordDetails
   },
   {
-    path:'/itemDetails',
-    name:'itemDetails',
-    component:itemDetails
+    path: '/itemDetails',
+    name: 'itemDetails',
+    component: itemDetails
   },
   // 星级检查
   {
-    path:'/starCheck',
-    name:'starCheck',
+    path: '/starCheck',
+    name: 'starCheck',
     component: starCheck
   },
   {
-    path:'/checkTip',
-    name:'checkTip',
+    path: '/checkTip',
+    name: 'checkTip',
     component: checkTip
   },
   {
-    path:'/check',
-    name:'check',
-    component: check
+    path: '/check',
+    name: 'check',
+    component: check,
+    meta: {
+      keepAlive: true,
+      isUseCache: false
+    }
   },
   {
-    path:'/checkDetail',
-    name:'checkDetail',
+    path: '/checkDetail',
+    name: 'checkDetail',
     component: checkDetail
   },
   {
-    path:'/judgeStar',
-    name:'judgeStar',
-    component:judgeStar
+    path: '/judgeStar',
+    name: 'judgeStar',
+    component: judgeStar
   },
   {
-    path:'/searchIndex',
-    name:'searchIndex',
-    component:searchIndex
+    path: '/leader-check',
+    name: 'LeaderCheck',
+    component: () => import('@/pages/4S/leader-check/')
   },
   {
-    path:'/starAtest',
-    name:'starAtest',
-    component:starAtest
+    path: '/searchIndex',
+    name: 'searchIndex',
+    component: searchIndex
+  },
+  {
+    path: '/starAtest',
+    name: 'starAtest',
+    component: starAtest
+  },
+  {
+    path: '/apply-record',
+    name: 'ApplyRecord',
+    component: () => import('@/pages/4S/starAtest/ApplyRecord')
   }
 ],
   scrollBehavior(to, from, savedPosition) {
