@@ -1,26 +1,28 @@
 <!--  -->
 <template>
-  <div class="circleProgress">
-    <div class="clip"
-         :class="score>=50? 'auto' : ''">
-      <div class="left"
-           :class="score>=50? '' : 'width-none'"
-           :style="{borderColor: activeColor}"></div>
-      <div class="right"
-           :style="RightStyle"></div>
-    </div>
-    <div class="bottom"></div>
-    <div class="num_box">
-      <p>
-        <span class="num"
-              :class="{num1:index!=0}"
-              v-for="(item,index) in scoreArr"
-              :key="item"
-              :style="{color: textColor}">{{item}}</span>
-        <!-- <span class="num1"
+  <div class="wrapper">
+    <div class="circleProgress">
+      <div class="clip"
+           :class="score>=50? 'auto' : ''">
+        <div class="left"
+             :class="score>=50? '' : 'width-none'"
+             :style="{borderColor: activeColor}"></div>
+        <div class="right"
+             :style="RightStyle"></div>
+      </div>
+      <div class="bottom"></div>
+      <div class="num_box">
+        <p>
+          <span class="num"
+                :class="{num1:index!=0,fail:score<80}"
+                v-for="(item,index) in scoreArr"
+                :key="item">{{item}}</span>
+          <!-- <span class="num1"
               :style="{color: textColor}">{{scoreArr[1]}}</span> -->
-      </p>
-      <p class="num_star">{{star + '评分' || '一星评分'}} </p>
+        </p>
+        <p class="num_star"
+           :class="score>=80?'on_star':'un_star'">{{score>=80?'及格':'不及格'}} </p>
+      </div>
     </div>
   </div>
 </template>
@@ -31,13 +33,11 @@ export default {
   data () {
     return {
 
-      activeColor: '',
+      activeColor: this.score >= 80 ? '#007aff' : '#F88675',
       textColor: ''
     };
   },
-  created () {
-    this.getActiveColor()
-  },
+
   computed: {
     scoreArr () {
       return (this.score + '').split('')
@@ -45,24 +45,23 @@ export default {
     RightStyle () {
       return {
         transform: 'rotate(' + 3.3 * this.score + 'deg)',
-        borderColor: this.activeColor
+        borderColor: this.score >= 80 ? '#007aff' : '#F88675'
       }
     }
   },
   methods: {
-    getActiveColor () {
-      const color = this.$route.query && this.$route.query.color
-      if (color) {
-        this.activeColor = color
-        this.textColor = '#2d2d2d'
-      }
-    }
+
   }
 }
 </script>
 <style lang='scss' scoped>
 div {
   box-sizing: border-box;
+}
+.wrapper {
+  height: 114px;
+  overflow: hidden;
+  margin-top: 7.33vw;
 }
 .circleProgress {
   width: 30.4vw;
@@ -71,7 +70,6 @@ div {
   background-color: #dbdbdb;
   border-radius: 50%;
   margin: 0 auto;
-  margin-top: 7.33vw;
 }
 .num_box {
   position: absolute;
@@ -84,17 +82,26 @@ div {
   height: 25.4vw;
   transform: translate(-50%, -50%);
   text-align: center;
+  .num {
+    color: #007aff;
+    font-size: 13.3vw;
+  }
+  .num1 {
+    color: #007aff;
+    font-size: 9.06vw;
+  }
+  .fail {
+    color: #000;
+  }
 }
-.num {
-  color: #007aff;
-  font-size: 13.3vw;
+
+.un_star {
+  color: #f88b6f;
 }
-.num1 {
+.on_star {
   color: #007aff;
-  font-size: 9.06vw;
 }
 .num_star {
-  color: #666;
   font-size: 3.2vw;
   margin-top: -6vw;
   opacity: 0.8;

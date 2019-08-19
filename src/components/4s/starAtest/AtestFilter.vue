@@ -108,9 +108,13 @@ export default {
   justify-content: space-between;
   padding: 0 4vw;
   box-sizing: border-box;
+  position: fixed;
+  top: 94px;
+  left: 0;
+  z-index: 1;
   .sortContentWrapper {
     position: fixed;
-    top: 37vw;
+    top: 138px;
     left: 0;
     background: rgba($color: #000, $alpha: 0.3);
     z-index: 99;

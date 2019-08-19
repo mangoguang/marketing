@@ -20,7 +20,7 @@
           :key='index + item'
           @click="handleItemSelect(index)">
         <span class="item-left">{{item.name}}</span>
-        <span class="item-right">{{item.deduct}}分</span>
+        <span class="item-right">{{item.deduct||0}}分</span>
       </li>
     </ul>
   </div>
@@ -131,9 +131,9 @@ export default {
     .item {
       display: flex;
       justify-content: space-between;
-      padding: 0 7.6vw;
+      padding: 10px 7.6vw;
       box-sizing: border-box;
-      line-height: 10.4vw;
+      line-height: 1.2;
       border-bottom: 1px solid #fff;
       &:last-child {
         border-bottom: none;
@@ -141,6 +141,7 @@ export default {
       .item-left {
         color: #000;
         font-size: 4vw;
+        line-height: 1.2;
       }
       .item-right {
         color: #000;

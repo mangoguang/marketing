@@ -108,8 +108,8 @@ export default {
     this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
   },
   methods: {
-    async  _initData (page = 1) {
-      let { code, data } = await distributorList({ page, limit: 20 })
+    async  _initData (page = 1, key = "") {
+      let { code, data } = await distributorList({ page, limit: 20, key })
       data.list.map(item => {
         item.isEdit = true
         item.isReadOnly = true

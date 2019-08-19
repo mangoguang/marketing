@@ -1,124 +1,78 @@
 <!--  -->
 <template>
-  <div class="node_card">
-    <h1 class="header">已认证</h1>
-    <ul class="node_ul">
-      <li class="node_li" v-for="(item, index) in list" :key="index">
-        <div class="node_left_text">
-          <p class="text">{{ item.position }}</p>
-        </div>
-        <div class="node_right_text">
-          <div class="text">
-            <p v-for="(el,i) in item.text" :key="el + i">{{el}}</p>
-            <span class="unPass" @click="handleDetailClick">审核未通过</span>
+  <div class="bg">
+    <div class="node_card">
+      <h1 class="header">已认证</h1>
+      <ul class="node_ul">
+        <li class="node_li"
+            v-for="(item, index) in cofirmList"
+            :key="index">
+          <div class="node_left_text">
+            <p class="text">{{ itemName[index] }}</p>
+            <div class="step un-line">
+              <div class="step-circle un-circle"></div>
+            </div>
           </div>
-        </div>
-      </li>
-    </ul>
-    <div class="closeBtn" @click="handleCloseClick">知道了</div>
-     <div class="time_line" :style="lineStyle">
+          <div class="node_right_text">
+            <div class="text"
+                 v-for="(items) in item"
+                 :key="items.id">
+              <p>{{items.createTime+' '+items.remark}}</p>
+              <span :class="{unPass:items.status!=1}"
+                    @click="handleDetailClick(items)">{{items.status==1?'已通过':'审核未通过'}}</span>
+            </div>
+            <div v-if="item&&item.length==0"
+                 class="nodata">-</div>
+          </div>
+        </li>
+      </ul>
+      <div class="closeBtn"
+           @click="handleCloseClick">知道了</div>
+      <!-- <div class="time_line"
+           :style="lineStyle">
         <div class="circle">
           <div class="inside"></div>
         </div>
-        <div class="new_node" v-for="(item,index) in getTimeLine()" :key="item + index">
-          <div class="line" :class="{unshow: !item.type}"></div>
-          <div class="circle" :class="{unshowCircle: !item.type}">
+        <div class="new_node"
+             v-for="(item,index) in list2"
+             :key="item + index">
+          <div class="line"
+               :class="{unshow: !item.type}"></div>
+          <div class="circle"
+               :class="{unshowCircle: !item.type}">
             <div class="inside"></div>
           </div>
         </div>
-      </div>
+      </div> -->
+    </div>
   </div>
 </template>
 
 <script>
+import { parseTime } from '@/utils/tools'
 export default {
-  props: ['star'],      //几星
+  props: ['cofirmList', 'star'],      //几星
   data () {
     return {
-      list: [],
-      list1: [
-        {
-          position: '经销商',
-          text: ['2018.05.15 发起<一星认证>申请'],
-          type: true
-        },
-        {
-          position: '区域片区',
-          text: ['2018.05.20 考察验收','2018.05.20 考察验收'],
-          type: true
-        },
-        {
-          position: '总部',
-          text: ['2018.06.04 星级认证审核'],
-          type: false
-        },
-        {
-          position: '总部',
-          text: ['2018.06.05 完成<一星认证>'],
-          type: false
-        }
-      ],
-      list2: [
-         {
-          position: '经销商',
-          text: ['2018.05.15 发起<一星认证>申请'],
-          type: true
-        },
-        {
-          position: '区域片区',
-          text: ['2018.05.20 考察验收','2018.05.20 考察验收'],
-          type: true
-        },
-        {
-          position: '4S认证部',
-          text: ['2018.05.20 受理申请','2018.05.20 考察验收'],
-          type: true
-        },
-        {
-          position: '销售中心',
-          text: ['2018.06.04 审核通过'],
-          type: false
-        },
-        {
-          position: '市场中心',
-          text: ['2018.06.04 审核通过'],
-          type: false
-        },
-        {
-          position: '总部',
-          text: ['2018.06.05 完成<一星认证>'],
-          type: false
-        }
-      ],
+      itemName: ['经销商', '区域', '4s', '销售中心', '4s认证部', '市场中心', '总裁', '总部'],
+
       lineStyle: {}
     };
   },
-  watch: {
-    star() {
-      this.setStar()
-    }
-  },
+
   methods: {
-    setStar() {
-      const style = {
-        top: '70vw',
-        left: '-33.4vw'
-      }
-      this.list = this.star > 2 ? this.list2 : this.list1
-      this.lineStyle = this.star >2? style : ''
+    handleCloseClick () {
+      this.$emit('onNodeCardClose', true)
     },
-    //时间轴去掉第一个
-    getTimeLine() {
-      return this.list.slice(1)
-    },
-    handleCloseClick() {
-      this.$emit('getClick',true)
-    },
-    handleDetailClick() {
+    handleDetailClick (items) {
+      if (items.status == 1) return
       this.$router.push({
-        path: 'recordDetails',
+        path: '/attest-detail',
         query: {
-          color: '#F88675'
+          shopId: items.shopId,
+          qualificationId: items.id,    //认证id
+          starLevelId: items.starLevelId,   //星级1,2,3,4,5
+          type: items.type   //类型， 3：区域经理 评分项      4：4S
         }
       })
     }
@@ -126,14 +80,25 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
 .node_card {
   width: 82.66vw;
   min-height: 116.2vw;
   background: #fff;
   border-radius: 1.2vw;
-  margin: 0 auto;
-  margin-top: 24.2vw;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
   .header {
     background: #007aff;
     line-height: 11.2vw;
@@ -148,36 +113,88 @@ export default {
     padding: 0 2.8vw;
     padding-top: 6.13vw;
     box-sizing: border-box;
-    // width: 100%;
-    // height: 108vw;
-    // overflow: scroll;
+    max-height: 62vh;
+    overflow: auto;
+    padding-bottom: 45px;
     .node_li {
-      height: 20.6vw;
+      min-height: 55px;
       display: flex;
       justify-content: space-between;
-       box-sizing: border-box;
+      box-sizing: border-box;
       .node_left_text {
         flex: 0.2;
         padding-right: 6vw;
-        box-sizing: border-box;
+
+        position: relative;
+
         .text {
           color: #363636;
           font-size: 3.2vw;
           font-weight: 500;
           text-align: right;
         }
+        .step {
+          position: absolute;
+          top: 8px;
+          left: 63px;
+          height: 100%;
+          width: 2px;
+          background: #5ac8fa;
+          .step-circle {
+            width: 10px;
+            height: 10px;
+            background: rgba(90, 200, 250, 0.3);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            &::after {
+              content: "";
+              display: block;
+              width: 7px;
+              height: 7px;
+              background: #5ac8fa;
+              border-radius: 50%;
+            }
+          }
+        }
+        .un-line {
+          background: #f8f8f8;
+          .un-circle {
+            background: rgba(144, 144, 144, 0.3);
+            &::after {
+              content: "";
+              display: block;
+              width: 7px;
+              height: 7px;
+              background: #909090;
+              border-radius: 50%;
+            }
+          }
+        }
       }
       .node_right_text {
-        flex:0.8;
+        flex: 0.8;
         color: #666;
         font-size: 3.2vw;
         text-align: left;
-        box-sizing: border-box;
+
+        min-height: 55px;
+        padding-bottom: 10px;
         .text {
-          border-radius:0px 1.6vw 1.6vw 1.6vw;
+          border-radius: 0px 1.6vw 1.6vw 1.6vw;
           border: 1px solid #e1e1e1;
           padding: 0 1.6vw;
-        } 
+        }
+      }
+      &:last-child {
+        .step {
+          width: 0;
+        }
       }
     }
   }
@@ -188,7 +205,7 @@ export default {
     font-size: 4.8vw;
     font-weight: 500;
     position: absolute;
-    bottom: -10vw;
+    bottom: 0;
     left: 0;
     width: 100%;
     text-align: center;
@@ -199,17 +216,17 @@ export default {
   .time_line {
     display: flex;
     align-items: center;
-    transform: rotate(90deg);
+    flex-direction: column;
     position: absolute;
-    top: 49.6vw;
-    left: -12.4vw;
+    top: 68px;
+    left: 68px;
   }
   .circle {
     width: 3.13vw;
     height: 3.13vw;
     background: rgba($color: #5ac8fa, $alpha: 0.3);
     border-radius: 50%;
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-content: center;
     z-index: 99;
@@ -229,26 +246,29 @@ export default {
       background: rgba($color: #909090, $alpha: 1);
     }
   }
-  }
-  .line {
-    width: 19.6vw;
-    background: #5ac8fa;
-    height: 0.5vw;
-    margin-left: -1vw;
-    margin-right: -1vw;
-  }
-  .new_node {
-    display: flex;
-    align-items: center;
-  }
-  .unshow {
-    background: #f8f8f8;
-    opacity: 0.8;
-  }
-  .unPass {
-    color: #ff2d55;
-    text-decoration: underline;
-  }
- 
-
+}
+.line {
+  height: 19.6vw;
+  background: #5ac8fa;
+  width: 0.5vw;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.new_node {
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  height: 19.6vw;
+  top: -2px;
+}
+.unshow {
+  background: #f8f8f8;
+  opacity: 0.8;
+}
+.unPass {
+  color: #ff2d55;
+  text-decoration: underline;
+}
 </style>

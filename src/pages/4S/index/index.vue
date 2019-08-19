@@ -3,11 +3,13 @@
   <div class="index">
     <Header :storeClass="soreClass" />
     <StoreSelect :shops="shops"
-                 @onGetStoreId="onGetStoreId" />
+                 @onGetStoreId="onGetStoreId"
+                 v-permission="['Store Manager','Sleep Consultant']" />
     <!-- 日常检查 -->
-    <DailyCheck :shopId="shopId" />
+    <DailyCheck :shopId="shopId"
+                v-permission="['Store Manager','Sleep Consultant']" />
     <!--星级认证-->
-    <starAttestation />
+    <starAttestation v-permission="['Dealer Boss']" />
     <!-- 评分报表 -->
     <GradeReport :type="'gradeReport'" />
     <!-- 配置权限 -->

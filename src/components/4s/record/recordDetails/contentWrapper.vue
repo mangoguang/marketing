@@ -25,11 +25,15 @@ export default {
       let query = this.$route.query
       query.name = item.name
       query.categoryId = item.categoryId
-      query.total = item.total
-      this.$router.push({
-        name: 'itemDetails',
-        query
-      })
+      query.total = item.total;
+
+      if (this.$route.name == 'AttestDetail') {
+        query.id = item.id
+        this.$router.push({ path: '/attest-item', query })
+      } else {
+        this.$router.push({ name: 'itemDetails', query })
+      }
+
     }
   }
 }
