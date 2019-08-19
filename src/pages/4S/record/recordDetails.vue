@@ -7,6 +7,7 @@
       <star-header />
       <star-nav class="star_nav"
                 :starList='starList'
+                :activeIndex="0"
                 @changeStar='changeStar' />
     </div>
     <div class="details_content"

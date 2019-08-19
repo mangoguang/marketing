@@ -331,6 +331,17 @@ export default {
         background: rgba(0, 0, 0, 1);
         opacity: 0.3;
         border-radius: 0px 0px 0px 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &::after {
+          content: "";
+          display: block;
+          background: url("../../../assets/imgs/4s/cuowu@2x.png") center center /
+            100% 100%;
+          width: 8px;
+          height: 8px;
+        }
       }
       img {
         @extend %up_width;

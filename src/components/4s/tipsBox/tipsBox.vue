@@ -3,13 +3,17 @@
   <div class="tipsBox">
     <div class="tips_wrapper">
       <div class="header">
-        <img :src="tipsData.imgUrl" alt="">
+        <img :src="tipsData.imgUrl"
+             alt="">
         <p class="text">{{tipsData.title}}</p>
       </div>
       <div class="content border-bottom">{{tipsData.content}}</div>
       <div class="btn">
-        <button class="cancle" @click="handleCancle" v-show="tipsData.btn === 'cancle'">取消</button>
-        <button class="comfirm" @click="handleComfirm">确定</button>
+        <button class="cancle"
+                @click="handleCancle"
+                v-show="tipsData.btn === 'cancel'">取消</button>
+        <button class="comfirm"
+                @click="handleComfirm">确定</button>
       </div>
     </div>
   </div>
@@ -24,11 +28,11 @@ export default {
     };
   },
   methods: {
-    handleCancle() {
-      this.$emit('getTipsVal','cancle')
+    handleCancle () {
+      this.$emit('onCancel')
     },
-    handleComfirm() {
-      this.$emit('getTipsVal','comfirm')
+    handleComfirm () {
+      this.$emit('onComfim', this.tipsData.btn)
     }
   }
 }
@@ -40,7 +44,7 @@ export default {
   position: fixed;
   left: 0;
   top: 0;
-  background:rgba($color: #000000, $alpha: 0.3);
+  background: rgba($color: #000000, $alpha: 0.3);
   z-index: 999;
   .tips_wrapper {
     width: 74.66vw;
@@ -83,18 +87,18 @@ export default {
         flex: 1;
         color: #909090;
         font-size: 4.8vw;
-         position: relative;
-          &::after {
-          content: '';
+        position: relative;
+        &::after {
+          content: "";
           position: absolute;
-          top:0;
-          left:0;
-          box-sizing:border-box;
-          border-right:1px solid #ececec;
-          width:200%;
-          height:200%;
-          transform-origin:0 0 ;
-          transform:scale(0.5)
+          top: 0;
+          left: 0;
+          box-sizing: border-box;
+          border-right: 1px solid #ececec;
+          width: 200%;
+          height: 200%;
+          transform-origin: 0 0;
+          transform: scale(0.5);
         }
       }
       .comfirm {

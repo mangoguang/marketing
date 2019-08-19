@@ -12,14 +12,17 @@ const request = new Request()
 
 //获取星级
 export const userinfo = params => {
-  return mango.getAjax('/v1/app/userinfo', params)
+  return http({
+    url: '/api/app/userinfo',
+    method: 'get'
+  })
 }
 
 
 //获取星级
 export const guideStar = params => {
   return request.getData({
-    url: '/v2/api/4s/cert/guide/star',
+    url: '/api/4s/cert/guide/star',
     params
   })
 }
@@ -30,7 +33,7 @@ export const guideStar = params => {
  */
 export const gradeShops = params => {
   return http({
-    url: '/v2/api/cert/grade/shops',
+    url: '/api/cert/grade/shops',
     method: 'get',
     params
   })
@@ -39,7 +42,7 @@ export const gradeShops = params => {
 //店长（导购）获取一级和二级评分分类（username:19040049）
 export const gradeCategories = params => {
   return http({
-    url: '/v2/api/cert/grade/categories',
+    url: '/api/cert/grade/categories',
     method: 'get',
     params
   })
@@ -51,7 +54,7 @@ export const gradeCategories = params => {
  */
 export const gradeSubcategories = params => {
   return http({
-    url: '/v2/api/cert/grade/subcategories',
+    url: '/api/cert/grade/subcategories',
     method: 'get',
     params
   })
@@ -63,7 +66,7 @@ export const gradeSubcategories = params => {
  */
 export const uploadFile = params => {
   return http({
-    url: '/upload/file',
+    url: '/api/upload/file',
     method: 'post',
     params
   }, true)
@@ -74,7 +77,7 @@ export const uploadFile = params => {
  * @param {*} params 
  */
 export const gradeSubmit = params => {
-  return httpDef.post('/v2/api/cert/grade/submit',
+  return httpDef.post('/api/cert/grade/submit',
     params, {
       headers: {
         'Content-Type': 'application/json'
@@ -89,7 +92,7 @@ export const gradeSubmit = params => {
  */
 export const distributorList = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/distributor/list',
+    url: '/api/4s/cert/approve/distributor/list',
     params
   })
 }
@@ -100,7 +103,7 @@ export const distributorList = params => {
  */
 export const distributorApply = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/distributor/apply',
+    url: '/api/4s/cert/approve/distributor/apply',
     params
   })
 }
@@ -112,7 +115,7 @@ export const distributorApply = params => {
  */
 export const distributorApplys = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/distributor/logList',
+    url: '/api/4s/cert/approve/distributor/logList',
     params
   })
 }
@@ -124,7 +127,7 @@ export const distributorApplys = params => {
  */
 export const distributorCancel = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/distributor/cancel',
+    url: '/api/4s/cert/approve/distributor/cancel',
     params
   })
 }
@@ -136,7 +139,7 @@ export const distributorCancel = params => {
  */
 export const distributorshops = params => {
   return http({
-    url: '/v2/api/cert/checklog/distributorshops',
+    url: '/api/cert/checklog/distributorshops',
     method: 'get',
     params
   })
@@ -148,7 +151,7 @@ export const distributorshops = params => {
  */
 export const checklogs = params => {
   return http({
-    url: '/v2/api/cert/checklog/checklogs',
+    url: '/api/cert/checklog/checklogs',
     method: 'get',
     params
   })
@@ -160,7 +163,7 @@ export const checklogs = params => {
  */
 export const resultList = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/distributor/resultList',
+    url: '/api/4s/cert/approve/distributor/resultList',
     method: 'post',
     params
   })
@@ -172,7 +175,7 @@ export const resultList = params => {
  */
 export const checkcategories = params => {
   return http({
-    url: '/v2/api/cert/checklog/checkcategories',
+    url: '/api/cert/checklog/checkcategories',
     method: 'get',
     params
   })
@@ -185,7 +188,7 @@ export const checkcategories = params => {
  */
 export const checkloginfo = params => {
   return http({
-    url: '/v2/api/cert/checklog/checkloginfo',
+    url: '/api/cert/checklog/checkloginfo',
     method: 'get',
     params
   })
@@ -197,7 +200,7 @@ export const checkloginfo = params => {
  */
 export const checklogStandards = params => {
   return http({
-    url: '/v2/api/cert/checklog/standards',
+    url: '/api/cert/checklog/standards',
     method: 'get',
     params
   })
@@ -209,7 +212,7 @@ export const checklogStandards = params => {
  */
 export const checklogStandardinfo = params => {
   return http({
-    url: '/v2/api/cert/checklog/standardinfo',
+    url: '/api/cert/checklog/standardinfo',
     method: 'get',
     params
   })
@@ -222,7 +225,7 @@ export const checklogStandardinfo = params => {
  */
 export const getApproveFlowInfo = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/getApproveFlowInfo',
+    url: '/api/4s/cert/approve/getApproveFlowInfo',
     method: 'get',
     params
   })
@@ -234,7 +237,7 @@ export const getApproveFlowInfo = params => {
  */
 export const starGrade = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/approveCheckLog/starGrade',
+    url: '/api/4s/cert/approve/approveCheckLog/starGrade',
     method: 'post',
     params
   })
@@ -246,7 +249,7 @@ export const starGrade = params => {
  */
 export const gradeDetailList = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/approveCheckLog/gradeDetailList',
+    url: '/api/4s/cert/approve/approveCheckLog/gradeDetailList',
     method: 'post',
     params
   })
@@ -258,7 +261,7 @@ export const gradeDetailList = params => {
  */
 export const gradeDetailInfo = params => {
   return http({
-    url: '/v2/api/4s/cert/approve/approveCheckLog/gradeDetailInfo',
+    url: '/api/4s/cert/approve/approveCheckLog/gradeDetailInfo',
     method: 'post',
     params
   })
