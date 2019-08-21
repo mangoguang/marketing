@@ -7,9 +7,9 @@
                  v-permission="['Store Manager','Sleep Consultant']" />
     <!-- 日常检查 -->
     <DailyCheck :shopId="shopId"
-                v-permission="['Store Manager','Sleep Consultant']" />
+                v-permission="['Store Manager','Sleep Consultant','supervisor']" />
     <!--星级认证-->
-    <starAttestation v-permission="['Dealer Boss']" />
+    <starAttestation v-permission="['Dealer Boss','supervisor']" />
     <!-- 评分报表 -->
     <GradeReport :type="'gradeReport'" />
     <!-- 配置权限 -->
@@ -46,10 +46,12 @@ export default {
     }
   },
   async created () {
+
     this._initData()
   },
   methods: {
     ...mapMutations(['setShopId']),
+
     async  _initData () {
       let { code, msg, shops } = await gradeShops()
       if (code != 0) {
@@ -79,6 +81,6 @@ export default {
 <style lang='scss' scoped>
 .index {
   width: 100vw;
-  overflow: hidden;
+  // overflow: hidden;
 }
 </style>

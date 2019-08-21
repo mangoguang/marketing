@@ -1,86 +1,92 @@
 <template>
   <div class="login_box">
-  <div class="login" :style='{marginTop: marginTop}'>
-    <div :class="`${myStyle.loginFix}`"></div>
-    <div class="topBar">
-      <tips-error :style="{display:display}"></tips-error>
-      <tips-web :style="{display:display1}"></tips-web>
-      <div class="line"></div>
-      <div class="sriangle"></div>
-    </div>
-    <div class="login">
-      <div class="box">
-        <div class="welcome">Hi,</div>
-        <h1>欢迎使用慕思营销助手</h1>
-        <form>
-          <ul>
-            <li
-              is="myinput"
-              :type="type1"
-              :labelContent="account"
-              v-model.trim="inputValue1"
-              autocomplete="off"
-              :Msg="nameMsg"
-              @myFocus="myFocus"
-              @myBlur="myBlur"
-            ></li>
-            <li
-              is="myinput"
-              :type="type2"
-              :labelContent="pwd"
-              v-model.trim="inputValue2"
-              :Msg="pwdMsg"
-              @myFocus="myFocus"
-              @myBlur="myBlur"
-            ></li>
-            <li class="tips clearfix">
-              <input
-                type="checkbox"
-                id="remember"
-                name="remember"
-                value="remember"
-                v-model="checked"
-              >
-              <label for="remember" class="rem"></label>
-              <label for="remember">
-                <div class="rempwd">记住密码</div>
-              </label>
-              <div class="forgetpwd" @touchend="forgetPwd">忘记密码?</div>
-            </li>
-            <li>
-              <btn @click.native="submitForm()" :text="text" class="myBtn"></btn>
-            </li>
-          </ul>
-        </form>
+    <div class="login"
+         :style='{marginTop: marginTop}'>
+      <div :class="`${myStyle.loginFix}`"></div>
+      <div class="topBar">
+        <tips-error :style="{display:display}"></tips-error>
+        <tips-web :style="{display:display1}"></tips-web>
+        <div class="line"></div>
+        <div class="sriangle"></div>
       </div>
-       <div v-show="botContentShow" class="wechatLogin" :style="{height: h}">
-        <div class="wechatText">
-          <hr>
-          <span>第三方账号登录</span>
-          <hr>
+      <div class="login">
+        <div class="box">
+          <div class="welcome">Hi,</div>
+          <h1>欢迎使用慕思营销助手</h1>
+          <form>
+            <ul>
+              <li is="myinput"
+                  :type="type1"
+                  :labelContent="account"
+                  v-model.trim="inputValue1"
+                  autocomplete="off"
+                  :Msg="nameMsg"
+                  @myFocus="myFocus"
+                  @myBlur="myBlur"></li>
+              <li is="myinput"
+                  :type="type2"
+                  :labelContent="pwd"
+                  v-model.trim="inputValue2"
+                  :Msg="pwdMsg"
+                  @myFocus="myFocus"
+                  @myBlur="myBlur"></li>
+              <li class="tips clearfix">
+                <input type="checkbox"
+                       id="remember"
+                       name="remember"
+                       value="remember"
+                       v-model="checked">
+                <label for="remember"
+                       class="rem"></label>
+                <label for="remember">
+                  <div class="rempwd">记住密码</div>
+                </label>
+                <div class="forgetpwd"
+                     @touchend="forgetPwd">忘记密码?</div>
+              </li>
+              <li>
+                <btn @click.native="submitForm()"
+                     :text="text"
+                     class="myBtn"></btn>
+              </li>
+            </ul>
+          </form>
         </div>
-        <div class="wechat-icon"></div>
+        <div v-show="botContentShow"
+             class="wechatLogin"
+             :style="{height: h}">
+          <div class="wechatText">
+            <hr>
+            <span>第三方账号登录</span>
+            <hr>
+          </div>
+          <div class="wechat-icon"></div>
+        </div>
+
+        <div :style="{height:colorheight}"
+             class="fixBottom"></div>
       </div>
-      
-      <div :style="{height:colorheight}" class="fixBottom"></div>
+      <message-box v-show="mergeBoxShow"
+                   v-bind="mergeBox">
+        <p id="tip">{{mergeBox.tip}}</p>
+        <template v-slot:btn-group>
+          <button type="button"
+                  @click="merge">确定</button>
+          <button type="button"
+                  @click="cancelMerge">取消</button>
+        </template>
+        <template v-slot:btn>
+          <button type="button"
+                  @click="cancel">确定</button>
+        </template>
+      </message-box>
+      <!-- <footer></footer> -->
     </div>
-    <message-box v-show="mergeBoxShow" v-bind="mergeBox">
-      <p id="tip">{{mergeBox.tip}}</p>
-    <template v-slot:btn-group>
-        <button type="button" @click="merge">确定</button>
-        <button type="button" @click="cancelMerge">取消</button>
-    </template>
-    <template v-slot:btn>
-        <button type="button" @click="cancel">确定</button>
-    </template>
-  </message-box>
-    <!-- <footer></footer> -->
-  </div>
   </div>
 </template>
 
 <script>
-import {baseUrl} from '../Request/request'
+import { baseUrl } from '../Request/request'
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Vuex, { mapMutations } from "vuex";
@@ -92,7 +98,8 @@ import tipsWeb from "../components/charts/tipsWeb";
 import btn from "../components/btn";
 import myinput from "../components/myInput";
 import messageBox from '../components/msManage/yanMessageBox'
-import {IndexModel} from '../utils/index'
+import { IndexModel } from '../utils/index'
+import { loginAcount } from '@/api/4s'
 const indexModel = new IndexModel()
 export default {
   name: "login",
@@ -105,7 +112,7 @@ export default {
     messageBox
   },
   props: ["myStyle"],
-  data() {
+  data () {
     return {
       height: document.documentElement.clientHeight,
       text: "登录",
@@ -122,35 +129,35 @@ export default {
       nameMsg: "",
       pwdMsg: "",
       h: '',
-      marginTop:'',
+      marginTop: '',
       mergeBoxShow: false,
-      mergeBox:{
-        tip:'',
-        type:false,
-        btnNum:2
+      mergeBox: {
+        tip: '',
+        type: false,
+        btnNum: 2
       },
-      colorheight:'',
-      botContentShow:true
+      colorheight: '',
+      botContentShow: true
     }
   },
-  mounted() {
+  mounted () {
     this.$root.author = 'mangoguang'
   },
-  created() {
+  created () {
     this.getAccountMsg();
     this.isIPhoneX()
   },
   methods: {
     ...mapMutations(['setPersonMsg']),
     //去除input输入框的左边空格
-    myFocus() {
+    myFocus () {
       this.botContentShow = false
     },
-    myBlur() {
+    myBlur () {
       this.botContentShow = true
     },
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
-    submitForm() {
+    submitForm () {
       // if (this.key) {
       //如果请求失败，只可以请求一次
       this.key = false;
@@ -159,55 +166,52 @@ export default {
       this.login(this.inputValue1, this.inputValue2)
       // }
     },
-    isIPhoneX() {
+    isIPhoneX () {
       let phone = this.phoneSize();
       if (phone === "iphonex") {
         this.height = "54.4";
         this.marginTop = "-5.86vw";
-        this.colorheight='5.86vw'
+        this.colorheight = '5.86vw'
 
       } else if (phone === "iphone") {
         this.height = "49.26";
         this.marginTop = ''
-        this.colorheight=''
+        this.colorheight = ''
       } else {
         this.height = "49.26";
         this.marginTop = ''
-        this.colorheight=''
+        this.colorheight = ''
       }
     },
-    login(account, pwd) {
-      indexModel.getToken(account,md5(pwd)).then(res => {
-        mango.loading('close')
-        let data = res.data
-        if (data.code === 500) {
-          mango.tip(data.msg)
-          return
-        }
-        // data.access_token = '111'
-        if(data) {
-          // 将账号信息添加到对象
-          Object.assign(data, {
-            account,
-            pwd
-          })
-          // 转成字符串
-          let str = JSON.stringify(data)
-          // 存储到本地
-          localStorage.setItem('token', str)
-          this.$root.token = data
-          // 登陆成功跳转页面
-          this.getUserInfo()
-        }
-      }).catch((reject) => {
-        mango.tip('网络异常！')
+    async login (account, pwd) {
+      let params = {
+        grant_type: 'password', //固定填 password
+        username: account, //登录账号
+        password: md5(pwd)  //MD5(密码)
+      }
+      let data = await loginAcount(params)
+      if (data.code == 500) {
+        mango.tip(data.msg)
+        return
+      }
+      // 将账号信息添加到对象
+      Object.assign(data, {
+        account,
+        pwd
       })
+      // 转成字符串
+      let str = JSON.stringify(data)
+      // 存储到本地
+      localStorage.setItem('token', str)
+      this.$root.token = data
+      // 登陆成功跳转页面
+      this.getUserInfo()
     },
 
     // 获取用户个人信息
-    getUserInfo() {
+    getUserInfo () {
       indexModel.getUserInfo().then(res => {
-        res = res.data
+
         if (res) {
           console.log(11223344, this.mergeBoxShow)
           let typename = this.getName(res.positionList)
@@ -218,43 +222,45 @@ export default {
             name: res.username,
             phone: res.phone,
             sex: res.sex,
-            type:res.type,
+            type: res.type,
             typename: typename,
-            positionList:res.positionList[0],
+            positionList: res.positionList[0],
             userId: res.userId
             //crmAccount:res.crmAccount
           }
-          let crmAccount=JSON.stringify({
-            crmAccount:res.crmAccount
+          let crmAccount = JSON.stringify({
+            crmAccount: res.crmAccount
           })
           let shops = JSON.stringify(res.shopList)
           localStorage.setItem("crmAccount", crmAccount);
           localStorage.setItem("shops", shops)
           localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
+          localStorage.setItem('certPositionType', res.certPositionType);
           this.$root.ajaxData = ajaxData
           //alert("2:"+localStorage.getItem('deviceId'))
           //this.$router.replace({ path: "/" })
           // 检测app账号跟crm账号是否一致
           //this.mergeBoxShow = res.account !== res.crmAccount
-          if(res.account !== res.crmAccount){
+          // debugger
+          if (res.account !== res.crmAccount) {
             //console.log(1)
-            if(typename==='Dealer Boss'||typename==='Boss&Consultant'||typename==='Boss&Manager'){
-              this.mergeBoxShow=false
+            if (typename === 'Dealer Boss' || typename === 'Boss&Consultant' || typename === 'Boss&Manager') {
+              this.mergeBoxShow = false
               this.$router.replace({ path: "/" })
-               //console.log(2)
-            }else{
+              //console.log(2)
+            } else {
               //console.log(3)
-              let obj={
-                tip:`当前APP登录账号为${res.account}，CRM登录账号${res.crmAccount}，不一致，是否修改CRM登录账号为${res.account}，修改后使用${res.account}登录APP和CRM,是否确定修改？`,
-                btnNum:2,
-                type:false
+              let obj = {
+                tip: `当前APP登录账号为${res.account}，CRM登录账号${res.crmAccount}，不一致，是否修改CRM登录账号为${res.account}，修改后使用${res.account}登录APP和CRM,是否确定修改？`,
+                btnNum: 2,
+                type: false
               }
-              this.mergeBox=obj
-              this.mergeBoxShow=true
+              this.mergeBox = obj
+              this.mergeBoxShow = true
             }
-          }else{
+          } else {
             //console.log(4)
-            this.mergeBoxShow=false
+            this.mergeBoxShow = false
             this.$router.replace({ path: "/" })
           }
         }
@@ -267,116 +273,116 @@ export default {
     },
 
     // 合并app与crm账号
-    merge() {
-      this.mergeBoxShow=false;
+    merge () {
+      this.mergeBoxShow = false;
       let obj = this.$root.ajaxData
       indexModel.merge({
         userId: obj.userId,
         account: obj.account
       }).then(res => {
-        if(res.status){
-          let nObj={
-            tip:res.msg,
-            btnNum:1,
-            type:true
+        if (res.status) {
+          let nObj = {
+            tip: res.msg,
+            btnNum: 1,
+            type: true
           }
-          let crmAccount=JSON.stringify({
-            crmAccount:obj.account
+          let crmAccount = JSON.stringify({
+            crmAccount: obj.account
           })
           localStorage.setItem("crmAccount", crmAccount);
-          this.mergeBox=nObj;
-          this.mergeBoxShow=true;
-        }else{
-          let obj={
-            tip:res.msg,
-            btnNum:1,
-            type:false
+          this.mergeBox = nObj;
+          this.mergeBoxShow = true;
+        } else {
+          let obj = {
+            tip: res.msg,
+            btnNum: 1,
+            type: false
           }
-          this.mergeBox=obj;
-          this.mergeBoxShow=true;
+          this.mergeBox = obj;
+          this.mergeBoxShow = true;
         }
       })
-      .catch((reject) => {
+        .catch((reject) => {
           if (reject === 510) {
             this.merge()
           }
         })
       // this.$router.replace({ path: "/" })
     },
-    cancelMerge(){
-       let obj={
-          tip:'如果需要同步APP与CRM登录账号,请在个人中心点击同步账号',
-          btnNum:1,
-          type:false
-        }
-        this.mergeBox=obj;
-        this.mergeBoxShow=true;
+    cancelMerge () {
+      let obj = {
+        tip: '如果需要同步APP与CRM登录账号,请在个人中心点击同步账号',
+        btnNum: 1,
+        type: false
+      }
+      this.mergeBox = obj;
+      this.mergeBoxShow = true;
     },
-    cancel() {
+    cancel () {
       this.$router.replace({ path: "/" })
     },
     //获取职位名称
-    getName(arr) {
+    getName (arr) {
       let name = '';
-      if(arr && arr.length === 1) {
-         arr.map(item => {
-          if(item.positionType === 'Dealer Boss') {
+      if (arr && arr.length === 1) {
+        arr.map(item => {
+          if (item.positionType === 'Dealer Boss') {
             name = 'Dealer Boss'
-          }else if(item.positionType === 'Sleep Consultant') {
+          } else if (item.positionType === 'Sleep Consultant') {
             name = 'Sleep Consultant'
-          }else if(item.positionType === 'Store Manager') {
+          } else if (item.positionType === 'Store Manager') {
             name = 'Store Manager'
-          }else {
+          } else {
             name = item.positionType
           }
         })
-      }else if(arr && arr.length > 1){  //多个职位
+      } else if (arr && arr.length > 1) {  //多个职位
         arr.forEach(item => {
-          name = name === ''? item.positionType : name + '&' + item.positionType
+          name = name === '' ? item.positionType : name + '&' + item.positionType
         })
         name = name.split('&')
         name = this.getUnique(name)
         let nameStrs = ''
-        if(name && name.length > 1) {
+        if (name && name.length > 1) {
           const regBoss = new RegExp("Dealer Boss", "");
           const regConsultant = new RegExp("Sleep Consultant", "");
           const regManager = new RegExp("Store Manager", "");
           const hasData = this.filterVirtualName(name)
-          console.log(123,hasData)
-          if(hasData) {
-            console.log('22333',hasData)
+          console.log(123, hasData)
+          if (hasData) {
+            console.log('22333', hasData)
             name.forEach(item => {
-              nameStrs = nameStrs === ''? item : nameStrs + '&' + item
+              nameStrs = nameStrs === '' ? item : nameStrs + '&' + item
             })
-            console.log('nameStrs',nameStrs)
-             //判断了经销商和导购或者经销商和店长
-            if(regBoss.test(nameStrs) && regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
+            console.log('nameStrs', nameStrs)
+            //判断了经销商和导购或者经销商和店长
+            if (regBoss.test(nameStrs) && regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
               name = 'Boss&Manager'
               return name;
-            }else if(regBoss.test(nameStrs) && regManager.test(nameStrs)) {
+            } else if (regBoss.test(nameStrs) && regManager.test(nameStrs)) {
               name = 'Boss&Manager'
               return name;
-            }else if(regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
+            } else if (regBoss.test(nameStrs) && regConsultant.test(nameStrs)) {
               name = 'Boss&Consultant'
               return name;
-            }else if(regBoss.test(nameStrs)){
+            } else if (regBoss.test(nameStrs)) {
               name = 'Dealer Boss'
               return name;
-            }else if(regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
+            } else if (regManager.test(nameStrs) && regConsultant.test(nameStrs)) {
               name = 'Store Manager'
               return name;
-            }else if(regManager.test(nameStrs)){
+            } else if (regManager.test(nameStrs)) {
               name = 'Store Manager'
               return name;
-            }else if(regConsultant.test(nameStrs)) {
+            } else if (regConsultant.test(nameStrs)) {
               name = 'Sleep Consultant'
               return name;
             }
-          }else {
+          } else {
             name = 'other'
             return name;
           }
-        }else {
+        } else {
           name = name[0]
           return name;
         }
@@ -384,34 +390,34 @@ export default {
       return name
     },
     //去除虚拟门店店长等相似字段
-    filterVirtualName(name) {
+    filterVirtualName (name) {
       let len = name.length
-      for(var i = 0; i < len; i ++) {
-        if(name[i] ==='Dealer Boss' || name[i] === 'Sleep Consultant' || name[i] === 'Store Manager') {
+      for (var i = 0; i < len; i++) {
+        if (name[i] === 'Dealer Boss' || name[i] === 'Sleep Consultant' || name[i] === 'Store Manager') {
           return true
         }
       }
       return false
     },
     //去重
-    getUnique(typeArr) {
+    getUnique (typeArr) {
       var temp = {},
-      arr = [],
-      len = typeArr.length;
-      for(var i = 0; i < len; i ++) {
-        if(!temp[typeArr[i]]) {
+        arr = [],
+        len = typeArr.length;
+      for (var i = 0; i < len; i++) {
+        if (!temp[typeArr[i]]) {
           temp[typeArr[i]] = 'abc'
           arr.push(typeArr[i])
         }
       }
       return arr;
     },
-    setAccountMsg(uname, upwd) {
+    setAccountMsg (uname, upwd) {
       let string = `{"name":" ${uname}", "pwd": "${upwd}"}`;
       localStorage.setItem("accountMsg", string);
     },
     //读取cookie
-    getAccountMsg: function() {
+    getAccountMsg: function () {
       let accountMsg = localStorage.getItem("accountMsg");
       let oldaccountMsg = JSON.parse(accountMsg);
       if (oldaccountMsg) {
@@ -424,44 +430,44 @@ export default {
         this.inputValue1 = trimName;
       }
     },
-    forgetPwd: function() {
+    forgetPwd: function () {
       this.$router.replace({ path: "/ForgetPwd" });
     },
     //登陆接口
-    getApi() {
+    getApi () {
       mango.loading('open')
       var Name = _this.inputValue1
-      var Pwd = _this.inputValue2 
+      var Pwd = _this.inputValue2
       const url = `${mango.port}/app/login.api`
-    axios({
-      method: 'post',
-      url: url,
-      headers: {
-        'UUID': 'e10adc3949ba59abbe56e057f20f883e'
-      },
-      timeout: 10000,
-      params: {
-        // account: '18080028',
-        account:Name,
-        password: md5(Pwd)
-        // access_token: asToken
-      }
-    })
-    .then((res) => {
-      mango.loading('close')
-      let status = res.data.status  
-      if(res.status == 200){   //状态200，请求成功
-        if(status == 0){           //如果为0，账号或密码错误，出现弹框。
-        _this.display = 'block' 
-        _this.key = true
-        
-        }else {
-          //账号密码正确，跳转页面。
-          res = res.data.data
-          let shops = JSON.stringify(res.shopList)
-          _this.$store.commit('setPersonMsg',res)
-          let shopsArr = `${shops}`
-          let ajaxData = `{
+      axios({
+        method: 'post',
+        url: url,
+        headers: {
+          'UUID': 'e10adc3949ba59abbe56e057f20f883e'
+        },
+        timeout: 10000,
+        params: {
+          // account: '18080028',
+          account: Name,
+          password: md5(Pwd)
+          // access_token: asToken
+        }
+      })
+        .then((res) => {
+          mango.loading('close')
+          let status = res.data.status
+          if (res.status == 200) {   //状态200，请求成功
+            if (status == 0) {           //如果为0，账号或密码错误，出现弹框。
+              _this.display = 'block'
+              _this.key = true
+
+            } else {
+              //账号密码正确，跳转页面。
+              res = res.data.data
+              let shops = JSON.stringify(res.shopList)
+              _this.$store.commit('setPersonMsg', res)
+              let shopsArr = `${shops}`
+              let ajaxData = `{
             "account": "${res.account}",
             "tenantId": "${res.tenantId}",
             "token": "${res.token}",
@@ -472,25 +478,25 @@ export default {
             "sex": "${res.sex}",
             "type":"${res.type}"
           }`
-            localStorage.setItem("ajaxData", ajaxData);
-            localStorage.setItem("shops", shopsArr);
-            if (_this.checked) {
-              _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
-            } else {
-              _this.setAccountMsg("", "");
+              localStorage.setItem("ajaxData", ajaxData);
+              localStorage.setItem("shops", shopsArr);
+              if (_this.checked) {
+                _this.setAccountMsg(_this.inputValue1, _this.inputValue2);
+              } else {
+                _this.setAccountMsg("", "");
+              }
+              _this.$router.replace({ path: "/" });
             }
-            _this.$router.replace({ path: "/" });
+          } else {
+            //状态不为200，请求失败
+            console.log(res.status);
           }
-        } else {
-          //状态不为200，请求失败
-          console.log(res.status);
-        }
-      })
-      .catch(function() {
-        mango.loading("close");
-        _this.display1 = "block";
-        _this.key = true;
-      })
+        })
+        .catch(function () {
+          mango.loading("close");
+          _this.display1 = "block";
+          _this.key = true;
+        })
     }
   }
 };
@@ -498,20 +504,20 @@ export default {
 
 
 <style lang="scss" scoped>
-#tip{
-  padding:0;
-  margin:0;
-  word-break:break-all;
-  text-align:justify;
+#tip {
+  padding: 0;
+  margin: 0;
+  word-break: break-all;
+  text-align: justify;
 }
-.login_box{
-  height:100%;
-  width:100vw;
+.login_box {
+  height: 100%;
+  width: 100vw;
   background: #fff;
 }
 .login {
   height: 100%;
-  background: #fff!important;
+  background: #fff !important;
   // font-family: PINGPANG;
   position: relative;
   // height: 100vh;
@@ -622,17 +628,17 @@ export default {
           }
         }
         .myBtn {
-          background:rgba(0,122,255,1);
-          border: .13vw solid rgba(0,93,194,1);
+          background: rgba(0, 122, 255, 1);
+          border: 0.13vw solid rgba(0, 93, 194, 1);
         }
       }
     }
-    .fixBottom{
-      position:fixed;
-      bottom:0;
-      left:0;
-      right:0;
-      background:#fff;
+    .fixBottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
     }
   }
   .wechatLogin {

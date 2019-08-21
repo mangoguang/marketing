@@ -48,7 +48,8 @@ export default {
       this.setCategoryListIndex(this.paprentIndex) //记录三级分类索引
       this.setStandardListIndex(chaildIndex) //记录分类细项列表索引
 
-
+      let s = document.querySelector('#app').scrollTop
+      sessionStorage.setItem('scrollTop', s)
       this.$router.push({ path: '/checkDetail', query: { name: item.name, standardListIndex: index, isGrade: this.$route.query.isGrade } })
     }
   }

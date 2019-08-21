@@ -1,6 +1,7 @@
 <!--  -->
 <template>
-  <div class="check">
+  <div class="check"
+       ref="check">
     <RecordHeader :title="$route.query.name">
       <div class="tips"
            @click="$router.push('/checkTip')"></div>
@@ -31,6 +32,27 @@
                 :class="{on: btnBotStatus}">提交</button>
       </div>
     </div>
+    <ToastBox class="toast"
+              v-if="toastShow">
+      <template v-slot:content="test">
+        <div class="cont">
+          <p>该检查得分：<span>{{total.totalPoints}}分</span>
+            <span>扣分：-{{total.deductMarks}}分</span>
+          </p>
+          <p>注意：提交后无法修改分数</p>
+          <div class="bot"
+               @click="$router.push('/recordJxs')">查看检查记录 >>></div>
+        </div>
+      </template>
+      <template v-slot:bottons>
+        <div class="but">
+          <div class="btns"
+               @click="toastShow=false">返回修改</div>
+          <div class="btns"
+               @click="bindComfirmSubmit">确认提交</div>
+        </div>
+      </template>
+    </ToastBox>
   </div>
 </template>
 
@@ -39,17 +61,20 @@ import RecordHeader from '../../../components/4s/record/header'
 import SubHeader from '../../../components/4s/starCheck/subHeader'
 import CheckContent from '../../../components/4s/starCheck/checkContent'
 import CheckTitle from '../../../components/4s/starCheck/checkTitle'
+import ToastBox from '@/components/4s/tipsBox/ToastBox'
 import { Toast } from 'mint-ui'
 import { gradeSubcategories, gradeSubmit } from '@/api/4s'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 import { setTimeout } from 'timers';
+import _ from 'lodash'
 
 export default {
   components: {
     RecordHeader,
     SubHeader,
     CheckContent,
-    CheckTitle
+    CheckTitle,
+    ToastBox
   },
   data () {
     return {
@@ -62,11 +87,13 @@ export default {
       ],
       subData: {},
       selectIndex: 0,
-      isPageCheck: false
+      isPageCheck: false,
+      toastShow: false
     }
   },
   beforeRouteLeave (to, from, next) {
-    if (to.name == 'checkDetail') {
+    let routeName = ['checkDetail', 'recordJxs', 'checkTip']
+    if (routeName.includes(to.name)) {
       from.meta.keepAlive = true
     } else {
       from.meta.keepAlive = false
@@ -93,10 +120,10 @@ export default {
     })
 
     this.bigCategoryList = this.subcategories
-
-    console.log(this.bigCategoryList)
     this.total.totalPoints = totalPoints;
     this.total.deductMarks = this.deductMarks;
+
+    document.querySelector('#app').scrollTop = sessionStorage.getItem('scrollTop');
 
   },
   methods: {
@@ -119,10 +146,8 @@ export default {
       })
       this.setSubcategories(this.subcategories)
     },
-    // 提交表单
-    async  bindSubmit () {
+    bindSubmit () {
       this.btnBotStatus = true
-
       let standardListNameArr = []
       this.subcategories.map(item => {
         item.standardList.map(items => {
@@ -135,12 +160,17 @@ export default {
         Toast(`请给${standardListNameArr[0]}评分`)
         return
       }
+      this.toastShow = true;
+    },
+    // 提交表单
+    async  bindComfirmSubmit () {
+      this.toastShow = false;
+
       var params = this.submitScoreData
       let { code, msg, data } = await gradeSubmit(params)
       Toast(msg)
       if (code != 0) return
       this.$router.go(-1)
-
     },
     async  _initData () {
       let params = {
@@ -177,7 +207,7 @@ export default {
         })
         categoryList.push({ categoryId: item.id, standardList })
       })
-      console.log(totalScore)
+
       this.submitScoreData.categoryList = categoryList
       this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
       this.total.totalPoints = totalPoints;
@@ -188,6 +218,8 @@ export default {
       this.setTotalPoints(totalPoints)
       this.setSubcategories(categories)
       this.bigCategoryList = categories
+
+
 
     }
   }
@@ -237,6 +269,44 @@ export default {
     button.on {
       background: #007aff;
       color: #fff;
+    }
+  }
+}
+
+.toast {
+  .cont {
+    text-align: center;
+    padding-top: 10px;
+    p {
+      font-size: 14px;
+      color: #363636;
+      line-height: 1;
+      padding-bottom: 10px;
+      span:first-child {
+        color: #007aff;
+      }
+      span:last-child {
+        color: #ff0718;
+      }
+    }
+    .bot {
+      padding-top: 10px;
+      color: #ff0718;
+      font-size: 14px;
+    }
+  }
+  .but {
+    display: flex;
+    .btns {
+      flex: 1;
+      font-size: 15px;
+    }
+    .btns:first-child {
+      color: #909090;
+      border-right: 1px solid #ddd;
+    }
+    .btns:last-child {
+      color: #007aff;
     }
   }
 }

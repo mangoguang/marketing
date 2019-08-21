@@ -68,7 +68,8 @@ export default {
       display: block;
       width: 16px;
       height: 16px;
-      background: red;
+      background: url(../../../assets/imgs/4s/search@2x.png) center center /
+        14px 14px no-repeat;
       position: absolute;
       top: 50%;
       left: 5px;

@@ -3,9 +3,10 @@ export default {
     const {
       value
     } = binding
-    //角色数组 [{'Store Manager':'店长'},{'Sleep Consultant':'导购'},{'Dealer Boss':'经销商'},{'':'督导'}]
+    //角色数组 [{'Store Manager':'店长'},{'Sleep Consultant':'导购'},{'Dealer Boss':'经销商'},{'supervisor':'督导'}]
     //['Store Manager','Sleep Consultant','Dealer Boss']
-    const roles = JSON.parse(localStorage.getItem('ajaxData')).positionList.positionType
+
+    const roles = localStorage.getItem('certPositionType')
 
     if (value && value instanceof Array && value.length > 0) {
       const permissionRoles = value

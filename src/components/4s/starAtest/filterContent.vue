@@ -73,7 +73,7 @@ export default {
   data () {
     return {
       starlist: ['一星', '二星', '三星', '四星', '五星'],
-      handleList: ['已申请', '已退回', '认证通过', '未通过', '已撤销', '已评分', '已受理'],
+      handleList: ['认证中', '已认证', '认证失败'], //['已申请', '已退回', '认证通过', '未通过', '已撤销', '已评分', '已受理']
       starActiveIndex: -1,
       situationActiveIndex: -1,
       pickerValue: new Date(),
