@@ -26,7 +26,7 @@ export default {
     DailyUl,
     H3
   },
-  props:['username','id','date'],
+  props:['username','id','date','shopId'],
   data(){
     return{
       tabList:[
@@ -69,15 +69,28 @@ export default {
         return item;
       })
       this.tabList = arr
+     
+      if(i===0){
       let obj={
-        userId:this.id,
+        shopId:this.shopId,
         startDate:this.date,
         endDate:this.date
       }
-      i===0?this.getPerStoreReport(obj):this.getPerReport(obj)
+        this.getPerStoreReport(obj)
+      }else{
+      let obj={
+        userId:this.id,
+        startDate:this.date,
+        endDate:this.date,
+        shopId:this.shopId,
+        QueryYourself:1
+      }
+        this.getPerReport(obj)
+      }
+      //i===0?this.getPerStoreReport(obj):this.getPerReport(obj)
     },
     getPerStoreReport(obj){
-      indexModel.getPerStoreReport(obj).then((res) => {
+      indexModel.getPerStore(obj).then((res) => {
         if(res.status===1){
           this.dailyList=res.data
         }
@@ -102,9 +115,10 @@ export default {
       let arr=this.date.split('-')
       this.curDay=`${arr[0]}年${arr[1]}月${arr[2]}日`
       this.getPerStoreReport({
-        userId:this.id,
+        shopId:this.shopId,
         startDate:this.date,
         endDate:this.date
+        
       }) 
       
     }

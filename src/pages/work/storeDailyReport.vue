@@ -13,8 +13,6 @@
     </div>
   </div>
 </template>
-
-
 <script>
 import banner from '../../components/banner'
 import tabUI from '../../components/work/storeDailyReport/tabUI'

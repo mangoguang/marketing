@@ -1,7 +1,7 @@
 <template>
     <div >
         <banner :title='`${username}日报`' class="header"></banner>
-        <tabCurReport :username='username' :id="id" :date="date"/>
+        <tabCurReport :username='username' :id="id" :date="date" :shopId="shopId"/>
         <div class="summary">
                 <!-- 当日总结 -->
             <DailySummary
@@ -25,7 +25,7 @@ const indexModel = new IndexModel()
 let Base64 = require('js-base64').Base64
 export default {
     name:'employeeDailyReport',
-    props:['id','username','date'],
+    props:['id','username','date','shopId'],
     data(){
         return {
             dailySummaryTextarea:'',

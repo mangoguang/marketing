@@ -83,12 +83,12 @@ export default {
        },
        getDaily(obj){
            console.log('isDailyOk',obj.dailyOk);
-           obj.dailyOk?this.go(obj.userId,obj.userName,obj.createTime):mango.tip('未提交日报')
+           obj.dailyOk?this.go(obj.userId,obj.userName,obj.createTime,obj.shopId):mango.tip('未提交日报')
        },
-       go(id,name,date){
+       go(id,name,date,shopId){
            let time=date.split(' ')[0]
            //this.$router.push({path:`/employeeDailyReport/${id}/${name}/${time}`})
-           this.$router.push({name:'employeeDailyReport',params:{id:id,username:name,date:time}})
+           this.$router.push({name:'employeeDailyReport',params:{id:id,username:name,date:time,shopId:shopId}})
        },
        isIphoneX(){
            let phone = this.phoneSize()
