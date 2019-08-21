@@ -17,7 +17,7 @@ import {
 } from '@/router'
 
 axios.defaults.timeout = 500000
-let token = JSON.parse(localStorage.getItem('token')) || {}
+
 axios.defaults.headers = {
   'Content-Type': 'application/x-www-form-urlencoded'
 }
@@ -72,7 +72,10 @@ axios.interceptors.response.use(
 export const httpDef = axios
 
 //需要token
+
+
 export const http = (options, isFile) => {
+  let token = JSON.parse(localStorage.getItem('token')) || {}
   axios.defaults.headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     "Authorization": `Bearer ${token.access_token}`,

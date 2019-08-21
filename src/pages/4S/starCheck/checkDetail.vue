@@ -111,6 +111,9 @@ export default {
 
     this.maxScore = this.subcategories[this.categoryListIndex].total
   },
+  mounted () {
+    window.addEventListener('scroll', null, true);
+  },
   methods: {
     ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setdeductMarks']),
     bindSave () {
@@ -372,13 +375,10 @@ export default {
     }
   }
   .form {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
     position: relative;
     padding-top: 16.466vw;
-    height: 100vh;
     box-sizing: border-box;
+    padding-bottom: 200px;
     .imgBox {
       li {
         width: 20vw;

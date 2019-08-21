@@ -1,6 +1,7 @@
 <!--  -->
 <template>
-  <div class="check">
+  <div class="check"
+       ref="check">
     <RecordHeader :title="$route.query.name">
       <div class="tips"
            @click="$router.push('/checkTip')"></div>
@@ -65,6 +66,7 @@ import { Toast } from 'mint-ui'
 import { gradeSubcategories, gradeSubmit } from '@/api/4s'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 import { setTimeout } from 'timers';
+import _ from 'lodash'
 
 export default {
   components: {
@@ -90,7 +92,8 @@ export default {
     }
   },
   beforeRouteLeave (to, from, next) {
-    if (to.name == 'checkDetail') {
+    let routeName = ['checkDetail', 'recordJxs', 'checkTip']
+    if (routeName.includes(to.name)) {
       from.meta.keepAlive = true
     } else {
       from.meta.keepAlive = false
@@ -119,6 +122,8 @@ export default {
     this.bigCategoryList = this.subcategories
     this.total.totalPoints = totalPoints;
     this.total.deductMarks = this.deductMarks;
+
+    document.querySelector('#app').scrollTop = sessionStorage.getItem('scrollTop');
 
   },
   methods: {
@@ -202,7 +207,7 @@ export default {
         })
         categoryList.push({ categoryId: item.id, standardList })
       })
-      console.log(totalScore)
+
       this.submitScoreData.categoryList = categoryList
       this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
       this.total.totalPoints = totalPoints;
@@ -213,6 +218,8 @@ export default {
       this.setTotalPoints(totalPoints)
       this.setSubcategories(categories)
       this.bigCategoryList = categories
+
+
 
     }
   }

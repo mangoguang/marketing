@@ -10,6 +10,16 @@ import {
 
 const request = new Request()
 
+//登录
+export const loginAcount = params => {
+  return http({
+    url: '/api/token',
+    method: 'post',
+    params
+  })
+}
+
+
 //获取星级
 export const userinfo = params => {
   return http({

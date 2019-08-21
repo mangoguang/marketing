@@ -24,7 +24,7 @@ import DailyCheck from '@/components/4s/index/dailyCheck'
 import GradeReport from '@/components/4s/index/gradeReport'
 import ModuleConfig from '@/components/4s/index/moduleConfig'
 import starAttestation from '@/components/4s/index/starAttestation'
-import { gradeShops, userinfo } from '@/api/4s'
+import { gradeShops } from '@/api/4s'
 import { Toast } from 'mint-ui'
 
 import { mapMutations } from 'vuex'
@@ -46,18 +46,12 @@ export default {
     }
   },
   async created () {
-    this._getUserType();
 
+    this._initData()
   },
   methods: {
     ...mapMutations(['setShopId']),
-    async  _getUserType () {
-      let { code, data } = await userinfo()
-      if (code == 0 && data) {
-        localStorage.setItem('certPositionType', data.certPositionType);
-        this._initData()
-      }
-    },
+
     async  _initData () {
       let { code, msg, shops } = await gradeShops()
       if (code != 0) {
