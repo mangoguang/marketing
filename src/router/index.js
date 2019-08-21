@@ -245,68 +245,6 @@ export var router = new VueRouter({
     component: resetMyPwd
   },
 
-<<<<<<< HEAD
-  {
-    path: '/previewImg',
-    name: '/previewImg',
-    component:() => import('../pages/Personal/imgPreview')
-  },
-  {
-    path: '/address/:customerId',
-    name: 'address',
-    component: () => import('../pages/Personal/address/address')
-  },
-  {
-    path: '/addAddress/:customerId',
-    name: 'addAddress',
-    component: () => import('../pages/Personal/address/addAddress')
-  },
-  {
-    path: '/selectAddress/:customerId',
-    name: 'selectAddress',
-    component: () => import('../pages/Personal/address/selectAddress')
-  },
-  {
-    path: '/intentionProduct',
-    name: 'intentionProduct',
-    component: () => import('../pages/Personal/intention/intentionProduct')
-  },
-  {
-    path: '/searchProduct',
-    name: 'searchProduct',
-    component: () => import('../pages/Personal/intention/searchProduct')
-  },
-  {
-    path: '/followRecord',
-    name: 'followRecord',
-    component: () => import('../pages/Personal/intention/followRecord'),
-    meta:{
-      keepAlive:true,
-      isUseCache:false
-    }
-  },
-  {
-    path: '/intention/:opportunityId',
-    name: 'intention',
-    component: () => import('../pages/Personal/intention/intention')
-  },
-  {
-    path: '/addintention/:customerId',
-    name: 'addintention',
-    component: () => import('../pages/Personal/intention/addIntention'),
-    meta:{
-      keepAlive:false,
-      isUseCache: true
-    }
-  },
-  {
-    path: '/updateintention/:customerId',
-    name: 'updateintention',
-    component: () => import('../pages/Personal/intention/updateIntention'),
-    meta:{
-      keepAlive:true,
-      isUseCache: false
-=======
     {
       path: '/previewImg',
       name: '/previewImg',
@@ -673,9 +611,7 @@ export var router = new VueRouter({
       path: '/attest-item',
       name: 'AttestItem',
       component: () => import('@/pages/4S/starAtest/AttestItem')
->>>>>>> 4s
-    }
-  },
+    },
   //金管家模块-我的收藏
   {
     path: '/collectList',
