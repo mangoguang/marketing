@@ -5,7 +5,7 @@
                 :title="'星级认证'">
       <div class="iconBox-wrapper">
         <div class="icon-box">
-          <iconBox v-for="item in iconList"
+          <iconBox v-for="item in comListData"
                    :key="item.text"
                    :type="'gradeReport'"
                    :iconData="item"
@@ -40,9 +40,20 @@ export default {
           text: '认证进度',
           link: 'ApplyRecord'
         }
-      ]
+      ],
+      certPositionType: localStorage.getItem('supervisor')
 
     };
+  },
+  computed: {
+    comListData () {
+      if (localStorage.getItem('certPositionType') == 'supervisor') {
+        this.iconList.splice(1, 1)
+        return this.iconList
+      } else {
+        return this.iconList
+      }
+    }
   },
   methods: {
     handleClick (linkName) {

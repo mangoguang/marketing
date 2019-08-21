@@ -1,9 +1,9 @@
 <!--  -->
 <template>
   <div :class="`storeSelect ${storeSelectShow ? 'on' : ''}`">
-    <h3><span @click="showStoreList">{{shops[selectIndex].name}}</span></h3>
-    <ul>
-      <li @click="bindSelect(index,item.id)"
+    <h3><span @click.stop="showStoreList">{{shops[selectIndex].name}}</span></h3>
+    <ul @click="storeSelectShow = false">
+      <li @click.stop="bindSelect(index,item.id)"
           v-for="(item, index) in shops"
           :key="`shops${index}`"><span>{{item.name}}</span></li>
     </ul>
@@ -27,7 +27,11 @@ export default {
     }
   },
   created () {
-
+    this.$nextTick(() => {
+      document.onclick = () => {
+        this.storeSelectShow = false
+      }
+    })
   },
   methods: {
     showStoreList () {

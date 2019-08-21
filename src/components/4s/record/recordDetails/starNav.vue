@@ -5,7 +5,7 @@
         v-for="(item,index) in starList"
         :key='item + index'
         @click="selectStar(item,index)"
-        :style="index === activeStar? activeColor : ''">
+        :style="index === activeStar||index==activeIndex? activeColor : ''">
       <span>{{ item.name }}</span>
       <span class="text">|</span>
     </li>
@@ -14,11 +14,11 @@
 
 <script>
 export default {
-  props: ['starList'],
+  props: ['starList', 'activeIndex'],
   data () {
     return {
       list: ['五星', '四星', '三星', '二星', '一星'],
-      activeStar: 0,
+      activeStar: -1,
       timeoutId: null,
       activeColor: {
         color: '#007aff'

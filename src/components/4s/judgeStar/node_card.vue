@@ -9,17 +9,18 @@
             :key="index">
           <div class="node_left_text">
             <p class="text">{{ itemName[index] }}</p>
-            <div class="step un-line">
-              <div class="step-circle un-circle"></div>
+            <div class="step "
+                 :class="{'un-line':!item.passFail}">
+              <div class="step-circle"></div>
             </div>
           </div>
           <div class="node_right_text">
             <div class="text"
-                 v-for="(items) in item"
+                 v-for="(items) in item.typeList"
                  :key="items.id">
               <p>{{items.createTime+' '+items.remark}}</p>
-              <span :class="{unPass:items.status!=1}"
-                    @click="handleDetailClick(items)">{{items.status==1?'已通过':'审核未通过'}}</span>
+              <span :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}"
+                    @click="handleDetailClick(items)">{{status[items.status-1]['name'] }}</span>
             </div>
             <div v-if="item&&item.length==0"
                  class="nodata">-</div>
@@ -51,7 +52,7 @@
 <script>
 import { parseTime } from '@/utils/tools'
 export default {
-  props: ['cofirmList', 'star'],      //几星
+  props: ['cofirmList', 'star', 'status'],      //几星
   data () {
     return {
       itemName: ['经销商', '区域', '4s', '销售中心', '4s认证部', '市场中心', '总裁', '总部'],
@@ -164,7 +165,7 @@ export default {
         }
         .un-line {
           background: #f8f8f8;
-          .un-circle {
+          .step-circle {
             background: rgba(144, 144, 144, 0.3);
             &::after {
               content: "";

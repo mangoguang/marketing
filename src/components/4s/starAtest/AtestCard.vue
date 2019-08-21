@@ -189,6 +189,7 @@ export default {
 }
 .content-box {
   padding-bottom: 50px;
+  min-height: 80vh;
 }
 .no-data {
   text-align: center;

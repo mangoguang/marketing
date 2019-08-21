@@ -10,60 +10,64 @@
                  ref="loadmore"
                  :autoFill="false"
                  :bottomDistance="30">
-      <div class="atest_record_card"
-           v-for="(item,index) in comDataList"
-           :key="index"
-           @click="bindApproveFlowInfo(item.id)">
-        <div class="header">
-          <div class="via">
-            <img src="../../../assets/imgs/4s/via.png"
-                 alt="">
-          </div>
-          <div class="message">
-            <p class="name">{{item.distributor}}</p>
-            <p class="level">认证星级：{{item.approveLevel}}</p>
-          </div>
-          <div class="date">
-            <span>{{item.createTime}}</span>
-          </div>
-        </div>
-        <div class="status">
-          <p class="turnBack"
-             v-if="item.status==1"
-             @click.stop="handleBackout(item.id)">撤销</p>
-          <p class="pass"
-             :class="{'red':item.status==2||item.status==3||item.status==6,'ok':item.status==7}">{{item.statusString}}</p>
-        </div>
-        <div class="score_wrapper border-bottom">
-          <div class="score_box">
-            <div class="wrapper">
-              <span class="text">门店评分：</span>
-              <span class="score">{{item.scoreShop||'-'}}</span>
+      <div class="ul"
+           style="min-height:80vh;">
+        <div class="atest_record_card"
+             v-for="(item,index) in comDataList"
+             :key="index"
+             @click="bindApproveFlowInfo(item.id)">
+          <div class="header">
+            <div class="via">
+              <img src="../../../assets/imgs/4s/via.png"
+                   alt="">
             </div>
-            <div class="wrapper">
-              <span class="text">区域评分：</span>
-              <span class="score">{{item.scoreregion||'-'}}</span>
+            <div class="message">
+              <p class="name">{{item.distributor}}</p>
+              <p class="level">认证星级：{{item.approveLevel}}</p>
             </div>
-            <div class="wrapper">
-              <span class="text">4s评分：</span>
-              <span class="score">{{item.scorerCertifition||'-'}}</span>
+            <div class="date">
+              <span>{{item.createTime}}</span>
             </div>
           </div>
-          <div class="score_box"
-               v-if="item.status==2">
-            <span class="text">{{item.remark||'-'}}</span>
+          <div class="status">
+            <p class="turnBack"
+               v-if="item.status==1"
+               @click.stop="handleBackout(item.id)">撤销</p>
+            <p class="pass"
+               :class="item.color">{{item.statusString}}</p>
+          </div>
+          <div class="score_wrapper border-bottom">
+            <div class="score_box">
+              <div class="wrapper">
+                <span class="text">门店评分：</span>
+                <span class="score">{{item.scoreShop||'-'}}</span>
+              </div>
+              <div class="wrapper">
+                <span class="text">区域评分：</span>
+                <span class="score">{{item.scoreregion||'-'}}</span>
+              </div>
+              <div class="wrapper">
+                <span class="text">4s评分：</span>
+                <span class="score">{{item.scorerCertifition||'-'}}</span>
+              </div>
+            </div>
+            <div class="score_box"
+                 v-if="item.status==2">
+              <span class="text">{{item.remark||'-'}}</span>
+            </div>
           </div>
         </div>
       </div>
     </mt-loadmore>
     <div class="no-data"
          v-if="noData">暂无数据</div>
-    <TipsBox @getTipsVal="getTipsVal"
-             @handleCancle="handleCancle"
+    <TipsBox @onComfim="onComfim"
+             @onCancel="onCancel"
              v-show="tipsStatus"
              :tipsData="tipsData" />
     <node-card v-if="showNodeCard"
                :cofirmList="cofirmList"
+               :status="status"
                @onNodeCardClose="showNodeCard=false" />
   </div>
 </template>
@@ -99,7 +103,7 @@ export default {
         sort: 'desc'
       },
       level: ['一星', '二星', '三星', '四星', '五星'],
-      status: ['已申请', '已退回', '已撤销', '已受理', '已评分', '未通过', '认证通过'],
+      status: [{ name: '已申请', color: 'blue' }, { name: '已退回', color: 'red' }, { name: '已撤销', color: 'red' }, { name: '区域经理已受理（评分中）', color: 'blue' }, { name: '区域经理已评分（通过）', color: 'ok' }, { name: '区域经理未通过', color: 'red' }, { name: '区域经理发起认证', color: 'blue' }, { name: '4s认证部已受理', color: 'ok' }, { name: '4s认证部已评分（通过）', color: 'ok' }, { name: '4s认证部未通过', color: 'red' }, { name: '4s认证部发起认证', color: 'blue' }, { name: 'OA认证通过', color: 'ok' }, { name: 'OA认证未通过', color: 'red' }],
       noData: false,
       tipsStatus: false, //弹窗
       tipsData: { //弹窗内容
@@ -109,8 +113,8 @@ export default {
         content: '今日撤销已达到三次上限，无法再次操作撤销'
       },
       showNodeCard: false, //认证进度弹窗
-      cofirmList: []
-
+      cofirmList: [],
+      activeId: 0
     };
   },
   created () {
@@ -122,8 +126,9 @@ export default {
       let list = this.dataList
 
       list.map(item => {
-        item.approveLevel = this.level[item.approveLevel - 1] || '未知'
-        item.statusString = this.status[item.status - 1] || '未知'
+        item.approveLevel = this.level[item.approveLevel - 1] || '-'
+        item.statusString = this.status[item.status - 1] && this.status[item.status - 1]['name'] || '未知'
+        item.color = this.status[item.status - 1] && this.status[item.status - 1]['color'] || 'blue'
       })
       return list
     }
@@ -131,22 +136,36 @@ export default {
   methods: {
     async   bindApproveFlowInfo (id) {
       let { code, data } = await getApproveFlowInfo({ qualificationId: id })
-      let cofirmList = Object.keys(data).map(key => data[key])
+      let cofirmList = Object.keys(data).map(key => {
+        var passFail = false
+        data[key].map((item) => {
+          passFail = [2, 3, 6, 10, 13].includes(item.status)
+        })
+        return { typeList: data[key], passFail }
+      })
       this.cofirmList = cofirmList
       this.showNodeCard = true
     },
-    async  getTipsVal () {
+    async  onComfim (val) {
       this.tipsStatus = !this.tipsStatus
-      if (this.tipsData.btn == 'cancel') {
-        let { code, msg, data } = await distributorCancel({ id })
-        // if (code != 0) {
-        //   this.tipsStatus = !this.tipsStatus
-        //   return
-        // }
+      if (val == 'cancel') {
+        let { code, msg, data } = await distributorCancel({ id: this.activeId })
+        if (code != 0) {
+          this.tipsStatus = !this.tipsStatus
+          this.tipsData = { //弹窗内容
+            imgUrl: './static/images/4s/warn.png',
+            title: '提示',
+            btn: 'confrim',
+            content: msg
+          }
+          return
+        } else {
+          this._initData(this.params)
+        }
         Toast(msg)
       }
     },
-    handleCancle () {
+    onCancel () {
       this.tipsStatus = !this.tipsStatus
     },
     //撤销申请
@@ -154,10 +173,11 @@ export default {
       this.tipsData = { //弹窗内容
         imgUrl: './static/images/4s/warn.png',
         title: '撤销',
-        btn: 'cancle',
+        btn: 'cancel',
         content: '撤销申请后，需重新填写资料申请 《星级认证》，多次重复操作，系统将 限制时间申请，请谨慎操作。 是否确定撤销？'
       }
       this.tipsStatus = !this.tipsStatus
+      this.activeId = id
 
     },
     //排序
@@ -180,13 +200,14 @@ export default {
     },
     //筛选条件
     onFilterData (data) {
-      var status = data.handleList[data.situationActiveIndex]
+
+      var status = data.situationActiveIndex + 1
       var level = data.starlist[data.starActiveIndex]
       this.params = {
         page: 1,
         limit: 10,
         starLevel: this.level.indexOf(level) + 1,
-        status: this.status.indexOf(status) + 1,
+        status,
         startDate: data.startDay,
         endDate: data.endDay,
         sort: 'desc'
@@ -204,16 +225,16 @@ export default {
     loadBottom () {
       this.params.page++
       this._initData(this.params)
-      this.allLoaded = true;// 若数据已全部获取完毕
+      // this.allLoaded = true;// 若数据已全部获取完毕
       this.$refs.loadmore.onBottomLoaded();
     },
     //加载列表数据
     async  _initData (params) {
       let { data } = await distributorApplys(params)
-      if (data.totalPage == 1) {
+      if (data.totalPage == 1 || data.totalPage == params.page) {
         this.allLoaded = true
-
       }
+
       if (params.page > 1) {
         this.dataList = this.dataList.concat(data.list)
       } else {

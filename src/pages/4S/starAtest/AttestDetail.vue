@@ -7,6 +7,7 @@
       <star-header />
       <star-nav class="star_nav"
                 :starList='starList'
+                :activeIndex="activeIndex"
                 @changeStar='changeStar' />
     </div>
     <div class="details_content"
@@ -43,7 +44,8 @@ export default {
       headerHeight: '',
       starTop: '',
       starData: '',
-      starList: [{ name: '五星' }, { name: '四星' }, { name: '三星' }, { name: '二星' }, { name: '一星' }],
+      starList: [],
+      activeIndex: 0,
       score: 0,
       cycle: 0,
       checkCategories: [],
@@ -83,9 +85,10 @@ export default {
 
       this.checkCategories = data.gradeList
 
-      data.starList.map((item) => {
+      data.starList.map((item, index) => {
         let arr = ['', '一星', '二星', '三星', '四星', '五星']
         item.name = arr[item.starLevel]
+        if (item.starLevelId == params.starLevelId) { this.activeIndex = index }
       })
       this.starList = data.starList
     },
