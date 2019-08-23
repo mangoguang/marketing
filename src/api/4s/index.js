@@ -13,7 +13,7 @@ const request = new Request()
 //登录
 export const loginAcount = params => {
   return http({
-    url: '/api/token',
+    url: '/oauth/token',
     method: 'post',
     params
   })

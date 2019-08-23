@@ -99,7 +99,7 @@ import btn from "../components/btn";
 import myinput from "../components/myInput";
 import messageBox from '../components/msManage/yanMessageBox'
 import { IndexModel } from '../utils/index'
-import { loginAcount } from '@/api/4s'
+//import { loginAcount } from '@/api/4s'
 const indexModel = new IndexModel()
 export default {
   name: "login",
@@ -183,7 +183,7 @@ export default {
         this.colorheight = ''
       }
     },
-    async login (account, pwd) {
+    /* async login (account, pwd) {
       let params = {
         grant_type: 'password', //固定填 password
         username: account, //登录账号
@@ -207,11 +207,37 @@ export default {
       // 登陆成功跳转页面
       this.getUserInfo()
     },
-
+ */login(account, pwd) {
+      indexModel.getToken(account,md5(pwd)).then(res => {
+        mango.loading('close')
+        let data = res.data
+        if (data.code === 500) {
+          mango.tip(data.msg)
+          return
+        }
+        // data.access_token = '111'
+        if(data) {
+          // 将账号信息添加到对象
+          Object.assign(data, {
+            account,
+            pwd
+          })
+          // 转成字符串
+          let str = JSON.stringify(data)
+          // 存储到本地
+          localStorage.setItem('token', str)
+          this.$root.token = data
+          // 登陆成功跳转页面
+          this.getUserInfo()
+        }
+      }).catch((reject) => {
+        mango.tip('网络异常！')
+      })
+    },
     // 获取用户个人信息
     getUserInfo () {
       indexModel.getUserInfo().then(res => {
-
+        res = res.data
         if (res) {
           console.log(11223344, this.mergeBoxShow)
           let typename = this.getName(res.positionList)
@@ -247,7 +273,7 @@ export default {
             if (typename === 'Dealer Boss' || typename === 'Boss&Consultant' || typename === 'Boss&Manager') {
               this.mergeBoxShow = false
               this.$router.replace({ path: "/" })
-              //console.log(2)
+              console.log(2)
             } else {
               //console.log(3)
               let obj = {
@@ -259,7 +285,7 @@ export default {
               this.mergeBoxShow = true
             }
           } else {
-            //console.log(4)
+            console.log(4)
             this.mergeBoxShow = false
             this.$router.replace({ path: "/" })
           }

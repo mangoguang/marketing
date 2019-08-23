@@ -21,7 +21,7 @@ let baseUrl = 'https://agency.derucci.com'
 // let baseUrl = 'http://10.11.8.181/'
 // let baseUrl = 'http://10.11.8.7:8086/'
 // let baseUrl = 'http://10.11.8.186:8080' //
-// let baseUrl = 'http://10.11.8.8:8090' //王哲力
+//let baseUrl = 'http://10.11.8.8:8080' //王哲力
 // let baseUrl = 'http://10.11.8.186:8080' //刘照君
 
 export {
@@ -677,7 +677,7 @@ export default class Common {
     } else {
       if (str.slice(0, 3) === "99猪") {
         //console.log('原来的',str)
-        let newStr = str.slice(3, );
+        let newStr = str.slice(3,);
         //console.log('之后的',newStr)
         string = Base64.decode(newStr)
         //console.log('最后的',string)
@@ -697,6 +697,7 @@ export default class Common {
   }
   //配置日报时间点
   setReportTime() {
-    return new Date('2019/8/21')
+    //return new Date('2019/7/22')
+    return new Date('2019/8/23')
   }
 }

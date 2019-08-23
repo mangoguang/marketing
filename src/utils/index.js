@@ -8,7 +8,7 @@ class IndexModel extends Request {
   //获取令牌
   getToken(account, password) {
     return mango.getPostAjax({
-      path: '/api/token',
+      path: '/oauth/token',
       data: {
         grant_type: 'password', //固定填 password
         username: account, //登录账号
@@ -19,7 +19,7 @@ class IndexModel extends Request {
   //刷新令牌
   refreshToken(reToken) {
     return mango.getPostAjax({
-      path: '/api/token',
+      path: '/oauth/token',
       data: {
         grant_type: 'refresh_token',
         refresh_token: reToken
@@ -261,7 +261,7 @@ class IndexModel extends Request {
   }
   //获取用户个人数据
   getUserInfo(obj) {
-    return mango.getAjax('/api/app/userinfo', obj)
+    return mango.getAjax('/v1/app/userinfo', obj)
   }
 
   //统一app和crm账号

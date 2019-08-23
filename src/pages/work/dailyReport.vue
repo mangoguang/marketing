@@ -88,7 +88,8 @@ export default {
     this.getCurMonthData(this.getCurMonth())
     this.getDailyData({
       startDate: `${year}-${month}-${day}`,
-      endDate: `${year}-${month}-${day}`
+      endDate: `${year}-${month}-${day}`,
+      QueryYourself:1
     })
     // this.setSumAndPlan(this.curMonthData)
   },
@@ -104,7 +105,8 @@ export default {
       this.setSumAndPlan(this.curMonthData)
       this.getDailyData({
         startDate: `${this.curDate[0]}-${this.curDate[1]}-${this.curDate[2]}`,
-        endDate: `${this.curDate[0]}-${this.curDate[1]}-${this.curDate[2]}`
+        endDate: `${this.curDate[0]}-${this.curDate[1]}-${this.curDate[2]}`,
+        QueryYourself:1
       })
     },
     changeCurMonthData(date) {
