@@ -14,7 +14,7 @@
         <span v-if="articleDetails.createTime">{{articleDetails.createTime.split(' ')[0].split('-').join('.')}}</span>
       </div>
     </div>
-    <div class="content" v-html="myhtml" @click.stop="showImage">
+    <div class="cont" v-html="myhtml" @click.stop="showImage">
     </div>
   </div>
 </template>
@@ -213,7 +213,7 @@ export default {
       font-size: 3.73vw;
     }
   }
-  .content {
+  .cont {
     text-align: left;
     word-wrap: break-word !important;
     width: 100vw;

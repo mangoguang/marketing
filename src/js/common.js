@@ -14,8 +14,8 @@ import VueRouter from 'vue-router'
 //let baseUrl = "http://10.11.8.7"
 //let baseUrl = "http://172.16.4.201"
 //let baseUrl="http://10.11.8.17"
-//let baseUrl = "https://mobiletest.derucci.net/cd-sys-web"
-let baseUrl = 'https://agency.derucci.com'
+let baseUrl = "https://mobiletest.derucci.net/cd-sys-web"
+//let baseUrl = 'https://agency.derucci.com'
 // let baseUrl="http://172.16.9.212/"
 // let baseUrl = "http://172.16.12.86/"
 // let baseUrl = 'http://10.11.8.181/'
