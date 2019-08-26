@@ -28,6 +28,9 @@ export default {
       ],
       title: '检查标准'
     }
+  },
+  mounted () {
+    document.querySelector('#app').scrollTop = 0
   }
 }
 </script>

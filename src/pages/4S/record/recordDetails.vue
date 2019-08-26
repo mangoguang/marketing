@@ -27,6 +27,7 @@ import starNav from '@/components/4s/record/recordDetails/starNav'
 import CircleView from '@/components/4s/record/recordDetails/CircleView'
 import recordContent from '@/components/4s/record/recordDetails/contentWrapper'
 import { checkcategories, checkloginfo } from '@/api/4s'
+import { Toast } from 'mint-ui'
 export default {
   components: {
     starHeader,
@@ -58,12 +59,20 @@ export default {
   methods: {
     async  _getCheckLogInfo (params) {
       let { code, msg, checkLogInfo } = await checkloginfo(params)
+      if (!checkLogInfo) {
+        Toast('暂无数据')
+        setTimeout(() => {
+          this.$router.go(-1)
+        }, 1000)
+        return
+      }
       this.score = checkLogInfo.score
       this.cycle = checkLogInfo.cycle
       this.checkCategories = checkLogInfo.checkCategories
     },
     async   _initData (params) {
       let { code, msg, checkCategories } = await checkcategories(params)
+
       checkCategories.map(item => {
         item.name = item.name.replace('检查', '')
       })

@@ -46,7 +46,7 @@ export default {
     }
   },
   async created () {
-
+    if (localStorage.getItem('certPositionType') == 'supervisor') return
     this._initData()
   },
   methods: {
@@ -66,14 +66,15 @@ export default {
         this.shops = shops
         this.shopId = shops[0].id
         this.setShopId(shops[0].id)
+        this.soreClass = shops[0].starLevel
       }
 
     },
 
-    onGetStoreId (val) {
-      this.setShopId(val)
-      this.shopId = val
-
+    onGetStoreId (item) {
+      this.setShopId(item.id)
+      this.shopId = item.id
+      this.soreClass = item.starLevel
     }
   }
 }

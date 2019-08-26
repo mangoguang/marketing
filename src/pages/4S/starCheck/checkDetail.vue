@@ -7,7 +7,8 @@
                   v-if="isGrade!=1"
                   name="reason"
                   class="area"
-                  placeholder="请填写扣分原因"></textarea>
+                  placeholder="请填写扣分原因"
+                  @input="bindTexareaChange"></textarea>
         <div class="editor-readonly"
              v-else>{{textareaVal}}</div>
         <div class="upload">
@@ -17,9 +18,14 @@
             <div class="up-del"
                  @click="bindDeleteImg(index)"
                  v-if="isGrade!=1"></div>
-            <img :src="item"
+            <img class="source"
+                 v-if="/png|jpg|jpeg|bmp/.test(item)"
+                 :src="item"
                  :preview='true'
                  alt="">
+            <video class="source"
+                   v-if="/mp4/.test(item)"
+                   :src="item"></video>
           </div>
 
           <input type="file"
@@ -76,7 +82,9 @@ Vue.component(Range.name, Range);
 import { uploadFile } from '@/api/4s'
 import { async, Promise } from 'q';
 
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
+
+import _ from 'lodash'
 export default {
   components: {
     mybanner
@@ -94,47 +102,74 @@ export default {
       uploading: false
     }
   },
-  computed: mapState({
-    submitScoreData: state => state.eggRecordDetails.submitScoreData,
-    categoryListIndex: state => state.eggRecordDetails.categoryListIndex,
-    standardListIndex: state => state.eggRecordDetails.standardListIndex,
-    subcategories: state => state.eggRecordDetails.subcategories,
-    deductMarks: state => state.eggRecordDetails.deductMarks,
-    totalPoints: state => state.eggRecordDetails.totalPoints
-  }),
+  computed: {
+    ...mapState({
+      submitScoreData: state => state.eggRecordDetails.submitScoreData,
+      categoryListIndex: state => state.eggRecordDetails.categoryListIndex,
+      standardListIndex: state => state.eggRecordDetails.standardListIndex,
+      subcategories: state => state.eggRecordDetails.subcategories,
+      deductMarks: state => state.eggRecordDetails.deductMarks,
+      totalPoints: state => state.eggRecordDetails.totalPoints
+    })
+    // ...mapGetters(['getSubmitScoreData'])
+  },
   created () {
     this.isGrade = this.$route.query.isGrade
+
     let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
+
     this.textareaVal = standardList.reason //扣分原因
-    this.picVal = standardList.urls || []   //上传文件
+    var urls = [].concat(standardList.urls || [])
+    this.picVal = urls || []  //上传文件
+
+
     this.rangeValue = standardList.deduct || 0 //分数
 
     this.maxScore = this.subcategories[this.categoryListIndex].total
   },
-  mounted () {
-    window.addEventListener('scroll', null, true);
+  destroyed () {
+    let pswp = document.querySelector('.pswp')
+    let domColse = document.querySelector('.pswp__button--close')
+    if (pswp.getAttribute('aria-hidden') == 'false') {
+      domColse.click()
+      this.$router.push({ path: '/checkDetail', query: this.$route.query })
+    }
   },
+
   methods: {
     ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setdeductMarks']),
+    bindTexareaChange: _.debounce(function (e) {
+      let val = this.textareaVal.replace(/<\/?[^>]*>/g, '')
+      val = val.replace(/[^\w\d.?!,;"。？《》！；<> “”\u4e00-\u9fa5]/g, '')
+      if (val.length >= 100) {
+        Toast('请输入内容不得超过100字')
+        this.textareaVal = val.substr(0, 100);
+      } else {
+        this.textareaVal = val
+      }
+
+    }, 300),
     bindSave () {
       // if (!this.textareaVal) {
       //   Toast('填写扣分原因')
       //   return
       // }
       let { rangeValue, textareaVal, picVal } = this
+      let totle = this.deductMarks + rangeValue
+      if (totle > this.totalPoints) {
+        Toast('扣分不能超过总分')
+        return
+      }
 
       let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
 
       standardList.reason = textareaVal //扣分原因
       standardList.urls = picVal  //上传文件
       standardList.deduct = rangeValue //分数
-      let totle = this.deductMarks + rangeValue
 
 
-      if (totle > this.totalPoints) {
-        Toast('扣分不能超过总分')
-        return
-      }
+
+
 
       this.setdeductMarks(totle)
 
@@ -151,10 +186,7 @@ export default {
     _uploadFile (e) {
       var _this = this;
 
-      let files = Array.from(e.target.files);
-      // files = Array.prototype.slice.call(files);
-      if (!files.length) return;
-
+      let files = Array.from(e.target.files)
       let imgSize = 1 * 1024 * 1024;
       return new Promise((resolve, reject) => {
         files.map(async (item, index) => {
@@ -168,8 +200,6 @@ export default {
               img.onload = async function () {
                 let data = _this.compress(img);
                 let blob = _this.dataURItoBlob(data);
-                console.log(blob)
-                console.log(data)
                 let file = new File([blob], item.name, { type: item.type })
 
                 resolve(file)
@@ -177,7 +207,7 @@ export default {
             }
 
           } else if (/^video/.test(item.type)) {
-            resolve(file)
+            resolve(files[0])
           } else {
             Toast({
               message: `上传正确的格式`,
@@ -193,8 +223,12 @@ export default {
 
     },
     async  bindUpload (e) {
+      if (e.target.files.length == 0) return
+      if (this.picVal.length > 4) {
+        Toast('文件数量不可大于5个')
+        return
+      }
 
-      console.log(e)
       let file = await this._uploadFile(e)
 
       var formData = new FormData();
@@ -206,6 +240,7 @@ export default {
         spinnerType: 'fading-circle'
       });
       let { data } = await uploadFile(formData)
+
       this.picVal.push(data.url)
       this.uploading = false
       Indicator.close();
@@ -256,28 +291,29 @@ export default {
     },
     bindDeleteImg (index) {
       this.picVal.splice(index, 1)
+      sessionStorage.setItem('urls', JSON.stringify(this.picVal))
     }
   }
 }
 </script>
 <style lang='scss' scoped>
-/deep/ .mt-range-thumb {
-  width: 17px;
-  height: 17px;
-  top: 50%;
-  transform: translateY(-50%);
-}
+// /deep/ .mt-range-thumb {
+//   width: 17px;
+//   height: 17px;
+//   top: 50%;
+//   transform: translateY(-50%);
+// }
 /deep/ .mt-range {
   width: 245px;
   margin: 0 auto;
 }
 /deep/ .mt-range-runway {
   border-radius: 6px;
-  margin-right: 17px;
+  // margin-right: 17px;
 }
-/deep/ .mt-range-content {
-  margin-right: 17px;
-}
+// /deep/ .mt-range-content {
+//   margin-right: 17px;
+// }
 /deep/ .mt-range-progress {
   padding-right: 10px;
   border-radius: 6px 0 0 6px;
@@ -298,7 +334,7 @@ export default {
     margin: 0 auto;
     position: relative;
     padding-top: 19px;
-    border-top: 6px solid #f5f5f5;
+
     .top {
       display: flex;
       justify-content: space-between;
@@ -337,6 +373,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
+        z-index: 2;
         &::after {
           content: "";
           display: block;
@@ -346,7 +383,7 @@ export default {
           height: 8px;
         }
       }
-      img {
+      .source {
         @extend %up_width;
       }
     }
@@ -362,16 +399,20 @@ export default {
     .area {
       width: 319px;
       display: block;
-      height: 50px;
+      min-height: 100px;
+      max-height: 200px;
       font-size: 14px;
       color: #2d2d2d;
       font-family: "Microsoft Yahei,PingFang-SC-Medium";
+      outline: none;
     }
     .editor-readonly {
       width: 319px;
       min-height: 50px;
       font-size: 14px;
       color: #2d2d2d;
+      overflow: hidden;
+      word-wrap: break-word;
     }
   }
   .form {
@@ -387,8 +428,9 @@ export default {
       }
     }
     .rangeBox {
-      width: 92vw;
-      margin: 0 4vw;
+      // width: 92vw;
+      // margin: 0 4vw;
+      border-top: 6px solid #f5f5f5;
       .tips {
         position: absolute;
         top: 10px;

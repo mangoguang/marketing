@@ -26,7 +26,7 @@
       <!-- 底部按钮 -->
       <div class="btnBot"
            v-if="$route.query.isGrade!=1">
-        <button @click="bindReset"
+        <button @click="toastReset=true"
                 :class="{on: !btnBotStatus}">重置</button>
         <button @click="bindSubmit"
                 :class="{on: btnBotStatus}">提交</button>
@@ -34,14 +34,14 @@
     </div>
     <ToastBox class="toast"
               v-if="toastShow">
-      <template v-slot:content="test">
+      <template v-slot:content>
         <div class="cont">
-          <p>该检查得分：<span>{{total.totalPoints}}分</span>
+          <p>该检查得分：<span>{{total.totalPoints-total.deductMarks}}分</span>
             <span>扣分：-{{total.deductMarks}}分</span>
           </p>
-          <p>注意：提交后无法修改分数</p>
+          <!-- <p>注意：提交后无法修改分数</p> -->
           <div class="bot"
-               @click="$router.push('/recordJxs')">查看检查记录 >>></div>
+               @click="$router.push('/recordJxs')">查看检查记录 >></div>
         </div>
       </template>
       <template v-slot:bottons>
@@ -50,6 +50,19 @@
                @click="toastShow=false">返回修改</div>
           <div class="btns"
                @click="bindComfirmSubmit">确认提交</div>
+        </div>
+      </template>
+    </ToastBox>
+    <ToastBox class="toast"
+              v-if="toastReset"
+              :content="'是否确认重置？'">
+
+      <template v-slot:bottons>
+        <div class="but">
+          <div class="btns"
+               @click="toastReset=false">取消</div>
+          <div class="btns"
+               @click="bindReset">确定</div>
         </div>
       </template>
     </ToastBox>
@@ -66,7 +79,7 @@ import { Toast } from 'mint-ui'
 import { gradeSubcategories, gradeSubmit } from '@/api/4s'
 import { mapGetters, mapMutations, mapState } from 'vuex'
 import { setTimeout } from 'timers';
-import _ from 'lodash'
+
 
 export default {
   components: {
@@ -88,11 +101,12 @@ export default {
       subData: {},
       selectIndex: 0,
       isPageCheck: false,
-      toastShow: false
+      toastShow: false,
+      toastReset: false
     }
   },
   beforeRouteLeave (to, from, next) {
-    let routeName = ['checkDetail', 'recordJxs', 'checkTip']
+    let routeName = ['checkDetail', 'recordJxs', 'checkTip', 'recordJxs']
     if (routeName.includes(to.name)) {
       from.meta.keepAlive = true
     } else {
@@ -122,7 +136,6 @@ export default {
     this.bigCategoryList = this.subcategories
     this.total.totalPoints = totalPoints;
     this.total.deductMarks = this.deductMarks;
-
     document.querySelector('#app').scrollTop = sessionStorage.getItem('scrollTop');
 
   },
@@ -134,16 +147,20 @@ export default {
     },
     // 重置表单
     bindReset () {
+      this.total.deductMarks = 0
+      this.toastReset = false;
       this.btnBotStatus = false
       this.submitScoreData.categoryList.map(item => {
         item.standardList = []
       })
       this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
+
       this.subcategories.map(item => {
         item.standardList.map(items => {
           items.status = false
         })
       })
+      this.setdeductMarks(0)
       this.setSubcategories(this.subcategories)
     },
     bindSubmit () {
@@ -177,6 +194,7 @@ export default {
         shopId: this.$route.query.shopId,
         categoryId: this.$route.query.id
       }
+
 
       let { code, msg, categories } = await gradeSubcategories(params)
       if (code != 0) {

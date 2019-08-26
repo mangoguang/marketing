@@ -3,7 +3,7 @@
   <div :class="`storeSelect ${storeSelectShow ? 'on' : ''}`">
     <h3><span @click.stop="showStoreList">{{shops[selectIndex].name}}</span></h3>
     <ul @click="storeSelectShow = false">
-      <li @click.stop="bindSelect(index,item.id)"
+      <li @click.stop="bindSelect(index,item)"
           v-for="(item, index) in shops"
           :key="`shops${index}`"><span>{{item.name}}</span></li>
     </ul>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import Bus from '@/utils/Bus'
 export default {
   props: {
     shops: {
@@ -34,13 +35,31 @@ export default {
     })
   },
   methods: {
+    async  _initData () {
+      let { code, msg, shops } = await gradeShops()
+      if (code != 0) {
+        Toast({
+          message: msg,
+          position: 'middle',
+          duration: 2000
+        });
+        return
+      }
+      if (shops.length > 0) {
+        this.shops = shops
+        this.shopId = shops[0].id
+        this.setShopId(shops[0].id)
+        this.soreClass = shops[0].starLevel
+      }
+
+    },
     showStoreList () {
       this.storeSelectShow = !this.storeSelectShow
     },
-    bindSelect (index, id) {
+    bindSelect (index, item) {
       this.selectIndex = index
       this.storeSelectShow = false
-      this.$emit('onGetStoreId', id)
+      this.$emit('onGetStoreId', item)
     }
   }
 }
