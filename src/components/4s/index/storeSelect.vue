@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import Bus from '@/utils/Bus'
 export default {
   props: {
     shops: {
