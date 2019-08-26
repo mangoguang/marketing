@@ -1,7 +1,7 @@
 <template>
   <div class="newCustomerInfo" ref='newTop'>
     <my-banner :title="'新建客户信息'">
-      <div class="save" @click="creatNewCustomer">保存</div>
+      <button type="button" class="save" @click="creatNewCustomer">保存</button>
     </my-banner>
     <ul>
       <li>
@@ -558,9 +558,6 @@ export default {
   position: relative;
   .save{
     color: #0071ff;
-    width: 10vw;
-    position: absolute;
-    right: 0;
   }
   .dealUl{
     margin-top: 2vw;

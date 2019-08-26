@@ -8,7 +8,7 @@
           {{ el }}
         </div>
       </div>
-      <p class="price">¥{{ Math.round(list.price*100)/100 }}</p>
+      <p class="price" :style="{marginTop:list.label.length>0?0:'6vw'}">¥{{ Math.round(list.price*100)/100 }}</p>
       <div class="like_btn" @click.prevent="changLike">
         <img src="../../../assets/imgs/like.png" alt="收藏" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="未收藏" v-else>
@@ -126,7 +126,7 @@ export default {
     .type{
       display: flex;
       flex-wrap: wrap;
-      min-height: 6vw;
+      //min-height: 6vw;
       //margin-top:1.333vw;
     }
     .type_icon {
