@@ -1,0 +1,44 @@
+
+.border-bottom {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top:0;
+    left:0;
+    box-sizing:border-box;
+    border-bottom:1px solid #ececec;
+    width:200%;
+    height:200%;
+    transform-origin:0 0 ;
+    transform:scale(0.5)
+  }
+}
+
+.omit {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// .topTri {      //三角形
+//   height: 0;
+//   width: 0;
+//   border-width:2vw;
+//   border-style: solid;
+//   border-color: transparent;
+//   border-bottom-color: #fff; 
+//   border-top-width: 0
+// }
+// .bottomTri {
+//   height: 1.73vw;
+//   width: 0;
+//   border-width:2.26vw;
+//   border-style: solid;
+//   border-color: transparent;
+//   border-top-color: #fff; 
+//   border-bottom-width: 0
+// }
+
+
+

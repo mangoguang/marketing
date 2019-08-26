@@ -1,0 +1,157 @@
+{
+  "category1List": [
+    {
+      "name": "服务政策", 
+      "iconUrl": "./static/images/ms-policy.png", 
+      "category1id": "servicePolicy" 
+    },
+    {
+      "name": "英雄故事", 
+      "iconUrl": "./static/images/ms-story.png", 
+      "category1id": "story"
+    },
+    {
+      "name": "金管家服务", 
+      "iconUrl": "./static/images/ms-service.png", 
+      "category1id": "serviceMsmanage"
+    },
+    {
+      "name": "常见问题", 
+      "iconUrl": "./static/images/ms-question.png", 
+      "category1id": "question"
+    }
+  ],
+  "articleSearch": [
+    {
+      "title": "慕思服务政策", 
+      "articleId": "201902201234"
+    },
+    {
+      "title": "慕思服务", 
+      "articleId": "201902201235"
+    },
+    {
+      "title": "慕思政策", 
+      "articleId": "201902201236"
+    },
+    {
+      "title": "慕思的爱心服务", 
+      "articleId": "201902201237"
+    },
+    {
+      "title": "慕思的爱心", 
+      "articleId": "201902201238"
+    },
+    {
+      "title": "慕思的家", 
+      "articleId": "201902201238"
+    }
+  ],
+  "categories": [
+    {
+      "name": "订单管",  
+      "categoryId": "orderManage",  
+    "child": 
+    [{
+      "name": "已完成订单", 
+      "categoryId": "finishOrder"
+    },
+    {
+      "name": "未完成订单", 
+      "categoryId": "unfinishOrder"
+    }]
+    },
+    {
+      "name": "仓储物流",  
+      "categoryId": "storage"
+    },
+    {
+      "name": "配送安装",  
+      "categoryId": "send"
+    },
+    {
+      "name": "售后处理",  
+      "categoryId": "sellout"
+    },
+    {
+      "name": "增值服务",  
+      "categoryId": "service"
+    }
+    ],
+  "articles": [
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-29",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201234", 
+      "top": true,  
+      "collection": true  
+    },
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-20",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201235", 
+      "top": true,  
+      "collection": false  
+    },
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-18",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201236", 
+      "top": false,  
+      "collection": true  
+    },
+    {
+      "title": "慕思产品三包服务政策详解",  
+      "time": "2019-02-17",  
+      "imgUrl": "../img.jpg", 
+      "articleId": "201902201237", 
+      "top": false,  
+      "collection": false  
+    }
+  ],
+  "articleDetail": {
+    "data": "富文本",
+    "collection": false  
+  },
+  "collect": {
+    "status": 1
+  },
+  "remove": {
+    "status": 1
+  },
+  "questionList": [
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    },
+    {
+      "title": "床垫除螨哪种工具最好？",
+      "questionId": "20190220123"
+    }
+  ],
+  "questionDetail": {
+    "title": "床垫除螨哪种工具最好？",
+    "detail": "除螨用*************除螨用*************除螨用*************",  
+    "collection": false
+  }
+    
+}

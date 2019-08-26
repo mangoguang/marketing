@@ -1,0 +1,322 @@
+<template>
+    <div class="addAdress">
+      <mybanner :title="title" style="background:#f8f8f8">
+        <button type="button" @click="update">保存</button>
+      </mybanner>
+      <ul class="list">
+        <li>
+          <follow-select v-bind="formInfo.follow" v-model="form.follow" @update="updateFollow" :showIcon="selectIcon" class="li_border"/>
+        </li>
+        <li>
+          <date-select day='end' v-bind="formInfo.time" v-model="form.time" @update="updateTime" :showIcon="selectIcon" class="li_border"/>
+        </li>
+        <li>
+          <duration-select v-bind="formInfo.duration" v-model="form.residentTime"  @update="updateResidentTime" :showIcon="selectIcon"/>
+        </li>
+      </ul>
+      <yan-textarea v-bind="formInfo.report" :maxlength='300' v-model.trim="form.report"/>
+      <div class="next">
+         <date-select v-bind="formInfo.nextTime" v-model="form.nextTime"  @update="updateNextTime" :showIcon="selectIcon"/>
+      </div>
+      <yan-textarea v-bind="formInfo.plan" :maxlength='300' v-model.trim="form.plan"/>
+      <p class="title">附件图片</p>
+      <upload ref="upload" picLen='5' :clear="isClear" :path="path"/>
+    </div>
+</template>
+
+<script>
+import Vue from 'vue'
+import mybanner from '../../../components/banner'
+import Btn from '../../../components/personal/Btn'
+import yanInput from '../../../components/yanInput'
+import yanTextarea from '../../../components/yanTextarea'
+import followSelect from '../../../components/mySelect/followSelect'
+import dateSelect from '../../../components/mySelect/dateSelect'
+import upload from '../../../components/upload/filesUpload'
+import durationSelect from '../../../components/mySelect/durationSelect'
+import { Picker, Toast } from 'mint-ui';
+import { mapState, mapMutations } from 'vuex'
+Vue.component(Picker.name, Picker);
+import { IndexModel } from '../../../utils'
+const indexModel=new IndexModel();
+import mango from '../../../js'
+export default {
+  data () {
+    return {
+      form:{
+       follow:'到店沟通',
+       time:'',
+       residentTime:'',
+       report:'',
+       nextTime:'',
+       plan:''
+      },
+      selectIcon:true,
+      oppId:'',
+      isClear:true,
+      path:'/followRecord'
+    }
+  },
+  components:{
+     mybanner,
+     Btn,
+     yanInput,
+     yanTextarea,
+     followSelect,
+     dateSelect,
+     upload,
+     durationSelect
+  },
+  watch:{
+    $route(to,from){
+      // if(from.name==="intention"){
+      //   this.$route.meta.keepAlive=false;
+      //   this.setFiles([]);
+      //   this.setPicVal([]);
+      // }
+      // if(from.name==="/previewImg"){
+      //    this.$route.meta.keepAlive=true;
+      // }
+    }
+  },
+  computed:{
+    ...mapState('followRecord',[
+      'title',
+      'formInfo'
+    ]),
+    ...mapState(['Files'])
+  },
+  // created(){
+  //   console.log("created");
+  //  this.oppId=this.$route.query.oppId;
+  //  this.setFiles([]);
+  //  this.setPicVal([]);
+  // },
+  activated(){
+    if(!this.$route.meta.isUseCache){
+       this.oppId=this.$route.query.oppId;
+    }
+  },
+  methods:{
+    ...mapMutations(['setFiles','setPicVal']),
+    valid(){
+      if(this.form.oppId===''){
+        mango.tip('意向ID不能为空');
+        return false;
+      }
+      if(this.form.follow===''){
+        mango.tip('请选择跟进方式');
+        return false;
+      }
+      if(this.form.time===''){
+        mango.tip('请选择跟进时间');
+        return false;
+      }
+      if(this.form.residentTime===''){
+        mango.tip('请选择跟进时长');
+        return false;
+      }
+      if(this.form.report===''){
+        mango.tip('请填写本次跟进情况');
+        return false;
+      }
+      // if(this.form.nextTime===''){
+      //   mango.tip('请选择下次跟进时间');
+      //   return false;
+      // }
+      // if(this.form.plan===''){
+      //   mango.tip('请填写下一步跟进计划');
+      //   return false;
+      // }
+      if(this.form.nextTime){
+        if(!mango.compareTimeStamp(this.form.time,this.form.nextTime)){
+          if(this.form.time!==this.form.nextTime){
+            mango.tip('下次跟进时间不能小于当前跟进时间');
+            return false;
+          }  
+        }
+      }
+      let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+      let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+      if(this.form.report.length>300){
+        this.form.report=this.form.report.substring(0,300);
+        mango.tip('跟进情况不能超过300字');
+        return false;
+      }
+      if(remarkReg.test(this.form.report)){
+        this.form.report=this.changeStr(this.form.report)
+        mango.tip('跟进情况不支持表情');
+        return false;
+      }
+      if(!reg.test(this.form.report)){
+        mango.tip('跟进情况不支持特殊符号');
+        return false;
+      }
+      if(this.form.plan.length>300){
+        this.form.plan=this.form.plan.substring(0,300);
+        mango.tip('跟进计划不能超过300字');
+        return false;
+      }
+      if(this.form.plan!==''&&remarkReg.test(this.form.plan)){
+        this.form.plan=this.changeStr(this.form.plan)
+        mango.tip('跟进计划不支持表情');
+        return false;
+      }
+       if(this.form.plan!==''&&!reg.test(this.form.plan)){
+        mango.tip('跟进计划不支持特殊符号');
+        return false;
+      }
+      return true;
+    },
+    changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
+    },
+   update(){
+      if(this.valid()){
+        let formData=new FormData();
+        if(this.Files.length>0){
+          for(let i=0;i<this.Files.length;i++){
+              formData.append('record.dataFile',this.Files[i]);
+          }
+        }
+        let obj=this.updateParams(this.form);
+        let keys=[];
+        for(let key in obj){
+          formData.append(key,obj[key])
+          keys.push(key)
+        }
+        console.log(keys);
+        console.log(obj);
+        indexModel.updateTrackrecord(formData,keys,obj).then(res => {
+          if(res.code===0){
+            mango.tip("提交成功");
+            this.setFiles([]);
+            this.setPicVal([]);
+            this.isClear=true;
+            this.form.follow='';
+            this.form.time='';
+            this.form.residentTime='';
+            this.form.nextTime='';
+            this.form.report='';
+            this.form.plan='';
+            this.$router.back(-1);
+          }else{
+            mango.tip(res.msg);
+            this.setFiles([]);
+            this.setPicVal([]);
+            this.isClear=true;
+            this.form.follow='';
+            this.form.time='';
+            this.form.residentTime='';
+            this.form.nextTime='';
+            this.form.report='';
+            this.form.plan='';
+          };
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.update()
+          }
+        })
+      }
+     
+   },
+   updateParams(obj){
+    let tempObj={};
+    let temp={
+      'opportunity.oppId':this.oppId,
+      'record.source':obj.follow,
+      'record.residentTime':obj.residentTime,
+      'record.followDate':obj.time,
+      'record.nextDate':obj.nextTime,
+      'record.situation':obj.report,
+      'record.plan':obj.plan
+    }
+    for(let key in temp){
+      if(temp[key]||temp[key]===0){
+        tempObj[key]=temp[key]
+      }
+    }
+    return tempObj   
+   },
+   //选择更新跟进时间
+   updateTime(value,anotherVal){
+     this.$set(this.form,'time',anotherVal);
+   },
+   //选择更新下次跟进
+   updateNextTime(value,anotherVal){
+     this.$set(this.form,'nextTime',anotherVal);
+   },
+   //选择更新留店时长
+   updateResidentTime(value){
+    console.log(value);
+    if(!value){
+      this.form.residentTime='0分钟';
+    }else{
+      this.form.residentTime=value;
+    }
+   
+   },
+   //选择跟进
+   updateFollow(arr){
+    this.form.follow=arr[0];
+   }
+      
+  },
+  beforeRouteEnter(to,from,next){
+    if(!to.meta.isUseCache){
+      next(vm => {
+        vm.setFiles([]);
+        vm.setPicVal([]);
+        vm.isClear=true;
+        vm.form.follow='到店沟通';
+        vm.form.time=mango.indexTimeB(new Date())[1];
+        vm.form.residentTime='';
+        vm.form.nextTime='';
+        vm.form.report='';
+        vm.form.plan='';
+      })
+    }else{
+      next();
+    }
+   
+  }
+  
+};
+</script>
+
+<style lang="scss" scoped>
+ .addAdress{
+   width:100vw;
+   min-height: 100vh;
+   position: relative;
+   box-sizing: border-box;
+  padding-top:16.466vw;
+  .list{
+    width:100vw;
+    border-bottom: 1px solid #e1e1e1;
+    background: #fff;
+    li{
+      padding-left:4.266vw;
+      .li_border{
+        border-bottom: 1px solid #e1e1e1;
+        padding-left:none;
+      }
+    }
+  }
+  .next{
+    width:100vw;
+    padding-left:4.266vw;
+    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
+    box-sizing: border-box;
+    background: #fff;
+  }
+  .title{
+    color:#363636;
+    font-size:4vw;
+    padding:0 4.266vw;
+  }
+
+ }
+</style>

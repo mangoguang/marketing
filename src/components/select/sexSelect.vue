@@ -1,0 +1,127 @@
+<template>
+  <li class="sexSelect">
+    <ul>
+      <li is="customerLi" :leftText="'客户性别'" :start='"*"' :icon="true" @click.native="selectSex">
+        <span :style="color" class="sex">{{sexVal || '请选择客户性别'}}</span>
+      </li>
+      <!-- 性别选择插件 -->
+      <li>
+        <mt-popup 
+      position="bottom"
+      v-model="popupVisible">
+        <mt-picker
+        :slots="slots"
+        @change="onValuesChange"
+        :showToolbar="true"
+        ref="sexPicker">
+        <div class="btn-group">
+          <div @click="cancel">取消</div>
+          <div @click="update">确定</div>
+         </div>
+        </mt-picker>
+      </mt-popup>
+      </li>
+    </ul>
+  </li>
+</template>
+
+<script>
+
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from "vuex"
+import { DatetimePicker, Picker, Popup } from 'mint-ui'
+// import { DatetimePicker } from 'mint-ui'
+// import mango from '../../js'
+// Vue.component(DatetimePicker.name, DatetimePicker)
+Vue.component(Picker.name, Picker)
+Vue.component(Popup.name, Popup)
+import customerLi from '../customer/customerLi'
+
+export default {
+  name: 'sexSelect',
+  components:{customerLi},
+  data() {
+    return {
+      slots: [{values: ['男', '女','未知'],defaultIndex:0}],
+      popupVisible: false,
+      key: false,
+      color: 'color: #999',
+      value:''
+    }
+  },
+  computed:{
+    ...mapState({
+      sexVal: state => state.select.sexVal,
+      newCustomerInfo: state => state.customer.newCustomerInfo
+    })
+  },
+  created() {
+    this.init()
+  },
+  methods:{
+    ...mapMutations(["setSexVal", 'setNewCustomerInfo']),
+    cancel(){
+      this.popupVisible = false
+    },
+    update(){
+      this.color = 'color: #363636'
+      this.$emit('sexChange',this.value);
+       this.popupVisible=false;
+    },
+    init() {
+      if(this.newCustomerInfo.sex) {
+        this.color = 'color: #363636'
+        let sex;
+        sex = this.newCustomerInfo.sex === 'Mr.'? '男' : (this.newCustomerInfo.sex ==='Ms.'? '女' : '未知')
+        this.setSexVal(sex)
+      } 
+    },
+    selectSex() {
+      //this.color = 'color: #363636'
+      // if(this.sexVal === '') {
+      //   this.setSexVal(this.slots[0].values[0])
+      //   this.newCustomerInfo.sex = 'Mr.'
+      //   this.setNewCustomerInfo(this.newCustomerInfo)
+      // }else {
+      //   this.$refs.sexPicker.setSlotValue(0, this.sexVal)
+      // }
+      this.popupVisible = true
+    },
+    onValuesChange(picker, values) {
+      // this.val = values[0]
+      // if(this.key) {
+      //   this.$emit('sexChange', values[0])
+      // }else {
+      //   this.key = true
+      // }
+      this.value=values[0];
+      
+    }
+  }
+  }
+
+</script>
+
+<style lang="scss">
+  .sexSelect{
+    ul{
+      width: 100%;
+      .sex {
+        // margin-left: -3vw
+      }
+    }
+  }
+  .btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
+  }
+}
+</style>

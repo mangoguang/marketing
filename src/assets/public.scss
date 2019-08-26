@@ -1,0 +1,119 @@
+@import '../../../assets/common.scss';
+.box{
+  height:100vh;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  .top{
+      @include flex-center;
+      justify-content: space-between;
+      color:$fontCol;
+      font-size:4.533vw;
+      background: #EFEFF4;
+      height:10.66vw;
+      padding:0 4.266vw;
+      position: fixed;
+      left:0;
+      right:0;
+      z-index: 10;
+      li:first-child{
+        flex:0 0 28vw;  
+          
+      }
+      li:nth-child(2){
+        flex:0 0 28vw;
+      }
+      li:last-child{
+        flex:0 0 23.733vw;
+        text-align: right;
+        white-space: nowrap;
+
+      }
+  }
+  .content-Item{
+      @include flex-center;
+      color:$fontCol;
+      font-size:4.266vw;
+      padding:0 4.266vw;
+      background: #fff;
+      min-height: 17.33vw;
+      margin-bottom:1.33vw;
+      justify-content: space-between;
+      width:100vw;
+      box-sizing: border-box;
+      li:first-child{
+         flex:0 0 28vw;
+         position: relative;
+          @include flex-center;
+          span{
+            padding-left:2.66vw;
+            // padding-right: 1.33vw;
+            width:15vw;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+          b{
+            display: inline-block;
+            width:4vw;
+            height:4vw;
+            flex-shrink: 0;
+            align-self: flex-start;
+            margin-left:-1vw;
+          }
+          b.urgencytrue{
+            background: url('../../../assets/imgs/jinji.png') no-repeat center center;
+            background-size: 100% 100%;
+          }
+          b.urgencyfalse{
+            display: none;
+          }
+          
+      }
+      li:nth-child(2){
+        flex-shrink: 0;
+        flex:0 0 28vw;
+        //position: relative;
+        color:#909090;
+        word-break: break-all;
+        text-overflow: ellipsis;
+        //display: -webkit-box;
+        /* autoprefixer: off */
+        //-webkit-box-orient: vertical;
+        /* autoprefixer: on */
+        //-webkit-line-clamp: 2;
+        overflow: hidden;
+        white-space: nowrap;
+        
+      }
+      li:last-child{
+         width:89px;
+          position: relative;
+          text-align: right;
+          white-space: nowrap;
+      }
+      i{
+        display: inline-block;
+        width:5.33vw;
+        height:4vw;
+        flex-shrink: 0;
+      }
+      i.importantA{
+        background:url("../../../assets/imgs/A.png") no-repeat center center;
+        background-size:100% 100%;
+      }
+      i.importantB{
+        background:url("../../../assets/imgs/B.png") no-repeat center center;
+        background-size:100% 100%;
+      }
+      i.importantC{
+        background:url("../../../assets/imgs/C.png") no-repeat center center;
+        background-size:100% 100%;
+      }
+      i.importantD{
+        background:url("../../../assets/imgs/D.png") no-repeat center center;
+        background-size:100% 100%;
+      }
+      
+  }
+}
