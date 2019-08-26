@@ -1,6 +1,6 @@
 <template>
   <div class="dealCustomer" ref="deal">
-    <TopBar :topBarTitle='topbar'/>
+    <TopBar :topBarTitle='topbar' style="margin-top:-13vw;"/>
     <ul>
       <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false"> 
         <li
@@ -8,10 +8,20 @@
           :key="`customerList${index}`"
           @click="getDetails(index)"
         >
-          <i :class="`important${item.level}`"></i>
-          <span class="name">{{`*${item.username.slice(1, 5)}`}}</span>
-          <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span>
-          <span class="date">{{item.followDate}}</span>
+         <div class="name">
+            <i :class="`important${item.level}`"></i>
+              <!-- <span
+              :class="{active : compareTime[index]}"
+            >{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span> -->
+            <span>{{item.username}}</span>
+            <strong :class="`urgency${item.urgency}`"></strong>
+          </div>
+          <!-- <span class="name">{{`*${item.username.slice(1, 5)}`}}</span> -->
+          <!-- <span class="phone">{{`******${item.phone.slice(6, 11)}`}}</span> -->
+          <span class="phone" v-if="item.phone!=='0'">{{item.phone}}</span>
+          <span class="phone" v-else>未收集</span>
+          <!-- <span class="date">{{item.followDate}}</span> -->
+          <span class="date">{{item.closeTime.split(" ")[0]}}</span>
         </li>
       </mt-loadmore>
     </ul>
@@ -222,6 +232,11 @@ export default {
           // this.setCustomerList(res.data)
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.getData(page, limit, startTime, endTime)
+        }
+      })
 
       // mango.getAjax(this,"makedeal",{
       //       account: this.account,
@@ -324,12 +339,12 @@ export default {
   height: 100vh;
   overflow: scroll; 
   box-sizing: border-box;
-  padding-top: 33.88vw;
+  padding-top: 34vw;
   background: #f8f8f8;
   -webkit-overflow-scrolling: touch;
   // margin-bottom: 20vw;
   ul {
-    border-top: 1px solid #e1e1e1;
+   // border-top: 1px solid #e1e1e1;
     margin-top: -1vw;
     // border-bottom: 1px solid #e1e1e1;
     color: #999;
@@ -350,7 +365,25 @@ export default {
       padding-left: 4.266vw;
       .name {
         color: #363636;
-        flex: 0.45;
+        flex: 0.5;
+        display: flex;
+        align-items: center;
+        strong {
+          height: 4vw;
+          width: 3.73vw;
+          margin-top: -7vw;
+          margin-left: 1vw;
+        }
+        .urgencyfalse {
+          // background: url(../../assets/imgs/jinji1.png) no-repeat;
+          background-size: 100% 100%;
+          // background-position: center;
+        }
+        .urgencytrue {
+          background: url(../../../assets/imgs/jinji.png) no-repeat;
+          background-size: 100% 100%;
+          // background-position: center;
+        }
       }
       .phone {
         flex: 0.5;
@@ -358,6 +391,7 @@ export default {
       .date {
         flex: 0.4;
         color: #363636;
+        text-align: right;
       }
       // span:nth-child(4) {
       //   flex: 0.5;
@@ -390,6 +424,11 @@ export default {
     }
     .importantC{
       background: url(../../../assets/imgs/C.png) no-repeat;
+      background-size: auto 100%;
+      // background-position: center;
+    }
+    .importantD{
+      background: url(../../../assets/imgs/D.png) no-repeat;
       background-size: auto 100%;
       // background-position: center;
     }

@@ -5,7 +5,7 @@
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}12`">
         <div class="barBox">
-          <chartsTit :text="index === 0 ? '整体品类占比' : ''"></chartsTit>
+          <!-- <chartsTit :text="index === 0 ? '整体品类占比' : ''"></chartsTit> -->
           <Pie
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"

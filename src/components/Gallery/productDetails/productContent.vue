@@ -6,8 +6,8 @@
         <img src="../../../assets/imgs/like.png" alt="" v-if="like">
         <img src="../../../assets/imgs/unlike.png" alt="" v-else>
       </div>
-      <div class="share">
-        <router-link :to="{path: '/share', query: {list:list}}">
+      <div class="share" v-show='status'>
+        <router-link :to="{path: '/preShare', query: {list:list}}">
           <img src="../../../assets/imgs/share.png" alt="">
         </router-link>
       </div>
@@ -21,7 +21,7 @@
       <h1>{{list.goodsName}}</h1>
       <div v-if="list.remark">
         <img src="../../../assets/imgs/trigon1.png" alt="">
-      <p >{{list.remark}}</p>
+      <p>{{list.remark}}</p>
       </div>
     </div>
   </div>
@@ -70,7 +70,7 @@ export default {
     //字符串转为数组
     getLabel(label) {
       if(label) {
-        return this.list.label.split(',')
+        return this.list.label.split('、')
       }
     },
       //收藏
@@ -106,7 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 .content {
-  padding: 0 4vw;
+  padding: 2vw 4vw;
   padding-bottom: 4vw;
   box-sizing: border-box;
   height: auto;
@@ -163,7 +163,7 @@ export default {
   }
    .type{
       display: flex;
-      min-height: 6vw;
+      // min-height: 6vw;
       .type_icon {
         font-size: 2.4vw;
         color: #666;
@@ -173,6 +173,10 @@ export default {
         word-wrap:break-word;
         word-break:break-all;
         display: flex;
+        border:1px solid #FF2D55;
+        color:#FF2D55;
+        padding:0 1.6vw;
+        border-radius: 1.333vw;
       }
     }
 }

@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { b64DecodeUnicode, changeImgStyle } from '../../utils/msManage'
+import { b64DecodeUnicode, changeImgStyle, changeVedioStyle } from '../../utils/msManage'
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import banner from '../../components/banner'
@@ -56,6 +56,7 @@ export default {
           if(res.data.remark) {
             let temp = res.data.remark
             this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
+            this.myhtml = changeVedioStyle(this.myhtml)
           }
           this.collection = res.data.collect
         }
@@ -123,13 +124,14 @@ export default {
       h1 {
         white-space:pre-wrap;
         color: #363636;
-        font-size: 4.8vw;
+        font-size: 5.33vw;
         padding-top: 3vw;
-        padding-bottom: 3vw;
+        padding-bottom: 2vw;
         width: 76%;
         text-align: center;
         width: 55vw;
         margin: 0 auto;
+        font-weight: bold;
       }
     }
     p {

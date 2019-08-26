@@ -1,69 +1,84 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'" :icon='true' :start="'*'" @click.native='addIntention'>
-        <span>{{checkedList && checkedList.length? checkedList[0].goodsName: '请选择意向产品'}}</span>
+      <li is="customerLi" :leftText="'意向产品'" :icon='true'  @click.native='addIntention'>
+        <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
-      <li is="shopSelect" :start='"*"' :type='"demand"'></li>
-      <li is="customerLi" :leftText="'进店日期'" :start="'*'" :icon="true" @click.native="selectStoreDate">
+      <li is="customerLi" :leftText="'所属门店'" :start="'*'" >
+        <span class='shop'>{{ shopName }}</span>
+      </li>
+      <!-- <li is="shopSelect" :start='"*"' :type='type'></li> -->
+      <!-- <li is="customerLi" :leftText="'创建日期'" :start="'*'" :icon="true" @click.native="selectTime">
         <span :style="timeColor">{{turnDate(newCustomerInfo.arrivalDate) || turnDate(day)}}</span>
-      </li>
-      <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li>
+      </li> -->
+      <li is="arrivalDate"></li>
+      <!-- <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li> -->
       <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
-
-      <li is='customerLi' :leftText='"客户地区"'>
-        <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
-      </li>
-       <li is='customerLi' :leftText='"客户地址"'>
-        <span>{{newCustomerInfo.address || '请输入客户地址'}}</span>
-      </li>
-      <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
-      <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
+      
+      <template v-if='addressType !== "intention"'>
+        <li is="customerLi" :leftText="'客户地区'"  :start="'*'">
+          <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
+        </li>
+        <li is="customerLi" :leftText="'客户地址'"  :start="'*'">
+          <span>{{newCustomerInfo.address || '请选择客户地址'}}</span>
+        </li>
+        <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
+        <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
+      </template>
+      <template v-else>
+        <li is='customerLi' :leftText='"客户地址"' :start="'*'" @click.native='toSelectAddress' :icon="true">
+          <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.districtName || '请选择客户地址'}}</span>
+        </li>
+        <li is='customerLi' :leftText='"户型大小"'>
+          <span>{{newCustomerInfo.apartmentTypeName || '请先选择客户地址'}}</span>
+        </li>
+        <li is='customerLi' :leftText='"有无电梯"'>
+          <span>{{newCustomerInfo.elevatorName || '请先选择客户地址'}}</span>
+        </li>
+      </template>
       <li is="BuyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
       <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
       <li is="progressSelect"  @progressChange="progressChange" @pgCodeChange='pgCodeChange'></li>
       <li is="customerLi" :leftText="'竞品产品'">
-        <input v-model="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品">
+        <input v-model.trim="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品" oninput="if(value.length>100)value=value.slice(0,100)">
       </li>
       <li is="colorSelect"  @colorChange="colorChange" @colorCodeChange='colorCodeChange'></li>
       <li is="customerLi" :leftText="'预算金额'">
-        <input v-model="newCustomerInfo.budget" type="number" placeholder="请填写预算金额">
+        <input v-model.trim="newCustomerInfo.budget" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写预算金额" oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
+      <!-- <li is="customerLi" :leftText="'需求日期'"  :icon="true" @click.native="selectFollowTime">
+        <span :style="timeColor">{{turnDate(newCustomerInfo.deliverDate) || '请选择需求日期'}}</span>
+      </li> -->
+      <li is="deliverDate"></li>
       <li is="customerLi" :leftText="'已交定金'">
-        <input v-model="newCustomerInfo.depositPaid" type="number" placeholder="请填写已交金额">
+        <input v-model.trim="newCustomerInfo.depositPaid" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写已交金额" oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
 
       <li is="discountSelect" @discountChange="discountChange"></li>
       <li class="textarea">
         <h3>备注信息</h3>
-        <textarea v-model="newCustomerInfo.remark2" placeholder="添加备注信息"></textarea>
+        <textarea v-model.trim="newCustomerInfo.remark2" placeholder="添加备注信息" oninput="if(value.length>200)value=value.slice(0,200)"></textarea>
       </li>
       <intentionSelect :intentionVal='intentionVal'/>
       <urgentSelect :urgentVal='urgentVal'/>
     </ul>
-    <div class="mintComponent">
-       <mt-datetime-picker
-        ref="datePicker"
-        type="date"
-        v-model="today"
-        :startDate="new Date('1930-01-01')"
-        year-format="{value} 年"
-        month-format="{value} 月"
-        date-format="{value} 日"
-        @confirm="setStoreDate">
-      </mt-datetime-picker>
-    </div>
+   
+    
   </div>
 </template>
 
 <script>
+import {IndexModel} from '../../../utils/index'
+const indexModel = new IndexModel()
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from 'vuex'
-import { Picker, Popup } from 'mint-ui'
+import { Picker, Popup, DatetimePicker } from 'mint-ui'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
-
+Vue.component(DatetimePicker.name, DatetimePicker)
+import addressSelect from '../../mySelect/addressSelect'
+import areaSelect from '../../select/areaSelect'
 import customerLi from '../customerLi'
 import bigBtn from '../bigBtn'
 import YanintentionSelect from '../../mySelect/intentionSelect'
@@ -78,11 +93,13 @@ import intentionSelect from '../../select/intentionSelect'
 import urgentSelect from '../../select/urgentSelect'
 import houseType from '../../select/houseType'
 import elevatorSelect from '../../select/elevatorSelect'
+import arrivalDate from '../../select/arrivalDate'
+import deliverDate from '../../select/deliverDate'
 import mango from '../../../js'
 import {btnList} from '../../../utils/gallery'
 export default {
   name:'newDemand',
-  props: ['btns', 'fromName', 'changeCode'],
+  props: ['btns', 'fromName', 'changeCode', 'type','addressType'],
   components: {
     customerLi,
     bigBtn,
@@ -98,7 +115,11 @@ export default {
     colorSelect,
     houseType,
     elevatorSelect,
-    YanintentionSelect
+    YanintentionSelect,
+    areaSelect,
+    addressSelect,
+    arrivalDate,
+    deliverDate
   },
   data(){
     return{
@@ -111,7 +132,10 @@ export default {
       Color: 'color: #999',
       shops:'',
       day: '',
-      codeList: {}
+      codeList: {},
+      productList: [],
+      shopName:''
+     
    }
   },
   computed: {
@@ -127,47 +151,93 @@ export default {
   watch: {
     //初始进来的时候初始化数据
     fromName() {
-      if(this.fromName === 'NewCustomer') {
+      if(this.fromName === 'NewCustomer' && this.type == 'demand') {
         this.setInitData()
-      }else {
+      }else if(this.fromName !='NewCustomer'){
         this.setIntentionProduct()
-        if(this.newCustomerInfo.arrivalDate) {
+        this.hasAddressId()
+        this.initShop()
+        /* if(this.newCustomerInfo.arrivalDate) {
           this.timeColor = 'color: #363636'
-        }
+        } */
       }
       //获取shopid
-      let val = this.getShopVal()
-      this.getShopId(val)
+      /* let val = this.getShopVal()
+      this.getShopId(val) */
     }
   },
   mounted() {
-    let shops = localStorage.getItem('shops')
-    this.shops = JSON.parse(shops)
-    //获取默认进店时间
     this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
-    ...mapMutations(['initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
+    ...mapMutations(['setAddressId','initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
     setInitData() {
-      this.newCustomerInfo.arrivalDate = this.day
+      this.$set(this.newCustomerInfo, 'arrivalDate', this.day)
+      this.$set(this.newCustomerInfo,'source','自然进店')
       this.setNewCustomerInfo(this.newCustomerInfo)
+      this.codeList.sourceCode = 'Natural'
+      this.changeCode(this.codeList)
       //初始化门店的值
-      let shopsList = btnList(this.shops,0)
-      this.initShopList(shopsList)
+    /*   let shopsList = btnList(this.shops,0)
+      this.initShopList(shopsList) */
+      this.initShop();
       this.getShopVal()
       this.setBuyReason('')
       this.setLeaveStoreVal('')
       this.setDiscountVal('')
       this.setCheckedList([])
+      this.setAddressId('')
+    },
+    initShop(){
+      let orgId=this.$route.query.orgId;
+      let shops=JSON.parse(localStorage.getItem('shops'))
+       if(shops&&shops.length){
+          shops.map((item,index) => {
+            if(item.crmId===orgId){
+              this.shopName=item.name;
+              this.shopId=item.id;
+            }
+          })
+        }
+        this.newCustomerInfo.shopId=this.shopId;
+    },
+    //请求客户地址
+    hasAddressId() {
+      if(this.$store.state.addressId) {
+        let id = this.$store.state.addressId
+        indexModel.getAddress(id).then(res => {
+          if(res.status == 1) {
+            this.$set(this.newCustomerInfo,'provinceName',res.data.provinceName)
+            this.$set(this.newCustomerInfo,'cityName',res.data.cityName)
+            this.$set(this.newCustomerInfo,'districtName',res.data.districtName)
+            this.newCustomerInfo.apartmentTypeName = res.data.apartmentTypeName
+            this.newCustomerInfo.elevatorName = res.data.elevator === "Y"? '有' : '无'
+            this.newCustomerInfo.addressId = res.data.id
+            this.setNewCustomerInfo(this.newCustomerInfo)
+          }else {
+            mango.tips('地址选择失败')
+          }
+        })
+        .catch(reject => {
+          if(reject === 510) {
+            this.hasAddressId()
+          }
+        })
+      }
+    },
+    //跳转客户地址
+    toSelectAddress() {
+      this.$router.push({name:'selectAddress',params:{customerId:this.$route.query.id},query:{type: 'intention'}})
     },
     //跳转到选择意向产品页面
     addIntention() {
       this.$router.push({
-        name:'searchProduct',
+        name:'intentionProduct',
         query:{
             redirect: this.$route.path
           }
         })
+      // this.$router.push({name:'intentionProduct',query:{redirect:this.url}})
     },
     // 保存意向产品
     setIntentionProduct() {
@@ -179,6 +249,7 @@ export default {
             id: item.crmId,
             quantity: item.quantity
           }
+          this.productList.push(item.goodsName)
           newArr.push(obj)
         })
         this.newCustomerInfo.productArr = newArr
@@ -209,6 +280,16 @@ export default {
       this.newCustomerInfo.shopId = this.shopId
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
+    areaChange(val) {
+      // console.log('选择的地区：', val)
+      this.$set(this.newCustomerInfo,'provinceName',val.provinceName)
+      this.$set(this.newCustomerInfo,'cityName',val.cityName)
+      this.$set(this.newCustomerInfo,'countryName',val.countryName)
+      this.newCustomerInfo.province = val.provinceCode
+      this.newCustomerInfo.city = val.cityCode
+      this.newCustomerInfo.area = val.countyCode
+      this.setNewCustomerInfo(this.newCustomerInfo)
+    },
     //选择留店时长
     leaveStoreChange(val) {
       // console.log('sex改变了：', val)
@@ -216,15 +297,7 @@ export default {
       this.newCustomerInfo.residentTime = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
-    //打开日期选择插件
-    selectStoreDate() {
-      this.$refs.datePicker.open()
-    },
-    //选择日期
-    setStoreDate(value) {
-      this.timeColor = 'color: #363636'
-      this.$set(this.newCustomerInfo, 'arrivalDate', mango.indexTimeB(value)[1])
-    },
+  
     //转变日期格式
     turnDate(date) {
       if (date) {
@@ -274,8 +347,11 @@ export default {
     elevatorChange(val) {
       // console.log('age改变了：', val)
       this.setElevatorVal(val)
-      this.newCustomerInfo.elevator = val === '有'? 'Y' : 'N'
-      this.setNewCustomerInfo(this.newCustomerInfo)
+      if(val){
+        this.newCustomerInfo.elevator = val === '有'? 'Y' : 'N'
+        this.setNewCustomerInfo(this.newCustomerInfo)
+      }
+     
     },
      //选择装修风格
     stylePrefChange(val) {
@@ -334,7 +410,47 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/common.scss";
+@import "../../../assets/common.scss";  
+input:-moz-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei";
+  }
+  input::-moz-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei"
+  }
+  input::-ms-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei";
+  }
+  input::-webkit-input-placeholder{
+    font-size: 14px;
+    color:#999;
+    //color:rgb(154,154,154);
+    //font-family: "Microsoft YaHei"
+  }
+   textarea::-moz-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+     textarea:-moz-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+    textarea::-ms-input-placeholder{
+      color:#999;
+      font-size:14px;
+    }
+    textarea::-webkit-input-placeholder{
+      color:#999;
+      font-size:14px;
+    }
 .newDemand{
   background: #f8f8f8;
   .address {
@@ -370,6 +486,7 @@ export default {
       padding: 3vw 5vw;
       box-sizing: border-box;
       font-size: $fontSize;
+      border-bottom: 1px solid #ccc;
     }
   }
   li:nth-child(6) {

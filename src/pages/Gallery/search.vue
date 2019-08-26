@@ -1,6 +1,6 @@
 <template>
-  <div class="search">
-    <div class="search_box">
+  <div class="search" :style="marginTop">
+    <div class="search_box" :style='paddingTop'>
       <button class="cancle" @click="cancleBtn"></button>
       <Search class="searchComp" 
         v-model.trim="searchVal"
@@ -63,6 +63,8 @@ export default {
   components: { Search, SortList, MFilter, MList, WList },
   data() {
     return {
+      marginTop: '',
+      paddingTop: '',
       searchVal: '',
       matchTxt: false,
       unMatchTxt: true,
@@ -137,6 +139,9 @@ export default {
       initParmas: state => state.searchParmas.initParmas,
       searchScroll: state => state.searchScroll.searchScroll
     })
+  },
+  created() {
+    this.isIPhoneX()
   },
   methods: {
     ...mapMutations([
@@ -257,6 +262,20 @@ export default {
         this.setParmas('limit', 10)
         this.searchKey(this.obj)
       }
+    },
+     //判断是否iphoneX
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.marginTop = {marginTop: '-5.86vw'};
+        this.paddingTop = {paddingTop: '11vw'}
+      }else if(phone === 'iphone') {
+        this.marginTop = "";
+        this.paddingTop = {paddingTop: '5vw'}
+      }else {
+        this.marginTop = "";
+        this.paddingTop = {paddingTop: '5vw'}
+      }
     }
   }
 }
@@ -265,25 +284,30 @@ export default {
 <style lang="scss" scoped>
 .search {
   height: 100vh;
-  background: #f7f7f7;
+  width:100vw;
+  // background: #f7f7f7;
   box-sizing: border-box;
   overflow: hidden;
   .search_box {
-    padding: 2vw 4vw;
+    // padding: 3vw 4vw;
+    box-sizing: border-box;
     background: #fff;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding:2.7vw 0 2.6vw;
     .searchComp {
       width: 78.66vw;
-      margin-left: 2vw;
+      // margin-left: 2vw;
+      box-sizing: border-box;
     }
     .cancle {
       background: url(../../assets/imgs/back.png) no-repeat center;
       background-size: contain;
       width: 2.66vw;
       height: 4.8vw;
-      padding-right: 6vw;
+      padding-right: 10vw;
+      box-sizing: border-box;
     }
   }
   .nav_function {

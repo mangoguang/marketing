@@ -30,7 +30,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
-
+import {waterMark} from '../../../utils/msManage'
 
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
@@ -78,9 +78,11 @@ export default {
     // console.log('本地存储的shops:', JSON.parse(shops))
   },
   mounted(){
+    
     console.log('参数', this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
     this.getSalesData(this.cityMsg.cityName, this.endTime, this.cityMsg.cityLevel)
     this.getAreaSalesData(this.endTime)
+    waterMark('.barBox');
   },
   computed: {
     ...mapState({
@@ -128,7 +130,8 @@ export default {
           if (this[`${chartsName}Data`].series) {
             // 检测数据是否为空
             this.areaSalesShow = emptyData(this[`${chartsName}Data`].series)
-            chartsInit(this, chartsName, 'vertical', true)
+            //chartsInit(this, chartsName, 'vertical', true)
+            chartsInit(this, chartsName, 'horizontal', true)
             this.salchanrtDom2 = chanrtDom
           }
         }
@@ -167,7 +170,7 @@ export default {
           this.key1 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          //res.yAxisData = [mango.chartsBotTit(res)]
           // console.log(887799, res)
           _this.salesData = res
         }

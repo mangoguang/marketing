@@ -1,7 +1,7 @@
 //我的客户
 .customerList{
   width: 100vw;
-  padding: 34vw 0 34vw 0;
+  padding: 34vw 0 38vw 0;
   box-sizing: border-box;
   height: 100vh;
   overflow: scroll;
@@ -28,18 +28,24 @@
       flex: 0.7;
       // justify-content: space-around;
       align-items: center;
+      width: 30vw;
     }
     li:nth-child(2){
-      flex: 0.4;
+      // flex: 0.3;
+      width: 30vw;
       // flex-direction: column;
       align-items: center;
       
     }
     li:nth-child(3){
-      flex: 0.5;
+      //flex: 0.5;
       color: #363636;
       font-size: 4vw!important;
       align-items: center;
+      //margin-left: 2vw;
+      //padding-left: 2vw;
+      box-sizing: border-box;
+      text-align: right;
     }
     li{
       display: flex;
@@ -47,15 +53,17 @@
       // line-height: 14vw;
       // padding: 1vw 0;
       position: relative;
-      height: 17.33vw;
+      min-height: 17.33vw;
       div{
         // position: absolute;
         height: 4vw;
         width: 3.73vw;
         // top: 3vw;
         // right: 10vw;
-        // margin-left: 1vw;
-        margin-top: -7vw;
+        margin-left: -1vw;
+        margin-top: 3vw;
+        flex-shrink: 0;
+        align-self: flex-start;
       }
       div.urgencyfalse{
         // background: url(../../assets/imgs/jinji1.png) no-repeat;
@@ -77,27 +85,42 @@
       line-height: 7vw;
       font-size: 16px;
       color: #363636;
-      margin-left: -3vw;
+      // margin-left: -3vw;
+     
+      font-weight: normal;
+      width:15vw;
+      display: inline-block;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      padding-left:2.66vw;
+      
     }
     i{
       // display: inline-block;
-      width: 10.6vw;
+      width: 5.33vw;
       height: 4vw;
+      flex-shrink: 0;
       // margin-left: 1vw;
     }
     i.importantA{
       background: url(../../assets/imgs/A.png) no-repeat;
-      background-size: auto 100%;
+      background-size: 100% 100%;
       // background-position: center;
     }
     i.importantB{
       background: url(../../assets/imgs/B.png) no-repeat;
-      background-size: auto 100%;
+      background-size: 100% 100%;
       // background-position: center;
     }
     i.importantC{
       background: url(../../assets/imgs/C.png) no-repeat;
-      background-size: auto 100%;
+      background-size: 100% 100%;
+      // background-position: center;
+    }
+    i.importantD{
+      background: url(../../assets/imgs/D.png) no-repeat;
+      background-size: 100% 100%;
       // background-position: center;
     }
     span{
@@ -124,7 +147,7 @@
   padding-left: 4.266vw;
   color: #999;
   font-size: 4.26vw;
-  line-height: 11.73vw;
+  /* line-height: 11.73vw; */
   border-bottom: 1px solid #e1e1e1;
   li {
     display: flex;

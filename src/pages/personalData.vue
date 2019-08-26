@@ -5,7 +5,7 @@
       <li>
         <span>头像</span>
         <div class="cell">
-          <img v-if="headPortrait===''" src="../assets/imgs/avatar.png" alt="" class="avatar">
+          <img v-if="headPortrait===''" :src="via" alt="" class="avatar">
           <img v-else :src="headPortrait" alt="" class="avatar">
         </div>
       </li>
@@ -40,7 +40,7 @@
             <span>{{account}}</span>
           </div>
       </li>
-       <li>
+       <li v-show="_localAjax().typename !== 'Dealer Boss'">
         <span style="align-self:flex-start;">所属门店</span>
         <div class="cell" style="flex-direction: column;">
           <span v-for="(item,index) in shopList" :key="index">{{item.name}}</span>
@@ -63,7 +63,8 @@ export default {
       sex:'',
       phone:'',
       account:'',
-      shopList:''
+      shopList:'',
+      via:'./static/images/avatar.png'
     }
   },
   components:{
@@ -83,6 +84,10 @@ export default {
           this.phone=res.data.phone;
           this.account=res.data.account;
           this.shopList=res.data.shopList;
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getUserInfo()
         }
       })
     }

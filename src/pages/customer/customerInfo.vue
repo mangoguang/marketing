@@ -7,18 +7,18 @@
         :key="`customerInfoBtn${index}`"
         :class="{active: customerTabStatus[index].status}"
         @click="infoSelect(index)"
-      >{{item.name}}</li>
+      ><span>{{item.name}}</span></li>
     </ul>
     <!-- 客户信息-->
     <div v-show="customerTabStatus[0].status">
-      <customer-msg :list="list" :editMsg='editMsg' v-if='!editStatus'/>
-      <div v-else>
+      <customer-msg :isedit="edit" :list="list" :editMsg='editMsg' v-if='!editStatus'/>
+      <div v-else style="margin-top:2.666vw;" >
         <newDescript :select='this.list.headPortrait? false : true' :list='list' :areaType='true' :type='"descript"'/>
         <btn @click.native="saveMsg()" :text="'保存资料'" class="theBtn"></btn>
       </div>
     </div>
     <!-- 意向信息-->
-    <intentionMsg v-show="customerTabStatus[1].status" :list='list.opportunityList'/>
+    <intentionMsg :isedit="edit" v-show="customerTabStatus[1].status" :list='list.opportunityList' :orgId='list.orgId' :phone="phone"/>
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
       }else {
         vm.setUpLoadUrl('')
       }
+      
     })
   },
   data(){
@@ -64,9 +65,12 @@ export default {
       shops: '',
       shpoId:'',
       index: '',
-      phone:''
+      phone:'',
+      wechat:'',
+      edit:''
     }
   },
+  
   computed: {
     ...mapState({
       customerTabStatus: state => state.tabStatus.customerTabStatus,
@@ -87,8 +91,12 @@ export default {
       indexModel.getCustomerDetails(this.$route.query.id).then(res => {
         if(res.data) {
           this.list = res.data
-          this.phone = this.list.phone
-          this.getShopName(this.list.orgId)
+          this.phone = this.list.phone==='0'?'': this.list.phone
+          this.wechat = this.list.weChat
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getData()
         }
       })
     },
@@ -97,44 +105,194 @@ export default {
       this.editStatus = val
     },
       //保存资料
-    saveMsg() {
+    async saveMsg() {
       if(!this.newCustomerInfo.sex) {
         MessageBox.alert('性别不能为空')
         return
-      }else if(!this.newCustomerInfo.username) {
-        MessageBox.alert('姓名不能为空')
+      }
+      if(!this.newCustomerInfo.username) {
+        MessageBox.alert('称呼不能为空')
         return
       }
-      if(this.phone === this.newCustomerInfo.phone) {
-          this.saveData()
-      }else {
-        let testPhone = variable.testPhone(this.newCustomerInfo.phone)
-        if(testPhone) {
-          this.checkPhone()
-        }else {
-          MessageBox.alert('请填写正确手机号码')
-        }
+      let testName=/^[\u4e00-\u9fa5]{2,}$/
+      if(!testName.test(this.newCustomerInfo.username)){
+        MessageBox.alert('称呼只能输入中文且不能少于2个字')
+        return
       }
-      
+
+        let passName=await this.recycleName(this.newCustomerInfo.username);
+        console.log(passName,'ss')
+        if(!passName){
+          MessageBox.alert('姓氏不存在')
+          return;
+        }
+        let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+        if((!this.newCustomerInfo.phone||this.newCustomerInfo.phone==='')&&!this.newCustomerInfo.weChat){
+          MessageBox.alert('请填写手机号码或微信号')
+          return
+        }
+        if(!this.newCustomerInfo.phone||this.newCustomerInfo.phone===''){
+          if(this.phone!==''&&this.newCustomerInfo.phone===''){
+            MessageBox.alert('手机号码不能修改为空')
+            return
+          }
+          this.wx(this.newCustomerInfo.weChat)
+        }
+        if(this.newCustomerInfo.phone&&this.phone!==this.newCustomerInfo.phone) {
+           let ishasPhone;
+            if(!testPhone) {
+              MessageBox.alert('请填写正确手机号码')
+              return
+            }else {
+              ishasPhone=await this.checkPhone('phone',this.newCustomerInfo.phone)
+            }
+            if(ishasPhone){
+              return
+            }
+            this.wx(this.newCustomerInfo.weChat);
+        }
+        if(this.newCustomerInfo.phone&&this.phone===this.newCustomerInfo.phone){
+            this.wx(this.newCustomerInfo.weChat);
+        }
     },
-    //验证手机
-    checkPhone() {
-      mango.getAjax('/v3/app/customer/check', {
-        value: this.newCustomerInfo.phone,
-        type: 'phone'
-      }).then((res) => {
-        if(res.status) {
-          MessageBox.alert('该手机号码已存在')
-        }else {
-          this.saveData()
+    //check
+    async wx(wechat){
+        let testWeChat = variable.testWeChat(wechat)
+        let ishasWeChat;
+        if(this.wechat&&!wechat){
+          MessageBox.alert('微信号不能修改为空')
+          return
+        }
+        if(wechat&&this.wechat!==wechat){
+          if(!testWeChat) {
+            MessageBox.alert('请填写正确微信号')
+            return
+          }else {
+            ishasWeChat=await this.checkPhone('wechat',wechat)
+            console.log(ishasWeChat);
+          }
+        }else if(wechat&&this.wechat===wechat){
+          ishasWeChat=false
+        }else{
+          ishasWeChat=false
+        }
+        if(ishasWeChat){
+          return
+        }
+        let check;
+        if(this.newCustomerInfo.qq&&this.newCustomerInfo.qq!==''){
+          check=await this.checkQQ();
+        }else{
+          check=true
+        }
+        if(!check){
+          return;
+        }
+        let dutyReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+        if(this.newCustomerInfo.duty!==''&&!dutyReg.test(this.newCustomerInfo.duty)){
+          MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
+          return;
+        }
+          let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+          let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+          if(this.newCustomerInfo.remark!==''&&remarkReg.test(this.newCustomerInfo.remark)){
+            this.newCustomerInfo.remark=this.newCustomerInfo.remark.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+            MessageBox.alert('客户描述不支持表情')
+            return
+          }
+          if(this.newCustomerInfo.remark!==''&&!reg.test(this.newCustomerInfo.remark)){
+            MessageBox.alert('客户描述不支持特殊符号')
+            return
+          }
+        this.saveData();
+        
+       
+    },
+    async checkQQ(){
+        let check;
+        let testQQ=/^[1-9][0-9]{4,9}$/
+       if(!testQQ.test(this.newCustomerInfo.qq)){
+          MessageBox.alert('请输入正确的QQ')
+          check=false
+          return
+        }else{
+          check=true;
+        }
+        return check;
+    },
+    async checkName(name){
+      let isExist;
+      await indexModel.checkLastName({lastName:name}).then((res) => {
+        console.log('检查名字',res)
+        if(res.data){
+          isExist=true
+        }else{
+          isExist=false
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.checkName()
         }
       })
+      return isExist;
+    }, 
+    async recycleName(str){
+      console.log('str',str)
+      let lastName;
+      let strLen=str.length-1;
+      let isExist;
+      console.log(lastName);
+      for(let i=0;i<strLen;i++){
+        lastName=str.slice(0,i+1);
+        isExist=await this.checkName(lastName)
+        break;
+      }
+      return isExist
+    },
+    //验证手机
+    async checkPhone(type,value) {
+      let ishas;
+      let existName;
+      if(type==='phone'){
+        existName="手机号"
+      }else{
+        existName="微信号"
+      }
+      await mango.getAjax('/v3/app/customer/check', {
+        value: value,
+        type: type,
+        orgId: this.newCustomerInfo.orgId
+      }).then((res) => {
+          if(res.status==1) {
+            MessageBox.alert(`该${existName}已存在`)
+            ishas=true;
+          }
+          if(res.status==0){
+            ishas=false;
+            console.log(ishas);  
+          }
+        
+      }).catch((reject) => {
+          if (reject === 510) {
+            this.checkPhone()
+          }
+        })
+        return ishas;
     },
     //保存数据
     saveData() {
-      let formdata = this.newCustomerInfo.dataFiles
+      console.log(this.newCustomerInfo);
+      let formdata = new FormData()
+      /*let file = this.newCustomerInfo.dataFiles.getAll('record.dataFile')
+      console.log('file',file);
+      for(let i = 0; i < file.length; i++){
+        formdata.append('record.dataFile',file[i]);
+      } */
+      
+      //let formdata = this.newCustomerInfo.dataFiles
       if(this.upLoadUrl) {
-        this.changeFormData(this.upLoadUrl)
+        let blob=this.changeFormData(this.upLoadUrl);
+        formdata.append("dataFile", blob, Date.now() + ".jpg");
       }
       let obj = this.updateParams(this.newCustomerInfo)
       let arr = []
@@ -142,12 +300,18 @@ export default {
         formdata.append(key,obj[key])
         arr.push(key)
       }
-      mango.getFormdataAjax('/v3/app/customer/update', formdata, arr).then((res) => {
+     indexModel.updateCustomer(formdata,arr,obj).then(res => {
         if(res.status) {
-          this.editStatus = false
-          this.getData()
+           MessageBox.alert('更新成功').then(action => {
+            this.editStatus = false
+            this.getData()
+          })
         }else {
-          MessageBox.alert(res.msg)
+           MessageBox.alert('更新失败')
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.saveData()
         }
       })
     },
@@ -161,25 +325,28 @@ export default {
       }
       //Blob对象
       let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
+      return blob
       //FormData对象
-      let formdata = this.newCustomerInfo.dataFiles
-      formdata.append("dataFile", blob, Date.now() + ".jpg");
+      //let formdata = this.newCustomerInfo.dataFiles
+      //formdata.append("dataFile", blob, Date.now() + ".jpg");
+      //console.log('123',formdata.getAll('dataFile'))
     },
      //获取参数
      updateParams(obj) {
+       console.log(555,obj)
       let tempObj = {}
       let temp = {
-        phone: obj.phone,
-        username: obj.username,
-        sex: obj.sex, 
-        birthday: obj.birthday,
-        age: obj.age,
-        qq:obj.qq,
-        weChat: obj.weChat,
-        duty: obj.duty,
-        remark: obj.remark,
-        customerId: this.$route.query.id,
-        orgId: obj.orgId || this.list.orgId
+        "phone": obj.phone?obj.phone:'0',
+        "username": obj.username,
+        "sex": obj.sex, 
+        "birthday": obj.birthday,
+        "age": obj.age,
+        "qq":obj.qq,
+        "weChat": obj.weChat,
+        "duty": obj.duty,
+        "remark": obj.remark,
+        "customerId": this.$route.query.id,
+        "orgId": obj.orgId || this.list.orgId
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {
@@ -217,6 +384,7 @@ export default {
   //
   activated() {
     // isUseCache为false时才重新刷新获取数据
+    this.$route.query.edit==='no'?this.edit='no':this.edit='yes'
     if(!this.$route.meta.isUseCache){  
       this.editStatus = false
       let shops = localStorage.getItem('shops')
@@ -227,12 +395,12 @@ export default {
   },
     //
   beforeRouteLeave (to, from, next) { 
-  // /Customer       
-    if (to.name === 'selectAddress' || to.name === 'chooseShop'){
+  // /Customer   
+    if (to.name === 'address' || to.name === 'chooseShop'){
       this.$route.meta.isUseCache = true; 
     }else {
       this.$route.meta.isUseCache = false; 
-      this.setUpLoadUrl('')
+      this.setUpLoadUrl('') 
     }        
     next();
   },
@@ -254,10 +422,14 @@ export default {
 .customerInfo{
   padding-bottom:4vw;
   box-sizing: border-box; 
+  
   .active {
-    background: #f8f8f8;
+    
     color: #007aff;
     font-weight: bold;
+    span{
+      background: #f8f8f8;
+    }
   }
   .theBtn {
     background:rgba(0,122,255,1);

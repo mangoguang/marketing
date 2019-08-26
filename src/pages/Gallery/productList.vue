@@ -1,6 +1,6 @@
 <template>
-  <div class="prodectList">
-    <div class="topBar">
+  <div class="prodectList" :style="marginTop">
+    <div class="topBar" :style="{'paddingTop':`${paddingTop}vw`}">
       <button class="cancle" @click="backBtn"></button>
       <Search :origin="true" :type="'gallery'" class="search"/>
     </div>
@@ -22,6 +22,7 @@
               <m-list :list='item'/>
             </router-link>
           </div>
+          <div v-if='!list.length' class='noTips'>暂无产品</div>
         </div>
         <!-- 瀑布流 -->
         <div class="list" v-show="showType">
@@ -30,8 +31,10 @@
               <w-list :list='item'/>
             </router-link>
           </div>  
+          <div v-if='!list.length' class='noTips'>暂无产品</div>
         </div>
       </mt-loadmore>
+    <div class="tips" v-show="showTips">已经到底了</div>
     </div>
   </div>
 </template>
@@ -43,6 +46,7 @@ import Vue from 'vue'
 import {IndexModel} from '../../utils/index'
 const indexModel = new IndexModel()
 import {mapState, mapMutations} from 'vuex'
+import mango from "../../js";
 import {fliterItem} from '../../utils/gallery'
 import Search from "../../components/msManage/search/eggSearchInp";
 import PTopNav from "../../components/Gallery/productList/pTopNav";
@@ -61,6 +65,8 @@ export default {
   },
   data() {
     return{
+      marginTop: '',
+      paddingTop:'',
       key: true,
       changeStatus: false,
       list: [],
@@ -75,7 +81,8 @@ export default {
         limit: 10,
         page: 1
       },
-      allLoaded: false
+      allLoaded: false,
+      showTips: false
     }
   },
   computed: {
@@ -97,8 +104,9 @@ export default {
   watch: {
     downListVal() {
       if(this.init) {
-        this.list = []
+        //this.list = []
         this.allLoaded = false
+        this.showTips = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'st', fliterItem(this.downListVal))
         this.changeParmas()
@@ -106,8 +114,9 @@ export default {
     },
     filterVal() {
       if(this.init) {
-        this.list = []
+        //this.list = []
         this.allLoaded = false
+        this.showTips = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'brand', this.filterVal[0])
         this.changeParmas()
@@ -115,8 +124,9 @@ export default {
     },
     price() {
       if(this.init) {
-        this.list = []
+        //this.list = []
         this.allLoaded = false
+        this.showTips = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'rp', this.getPrice())
         this.changeParmas()
@@ -124,8 +134,9 @@ export default {
     },
     productNavlistVal() {
       if(this.init) {
-        this.list = []
+        //this.list = []
         this.allLoaded = false
+        this.showTips = false
         this.obj = this.filterParmas
         this.$set(this.obj, 'category', this.productNavlistVal)
         this.listenScrollTop()
@@ -134,9 +145,11 @@ export default {
     }
   },
   created() {
+    this.isIPhoneX()
     this.$set(this.obj, 'account', this._localAjax().account)
     this.initBrand()
     this.initGetData()
+    this.showTips = false
   },
   methods: {
     ...mapMutations([
@@ -187,10 +200,16 @@ export default {
     },
     //请求数据
     filterData(obj) {
+     
       indexModel.fliterList(obj).then(res => {
         if(res.data) {
+          this.allLoaded = false
           this.init = true
-          this.list = this.list.concat(res.data.list)
+          if(obj.page===1){
+            this.list=res.data.list;
+          }else{
+            this.list = this.list.concat(res.data.list)
+          }
           this.saveLimit()
           this.getProductLimit(this.productNavlistVal)
           this.listenScrollTop()
@@ -293,6 +312,7 @@ export default {
       let len = (this.list.length)/10 + 1
       if(Math.floor(len) < len) {
         this.allLoaded = true
+        this.showTips = true
       }else {
         // this.getProductLimit(this.productNavlistVal)
         let obj = {'page': len}
@@ -300,6 +320,20 @@ export default {
         this.setParmas(obj)
         this.setParmas(obj1)
         this.filterData(this.filterParmas)
+      }
+    },
+      //判断是否iphoneX
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.marginTop = {marginTop: '-5.86vw'};
+        this.paddingTop=11
+      }else if(phone === 'iphone') {
+        this.marginTop = "";
+        this.paddingTop=5
+      }else {
+        this.marginTop = "";
+        this.paddingTop=5
       }
     }
   }
@@ -315,7 +349,9 @@ export default {
   background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
   .topBar {
     background: #fff;
-    padding: 2vw 4vw;
+    padding: 3vw 1.66vw;
+    padding-right:0;
+    padding-bottom:1vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -328,7 +364,8 @@ export default {
     }
     .search {
       width: 78.66vw;
-      margin-left: 2vw;
+      //margin-left: 2vw;
+      text-align: center;
     }
   }
   .nav_function {
@@ -337,13 +374,13 @@ export default {
     justify-content: space-between;
     line-height: 10.6vw;
     background:rgba(255,255,255,1);
-    box-shadow:0px 1px 3px 0px rgba(0, 0, 0, 0.3);
-    margin-bottom: 2vw;
+    box-shadow:0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+    //margin-bottom: 2vw;
     .sortList {
       flex: 0.94;
     }
     .changeStyle {
-        // padding-top: 1vw;
+        padding-top: 1vw;
       img {
         width: 3.46vw;
         height: 3.46vw;
@@ -354,8 +391,9 @@ export default {
     background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
   }
   .list {
-    background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
+    //background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
     margin: 3vw;
+    margin-top:2.666vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -378,5 +416,15 @@ export default {
     padding-bottom: 50vw;
     box-sizing: border-box;
     -webkit-overflow-scrolling: touch
+  }
+  .tips {
+    color: #666;
+    text-align: center;
+    // font-size: 4vw;
+  }
+  .noTips {
+    width:100vw;
+    text-align: center;
+    background:#fff;
   }
 </style>

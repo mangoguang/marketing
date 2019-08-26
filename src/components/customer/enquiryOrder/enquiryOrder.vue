@@ -16,12 +16,16 @@
         >
           <div class="name">
             <i :class="`important${item.level}`"></i>
+              <!-- <span
+              :class="{active : compareTime[index]}"
+            >{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span> -->
             <span
               :class="{active : compareTime[index]}"
-            >{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span>
+            >{{item.username}}</span>
             <strong :class="`urgency${item.urgency}`"></strong>
           </div>
-          <span class="phone">{{item.phone}}</span>
+          <span class="phone" v-if="item.phone!=='0'">{{item.phone}}</span>
+          <span class="phone" v-else>未收集</span>
           <span class="date" :class="{active : compareTime[index]}">{{item.followDate}}</span>
         </li>
       </mt-loadmore>
@@ -212,7 +216,11 @@ export default {
           }
           this.isExpire(this.baceLimit);
         }
-      });
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderList(page, limit, startTime, endTime)
+        }
+      })
     },
     //加载数据
     loadData() {
@@ -317,7 +325,7 @@ export default {
   width: 100vw;
   height: 100vh;
   box-sizing: border-box;
-  padding-top: 33.92vw;
+  padding-top: 34vw;
   background: #f8f8f8;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
@@ -346,7 +354,7 @@ export default {
       // }
       .name {
         color: #363636;
-        flex: 0.4;
+        flex: 0.5;
         display: flex;
         align-items: center;
         // justify-content: space-between;
@@ -367,6 +375,11 @@ export default {
         }
         .importantC {
           background: url(../../../assets/imgs/C.png) no-repeat;
+          background-size: auto 100%;
+          // background-position: center;
+        }
+        .importantD {
+          background: url(../../../assets/imgs/D.png) no-repeat;
           background-size: auto 100%;
           // background-position: center;
         }

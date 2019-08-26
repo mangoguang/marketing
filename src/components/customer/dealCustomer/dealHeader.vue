@@ -4,17 +4,19 @@
       <img src="../../../assets/imgs/backicon.png" alt="">
     </div>
     <div class="personalMsg">
-      <img :src="list.headPortrait" class='via'/>
-      <div class="content">
+      <img :src="list.headPortrait || via" class='via' />
+      <div class="personal-content">
         <div class="name">
-          <span>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</span>
+          <!-- <span>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</span> -->
+          <span>{{ list.username }}</span>
           <span>|</span>
           <span>{{ (list.sex == 'Ms.') ?'女':(list.sex == 'Mr.')? '男' : '未知'}}</span>
           <!-- <span v-show='key1'>{{`***${address ? address.slice(3, 50) : ''}`}}</span> -->
         </div>
         <div class="phoneNumber">
-          <a :href="`tel:${list.phone}`">{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</a>
-          <!-- <a :href="`tel:*****${list.phone ? list.phone.slice(5, 11) : ''}`"></a> -->
+          <a :href="`tel:${list.phone}`" v-if="list.phone!=='0'">{{ list.phone }}</a>
+          <a href="javascript:;" v-else>未收集</a>
+          <!-- <a :href="`tel:${list.phone}`">{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</a> -->
           <!-- <span>{{ `*****${list.phone ? list.phone.slice(5, 11) : ''}` }}</span> -->
           <div class="phone-icon">
             <!-- <a href="tel:1599999999"> -->
@@ -43,7 +45,8 @@ export default {
       phone:'',
       address: '',
       key: false,
-      key1: false
+      key1: false,
+      via: './static/images/avatar.png'
     }
   },
   computed: {
@@ -113,7 +116,7 @@ export default {
       border-radius:50%;
       background: rgba(255, 255, 255, 0.1)
     }
-    .content{
+    .personal-content{
       margin-left: 5.6vw;
       .phoneNumber{
         display: flex;

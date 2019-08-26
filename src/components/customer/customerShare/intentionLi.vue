@@ -1,15 +1,15 @@
 <template>
   <li class="intentionLi">
-    <span class="icon">
+    <div class="icon">
       <img :src="`./static/images/${list.status}.png`" alt="">
       <p v-show="list.status === 'New'">跟进中</p>
       <p v-show="list.status === 'Approved'">已成交</p>
       <p v-show="list.status === 'Closed'">已战败</p>
-    </span>
+    </div>
     <div class="content">
       <div class="title">
         <span class="text">{{ list.goodsName }}</span>
-        <span class="category">
+        <span class="category-icon">
           <img :src="`./static/images/${list.level}.png`" alt="">
         </span>
         <span class="urgent" v-show="list.urgency">
@@ -22,14 +22,14 @@
       </div>
        <div class="date" v-show="list.status === 'Approved'">
         <span>成交日期：</span>
-        <span>{{ turnDate(list.orderTime) }}</span>
+        <span>{{ turnDate(list.closeTime) }}</span>
       </div>
        <div class="date" v-show="list.status === 'Closed'">
         <span>战败日期：</span>
         <span>{{ turnDate(list.closeTime) }}</span>
       </div>
     </div>
-    <div class="details">
+    <div class="details" v-if="type==='select'?false:true">
       <span class="text">详情</span>
       <img src="../../../assets/imgs/arrow.png" alt="">
     </div>
@@ -38,19 +38,24 @@
 
 <script>
 export default {
-  props:['list'],
+  props:['list','type'],
   data() {
     return {
       
     }
   },
+  created() {
+    this.turnDate(this.list.closeTime)
+  },
   methods: {
       // 将日期格式2018-01-01改成2018年01月01日
     turnDate(date) {
       if (date) {
-        let arr = date.split('-')
-        if (arr.length > 1) {
-          return `${arr[0]}年${arr[1]}月${arr[2]}日`
+        // console.log(11,date)
+        let arr = date.split(' ')
+        let newArr = arr[0].split('-')
+        if (newArr.length > 1) {
+          return `${newArr[0]}年${newArr[1]}月${newArr[2]}日`
         } else {
           return date
         }
@@ -71,7 +76,9 @@ export default {
   box-sizing: border-box;
   padding: 0 4vw;
   .icon {
-    flex: 0.2;
+    // flex: 0.2;
+    width: 15vw;
+    // height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -87,7 +94,12 @@ export default {
     }
   }
   .content{
-    flex: 0.8;
+    width:70vw;
+    height: 100%;
+    // border:1px solid red;
+    box-sizing:border-box;
+    padding: 2vw 0;
+    // flex: 0.9;
     .title {
       display: flex;
       align-items: center;
@@ -102,11 +114,12 @@ export default {
         display: inline-block;
         width: 45vw;
       }
-      .category {
+      .category-icon {
         img {
           width: 5.26vw;
           height: auto;
           margin:0 1vw;
+          border: none;
         }
       }
       .urgent {
@@ -122,7 +135,9 @@ export default {
     color: #909090;
   }
   .details{
-    flex: 0.2;
+    // flex: 0.2;
+    width: 15vw;
+    height: 100%;
     align-items: center;
     display: flex;
     justify-content: space-around;

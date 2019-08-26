@@ -1,13 +1,22 @@
 <template>
-  <div class="daily">
-    <TimeSelect
-    @changeDateInterVal="changeDateInterVal" />
-    <DailyUl
-    :list="dailyList" />
+  <div class="dailyBox">
+    <ul class="dailyTab" v-if="isShow">
+      <li v-for="(item,index) in tabList" :key="index" @click="changeStatus(index)" :class="item.status?'on':''">{{item.name}}</li>
+    </ul>
+    <div class="dailyBj" :class="isShow?'dailyOn':''">
+      <div class="daily">
+       <TimeSelect
+        @changeDateInterVal="changeDateInterVal" class="time" :key="status"/>
+        <DailyUl
+        :list="dailyList"  class="dailyUI"/>
+      </div>
+      
+    </div>
   </div>
 </template>
 
 <script>
+import mango from '../../../js'
 import TimeSelect from './timeSelect'
 import DailyUl from './dailyUl'
 import { IndexModel } from "../../../utils/";
@@ -20,15 +29,18 @@ export default {
   data() {
     return{
       dailyList: {
-        "cus": 3,   //接待客户数
-        "cusBusiness": 2,    //成交客户数
-        "guestSingleValue": 52439,    //客单值
-        "opp": 3,     //新增意向数
-        "tourist": 1,    //游客数
-        "trackRecord": 2,   //跟进客户
-        "turnoverRatio": 1, // 成交率
-        "volumeBusiness": 157318   //成交金额
-      }
+        "cus": 0,   //接待客户数
+        "cusBusiness": 0,    //成交客户数
+        "guestSingleValue": 0,    //客单值
+        "opp": 0,     //新增意向数
+        "tourist": 0,    //游客数
+        "trackRecord": 0,   //跟进客户
+        "turnoverRatio": 0, // 成交率
+        "volumeBusiness": 0   //成交金额
+      },
+      tabList:[],
+      isShow:false,
+      status:''
     }
   },
   computed: {
@@ -38,32 +50,137 @@ export default {
   },
   watch: {
     dateInterVal(val) {
-      this.getDailyData(val)
+      this.getData(val)
     }
   },
   mounted(){
-    let date = new Date()
-    const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
-    this.curDay = `${year}-${month}-${day}`
-    this.getDailyData({
-      startDate: this.curDay,
-      endDate: this.curDay
-    })
   },
   created(){
-
+    this.getUser()
   },
   methods:{
+    changeStatus(i){
+      this.status=i
+      let array=this.tabList.map((item,index) => {
+        if(index===i){
+          item.status=true
+        }else{
+          item.status=false
+        }
+        return item;
+      })
+      this.tabList=array
+      this.initData()
+    },
     changeDateInterVal(obj) {
-      this.getDailyData(obj)
+      this.getData(obj)
     },
     getDailyData(obj) {
-      // console.log(111)
       indexModel.getDailyReport(obj).then((res) => {
         if (res.data) {
           // 更改数据
           this.dailyList = res.data
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getDailyData(obj)
+        }
+      })
+    },
+    getDailyStoreReport(obj){
+      indexModel.getDailyStoreReport(obj).then((res) => {
+        if (res.data) {
+          // 更改数据
+          if(this.isShow&&this.tabList[0].status){
+            this.dailyList = res.data
+          }
+          
+        }
+      }).catch((reject) => {
+        if(reject===510){
+          this.getDailyStoreReport(obj)
+        }
+      })
+    },
+    getUser(){
+      let date = new Date()
+      const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
+      this.curDay = `${year}-${month}-${day}`
+      if(this._localAjax().typename === 'Store Manager'){
+        this.isShow=true
+        this.status=0
+        this.tabList=[{name:'门店数据',status:true},{name:"个人数据",status:false}]
+        this.initData()
+      }else{
+        this.isShow=false
+        if(this._localAjax().typename === 'Boss&Consultant' ||this._localAjax().typename === 'Boss&Manager' ||this._localAjax().typename === 'Dealer Boss'){
+          this.getDailyData({
+              startDate: this.curDay,
+              endDate: this.curDay,
+              QueryYourself:0
+          })
+        }else{
+          this.getDailyData({
+              startDate: this.curDay,
+              endDate: this.curDay,
+              QueryYourself:1
+          })
+        }
+        
+      }
+    },
+    getData(val){
+      if(this.isShow&&this.tabList[0].status){
+        this.getParamsAjax(val)
+      }else{
+        if(this._localAjax().typename === 'Boss&Consultant' ||this._localAjax().typename === 'Boss&Manager' ||this._localAjax().typename === 'Dealer Boss'){
+          let temp=Object.assign({},{QueryYourself:0},val)
+          this.getDailyData(temp)
+        }else{
+          let temp=Object.assign({},{QueryYourself:1},val)
+          this.getDailyData(temp)
+        }
+       
+      }
+    },
+    getParamsAjax(val){
+      //let userId=this._localAjax().userId;
+      //let temp=Object.assign({},{userId:userId},val)
+      let temp=Object.assign({},{QueryYourself:0},val)
+      //this.getDailyStoreReport(temp)
+       this.getDailyData(temp)
+    },
+    initData(){
+        if(this.isShow&&this.tabList[0].status){
+          this.initParamsData()
+        }else{
+          if(this._localAjax().typename === 'Boss&Consultant' ||this._localAjax().typename === 'Boss&Manager' ||this._localAjax().typename === 'Dealer Boss'){
+            this.getDailyData({
+              startDate: this.curDay,
+              endDate: this.curDay,
+              QueryYourself:0
+            })
+          }else{
+            this.getDailyData({
+              startDate: this.curDay,
+              endDate: this.curDay,
+              QueryYourself:1
+            })
+          }
+         
+        }
+    },
+    initParamsData(){
+      /* this.getDailyStoreReport({
+            userId:this._localAjax().userId,
+            startDate: this.curDay,
+            endDate: this.curDay
+      }) */
+      this.getDailyData({
+            startDate: this.curDay,
+            endDate: this.curDay,
+            QueryYourself:0
+
       })
     }
   }
@@ -71,11 +188,76 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .daily{
-    margin: 0 4.8vw;
-    background: #fff;
-    border-radius: 2vw;
-    border-bottom: 1px solid #e1e1e1;
+.dailyBox{
+  .dailyBj{
+    width:100vw;
+    .daily{
+      margin: 0 4.8vw;
+      border-radius: 2vw;
+      border-bottom: 1px solid #e1e1e1;
+      position: relative;
+      p{
+        position: absolute;
+        top:32vw;
+        right:6.4vw;
+        background: rgba(0, 122, 255, .2);
+        border-radius: 1.33vw;
+        color:#666;
+        font-size: 12px;
+        padding:0 1.33vw;
+      }
+    }
+    .time{
+      background: #fff;
+      border-top-left-radius:2vw;
+      border-top-right-radius:2vw;
+    }
+    .dailyUI{
+      background: #fff;
+      border-bottom-left-radius:2vw;
+      border-bottom-right-radius:2vw;
+    }
   }
+  .dailyOn{
+    padding-top:2.66vw;
+    background: url('../../../assets/imgs/bj.png') no-repeat top center;
+    background-size:100% 48.266vw;
+    .dailyUI{
+       background: rgba(255,255,255,.9);
+    }
+  }
+  
+  .dailyTab{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index:10;
+    li{
+      width:28vw;
+      height:8vw;
+      font-size: 4.266vw;
+      color:#363636;
+      background: #EFEFF4;
+      border-top-left-radius: 5.33vw;
+      border-top-right-radius: 5.33vw;
+      text-align: center;
+      position: relative;
+
+    }
+    li:first-child{
+      left:2.66vw;
+    }
+    li.on{
+      background: url('../../../assets/imgs/tab.png') no-repeat center center;
+      background-size: 28vw 8vw;
+      font-weight: bold;
+      z-index:10;
+      top:1px;
+    }
+    
+  }
+}
+  
 </style>
 

@@ -7,7 +7,7 @@
            <p class="line"></p>
       </li>
     </ul>
-    <component :is="activeComponent"></component>
+    <component :is="activeComponent" :name='name'></component>
     <message-box :type="messageBox.type" :btnNum='messageBox.btnNum' v-if="messageBox.showMessageBox">
       {{messageBox.tip}}
       <template v-slot:btn-group>
@@ -40,8 +40,14 @@ export default {
   },
   data(){
     return{
-      account:''
+      account:'',
+      name: ''
     }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.name = from.name
+    })
   },
   computed:{
     ...mapState({
@@ -116,6 +122,15 @@ export default {
       this.$store.commit('collect/setMessageBox',{showMessageBox:false});
     }
     
+  },
+  beforeRouteEnter(to,from,next){
+    if(from.name==="productDetails"){
+      next(vm => {
+        //console.log(vm);
+        vm.changeTab(2);
+      })
+    }
+    next();
   }
 }
 </script>

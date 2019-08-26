@@ -1,7 +1,6 @@
 <template>
   <ul class="orderCentent">
     <Loadmore
-    :top-method="loadTop"
     :bottom-method="loadBottom"
     :bottom-all-loaded="allLoaded"
     ref="loadmore"
@@ -12,6 +11,7 @@
       :key="`orderList${index}`"
       @click.native="toOrderDetail(item.orderId)"
       :obj="item"></li>
+      <li v-if='orderList.length<=0' class='no-record'>暂无记录</li>
     </Loadmore>
   </ul>
 </template>
@@ -50,7 +50,6 @@ export default {
     ...mapGetters(['orderList'])
   },
   mounted() {
-    console.log(this)
     let params = {
       page: 1,
       limit: 30
@@ -65,6 +64,8 @@ export default {
     ]),
     getOrderList(obj) {
       indexModel.getOrderList(obj).then((res) => {
+        // 解除上拉加载动画
+        this.$refs.loadmore.onTopLoaded();
         res = res.data
         if (res) {
           let target = this.orderData.records || []
@@ -72,25 +73,35 @@ export default {
           res.records = target.concat(arr)
           this.setOrderData(res)
           console.log(res)
+          if(res.pages==this.orderSearchParam.page){
+            this.allLoaded=true
+          }else{
+            this.allLoaded=false
+          }
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderList(obj)
         }
       })
     },
-    loadTop() {
-      this.$refs.loadmore.onTopLoaded();
-      console.log('上拉刷新')
-    },
+    // loadTop() {
+    //   let params = {
+    //     page: 1,
+    //     limit: 30
+    //   }
+    //   this.setOrderSearchParam(params)
+    //   this.getOrderList(params)
+    // },
     //下拉刷新
     loadBottom() {
       this.orderSearchParam.page++
-      this.getOrderList({
-        page: this.orderSearchParam.page,
-        limit: 30
-      })
-      // this.allLoaded = true;// 若数据已全部获取完毕
+      this.getOrderList(this.orderSearchParam)
+      //this.allLoaded = true;// 若数据已全部获取完毕
       this.$refs.loadmore.onBottomLoaded()
     },
     toOrderDetail(orderId) {
-      this.$router.push({path: `/orderDetail/${orderId}`})
+      this.$router.push({path:'/orderDetail',query: {orderId:orderId}})
     }
   }
 }
@@ -108,6 +119,10 @@ export default {
     height: 100vh;
     width: 100vw;
     overflow-x: hidden;
+  }
+  .no-record{
+    text-align: center;
+    padding:10px 0;
   }
 </style>
 

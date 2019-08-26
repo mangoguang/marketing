@@ -1,12 +1,9 @@
 <template>
     <div class="addAdress">
-      <mybanner :title="title" style="background:#fff">
-        <button type="button" @click="submit" v-if="status!=='New'">保存</button>
-        <button type="button" @click="close" v-if="status==='New'" style="color:#FF3B30">意向关闭</button>
+      <mybanner :title="title" style="background:#f8f8f8">
+        <button type="button" @click="submit">保存</button>
       </mybanner>
-      <title-bar :text="titleModule.info">
-         <button type="button" v-if="status==='New'" @click="submit">保存</button>
-      </title-bar>
+      <title-bar :text="titleModule.info"></title-bar>
       <ul class="list">
         <li>
           <intention-select v-bind="formInfo.intention" :value="goodsValue" :id="customerId" :url="path" :showIcon="selectIcon"/>
@@ -46,30 +43,31 @@
       </ul>
       <ul class="list">
          <li>
-          <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly'/>
+          <!-- <yan-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/> -->
+          <yan-one-input v-bind="formInfo.goods" v-model.trim="form.competingGoods" :readonly='readonly' :maxlength='100'/>
         </li>
         <li>
           <color-select v-bind="formInfo.color" :value="colorPrefName" @update="updateColor" :showIcon="selectIcon"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.budget" v-model.trim="form.budget" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.budget" v-model.trim="form.budget" :readonly='readonly' :maxlength='8'/>
         </li>
         <li>
           <date-select v-bind="formInfo.deliver" :value="form.deliverDate" @update="updateDeliver" :showIcon="selectIcon"/>
         </li>
          <li>
-          <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly'/>
+          <yan-input v-bind="formInfo.paid" v-model.trim="form.depositPaid" :readonly='readonly' :maxlength='8'/>
         </li>
         <li>
           <discount-select v-bind="formInfo.discount" :value="form.argreeDiscount" @update="updateDiscount" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remark" :readonly='readonly' v-model="form.remark"></yan-textarea>
+      <yan-textarea v-bind="formInfo.remark" :maxlength='200' :readonly='readonly' v-model="form.remark"></yan-textarea>
       <div class="select">
         <classify-select style="margin-bottom:2.666vw" label="意向分类" @update="updateClassify" name="classify" :checked="form.level" :options="formInfo.classify"/>
         <classify-select label="是否紧急" @update="updateUrgency" name="urgency" :checked="urgency" :options="formInfo.urgency"/>
       </div>
-      <div v-if="status==='New'">
+     <!--  <div v-if="status==='New'">
          <title-bar :text="titleModule.report">
            <button type="button" @click="addRecord">添加记录</button>
          </title-bar>
@@ -79,7 +77,7 @@
       <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
         <span slot='update'>确定</span>
         <span slot='cancel'>取消</span>
-      </yan-layer-prompt>
+      </yan-layer-prompt> -->
     </div>
 </template>
 
@@ -88,6 +86,7 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import titleBar from '../../../components/common/titleBar'
 import yanInput from '../../../components/yanInput'
+import yanOneInput from '../../../components/yanOneInput'
 import yanTextarea from '../../../components/yanTextarea'
 import intentionSelect from '../../../components/mySelect/intentionSelect'
 import storeSelect from '../../../components/mySelect/storeSelect'
@@ -130,9 +129,10 @@ export default {
         argreeDiscount:'',    //协议折扣，例：80（百分之80折扣）
         remark:'',
         urgency:'',   //是否紧急
-        level:'',   //等级
+        level:'A',   //等级
         recordList:[]
       },
+      isFirstEnter:false,
       goodsValue:'',
       shopName:'',
       sourceName:'',
@@ -151,7 +151,8 @@ export default {
       path:'',
       status:'',
       urgency:'否',
-      url:''
+      url:'',
+      go:-1
     }
   },
   components:{
@@ -172,11 +173,12 @@ export default {
      recordPannel,
      yanLayerPrompt,
      colorSelect,
-     discountSelect
+     discountSelect,
+     yanOneInput
   },
   watch:{
     $route(to,from){
-      console.log(from);
+      //console.log(from);
       if(from.name==='selectAddress'){
         let obj={};
         if(this.$route.query.addressId){
@@ -202,6 +204,8 @@ export default {
       }
       if(from.name==='intentionProduct'){
         console.log('进来intentionProduct');
+        console.log(this.$store.state.checkedList.length);
+        //let list=JSON.parse(localStorage.getItem('product'));
         if(this.$store.state.checkedList.length>0){
           this.goodsValue=this.$store.state.checkedList[0].goodsName;
           this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
@@ -215,12 +219,14 @@ export default {
           this.goodsValue='';
           this.form.goodsList=[];
         }
-        
-        
       }
       if(from.name==='chooseShop'){
+        console.log("进来chooseShop");
         let shops=JSON.parse(localStorage.getItem('shops'));
+        console.log(shops);
+        this.go=-2;
         let shopIndex=localStorage.getItem('shopIndex');
+        console.log(shopIndex);
         shops.map((item,index) => {
           if(shopIndex==index){
             this.form.shopId=item.id;
@@ -240,105 +246,59 @@ export default {
     ...mapState(['checkedList'])
   },
   created(){
-    console.log("回退进了created");
-    this.customerId=this.$route.params.customerId;
-    this.path=this.$route.fullPath;
-    this.url=this.$route.query.url;
-    if(this.$route.query.oppId){
-      this.updateTitle('意向详情');
-      this.form.oppId=this.$route.query.oppId;
-      this.getOpportunity(this.form.oppId);
-      
-    }else{
-      this.updateTitle('新建意向');
-      this.setCheckedList([]);
-    }
-    
+    this.updateTitle('新建意向');
+    this.$route.meta.keepAlive=true;
   },
   activated(){
     this.customerId=this.$route.params.customerId;
     this.path=this.$route.fullPath;
-    if(this.$store.state.checkedList.length<=0){
-      this.goodsValue='';
-      this.form.goodsList=[];
-    }
-    
+    this.url=this.$route.query.url;
+    console.log(this.checkedList);
+    this.getProduct();
+    this.getShop();
+    console.log("回退进了created");
+    this.isFirstEnter=true;
   },
   mounted(){
-
+   
   },
   methods:{
     ...mapMutations('addIntention',['updateTitle']),
     ...mapMutations(['updateAddress','setCheckedList','updateSearchProductList']),
+    getShop(){
+      let shops=JSON.parse(localStorage.getItem('shops'));
+      console.log(shops);
+      let shopIndex=localStorage.getItem('shopIndex');
+      console.log(shopIndex);
+      shops.map((item,index) => {
+        if(shopIndex==index){
+          this.form.shopId=item.id;
+          this.shopName=item.name;
+        }
+      })
+    },
+    getProduct(){
+      if(this.$store.state.checkedList.length<=0){
+        this.goodsValue='';
+        this.form.goodsList=[];
+      }else{
+        this.goodsValue=this.$store.state.checkedList[0].goodsName;
+        this.form.goodsList=this.$store.state.checkedList.map((item,index) => {
+          let obj={};
+          obj.goodsId=item.crmId;
+          obj.goodsName=item.goodsName;
+          obj.quantity=item.quantity;
+          return obj;
+        });
+      }
+    },
     addRecord(){
-     this.$router.push({name:'followRecord',query:{oppId:this.oppId}});
-     //this.isRecord=true;
-     //this.setTitle('新增跟进记录');
+     this.$router.replace({name:'followRecord',query:{oppId:this.oppId}});
    },
     listen(){
       if(this.form.address===''){
         mango.tip('请先选择地址');
       }
-    },
-    getOpportunity(id){
-      console.log("发了请求");
-      indexModel.getOpportunity(id).then(res => {
-        if(res.code===0){
-          if(res.data.goodsList.length>0){
-            this.setCheckedList([]);
-            this.goodsValue=res.data.goodsList[0].goodsName;
-           let list=res.data.goodsList.map((item,index) => {
-             let obj={};
-             obj.crmId=item.goodsId;
-             obj.goodsName=item.goodsName;
-             obj.quantity=item.quantity;
-             return obj;
-           })
-            this.setCheckedList(list);
-            this.form.goodsList=res.data.goodsList;       
-          }else{
-             this.setCheckedList([]);
-             this.form.goodsList=[];
-          }
-          this.status=res.data.status;
-          console.log(4444,res.data.shopId);
-          this.shopName=res.data.shopId===''?'':this.getShopName(res.data.shopId);
-          this.form.shopId=res.data.shopId;
-          this.form.arrivalDate=res.data.arrivalDate;
-          this.form.residentTime=res.data.residentTime;
-          this.sourceName=res.data.sourceName;
-          this.form.source=res.data.source;
-          this.buyReasonName=res.data.buyReasonName==''?'':res.data.buyReasonName;
-          this.form.buyReason=res.data.buyReason;
-          this.stylePrefName=res.data.stylePrefName==''?'':res.data.stylePrefName;
-          this.form.stylePref=res.data.stylePref;
-          this.progressName=res.data.progressName==''?'':res.data.progressName;
-          this.form.progress=res.data.progress;
-          this.form.competingGoods=res.data.competingGoods==''?'':res.data.competingGoods;
-          this.colorPrefName=res.data.colorPrefName==''?'':res.data.colorPrefName;
-          this.form.colorPref=res.data.colorPref;
-          this.form.deliverDate=res.data.deliverDate==''?'':res.data.deliverDate;
-          this.form.remark=res.data.remark==''?'':res.data.remark;
-          this.form.budget=res.data.budget;
-          this.form.depositPaid=res.data.depositPaid;
-          this.form.argreeDiscount=res.data.argreeDiscount;
-          this.form.level=res.data.level;
-          this.form.recordList=res.data.recordList;
-          if(res.data.urgency){
-            this.urgency="是";
-            this.form.urgency=res.data.urgency?'true':'false';
-          }else{
-            this.urgency="否";
-            this.form.urgency=res.data.urgency?'true':'false';
-          }
-          let address=res.data.addressId===''?'':this.getAddress(res.data.addressId);
-          this.address=address;
-          this.form.addressId=res.data.addressId;
-        }else{
-            mango.tip(res.msg);
-        }
-        
-      })
     },
     getAddress(id){
      indexModel.getAddress(id).then(res => {
@@ -349,7 +309,11 @@ export default {
           }else{
             mango.tip(res.msg);
           }
-    })
+    }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddress(id)
+        }
+      })
    },
    getShopName(id){
     let shops=localStorage.getItem('shops');
@@ -371,12 +335,28 @@ export default {
         mango.tip('客户ID不能为空');
         return false;
       }
+      if(this.form.goodsList.length<=0){
+        mango.tip('意向产品不能为空');
+        return false;
+      }
       if(this.form.arrivalDate===''){
         mango.tip('进店日期不能为空');
         return false;
       }
       if(this.form.shopId===''){
         mango.tip('门店不能为空');
+        return false;
+      }
+      if(this.form.residentTime===''){
+        mango.tip('留店时长不能为空');
+        return false;
+      }
+      if(this.form.source===''){
+        mango.tip('客户来源不能为空');
+        return false;
+      }
+      if(this.form.addressId===''){
+        mango.tip('请选择地址,如无地址请先新建地址');
         return false;
       }
       var reg=/^\d{1,}\.{0,1}\d{0,}$/;
@@ -393,6 +373,26 @@ export default {
           mango.tip('需求日期不能小于到店日期');
           return false;
         }
+      }
+      if(this.form.budget.length>8){
+        this.form.budget=this.form.budget.substring(0,8);
+        mango.tip('预算金额不能超过8个字');
+        return false;
+      }
+       if(this.form.depositPaid.length>8){
+        this.form.depositPaid=this.form.depositPaid.substring(0,8);
+        mango.tip('已交定金不能超过8个字');
+        return false;
+      }
+      if(this.form.competingGoods.length>100){
+        this.form.competingGoods=this.form.competingGoods.substring(0,100);
+        mango.tip('竞品产品不能超过100个字');
+        return false;
+      }
+      if(this.form.remark.length>200){
+        this.form.remark=this.form.remark.substring(0,200);
+        mango.tip('备注信息不能超过200个字');
+        return false;
       }
       return true;
 
@@ -443,50 +443,26 @@ export default {
             form.delete(key[i]);
           }
         }
-        console.log(lastKey);
         indexModel.updateOpportunity(form,[...lastKey]).then(res => {
             if(res.code==0){
               mango.tip(res.msg);
               this.setCheckedList([]);
               this.updateSearchProductList([]);
-              this.$router.push({path:this.url});
-              this.$destroy();
+               this.$destroy();
+               
+              this.$router.back(this.go);
+              console.log("执行了");
             }else{
               mango.tip(res.msg);
             }
         })
      }
     },
-    layerUpdate(){
-      if(this.failReason===''){
-       mango.tip('战败原因不能为空');
-       return;
-      }else{
-        let obj={
-          opportunityId:this.form.oppId,
-          closeReason:this.failReason
-        }
-        indexModel.closeOpportunity(obj).then(res => {
-          if(res.code===0){
-            mango.tip(res.msg);
-            this.isPrompt=false;
-            this.$router.push({name:'intention',params:{opportunityId:this.form.oppId}});
-          }else{
-            mango.tip(res.msg);
-            this.isPrompt=true;
-          }
-          
-        })
-      }
-    },
-    layerCancel(){
-      this.isPrompt=false;
-    },
-    close(){
-      this.isPrompt=true;
-    },
+    
+    
+    
     openStore(){
-       this.$router.push({name:'chooseShop'});
+      this.$router.push({name:'chooseShop',query: {type: 'addintention'}});
       
     },
    updateClassify(option){
@@ -553,50 +529,118 @@ export default {
      discount=parseFloat(discount)*10;
      console.log(discount);
      this.form.argreeDiscount=discount;
+   },
+   //离开清除缓存
+   clearKeepAlive(){
+      let obj={
+        oppId:'',
+        goodsList:[],
+        addressId:'',
+        shopId:'',
+        arrivalDate:'',  //进店日期
+        budget:'',
+        deliverDate:'',    //需求日期
+        residentTime:'',   //留店时长
+        source:'',  //客户来源
+        stylePref:'',   //风格
+        progress:'',   //进度
+        colorPref:'',    //颜色偏好
+        competingGoods:'',
+        buyReason:'',   //购买原因
+        depositPaid:'',     //已缴定金
+        argreeDiscount:'',    //协议折扣，例：80（百分之80折扣）
+        remark:'',
+        urgency:'',   //是否紧急
+        level:'A',   //等级
+        recordList:[]
+      }
+      this.form=obj;
+      this.goodsValue='';
+      this.shopName='';
+      this.sourceName='';
+      this.apartmentType='';
+      this.elevator='';
+      this.address='';
+      this.buyReasonName='';
+      this.stylePrefName='';
+      this.progressName='';
+      this.colorPrefName='';
+      this.selectIcon=true;
+      this.readonly=false;
+      this.failReason='';
+      this.isPrompt=false;
+      this.customerId='';
+      this.path='';
+      this.status='';
+      this.urgency='否';
+      this.url='';
+      this.go=-1;
    }
   },
-  beforeRouteEnter(to,from,next){
-    console.log("进来addIntention",to);
-   // console.log(from);
-    if(from.name==='selectAddress'){
-      to.meta.keepAlive=true;
-      next();
-    }
-    if(from.name==='searchProduct'){
-      to.meta.keepAlive=true;
-      next();
-    }
-    if(from.name==='intentionProduct'){
-      to.meta.keepAlive=true; 
-      next();
-    }
-    if(from.name==='intention'){
-      to.meta.keepAlive=false; 
-      next();
-    }
-    if(from.name==='/enquiryInfo'){
-      to.meta.keepAlive=false; 
-      next();
-    }
-    if(from.name==='/CustomerInfo'){
-      to.meta.keepAlive=false; 
+  //  beforeRouteEnter(to,from,next){
+   // console.log("进来addIntention",to);
+    // if(from.name==='selectAddress'){
+    //   to.meta.keepAlive=true;
+    //   next();
+    // }
+    // if(from.name==='searchProduct'){
+    //   to.meta.keepAlive=true;
+    //   next();
+    // }
+    // if(from.name==='intentionProduct'){
+    //   to.meta.keepAlive=true;
+    //   next();
+    // }
+    // if(from.name==='chooseShop'){
+    //     to.meta.keepAlive=true;
+    //     next();
       
-      next();
-    }
-    //to.meta.keepAlive=false;
-   next();
-  },
+    // }
+    // if(from.name==='intention'){
+    //   to.meta.keepAlive=false;
+    //   next();
+    // }
+    // if(from.name==='/enquiryInfo'){
+    //   to.meta.keepAlive=false; 
+    //   next();
+    // }
+    // if(from.name==='/CustomerInfo'){
+    //   to.meta.keepAlive=false;   
+    //   next();
+    // }
+    // to.meta.keepAlive=true;
+    // next();
+  // }
   beforeRouteLeave(to,from,next){
-    console.log(to);
-   console.log(from);
+   console.log(to.name);
+   //console.log(from);
     if(to.name==='/enquiryInfo'){
-      //this.$destroy();
-      next();
+        //from.meta.keepAlive=false;
+        if(!from.meta.keepAlive){
+          //this.setCheckedList([]);
+          this.clearKeepAlive();
+          this.$destroy();
+          next();    
+        }
     }
     if(to.name==='/CustomerInfo'){
-     //this.$destroy();
-      next();
+        //from.meta.keepAlive=false;
+        if(!from.meta.keepAlive){
+          //this.setCheckedList([]);
+          this.clearKeepAlive();
+           this.$destroy();
+          next();    
+        }
+         next();    
     }
+    // if(to.name==='intentionProduct'){
+    //     //from.meta.keepAlive=false;
+      
+    //     from.meta.keepAlive=true;
+    //     next();
+      
+    // }
+    
     next();
   }
 };

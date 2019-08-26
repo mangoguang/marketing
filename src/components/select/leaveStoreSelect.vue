@@ -5,7 +5,7 @@
         <span :style="color">{{ type?(followTiming || '请选择跟进时长'): (leaveStoreVal || '请选择客户留店时长')}}</span>
       </li>
       <!-- 选择插件 -->
-      <li class="pickerContainer">
+     <!--  <li class="pickerContainer">
         <mt-popup position="bottom" v-model="popupVisible">
           <mt-picker
             :slots="hourSlots"
@@ -18,7 +18,15 @@
             ref="minPicker">
           </mt-picker>
         </mt-popup>
-      </li>
+      </li> -->
+        <mt-datetime-picker
+        v-model="pickerVisible"
+        type="time"
+        hourFormat="{value} 小时"
+        minuteFormat="{value} 分钟"
+        @confirm="handleConfirm"
+        ref='time'>
+      </mt-datetime-picker>
     </ul>
   </li>
 </template>
@@ -41,15 +49,16 @@ export default {
   props: ['start', 'text', 'type'],
   data() {
     return {
-      hourSlots: [],
+      /* hourSlots: [],
       minuteSlots: [],
       popupVisible: false,
       key1: false,
-      key2: false,
+      key2: false, */
       color: "color: #999",
-      hour: '',
-      min: '',
-      leaveStore:''
+     /*  hour: '',
+      min: '', */
+      leaveStore:'',
+      pickerVisible:''
     };
   },
   computed: {
@@ -59,32 +68,75 @@ export default {
       newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
+  watch:{
+    leaveStoreVal(){
+      if(this.leaveStoreVal===''){
+        this.color="color: #999"
+      }else{
+        this.color="color: #363636"
+      }
+    },
+    followTiming(){
+      if(this.followTiming===''){
+        this.color="color: #999"
+      }else{
+        this.color="color: #363636"
+      }
+    }
+  },
   mounted() {
-    this.getSlots();
+    //this.getSlots();
     this.init()
   },
   methods: {
     ...mapMutations(["setLeaveStoreVal",'setFollowTiming']),
      init() {
-       if(this.type) {
+      if(this.type) {
          if(this.newCustomerInfo && this.newCustomerInfo.residentTime2) {
             this.color = 'color: #363636'
             this.setFollowTiming(this.newCustomerInfo.residentTime2)
             this.key1 = false
             this.key2 = false
+          }else{
+            this.setFollowTiming('')
           }
-       }else {
+      }else {
          if(this.newCustomerInfo && this.newCustomerInfo.residentTime) {
             this.color = 'color: #363636'
             this.setLeaveStoreVal(this.newCustomerInfo.residentTime)
             this.key1 = false
             this.key2 = false
+          }else{
+            this.setLeaveStoreVal('')
           }
        }
       //初始化问题
       
     },
-    hourChange(picker, values) {
+    selectLeaveStore(){
+      this.$refs.time.open();
+    },
+     handleConfirm(){
+      this.color = "color: #363636";
+      if(this.pickerVisible){
+        let durationAttr=this.pickerVisible.split(':');
+        //this.color=(parseInt(durationAttr[0])<=0)&&parseInt(durationAttr[1])<=0?'color: #999':'color: #363636'
+        let hour= parseInt(durationAttr[0])<=0?'':parseInt(durationAttr[0])+"小时";
+        let minute=parseInt(durationAttr[1])<=0?'':parseInt(durationAttr[1])+"分钟";
+        let duration=hour+minute;
+        this.setFollowTiming(duration);
+        this.setLeaveStoreVal(duration);
+        this.$emit('leaveStoreChange2', duration)
+        this.$emit('leaveStoreChange',duration);
+      }else{
+        this.setFollowTiming('0分钟');
+        this.setLeaveStoreVal('0分钟');
+        this.$emit('leaveStoreChange2','0分钟');
+        this.$emit('leaveStoreChange','0分钟');
+      }
+    },
+
+  /*   hourChange(picker, values) {
       if(this.key1) {
         this.hour = values[0]
         this.leaveStore = this.min? this.hour +  this.min : this.hour
@@ -102,17 +154,19 @@ export default {
       }else {
         this.key2 = true
       }
-    },
+    },*/
     selectLeaveStore() {
-      if(this.type) {
+      /* if(this.type) {
         this.followMethod()
       }else {
         this.leaveMethod()
       }
-      this.popupVisible = true;
-    },
+      this.popupVisible = true; */
+        this.$refs.time.open()
+      
+    }
     //
-    leaveMethod() {
+ /*    leaveMethod() {
       this.color = "color: #363636";
       if (this.leaveStoreVal === "") {
         this.leaveStore = this.hour + this.min 
@@ -133,9 +187,9 @@ export default {
         this.$refs.hourPicker.setSlotValue(0, this.hour);
         this.$refs.minPicker.setSlotValue(0, this.min);
       }
-    },
+    }, */
     //设置slot
-    getSlots() {
+    /*getSlots() {
       this.hourSlots = this.getTimes(24, '小时', 'slot1')
       this.minuteSlots = this.getTimes(60, '分', 'slot2')
     },
@@ -150,7 +204,7 @@ export default {
         className: className
       }]
       return obj 
-    }
+    } */
   }
 };
 </script>

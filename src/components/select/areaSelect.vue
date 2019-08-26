@@ -1,7 +1,7 @@
 <template>
   <li class="areaSelect">
     <ul>
-      <li is="customerLi" :leftText="'客户地区'" :icon="true" @click.native="selectArea">
+      <li is="customerLi" :leftText="'客户地区'" :start='"*"' :icon="true" @click.native="selectArea">
         <span>{{areaVal && areaVal.provinceName != '' ? `${areaVal.provinceName} ${areaVal.cityName} ${areaVal.countryName}` : '请选择客户地区'}}</span>
       </li>
       <!-- 性别选择插件 -->
@@ -154,6 +154,10 @@ export default {
             className: 'provinceSlot'
           }]
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getProvince()
+        }
       })
       // mango.getAjax(this, 'province', {},'v3').then((res) => {
       //   res = res.data
@@ -180,6 +184,10 @@ export default {
               values: temp,
               className: 'citySlot'
             }]
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getCity(province)
         }
       })
         // mango.getAjax('/v1/api/public/address', {
@@ -208,6 +216,10 @@ export default {
               values: temp,
               className: 'countySlot'
             }]
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getCounty(city)
         }
       })
         // mango.getAjax(this, 'area', {

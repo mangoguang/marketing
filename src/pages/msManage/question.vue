@@ -5,6 +5,7 @@
       <EggSearch :style="{'paddingTop':`${paddingTop}vw`}"
         :origin='origin' 
         :type='"question"' />
+         
       <!-- <button>搜索</button> -->
     </div>
     <div>
@@ -86,14 +87,14 @@ export default {
     isIPhoneX (){
       let phone = this.phoneSize()
       if(phone === 'iphonex') {
-        this.paddingTop = '20'
-        this.top = '34'
+        this.paddingTop = '22'
+        this.top = '36'
       }else if(phone === 'iphone') {
-        this.paddingTop = '14'
-        this.top = '28'
+        this.paddingTop = '16'
+        this.top = '30'
       }else {
-        this.paddingTop = '14'
-        this.top = '28'
+        this.paddingTop = '16'
+        this.top = '30'
       }
     }
   }
@@ -138,7 +139,7 @@ export default {
   }
    .questionList1 {
     position: absolute;
-    top: 44vw;
+    top: 41vw;
     left: 0;
   }
    .questionList0 {

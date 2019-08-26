@@ -68,7 +68,7 @@ export default {
       text-align: center;
       span{
         display: block;
-        width:21.333vw;
+        width:15vw;
         height:10.666vw;
         line-height: 10.666vw;
         font-size:3.733vw;

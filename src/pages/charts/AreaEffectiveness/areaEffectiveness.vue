@@ -3,7 +3,9 @@
     <mybanner :title='title'/>
     <SelectComponent></SelectComponent>
     <div class="barBox">
-      <chartsTit :text="'坪效-整体'"></chartsTit>
+      <chartsTit :text="'坪效-整体'">
+         <h6>单位：元</h6>
+      </chartsTit>
       <div v-show="!areaEffectivenessShow" :style="{height: `100vw`}" ref="areaEffectivenessContainer" ></div>
       <noData v-show="areaEffectivenessShow"></noData>
       <!-- <Bar
@@ -12,7 +14,9 @@
       :height="100"></Bar> -->
     </div>
     <div class="barBox">
-      <chartsTit :text="'坪效-各店'"></chartsTit>
+      <chartsTit :text="'坪效-各店'">
+        <h6>单位：元</h6>
+      </chartsTit>
       <div v-show="!areaEffectivenessShopShow" ref="areaEffectivenessShopContainer" ></div>
       <noData v-show="areaEffectivenessShopShow"></noData>
       <!-- <Bar
@@ -29,6 +33,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
+import {waterMark} from '../../../utils/msManage'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -75,6 +80,7 @@ export default {
   mounted(){
     this.getareaEffectivenessData(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
     this.getareaEffectivenessShopData(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
+    waterMark('.barBox')
   },
   computed: {
     test() {
@@ -155,7 +161,7 @@ export default {
           this.key1 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          //res.yAxisData = [mango.chartsBotTit(res)]
           _this.areaEffectivenessData = res
         }
       })

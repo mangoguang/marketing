@@ -148,6 +148,11 @@ export default {
           this._changeShopName(tempId)
         }
       }) 
+      .catch((reject) => {
+        if (reject === 510) {
+          this.getTrackDetails()
+        }
+      })
     },
     //shopId转换为名字
     _changeShopName(id) {

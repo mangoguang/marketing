@@ -3,19 +3,23 @@ const state = {
   formInfo:{
     follow:{
       label:'跟进方式',
-      placeholder:'请选择跟进方式'
+      placeholder:'请选择跟进方式',
+      required:true
     },
     time:{
       label:'跟进时间',
-      placeholder:'请选择日期'
+      placeholder:'请选择日期',
+      required:true
     },
     duration:{
       label:'跟进时长',
-      placeholder:'请选择留店时长'
+      placeholder:'请选择留店时长',
+      required:true
     },
     report:{
       label:'跟进情况',
-      placeholder:'描述一下本次跟进情况'
+      placeholder:'描述一下本次跟进情况',
+      required:true
     },
     nextTime:{
       label:'下次跟进',

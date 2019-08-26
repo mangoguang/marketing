@@ -2,35 +2,70 @@
   <div class="footer" :style="{'padding-bottom':`${padding}vw`}">
     <ul>
       <li id="1">
-        <router-link to="/home" @click.native="changeActive">
+        <router-link to="/" @click.native="changeActive" replace>
           <div class="iconHome"></div>
           <p class="iconCharP">首页</p>
         </router-link>
       </li>
-      <li id="2" v-if="status">
-         <router-link to="/ReportForms" @click.native="changeActive">
+      <li id="2" v-if="_localAjax().typename === 'Dealer Boss'
+                      ||_localAjax().typename ==='Boss&Consultant'
+                      ||_localAjax().typename === 'Boss&Manager'">
+         <router-link to="/ReportForms" replace>
           <div class="iconChar"></div>
           <p class="iconCharP">报表</p>
          </router-link>
+        <!--  <a href="javascript:;" @click="pingbi">
+          <div class="iconChar"></div>
+          <p class="iconCharP">报表</p>
+         </a> -->
         <!-- <div v-show="!chartActive">
           <div class="charActive"></div>
           <p class="charPActive">报表</p>
         </div> -->
       </li>
-      <li id="3" v-else>
-        <router-link to="/Customer" @click.native="changeActive">
-          <div class="iconSalary"></div>
-          <p class="iconCharP">客户</p>
-        </router-link>
+      <li id="3" v-if="_localAjax().typename === 'Sleep Consultant' || 
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' ">
+          <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
+                              _localAjax().typename === 'Boss&Consultant'"
+                        to="/Customer" @click.native="changeActive" replace>
+            <div class="iconSalary"></div>
+            <p class="iconCharP">客户</p>
+          </router-link>
+          <router-link  v-else-if=" _localAjax().typename === 'Store Manager'|| _localAjax().typename === 'Boss&Manager'"
+                        to="/storeCustomer" @click.native="changeActive" replace>
+            <div class="iconSalary"></div>
+            <p class="iconCharP">客户</p>
+          </router-link>
+          <a href="javascript:;" @click="pingbi" v-else>
+            <div class="iconSalary"></div>
+            <p class="iconCharP">客户</p>
+          </a>
       </li>
-      <li id="4" >
-        <router-link to="/" @click.native="changeActive">
+      <li id="4" v-if="_localAjax().typename === 'Sleep Consultant' || 
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' ||
+                              _localAjax().typename === 'Dealer Boss' ">
+        <template>
+        <router-link  v-if="_localAjax().typename === 'Sleep Consultant' || 
+                              _localAjax().typename === 'Store Manager' || 
+                              _localAjax().typename === 'Boss&Consultant' ||
+                              _localAjax().typename === 'Boss&Manager' ||
+                              _localAjax().typename === 'Dealer Boss' "
+                      to="/work" @click.native="changeActive" replace>
           <div class="iconMsg"></div>
           <p class="iconCharP">工作</p>
         </router-link>
+        <a  href="javascript:;" @click="pingbi" v-else>
+          <div class="iconMsg"></div>
+          <p class="iconCharP">工作</p>
+        </a>
+        </template>
       </li>
       <li id="5">
-        <router-link to="/personalCenter" @click.native="changeActive">
+        <router-link to="/personalCenter" @click.native="changeActive" replace>
           <div class="iconPerson"></div>
           <p class="iconCharP">个人</p>
         </router-link>
@@ -67,11 +102,13 @@ export default {
       this.setChartActive(true);
     },
     isDeal() {
-      if(this._localAjax().typename === 'boss') {
-        this.status = true
-      }else {
-        this.status = false
-      }
+      // if(this._localAjax() && this._localAjax().typename) {
+      //   this.status = this._localAjax().typename === 'boss'? 'true' : 'false'
+      // }
+      // console.log('isBoss',this.status)
+    },
+    pingbi(){
+      alert('暂无权限')
     },
     touchend(e) {
       // console.log(e.path[1].id)
@@ -102,7 +139,7 @@ export default {
     width: 6.6vw;
     height: 6.6vw;
     margin-bottom: 1.33vw;
-    background: url(../assets/imgs/icon1.png);
+    background: url(../../static/images/icon.png);
     background-size: 2100%;
     background-position: -14.2vw -20.8vw;
   }
@@ -121,7 +158,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -7.6vw -20.8vw;
       }
@@ -129,9 +166,10 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
-        background-size: 2100%;
-        background-position: -21.4vw -20.8vw;
+        background: url(../assets/imgs/_char-icon.png) no-repeat center;
+        // background-size: 2100%;
+        // background-position: -21.4vw -20.8vw;
+        background-size: 100% 100%;
       }
       .iconSalary {
         width: 6.6vw;
@@ -152,7 +190,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -49.7vw -20.8vw;
       }
@@ -166,7 +204,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -0.4vw -20.8vw;
       }
@@ -174,9 +212,11 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
-        background-size: 2100%;
-        background-position: -14.2vw -20.8vw;
+        background: url(../assets/imgs/char-icon.png) no-repeat center;
+        background-size: 100% 100%;
+        // background: url(../../static/images/icon.png);
+        // background-size: 2100%;
+        // background-position: -14.2vw -20.8vw;
       }
       .router-link-exact-active .iconCharP {
         color: #007aff;
@@ -201,7 +241,7 @@ export default {
         width: 6.6vw;
         height: 6.6vw;
         margin-bottom: 1.33vw;
-        background: url(../assets/imgs/icon1.png);
+        background: url(../../static/images/icon.png);
         background-size: 2100%;
         background-position: -42.6vw -20.8vw;
       }

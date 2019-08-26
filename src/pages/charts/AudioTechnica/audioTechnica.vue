@@ -6,7 +6,7 @@
     <!-- 整体进店数 -->
     <li class="barBox">
       <chartsTit :text="'进店数-整体'">
-        <!-- <h6>单位：万</h6> -->
+       <h6>单位：人次</h6>
       </chartsTit>
       <div v-show="!storeGetInTotalShow" :style="{height: `100vw`}" ref="storeGetInTotalContainer" ></div>
       <noData v-show="storeGetInTotalShow"></noData>
@@ -14,6 +14,7 @@
     <!-- 各门店进店数 -->
     <li class="barBox">
       <chartsTit :text="'进店数-各门店'">
+        <h6>单位：人次</h6>
       </chartsTit>
       <div v-show="!perStoreGetInShow" ref="perStoreGetInContainer" ></div>
       <noData v-show="perStoreGetInShow"></noData>
@@ -34,14 +35,16 @@
     </li>
     <!-- 整体客单值 -->
     <li class="barBox">
-      <chartsTit :text="'客单值-整体'">
+      <chartsTit :text="'均单值-整体'">
+        <h6>单位：元</h6>
       </chartsTit>
       <div v-show="!orderFormTotalShow" :style="{height: `100vw`}" ref="orderFormTotalContainer" ></div>
       <noData v-show="orderFormTotalShow"></noData>
     </li>
     <!-- 各门店客单值 -->
     <li class="barBox">
-      <chartsTit :text="'客单值-各门店'">
+      <chartsTit :text="'均单值-各门店'">
+        <h6>单位：元</h6>
       </chartsTit>
       <div v-show="!perOrderFormShow" ref="perOrderFormContainer" ></div>
       <noData v-show="perOrderFormShow"></noData>
@@ -56,6 +59,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
+import {waterMark} from '../../../utils/msManage'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -120,6 +124,9 @@ export default {
       endTimeSelect: state => state.select.endTimeSelect
     })
   },
+  mounted(){
+    waterMark('.barBox')
+  },
   watch: {
     citySelect() {
       if (this.endTimeSelect && this.endTimeSelect != '') {
@@ -168,7 +175,7 @@ export default {
         if (this[`${chartsName}Data`].series) {
           // 检测数据是否为空
           this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
-          chartsInit(this, chartsName, 'vertical')
+          chartsInit(this, chartsName, 'vertical','','','','',true)
           this.auchanrtDom3 = chanrtDom
         }
       }
@@ -180,7 +187,7 @@ export default {
           if (this[`${chartsName}Data`].series) {
             // 检测数据是否为空
           this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
-          chartsInit(this, chartsName, 'horizontal')
+          chartsInit(this, chartsName, 'horizontal','','','','',true)
             this.auchanrtDom4 = chanrtDom
             if(this.i > 1){
               try {
@@ -275,7 +282,8 @@ export default {
           this.key1 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          console.log('测试',res);
+          //res.yAxisData = [mango.chartsBotTit(res)]
           _this.storeGetInTotalData = res
         }
       })
@@ -320,7 +328,8 @@ export default {
           this.key3 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          console.log('整提',res)
+          //res.yAxisData = [mango.chartsBotTit(res)]
           _this.achieveRatioTotalData = res
         }
       })
@@ -338,14 +347,18 @@ export default {
       }).then((res) => {
         mango.loading('close')
         if (res) {
+          console.log('店铺成交率0', res)
           let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
+          console.log('店铺成交率1', newData)
           this.$set(res.data,'idsData',newData[3])
           this.$set(res.data.series[0],'data',newData[1])
           this.$set(res.data.series[1],'data',newData[2])
           this.$set(res.data,'yAxisData',newData[0])
           this.key4 = true
           res = res.data
+          console.log("店铺成交率",res);
           _this.perAchieveRatioData = res
+          console.log('店铺成交率', res)
         }
       })
     },
@@ -365,7 +378,8 @@ export default {
           this.key5 = true
           res = res.data
           mango.sortYears(res)
-          res.yAxisData = [mango.chartsBotTit(res)]
+          //res.yAxisData = [mango.chartsBotTit(res)]
+          console.log('res',res);
           _this.orderFormTotalData = res
         }
       })

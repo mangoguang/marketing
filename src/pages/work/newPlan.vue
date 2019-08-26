@@ -12,10 +12,12 @@
     <!-- 当日总结 -->
     <DailySummary
     :text="''"
+    :disabled="true"
     @changeDailySummaryTextarea="changeDailySummaryTextarea" />
     <!-- 明日目标及重点工作安排 -->
     <DailyPlan
-    :text="dailyPlanTextarea"
+    :text="''"
+    :disabled="true"
     @changeDailyPlanTextarea="changeDailyPlanTextarea" />
   </div>
 </template>
@@ -29,7 +31,9 @@ import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
 import mango from "../../js"
 import { IndexModel } from "../../utils/"
+import { doubleDigit } from "../../utils/common/"
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
   name: 'newPlan',
   components: {
@@ -57,7 +61,7 @@ export default {
     if (month < 10) {
       month = `0${month}`
     }
-    this.curDay = `${year}-${month}-${day}`
+    this.curDay = `${year}-${doubleDigit(month)}-${doubleDigit(day)}`
     // 获取当日数据
     this.getDailyData({
       startDate: this.curDay,
@@ -70,6 +74,10 @@ export default {
         if (res.data) {
           // 更改数据
           this.dailyList = res.data
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getDailyData(data)
         }
       })
     },
@@ -87,8 +95,8 @@ export default {
         return
       }
       indexModel.savePlan({
-        summarize: this.dailySummaryTextarea,
-        plan: this.dailyPlanTextarea,
+        summarize: Base64.encode(this.dailySummaryTextarea),
+        plan: Base64.encode(this.dailyPlanTextarea),
         date: this.curDay         //获取当前日期
       }).then((res) => {
         if (res) {
@@ -96,6 +104,10 @@ export default {
             mango.tip('保存成功！')
             this.$router.back(-1)
           }
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.save()
         }
       })
     }

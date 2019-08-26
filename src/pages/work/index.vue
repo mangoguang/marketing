@@ -2,8 +2,10 @@
   <div class="work">
     <WorkHeader :title="'工作'" />
     <WorkModules />
-    <Footer/>
+    <Footer style="z-index:10"/>
     <Daily />
+    <planModule/>
+    <!-- <div @click="changeToken" style="text-align: center;line-height: 10vw;">测试</div> -->
   </div>
 </template>
 
@@ -15,7 +17,9 @@ import WorkHeader from '../../components/work/header'
 import Footer from '../../components/Footer'
 import WorkModules from '../../components/work/workModules/'
 import Daily from '../../components/work/daily/'
+import planModule from '../../components/work/plan/planModule'
 import { IndexModel } from "../../utils/"
+import {checkLogin} from '../../utils/token/toLogin'
 const indexModel = new IndexModel()
 
 export default {
@@ -24,7 +28,8 @@ export default {
     WorkHeader,
     Footer,
     WorkModules,
-    Daily
+    Daily,
+    planModule
   },
   props:[],
   data(){
@@ -32,41 +37,19 @@ export default {
 
     }
   },
+  created() {
+    checkLogin()
+  },
   mounted() {
-    // indexModel.getCusotmerList({
-    //   type: 'New',  //New:意向客户，Approved：成交客户，Closed：战败客户
-    //   key: '',  //搜索关键字，电话或名字
-    //   sort: 'u',  //u：紧急排序，l：意向分类排序
-    //   sd: '2018-03-12',  //跟进日期
-    //   ed: '2018-03-26',
-    //   u: 1,  //1：紧急，0不紧急
-    //   l: 'B',  //
-    //   page: 1,  //页数
-    //   limit: 10  //每页条数
-    // }).then((res) => {
-    //   console.log('succ111', res)
-    // })
-    // `{
-    //           "account": "${res.account}",
-    //           "tenantId": "${res.tenantId}",
-    //           "token": "${res.token}",
-    //           "uuid": "${res.uuid}",
-    //           "timestamp": "${Date.parse(new Date())}",
-    //           "name": "${res.username}",
-    //           "phone": "${res.mobile}",
-    //           "sex": "${res.sex}",
-    //           "type":"${res.type}"
-    //         }`
-    // indexModel.getUserInfo().then(res => {
-    //   console.log('获取用户个人信息', res)
-    //   if (res.data) {
-        
-    //   }
-    // })
-    
+
   },
   methods:{
-
+    changeToken() {
+      let token = JSON.parse(localStorage.getItem('token'))
+      token.access_token = '1234567891234567891234567'
+      token.refresh_token = '2e0ce02f-6076-43d2-b935-5e329faedd0'
+      localStorage.setItem('token', JSON.stringify(token))
+    }
   }
 }
 </script>

@@ -4,9 +4,9 @@
       <div class="address-box">
         <my-select :options="addressList" name="1" @change="updateVal" @edit="edit" v-if='hasRecord'>
           <template slot-scope="props">
-              <span v-if="props.info.elevator">{{props.info.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;有电梯</span>
-              <span v-else>{{props.info.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;无电梯</span>
-              <p>{{props.info.province}}{{props.info.city}}{{props.info.district}}{{props.info.address}}</p>
+              <span v-if="props.info.elevator">{{props.info.apartmentType?props.info.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}有电梯</span>
+              <span v-else>{{props.info.apartmentType?props.info.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}无电梯</span>
+              <p>{{props.info.province+props.info.city+props.info.district+props.info.address}}</p>
           </template>
         </my-select>
         <div class="noRecord"  v-else>
@@ -27,11 +27,13 @@ import mySelect from '../../../components/mySelect/select'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
 import { IndexModel } from '../../../utils'
+let Base64 = require('js-base64').Base64
 const indexModel=new IndexModel()
 export default {
   data () {
     return {
-      fromPath:''
+      fromPath:'',
+      type: ''
     }
   },
   components:{
@@ -51,39 +53,58 @@ export default {
   }, 
   created(){
    this.getAddressList();
+   if(this.$route.query.type) {
+     this.type = this.$route.query.type
+   }
   },
   
   mounted(){
     
   },
   methods:{
-   ...mapMutations(['updateAddress']),
+   ...mapMutations(['updateAddress','setAddressId']),
    ...mapMutations('selectAddress',['updateHasRecord','updatePath']),
+   turnAddress(str){
+     let string = Base64.decode(str)
+     return string
+   },
    jump(){
      this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId}});
    },
    //获取选择项
    updateVal(id){
-     console.log(222,id);
-     setTimeout(() => {
-       this.$router.replace({path:this.$route.query.redirect,query:{addressId:id}})
-     },100)
-     
+     if(this.type === 'intention') {
+       setTimeout(() => {
+       this.setAddressId(id)
+       this.$router.go(-1)
+       },100)
+     }else {
+       setTimeout(() => {
+        this.setAddressId(id);
+        //this.$router.replace({path:this.$route.query.redirect,query:{addressId:id}})
+        this.$router.go(-1);
+      },100)
+     }
+    //  console.log(222,id);
    },
    //获取编辑的id
    edit(id){
-     console.log(id);
+    //  console.log(id);
      let customerId=this.$route.params.customerId;
-     console.log('customerId',customerId);
+    //  console.log('customerId',customerId);
      let addressId=id;
      //let redirect=this.$route.query.redirect;
-     this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
+     if(this.type === 'intention') {
+       this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
+     }else {
+        this.$router.push({name:'addAddress',params:{customerId:customerId},query:{addressId:addressId}});
+     }
    },
    //获取地址
    getAddressList(){
       let id=this.$route.params.customerId;
       indexModel.getAddressList(id).then(res => {
-        console.log(res);
+        // console.log(res);
          if(res.code===0){
            if(res.data.length>0){
              this.updateAddress(res.data);
@@ -92,13 +113,24 @@ export default {
              this.updateHasRecord(false);
            }
          }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddressList()
+        }
       })
     }
-  }
-  /*  beforeRouteLeave(to, from, next) {
-    to.meta.keepAlive = true;
+  },
+  beforeRouteEnter(to, from, next) {
+    
     next();
-  } */
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==="updateintention"){
+      to.meta.isUseCache=true;
+      next();
+    }
+    next();
+  }
   
 };
 </script>
@@ -120,6 +152,8 @@ export default {
     p{
       color:#363636;
       font-size: 3.2vw;
+      word-break: break-all;
+      text-align: justify;
     }
     .noRecord{
       text-align: center;
@@ -130,6 +164,9 @@ export default {
       img{
         width:4vw;
         margin-top:4vw;
+      }
+      p{
+        text-align: center;
       }
     }
    }

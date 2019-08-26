@@ -1,8 +1,9 @@
 <template>
-  <div class="search">
+  <div class="search" :style='{paddingTop:padding,marginTop:marginTop}'>
     <div class="search_box">
       <Search class="searchComp" id="debounce"
         v-model.trim="searchVal"
+        @input="search"
         :deleteVal='deleteVal'
       />
       <button class="cancle" @click="cancleBtn">取消</button>
@@ -45,7 +46,9 @@ export default {
       historyTxt: '',
       searchType: '',
       key: false,
-      account: ''
+      account: '',
+      padding:'',
+      marginTop:''
     }
   },
   computed: {
@@ -76,9 +79,10 @@ export default {
     this.compareTime(this.searchType)
     this.showHistory()
     this.account = this._localAjax().account
+    this.isIPhoneX()
   },
   mounted() {
-    this.monitorInpub()
+    //this.monitorInpub()
   },
   methods: {
     //监听输入框变化
@@ -91,6 +95,13 @@ export default {
           debounceAjax(e.target.value)
         }
       })
+    },
+    search(){
+      let ajaxRequest = this.getRequest()
+      let debounceAjax = this.debounce(ajaxRequest, 200)
+      if(this.searchVal!== '') {
+          debounceAjax(this.searchVal)
+      }
     },
     getRequest() {
        if(this.searchType == 'question') {
@@ -255,13 +266,28 @@ export default {
       }else {
         setLocalStorage(obj,type)
       }
+    },
+     //判断是否iphoneX
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if(phone === 'iphonex') {
+        this.padding = "5.86vw";
+        this.marginTop ='-5.86vw'
+      }else {
+        this.padding = "";
+        this.marginTop =''
+      }
     }
+
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .search {
+  background: #fff;
+  width:100vw;
+  overflow-x:hidden;
   .search_box {
     display: flex;
     justify-content: space-between;

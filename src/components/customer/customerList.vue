@@ -4,7 +4,7 @@
       ref="customer"
       class="customerList">
       <TopBar :topBarTitle='topbar'/>
-      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore" :auto-fill="false" >
+      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore1" :auto-fill="false" >
         <li
           class="customerContent"
           v-for="(item, index) in customerList.records"
@@ -116,7 +116,7 @@ export default {
       // console.log('接口参数：', this.customerAjaxParams, this.customerList)
       this.customerAjaxParams.page ++
       mango.getAjax('/v3/app/customer/list', this.customerAjaxParams).then((res) => {
-        this.$refs.loadmore.onBottomLoaded()
+        this.$refs.loadmore1.onBottomLoaded()
         res = res.data
         if (res) {
           if (res.records) {
@@ -130,6 +130,11 @@ export default {
           }
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.loadBottom()
+        }
+      })
       // mango.loading('open')
       // setTimeout(() => {
       //   // let last = this.customerList[this.customerList.length - 1]
@@ -140,7 +145,7 @@ export default {
       // }, 2500)
     },
     toCustomerInfo(id) {
-      this.$router.push({path:'/customerInfo',query: {id: id,status:2}})
+      this.$router.push({path:'/customerInfo',query: {id: id}})
       this.setCustomerTabStatus(mango.btnList(['客户信息', '意向信息'], 0))
       // this.setCustomerTabStatus(mango.btnList(['客户描述', '新建需求', '需求信息'], 0))
     },

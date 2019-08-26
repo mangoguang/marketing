@@ -1,11 +1,10 @@
 <template>
   <li :class="`customerLi ${icon ? 'icon' : ''}`">
-    <span>{{leftText}}
+    <span class='customerli-text'>{{leftText}}
       <strong style="color: #fb222b">{{ start }}</strong>
     </span>
-    <slot></slot>
-    <!-- <span>{{mindText}}</span> -->
-    <span></span>
+    <slot></slot>  <!-- input或者span-->
+    <span></span>  <!-- 图标-->
   </li>
 </template>
 
@@ -23,34 +22,56 @@ export default {
   created(){
   },
   methods: {
-    getCustomerInfo() {
-
-    }
+    
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/common.scss";
   .customerLi{
     display: flex;
     align-items: center;
     border-bottom: 1px solid #ccc;
     padding: 0 5vw;
     background: #fff;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    width: 100vw;
+    span {
+      display: table-cell;
+      vertical-align: middle;
+    }
+    .customerli-text {
+      padding-right: 6vw;
+      // width:16vw;
+    }
+    span:nth-child(2) {
+      width: 60vw;
+      overflow-x: scroll;
+      overflow-y: scroll;
+      height:3em;
+      line-height:3em;
+    }
     span{
-      color: $fontCol;
+      color: #363636;
       line-height: 3em;
     }
     strong {
       font-weight: normal;
-    }
-    span:first-child{
-      margin-right: 5vw;
+      margin-right: -1vw;
+      box-sizing: border-box;
+      display: inline-block;
     }
     input{
-      flex: 1;
-      font-size: $fontSize;
+      // border: 1px solid red;
+      font-size: 3.73vw;
+    }
+  }
+  .customerLi2{
+    height: 18vw;
+    span{
+      height: 18vw!important;
+      line-height: 9vw!important;
     }
   }
   .icon{

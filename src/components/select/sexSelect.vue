@@ -12,7 +12,13 @@
         <mt-picker
         :slots="slots"
         @change="onValuesChange"
-        ref="sexPicker"></mt-picker>
+        :showToolbar="true"
+        ref="sexPicker">
+        <div class="btn-group">
+          <div @click="cancel">取消</div>
+          <div @click="update">确定</div>
+         </div>
+        </mt-picker>
       </mt-popup>
       </li>
     </ul>
@@ -37,10 +43,11 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['男', '女','未知']}],
+      slots: [{values: ['男', '女','未知'],defaultIndex:0}],
       popupVisible: false,
       key: false,
-      color: 'color: #999'
+      color: 'color: #999',
+      value:''
     }
   },
   computed:{
@@ -54,6 +61,14 @@ export default {
   },
   methods:{
     ...mapMutations(["setSexVal", 'setNewCustomerInfo']),
+    cancel(){
+      this.popupVisible = false
+    },
+    update(){
+      this.color = 'color: #363636'
+      this.$emit('sexChange',this.value);
+       this.popupVisible=false;
+    },
     init() {
       if(this.newCustomerInfo.sex) {
         this.color = 'color: #363636'
@@ -63,23 +78,25 @@ export default {
       } 
     },
     selectSex() {
-      this.color = 'color: #363636'
-      if(this.sexVal === '') {
-        this.setSexVal(this.slots[0].values[0])
-        this.newCustomerInfo.sex = 'Mr.'
-        this.setNewCustomerInfo(this.newCustomerInfo)
-      }else {
-        this.$refs.sexPicker.setSlotValue(0, this.sexVal)
-      }
+      //this.color = 'color: #363636'
+      // if(this.sexVal === '') {
+      //   this.setSexVal(this.slots[0].values[0])
+      //   this.newCustomerInfo.sex = 'Mr.'
+      //   this.setNewCustomerInfo(this.newCustomerInfo)
+      // }else {
+      //   this.$refs.sexPicker.setSlotValue(0, this.sexVal)
+      // }
       this.popupVisible = true
     },
     onValuesChange(picker, values) {
       // this.val = values[0]
-      if(this.key) {
-        this.$emit('sexChange', values[0])
-      }else {
-        this.key = true
-      }
+      // if(this.key) {
+      //   this.$emit('sexChange', values[0])
+      // }else {
+      //   this.key = true
+      // }
+      this.value=values[0];
+      
     }
   }
   }
@@ -91,8 +108,20 @@ export default {
     ul{
       width: 100%;
       .sex {
-        margin-left: -3vw
+        // margin-left: -3vw
       }
     }
   }
+  .btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
+  }
+}
 </style>

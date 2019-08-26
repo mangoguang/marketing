@@ -6,12 +6,12 @@
           <p>
             <slot></slot>
           </p>
-          <div class="btn-group" v-if="btnNum==2">
+          <div class="btn-group" v-show="btnNum==2">
            <!--  <button type="button">确定</button>
             <button type="button">取消</button> -->
             <slot name="btn-group"></slot>
           </div>
-          <div class="btn" v-else>
+          <div class="btn" v-show="btnNum!==2">
             <slot name="btn"></slot>
             <!-- <button type="button">确定</button> -->
           </div> 
@@ -90,29 +90,22 @@ export default {
       height: 13.33vw;
       color:#363636;
       font-size: .18rem;
-      justify-self: flex-end;
       border-top:1px solid #E1E1E1;
       display:flex;
       flex-direction: row;
       align-items: center;
       :first-child{
-        flex:0 0 50%;
+        width:50%;
         height: 100%;
         border-right: 1px solid #E1E1E1;
-        display: block;
-        text-align: center;
-        display:flex;
-        justify-content: center;
+       line-height: 13.33vw;
         font-size: .18rem;
         color:#363636;
       }
       :last-child{
-        flex:0 0 50%;
+        width:50%;
         height: 100%;
-        display: block;
-        text-align: center;
-        display:flex;
-        justify-content: center;
+        line-height: 13.33vw;
         color:#909090;
         font-size: .18rem;
       }
@@ -122,19 +115,12 @@ export default {
       height: 13.33vw;
       color:#363636;
       font-size: .18rem;
-      justify-self: flex-end;
       border-top:1px solid #E1E1E1;
-      display:flex;
-      flex-direction: row;
-      align-items: center;
       :first-child{
-        flex:1;
+        width:100%;
         height: 100%;
         border-right: 1px solid #E1E1E1;
-        display: block;
-        text-align: center;
-        display:flex;
-        justify-content: center;
+        line-height: 13.33vw;
         font-size: .18rem;
         color:#363636;
       }

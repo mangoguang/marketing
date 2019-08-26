@@ -1,9 +1,10 @@
 <template>
   <div class="p-topNav">
-    <ul>
+    <ul ref='topNav'>
       <li v-for="(item, index) in productNavList" :key="index" 
         :class="{active : item.status}"
-        @click="toggleNav(index)">
+        @click="toggleNav(index)"
+        >
         <span>{{ item.name }}</span>
         <div class="dotted" v-show="item.status"></div>
       </li>
@@ -17,6 +18,7 @@ import {mapMutations, mapState} from 'vuex'
 export default {
   data() {
     return {
+      chooseIndex: -1
     };
   },
   computed: {
@@ -28,6 +30,10 @@ export default {
   },
   created() {
     this.initNav()
+  },
+  mounted() {
+    this.getIndex()
+    this.$refs.topNav.scrollLeft = 60*this.chooseIndex
   },
   methods: {
     ...mapMutations(['setProductNavList', 'getProductNavListVal']),
@@ -46,6 +52,14 @@ export default {
       }
       this.setProductNavList(btnList(this.initNavList, index))
       this.getProductNavListVal()
+    },
+    getIndex() {
+      this.productNavList.map((item,index) => {
+        if(item.status) {
+          this.chooseIndex = index
+          return;
+        }
+      })
     }
   }
 };
@@ -58,6 +72,7 @@ ul::-webkit-scrollbar {
 .p-topNav {
   overflow-x: hidden;
   position: relative;
+  height:11.46vw;
   ul {
     background: #e2effd;
     overflow-x: auto;

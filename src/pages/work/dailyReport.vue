@@ -1,10 +1,13 @@
 <template>
   <div class="dailyReport">
     <banner :title='"日报"' class="header">
-      <button @click="newPlan" class="newDailyReport">+</button>
+      <button @click="newPlan" class="newDailyReport" >+</button>
     </banner>
     <!-- 日历组件 -->
-    <myDatePicker @getCurDay="getCurDay" :curMonthData="curMonthData" />
+    <myDatePicker
+    @getCurDay="getCurDay"
+    :curMonthData="curMonthData"
+    @changeCurMonthData="changeCurMonthData" />
     <!-- 当日数据 -->
     <CurReport
     :list="dailyList"
@@ -12,12 +15,12 @@
     <!-- 当日总结 -->
     <DailySummary
     :text="dailySummaryTextarea"
-    :disabled="'disabled'"
+    :disabled="false"
     @changeDailySummaryTextarea="changeDailySummaryTextarea" />
     <!-- 明日目标及重点工作安排 -->
     <DailyPlan
     :text="dailyPlanTextarea"
-    :disabled="'disabled'"
+    :disabled="false"
     @changeDailyPlanTextarea="changeDailyPlanTextarea" />
   </div>
 </template>
@@ -31,7 +34,9 @@ import DailySummary from '../../components/work/dailyReport/dailySummary'
 import DailyPlan from '../../components/work/dailyReport/dailyPlan'
 import { IndexModel } from "../../utils/"
 import mango from "../../js"
+import Bus from '../../utils/Bus'
 import { mapMutations } from 'vuex';
+let Base64 = require('js-base64').Base64
 const indexModel = new IndexModel()
 export default {
   name: 'dailyReporxt',
@@ -69,16 +74,13 @@ export default {
 
   },
   created() {
-    let arr = [{
-      index: 0,
-      day: 4
-    }, {
-      index: 1,
-      day: 10
-    }]
+    Bus.$on('dailyPlanTextarea', val => {
+      console.log('dailyPlanTextarea', val)
+    })
   },
   mounted() {
     this.curDay = this.getToday()
+    this.curDate = this.curDay.split(/年|月|日/)
     let date = new Date()
     const [year, month, day] = [date.getFullYear(), date.getMonth() + 1, date.getDate()]
     this.curNum = parseInt(date.getDate())
@@ -105,6 +107,10 @@ export default {
         endDate: `${this.curDate[0]}-${this.curDate[1]}-${this.curDate[2]}`
       })
     },
+    changeCurMonthData(date) {
+      // console.log('当前月份', this.getCurMonth(), date)
+      this.getCurMonthData(date)
+    },
     // 获取当前月份
     getCurMonth() {
       let date = new Date()
@@ -114,12 +120,16 @@ export default {
       }
       return `${year}-${month}`
     },
+    // getSelectMonth() {
+
+    // },
     // 当日总结子组件触发更改数据
     changeDailySummaryTextarea(str) {
       this.dailySummaryTextarea = str
     },
     // 明日目标及重点工作安排子组件触发更改文本
     changeDailyPlanTextarea(str) {
+      this.dailyPlanTextarea = str
     },
     // 获取当天日期字符串，格式如：2019年04月17日
     getToday() {
@@ -128,23 +138,27 @@ export default {
     },
     // 获取选择日期的数据
     getCurMonthData(month) {
+      console.log(month);
       indexModel.getCurMonthData({
         date: month
       }).then((res) => {
         res = res.data
         if (res) {
+          console.log(res);
           this.curMonthData = res
           if (this.curNum) {
             // 显示选择日期的当日总结和明日计划
             this.setSumAndPlan(res)
           }
           // 遍历一个月内有哪些天有总结
-          this.dailyList = res.map((item) => {
-            if (item) {
-              let date = item.createTime
-              return parseInt(date.split(' ')[0].split('-')[2])
-            }
-          })
+          // this.dailyList = res.map((item) => {
+          //   let date = item.createTime
+          //   return parseInt(date.split(' ')[0].split('-')[2])
+          // })
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getCurMonthData(month)
         }
       })
     },
@@ -153,6 +167,7 @@ export default {
       // 获取当前选择的日期数的整数值
       const num = parseInt(this.curNum)
       let arr = []
+      let arr2 = []
       if (res) {
         // 获取res数组里面的日期。
         arr = res.map(element => parseInt(element.createTime.substr(8, 2)))
@@ -161,15 +176,27 @@ export default {
       }
       const index = arr.indexOf(num)
       if (index >= 0) {
-        this.dailySummaryTextarea = res[index].summarize
-        this.dailyPlanTextarea = res[index].plan
+        let date = `${this.curDate[0]}/${this.curDate[1]}/${this.curDate[2]}`
+        if(new Date(date)< mango.setReportTime()){
+          this.dailySummaryTextarea = res[index].summarize
+          this.dailyPlanTextarea = res[index].plan
+        }else{
+          this.dailySummaryTextarea = Base64.decode(res[index].summarize)
+          this.dailyPlanTextarea = Base64.decode(res[index].plan)
+        }
+        
       }
     },
     getDailyData(data) {
       indexModel.getDailyReport(data).then((res) => {
         if (res.data) {
+          console.log(res)
           // 更改数据
           this.dailyList = res.data
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getDailyData(data)
         }
       })
     },

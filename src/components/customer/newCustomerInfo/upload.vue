@@ -2,7 +2,7 @@
   <div class="upload">
     <h1>附件图片</h1>
     <ul class="load_box">
-      <div v-if="imgLen>=5 ? false : true" class="addFile">
+      <div v-if="newCustomerInfo.imgLen>=5 ? false : true" class="addFile">
         <input
           name='record.dataFile'
           type="file"
@@ -17,14 +17,14 @@
           <p>添加图片</p>
         </div>
       </div>
-      <li v-for="(value, key, i) in imgs" :key="key">
+      <li v-for="(value, key, i) in newCustomerInfo.imgs" :key="key">
         <img :src="getObjectURL(value)">
         <a class="close" @click="delImg(key,i)">
           <img src="../../../assets/imgs/egg_delete.png" alt="">
         </a>
       </li>
       <div class="count">
-        <span>{{ imgLen }}</span>
+        <span>{{ newCustomerInfo.imgLen }}</span>
         <span>/5</span>
       </div>
     </ul>
@@ -40,13 +40,18 @@ export default {
       imgs: {},
       imgLen: 0,
       imgdata: "",
-      fil: ''
+      fil: []
     };
   },
   computed: {
     ...mapState({
       newCustomerInfo: state => state.customer.newCustomerInfo
     })
+  },
+  watch: {
+    imgLen() {
+      console.log('imgLen',this.newCustomerInfo.imgLen)
+    }
   },
   methods: {
     ...mapMutations(['setNewCustomerInfo']),
@@ -56,7 +61,7 @@ export default {
       // 通过DOM取文件数据
       this.fil = inputDOM.files;
       // console.log('文件：', this.fil)
-      let oldLen = this.imgLen;
+      let oldLen = this.newCustomerInfo.imgLen;
       let len = this.fil.length + oldLen;
       if (len > 5) {
         alert("最多可上传5张，您还可以上传" + (5 - oldLen) + "张");
@@ -68,15 +73,26 @@ export default {
           alert("请选择3M以内的图片！");
           return false;
         }
-        this.imgLen ++;
-        this.$set(
-          this.imgs,
-          this.fil[i].name + "?" + new Date().getTime() + i,
-          this.fil[i]
-        );
-       this.submit(this.fil[i])
+        this.newCustomerInfo.imgLen ++;
+        //判断有没有缓存图片
+        if(this.newCustomerInfo.imgs) {
+          this.imgs = this.newCustomerInfo.imgs
+          this.$set(
+            this.imgs,
+            this.fil[i].name + "?" + new Date().getTime() + i,
+            this.fil[i]
+          )
+        }else {
+          this.$set(
+            this.imgs,
+            this.fil[i].name + "?" + new Date().getTime() + i,
+            this.fil[i]
+          );
+        }
+        this.$set(this.newCustomerInfo,'imgs',this.imgs)
+        this.submit(this.fil[i])
+        this.setNewCustomerInfo(this.newCustomerInfo)
       }
-      // this.saveData()
     },
     //创建url预览图片
     getObjectURL(file) {
@@ -95,17 +111,26 @@ export default {
     },
     //删除图片
     delImg(key,i) {
-      this.$delete(this.imgs, key);
-      let formdata = this.newCustomerInfo.dataFiles
-      //获取删除后的formdata
-      let temp = this.getArr(i,formdata.getAll('record.dataFile'))
-      formdata.delete('record.dataFile')
-      temp.forEach(item => {
-        formdata.append('record.dataFile', item)
-      });
-      this.newCustomerInfo.dataFiles = formdata
+   
+
+      // const imgs = this.newCustomerInfo.imgs
+      this.$delete(this.newCustomerInfo.imgs,key)
+      // const imgArr = []
+      // for(key in imgs) {
+      //   imgArr.push(img[key])
+      // }
+      // let temp = this.getArr(i,imgArr)
+
+      // let formdata = this.newCustomerInfo.dataFiles
+      // //获取删除后的formdata
+      // let temp = this.getArr(i,formdata.getAll('record.dataFile'))
+      // formdata.delete('record.dataFile')
+      // temp.forEach(item => {
+      //   formdata.append('record.dataFile', item)
+      // });
+      // this.newCustomerInfo.dataFiles = formdata
+      this.newCustomerInfo.imgLen -= 1
       this.setNewCustomerInfo(this.newCustomerInfo)
-      this.imgLen--;
     },
     //
     getArr(i,arr) {
@@ -128,7 +153,7 @@ export default {
         reader.onload = (e) => {
           // console.log('事件原对象：', e)
           this.imgUrl = e.target.result
-          this.changeFormData(this.imgUrl)
+          // this.changeFormData(this.imgUrl)
         };
       }
     },
@@ -158,6 +183,8 @@ export default {
 .upload {
   box-sizing: border-box;
   padding: 4vw;
+  width: 100vw;
+  max-height: 62vw;
   h1 {
     font-size: 4vw;
     color: #363636;
@@ -170,6 +197,8 @@ export default {
     margin-right: 25px;
     border: 1px dashed #e1e1e1;
     border-radius: 1.06vw;
+    // margin-top: 4vw;
+    box-sizing: border-box;
     input {
       opacity: 0;
       width: 20vw;
@@ -180,9 +209,6 @@ export default {
       z-index: 99;
     }
     .content {
-      // position: absolute;
-      // left: 20%;
-      // top: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -201,12 +227,15 @@ export default {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    // border: 1px solid red;
     li {
+      border-radius: 1vw;
       width: 20vw;
       height: 20vw;
       display: flex;
       margin-right: 6vw;
       margin-bottom: 4vw;
+      box-sizing: border-box;
       .close {
         margin-left: 1vw;
         img {

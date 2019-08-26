@@ -1,75 +1,169 @@
 <template>
-  <mt-swipe class="wrapper" :auto="auto" @change="handleChange" >
-    <mt-swipe-item 
-      :style="{'backgroundImage':'url('+ item.imgUrl + ')','backgroundSize': '100% 100%','width':'100%','height': '100%'}"
-      v-for='(item,index) in list' :key='index'
-      :data-type="index">
+  <mt-swipe :class="myClass" :auto="auto" @change="handleChange" >
+    <mt-swipe-item
+      v-for="(item,index) in list"
+      :key="index"
+      :data-type="index"
+    >
+    <img v-lazy="item.imgUrl" alt="" :key="item.imgUrl">
     </mt-swipe-item>
   </mt-swipe>
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
-import { Swipe, SwipeItem } from 'mint-ui';
-import Vue from 'vue'
+import { mapMutations } from "vuex";
+import { Swipe, SwipeItem } from "mint-ui";
+import Vue from "vue";
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 export default {
-  props: ['list', 'auto'],
+  props: ["list", "auto", 'myClass'],
   watch: {
     list() {
-      if(this.list && this.list.length) {
-        this.setImgUrl(this.list[0].imgUrl)
+      if (this.list && this.list.length) {
+        this.setImgUrl(this.list[0].imgUrl);
       }
     }
   },
   created() {
-    if(this.list && this.list.length) {
-      this.setImgUrl(this.list[0].imgUrl)
+    if (this.list && this.list.length) {
+      this.setImgUrl(this.list[0].imgUrl);
     }
   },
   methods: {
-    ...mapMutations(['setImgUrl']),
+    ...mapMutations(["setImgUrl"]),
     handleChange(index) {
-      this.setImgUrl(this.list[index].imgUrl)
+      this.setImgUrl(this.list[index].imgUrl);
     }
   }
-}
+};
 </script>
 
-<style lang="scss" scoped>
-.wrapper {
+<style lang="scss">
+
+.tukuHome {
   width: 70.13vw;
   height: 21.33vw;
+  overflow: hidden;
+  img{
+  width:100%;
+  height:100%;
+  display: block;
+  border-radius: 1.4vw;
 }
-
-</style>
-
-<style lang="scss">
-// .mint-swipe-indicators {
-//   right: -3%;
-//     .mint-swipe-indicator {
-//       background: #fff;
-//       opacity: 0.5;
-//     }
-//     .is-active {
-//       background: #fff;
-//       opacity: 1;
-//     }
-// }
-.mint-swipe-indicators {
-  right: 66%;
+  .mint-swipe-indicators {
+    //right: 10%;
+    left:initial;
+    right:2.666vw;
+    bottom:1.333vw;
     .mint-swipe-indicator {
-      background: #363636;
-      opacity: 0.6;
+      background: rgba(255, 255, 255, 0.5);
+      width: 1.06vw;
+      height: 1.06vw;
+      border-radius: 50%;
     }
     .is-active {
-      background: #363636;
-      width: 3.4vw;
-      border-radius: 36%;
-      opacity: 0.6;
+      background: #fff;
+      width: 1.06vw;
+      height: 1.06vw;
+      border-radius: 50%;
+      opacity: 1;
     }
   }
+}
+
+.tukuDetails {
+  overflow: hidden;
+  img{
+  width:100%;
+  height:100%;
+  display: block;
+  border-radius: 1.4vw;
+}
+  .mint-swipe-indicators {
+    //right: 78%;
+    left:4.266vw;
+    transform: none;
+    -webkit-transform: none;
+    .mint-swipe-indicator {
+      background: rgba(54, 54, 54, 0.6);
+      width: 1.06vw;
+      height: 1.06vw;
+      border-radius: 50%;
+    }
+    .is-active {
+      background: rgba(54, 54, 54, 0.8);
+      width: 2.46vw;
+      height: 1.06vw;
+      border-top-left-radius: 30%;
+      border-bottom-left-radius: 30%;
+      border-top-right-radius: 30%;
+      border-bottom-right-radius: 30%;
+    }
+  }
+}
+
+.home {
+  overflow: hidden;
+  img{
+  width:100%;
+  height:100%;
+  display: block;
+  border-radius: 1.4vw;
+}
+  .mint-swipe-indicators {
+    right:2.666vw;
+    left:initial;
+    transform: none;
+    -webkit-transform: none;
+    .mint-swipe-indicator {
+      background: rgba(255, 255, 255, 0.5);
+      width: 1.33vw;
+      height: 1.33vw;
+    }
+    .is-active {
+      background: #fff;
+      width: 2.66vw;
+      height: 1.33vw;
+      // border-radius: 350%;
+      border-top-left-radius: 30%;
+      border-bottom-left-radius: 30%;
+      border-top-right-radius: 30%;
+      border-bottom-right-radius: 30%;
+      opacity: 1;
+    }
+  }
+}
+
+.msManage {
+  overflow: hidden;
+  img{
+  width:100%;
+  height:100%;
+  display: block;
+  border-radius: 1.4vw;
+}
+  .mint-swipe-indicators {
+    //right: 0;
+    .mint-swipe-indicator {
+      background: rgba(255, 255, 255, 0.5);
+      width: 1.33vw;
+      height: 1.33vw;
+    }
+    .is-active {
+      background: #fff;
+      width: 2.66vw;
+      height: 1.33vw;
+      // border-radius: 350%;
+      border-top-left-radius: 30%;
+      border-bottom-left-radius: 30%;
+      border-top-right-radius: 30%;
+      border-bottom-right-radius: 30%;
+      opacity: 1;
+    }
+  }
+}
+
 </style>
 
 

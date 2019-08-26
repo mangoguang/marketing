@@ -1,14 +1,20 @@
 <template>
     <div class="addAdress">
-      <mybanner :title="title" style="background:#fff">
-        <button type="button" @click="addRecord" v-if="isRecord">保存</button>
+      <mybanner :title="title" :style="{background:'#f8f8f8'}" >
+        <template v-if="$route.query.edit==='no'?false:true">
+          <button type="button" @click="addRecord" v-if="isRecord">保存</button>
 
-        <button type="button" @click="close" v-if="this.form.status==='New'&&!isRecord" style="color:#FF3B30">意向关闭</button>
-         <button type="button" @click="closeReason" v-if="this.form.status==='Closed'" style="color:#FF3B30">战败原因</button>
+          <button type="button" @click="close" v-if="form.status==='New'&&!isRecord" style="color:#FF3B30">意向关闭</button>
+         
+        </template>
+        <button type="button" @click="closeReason" v-if="form.status==='Closed'" style="color:#FF3B30">战败原因</button>
+        
       </mybanner>
       <div>
         <title-bar :text="titleModule.info">
-          <button type="button" v-if="this.form.status==='New'" @click="modify">修改</button>
+           <template v-if="$route.query.edit==='no'?false:true">
+          <button type="button" v-if="form.status==='New'" @click="modify">修改</button>
+           </template>
         </title-bar>
         <ul class="list">
           <li>
@@ -21,8 +27,8 @@
             <date-select v-bind="formInfo.time" :value="form.arrivalDate"  :showIcon="selectIcon"/>
           </li>
           <li>
-            <duration-select v-bind="formInfo.duration" :value="form.residentTime"  :showIcon="selectIcon"/>
-          </li>
+            <!-- <duration-select v-bind="formInfo.duration" :value="form.residentTime"  :showIcon="selectIcon"/>
+          </li> -->
           <li>
             <source-select v-bind="formInfo.source" :value="form.sourceName"  :showIcon="selectIcon"/>
           </li>
@@ -48,8 +54,9 @@
           </li>
         </ul>
         <ul class="list">
-          <li>
-            <yan-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/>
+          <li style="border-top:1px solid transparent;">
+            <!-- <yan-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/> -->
+            <yan-one-input v-bind="formInfo.goods" :value="form.competingGoods" :readonly='readonly'/>
           </li>
           <li>
             <color-select v-bind="formInfo.color" :value="form.colorPrefName" :showIcon="selectIcon"/>
@@ -64,7 +71,7 @@
             <yan-input v-bind="formInfo.paid" :value="depositPaid" :readonly='readonly'/>
           </li>
           <li>
-            <discount-select v-bind="formInfo.discount" :value="argreeDiscount"  :showIcon="selectIcon"/>
+            <discount-select v-bind="formInfo.discount" :value="argreeDiscountTxt"  :showIcon="selectIcon"/>
           </li>
         </ul>
         <yan-textarea v-bind="formInfo.remark" :readonly='readonly' :value="form.remark"></yan-textarea>
@@ -74,17 +81,18 @@
         </div>
         <div>
           <title-bar :text="titleModule.report">
-            <button type="button" v-if="this.form.status==='New'" @click="addRecord">添加记录</button>
+            <template v-if="$route.query.edit==='no'?false:true">
+            <button type="button" v-if="form.status==='New'" @click="addRecord">添加记录</button>
+            </template>
           </title-bar>
           <record-pannel :recordList="form.recordList"/>
         </div>
-        <div v-if="this.form.status==='Approved'">
+        <div v-if="form.status==='Approved'">
           <title-bar :text="titleModule.order"/>
-
           <order-info class="order" :orderList="item" v-for="(item,index) in form.orderList" :key="index"/>
         </div>
         <p class="last">到底啦</p>
-        <yan-layer-prompt v-if="isPrompt" placeholder="请输入战败原因" v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
+        <yan-layer-prompt v-if="isPrompt"  v-model='failReason' @update='layerUpdate' @cancel="layerCancel">
           <span slot='update'>确定</span>
           <span slot='cancel'>取消</span>
         </yan-layer-prompt>
@@ -101,6 +109,7 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import titleBar from '../../../components/common/titleBar'
 import yanInput from '../../../components/yanInput'
+import yanOneInput from '../../../components/yanOneInput'
 import yanTextarea from '../../../components/yanTextarea'
 import intentionSelect from '../../../components/mySelect/intentionSelect'
 import storeSelect from '../../../components/mySelect/storeSelect'
@@ -123,15 +132,17 @@ import { Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../../js'
 import { IndexModel } from '../../../utils'
+let Base64 = require('js-base64').Base64
 const indexModel=new IndexModel()
 export default {
   data () {
     return {
+      padding: '',
       form:{
         goodsList:[],
         shopName:'',
         arrivalDate:'',
-        residentTime:'',
+        // residentTime:'',
         sourceName:'',
         buyReasonName:'',
         stylePrefName:'',
@@ -175,7 +186,10 @@ export default {
       ],
       customerId:'',
       isRecord:false,
-      UpdateRedirect:''
+      UpdateRedirect:'',
+      argreeDiscountTxt:'',
+      phone:'',
+      placeholder:'已成单'
     }
   },
   components:{
@@ -199,7 +213,8 @@ export default {
      yanLayerMsg,
      colorSelect,
      discountSelect,
-     newRecord
+     newRecord,
+     yanOneInput
   },
   computed:{
     ...mapState('intention',[
@@ -211,35 +226,41 @@ export default {
   watch:{
     $route(to,from){
       if(from.name==='/CustomerInfo'){
-        console.log('/CustomerInfo');
         this.UpdateRedirect=from.fullPath;
 
       }
       if(from.name==='/enquiryInfo'){
-         console.log('/enquiryInfo');
         this.UpdateRedirect=from.fullPath;
       } 
+      
     }
   },
   created(){
-   this.getOpportunity();
-  
+    this.phone=this.$route.query.phone;
+    this.getOpportunity();
   },
   mounted(){
 
   },
   methods:{
     ...mapMutations('intention',['setClassify','setUrgency','setTitle']),
+    ...mapMutations(['setCheckedList','setAddressId','setFiles','setPicVal']),
     getOpportunity(){
       let id=this.$route.params.opportunityId;
       indexModel.getOpportunity(id).then(res => {
-        console.log(res.data);
         if(res.code===0){
           //this.form=res.data;
           this.oppId=res.data.oppId;
           this.customerId=res.data.customerId;
           if(res.data.goodsList.length>0){
-            this.goodsValue=res.data.goodsList[0].goodsName;
+            //this.goodsValue=res.data.goodsList[0].goodsName;
+            let arr=[];
+            res.data.goodsList.map((item,index) => {
+              let str=item.goodsName+",数量："+item.quantity;
+              arr.push(str);
+            })
+            //console.log(arr);
+            this.goodsValue=arr.join("、");
           }
           if(res.data.status==="Approved"){
             if(res.data.orderList.length>0){
@@ -249,7 +270,7 @@ export default {
           this.form.status=res.data.status;
           this.form.shopName=res.data.shopId===''?'未收集':this.getShopName(res.data.shopId);
           this.form.arrivalDate=res.data.arrivalDate;
-          this.form.residentTime=res.data.residentTime;
+          //this.form.residentTime=res.data.residentTime;
           this.form.sourceName=res.data.sourceName;
           this.form.buyReasonName=res.data.buyReasonName==''?'未收集':res.data.buyReasonName;
           this.form.stylePrefName=res.data.stylePrefName==''?'未收集':res.data.stylePrefName;
@@ -257,18 +278,25 @@ export default {
           this.form.competingGoods=res.data.competingGoods==''?'未收集':res.data.competingGoods;
           this.form.colorPrefName=res.data.colorPrefName==''?'未收集':res.data.colorPrefName;
           this.form.deliverDate=res.data.deliverDate==''?'未收集':res.data.deliverDate;
-          this.form.remark=res.data.remark==''?'未备注':res.data.remark;
+          this.form.remark=res.data.remark==''?'未备注':res.data.remark.replace(/\\n/g,"\r\n");
           this.budget=res.data.budget;
           this.depositPaid=res.data.depositPaid;
           this.argreeDiscount=res.data.argreeDiscount;
-          this.form.level=res.data.level;
+          if(res.data.argreeDiscount!==''){
+            this.argreeDiscountTxt=parseFloat(res.data.argreeDiscount)/10+"折";
+          }else{
+            this.argreeDiscountTxt=0;
+          }
+          this.form.level=res.data.level===''?'A':res.data.level;
           if(res.data.level){
              this.setClassify([res.data.level])
+          }else{
+            this.setClassify(['A'])
           }
           if(res.data.recordList.length>0){
             this.form.recordList=res.data.recordList;
           }
-          if(res.data.urgency==='Y'){
+          if(res.data.urgency===true){
             this.urgency="是";
             this.setUrgency(['是']);
           }else{
@@ -294,11 +322,14 @@ export default {
             mango.tip(res.msg);
         }
         
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOpportunity()
+        }
       })
     },
     modify(){
-      console.log(this.customerId);
-      this.$router.push({name:'addintention',params:{customerId:this.customerId},query:{oppId:this.oppId,url:this.UpdateRedirect}});
+      this.$router.replace({name:'updateintention',params:{customerId:this.customerId},query:{oppId:this.oppId,phone:this.phone}});
     },
     close(){
       this.isPrompt=true;
@@ -306,18 +337,52 @@ export default {
     closeReason(){
       this.isMsg=true;
     },
-   layerUpdate(){
-     //console.log("确定");
-     //console.log(this.failReason);
-     if(this.failReason===''){
-       mango.tip('战败原因不能为空');
-       return;
+   layerUpdate(type){
+     let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+     let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+     if(type===''){
+      mango.tip('请选择是否成单');
+      return;
      }else{
-      let obj={
-        opportunityId:this.oppId,
-        closeReason:this.failReason
-      }
-      indexModel.closeOpportunity(obj).then(res => {
+       let nobj;
+       if(type==="2"){
+         if(this.failReason===''){
+            mango.tip('流失原因不能为空');
+            return;
+          }else if(this.failReason.length>300){
+            mango.tip('流失原因不能超过300字');
+            return;
+          }else if(this.failReason!==''&&remarkReg.test(this.failReason)){
+            mango.tip('流失原因不支持表情');
+            return;
+          }else if(this.failReason!==''&&!reg.test(this.failReason)){
+            mango.tip('流失原因不支持特殊符号');
+            return;
+          }else{
+              let obj={
+                opportunityId:this.oppId,
+                closeReason:this.failReason,
+                type:type
+              }
+              nobj=Object.assign({},obj);    
+          }
+       }else{
+         if(this.form.deliverDate==='未收集'){
+            mango.tip('需求日期不能为空');
+            return;
+          }
+         if(this.phone===""||this.phone==="0"||this.phone===0){
+            mango.tip("客户手机号码不能为空");
+            return;
+          }
+          let obj={
+            opportunityId:this.oppId,
+            closeReason:'已成单',
+            type:type
+          }
+          nobj=Object.assign({},obj); 
+       }
+       indexModel.closeOpportunity(nobj).then(res => {
         if(res.code===0){
           mango.tip(res.msg);
           this.isPrompt=false;
@@ -327,14 +392,17 @@ export default {
           this.isPrompt=true;
         }
         
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.layerUpdate()
+        }
       })
+
      }
-     
+
    },
    layerCancel(){
-      this.isPrompt=false;
-     //console.log("取消");
-     //console.log(this.failReason);
+    this.isPrompt=false;
    },
    confirm(){
     this.isMsg=false;
@@ -349,6 +417,7 @@ export default {
     this.setTitle('意向详情');
    },
    getAddress(id){
+     this.setAddressId(id);
      indexModel.getAddress(id).then(res => {
           if(res.code===0){
             this.address=`${res.data.provinceName}${res.data.cityName}${res.data.districtName}${res.data.address}`;
@@ -357,14 +426,16 @@ export default {
           }else{
             mango.tip(res.msg);
           }
-    })
+    }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddress(id)
+        }
+      })
    },
    getShopName(id){
      let list=JSON.parse(localStorage.getItem('shops'));
-     //console.log(list)
     let name;
      list.map((item,index) => {
-       console.log(item);
        if(item.id===id){
          return name=item.name;
        } 
@@ -377,21 +448,29 @@ export default {
   },
   beforeRouteEnter(to,from,next){
     if(from.name==='/CustomerInfo'){
-      console.log('/CustomerInfo');
       let path=from.fullPath;
       next(vm => {
         vm.UpdateRedirect=path;
-        console.log('456')
       });
     }
     if(from.name==='/enquiryInfo'){
-      console.log('/enquiryInfo');
       let path=from.fullPath;
       next(vm => {
          vm.UpdateRedirect=path;
-         console.log('1234')
       });
     } 
+    next();
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==='updateintention'){
+      //this.setCheckedList([]);
+      to.meta.isUseCache=false;
+      next();
+    }
+    if(to.name==='followRecord'){
+      to.meta.isUseCache=false;
+      next();
+    }
     next();
   }
 };
@@ -412,7 +491,7 @@ export default {
     margin-bottom:2.666vw;
     li{
       padding-left:4.266vw;
-      :first-child{
+      &>:first-child{
          border-bottom: 1px solid #e1e1e1;
       }
     }

@@ -1,8 +1,8 @@
 <template>
   <li class="category">
-    <div class="icon" :style="{background: bgColor}">
+    <div class="icon" :style="{background: color}">
       <!-- <img src="../../../assets/imgs/ms-policy.png" alt=""> -->
-      <img :src="list.image" alt="">
+      <img v-lazy="list.image" alt="" :key="list.image">
     </div>
     <div class="text">
       <p>{{ list.name }}</p>
@@ -15,16 +15,19 @@ export default {
   props: ['list', 'bgColor'],
   data() {
     return {
-
+      color: ''
     }
+  },
+  mounted() {
+    this.color = this.list && this.list.image? '' : this.bgColor
   }
 }
 </script>
 
 <style lang="scss">
 .category {
-  width: 25%;
-  margin-right: 4vw;
+  //width: 25%;
+  margin-right: 7.466vw;
   .icon {
     width: 16vw;
     height: 16vw;
@@ -46,6 +49,10 @@ export default {
     word-wrap: break-word;
     line-height: 1.4em;
     margin-top: 2vw;
+    white-space: nowrap;
   }
+}
+.category:last-child{
+  padding-right: 7.466vw;
 }
 </style>

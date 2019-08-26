@@ -33,6 +33,7 @@ import chartsTit from '../../../components/charts/title'
 import RouterLink from '../../../components/charts/routerLink'
 import mybanner from '../../../components/banner'
 import noData from '../../../components/charts/noData'
+import {waterMark} from '../../../utils/msManage'
 export default {
   name: 'storeSales',
   components: {
@@ -61,6 +62,7 @@ export default {
     // console.log('creat,tenanid',this.ajaxData.tenantId)
   },
   mounted(){
+    waterMark('.barBox')
   },
   computed: {
 

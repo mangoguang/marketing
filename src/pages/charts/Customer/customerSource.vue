@@ -4,7 +4,9 @@
     />
     <SelectComponent></SelectComponent>
     <div class="barBox">
-      <chartsTit :text="'客户来源-整体'"></chartsTit>
+      <chartsTit :text="'客户来源-整体'">
+        <h6>单位：人次</h6>
+      </chartsTit>
       <div v-show="!customerSourceShow" ref="customerSourceContainer" ></div>
       <noData v-show="customerSourceShow"></noData>
       <!-- <Bar
@@ -14,7 +16,9 @@
       :height="100"></Bar> -->
     </div>
     <div class="barBox">
-      <chartsTit :text="'客户来源-各店'"></chartsTit>
+      <chartsTit :text="'客户来源-各店'">
+        <h6>单位：人次</h6>
+      </chartsTit>
       <div v-show="!areaCustomerSourceShow" ref="areaCustomerSourceContainer"></div>
       <noData v-show="areaCustomerSourceShow"></noData>
       <!-- <Bar
@@ -32,6 +36,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import chartsInit,{chanrtDom, emptyData} from '../../../utils/chartsInit'
+import {waterMark} from '../../../utils/msManage'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)
@@ -78,6 +83,7 @@ export default {
     // console.log('数据：', this.citySelect)
     this.getcustomerSourceData(this.endTime, this.cityMsg.cityName, this.cityMsg.cityLevel)
     this.getareaCustomerSourceData(this.endTime)
+    waterMark('.barBox')
     
   },
   computed: {
@@ -124,7 +130,7 @@ export default {
           // 检测数据是否为空
           this[`${chartsName}Show`] = emptyData(this[`${chartsName}Data`].series)
           console.log(22222221, emptyData(this[`${chartsName}Data`].series))
-          chartsInit(this, chartsName, 'horizontal')
+          chartsInit(this, chartsName, 'horizontal','','','','','',true)
           this.cusSourcechanrtDom2 = chanrtDom
           if(this.i > 1){
             try {

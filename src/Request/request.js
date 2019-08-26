@@ -1,24 +1,31 @@
 import axios from 'axios'
-//  let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
-// let baseUrl = 'http://10.11.8.250'
+import { Indicator, Toast } from 'mint-ui'
+//let baseUrl = 'https://op.derucci.com'
+let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
+//let baseUrl = 'http://10.11.8.17:8088'
+//let baseUrl = 'http://172.16.4.201'
+//let baseUrl = 'http://10.11.8.250'
 // let baseUrl = 'http://10.11.8.229'
 // let baseUrl = 'http://172.16.8.216'
-let baseUrl = 'http://10.11.8.7'
+// let baseUrl = 'http://10.11.8.7'
 // let baseUrl = 'http://10.12.0.117'
-// let baseUrl = 'http://172.16.10.107'
+//let baseUrl = 'http://172.16.10.107'
 // let baseUrl = 'http://10.11.8.250:8088'
 let token = JSON.parse(localStorage.getItem('token'))
 export {baseUrl}
 class Request {
   getData ({ url, params, method = 'GET' }) {
     return new Promise((resolve, reject) => {
+      this.loading('open')
       axios({
         url: baseUrl + url,
         params: params,
         method: method
       }).then(res => {
+        this.loading('close')
         resolve(res.data)
       }).catch(err => {
+        this.loading('close')
         reject(err)
       })
     })
@@ -64,6 +71,20 @@ class Request {
         reject(err)
       })
     })
+  }
+  loading(str) {
+    if (str === 'open') {
+      Indicator.open({
+        text: '数据请求中...',
+        spinnerType: 'fading-circle'
+      })
+      // let loadingTime = setTimeout(function() {
+      //   Indicator.close()
+      //   clearTimeout(loadingTime)
+      // }, 15000)
+    } else {
+      Indicator.close()
+    }
   }
 }
 export {Request}

@@ -10,13 +10,13 @@
           <input ref="inpComp" class="input"
               v-model="searchKey" 
               type="search" 
-              placeholder="请输入姓名或电话"
+              placeholder="请输入姓名或电话或微信号"
               @keypress="search">
         <!-- <button @click="searchCustomer">搜索</button> -->
         </form>
       </div>
       <!-- 模块选择 -->
-      <ul :style="{display: !navShow ? 'none' : 'flex'}">
+      <ul :style="{display: !navShow ? 'none' : 'flex'}" class="moduleNav">
         <li v-for="(item, index) in headerStatus"
         :key="`this.headerStatus${index}`">
           <button 
@@ -25,6 +25,7 @@
           @click="moduleSelect(index)">
           <!-- <img src="../../assets/imgs/customer-icon.png" class="topBarimg"> -->
           {{item.name}}
+          <hr v-show='item.status'/>
           </button>
           <!-- <button class="search" @click="showNav"></button> -->
         </li>
@@ -58,7 +59,9 @@
         <img src="../../assets/imgs/filter.png" alt="" class="filterImg">
       </button>
     </div>
- 
+     <div class="bot-total" v-show="headerStatus[3].status">
+      <p><slot></slot></p>
+    </div>
   </header>
 </template>
 <!-- </keep-alive> -->
@@ -79,7 +82,7 @@ export default {
       ifShow: 'hide',
       navShow: true,
       ajaxData: {},
-      customerClassifyList: mango.btnList(['全部', '紧急降序', '级别A到C', '级别C到A'], 0),
+      customerClassifyList: mango.btnList(['全部', '紧急降序', '级别A到D', '级别D到A'], 0),
       selectBtnText: '全部',
       searchKey: '',
       ajaxData:[],
@@ -93,7 +96,8 @@ export default {
       rightContainerStatus: state => state.rightContainer.rightContainerStatus,
       customerAjaxParams: state => state.customer.customerAjaxParams,
       headerStatus: state => state.customerHeader.headerStatus,
-      dealCustomerList: state => state.dealCustomerList.dealCustomerList
+      dealCustomerList: state => state.dealCustomerList.dealCustomerList,
+      allCustomerList: state => state.allCustomerList.allCustomerList
     })
   },
   watch: {
@@ -137,7 +141,8 @@ export default {
       'setRightTimeSelect',
       'setRightHeadTitle',
       'setOrderList',
-      'setDealCustomerList'
+      'setDealCustomerList',
+      'setAllCustomerList'
     ]),
     //搜索
     search(event) {
@@ -153,7 +158,7 @@ export default {
       if(this.headerStatus[1].status) {
         this.setRightHeadTitle('订单交单日期')
       }else{
-        this.setRightHeadTitle('最新下单日期')
+        this.setRightHeadTitle('战败时间')
       }
     },
     // 显示右侧边栏
@@ -228,7 +233,7 @@ export default {
     },
     // 选择页面模块
     moduleSelect(i) {
-      this.setHeaderStatus(mango.btnList(['意向客户', '成交客户', '战败客户'], i))
+      this.setHeaderStatus(mango.btnList(['意向客户', '成交客户', '战败客户','所有客户'], i))
     },
     // ajax请求客户列表
     getCustomerList() {
@@ -241,11 +246,17 @@ export default {
           this.setCustomerList(res.data)
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.getCustomerList()
+        }
+      })
     },
     // 根据手机或名字搜索客户
     searchCustomer() {
        mango.changeBtnStatus(this.customerClassifyList, 0)
       let type = this.getType()
+      console.log(type);
        let parmas = {
         type: type,
         key: this.searchKey
@@ -263,8 +274,16 @@ export default {
                 res.data.total == null ? "0" : res.data.total
               })`
             );
-          }else {
+          }else if(type === 'Closed'){
             this.setDealCustomerList(res.data)
+            this.$emit(
+              "changeResultTit",
+              `全部客户 (${
+                res.data.total == null ? "0" : res.data.total
+              })`
+            );
+          }else{
+            this.setAllCustomerList(res.data)
             this.$emit(
               "changeResultTit",
               `全部客户 (${
@@ -274,11 +293,16 @@ export default {
           }
         }
       })
+      .catch(reject => {
+        if(reject === 510) {
+          this.searchCustomer()
+        }
+      })
     },
     //获得当前的头部导航栏状态
     getType() {
       let type;
-      type = this.headerStatus[0].status? 'New' : this.headerStatus[1].status? 'Approved' : 'Closed'
+      type = this.headerStatus[0].status? 'New' : this.headerStatus[1].status? 'Approved' : this.headerStatus[2].status?'Closed':''
       return type;
     },
     isIPhoneX : function(fn){
@@ -321,6 +345,7 @@ header{
       font-size: 4.26vw;
       color: #fff;
       text-align: center;
+      transition: all .1s;
     }
     button:first-child{
       // padding-left: 0;
@@ -339,17 +364,20 @@ header{
         font-size: 8vw;
         color: #fff;
         font-weight: bold;
+        margin-left: -3vw;
       } 
     }
     ul{
       display: flex;
+      //height:7.733vw;
+      align-items: center;
       margin-top: 3.26vw;
-      // justify-content: space-around;
+      justify-content: space-around;
       margin-bottom: 3.26vw;
       width: 100%;
       box-sizing: border-box;
       li {
-        margin-left: 7.73vw;
+        // margin-left: 7.73vw;
         text-align: center;
         box-sizing: border-box;
       }
@@ -412,14 +440,22 @@ header{
       background: url(../../assets/imgs/search.png) no-repeat center;
       background-size: 5vw 5vw;
     }
-    button.on{
-      font-size: 4.8vw;
+    hr {
+      border:none;
       color: #fff;
       border-bottom: .8vw solid #fff;
-      border-radius: .26vw;
+      border-radius: 0.4vw;
+      margin: 0;
+    }
+    button.on{
+      //font-size: 4.8vw;
+      color: #fff;
+      transform: scale(1.125);
+      // border-bottom: .8vw solid #fff;
+      // border-radius: .26vw;
       opacity: 0.8;
       .topBarimg{
-        width: 3vw;
+        // width: 3vw;
         // height: 3.6vw;
       }
     }
@@ -427,7 +463,9 @@ header{
   .bot-select, .bot-result, .bot-total{
     display: flex;
     justify-content: space-between;
-    line-height: 9vw;
+    //line-height: 9vw;
+    height:5.866vw;
+    align-items: center;
     color: #fff;
     button, p{
       // color: $fontCol;
@@ -436,6 +474,8 @@ header{
   }
   .bot-select {
     display: flex;
+    align-items: center;
+    height: 5.866vw;
     position: relative;
     justify-content: space-between;
     button:first-child, button:last-child {
@@ -465,7 +505,7 @@ header{
     position: absolute;
     height: 100vh;
     width: 100vw;
-    top: 6vw;
+    top: 7vw;
     left: -4.266vw;;
     background: rgba(0, 0, 0, .5);
     li{
@@ -507,4 +547,5 @@ header{
     border-left: 1px solid #fff;
   }
 }
+
 </style>

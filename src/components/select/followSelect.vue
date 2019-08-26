@@ -12,7 +12,13 @@
         <mt-picker
         :slots="slots"
         @change="onValuesChange"
-        ref="selectFollow"></mt-picker>
+        :showToolbar="true"
+        ref="selectFollow">
+        <div class="btn-group">
+              <div @click="cancel">取消</div>
+              <div @click="update">确定</div>
+        </div>
+        </mt-picker>
       </mt-popup>
       </li>
     </ul>
@@ -37,11 +43,13 @@ export default {
   components:{customerLi},
   data() {
     return {
-      slots: [{values: ['电话沟通','到店沟通','微信沟通']}],
+      slots: [{values: ['到店沟通','电话沟通','微信沟通'],defaultIndex:0}],
       popupVisible: false,
       key: false,
-      color: "color: #999",
-      typeList: []
+      color: "color: #363636",
+      typeList: [],
+      code:'',
+      value:''
     }
   },
   computed:{
@@ -64,26 +72,36 @@ export default {
       }
     },
     selectFollow() {
-      this.color = "color: #363636";
+      /* this.color = "color: #363636";
       if (this.followVal === "") {
         this.setFollowVal(this.slots[0].values[0]);
         let code = getCode(this.followVal,this.typeList)
         this.$emit('followWayChange', this.followVal)
       } else {
         this.$refs.selectFollow.setSlotValue(0, this.followVal);
-      }
+      } */
       this.popupVisible = true;
     },
     //进来的时候走两次change事件
     onValuesChange(picker, values) {
-      if(this.key) {
+     /*  if(this.key) {
         if(this.followVal) {
           let code = getCode(values[0],this.typeList)
           this.$emit('followWayChange', values[0])
         }
       }else {
         this.key = true
-      }
+      } */
+      this.code = getCode(values[0],this.typeList);
+      this.value = values[0]
+    },
+    cancel(){
+      this.popupVisible = false;
+    },
+    update(){
+      this.color = "color: #363636";
+      this.$emit('followWayChange', this.value)
+      this.popupVisible = false;
     }
   }
   }
@@ -95,5 +113,18 @@ export default {
     ul{
       width: 100%;
     }
+  }
+   .btn-group{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  //padding:0 4.266vw;
+ height:100%;
+  div{
+    //flex:1;
+    color:#26a2ff;
+    font-size: 16px;
+  }
   }
 </style>

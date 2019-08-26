@@ -5,9 +5,15 @@
         v-model="radioVal" @change="changeVal"/>
     </div>
     <div class="inp">
-      <input v-model="phone" type="number" :placeholder="chooseVal">
-      <button @click="toCustomerInfo" type="button">新建</button>
+      <input v-model="phone" @focus="changeStatus" @blur="close" :type="inpType" :placeholder="chooseVal" v-show='inpType=="number"' onkeypress="if(event.keyCode == 101){return false}"/>
+      <input v-model="phone" @focus="changeStatus"  @blur="close" :type="inpType" :placeholder="chooseVal" v-show='inpType=="text"'  oninput="if(value.length>20)value=value.slice(0,20)"/>
+     
     </div>
+    <chooseShop @change="updateShop" :status="status"/>
+    <div class="btn">
+       <button @click="toCustomerInfo" type="button">新建</button>
+    </div>
+   
     <div class="tips" v-show="existStatus">
       <selectTips class="tips_box" :btnSelect='btnSelect' :tipsVal='tipsVal'/>
     </div>
@@ -19,10 +25,11 @@
 import mango from '../../../js'
 import variable from '../../../js/variable'
 import radioComp from './radioComp'
+import chooseShop from './chooseShop'
 import selectTips from './selectTips'
 export default {
   name:'customerSearch',
-  components: {radioComp,selectTips},
+  components: {radioComp,selectTips,chooseShop},
   data(){
     return{
       phone: '',
@@ -37,39 +44,85 @@ export default {
       chooseVal: '请输入客户手机号',
       existStatus: false,
       cusId: '',
-      tipsVal: '手机号码已存在，'
+      tipsVal: '手机号码已存在，',
+      inpType: '',
+      pressType: '',
+      status:true,
+      orgId:''
     }
   },
   watch: {
     radioVal() {
       this.chooseVal = this.radioVal == '客户手机'? '请输入客户手机号' : '请输入客户微信号'
+      this.inpType = this.radioVal == '客户手机'? 'number' : 'text'
       this.tipsVal = this.radioVal == '客户手机'? '手机号码已存在，' : '微信号已存在，'
     }
+  },
+  created(){
+    this.orgId=JSON.parse(localStorage.getItem('shops'))[0].crmId
   },
   mounted() {
     this.radioVal = this.text[0].name
   },
   methods: {
+    myFunction(e) {
+      console.log(e.keyCode)
+      if(e.keyCode == 101) {
+      }
+    },
     //新建客户时候验证手机/微信号
     toCustomerInfo() {
       let type = this.radioVal === '客户手机'? 'phone' : 'wechat'
+      if(type === 'phone') {
+        this.phoneTest(type)
+      }else {
+        let wechat = this.weChatText()
+        if(wechat) {
+          this.sendPhoneTest(type)
+        }
+      }
+    },
+    //验证微信
+    weChatText() {
+      let result;
+      var wx = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/
+      if(!wx.test(this.phone)) {
+        mango.tip('请输入正确的微信号')
+        result = false
+      }else {
+        result = true
+      }
+      return result
+    },
+    //验证手机号
+    phoneTest(type) {
       let testPhoneNum = variable.testPhone(this.phone)
       if(testPhoneNum) {
-        mango.getAjax('/v3/app/customer/check', {
-          value: this.phone,
-          type: type
-        }).then((res) => {
-          res = res.data
-          if (res) {
-            this.existStatus = true
-            this.cusId = res.customerId
-          } else {
-            this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}`})
-          }
-        })
+        this.sendPhoneTest(type)
       }else {
         mango.tip('请填写正确的手机号码')
       }
+    },
+    //请求
+    sendPhoneTest(type) {
+      mango.getAjax('/v3/app/customer/check', {
+        value: this.phone,
+        type: type,
+        orgId:this.orgId
+      }).then((res) => {
+        res = res.data
+        if (res) {
+          this.existStatus = true
+          this.cusId = res.customerId
+        } else {
+         this.$router.push({path: `/newCustomerInfo?${type}=${this.phone}&orgId=${this.orgId}`})
+        }
+      })
+      .catch(reject => {
+        if(reject === 510) {
+          this.sendPhoneTest(type)
+        }
+      })
     },
     //单选框的值
     changeVal(val) {
@@ -78,11 +131,20 @@ export default {
     //提示框的值
     btnSelect(val) {
       if(val) {
-        this.$router.push({path: '/customerInfo',query: {
+        this.$router.replace({path: '/customerInfo',query: {
           id:this.cusId
         }})
       }
       this.existStatus = false
+    },
+    updateShop(value){
+      this.orgId=value;
+    },
+    changeStatus(){
+      this.status=false
+    },
+    close(){
+      this.status=true
     }
   }
 }
@@ -104,30 +166,35 @@ export default {
   .inp{
     display: flex;
     padding: 0 10vw;
+    
     // font-size: 0;
     input, button{
       display: block;
-      height: 11.6vw;
+      height: 11.733vw;
       font-size: 12px;
       line-height: 11.6vw;
     }
     input{
-      width: 61.4vw;
+      width: 80vw;
       padding: 0 8vw;
       color: $fontCol;
       box-sizing: border-box;
-      border-top-left-radius: 5.8vw;
-      border-bottom-left-radius: 5.8vw;
-      background: url(../../../assets/imgs/search.png) no-repeat, #ebebeb;
-      background-position: 3vw center;
-      background-size: 4vw auto;
+      border-radius: 5.8665vw;
+      background:#eee;
     }
-    button{
-      width: 18.6vw;
-      background: $btnCol;
-      border-top-right-radius: 5.8vw;
-      border-bottom-right-radius: 5.8vw;
+    
+    }
+    .btn{
+      text-align: center;
+      margin-top: 9.333vw;
+      & > button{
+      width: 80vw;
+      height:11.733vw;
+      // background: $btnCol;
+      border-radius: 5.8665vw;
       color: #fff;
+      background: #007AFF;
+      border:1px solid #005DC2;
     }
   }
   .tips {
@@ -142,6 +209,18 @@ export default {
       left: 12.66vw;
       top: 72.13vw;
     }
+  }
+   input:-moz-input-placeholder{
+    color:#999;
+  }
+  input::-moz-input-placeholder{
+     color:#999;
+  }
+  input::-ms-input-placeholder{
+     color:#999;
+  }
+  input::-webkit-input-placeholder{
+     color:#999;
   }
 }
 </style>

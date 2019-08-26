@@ -34,9 +34,12 @@ export default {
   methods: {
     //初始化问题
      init() {
+      //  console.log('init',this.newCustomerInfo.urgency)
       if(this.newCustomerInfo.urgency === 'false' || this.newCustomerInfo.urgency === 'true') {
         let i = this.newCustomerInfo.urgency  === 'false'? 1 : 0
         mango.changeBtnStatus(this.urgencyBtns, i)
+      }else {
+        mango.changeBtnStatus(this.urgencyBtns, 1)
       }
     },
     // 紧急程度选择
@@ -60,6 +63,7 @@ export default {
   align-items: center;
   box-sizing: border-box;
   padding: 2vw 4vw;
+  height: 15vw;
   h3 {
     font-size: 4vw;
     color: #363636;
@@ -72,7 +76,7 @@ export default {
     align-items: center;
     justify-content: space-between;
     li {
-      width: 21.33vw;
+      width: 15vw;
       height: 10.66vw;
       border-radius: 1.6vw;
       background: #fff;

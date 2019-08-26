@@ -7,7 +7,12 @@
       <!-- 性别选择插件 -->
       <li>
         <mt-popup position="bottom" v-model="popupVisible">
-          <mt-picker :slots="slots" @change="onValuesChange" ref="agePicker"></mt-picker>
+          <mt-picker :slots="slots" @change="onValuesChange" :showToolbar="true" ref="agePicker">
+            <div class="btn-group">
+              <div @click="cancel">取消</div>
+              <div @click="update">确定</div>
+            </div>
+          </mt-picker>
         </mt-popup>
       </li>
     </ul>
@@ -31,10 +36,11 @@ export default {
   components: { customerLi },
   data() {
     return {
-      slots: [{ values: [] }],
+      slots: [{values:[],defaultIndex:0}],
       popupVisible: false,
       key: false,
-      color: "color: #999"
+      color: "color: #999",
+      value:''
     };
   },
   computed: {
@@ -62,27 +68,36 @@ export default {
       }
     },
     selectAge() {
-      this.color = "color: #363636";
+     /*  this.color = "color: #363636";
       if (this.ageVal === "") {
         this.setAgeVal(this.slots[0].values[0]);
         this.newCustomerInfo.age = this.ageVal
         this.setNewCustomerInfo(this.newCustomerInfo)
       } else {
         this.$refs.agePicker.setSlotValue(0, this.ageVal);
-      }
+      } */
       this.popupVisible = true;
     },
     onValuesChange(picker, values) {
-      if (this.key) {
+     /*  if (this.key) {
         this.$emit("ageChange", values[0]);
       } else {
         this.key = true;
-      }
+      } */
+      this.value=values[0]
+    },
+    cancel(){
+      this.popupVisible = false;
+    },
+    update(){
+      this.color = "color: #363636";
+      this.$emit("ageChange", this.value);
+      this.popupVisible = false;
     },
     getSlotVal() {
       let arr = [];
-      for (var i = 0; i < 101; i++) {
-        arr[i] = i ;
+      for (var i = 0; i < 91; i++) {
+        arr[i] = i + 10;
       }
       this.slots[0].values = arr;
     }
@@ -96,4 +111,16 @@ export default {
     width: 100%;
   }
 }
+ .btn-group{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    //padding:0 4.266vw;
+    div{
+      //flex:1;
+      color:#26a2ff;
+      font-size: 16px;
+    }
+  }
 </style>

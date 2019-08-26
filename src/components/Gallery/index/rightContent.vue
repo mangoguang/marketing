@@ -2,10 +2,10 @@
   <div class="m-right" ref="classfiyScroll">
     <div class="pictureLink">
       <router-link :to='{name:"recommend",query: {brand: listVal}}'>
-        <img :src="imgUrl" alt="">
+        <img v-lazy="imgUrl" alt="" :key="imgUrl">
       </router-link>
     </div>
-    <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext"/>
+    <m-slider class="m-slider" :list='imgSliderList' @click.native="goNext" :myClass='"tukuHome"'/>
     <div class="classify">
       <ClassifyComp :type='dataList' :auto='2000'/>
     </div>
@@ -126,21 +126,56 @@ export default {
         }
       })
     },
+    //判断是外部链接还是内部id
+    isHttps(url) {
+      let result = url.indexOf('https') == '-1' ? 'id' : 'https'
+      return result
+    },
+    //判断系统并打开外部链接
+    judgeSystem(url) {
+      // 判断操作系统
+      if(api.systemType == 'android'){
+          //Android中的使用方法如下：
+        api.openApp({
+            androidPkg: 'android.intent.action.VIEW',
+            mimeType: 'text/html',
+            url: url
+        }, function(ret, err) {
+          if(err) {alert('链接错误')}
+        });
+      }else{
+        //iOS中的使用方法如下：
+        api.openApp({
+            iosUrl: url
+        },function(ret, err) {
+          if(err) {alert('链接错误')}
+        });
+      } 
+    },
     //轮播图跳转到活动
     goNext(e) {
-      // var browser = api.require('webBrowser');
-      // browser.open({
-      //     url: 'https://baidu.com'
-      // })
       let dom = e.target
       let className = dom.className.toLowerCase();
       if (className != "mint-swipe-item is-active") {
         return false;
       }
       let index = dom.getAttribute("data-type");
-      console.log(index)
-      // window.location.href="https://baidu.com"
-      // this.$router.push({path: 'https://baidu.com'})
+      if(this.imgSliderList && this.imgSliderList[index].url) {
+        let url = this.imgSliderList[index].url
+        let type = this.isHttps(url)
+        if(type === 'id') {
+          if(/^[0-9]+$/.test(url)) {
+            this.$router.push({path:'/productDetails',query: {id: url}})
+          }else {
+            alert('链接错误')
+          }
+        }else if(type === 'https') {
+          this.judgeSystem(url)
+        }
+      }else {
+        alert('没有相应的链接')
+      }
+        
     }
   }
 }
@@ -159,10 +194,12 @@ export default {
     img {
       width: 70.13vw;
       height: 21.33vw;
+      border-radius:1.4vw; 
     }
   }
   .m-slider {
     margin-left: 4vw;
+    border-radius: 1.4vw;
   }
 }
 </style>

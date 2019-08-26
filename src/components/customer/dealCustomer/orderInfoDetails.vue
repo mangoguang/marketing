@@ -6,7 +6,7 @@
         <!-- <div class="product-photo">产品图</div> -->
         <div class="product-details">
           <div class="details">
-            <span>{{ item.goodsName || 1}}</span>
+            <span>{{ item.goodsName}}</span>
             <p>{{ item.specification }}</p>
           </div>
           <div class="price">
@@ -43,13 +43,15 @@
         <li>
           <div>
             <span>客户姓名:</span>
-            <p>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</p>
+            <p>{{ list.username }}</p>
+            <!-- <p>{{ `*${list.username ? list.username.slice(1, 5) : ''}` }}</p> -->
           </div>
         </li>
         <li>
           <div>
             <span>客户电话:</span>
-            <p>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</p>
+            <p>{{ list.phone }}</p>
+            <!-- <p>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</p> -->
           </div>
         </li>
         <li>
@@ -61,13 +63,13 @@
         <li>
           <div>
             <span>订单创建日期:</span>
-            <p>{{ list.submitTime }}</p>
+            <p>{{ list.orderTime }}</p>
           </div>
         </li>
         <li>
           <div>
             <span>订单下单日期:</span>
-            <p>{{ list.orderTime }}</p>
+            <p>{{ list.submitTime }}</p>
           </div>
         </li>
         <li>
@@ -79,7 +81,8 @@
         <li> 
           <div>
             <span>送货地址:</span>
-            <p>{{ `******${address ? address.slice(6, 50) : ''}` }}</p>
+            <p>{{ address }}</p>
+            <!-- <p>{{ `******${address ? address.slice(6, 50) : ''}` }}</p> -->
           </div>
         </li>
       </ul>
@@ -98,6 +101,13 @@ export default {
     return{
       address: ''
     } 
+  },
+  watch: {
+    list() {
+      if(this.list) {
+        this.getAddress()
+      }
+    }
   },
   // destroyed() {
   //   this.setTotalPrice(0)
@@ -129,7 +139,9 @@ export default {
   //   }
   // },
   created() {
-    this.getAddress()
+    // if(this.list) {
+    //   this.getAddress()
+    // }
     // this.calcPrice()
     // console.log(144, this.orderTotalPrice, this.orderDiscountPrice)
   },
@@ -141,12 +153,18 @@ export default {
     //   'setOrderDiscountPrice'
     // ])
     getAddress() {
+      // console.log(111,this.list.addressId)
       let id = this.list.addressId
       mango.getAjax('/v2/app/address', {
         addressId: id
       }).then(res => {
         if(res.data) {
-          this.address = res.data.country + res.data.province + res.data.city + res.data.address + res.data.housingEstate
+          this.address = res.data.provinceName + res.data.cityName + res.data.districtName + res.data.address + res.data.housingEstate
+        }
+      })
+      .catch(reject => {
+        if(reject === 510) {
+          this.getAddress()
         }
       })
     }

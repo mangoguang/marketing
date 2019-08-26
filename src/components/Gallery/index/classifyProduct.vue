@@ -6,7 +6,7 @@
           <li v-for="(item, index) in type.list" :key="index">
             <router-link :to='{name:"productList", query:{index:index, categoryName:item.name}}'>
               <div class="img">
-                <img :src="item.img" alt="">
+                <img v-lazy="item.img" alt="" :key="item.img">
               </div>
               <p>{{ item.name }}</p>
             </router-link>
@@ -27,9 +27,9 @@
         <li v-for="(el, i) in item.products" :key='i + "_" + el'>
           <router-link :to='{name: "productDetails",query: {id: el.id}}'>
             <div class="img">
-              <img :src="el.imgUrl" alt="">
+              <img v-lazy="el.imgUrl" alt="" :key="el.imgUrl">
             </div>
-            <p>{{ el.name }}</p>
+            <p class="productName">{{ el.name }}</p>
           </router-link>
         </li>
       </ul>
@@ -66,10 +66,14 @@ export default {
 .classifyProduct {
   padding: 4vw;
   margin-bottom: 45vw;
+  width: 100%;
+  box-sizing:border-box;
   h1 {
     font-size: 3.46vw;
     color: #666;
     font-weight: normal;
+    // border:1px solid red;
+
   }
   .loopList {
     display: flex;
@@ -77,6 +81,7 @@ export default {
     flex-wrap: wrap;
     text-align: center;
     padding-top: 4vw;
+    // border:1px solid red;
     li {
       width: 33%;
       // flex: 0.3;
@@ -93,19 +98,28 @@ export default {
           height: 21.33vw;
         }
       }
+      .productName {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap
+      }
     }
     li:nth-child(3n+0) {
-      padding-right: 0
+      padding-right: 0;
+
+
     }
   }
   .brand {
     width: 100%;
+    // border:1px solid red;
     .topBar {
       display: flex;
       justify-content: space-between;
       .more {
         font-size: 3.2vw;
         color: #007aff;
+        width: 10vw;
       }
       .icon_more {
         background: url(../../../assets/imgs/m-more.png) no-repeat center;

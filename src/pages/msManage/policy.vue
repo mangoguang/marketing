@@ -23,7 +23,8 @@ export default {
     return {
       listComp: 'listComp',
       title: '',
-      paddingTop: ''
+      paddingTop: '',
+      hasSubData: ''
     }
   },
   computed: {
@@ -37,7 +38,12 @@ export default {
       this.init()
     },
     list() {
-      this.initTop()
+      this.hasSub()
+      if(this.hasSubData) {
+        this.listComp = 'listComp'
+      }else {
+        this.initTop()
+      }
     }
   },
   created() {
@@ -78,9 +84,13 @@ export default {
     initTop() {
       if(this.list.length) {
         if(this.list[0].subCateList) {
-        this.listComp = 'listComp'
+          this.listComp = 'listComp'
         }else if(!this.list[0].subCateList) {
-          this.listComp = 'listComp1'
+          if(this.parmas.name1 && this.parmas.name2) {
+            this.listComp = 'listComp'
+          }else {
+            this.listComp = 'listComp1'
+          }
         }
       }
     },
@@ -88,6 +98,20 @@ export default {
       if(!this.parmas.name1) {
         this.listComp = 'listComp0'
       }
+    },
+    //判断是否有二级参数
+    hasSub() {
+      if(this.parmas && !this.parmas.name1) {
+        return
+      }
+      this.list.map((item, index) => {
+        if(item.id === this.parmas.name1) {
+          if(item.subCateList && item.subCateList.length) {
+            this.hasSubData = true
+            return
+          }
+        }
+      })
     },
     isIPhoneX (){
       let phone = this.phoneSize()
@@ -115,12 +139,12 @@ export default {
   }
   .listComp {
     position: absolute;
-    top: 44vw;
+    top: 39vw;
     left: 0;
   }
    .listComp1 {
     position: absolute;
-    top: 30vw;
+    top: 28vw;
     left: 0;
   }
    .listComp0 {

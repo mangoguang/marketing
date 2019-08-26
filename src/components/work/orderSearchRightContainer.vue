@@ -5,7 +5,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>订单</h3>
+            <h3>订单交期</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>
@@ -75,6 +75,7 @@ export default {
       dateType: '',
       orderSearchBtns: [],
       orderStatusList: [],
+      orderStatus: {},
       ajaxData:[],
       marginTop:'',
       orderSelectParam: {}
@@ -123,7 +124,7 @@ export default {
       'setRightContainerStatus',
       'setCustomerAjaxParams',
       'setAllLoaded',
-      'setCustomerList'  
+      'setCustomerList'
     ]),
     // 初始化起始日期
     initStartDateVal() {
@@ -140,24 +141,44 @@ export default {
     //重置
     resizeCustomerList() {
       mango.changeBtnStatus(this.orderSearchBtns, '')
-      this.$set(this.customerAjaxParams,'i','')
-      this.$set(this.customerAjaxParams,'u','')
-      this.$set(this.customerAjaxParams, 'sd', '')
-      this.$set(this.customerAjaxParams, 'ed', '')
-      this.$set(this.customerAjaxParams, 'l', '')
+      let params = {
+        page: 1,
+        limit: 30
+      }
+      this.setOrderSearchParam(params)
+      this.getOrderList(params)
       this.setRightContainerStatus('hideRightContainer')
     },
     // 隐藏右侧边栏
     hideRightContainer() {
+      let params = {
+        page: 1,
+        limit: 30,
+        status: this.orderStatus.code,
+        startTime: this.startDateVal, //交期时间（需求时间）
+        endTime: this.endDateVal
+      }
+      // 提交请求参数到vuex
+      this.setOrderSearchParam(params)
+      this.getOrderList(params)
       this.setRightContainerStatus('hideRightContainer')
     },
     hideRightBar() {
       this.setRightContainerStatus('hideRightContainer')
     },
-    // 紧急程度选择
+    // 订单状态选择
     orderSearchSelect(i) {
-      console.log(this.orderStatusList[i].name, this.orderStatusList[i].code)
-      mango.changeBtnStatus(this.orderSearchBtns, i)
+      if (this.orderStatus.code === this.orderStatusList[i].code) {
+        mango.changeBtnStatus(this.orderSearchBtns)
+        this.orderStatus = {}
+      } else {
+        this.orderStatus = {
+          name: this.orderStatusList[i].name,
+          code: this.orderStatusList[i].code
+        }
+        mango.changeBtnStatus(this.orderSearchBtns, i)
+      }
+      console.log(11111111, this.orderStatus)
     },
     // 选择时间
     handleConfirm(date) {
@@ -208,6 +229,23 @@ export default {
           const arr = res.map(item => item.name)
           this.orderSearchBtns = mango.btnList(arr)
         }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderStatusList()
+        }
+      })
+    },
+    getOrderList(obj) {
+      indexModel.getOrderList(obj).then((res) => {
+        res = res.data
+        if (res) {
+          this.setOrderData(res)
+          
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getOrderList(obj)
+        }
       })
     }
   }
@@ -240,14 +278,21 @@ export default {
       width: 80vw;
       height: 100vh;
       background: #fff;
-      padding: 4vw;
+      padding: 4.53vw;
+      padding-top:5.333vw;
       box-sizing: border-box;
       &>ul{
         // width: 100%;
         h3{
           font-size: $fontSize;
           color: $fontSubCol;
-          margin-top: 3vw;
+          margin-top: 5.333vw;
+          margin-bottom: 2.666vw;
+        }
+        li:first-child{
+          h3{
+            margin-top: 0;
+          }
         }
         ul{
           display: flex;

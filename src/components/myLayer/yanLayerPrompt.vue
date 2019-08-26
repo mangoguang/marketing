@@ -2,8 +2,21 @@
   <div class="yan-layer-shade">
       <div class="yan-layer-box">
         <div class="yan-layer-content">
-          <img src="../../assets/imgs/fail.png" alt="">
-          <textarea :placeholder="placeholder" :readonly='readonly' :value="value" @input="$emit('input',$event.target.value)"></textarea>
+          <img src="../../assets/imgs/fail.png" alt="" v-show="type==='2'">
+          <img src="../../assets/imgs/getOrder.png" alt=""  v-show="type==='1'">
+          <div class="order">
+            <label>
+              <input type="radio" v-model="type" value="1" />
+              <span></span>
+              已成单
+            </label>
+            <label>
+              <input type="radio" v-model="type" value="2" />
+              <span></span>
+              已流失
+            </label>
+          </div>
+          <textarea :placeholder="placeholder"  maxlength="200" :readonly='readonly' :disabled="type==='1'?true:false"  :value="value" @input="$emit('input',$event.target.value)"></textarea>
           <div class="yan-btn-group">
               <div class="yan-btn" @click="update">
                 <slot name="update"></slot>
@@ -19,15 +32,24 @@
 
 <script>
 export default {
-  props:['placeholder','readonly','value'],
+  props:['readonly','value'],
   data(){
     return{
-
+      type:'1'
+    }
+  },
+  computed:{
+    placeholder:function(){
+      if(this.type==='1'){
+        return "已成单"
+      }else{
+        return "请输入流失原因"
+      }
     }
   },
   methods:{
     update(){
-      this.$emit('update');
+      this.$emit('update',this.type);
     },
     cancel(){
       this.$emit('cancel');
@@ -49,7 +71,8 @@ export default {
     top:40%;
     left:50%;
     width:74.666vw;
-    height:49.333vw;
+    height:62.666vw;
+    overflow: hidden;
     background: #fff;
     border-radius: 1.333vw;
     transform: translate(-50%,-50%);
@@ -60,6 +83,44 @@ export default {
       position: relative;
       height:100%;
       box-sizing: border-box;
+    }
+    .order{
+        display: flex;
+        flex-direction: row;
+        justify-content:space-around;
+        align-items: center;
+        margin-bottom: 3.2vw;
+      label{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 3.733vw;
+        color:#363636;
+      }
+      input{
+        display: none;
+        & + span{
+          display: inline-block;
+          width:5.866vw;
+          height: 5.866vw;
+          background:url("../../assets/imgs/aselect.png") no-repeat center center;
+          background-size: 100% 100%;
+          margin-right:2.933vw;
+        }
+      }
+      input:checked{
+        display: none;
+        & + span{
+          display: inline-block;
+          width:5.866vw;
+          height: 5.866vw;
+          background:url("../../assets/imgs/aselected.png") no-repeat center center;
+          background-size: 100% 100%;
+          margin-right:2.933vw;
+        }
+      }
+     
+      
     }
     img{
       width:5.6vw;
@@ -92,6 +153,7 @@ export default {
       padding:2.666vw;
       box-sizing: border-box;
       border-radius:1.333vw;
+      overflow:scroll;
     }
     .yan-btn-group{
       position: absolute;

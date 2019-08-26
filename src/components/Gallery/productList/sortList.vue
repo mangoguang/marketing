@@ -104,7 +104,8 @@ export default {
     position: fixed;
     z-index: 99;
     // top: 10.3vw;
-    top: 32.6vw;
+    //top: 33.6vw;
+    top:45.244vw;
     left: 0;
     width: 100vw;
     background: #f8f8f8;

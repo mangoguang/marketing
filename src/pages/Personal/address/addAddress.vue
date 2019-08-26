@@ -6,7 +6,8 @@
           <area-select v-bind="formInfo.areaInfo" v-model="area" readonly @update="updateArea" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <yan-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border"/>
+          <!-- <yan-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border" :maxlength='200'/>-->
+          <yan-one-input v-bind="formInfo.addressInfo" v-model.trim="form.address" :showIcon="inputIcon" class="li_border" :maxlength='200'/> 
         </li>
         <li>
           <house-select v-bind="formInfo.apartmentType" v-model="apartmentType" @update="updateApartmentType" :showIcon="selectIcon" class="li_border"/>
@@ -15,8 +16,9 @@
           <elevator-select v-bind="formInfo.elevatorInfo" v-model="elevator" @update="updateElevator" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.remarkInfo" v-model="form.remark"/>
-      <btn text='保存' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
+      <yan-textarea v-bind="formInfo.remarkInfo" v-model.trim="form.remark" :maxlength='200'/>
+      <btn text='保存' @click.native='jump'/>
+      
     </div>
 </template>
 
@@ -25,6 +27,7 @@ import Vue from 'vue'
 import mybanner from '../../../components/banner'
 import Btn from '../../../components/personal/Btn'
 import yanInput from '../../../components/yanInput'
+import yanOneInput from '../../../components/yanOneInput'
 import yanTextarea from '../../../components/yanTextarea'
 import areaSelect from '../../../components/mySelect/areaSelect'
 import houseSelect from '../../../components/mySelect/houseSelect'
@@ -33,8 +36,10 @@ import { Picker, Toast } from 'mint-ui';
 import { mapState, mapMutations } from 'vuex'
 Vue.component(Picker.name, Picker);
 import mango from "../../../js"
+import { resize } from '../../../utils/public'
 import { IndexModel } from '../../../utils' 
 const indexModel = new IndexModel()
+let Base64 = require('js-base64').Base64
 export default {
   data () {
     return {
@@ -54,7 +59,8 @@ export default {
       area:'',
       apartmentType:'',
       selectIcon:true,
-      inputIcon:false
+      inputIcon:false,
+      status:true
     
     }
   },
@@ -65,7 +71,8 @@ export default {
      yanTextarea,
      areaSelect,
      houseSelect,
-     elevatorSelect
+     elevatorSelect,
+     yanOneInput
   },
   computed:{
     ...mapState('addAddress',[
@@ -79,13 +86,15 @@ export default {
       this.form.id=this.$route.query.addressId;
       this.updateTitle('编辑地址');
       this.getAddress(this.form.id);
-
+   }else{
+     this.updateTitle('新建地址');
    }
   
   },
   
   mounted(){
 
+    //this.status=resize(this.status);
   },
   methods:{
     ...mapMutations('addAddress',['updateTitle']),
@@ -105,6 +114,10 @@ export default {
           this.apartmentType=res.data.apartmentTypeName;
         }else{
           mango.tip(res.msg);
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddress(id)
         }
       })
     },
@@ -128,18 +141,37 @@ export default {
    updateAddress(){
      if(this.valid()){
        console.log(':::', this.form);
-        indexModel.updateAddress(this.form).then(res => {
+       let obj={
+          address:this.form.address,
+          remark:this.form.remark, 
+          apartmentType:this.form.apartmentType,
+          elevator:this.form.elevator,
+          customerId:this.form.customerId,
+          country:this.form.country,
+          province:this.form.province,
+          city:this.form.city,
+          district:this.form.district
+       }
+        indexModel.updateAddress(obj).then(res => {
           if(res.code===0){
             mango.tip(res.msg);
             this.$router.back(-1);
             //this.$router.push({name:'address',params:{customerId:this.$route.params.customerId}})
           }else{
-            mango.tip(res.msg);
+            mango.tip('更新失败');
+          }
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.updateAddress()
           }
         })
      }
     
    },
+   changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
+    },
    valid(){
      if(this.customerId==''){
        mango.tip('客户id为空');
@@ -161,6 +193,32 @@ export default {
        mango.tip('请选择有无电梯');
        return false;
      }
+     if(this.form.address.length>200){
+       this.form.address=this.form.address.substring(0,200);
+       mango.tip('地址不能超过200字');
+       return false;
+     }
+      let addressReg=/^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/;
+      let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+      if(!addressReg.test(this.form.address)){
+        mango.tip('地址只能输入中英文或数字,不能包含空格')
+        return false
+      }
+     if(this.form.remark.length>200){
+       this.form.remark=this.form.remark.substring(0,200);
+       mango.tip('备注不能超过200字');
+       return false;
+     }
+     let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+      if(this.form.remark!==''&&remarkReg.test(this.form.remark)){
+        this.form.remark = this.changeStr(this.form.remark)
+        mango.tip('备注不支持表情')
+        return false
+      }
+      if(this.form.remark!==''&&!reg.test(this.form.remark)){
+        mango.tip('备注不支持特殊符号')
+        return false
+      }
      return true;
    }
       

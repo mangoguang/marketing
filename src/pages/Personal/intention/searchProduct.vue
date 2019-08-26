@@ -1,11 +1,11 @@
 <template>
     <div class="address">
-      <mybanner :title="title" style="background:#fff;border:none">
+      <mybanner :title="title" style="background:#f8f8f8;border:none">
         <button type="button" @click="update">确定</button>
       </mybanner>
-      <search-input v-model.trim="key" @input="search"></search-input>
+      <search-input v-model.trim="key" @input="search" :style="{marginTop:`${top}vw`}"></search-input>
       <div class="list">
-       <search-list :options="searchProductList" name="1" @change="updateVal" v-if="hasRecord">
+       <search-list ref="search" :key="key" :options="searchProductList" name='1' @change="updateVal" v-if="hasRecord">
          <template slot-scope="props">
            <span class="item">{{props.info.goodsName}}</span>
          </template>
@@ -32,7 +32,8 @@ export default {
       hasRecord:false,
       productList:[],
       id:'',
-      url:''
+      url:'',
+      top:''
     }
   },
   components:{
@@ -44,7 +45,7 @@ export default {
     ...mapState('searchProduct',[
       'title'
     ]),
-    ...mapState(['searchProductList','checkedList'])
+    ...mapState(['searchProductList','checkedList','allSearchProductList','again'])
   }, 
   created(){
    this.id=this.$route.params.customerId;
@@ -52,10 +53,21 @@ export default {
   },
   
   mounted(){
-    
+      this.isIPhoneX();
   },
   methods:{
-   ...mapMutations(['updateSearchProductList','updateCheckedList']),
+   ...mapMutations(['updateSearchProductList','updateCheckedList','updateAllSearchProductList','updateAgain']),
+   isIPhoneX : function(fn) {
+      var u = navigator.userAgent;
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+      if (isIOS) {        
+        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+          this.top = '6'
+        }else{
+          this.top = '0'
+        } 
+      }
+    },
    update(){
      if(this.productList.length>0||this.checkedList.length>0){
        let list=[];
@@ -72,13 +84,13 @@ export default {
      
    },
    updateVal(checkList){
-     //console.log(checkList);
      this.productList=checkList;
    },
    search(){
     var that=this;
       Debounce(function(){
        if(that.key!==''){
+         that.productList=[];
           indexModel.getProduct(that.key).then(res => {
           if(res.code===0){
             if(res.data.length>0){
@@ -87,6 +99,10 @@ export default {
             }else{
               that.hasRecord=false;
             }  
+          }
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.search()
           }
         })
        }

@@ -9,9 +9,9 @@
         </div>
        <customer-address v-for="(item,index) in addressList" :key="index" :index='index' :id="item.addressId" @edit="edit" @del="del" v-else>
           <div class="address_li">
-            <h1 v-if="item.elevator">{{item.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;有电梯</h1>
-            <h1 v-else>{{item.apartmentType}}&nbsp;&nbsp;&nbsp;&nbsp;无电梯</h1>
-            <p>{{item.province}}{{item.city}}{{item.district}}{{item.address}}</p>
+            <h1 v-if="item.elevator">{{item.apartmentType?item.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}有电梯</h1>
+            <h1 v-else>{{item.apartmentType?item.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}无电梯</h1>
+            <p>{{item.province+item.city+item.district+item.address}}</p>
           </div>
         </customer-address> 
       </div>
@@ -27,7 +27,8 @@ import customerAddress from '../../../components/mySwipe/customerAddress'
 import { Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
 import mango from '../../../js'
-import { IndexModel } from '../../../utils' 
+import { IndexModel } from '../../../utils'
+let Base64 = require('js-base64').Base64 
 const indexModel = new IndexModel()
 export default {
   data () {
@@ -55,6 +56,10 @@ export default {
   },
   methods:{
    ...mapMutations('address',['updateAddress','delAddress']),
+   turnAddress(str){
+     let string = Base64.decode(str)
+     return string
+   },
    jump(){
      this.$router.push({name:'addAddress',params:{customerId:this.$route.params.customerId}});
    },
@@ -64,7 +69,6 @@ export default {
 
    },
    del(index,id){
-     console.log(id);
      let obj={
        addressId:id,
        customerId:this.$route.params.customerId,
@@ -81,7 +85,11 @@ export default {
        }else{
          mango.tip(res.msg);
        }
-     });
+     }).catch((reject) => {
+        if (reject === 510) {
+          this.del(index,id)
+        }
+      })
     },
     getAddressList(){
       let id=this.$route.params.customerId;
@@ -94,6 +102,10 @@ export default {
           }else{
             this.hasRecord=false;
           }
+        }
+      }).catch((reject) => {
+        if (reject === 510) {
+          this.getAddressList()
         }
       })
     }
@@ -133,6 +145,8 @@ export default {
         p{
           font-size: 3.2vw;
           color:#363636;
+          word-break: break-all;
+          text-align: justify;
         }
     }
    }

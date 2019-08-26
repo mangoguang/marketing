@@ -4,7 +4,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>{{rightHeadTitle}}</h3>
+            <h3 :style="{'paddingTop': `${paddingTop}vw`}">{{rightHeadTitle}}</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>
@@ -60,7 +60,8 @@ export default {
       headTitle: '',
       ajaxData: [],
       account: '',
-      marginTop:''
+      marginTop:'',
+      paddingTop:''
     }
   },
   computed: {
@@ -125,11 +126,15 @@ export default {
     },
     //重置
     resizeCustomerList() {
+      this.initStartDateVal();
+      this.endDateVal=mango.indexTime(new Date(), 'day');
       let time = {startTime: '', endTime: ''}
       if(this.rightHeadTitle === '订单交单日期') {
         this.setCustomerTime(time)
+        this.$emit('getTime',time,1)
       }else {
         this.setDealTime(time)
+         this.$emit('getTime',time)
       }
       this.setRightTimeSelect(false)
     },
@@ -138,8 +143,10 @@ export default {
       let time = {startTime: this.startDateVal, endTime: this.endDateVal}
       if(this.rightHeadTitle === '订单交单日期') {
         this.setCustomerTime(time)
+        this.$emit('getTime',time,1)
       }else {
         this.setDealTime(time)
+        this.$emit('getTime',time)
       }
       this.setRightTimeSelect(false)
     },
@@ -156,9 +163,10 @@ export default {
           (screen.height == 896 && screen.width == 414)
         ) {
           this.marginTop = "-5.86";
-          
+          this.paddingTop = '12'
         } else {
           this.marginTop = "";
+          this.paddingTop = ''
         }
       }
     }
@@ -186,14 +194,21 @@ export default {
       width: 80vw;
       height: 100vh;
       background: #fff;
-      padding: 4vw;
+      padding: 4.533vw;
+      padding-top:5.333vw;
       box-sizing: border-box;
       &>ul{
         // width: 100%;
         h3{
           font-size: $fontSize;
           color: $fontSubCol;
-          margin-top: 3vw;
+          margin-top: 5.333vw;
+          margin-bottom: 2.666vw;
+        }
+        li:first-child{
+          h3{
+            margin-top:0;
+          }
         }
         ul{
           display: flex;

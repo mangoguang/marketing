@@ -1,13 +1,14 @@
 <template>
     <div class="address">
-      <mybanner :title="title" style="background:#fff;">
+      <mybanner :title="title" style="background:#f8f8f8;">
         <button type="button" @click="update">保存</button>
       </mybanner>
-      <div class="list">
+      <div class="list" v-if="checkedList.length>0">
         <customer-product v-for="(item,index) in checkedList" :key="index" :index="index" :num="item.quantity"  @add="add(index)" @cut="cut(index)" @del="del(index)">
           {{item.goodsName}}
         </customer-product>
       </div>
+      <div class="no-record" v-else>暂无记录</div>
       <btn text='添加意向产品' style="position:absolute;bottom:6.4vw;left:0;right:0" @click.native='jump'/>
     </div>
 </template>
@@ -44,14 +45,53 @@ export default {
    this.id=this.$route.params.customerId;
   },
   mounted(){
-   
+   console.log(this.checkedList);
+    let temp = [];
+   for(let i = 0;i<this.checkedList.length;i++){
+     temp.push(this.checkedList[i].crmId);
+   }
+   let temp2 = [];
+   if(temp.length>0){
+     temp.map((item,index) => {
+       if(temp2.indexOf(item)==-1){
+         temp2.push(item);
+       }
+     })
+     let temp3 = [];
+     
+     if(temp2.length>0){
+       temp2.map((item,index) => {
+         let n = 0;
+         let goodsName;
+         let id;
+          this.checkedList.map((sitem,sindex) => {
+            if(item===sitem.crmId){
+                n+=parseInt(sitem.quantity)
+                goodsName = sitem.goodsName
+                id = sitem.id
+            }
+          })
+          temp3.push({
+            crmId:item,
+            goodsName:goodsName,
+            id:id,
+            quantity:n
+          })
+       })
+       this.setCheckedList(temp3);
+     }
+   } 
   },
   methods:{
    ...mapMutations(['addGoodsNum','cutGoodsNum','delGoods','setCheckedList']),
    update(){
-     let arr=this.$store.state.checkedList;
-     this.setCheckedList(arr);
-     this.$router.replace({path:this.path});
+      let arr=this.$store.state.checkedList;
+      //localStorage.setItem('prouduct',JSON.stringify(arr));
+      this.setCheckedList(arr);
+      // setTimeout(() => {
+      //   this.$router.replace({path:this.path});
+      // },200);
+      this.$router.go(-1);
    },
    jump(){
      this.$router.replace({name:'searchProduct',params:{customerId:this.id},query:{redirect:this.path}})
@@ -65,6 +105,18 @@ export default {
    cut(i){
      this.cutGoodsNum(i);
    }
+  },
+  beforeRouteLeave(to,from,next){
+    if(to.name==="addintention"){
+      to.meta.isUseCache=true;
+      next();
+    }
+    if(to.name==="updateintention"){
+      console.log("意向updateintention")
+      to.meta.isUseCache=true;
+      next();
+    }
+    next();
   }
 };
 </script>
@@ -77,7 +129,8 @@ export default {
   overflow-x: hidden;
   position: relative;
   box-sizing: border-box;
- 
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   .btnBox{
     position:relative;
     span{
@@ -85,7 +138,13 @@ export default {
       font-size: 3.733vw;
     }
   }
-  
+   .no-record{
+      //padding-top:20vw;
+      margin-top:20vw;
+      font-size:14px;
+      text-align: center;
+      padding:13.33vw 0;
+    }
    .list{
     margin-top:16.466vw;
     width:100vw;
@@ -101,6 +160,7 @@ export default {
         margin-top:4vw;
       }
     }
+   
     .address_li{
        h1{
           color:#363636;

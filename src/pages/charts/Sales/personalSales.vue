@@ -23,6 +23,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import chartsInit,{chanrtDom} from '../../../utils/chartsInit'
+import {waterMark} from '../../../utils/msManage'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -56,6 +57,7 @@ export default {
   },
   mounted(){
     // console.log('路由参数', this.$route)
+    waterMark('.barBox')
   },
   computed: {
 
@@ -96,9 +98,9 @@ export default {
           this.$set(res.data,'yAxisData',newData[0])
           this.key = true
           res = res.data
-          for (let i = 0; i < res.yAxisData.length; i++) {
+          /* for (let i = 0; i < res.yAxisData.length; i++) {
             res.yAxisData[i] = `*${res.yAxisData[i].slice(1, 5)}`
-          }
+          } */
           // res.average = res.shopAvg
           // console.log('店内员工销售额：', res)
           _this.personalSalesData = res

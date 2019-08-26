@@ -5,16 +5,16 @@
     <SelectComponent></SelectComponent>
     <ul>
       <li v-for="(item, index) in brandData.series" :key="`${index}11`">
-        <div v-show="!brandShow" class="barBox">
-          <!-- <chartsTit :text="index === 0 ? `整体${typeName}占比` : ''"></chartsTit> -->
+        <div v-if="!brandShow" class="barBox">
+          <chartsTit  :text="`各${typeName}金额占比-${item.name}`"></chartsTit>
           <Pie
-          v-show="!brandPieShow[index]"
+          v-if="!brandPieShow[index]"
           :yAxisData="brandData.yAxisData"
           :seriesData="item.data"
           :title="`各${typeName}金额占比-${item.name}`"
           :category="`整体${typeName}占比`"
           :height="120"></Pie>
-          <noData v-show="brandPieShow[index]"></noData>
+          <noData v-if="brandPieShow[index]"></noData>
         </div>
       </li>
       <li>
@@ -25,43 +25,47 @@
           </chartsTit>
           <!-- <div ref="brandContainer" ></div> -->
           <Bar
-          v-show="!brandShow"
+          v-if="!brandShow"
           @chartsClick="chartsEvent"
           :data="brandData"
           :vertical="'horizontal'"
           :title="`各${typeName}金额对比`"
           :height="120"
           :salesVal="true"></Bar>
-          <noData v-show="brandShow"></noData>
+          <noData v-if="brandShow"></noData>
         </div>
       </li>
     </ul>
     <ul>
       <li v-for="(item, index) in categoryData.series" :key="`${index}11`">
-        <div v-show="!categoryShow" class="barBox">
-          <!-- <chartsTit :text="'整体品类对比'"></chartsTit> -->
+        <div v-if="!categoryShow" class="barBox">
+          <chartsTit :text="`各${typeName}数量占比-${item.name}`">
+           
+          </chartsTit>
           <Pie
-          v-show="!categoryPieShow[index]"
+          v-if="!categoryPieShow[index]"
           :yAxisData="categoryData.yAxisData"
           :seriesData="item.data"
           :title="`各${typeName}数量占比-${item.name}`"
           :category="`各${typeName}数量占比`"
           :height="120"></Pie>
-          <noData v-show="categoryPieShow[index]"></noData>
+          <noData v-if="categoryPieShow[index]"></noData>
         </div>
       </li>
       <li>
         <div class="barBox">
           <!-- <chartsTit :text="'整体销售额对比'"></chartsTit> -->
-          <chartsTit :text="`各${typeName}数量对比`"></chartsTit>
+          <chartsTit :text="`各${typeName}数量对比`">
+             <h6>单位：件</h6>
+          </chartsTit>
           <!-- <div ref="categoryContainer" ></div> -->
           <Bar
-          v-show="!categoryShow"
+          v-if="!categoryShow"
           :data="categoryData"
           :vertical="'horizontal'"
           :title="`各${typeName}数量对比`"
           :height="120"></Bar>
-          <noData v-show="categoryShow"></noData>
+          <noData v-if="categoryShow"></noData>
         </div>
       </li>
     </ul>
@@ -75,6 +79,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import mango from '../../../js'
 import chartsInit,{chanrtDom, emptyData, emptyPieData} from '../../../utils/chartsInit'
+//import {waterMark} from '../../../utils/msManage'
 import Vuex, { mapState, mapMutations, mapGetters } from 'vuex'
 import SelectComponent from '../../../components/select/selectComponent'
 Vue.use(VueRouter)

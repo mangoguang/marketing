@@ -33,7 +33,7 @@ export default {
       slots:[
         {
           flex: 1,
-          values: ['微信沟通','到店沟通','电话沟通'],
+          values: ['到店沟通','电话沟通','微信沟通'],
           className: 'slot1',
           textAlign: 'center'
         }

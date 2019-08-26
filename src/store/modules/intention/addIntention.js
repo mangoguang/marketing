@@ -3,8 +3,7 @@ const state = {
   formInfo:{
     intention:{
       label:'意向产品',
-      placeholder:'请选择意向产品',
-      required:true
+      placeholder:'请选择意向产品'
     },
     store:{
       label:'所属门店',
@@ -12,8 +11,8 @@ const state = {
       required:true
     },
     time:{
-      label:'进店日期',
-      placeholder:'请选择进店日期',
+      label:'创建日期',
+      placeholder:'请选择创建日期',
       required:true
     },
     duration:{
@@ -28,7 +27,8 @@ const state = {
     },
     address:{
       label:'客户地址',
-      placeholder:'请选择客户地址'
+      placeholder:'请选择客户地址',
+      required:true
     },
     house:{
       label:'户型大小',
@@ -78,7 +78,7 @@ const state = {
       label:'备注信息',
       placeholder:'添加备注信息'
     },
-    classify:["A","B","C"],
+    classify:["A","B","C","D"],
     urgency:['是','否']
   },
   titleModule:{
@@ -93,7 +93,8 @@ const state = {
 }
 
 const mutations = {
-  updateTitle:(state,str) => {state.title=str}
+  updateTitle:(state,str) => {state.title=str},
+  setClassify:(state,array) => {state.formInfo.classify=array}
 }
 
 const actions = {

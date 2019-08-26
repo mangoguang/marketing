@@ -32,6 +32,7 @@ export default {
         {
           flex: 0.2,
           values: ['6','7','8','9'],
+          defaultIndex:0,
           className: 'slot1',
           textAlign: 'center'
         }, {
@@ -41,6 +42,7 @@ export default {
         }, {
           flex: 0.2,
           values: ['0','1','2','3','4','5','6','7','8','9'],
+          defaultIndex:0,
           className: 'slot3',
           textAlign: 'center'
         },{

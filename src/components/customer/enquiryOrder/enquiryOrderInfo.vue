@@ -4,12 +4,15 @@
     <div class="address">
       <ul>
         <li>
-          收货人：{{ `*${orderInfoDetails.username ? orderInfoDetails.username.slice(1, 10) : ''}` }}
-          <span>{{ `******${orderInfoDetails.phone ? orderInfoDetails.phone.slice(6, 11) : ''}` }}</span>
+          <!-- 收货人：{{ `*${list.username ? list.username.slice(1, 10) : ''}` }} -->
+          收货人：{{ list.username }}
+          <span>{{ list.phone }}</span>
+          <!-- <span>{{ `******${list.phone ? list.phone.slice(6, 11) : ''}` }}</span> -->
           <div class="phone"></div>
         </li>
-        <li>收获地址：{{ `******${orderInfoDetails.address ? orderInfoDetails.address.slice(6, 50) : ''}` }}</li>
-        <li>需求日期：{{ orderInfoDetails.demandTime }}</li>
+        <li>收获地址：{{ address }}</li>
+        <!-- <li>收获地址：{{ `******${list.address ? list.address.slice(6, 50) : ''}` }}</li> -->
+        <li>需求日期：{{ turnDate(list.demandTime) }}</li>
       </ul>
     </div>
   </div>
@@ -22,13 +25,54 @@ import Vuex, { mapMutations, mapState } from "vuex";
 import mango from "../../../js";
 
 export default {
-  data() {
-    return {};
+  props: {
+    list: {
+      type: [Object,Array],
+      default: [],
+      required: false
+    }
   },
-  computed: {
-    ...mapState({
-      orderInfoDetails: state => state.orderInfoDetails.orderInfoDetails      
-    })
+  watch: {
+    list() {
+      if(this.list.addressId) {
+        this.getAddress()
+      }
+    }
+  },
+  data() {
+    return {
+      address: ''
+    };
+  },
+  methods: {
+    //获取地址
+    getAddress() {
+      // console.log(111,this.list.addressId)
+      let id = this.list.addressId
+      mango.getAjax('/v2/app/address', {
+        addressId: id
+      }).then(res => {
+        if(res.data) {
+          this.address = res.data.provinceName + res.data.cityName + res.data.districtName + res.data.address + res.data.housingEstate
+        }
+      })
+      .catch(reject => {
+        if(reject === 510) {
+          this.getAddress()
+        }
+      })
+    },
+      // 将日期格式2018-01-01改成2018年01月01日
+    turnDate(date) {
+      if (date) {
+        let arr = date.split('-')
+        if (arr.length > 1) {
+          return `${arr[0]}年${arr[1]}月${arr[2]}日`
+        } else {
+          return date
+        }
+      }
+    }
   }
 };
 </script>
@@ -38,10 +82,15 @@ export default {
   background: #fff;
   display: flex;
   align-items: center;
-  padding: 5.46vw 0;
+  padding: 5.333vw 0;
   font-size: 3.73vw;
   color: #363636;
+  //height: 28vw;
+  overflow: scroll;
   // justify-content: space-between;
+  .address {
+    min-height: 20vw;
+  }
   .address-icon {
     background: url("../../../assets/imgs/address.png") no-repeat center;
     background-size: 100% 100%;

@@ -8,6 +8,7 @@ import customer from './modules/customer'
 import select from './modules/components/select'
 import rightContainer from './modules/components/rightContainer'
 import dealCustomerList from './modules/components/dealCustomerList'
+import allCustomerList from './modules/components/allCustomerList'
 import dealOrderInfoDetails from './modules/components/dealOrderInfoDetails'
 import orderInfoDetails from './modules/components/orderInfoDetails'
 import followTrackDetails from './modules/components/followTrackDetails'
@@ -44,6 +45,18 @@ import addIntention from './modules/intention/addIntention'
 import intention from './modules/intention/intention'
 import loadImgUrl from './modules/picture/index'
 import work from './modules/work/index'
+import storeHeader from './modules/components/storeCustomer/header'
+import storeApproved from './modules/components/storeCustomer/approvedCustomer'
+import storeClosed from './modules/components/storeCustomer/closedCustomer'
+import storeCustomer from './modules/components/storeCustomer/customer'
+import allCustomer from './modules/components/storeCustomer/allCustomer'
+import store from './modules/components/storeCustomer/storeCustomer'
+import employeeList from './modules/employee/employeeList'
+import shopList from './modules/store/shopList'
+import storeEmployeeList from './modules/store/storeEmployeeList'
+import plan from './modules/work/plan'
+import eggRecordDetails from './modules/4s/recordDetails' 
+import noticeList from './modules/notice/noticeList' 
 export default new Vuex.Store({
   state,
   mutations,
@@ -53,6 +66,7 @@ export default new Vuex.Store({
     select,
     rightContainer,
     dealCustomerList,
+    allCustomerList,
     dealOrderInfoDetails,
     orderInfoDetails,
     customerHeader,
@@ -89,6 +103,18 @@ export default new Vuex.Store({
     addIntention,
     loadImgUrl,
     work,
-    intention
+    intention,
+    storeHeader,
+    storeApproved,
+    storeClosed,
+    storeCustomer,
+    allCustomer,
+    store,
+    employeeList,
+    shopList,
+    storeEmployeeList,
+    plan,
+    eggRecordDetails,
+    noticeList
   }
 })

@@ -5,7 +5,7 @@
       <div>
         <ul>
           <li class="time">
-            <h3>更新时间</h3>
+            <h3 :style="{'paddingTop': `${paddingTop}`}">最近跟进时间</h3>
             <ul>
               <li @click="openDatePicker('start')">
                 <p>起始日</p>
@@ -75,7 +75,7 @@ Vue.use(Vuex)
 Vue.component(DatetimePicker.name, DatetimePicker)
 export default {
   name: 'rightContainer',
-  props:[''],
+  props:['type'],
   data () {
     return {
       paramsObj: {},
@@ -84,15 +84,17 @@ export default {
       endDateVal: mango.indexTime(new Date(), 'day'),
       dateType: '',
       urgencyBtns: mango.btnList(['是', '否']),
-      keyBtns: mango.btnList(['A', 'B', 'C']),
+      keyBtns: mango.btnList(['A', 'B', 'C','D']),
       ajaxData:[],
-      marginTop:''
+      marginTop:'',
+      paddingTop:''
     }
   },
   computed: {
     ...mapState({
       rightContainerStatus: state => state.rightContainer.rightContainerStatus,
-      customerAjaxParams: state => state.customer.customerAjaxParams
+      customerAjaxParams: state => state.customer.customerAjaxParams,
+      cusomerAjaxParams:state => state.storeCustomer.customerAjaxParams
     }),
     // startDateVal() {
     //   return mango.indexTime(this.startTime, 'day')
@@ -106,22 +108,38 @@ export default {
       return Math.ceil((end - start)/86400000)
     }
   },
-  // watch:{
-  //   rightContainerStatus() {
-  //     console.log(123,this.rightContainerStatus)
-  //   }
-  // },
+ watch:{
+   'cusomerAjaxParams':{
+      handler(newVal, oldVal) {
+        if(newVal.key!==''){
+          this.initStartDateVal();
+          this.endDateVal= mango.indexTime(new Date(), 'day');
+          mango.changeBtnStatus(this.urgencyBtns, '')
+          mango.changeBtnStatus(this.keyBtns, '')
+        }
+      },
+      immediate: true,
+      deep: true
+
+   }
+  },
   created() {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     this.initStartDateVal()
+    
   },
   mounted(){
     this.isIPhoneX()
     let str = new Date()
     // console.log(333, str.getTime())
     // 对象深拷贝
-    this.paramsObj = deepclone(this.customerAjaxParams)
+    if(this.type==='store'){
+      this.paramsObj = Object.assign({},this.cusomerAjaxParams)
+    }else{
+      this.paramsObj = deepclone(this.customerAjaxParams)
+    }
+    
   },
   methods:{
     ...mapMutations([
@@ -130,6 +148,7 @@ export default {
       'setAllLoaded',
       'setCustomerList'  
     ]),
+    ...mapMutations('storeCustomer',['setStoreCustomerAjaxParams']),
     // 初始化起始日期
     initStartDateVal() {
       let date = new Date()
@@ -144,20 +163,37 @@ export default {
     },
     //重置
     resizeCustomerList() {
+      this.initStartDateVal();
+      this.endDateVal= mango.indexTime(new Date(), 'day');
       mango.changeBtnStatus(this.urgencyBtns, '')
       mango.changeBtnStatus(this.keyBtns, '')
-      this.$set(this.customerAjaxParams,'i','')
-      this.$set(this.customerAjaxParams,'u','')
-      this.$set(this.customerAjaxParams, 'sd', '')
-      this.$set(this.customerAjaxParams, 'ed', '')
-      this.$set(this.customerAjaxParams, 'l', '')
+      if(this.type==='store'){
+        this.$set(this.cusomerAjaxParams,'i','')
+        this.$set(this.cusomerAjaxParams,'u','')
+        this.$set(this.cusomerAjaxParams, 'sd', '')
+        this.$set(this.cusomerAjaxParams, 'ed', '')
+        this.$set(this.cusomerAjaxParams, 'l', '')
+        this.$emit('getPramas',0)
+      }else{
+        this.$set(this.customerAjaxParams,'i','')
+        this.$set(this.customerAjaxParams,'u','')
+        this.$set(this.customerAjaxParams, 'sd', '')
+        this.$set(this.customerAjaxParams, 'ed', '')
+        this.$set(this.customerAjaxParams, 'l', '')
+      }
+      
       this.setRightContainerStatus('hideRightContainer')
     },
     // 隐藏右侧边栏
     hideRightContainer() {
       this.$set(this.paramsObj, 'sd', this.startDateVal)
       this.$set(this.paramsObj, 'ed', this.endDateVal)
-      this.setCustomerAjaxParams(this.paramsObj)
+      if(this.type==='store'){
+        //this.setStoreCustomerAjaxParams(this.paramsObj)
+        this.$emit('getPramas',1,this.paramsObj)
+      }else{
+        this.setCustomerAjaxParams(this.paramsObj)
+      }
       this.setRightContainerStatus('hideRightContainer')
     },
     hideRightBar() {
@@ -165,13 +201,25 @@ export default {
     },
     // 紧急程度选择
     urgencySelect(i) {
-      this.paramsObj.u = i? 0 : 1
-       mango.changeBtnStatus(this.urgencyBtns, i)
+      //如果已经选中再点击取消选中状态
+      if(this.urgencyBtns[i].status) {
+        this.paramsObj.u = ''
+        mango.changeBtnStatus(this.urgencyBtns, -1)
+      }else {
+        this.paramsObj.u = i? 0 : 1
+        mango.changeBtnStatus(this.urgencyBtns, i)
+      }
     },
     // 关键程度选择
     keySelect(i) {
-      this.paramsObj.l = i === 0? "A" : i === 1? 'B' : 'C'
-      mango.changeBtnStatus(this.keyBtns, i)
+      if(this.keyBtns[i].status) {
+        this.paramsObj.l = ''
+        mango.changeBtnStatus(this.keyBtns, -1)
+      }else {
+        this.paramsObj.l = i === 0? "A" : i === 1? 'B' : i === 2 ? 'C':'D'
+        mango.changeBtnStatus(this.keyBtns, i)
+      }
+      // console.log(this.paramsObj.l)
     },
     // 选择时间
     handleConfirm(date) {
@@ -208,9 +256,11 @@ export default {
           (screen.height == 896 && screen.width == 414)
         ) {
           this.marginTop = "-5.86";
+          this.paddingTop = "12vw"
           
         } else {
           this.marginTop = "";
+          this.paddingTop = ""
         }
       }
     }
@@ -244,14 +294,21 @@ export default {
       width: 80vw;
       height: 100vh;
       background: #fff;
-      padding: 4vw;
+      padding: 4.533vw;
+      padding-top:5.333vw;
       box-sizing: border-box;
       &>ul{
         // width: 100%;
         h3{
           font-size: $fontSize;
           color: $fontSubCol;
-          margin-top: 3vw;
+          margin-top: 5.333vw;
+          margin-bottom: 2.666vw;
+        }
+        li:first-child{
+          h3{
+            margin-top:0;
+          }
         }
         ul{
           display: flex;
@@ -260,7 +317,7 @@ export default {
           li{
           }
           button{
-            padding: 0 10vw;
+            padding: 0 7vw;
             line-height: 3em;
             border-radius: 2vw;
             background: $bgCol;
@@ -271,6 +328,7 @@ export default {
             background: $btnSubCol;
           }
         }
+       
       }
       .botBtns{
         display: flex;

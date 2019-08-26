@@ -1,11 +1,13 @@
 <template>
-  <div class="wrapper" v-if="list.length">
+  <div class="wrapper" v-if="list.length" :style='{height: height}'>
     <ul class="treeList">
       <li v-for="(item, index) in fatherList" :key="index" class="select">
         <span  
           @touchend="changeNewStatus(index)" 
           :class="item.status? 'addClass' : ''">
+          <!-- :class="item.status? 'addClass' : ''"> -->
           {{ item.name }}
+           <hr v-show="item.status">
         </span>
         <div class="child_wrapper" :style="{'top':`${top}vw`}">
           <ul class="child_treeList " v-show="item.status" >
@@ -13,6 +15,7 @@
               <span 
                 @touchend="changChildStatus(i, index)"
                 :class="el.status? 'childrenAddClass' : ''">
+                <!-- :class="el.status? 'childrenAddClass' : ''"> -->
                 {{ el.name }}
               </span>
             </li>
@@ -36,7 +39,8 @@ export default {
       addClass: '',
       fatherList: [],
       childList: [],
-      top: ''
+      top: '',
+      height: '20vw'
     }
   },
   created() {
@@ -55,6 +59,7 @@ export default {
     getCategoriesList() {
       let categoryId
       if(this.$route.query.name == '常见问题') {
+        this.height = '12vw'
         indexModel.getQuestionCategoryList().then(res => {
           if(res.data && res.data.length) {
             this.setList(res.data)
@@ -70,7 +75,17 @@ export default {
           }else {
             this.getParmas(categoryId)
           }
+          this.initHeight()
         })
+      }
+    },
+    initHeight() {
+      if(this.fatherList && this.fatherList.length && !this.childList.length) {
+        this.height = '12vw'
+      }else if(this.childList && this.childList.length) {
+        this.height = '23vw'
+      }else {
+        this.height = ''
       }
     },
     //初始进来的时候默认传第一个值/从内容详情返回的时候传store里面打值
@@ -107,9 +122,12 @@ export default {
     getChildList(list, index, i) {
       let arr = []
       if(list[index].subCateList) {
+        this.height = '23vw'      //
         list[index].subCateList.forEach(el => {
           arr.push(el.name)
         });
+      }else {
+        this.height = '12vw'      //
       }
       let listName = mango.btnList(arr, i)
       return listName
@@ -153,7 +171,7 @@ export default {
     isIPhoneX (){
       let phone = this.phoneSize()
       if(phone === 'iphonex') {
-        this.top = '33'
+        this.top = '34'
       }else if(phone === 'iphone') {
         this.top = '28'
       }else {
@@ -167,16 +185,16 @@ export default {
 
 <style lang="scss" scoped>
 .treeList::-webkit-scrollbar {
-  background-color:#fff;
+  // background-color:#fff;
 }
 .child_treeList::-webkit-scrollbar {
-  background-color:#fff;
+  // background-color:#fff;
 }
 .wrapper {
-  min-width: 100vw;
+  max-width: 100vw;
   overflow-x: hidden;
-  position: relative;
-  // height: 25vw;
+  // position: relative;
+  // height: 22vw;
   position: fixed;
   background: #fff;
   z-index: 90;
@@ -185,23 +203,34 @@ export default {
   .treeList{
     overflow-x: auto;
     display: flex;
-    white-space: nowrap;
-    width: 100vw;
+    //white-space: nowrap;
+    min-width: 100vw;
+    font-size: 0;
     .select {
       font-size: 3.73vw;
       color: #666;
-      padding: 2vw 4vw;
+      padding: 0 4vw;
+      
+      & > span{
+        display: block;
+        white-space: nowrap;
+        height:12vw;
+        line-height: 12vw;
+        position: relative;
+      }
       .child_wrapper {
+        // border:1px solid red;
         overflow-x: hidden;
         display: flex;
         white-space: nowrap;
         background: #e1e1e1;
         width: 100vw;
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
-        // z-index: 99;
+        z-index: 999;
         .child_treeList {
+          // border:1px solid red;
           overflow-x: auto;
           display: flex;
           white-space: nowrap;
@@ -211,6 +240,9 @@ export default {
             color: #666;
             padding: 2vw 0;
             padding-left: 4vw;
+            }
+            .selectChild:last-child{
+              padding-right: 4vw;
             }
           span {
             padding: 1.23vw 4.26vw;
@@ -236,8 +268,19 @@ export default {
 }
 .addClass {
   color: #363636;
-  font-size: 4.5vw;
-  border-bottom: 0.8vw solid #363636;
-  border-radius: 0.4vw;
+  // font-size: 4.5vw;
+  // border-bottom: 0.8vw solid #363636;
+  // border-radius: 0.4vw;
 }
+ hr {
+    border: none;
+    border-top: 0.8vw solid #363636;
+    border-radius: 0.4vw;
+    margin: 0;
+    position: absolute;
+    bottom:0;
+    left:0;
+    right:0;
+
+  }
 </style>

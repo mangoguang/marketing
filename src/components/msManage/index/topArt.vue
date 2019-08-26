@@ -1,19 +1,19 @@
 <template>
   <div class="topArt">
     <div class="title">
-      <h1>重点知识</h1>
+      <h1>热门推荐</h1>
     </div>
     <ul>
       <li v-for="(item, index) in list" :key="index" @click.prevent="toArticle(index)" >
           <div class="list_left">
-            <h1>{{item.title}}</h1>
+            <h1><img v-show="item.logoImageUrl!==''" :src="item.logoImageUrl"/>{{item.title}}</h1>
             <div class="list_bottom">
-              <span class="top">置顶</span>
-              <span class="time">{{item.createTime}}</span>
+              <!-- <span class="top">置顶</span> -->
+              <span class="time">{{item.createTime}}&nbsp;&nbsp;{{item.author}}</span>
             </div>
           </div>
           <div class="list_right">
-            <img :src=" item.image" alt="" class="img">
+            <img v-lazy="item.image" alt="" class="img" :key="item.image">
           </div>
         </li>
       </ul>
@@ -59,13 +59,17 @@ export default {
   // margin-bottom: 20vw;
   .title {
     width: 26.66vw;
-    margin: 0 auto;
+    // margin: 0 auto;
+    margin-left: 2vw;
+    line-height: normal;
     h1 {
       color: #363636;
       font-size: 4.8vw;
       font-weight: bold;
       border-bottom: .53vw solid #363636;
       text-align: center;
+       line-height: normal;
+       
     }
   }
   ul {
@@ -87,10 +91,21 @@ export default {
         align-content: space-between;
         h1 {
           color: #363636;
-          font-size: 5.4vw;
-          font-weight: bold;
+          font-size: 4.8vw;
+          //font-weight: bold;
           flex: 0.8;
           line-height: 1.5em;
+          img{
+              display: inline-block;
+              width: 4.8vw;
+              height: 4.8vw;
+              background: red;
+              vertical-align:-3px;
+              margin-right:2px;
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 4.8vw 4.8vw;
+          }
         }
         .list_bottom {
           flex: 0.2;

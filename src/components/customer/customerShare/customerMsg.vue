@@ -2,47 +2,52 @@
   <div class="customerMsg">
     <ul>
       <li is="customerLi" :leftText="'客户生日'">
-        <span>{{ turnDate(list.birthday) }}</span>
-        <span class='unspan' v-show='!list.birthday'>未收集</span>
+        <span v-if='list.birthday'>{{ turnDate(list.birthday) }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
       <li is="customerLi" :leftText="'客户年龄'">
-        <span>{{ list.age }}</span>
-        <span class='unspan' v-show='!list.age'>未收集</span>
+        <span v-if='list.age'>{{ list.age }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
       <li is="customerLi" :leftText="'客户微信'">
-        <span>{{ list.weChat }}</span>
-        <span class='unspan' v-show='!list.weChat'>未收集</span>
+        <span v-if='list.weChat'>{{ list.weChat }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
       <li is="customerLi" :leftText="'客户 QQ'">
-        <span>{{ list.qq }}</span>
-        <span class='unspan' v-show='!list.qq'>未收集</span>
+        <span v-if='list.qq'>{{ list.qq }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
       <li is="customerLi" :leftText="'客户职业'">
-        <span>{{ list.duty }}</span>
-        <span class='unspan' v-show='!list.duty'>未收集</span>
+        <span v-if='list.duty'>{{ list.duty }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi" :leftText="'客户地址'">
-        <span>{{ list.address }}</span>
-        <span class='unspan' v-show='!list.address'>未收集</span>
+      <!-- <li is="customerLi" class="customerLi2" :leftText="'客户地址'">
+        <span v-if='list.address'>{{ list.address }}</span>
+        <span class='unspan' v-else>未收集</span>
+      </li> -->
+      <li is="customerLi" :leftText="'客户地区'"  :icon="true" @click.native="toAddress">
+          <span>地址管理</span>
       </li>
-      <li is="customerLi" :leftText="'客户描述'">
-        <span>{{ list.remark }}</span>
-        <span class='unspan' v-show='!list.remark'>未收集</span>
+      <li is="customerLi" class="customerLi2" :leftText="'客户描述'">
+        <span v-if='list.remark'>{{ list.remark.replace(/\\n/g,"\r\n") }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
       <li is="customerLi" :leftText="'所属门店'">
-        <span>{{ getShopId(list.orgId) }}</span>
-        <span class='unspan' v-show='!list.orgId'>未收集</span>
+        <span v-if='list.orgId' class='shop'>{{ getShopId(list.orgId) }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
     </ul>
-    <btn @click.native="edit()" :text="'编辑资料'" class="myBtn"></btn>
+    <btn @click.native="edit()" :text="'编辑资料'" class="myBtn" v-if="isedit==='no'?false:true"></btn>
   </div>
 </template>
 
 <script>
 import customerLi from '../customerLi'
 import btn from "../../btn";
+import mango from '../../../js'
+let Base64 = require('js-base64').Base64
 export default {
-  props: ['list', 'editMsg'],
+  props: ['list', 'editMsg','isedit'],
   components: {customerLi, btn},
   data() {
     return {
@@ -57,6 +62,16 @@ export default {
    edit() {
      this.editMsg(true)
    },
+   toAddress() {
+     if(this.isedit==='no'){
+       return;
+     }
+      this.$router.push({path:`/address/${this.$route.query.id}`})
+    },
+    turnRemark(str){
+      let string = mango.textDecode(str)
+      return string
+    },
     //获取门店
     getShopId(id) {
       let name
@@ -90,13 +105,25 @@ export default {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     box-sizing: border-box;
-    padding-left:4vw;
+    // padding-left:4vw;
     background: #fff;
     margin-top: 4vw;
     color: #363636;
     font-size: 4vw;
+    li {
+      line-height: 3em;
+    }
+    .shop {
+      // margin-left:4vw;
+      box-sizing:border-box;
+    }
+     span:first-child  {
+        // border: 1px solid red
+      }
     li:last-child{
-      border-bottom: none
+      border-bottom: none;
+      width: 100%;
+     
     }
     .unspan{
       color: #999

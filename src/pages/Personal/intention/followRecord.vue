@@ -1,6 +1,6 @@
 <template>
     <div class="addAdress">
-      <mybanner :title="title" style="background:#fff">
+      <mybanner :title="title" style="background:#f8f8f8">
         <button type="button" @click="update">保存</button>
       </mybanner>
       <ul class="list">
@@ -8,19 +8,19 @@
           <follow-select v-bind="formInfo.follow" v-model="form.follow" @update="updateFollow" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
-          <date-select v-bind="formInfo.time" v-model="form.time" @update="updateTime" :showIcon="selectIcon" class="li_border"/>
+          <date-select day='end' v-bind="formInfo.time" v-model="form.time" @update="updateTime" :showIcon="selectIcon" class="li_border"/>
         </li>
         <li>
           <duration-select v-bind="formInfo.duration" v-model="form.residentTime"  @update="updateResidentTime" :showIcon="selectIcon"/>
         </li>
       </ul>
-      <yan-textarea v-bind="formInfo.report" v-model.trim="form.report"/>
+      <yan-textarea v-bind="formInfo.report" :maxlength='300' v-model.trim="form.report"/>
       <div class="next">
          <date-select v-bind="formInfo.nextTime" v-model="form.nextTime"  @update="updateNextTime" :showIcon="selectIcon"/>
       </div>
-      <yan-textarea v-bind="formInfo.plan" v-model.trim="form.plan"/>
+      <yan-textarea v-bind="formInfo.plan" :maxlength='300' v-model.trim="form.plan"/>
       <p class="title">附件图片</p>
-      <upload picLen='5' :clear="isClear"/>
+      <upload ref="upload" picLen='5' :clear="isClear" :path="path"/>
     </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
   data () {
     return {
       form:{
-       follow:'',
+       follow:'到店沟通',
        time:'',
        residentTime:'',
        report:'',
@@ -53,7 +53,8 @@ export default {
       },
       selectIcon:true,
       oppId:'',
-      isClear:false
+      isClear:true,
+      path:'/followRecord'
     }
   },
   components:{
@@ -66,6 +67,18 @@ export default {
      upload,
      durationSelect
   },
+  watch:{
+    $route(to,from){
+      // if(from.name==="intention"){
+      //   this.$route.meta.keepAlive=false;
+      //   this.setFiles([]);
+      //   this.setPicVal([]);
+      // }
+      // if(from.name==="/previewImg"){
+      //    this.$route.meta.keepAlive=true;
+      // }
+    }
+  },
   computed:{
     ...mapState('followRecord',[
       'title',
@@ -73,8 +86,16 @@ export default {
     ]),
     ...mapState(['Files'])
   },
-  created(){
-   this.oppId=this.$route.query.oppId;
+  // created(){
+  //   console.log("created");
+  //  this.oppId=this.$route.query.oppId;
+  //  this.setFiles([]);
+  //  this.setPicVal([]);
+  // },
+  activated(){
+    if(!this.$route.meta.isUseCache){
+       this.oppId=this.$route.query.oppId;
+    }
   },
   methods:{
     ...mapMutations(['setFiles','setPicVal']),
@@ -99,36 +120,77 @@ export default {
         mango.tip('请填写本次跟进情况');
         return false;
       }
-      if(this.form.nextTime===''){
-        mango.tip('请选择下次跟进时间');
+      // if(this.form.nextTime===''){
+      //   mango.tip('请选择下次跟进时间');
+      //   return false;
+      // }
+      // if(this.form.plan===''){
+      //   mango.tip('请填写下一步跟进计划');
+      //   return false;
+      // }
+      if(this.form.nextTime){
+        if(!mango.compareTimeStamp(this.form.time,this.form.nextTime)){
+          if(this.form.time!==this.form.nextTime){
+            mango.tip('下次跟进时间不能小于当前跟进时间');
+            return false;
+          }  
+        }
+      }
+      let remarkReg=/[\ud800-\udbff][\udc00-\udfff]/g;
+      let reg=/^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/;
+      if(this.form.report.length>300){
+        this.form.report=this.form.report.substring(0,300);
+        mango.tip('跟进情况不能超过300字');
         return false;
       }
-      if(this.form.plan===''){
-        mango.tip('请填写下一步跟进计划');
+      if(remarkReg.test(this.form.report)){
+        this.form.report=this.changeStr(this.form.report)
+        mango.tip('跟进情况不支持表情');
         return false;
       }
-      if(!mango.compareTimeStamp(this.form.time,this.form.nextTime)){
-          mango.tip('下次跟进时间不能小于等于当前跟进时间');
-          return false;
+      if(!reg.test(this.form.report)){
+        mango.tip('跟进情况不支持特殊符号');
+        return false;
+      }
+      if(this.form.plan.length>300){
+        this.form.plan=this.form.plan.substring(0,300);
+        mango.tip('跟进计划不能超过300字');
+        return false;
+      }
+      if(this.form.plan!==''&&remarkReg.test(this.form.plan)){
+        this.form.plan=this.changeStr(this.form.plan)
+        mango.tip('跟进计划不支持表情');
+        return false;
+      }
+       if(this.form.plan!==''&&!reg.test(this.form.plan)){
+        mango.tip('跟进计划不支持特殊符号');
+        return false;
       }
       return true;
+    },
+    changeStr(str){
+      let string = str.replace(/[\ud800-\udbff][\udc00-\udfff]/g,'')
+      return string
     },
    update(){
       if(this.valid()){
         let formData=new FormData();
-        formData.append('opportunity.oppId',this.oppId);
-        formData.append('record.source',this.form.follow);
-        formData.append('record.followDate',this.form.time);
-        formData.append('record.nextDate',this.form.nextTime);
-        formData.append('record.situation',this.form.report);
-        formData.append('record.plan',this.form.plan);
-        for(let i=0;i<this.Files.length;i++){
-          formData.append('record.dataFile',this.Files[i]);
+        if(this.Files.length>0){
+          for(let i=0;i<this.Files.length;i++){
+              formData.append('record.dataFile',this.Files[i]);
+          }
         }
-        let key=['opportunity.oppId','record.source','record.followDate','record.nextDate','record.situation','record.plan'];
-        indexModel.updateTrackrecord(formData,key).then(res => {
+        let obj=this.updateParams(this.form);
+        let keys=[];
+        for(let key in obj){
+          formData.append(key,obj[key])
+          keys.push(key)
+        }
+        console.log(keys);
+        console.log(obj);
+        indexModel.updateTrackrecord(formData,keys,obj).then(res => {
           if(res.code===0){
-            mango.tip(res.msg);
+            mango.tip("提交成功");
             this.setFiles([]);
             this.setPicVal([]);
             this.isClear=true;
@@ -151,9 +213,31 @@ export default {
             this.form.report='';
             this.form.plan='';
           };
+        }).catch((reject) => {
+          if (reject === 510) {
+            this.update()
+          }
         })
       }
      
+   },
+   updateParams(obj){
+    let tempObj={};
+    let temp={
+      'opportunity.oppId':this.oppId,
+      'record.source':obj.follow,
+      'record.residentTime':obj.residentTime,
+      'record.followDate':obj.time,
+      'record.nextDate':obj.nextTime,
+      'record.situation':obj.report,
+      'record.plan':obj.plan
+    }
+    for(let key in temp){
+      if(temp[key]||temp[key]===0){
+        tempObj[key]=temp[key]
+      }
+    }
+    return tempObj   
    },
    //选择更新跟进时间
    updateTime(value,anotherVal){
@@ -169,23 +253,35 @@ export default {
     if(!value){
       this.form.residentTime='0分钟';
     }else{
-       this.form.residentTime=value;
+      this.form.residentTime=value;
     }
    
    },
    //选择跟进
    updateFollow(arr){
-     //console.log(arr);
     this.form.follow=arr[0];
    }
       
   },
-  beforeRouteLeave(to,from,next){
-    console.log(this);
-    this.setFiles([]);
-    this.setPicVal([]);
-    next();
+  beforeRouteEnter(to,from,next){
+    if(!to.meta.isUseCache){
+      next(vm => {
+        vm.setFiles([]);
+        vm.setPicVal([]);
+        vm.isClear=true;
+        vm.form.follow='到店沟通';
+        vm.form.time=mango.indexTimeB(new Date())[1];
+        vm.form.residentTime='';
+        vm.form.nextTime='';
+        vm.form.report='';
+        vm.form.plan='';
+      })
+    }else{
+      next();
+    }
+   
   }
+  
 };
 </script>
 

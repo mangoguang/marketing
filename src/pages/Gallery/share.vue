@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {baseUrl} from '../../Request/request'
+import { baseUrl } from "../../Request/request";
 import axios from "axios";
 import QRCode from "qrcodejs2";
 import html2canvas from "html2canvas";
@@ -61,7 +61,9 @@ export default {
       loadImgUrl: "",
       successSave: false,
       imageData: "",
-      pageUrl: ''
+      pageUrl: "",
+      test: "",
+      changeUrl: ""
     };
   },
   computed: {
@@ -71,12 +73,7 @@ export default {
   },
   created() {
     this.msg = this.$route.query.list;
-    this.pageUrl = baseUrl + "/web/marketing/#/productDetails?id=" + this.msg.id + '&musi=1'
-  },
-  watch: {
-    imgUrl() {
-      console.log(this.imgUrl);
-    }
+    this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
   },
   mounted() {
     this.getCode();
@@ -85,27 +82,29 @@ export default {
     //生成二维码
     getCode() {
       let qrcode = new QRCode("qrcode", {
-        width: 48,
-        height: 48, // 高度
+        width: 56,
+        height: 56, // 高度
         text: this.pageUrl,
         colorDark: "#000",
         colorLight: "#fff",
         correctLevel: QRCode.CorrectLevel.L,
-        QRCodeVersion: 8
+        QRCodeVersion: 1
       });
     },
     //点击保存图片
     saveImg() {
       html2canvas(this.$refs.creatImg, {
         backgroundColor: null
+        // useCORS: true, // 【重要】开启跨域配置
+        // taintTest: false//是否在渲染前测试图片
       }).then(canvas => {
         this.url = canvas.toDataURL();
         this.postImage();
       });
     },
     //base64转成formdata形式上传
-    changeFormData() {
-      let bytes = window.atob(this.url.split(",")[1]);
+    changeFormData(url) {
+      let bytes = window.atob(url.split(",")[1]);
       let temp = new ArrayBuffer(bytes.length);
       let ia = new Uint8Array(temp);
       for (var i = 0; i < bytes.length; i++) {
@@ -119,9 +118,12 @@ export default {
     },
     //上传图片获取图片地址
     postImage() {
-      this.changeFormData();
-      if (this.imageData) {
-        this.getImgUrl();
+      if (this.url) {
+        this.changeFormData(this.url);
+        if (this.imageData) {
+          // console.log(this.imageData.get('dataFile'))
+          this.getImgUrl();
+        }
       }
     },
     //请求服务器图片路径
@@ -134,7 +136,7 @@ export default {
         })
         .then(res => {
           this.loadImgUrl = res.data.url;
-          this.savePicture();
+          // this.savePicture();
         });
     },
     //保存图片
@@ -197,18 +199,18 @@ export default {
           contentUrl: this.pageUrl
         },
         function(ret, err) {
-          if (ret.status) {
-            alert('分享成功');
-          } else {
-            alert('分享失败');
-          }
+          // if (ret.status) {
+          //   alert("分享成功");
+          // } else {
+          //   alert("分享失败");
+          // }
         }
       );
     },
     shareQQ(title) {
       var qq = api.require("qq");
       qq.shareNews({
-        url:  this.pageUrl,
+        url: this.pageUrl,
         title: title,
         description: this.msg.remark,
         imgUrl: this.imgUrl,
@@ -220,7 +222,7 @@ export default {
       sinaWeiBo.sendRequest(
         {
           contentType: "web_page",
-          text:  this.pageUrl,
+          text: this.pageUrl,
           media: {
             title: title,
             description: this.msg.remark,

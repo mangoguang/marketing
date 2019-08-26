@@ -4,10 +4,10 @@
     <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="load" :auto-fill="false"> 
       <li v-for="(item, index) in artList" :key="index" @click.prevent="toArticle(index)" >
         <div class="list_left">
-          <h1>{{item.title}}</h1>
+          <h1><img v-show="item.logoImageUrl!==''" :src="item.logoImageUrl"/>{{item.title}}</h1>
           <div class="list_bottom">
             <span v-if="item.top" class="top">置顶</span>
-            <span class="time">{{item.createTime}}</span>
+            <span class="time">{{item.createTime}}&nbsp;&nbsp;{{item.author}}</span>
           </div>
         </div>
         <div class="list_right">
@@ -38,7 +38,8 @@ export default {
       allLoaded:false,
       list: [],
       page: 1,
-      limit: 5,
+      //limit: 5,
+      limit:10,
       typeId: '',
       key: false,
       noData: false,
@@ -61,6 +62,7 @@ export default {
       if(this.key) {
         let temp = 0
         let parmas = this.getId()
+        console.log('00',parmas);
         // if(this.parmas.name1 && !this.parmas.name2) {
         //   temp = this.hasList(this.parmas.name1)
         // }else if(this.parmas.name1 && this.parmas.name2){
@@ -69,7 +71,7 @@ export default {
          temp = this.hasList(parmas)
         if(temp === this.msManageList.length) {
           this.getInitList([])
-          let obj = this.getCategoriesId(1, 10)
+          let obj = this.getCategoriesId(1,10)
           obj = this.setType(obj)
           this.getArticlesList(obj)
         }else {
@@ -179,6 +181,7 @@ export default {
     //获取文章列表
     getArticlesList(obj) {
       let parmas = this.getId()
+      console.log('w',parmas);
       indexModel.getArticles(obj).then(res => {
         if(res.data) {
           if(res.data.length) {
@@ -200,6 +203,7 @@ export default {
     getCategoriesId(page, limit){
       const categoryId = this.$route.query.id
       let obj = {}
+      console.log('www',this.parmas);
       if(this.parmas.name1 && !this.parmas.name2) {
         let subCateId = this.parmas.name1
         obj = {
@@ -209,6 +213,7 @@ export default {
           'page': page,
           'limit':limit
           }
+          console.log('234',obj);
       }else if(this.parmas.name1 && this.parmas.name2) {
         let subCateId = this.parmas.name1
         let subCate2Id = this.parmas.name2
@@ -276,12 +281,15 @@ export default {
     //下拉加载数据
     pullDownData() {
       this.allLoaded = true
+      console.log('artlist',this.artList.length);
       let len = (this.artList.length)/10 + 1
       if(Math.floor(len) < len) {
         this.allLoaded = true
       }else {
         this.page = len
+        console.log(this.page);
         let obj = this.getCategoriesId(this.page, this.limit)
+        obj = this.setType(obj);
         this.getArticlesList(obj);
       }
     }
@@ -297,10 +305,11 @@ export default {
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 44vw;
+  background: #f8f8f8;
   li {
     width: 100vw;
     height: 26.66vw;
-    box-shadow:0px 2px 6px 0px rgba(136,136,136,0.2);
+    box-shadow:0px 1px 1px 0px rgba(136,136,136,0.1);
     padding: 4.4vw;
     box-sizing: border-box;
     margin-bottom: 2.4vw;
@@ -315,10 +324,21 @@ export default {
       align-content: space-between;
       h1 {
         color: #363636;
-        font-size: 5.4vw;
-        font-weight: bold;
+        font-size: 4.8vw;
+        //font-weight: bold;
         flex: 0.8;
         line-height: 1.5em;
+        img{
+              display: inline-block;
+              width: 4.8vw;
+              height: 4.8vw;
+              background: red;
+              vertical-align:-3px;
+              margin-right:2px;
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 4.8vw 4.8vw;
+          }
       }
       .list_bottom {
         flex: 0.2;

@@ -5,7 +5,7 @@
         v-for="(item, index) in timeBtns" 
         :key="`timeBtns${index}`"
         @click="selectTime(index)"
-        :class="{on: item.status}">{{item.name}}</button>
+        :class="{on:item.status}">{{item.name}}</button>
     </li>
     <li
     class="last">
@@ -29,8 +29,19 @@ export default {
   data() {
     return{
       btnIndex: 0,
-      timeBtns: mango.btnList(['今日', '本周', '本月', '本年'], 0),
+      timeBtns:mango.btnList(['今日', '本周', '本月', '本年'], 0),
       ajaxData: {}
+    }
+  },
+  watch: {
+    dateInterVal(val) {
+      console.log('时间区间改变', val)
+      let  btns = this.timeBtns
+      for (let i = 0; i < btns.length; i++) {
+        btns[i].status = false
+      }
+      this.btnIndex = -1
+      // this.timeBtns = mango.btnList(['今日', '本周', '本月', '本年'], 0)
     }
   },
   computed: {
@@ -105,6 +116,7 @@ export default {
   .timeSelect{
     padding: 0 2vw;
     position: relative;
+    border-bottom: 1px solid #E1E1E1;
     li{
       line-height: 10.6vw;
       button{
@@ -122,10 +134,11 @@ export default {
         position: absolute;
         display: block;
         width: 6vw;
-        height: 1px;
+        height: 2px;
         bottom: 0;
         left: 50%;
         margin-left: -3vw;
+        bottom: -1vw;
         background: #007aff;
       }
     }
