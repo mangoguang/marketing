@@ -3,9 +3,9 @@
     <div class="compile">编辑</div>
     <div class="personalMsg">
       <!-- <div class="via" @click="go"></div> -->
-      <img v-if="ajaxData.sex===1" :src="via" alt="" class="via" @click="go">
-      <img v-else-if="ajaxData.sex===2" :src="svia" alt="" class="via" @click="go">
-      <img v-else :src="unknow" alt="" class="via" @click="go">
+      <img v-if="ajaxData.sex===1" :src="via" alt=""  @click="go"/>
+      <img v-else-if="ajaxData.sex===2" :src="svia" alt="" @click="go" />
+      <img v-else :src="unknow" alt="" @click="go"/>
       <div class="personal-content">
         <div class="name">
           <span><span v-if="ajaxData.positionList">{{ajaxData.positionList.typeName}}</span>{{ajaxData.name}}</span>

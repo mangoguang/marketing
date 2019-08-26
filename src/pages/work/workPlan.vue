@@ -1,7 +1,7 @@
 <template>
     <div class="workPlan" ref="workPlan">
         <banner title='工作计划' class="header">
-            <button type="button" class="addPlan" @click="newPlan">+</button>
+            <button type="button" class="addPlan" @click="newPlan"></button>
         </banner>
         <div class="planContent" v-show="!showList">
             <monthDay @getMonthDate="getMonthDate" :dateList="dateList" @getSelectDate="getSelectDate"/>
@@ -154,11 +154,11 @@ export default {
     background: #fff;
     border: none;
   }
-  .addPlan{
-    font-size: 36px;
-    width: 10vw;
-    margin-right: 4.8vw;
-    font-weight: 300;
+   .addPlan{
+    width:17px;
+    height:17px;
+    background: url("../../assets/imgs/add_02.png") no-repeat;
+    background-size: 17px 17px;
   }
   .planTimeList{
       background: #fff;

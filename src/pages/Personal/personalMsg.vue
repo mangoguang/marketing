@@ -115,6 +115,11 @@ export default {
   },
   mounted() {
     console.log('个人中心页面：', this.$root.token)
+    var imgs=document.getElementsByTagName("img")
+    for(var i =0;i<imgs.length;i++){
+      console.log(imgs[i].src);
+      alert(imgs[i].src)
+    }
   },
   methods:{
     ...mapMutations([

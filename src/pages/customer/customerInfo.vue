@@ -25,7 +25,6 @@
 <script>
 import { MessageBox } from 'mint-ui'
 import {IndexModel} from '../../utils/index'
-import variable from '../../js/variable'
 const indexModel = new IndexModel()
 import { mapMutations, mapState } from "vuex"
 import btn from "../../components/btn";
@@ -126,7 +125,7 @@ export default {
           MessageBox.alert('姓氏不存在')
           return;
         }
-        let testPhone = variable.testPhone(this.newCustomerInfo.phone)
+        let testPhone = /(^1[3|4|5|7|8]\d{9}$)|(^09\d{8}$)/.test(this.newCustomerInfo.phone)
         if((!this.newCustomerInfo.phone||this.newCustomerInfo.phone==='')&&!this.newCustomerInfo.weChat){
           MessageBox.alert('请填写手机号码或微信号')
           return
@@ -157,7 +156,7 @@ export default {
     },
     //check
     async wx(wechat){
-        let testWeChat = variable.testWeChat(wechat)
+        let testWeChat = /^[a-zA-Z]([-_a-zA-Z0-9]{5,19})+$/.test(wechat)
         let ishasWeChat;
         if(this.wechat&&!wechat){
           MessageBox.alert('微信号不能修改为空')

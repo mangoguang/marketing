@@ -148,9 +148,19 @@ export default {
         },
         linkTo(id,status){
             if(status==='Approved'){
-                this.$router.push({path:'/enquiryInfo',query:{id:id}})
+                if(this.$route.name==='employeeDetail'){
+                    this.$router.push({path:'/enquiryInfo',query:{id:id,edit:'no'}})
+                }else{
+                    this.$router.push({path:'/enquiryInfo',query:{id:id}})
+                }
+               
             }else{
-                this.$router.push({path:'/customerInfo',query:{id:id}})
+                if(this.$route.name==='employeeDetail'){
+                    this.$router.push({path:'/customerInfo',query:{id:id,edit:'no'}})
+                }else{
+                    this.$router.push({path:'/customerInfo',query:{id:id}})
+                }
+               
             }
         },
         newCustomer() {

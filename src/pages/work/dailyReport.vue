@@ -1,7 +1,7 @@
 <template>
   <div class="dailyReport">
     <banner :title='"日报"' class="header">
-      <button @click="newPlan" class="newDailyReport" >+</button>
+      <button @click="newPlan" class="newDailyReport" ></button>
     </banner>
     <!-- 日历组件 -->
     <myDatePicker
@@ -237,10 +237,10 @@ export default {
     border: none;
   }
   .newDailyReport{
-    font-size: 36px;
-    width: 10vw;
-    margin-right: 4.8vw;
-    font-weight: 300;
+    width:17px;
+    height:17px;
+    background: url("../../assets/imgs/add_02.png") no-repeat;
+    background-size: 17px 17px;
   }
 }
 </style>

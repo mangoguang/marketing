@@ -372,7 +372,7 @@ header{
       //height:7.733vw;
       align-items: center;
       margin-top: 3.26vw;
-      justify-content: space-around;
+      //justify-content: space-around;
       margin-bottom: 3.26vw;
       width: 100%;
       box-sizing: border-box;
@@ -380,6 +380,7 @@ header{
         // margin-left: 7.73vw;
         text-align: center;
         box-sizing: border-box;
+        flex:1;
       }
     }
     &>div{

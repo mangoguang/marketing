@@ -126,13 +126,10 @@ export default {
     .type{
       display: flex;
       flex-wrap: wrap;
-      min-height: 6vw;
-      //margin-top:1.333vw;
     }
     .type_icon {
       font-size: 2.4vw;
       color: #666;
-      //line-height: 1.4em;
       margin-right: 2vw;
       max-width: 42vw;
       word-wrap:break-word;
@@ -142,7 +139,7 @@ export default {
       border:1px solid #FF2D55;
       color:#FF2D55;
       border-radius: 1.333vw;
-      //margin-bottom:1.333vw;
+      margin-bottom:1.333vw;
     }
     .price {
       font-size: 4.8vw;

@@ -7,9 +7,9 @@
          @click='cilck'>
       <div class="icon"></div>
     </div>
-    <span class="my_title"
-          :class="left? 'myLeftStyle':''">{{title}}</span>
-    <slot></slot>
+    <div class="my_title"
+          :class="left? 'myLeftStyle':''"><span>{{title}}</span><slot></div>
+    
     <!-- <more-details class="details"  v-show='MoreBtn'/> -->
   </div>
 </template>
@@ -94,25 +94,16 @@ export default {
   .my_title {
     width: 100%;
     text-align: center;
-    padding-right: 10.4vw;
+    /* padding-right: 10.4vw; */
     font-size: 5.06vw;
     letter-spacing: -1px;
     color: #363636;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-  }
-  button {
-    position: absolute;
-    right: 0;
-    font-size: 14px;
-    line-height: 11vw;
-    //width: 25vw;
-    padding: 0 5vw;
-    text-align: right;
-    color: #007aff;
-    font-weight: bold;
-    z-index: 1000;
+    flex: 1;
+    padding-right:9.606vw;
+    position: relative;
   }
   .myLeftStyle {
     color: #222444;
@@ -120,6 +111,17 @@ export default {
     font-weight: 500;
     padding-left: 2vw;
     text-align: left;
+  }
+  button{
+    font-weight: bold;
+    align-self: flex-end;
+    position: absolute;
+    right:4.266vw;
+    top:50%;
+    transform: translate(0,-50%);
+    color:#007fff;
+    font-weight: bold;
+    font-size: 15px;
   }
 }
 </style>

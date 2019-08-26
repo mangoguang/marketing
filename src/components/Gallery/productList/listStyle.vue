@@ -3,9 +3,11 @@
     <div class="img_icon" :style="{backgroundImage:'url(' + img + ')'}"></div>
     <div class="text_box">
       <p class="title">{{ list.goodsName }}</p>
-      <span class="type_icon" v-for="(el, v) in getLabel(list.label)" :key=v >
+      <div class="type">
+      <div class="type_icon" v-for="(el, v) in getLabel(list.label)" :key=v >
         {{ el }}
-      </span>
+      </div>
+      </div>
       <p class="price">¥{{ Math.round(list.price*100)/100 }}</p>
       <div class="like_btn" @click.prevent="changLike">
         <img src="../../../assets/imgs/like.png" alt="收藏" v-if="like">
@@ -133,19 +135,25 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
     }
+     .type{
+      display: flex;
+      flex-wrap: wrap;
+      /* min-height: 6vw; */
+      margin-top:1.333vw;
+    }
     .type_icon {
-      border: 1px solid #FF2D55;
-      border-radius: 1.333vw;
-      padding:0 1.6vw;
-      color:#FF2D55;
-      // width: 8vw;
-      display: inline-block;
-      // line-height: 3.6vw;
       font-size: 2.4vw;
-      // color: #666;
-      text-align: center;
+      color: #666;
       margin-right: 2vw;
-
+      max-width: 42vw;
+      word-wrap:break-word;
+      word-break:break-all;
+      display: flex;
+      padding:0 1.6vw;
+      border:1px solid #FF2D55;
+      color:#FF2D55;
+      border-radius: 1.333vw;
+      margin-bottom:1.333vw;
     }
     .price {
       font-size: 4.8vw;

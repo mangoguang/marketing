@@ -1,7 +1,7 @@
 <template>
   <div class="dailyReport">
     <banner :title="`${_localAjax().typename==='Store Manager'?'日报':'员工日报'}`" class="header">
-      <button @click="newPlan" class="newDailyReport" v-if="_localAjax().typename==='Store Manager'&&tabList[0].status">+</button>
+      <button @click="newPlan" class="newDailyReport" v-if="_localAjax().typename==='Store Manager'&&tabList[0].status"></button>
     </banner>
     <tabUI :list="tabList" @getIndex="getIndex" v-if="_localAjax().typename==='Store Manager'"/>
     <!-- 日历组件 -->
@@ -107,10 +107,10 @@ export default {
   }
 
   .newDailyReport{
-    font-size: 36px;
-    width: 10vw;
-    margin-right: 4.8vw;
-    font-weight: 300;
+    width:17px;
+    height:17px;
+    background: url("../../assets/imgs/add_02.png") no-repeat;
+    background-size: 17px 17px;
   }
 }
 </style>
