@@ -428,8 +428,15 @@ export default {
             background-size: 3vw 3vw;
             background-position: 4vw center;
         }
-         @include input-style(3.466vw,rgba(255,255,255,.8));
-        
+        input::-webkit-input-placeholder{
+          color: rgba(255,255,255,.8);
+        } input:-moz-placeholder{
+          color: rgba(255,255,255,.8);
+        } input::-moz-placeholder{
+          color: rgba(255,255,255,.8);
+        } input:-ms-input-placeholder{
+          color: rgba(255,255,255,.8);
+        }
         
     }
     .tabBox{
