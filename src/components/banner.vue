@@ -69,6 +69,7 @@ export default {
   border-bottom: 1px solid #ccc;
   background: #f8f8f8;
   padding-top: 5vw;
+  align-items: center;
   // justify-content: space-between;
   .fix {
     position: absolute;
