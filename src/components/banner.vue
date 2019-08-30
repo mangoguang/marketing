@@ -121,7 +121,7 @@ export default {
     transform: translate(0,-50%);
     color:#007fff;
     font-weight: bold;
-    font-size: 3.733vw;
+    font-size: 15px;
   }
 }
 </style>

@@ -240,7 +240,7 @@ export default {
     width:17px;
     height:17px;
     background: url("../../assets/imgs/add_02.png") no-repeat;
-    background-size: 17px 17px;
+    background-size: 100% 100%;
   }
 }
 </style>

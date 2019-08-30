@@ -109,8 +109,8 @@ export default {
   .newDailyReport{
     width:17px;
     height:17px;
-    background: url("../../assets/imgs/add_02.png") no-repeat;
-    background-size: 17px 17px;
+    background: url("../../assets/imgs/add_02.png") no-repeat center center;
+    background-size:cover;
   }
 }
 </style>

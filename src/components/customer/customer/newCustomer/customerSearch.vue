@@ -195,6 +195,7 @@ export default {
       color: #fff;
       background: #007AFF;
       border:1px solid #005DC2;
+      font-size:15px;
     }
   }
   .tips {

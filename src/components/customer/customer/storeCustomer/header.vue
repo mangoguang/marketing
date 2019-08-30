@@ -409,7 +409,7 @@ export default {
         height:11.733vw;
         margin-top:7vw;
         padding-left:4.266vw;
-        @include input-style(3.466vw,rgba(255,255,255,.8));
+       
         span {
             font-size: 8vw;
             color:#fff;
@@ -428,6 +428,7 @@ export default {
             background-size: 3vw 3vw;
             background-position: 4vw center;
         }
+         @include input-style(3.466vw,rgba(255,255,255,.8));
         
         
     }

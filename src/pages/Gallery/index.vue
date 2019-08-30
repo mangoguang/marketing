@@ -2,7 +2,7 @@
   <div class="index">
     <banner :title='"产品中心"'/>
     <div class="top-bar">
-      <scan/>
+      <!-- <scan/> -->
       <Search :origin="true" :type="'gallery'" class="search" style="margin-top:6vw"/>
     </div>
     <TopNav/>
