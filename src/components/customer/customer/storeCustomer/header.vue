@@ -6,7 +6,6 @@
                 <div class="searchDiv">
                     <input type="search" placeholder="请输入姓名或手机搜索" v-model="searchKey" @keypress="search">
                 </div>
-                
             </form>
        </div>
        <div class="tabBox">
