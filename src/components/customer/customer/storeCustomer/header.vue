@@ -440,20 +440,21 @@ export default {
             background-color: rgba(255,255,255,.2);
             background-size: 3vw 3vw;
             background-position: 4vw center;
+            input{
+                color:#fff;
+                font-size: 14px;
+            }
+            input::-webkit-input-placeholder{
+            color: rgba(255,255,255,.8);
+            } input:-moz-placeholder{
+            color: rgba(255,255,255,.8);
+            } input::-moz-placeholder{
+            color: rgba(255,255,255,.8);
+            } input:-ms-input-placeholder{
+            color: rgba(255,255,255,.8);
+            }
         }
-        input{
-            color:#fff;
-            font-size: 14px;
-        }
-        input::-webkit-input-placeholder{
-          color: rgba(255,255,255,.8);
-        } input:-moz-placeholder{
-          color: rgba(255,255,255,.8);
-        } input::-moz-placeholder{
-          color: rgba(255,255,255,.8);
-        } input:-ms-input-placeholder{
-          color: rgba(255,255,255,.8);
-        }
+       
         
     }
     .tabBox{
