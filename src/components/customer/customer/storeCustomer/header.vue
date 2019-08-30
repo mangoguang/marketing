@@ -393,17 +393,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@mixin flex-center (){
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-@mixin hr-border($height){
-    border: none;
-    border-bottom:$height #fff solid;
-    border-radius:$height/2;
-    margin:0; 
-}
+@import '../../../assets/common.scss';
 .header{
     width:100vw;
     min-height:22vw;
@@ -421,7 +411,7 @@ export default {
         height:11.733vw;
         margin-top:7vw;
         padding-left:4.266vw;
-       
+        
         span {
             font-size: 8vw;
             color:#fff;
@@ -453,7 +443,7 @@ export default {
             color: rgba(255,255,255,.8);
             }
         }
-       
+        
         
     }
     .tabBox{
