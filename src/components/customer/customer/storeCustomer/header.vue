@@ -391,7 +391,17 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '../../../assets/common.scss';
+@mixin flex-center (){
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+@mixin hr-border($height){
+    border: none;
+    border-bottom:$height #fff solid;
+    border-radius:$height/2;
+    margin:0; 
+}
 .header{
     width:100vw;
     min-height:22vw;
@@ -419,6 +429,7 @@ export default {
         input{
             width:65.333vw;
             height:8vw;
+            line-height: 8vw;
             border-radius: 4vw;
             padding-left: 9.333vw;
             box-sizing: border-box;
@@ -427,6 +438,7 @@ export default {
             background-color: rgba(255,255,255,.2);
             background-size: 3vw 3vw;
             background-position: 4vw center;
+            font-size: 14px;
         }
         input::-webkit-input-placeholder{
           color: rgba(255,255,255,.8);
