@@ -3,7 +3,10 @@
        <div class="top">
            <span>客户</span>
             <form action="" @submit.prevent>
-                <input type="search" placeholder="请输入姓名或手机搜索" v-model="searchKey" @keypress="search">
+                <div class="searchDiv">
+                    <input type="search" placeholder="请输入姓名或手机搜索" v-model="searchKey" @keypress="search">
+                </div>
+                
             </form>
        </div>
        <div class="tabBox">
@@ -426,18 +429,20 @@ export default {
             font-weight: bold;
             padding-right: 5.066vw;
         }
-        input{
+        .searchDiv{
             width:65.333vw;
             height:8vw;
             line-height: 8vw;
-            border-radius: 4vw;
             padding-left: 9.333vw;
+            border-radius: 4vw;
             box-sizing: border-box;
-            color:#fff;
             background:url('../../../assets/imgs/search.png') no-repeat center; 
             background-color: rgba(255,255,255,.2);
             background-size: 3vw 3vw;
             background-position: 4vw center;
+        }
+        input{
+            color:#fff;
             font-size: 14px;
         }
         input::-webkit-input-placeholder{
