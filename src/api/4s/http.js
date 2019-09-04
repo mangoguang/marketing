@@ -24,7 +24,9 @@ axios.defaults.headers = {
 axios.defaults.baseURL = baseUrl
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line
-  axios.defaults.baseURL = 'https://agency.derucci.com'
+  // axios.defaults.baseURL = 'https://agency.derucci.com'
+  axios.defaults.baseURL = 'https://mobiletest.derucci.net/cd-sys-web'
+
 }
 
 // http request 拦截器

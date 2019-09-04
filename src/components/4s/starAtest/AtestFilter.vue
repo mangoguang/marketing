@@ -106,7 +106,7 @@ export default {
   color: #363636;
   font-size: 4vw;
   justify-content: space-between;
-  padding: 0 4vw;
+  padding: 0 24px;
   box-sizing: border-box;
   position: fixed;
   top: 94px;

@@ -8,7 +8,8 @@
                   name="reason"
                   class="area"
                   placeholder="请填写扣分原因"
-                  @input="bindTexareaChange"></textarea>
+                  @input="bindTexareaChange"
+                  maxlength="100"></textarea>
         <div class="editor-readonly"
              v-else>{{textareaVal}}</div>
         <div class="upload">
@@ -23,26 +24,28 @@
                  :src="item"
                  :preview='true'
                  alt="">
-            <video class="source"
-                   v-if="/mp4/.test(item)"
-                   :src="item"></video>
+            <div class="video"
+                 v-if="/mp4/.test(item)"
+                 @click="bindPlay(item,index)">
+            </div>
+
           </div>
 
           <input type="file"
                  ref="upload"
                  hidden
                  multiple="multiple"
-                 accept="image/*,video/*"
                  @change="bindUpload">
 
           <div class="up-btn"
                @click="sheetVisible=true"
                v-if="isGrade!=1"></div>
+
         </div>
       </div>
-
       <div class="rangeBox"
            v-if="!uploading">
+        <h2>扣分：</h2>
         <div class="range-rule">
           <span class="tips">扣{{rangeValue}}分</span>
           <div class="top"><span>0</span><span>{{maxScore}}</span></div>
@@ -67,8 +70,17 @@
       <button @click="bindSave"
               v-if="isGrade!=1">保存</button>
     </div>
-    <mt-actionsheet :actions="[{ name:'拍摄', method:getCamera }, { name:'从手机相册选择', method:getPhoto}]"
+    <mt-actionsheet :actions="[{ name:'拍照', method:getCamera },{ name:'录像', method:getCamcorder }, { name:'从手机相册选择', method:getPhoto}]"
                     v-model="sheetVisible"></mt-actionsheet>
+    <div class="video-box"
+         v-if="showVideo">
+      <div class="video-close"
+           @click="bindVideoClose"></div>
+      <video-player class="video-player"
+                    ref="myVideoPlayer"
+                    :playsinline="true"
+                    :options="playerOptions" />
+    </div>
   </div>
 </template>
 
@@ -78,6 +90,8 @@ import mybanner from '../../../components/banner'
 import { Range, Actionsheet, Toast, Indicator } from 'mint-ui';
 Vue.component(Actionsheet.name, Actionsheet);
 Vue.component(Range.name, Range);
+
+import { videoPlayer } from 'vue-video-player';
 
 import { uploadFile } from '@/api/4s'
 import { async, Promise } from 'q';
@@ -99,7 +113,32 @@ export default {
       textareaVal: '',
       maxScore: 0,
       isGrade: 0, //是否已评分
-      uploading: false
+      uploading: false,
+      playerOptions: {
+        // playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
+        autoplay: false, //如果true,浏览器准备好时开始回放。
+        muted: false, // 默认情况下将会消除任何音频。
+        loop: false, // 导致视频一结束就重新开始。
+        preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+        language: 'zh-CN',
+        aspectRatio: '3:4', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+        sources: [{
+          src: 'http://vjs.zencdn.net/v/oceans.mp4',
+          type: 'video/mp4'
+        }],
+        poster: "", //你的封面地址
+        // width: document.documentElement.clientWidth,
+        notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
+        controlBar: {
+          timeDivider: true,
+          durationDisplay: true,
+          remainingTimeDisplay: false,
+          fullscreenToggle: true  //全屏按钮
+        },
+        defaltVal: 0
+      },
+      showVideo: false
     }
   },
   computed: {
@@ -122,31 +161,28 @@ export default {
     var urls = [].concat(standardList.urls || [])
     this.picVal = urls || []  //上传文件
 
-
+    this.defaltVal = standardList.deduct || 0
     this.rangeValue = standardList.deduct || 0 //分数
 
     this.maxScore = this.subcategories[this.categoryListIndex].total
   },
-  destroyed () {
+  beforeRouteLeave (to, from, next) {
     let pswp = document.querySelector('.pswp')
     let domColse = document.querySelector('.pswp__button--close')
     if (pswp.getAttribute('aria-hidden') == 'false') {
       domColse.click()
-      this.$router.push({ path: '/checkDetail', query: this.$route.query })
+      next(false)
+    } else {
+      next()
     }
-  },
 
+  },
   methods: {
     ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setdeductMarks']),
     bindTexareaChange: _.debounce(function (e) {
       let val = this.textareaVal.replace(/<\/?[^>]*>/g, '')
       val = val.replace(/[^\w\d.?!,;"。？《》！；<> “”\u4e00-\u9fa5]/g, '')
-      if (val.length >= 100) {
-        Toast('请输入内容不得超过100字')
-        this.textareaVal = val.substr(0, 100);
-      } else {
-        this.textareaVal = val
-      }
+      this.textareaVal = val
 
     }, 300),
     bindSave () {
@@ -154,8 +190,10 @@ export default {
       //   Toast('填写扣分原因')
       //   return
       // }
-      let { rangeValue, textareaVal, picVal } = this
-      let totle = this.deductMarks + rangeValue
+      let { rangeValue, textareaVal, picVal, defaltVal, deductMarks } = this
+
+      let totle = rangeValue + deductMarks
+      // console.log(deductMarks, rangeValue, totle)
       if (totle > this.totalPoints) {
         Toast('扣分不能超过总分')
         return
@@ -176,6 +214,7 @@ export default {
       this.setSubmitScoreData(this.submitScoreData)
 
       this.subcategories[this.categoryListIndex].standardList[this.$route.query.standardListIndex].status = true
+      this.subcategories[this.categoryListIndex].standardList[this.$route.query.standardListIndex].deductMarks = rangeValue
 
       this.setSubcategories(this.subcategories)
 
@@ -191,7 +230,7 @@ export default {
       return new Promise((resolve, reject) => {
         files.map(async (item, index) => {
           if (/^image/.test(item.type)) {
-            if (item.size < imgSize) { resolve(item); return }
+            if (item.size < imgSize) { console.log(item); resolve(item); return }
             let reader = new FileReader();
             reader.readAsDataURL(item);
             reader.onloadend = async function () {
@@ -201,7 +240,6 @@ export default {
                 let data = _this.compress(img);
                 let blob = _this.dataURItoBlob(data);
                 let file = new File([blob], item.name, { type: item.type })
-
                 resolve(file)
               }
             }
@@ -228,15 +266,15 @@ export default {
         Toast('文件数量不可大于5个')
         return
       }
-
+      console.log(e)
       let file = await this._uploadFile(e)
-
+      console.log(file)
       var formData = new FormData();
       formData.append('dataFile', file);
       formData.append('prefix', 'cert-check-log');
       this.uploading = true
       Indicator.open({
-        text: '图片上传中...',
+        text: '上传中...',
         spinnerType: 'fading-circle'
       });
       let { data } = await uploadFile(formData)
@@ -279,24 +317,86 @@ export default {
       }
       return new Blob([ia], { type: mimeString });
     },
+    getCamcorder () {
+      this.$refs.upload.setAttribute("capture", 'camcorder');
+      this.$refs.upload.setAttribute("accept", 'video/*');
+      this.$refs.upload.removeAttribute("multiple");
+      this.$refs.upload.click();
+    },
     getCamera () {
       this.$refs.upload.setAttribute("capture", 'camera');
+      this.$refs.upload.setAttribute("accept", 'image/*');
       this.$refs.upload.removeAttribute("multiple");
       this.$refs.upload.click();
     },
     getPhoto () {
       this.$refs.upload.removeAttribute("capture");
+      this.$refs.upload.setAttribute("accept", 'image/*,video/*');
       this.$refs.upload.setAttribute("multiple", 'multiple');
       this.$refs.upload.click();
     },
     bindDeleteImg (index) {
       this.picVal.splice(index, 1)
       sessionStorage.setItem('urls', JSON.stringify(this.picVal))
+    },
+    bindPlayerPlay (player, src) {
+      this.playerOptions.sources[0].src = src
+      // if (!player.isFullscreen()) {
+      //   player.requestFullscreen();
+      //   player.isFullscreen(true);
+      // }
+    },
+    playerStateChanged (src) {
+      this.playerOptions.sources[0].src = src
+    },
+    bindVideoClose () {
+      this.showVideo = false
+    },
+    bindPlay (item, index) {
+      this.showVideo = true
+      this.playerOptions.sources[0].src = item
+      // this.picVal[index].showVideo = true
+      // console.log(this.$refs)
+      // var video = this.$refs.video[0]
+      // if (video.requestFullscreen) {
+      //   // 最新标准
+      //   video.requestFullscreen();
+      // } else if (video.webkitRequestFullscreen) {
+      //   video.webkitRequestFullscreen();
+      // } else {
+      //   // iOS进入全屏
+      //   video.webkitEnterFullscreen();
+
+      //   // 针对iOS监听不到webkitfullscreenchange事件做的兼容，感知退出全屏
+      //   let timer = setInterval(() => {
+      //     if (!video.webkitDisplayingFullscreen) {
+      //       // 退出了全屏
+      //       video.pause()
+      //       clearInterval(timer);
+      //     }
+      //   }, 1000);
+      // }
+      // video.addEventListener('webkitfullscreenchange', () => {
+      //   video.pause()
+      // })
+      // video.play()
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.checkDetail /deep/ .banner .icon-back {
+  padding-left: 24px;
+}
+/deep/ .video-js {
+  padding-top: 0;
+  height: 100%;
+}
+/deep/ .video-js .vjs-big-play-button {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+}
 // /deep/ .mt-range-thumb {
 //   width: 17px;
 //   height: 17px;
@@ -329,11 +429,35 @@ export default {
   height: 90px;
 }
 .checkDetail {
+  .video-box {
+    position: fixed;
+    width: 100vw;
+    height: 100%;
+    z-index: 99;
+    top: 0;
+    left: 0;
+  }
+  .video-player {
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20% 0;
+    background: #000;
+  }
+  .video-close {
+    background: url("../../../assets/imgs/4s/cuowu@2x.png") center center / 100%
+      100%;
+    height: 20px;
+    width: 20px;
+    z-index: 999;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+  }
   .range-rule {
     width: 245px;
     margin: 0 auto;
     position: relative;
-    padding-top: 19px;
+    padding-top: 10px;
 
     .top {
       display: flex;
@@ -386,6 +510,26 @@ export default {
       .source {
         @extend %up_width;
       }
+      .video {
+        @extend %up_width;
+        position: relative;
+        background: #2d2d2d;
+        &::after {
+          content: "";
+          display: block;
+          height: 0;
+          width: 0;
+          border-right: 8px solid #fff;
+          border-bottom: 8px solid #fff;
+          border-top: 8px solid transparent;
+          border-left: 8px solid transparent;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          opacity: 0.8;
+          transform: translate(-50%, -50%) rotate(-45deg);
+        }
+      }
     }
     .up-btn {
       @extend %up_width;
@@ -395,7 +539,7 @@ export default {
     }
   }
   .editor {
-    padding: 17px 28px;
+    padding: 17px 24px;
     .area {
       width: 319px;
       display: block;
@@ -431,6 +575,13 @@ export default {
       // width: 92vw;
       // margin: 0 4vw;
       border-top: 6px solid #f5f5f5;
+      & > h2 {
+        font-size: 14px;
+        font-weight: 500;
+        color: rgba(153, 153, 153, 1);
+        padding: 19px 24px 0 24px;
+        line-height: 1;
+      }
       .tips {
         position: absolute;
         top: 10px;

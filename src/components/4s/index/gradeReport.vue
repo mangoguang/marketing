@@ -28,6 +28,12 @@ export default {
     ContentBox,
     IconBox
   },
+  props: {
+    storeType: {
+      type: Object,
+      default: {}
+    }
+  },
   data () {
     return {
       data1: {
@@ -46,6 +52,13 @@ export default {
   },
   methods: {
     handleClick (linkName) {
+      if (JSON.stringify(this.storeType) != '{}') {
+        this.$router.push({
+          path: '/record',
+          query: this.storeType
+        })
+        return
+      }
       this.$router.push({
         name: linkName
       })

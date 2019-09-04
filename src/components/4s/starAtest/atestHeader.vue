@@ -10,7 +10,8 @@
       <div class="serach">
         <input type="text"
                v-model="searchVal"
-               @input="bindSearch">
+               @input="bindSearch"
+               placeholder="经销商">
       </div>
     </div>
   </div>
@@ -72,13 +73,13 @@ export default {
         14px 14px no-repeat;
       position: absolute;
       top: 50%;
-      left: 5px;
+      left: 19px;
       transform: translateY(-50%);
     }
     input {
       width: 100%;
       box-sizing: border-box;
-      padding-left: 22px;
+      padding-left: 39px;
       padding-right: 5px;
     }
   }

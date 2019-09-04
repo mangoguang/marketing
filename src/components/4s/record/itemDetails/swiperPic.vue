@@ -7,16 +7,16 @@
                     :key="index"
                     :style="{backgroundColor:'#000'}">
         <div class="container">
-          <img v-if='/jpg|jpeg|png|bmp/g.test(item)'
+          <img v-lazy="item"
+               v-if='/jpg|jpeg|png|bmp/g.test(item)'
                :preview='isPreview'
-               :src="item.text"
                alt="">
           <video-player v-if="/mp4/g.test(item)"
                         class="video-player vjs-custom-skin player"
                         ref="myVideoPlayer"
                         :playsinline="true"
-                        :options="playerOptions"
-                        @play="onPlayerPlay($event)">
+                        :options="getPlayerOptions(item)"
+                        @play="onPlayerPlay($event,item)">
           </video-player>
         </div>
       </swiper-slide>
@@ -142,12 +142,20 @@ export default {
       console.log('当前点击索引：', index);
     },
     //点击播放的时候全屏
-    onPlayerPlay (player) {
+    onPlayerPlay (player, src) {
       if (!player.isFullscreen()) {
         player.requestFullscreen();
         player.isFullscreen(true);
       }
+    },
+    getPlayerOptions (src) {
+      this.playerOptions.sources[0].src = src
+      return this.playerOptions
     }
+    // loadeddata (src) {
+    //   console.log(src)
+    //   this.playerOptions.sources[0].src = src;
+    // }
   }
 }
 </script>
@@ -194,17 +202,12 @@ export default {
   height: 64px;
   width: 64px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 /deep/ .video-js .vjs-big-play-button .vjs-icon-placeholder:before,
 .video-js .vjs-modal-dialog,
 .vjs-button > .vjs-icon-placeholder:before,
 .vjs-modal-dialog .vjs-modal-dialog-content {
   display: inline-block;
-  // width: auto;
-  // height: auto;
   line-height: 60px;
 }
 .swiper-slide-active {

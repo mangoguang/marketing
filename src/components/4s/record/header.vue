@@ -54,9 +54,10 @@ export default {
     top: 14vw;
     padding-right: 4vw;
     line-height: 12vw;
+    width: 2.26vw;
     img {
-      width: 2.26vw;
-      height: 4.26vw;
+      width: 100%;
+      height: 100%;
     }
   }
   .title {

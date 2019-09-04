@@ -123,7 +123,7 @@ export const distributorApply = params => {
  *  app - 经销商申请记录列表
  * @param {*} params 
  */
-export const distributorApplys = params => {
+export const distributorLogList = params => {
   return http({
     url: '/api/4s/cert/approve/distributor/logList',
     params

@@ -48,7 +48,7 @@ export default {
   computed: {
     comListData () {
       if (localStorage.getItem('certPositionType') == 'supervisor') {
-        this.iconList.splice(1, 1)
+        this.iconList.splice(0, 1)
         return this.iconList
       } else {
         return this.iconList

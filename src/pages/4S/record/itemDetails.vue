@@ -8,7 +8,7 @@
     <div class="content">
       <select-list :standards="standards"
                    @getActiveData="getActiveData" />
-      <swiperPic :sliders="standardinfo.urls" />
+      <swiperPic :sliders="standardinfo.urls||[]" />
       <div class="rule-box">
         <div class="range-rule">
           <span class="tips">扣{{standardinfo.deduct}}分</span>
@@ -97,6 +97,12 @@ export default {
       let { code, standardinfo } = await checklogStandardinfo(params)
       if (standardinfo) {
         this.standardinfo = standardinfo
+      } else {
+        this.standardinfo = {
+          deduct: 0,
+          reason: '-',
+          urls: []
+        }
       }
     },
     //获取下啦选择框的值
@@ -193,6 +199,7 @@ export default {
       color: #303030;
       font-weight: 500;
       font-size: 3.46vw;
+      word-break: break-all;
     }
   }
 }

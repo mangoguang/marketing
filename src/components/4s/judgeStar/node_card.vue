@@ -2,7 +2,7 @@
 <template>
   <div class="bg">
     <div class="node_card">
-      <h1 class="header">已认证</h1>
+      <h1 class="header">{{comfirmTitle}}</h1>
       <ul class="node_ul">
         <li class="node_li"
             v-for="(item, index) in cofirmList"
@@ -52,7 +52,7 @@
 <script>
 import { parseTime } from '@/utils/tools'
 export default {
-  props: ['cofirmList', 'star', 'status'],      //几星
+  props: ['cofirmList', 'star', 'status', 'comfirmTitle'],      //几星
   data () {
     return {
       itemName: ['经销商', '区域', '4s', '销售中心', '4s认证部', '市场中心', '总裁', '总部'],

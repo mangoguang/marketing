@@ -29,6 +29,8 @@
         <!-- <span>
         </span> -->
       </li>
+      <div class="no-data"
+           v-if="checkLogs.length==0">暂无记录</div>
 
       <!-- <div class="show_more" @click="showMore" v-if="list.length > 3">
         <span>{{moreText}}</span>
@@ -86,6 +88,11 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.no-data {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+}
 .record_card_wrapper {
   width: 100%;
   box-shadow: 0px 0px 1.33vw 0px rgba(204, 204, 204, 0.6);
@@ -131,10 +138,10 @@ export default {
       font-size: 3.2vw;
       line-height: 8vw;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       color: #0e0e0e;
-      padding-left: 4.06vw;
-      padding-right: 2.66vw;
+      // padding-left: 4.06vw;
+      // padding-right: 2.66vw;
       margin-bottom: 1vw;
       box-sizing: border-box;
       &:nth-child(2n + 1) {

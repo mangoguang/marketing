@@ -24,7 +24,7 @@
                       :status="item.status" />
       </div>
       <!-- 底部按钮 -->
-      <div class="btnBot"
+      <div class="btn-bottom"
            v-if="$route.query.isGrade!=1">
         <button @click="toastReset=true"
                 :class="{on: !btnBotStatus}">重置</button>
@@ -37,7 +37,7 @@
       <template v-slot:content>
         <div class="cont">
           <p>该检查得分：<span>{{total.totalPoints-total.deductMarks}}分</span>
-            <span>扣分：-{{total.deductMarks}}分</span>
+            <span>扣分：{{total.deductMarks}}分</span>
           </p>
           <!-- <p>注意：提交后无法修改分数</p> -->
           <div class="bot"
@@ -130,12 +130,15 @@ export default {
 
     this.subcategories.map((item, index) => {
       totalPoints += item.total
-      deductMarks += item.deductLimit
-    })
+      // deductMarks += item.deductLimit
+      item.standardList.map(items => {
 
+        deductMarks += items.deductMarks
+      })
+    })
     this.bigCategoryList = this.subcategories
     this.total.totalPoints = totalPoints;
-    this.total.deductMarks = this.deductMarks;
+    this.total.deductMarks = deductMarks;
     document.querySelector('#app').scrollTop = sessionStorage.getItem('scrollTop');
 
   },
@@ -213,6 +216,7 @@ export default {
         deductMarks += item.deductLimit
         let standardList = []
         item.standardList.map(items => {
+          items.deductMarks = 0
           if (isGrade == 1) {
             items.status = true
           } else {
@@ -228,6 +232,7 @@ export default {
 
       this.submitScoreData.categoryList = categoryList
       this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
+      console.log(this.submitScoreData)
       this.total.totalPoints = totalPoints;
       this.total.deductMarks = (isGrade == 1) ? totalScore : this.deductMarks;
       if (isGrade == 1) {
@@ -268,7 +273,7 @@ export default {
     box-sizing: border-box;
     min-height: 100vh;
   }
-  .btnBot {
+  .btn-bottom {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -276,6 +281,7 @@ export default {
     align-self: flex-end;
     height: 13.34vw;
     display: flex;
+    z-index: 999;
     button {
       width: 50%;
       box-sizing: border-box;

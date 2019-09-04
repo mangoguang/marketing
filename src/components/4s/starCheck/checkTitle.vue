@@ -51,6 +51,7 @@ export default {
   background: #fff;
   // border-bottom: 1px solid #f8f8f8;
   position: relative;
+  padding: 0 24px;
   &:after {
     @extend %border;
   }
@@ -61,7 +62,7 @@ export default {
       line-height: 54px;
       font-size: 14px;
       color: #767a7f;
-      padding: 0 4vw;
+      padding: 0;
     }
   }
   h5.open {

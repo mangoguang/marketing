@@ -16,7 +16,7 @@ export default {
   props: ['star'],
   data () {
     return {
-      list: ['全部', '及格', '不及格'],
+      list: ['全部', '合格', '不合格'],
       activeStar: 0,
       timeoutId: null,
       activeColor: {

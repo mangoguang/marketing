@@ -60,7 +60,7 @@ export default {
   li {
     position: relative;
     color: #2d2d2d;
-    padding: 0 4vw;
+    padding: 0 24px;
     font-size: 16px;
     line-height: 3em;
     background: #fff;
@@ -80,7 +80,7 @@ export default {
     background: url(../../../assets/imgs/4s/starCheck/yes_blue.png) no-repeat,
       #fff;
     background-size: 4.2vw auto;
-    background-position: right 4vw top 50%;
+    background-position: right 24px top 50%;
   }
 }
 .close {

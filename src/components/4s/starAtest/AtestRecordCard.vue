@@ -15,7 +15,7 @@
         <div class="atest_record_card"
              v-for="(item,index) in comDataList"
              :key="index"
-             @click="bindApproveFlowInfo(item.id)">
+             @click="bindApproveFlowInfo(item.id,item.statusString)">
           <div class="header">
             <div class="via">
               <img src="../../../assets/imgs/4s/via.png"
@@ -68,6 +68,7 @@
     <node-card v-if="showNodeCard"
                :cofirmList="cofirmList"
                :status="status"
+               :comfirmTitle="comfirmTitle"
                @onNodeCardClose="showNodeCard=false" />
   </div>
 </template>
@@ -79,7 +80,7 @@ import NodeCard from '@/components/4s/judgeStar/node_card'
 import { Loadmore, Toast } from 'mint-ui';
 import Vue from 'vue'
 Vue.component(Loadmore.name, Loadmore);
-import { distributorApplys, distributorCancel, getApproveFlowInfo } from '@/api/4s'
+import { distributorLogList, distributorCancel, getApproveFlowInfo } from '@/api/4s'
 import { parseTime, geMonthLastDay } from '@/utils/tools.js'
 
 
@@ -114,7 +115,8 @@ export default {
       },
       showNodeCard: false, //认证进度弹窗
       cofirmList: [],
-      activeId: 0
+      activeId: 0,
+      comfirmTitle: ''
     };
   },
   created () {
@@ -134,7 +136,8 @@ export default {
     }
   },
   methods: {
-    async   bindApproveFlowInfo (id) {
+    async   bindApproveFlowInfo (id, statusString) {
+      this.comfirmTitle = statusString
       let { code, data } = await getApproveFlowInfo({ qualificationId: id })
       let cofirmList = Object.keys(data).map(key => {
         var passFail = false
@@ -230,7 +233,7 @@ export default {
     },
     //加载列表数据
     async  _initData (params) {
-      let { data } = await distributorApplys(params)
+      let { data } = await distributorLogList(params)
       if (data.totalPage == 1 || data.totalPage == params.page) {
         this.allLoaded = true
       }
@@ -243,6 +246,7 @@ export default {
 
       if (params.page == 1 && data.list.length == 0) {
         this.noData = true
+        this.allLoaded = true
       } else {
         this.noData = false
       }
@@ -254,12 +258,17 @@ export default {
 .apply-list {
   overflow: hidden;
   padding-top: 44px;
+  position: relative;
 }
 .no-data {
   text-align: center;
   font-size: 12px;
   color: #999;
   padding-top: 20px;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
 }
 .atest_record_card {
   width: 91.46vw;

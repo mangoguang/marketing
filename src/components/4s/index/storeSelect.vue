@@ -69,26 +69,29 @@ export default {
   position: relative;
   overflow: hidden;
   background: #f8f8f8;
-  span {
-    display: inline-block;
-    padding-right: 5vw;
-    max-width: 86vw;
-    height: 10.67vw;
-    line-height: 10.67vw;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    vertical-align: top;
-  }
+
   h3 {
     font-size: 14px;
     text-align: center;
     color: #363636;
-    line-height: 3em;
+    line-height: 1;
+    padding-top: 10px;
     span {
+      display: inline-block;
+      padding-right: 5px;
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    &:after {
+      content: "";
+      display: inline-block;
       background: url(../../../assets/imgs/4s/starCheck/zhankai.png) no-repeat;
       background-size: 3.2vw auto;
-      background-position: right 0 top 50%;
+      width: 3.2vw;
+      height: 7px;
+      transition: all 0.8s;
     }
   }
   ul {
@@ -102,6 +105,17 @@ export default {
       padding: 0 4.4vw;
       color: #909090;
       background: #fff;
+      span {
+        display: inline-block;
+        padding-right: 5vw;
+        max-width: 86vw;
+        height: 10.67vw;
+        line-height: 10.67vw;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
+      }
     }
   }
 }
@@ -110,5 +124,10 @@ export default {
   height: 10.67vw;
   background: #fff;
   overflow: visible;
+  h3 {
+    &:after {
+      transform: rotate(-180deg);
+    }
+  }
 }
 </style>

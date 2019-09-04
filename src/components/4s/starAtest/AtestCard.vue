@@ -1,8 +1,7 @@
 <!--  -->
 <template>
   <div class="loadmore-wrapper"
-       ref="wrapper"
-       :style="{ height: wrapperHeight + 'px' }">
+       ref="wrapper">
     <mt-loadmore :top-method="loadTop"
                  :bottom-method="loadBottom"
                  :bottom-all-loaded="allLoaded"
@@ -26,7 +25,7 @@
           <div class="time">
             <p>检查周期：{{item.cycleCheckTotal}}周</p>
             <p>累计周期：{{item.accumulativeCycle}}周</p>
-            <p>开始时间：{{item.checkStartTime}}</p>
+            <p>开始时间：{{item.checkStartTime||'-'}}</p>
           </div>
           <div class="buttMan">
             <div class="head_line"></div>
@@ -110,6 +109,7 @@ export default {
   methods: {
     async  _initData (page = 1, key = "") {
       let { code, data } = await distributorList({ page, limit: 20, key })
+      console.log(data)
       data.list.map(item => {
         item.isEdit = true
         item.isReadOnly = true
@@ -177,6 +177,7 @@ export default {
       if (code == 0) {
         item.nameVal = ''
         item.telVal = ''
+        this._initData()
       }
       Toast(msg);
     }
@@ -208,7 +209,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 0 1.6vw;
+    padding: 0 13px;
     padding-top: 4vw;
     box-sizing: border-box;
     .left_text {
@@ -233,12 +234,14 @@ export default {
   .time {
     color: #666;
     font-size: 3.73vw;
-    padding-left: 1.6vw;
+    padding-left: 13px;
   }
   .buttMan {
     width: 100%;
     height: 23.86vw;
     margin-top: 2.4vw;
+    padding: 0 13px;
+    box-sizing: border-box;
     // border-top:1px solid #ff964c;
     // border-bottom:1px solid #ff964c;
     .head_line {
@@ -261,10 +264,11 @@ export default {
       font-size: 3.73vw;
       display: flex;
       justify-content: space-between;
-      padding: 1.4vw 2.4vw 0 1.6vw;
+      padding-top: 1.4vw;
       box-sizing: border-box;
       height: 8vw;
       .edit_btn {
+        padding-top: 1.4vw;
         img {
           width: 5.06vw;
           height: 5.06vw;
@@ -286,7 +290,7 @@ export default {
       }
     }
     .content {
-      padding: 0 2.4vw 0 1.6vw;
+      padding: 0;
       box-sizing: border-box;
 
       .name,
@@ -325,7 +329,7 @@ export default {
     display: flex;
     justify-content: flex-end;
     width: 100%;
-    padding: 2.26vw 1.6vw 1.6vw 1.6vw;
+    padding: 2.26vw 0 1.6vw 0;
     box-sizing: border-box;
     button {
       width: 21.33vw;
@@ -336,6 +340,8 @@ export default {
       font-size: 4vw;
       font-weight: 500;
       text-align: center;
+      padding: 0;
+      margin-right: 13px;
     }
   }
 }

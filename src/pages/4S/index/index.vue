@@ -11,7 +11,7 @@
     <!--星级认证-->
     <starAttestation v-permission="['Dealer Boss','supervisor']" />
     <!-- 评分报表 -->
-    <GradeReport :type="'gradeReport'" />
+    <GradeReport :storeType="storeType" />
     <!-- 配置权限 -->
     <!-- <ModuleConfig /> -->
   </div>
@@ -42,12 +42,24 @@ export default {
       soreClass: 5,
       shops: [{ name: '' }],
       categories: [],
-      shopId: 0
+      shopId: 0,
+      storeType: {}
     }
   },
   async created () {
-    if (localStorage.getItem('certPositionType') == 'supervisor') return
+    let certPositionType = localStorage.getItem('certPositionType')
+    if (certPositionType == 'supervisor' || certPositionType == 'Dealer Boss') return
     this._initData()
+  },
+  beforeRouteEnter (to, from, next) {
+
+    let routeName = ['work']
+    if (routeName.includes(to.name)) {
+      to.meta.keepAlive = false
+    } else {
+      to.meta.keepAlive = true
+    }
+    next()
   },
   methods: {
     ...mapMutations(['setShopId']),
@@ -62,11 +74,12 @@ export default {
         });
         return
       }
-      if (shops.length > 0) {
+      if (shops && shops.length > 0) {
         this.shops = shops
         this.shopId = shops[0].id
         this.setShopId(shops[0].id)
         this.soreClass = shops[0].starLevel
+        this.storeType = { shopName: shops[0].name, shopId: shops[0].id }
       }
 
     },
@@ -75,6 +88,7 @@ export default {
       this.setShopId(item.id)
       this.shopId = item.id
       this.soreClass = item.starLevel
+      this.storeType = { shopName: item.name, shopId: item.id }
     }
   }
 }

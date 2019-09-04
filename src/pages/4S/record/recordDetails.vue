@@ -50,7 +50,7 @@ export default {
   },
   created () {
     let params = this.$route.query
-
+    console.log(params)
     this._initData(params)
   },
   mounted () {

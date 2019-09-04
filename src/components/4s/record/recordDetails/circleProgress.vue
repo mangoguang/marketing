@@ -21,7 +21,7 @@
               :style="{color: textColor}">{{scoreArr[1]}}</span> -->
         </p>
         <p class="num_star"
-           :class="score>=80?'on_star':'un_star'">{{score>=80?'及格':'不及格'}} </p>
+           :class="score>=80?'on_star':'un_star'">{{score>=80?'合格':'不合格'}} </p>
       </div>
     </div>
   </div>
@@ -32,8 +32,6 @@ export default {
   props: ['score', 'star'],
   data () {
     return {
-
-      activeColor: this.score >= 80 ? '#007aff' : '#F88675',
       textColor: ''
     };
   },
@@ -47,6 +45,9 @@ export default {
         transform: 'rotate(' + 3.3 * this.score + 'deg)',
         borderColor: this.score >= 80 ? '#007aff' : '#F88675'
       }
+    },
+    activeColor () {
+      return this.score >= 80 ? '#007aff' : '#F88675'
     }
   },
   methods: {
@@ -60,7 +61,6 @@ div {
 }
 .wrapper {
   height: 114px;
-  overflow: hidden;
   margin-top: 7.33vw;
 }
 .circleProgress {

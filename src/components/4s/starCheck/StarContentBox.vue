@@ -30,7 +30,7 @@ export default {
     this._getCategories(this.$route.query.shopId)
   },
   methods: {
-    ...mapMutations(['setLevelId']),
+    ...mapMutations(['setLevelId', 'setShopId']),
     async _getCategories (shopId) {
       let { code, categories, msg } = await gradeCategories({ shopId })
       this.categories = categories || []
@@ -38,6 +38,7 @@ export default {
     //保存几星检查
     bindSetLevelId (levelId) {
       this.setLevelId(levelId)
+      this.setShopId(this.$route.query.shopId);
     }
   }
 }

@@ -34,7 +34,7 @@
       <div class="more"
            v-if="item.shopList.length>4"
            @click="$emit('onToggleMore',parentIndex)"
-           :class="{'more-acitve':item.more}">{{item.more?'收起':'点击更多'}}</div>
+           :class="{'more-active':item.more}">{{item.more?'收起':'点击更多'}}</div>
     </div>
 
   </div>
@@ -78,6 +78,7 @@ export default {
     box-sizing: border-box;
     .via {
       height: 61px;
+      padding-left: 8px;
       img {
         width: 61px;
         height: 61px;
@@ -131,10 +132,12 @@ export default {
     .more-active {
       &::after {
         @extend %foot;
-        transform: rotateZ(0);
+        transform: rotateZ(-225deg);
+        transform-origin: center 5px;
       }
     }
   }
+
   .content {
     margin-top: 5px;
     padding: 1.4vw;
@@ -146,7 +149,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 1.2vw;
+      padding-right: 1.2vw;
       box-sizing: border-box;
       height: 30px;
       line-height: 30px;

@@ -677,7 +677,7 @@ export default class Common {
     } else {
       if (str.slice(0, 3) === "99猪") {
         //console.log('原来的',str)
-        let newStr = str.slice(3, );
+        let newStr = str.slice(3,);
         //console.log('之后的',newStr)
         string = Base64.decode(newStr)
         //console.log('最后的',string)

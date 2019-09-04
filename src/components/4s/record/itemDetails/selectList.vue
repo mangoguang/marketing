@@ -20,7 +20,8 @@
           :key='index + item'
           @click="handleItemSelect(index)">
         <span class="item-left">{{item.name}}</span>
-        <span class="item-right">{{item.deduct||0}}分</span>
+        <span class="item-right"
+              v-if="item.deduct!=0">{{-item.deduct||0}}分</span>
       </li>
     </ul>
   </div>
@@ -146,7 +147,7 @@ export default {
       .item-right {
         color: #000;
         font-size: 3.46vw;
-        min-width: 23px;
+        min-width: 36px;
       }
     }
     .active {

@@ -94,7 +94,7 @@ export default {
     height: calc(100vh - 35.33vw);
     box-sizing: border-box;
     overflow: scroll;
-    padding: 0 2.13vw;
+    padding: 0 10px;
     box-sizing: border-box;
     text-align: center;
     font-size: 3.2vw;

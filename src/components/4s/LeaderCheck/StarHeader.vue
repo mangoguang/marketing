@@ -6,7 +6,8 @@
       <egg-sort />
       <div class="search">
         <input type="text"
-               v-model="searchVal">
+               v-model="searchVal"
+               placeholder="搜索">
       </div>
     </div>
   </star-header>
@@ -52,14 +53,17 @@ export default {
       100% no-repeat;
     position: absolute;
     top: 50%;
-    left: 5px;
+    left: 19px;
     transform: translateY(-50%);
   }
   input {
     width: 100%;
     box-sizing: border-box;
-    padding-left: 22px;
+    padding-left: 38px;
     padding-right: 5px;
+  }
+  ::-webkit-input-placeholder {
+    padding-left: 5px;
   }
 }
 </style>

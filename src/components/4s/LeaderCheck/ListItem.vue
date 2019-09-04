@@ -18,9 +18,11 @@
         </li> -->
       </ul>
       <div class="right-box"
+           :class="{'has-check':item.isGrade==1}"
            @click="bindNavigatorStartCheck(item.id)">
-        <span>去评分</span>
-        <img src="../../../assets/imgs/4s/right_2.png"
+        <span>{{item.isGrade!=1?'去评分':'已评分'}}</span>
+        <img v-if="item.isGrade!=1"
+             src="../../../assets/imgs/4s/right_2.png"
              alt="">
       </div>
     </div>
@@ -190,6 +192,16 @@ export default {
       width: 1.6vw;
       height: auto;
       margin-left: 1vw;
+    }
+  }
+  .has-check {
+    box-sizing: border-box;
+    padding-left: 17px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAALVBMVEVHcExM2WRM2mNP2WBL2WRM2WRM2WNM2mRH12ZM2WNM2WRM2mNM2mRL12NM2WT1w2PbAAAADnRSTlMA79sPMcyhcRlAkbVJFgfB9OUAAAEySURBVDjLY2CAAsuyQEFB0fTJDGjATe8dGDxNQRX3fgcHW5DF294hgQyEOI8essSjA3CJunco4DlMnOsdGlgAlViHLvEKIs7+DgMUgCXmYUq8BInzymFKPLwAlGB7hwUkACX8sEk8AUrswybxmoGB5R1W4IDpO5gfjdCFNCeBSGUMXzy9wALxCVoAvtOA2PqcIQ9dA0MTiH7GEIeugRcs8pRBDquGdw/RJGAa0CXgGuAS4oWoGuASB1j0UDTAJQwYHFE0ACXioOEP1IKkAejcPFj0OyJrAHqwDhaaLEJIGoBBMg+eYjyQNAAD0QgpkSE0AIOdC5HIkDSAjEYwm1CiFp4YXnnGoSQG3MkHZ4LDmURxJmrc2QBnxsGd1XBmTtzZGWcBgLvIQBQyj1LQix/0YgkAyhwLOF2lENkAAAAASUVORK5CYII=)
+        5px center/ 3.2vw auto no-repeat,
+      #cff4d2;
+    span {
+      color: #4cd964;
     }
   }
 }
