@@ -55,7 +55,7 @@ export default {
   props: ['cofirmList', 'star', 'status', 'comfirmTitle'],      //几星
   data () {
     return {
-      itemName: ['经销商', '区域', '4s', '销售中心', '4s认证部', '市场中心', '总裁', '总部'],
+      itemName: ['经销商', '区域片区', '4s认证部', '总部', '总部'],
 
       lineStyle: {}
     };
@@ -190,6 +190,7 @@ export default {
           border-radius: 0px 1.6vw 1.6vw 1.6vw;
           border: 1px solid #e1e1e1;
           padding: 0 1.6vw;
+          margin-bottom: 10px;
         }
       }
       &:last-child {

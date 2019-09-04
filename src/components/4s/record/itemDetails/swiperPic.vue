@@ -109,7 +109,7 @@ export default {
           src: 'http://vjs.zencdn.net/v/oceans.mp4',
           type: 'video/mp4'
         }],
-        poster: "./static/images/4s/1.png", //你的封面地址
+        poster: "", //你的封面地址
         // width: document.documentElement.clientWidth,
         notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {

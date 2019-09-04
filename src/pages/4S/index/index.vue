@@ -53,8 +53,8 @@ export default {
   },
   beforeRouteEnter (to, from, next) {
 
-    let routeName = ['work']
-    if (routeName.includes(to.name)) {
+    let routeName = ['work', 'Login']
+    if (routeName.includes(from.name)) {
       to.meta.keepAlive = false
     } else {
       to.meta.keepAlive = true

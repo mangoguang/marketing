@@ -169,11 +169,19 @@ export default {
   beforeRouteLeave (to, from, next) {
     let pswp = document.querySelector('.pswp')
     let domColse = document.querySelector('.pswp__button--close')
+
     if (pswp.getAttribute('aria-hidden') == 'false') {
       domColse.click()
       next(false)
     } else {
-      next()
+      if (this.uploading) {
+        Indicator.close();
+        this.uploading = false
+        next(false)
+      } else {
+        next()
+      }
+
     }
 
   },
@@ -266,9 +274,7 @@ export default {
         Toast('文件数量不可大于5个')
         return
       }
-      console.log(e)
       let file = await this._uploadFile(e)
-      console.log(file)
       var formData = new FormData();
       formData.append('dataFile', file);
       formData.append('prefix', 'cert-check-log');
@@ -282,6 +288,7 @@ export default {
       this.picVal.push(data.url)
       this.uploading = false
       Indicator.close();
+
 
     },
     // 压缩图片
@@ -339,47 +346,12 @@ export default {
       this.picVal.splice(index, 1)
       sessionStorage.setItem('urls', JSON.stringify(this.picVal))
     },
-    bindPlayerPlay (player, src) {
-      this.playerOptions.sources[0].src = src
-      // if (!player.isFullscreen()) {
-      //   player.requestFullscreen();
-      //   player.isFullscreen(true);
-      // }
-    },
-    playerStateChanged (src) {
-      this.playerOptions.sources[0].src = src
-    },
     bindVideoClose () {
       this.showVideo = false
     },
     bindPlay (item, index) {
       this.showVideo = true
       this.playerOptions.sources[0].src = item
-      // this.picVal[index].showVideo = true
-      // console.log(this.$refs)
-      // var video = this.$refs.video[0]
-      // if (video.requestFullscreen) {
-      //   // 最新标准
-      //   video.requestFullscreen();
-      // } else if (video.webkitRequestFullscreen) {
-      //   video.webkitRequestFullscreen();
-      // } else {
-      //   // iOS进入全屏
-      //   video.webkitEnterFullscreen();
-
-      //   // 针对iOS监听不到webkitfullscreenchange事件做的兼容，感知退出全屏
-      //   let timer = setInterval(() => {
-      //     if (!video.webkitDisplayingFullscreen) {
-      //       // 退出了全屏
-      //       video.pause()
-      //       clearInterval(timer);
-      //     }
-      //   }, 1000);
-      // }
-      // video.addEventListener('webkitfullscreenchange', () => {
-      //   video.pause()
-      // })
-      // video.play()
     }
   }
 }

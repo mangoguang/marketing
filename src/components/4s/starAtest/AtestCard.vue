@@ -97,7 +97,8 @@ export default {
       allLoaded: false,
       page: 1,
       noData: false,
-      wrapperHeight: 0
+      wrapperHeight: 0,
+      level: ['一星', '二星', '三星', '四星', '五星']
     };
   },
   created () {
@@ -113,6 +114,7 @@ export default {
       data.list.map(item => {
         item.isEdit = true
         item.isReadOnly = true
+        item.approveLevel = this.level[item.approveLevel - 1] || '-'
       })
 
       this.dataList = page == 1 ? data.list : this.dataList.concat(data.list)

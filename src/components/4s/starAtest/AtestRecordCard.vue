@@ -104,7 +104,7 @@ export default {
         sort: 'desc'
       },
       level: ['一星', '二星', '三星', '四星', '五星'],
-      status: [{ name: '已申请', color: 'blue' }, { name: '已退回', color: 'red' }, { name: '已撤销', color: 'red' }, { name: '区域经理已受理（评分中）', color: 'blue' }, { name: '区域经理已评分（通过）', color: 'ok' }, { name: '区域经理未通过', color: 'red' }, { name: '区域经理发起认证', color: 'blue' }, { name: '4s认证部已受理', color: 'ok' }, { name: '4s认证部已评分（通过）', color: 'ok' }, { name: '4s认证部未通过', color: 'red' }, { name: '4s认证部发起认证', color: 'blue' }, { name: 'OA认证通过', color: 'ok' }, { name: 'OA认证未通过', color: 'red' }],
+      status: [{ name: '已申请', color: 'blue' }, { name: '已退回', color: 'red' }, { name: '已撤销', color: 'red' }, { name: '区域经理已受理', color: 'blue' }, { name: '区域经理已评分', color: 'ok' }, { name: '区域经理未通过', color: 'red' }, { name: '区域经理发起认证', color: 'blue' }, { name: '4s认证部已受理', color: 'ok' }, { name: '4s认证部已评分', color: 'ok' }, { name: '4s认证部未通过', color: 'red' }, { name: '4s认证部发起认证', color: 'blue' }, { name: 'OA认证通过', color: 'ok' }, { name: 'OA认证未通过', color: 'red' }],
       noData: false,
       tipsStatus: false, //弹窗
       tipsData: { //弹窗内容
@@ -144,9 +144,14 @@ export default {
         data[key].map((item) => {
           passFail = [2, 3, 6, 10, 13].includes(item.status)
         })
+        // console.log({ typeList: data[key], passFail })
         return { typeList: data[key], passFail }
       })
+      cofirmList.push(cofirmList[7])
+      cofirmList[7].passFail ? cofirmList[7].passFail = false : cofirmList[7].passFail
+      cofirmList.splice(2, 4)
       this.cofirmList = cofirmList
+
       this.showNodeCard = true
     },
     async  onComfim (val) {
