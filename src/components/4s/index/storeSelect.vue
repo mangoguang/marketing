@@ -1,11 +1,15 @@
 <!--  -->
 <template>
   <div :class="`storeSelect ${storeSelectShow ? 'on' : ''}`">
-    <h3><span @click.stop="showStoreList">{{shops[selectIndex].name}}</span></h3>
+    <h3>
+      <span @click.stop="showStoreList">{{shops[selectIndex]&&shops[selectIndex].name}}</span>
+    </h3>
     <ul @click="storeSelectShow = false">
       <li @click.stop="bindSelect(index,item)"
           v-for="(item, index) in shops"
-          :key="`shops${index}`"><span>{{item.name}}</span></li>
+          :key="`shops${index}`">
+        <span>{{item.name}}</span>
+      </li>
     </ul>
   </div>
 </template>
@@ -16,17 +20,17 @@ export default {
     shops: {
       type: Array,
       default: () => {
-        return []
+        return [{ name: '' }]
       }
     }
   },
-  data () {
+  data() {
     return {
-      selectIndex: 0,
+      selectIndex: sessionStorage.getItem('selectIndex') || 0,
       storeSelectShow: false
     }
   },
-  created () {
+  created() {
     this.$nextTick(() => {
       document.onclick = () => {
         this.storeSelectShow = false
@@ -34,14 +38,14 @@ export default {
     })
   },
   methods: {
-    async  _initData () {
+    async _initData() {
       let { code, msg, shops } = await gradeShops()
       if (code != 0) {
         Toast({
           message: msg,
           position: 'middle',
           duration: 2000
-        });
+        })
         return
       }
       if (shops.length > 0) {
@@ -50,13 +54,13 @@ export default {
         this.setShopId(shops[0].id)
         this.soreClass = shops[0].starLevel
       }
-
     },
-    showStoreList () {
+    showStoreList() {
       this.storeSelectShow = !this.storeSelectShow
     },
-    bindSelect (index, item) {
+    bindSelect(index, item) {
       this.selectIndex = index
+      sessionStorage.setItem('selectIndex', index)
       this.storeSelectShow = false
       this.$emit('onGetStoreId', item)
     }
@@ -74,8 +78,12 @@ export default {
     font-size: 14px;
     text-align: center;
     color: #363636;
-    line-height: 1;
+    line-height: 1.1;
     padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
     span {
       display: inline-block;
       padding-right: 5px;
@@ -83,10 +91,11 @@ export default {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      padding-top: 2px;
     }
     &:after {
-      content: "";
-      display: inline-block;
+      content: '';
+      display: block;
       background: url(../../../assets/imgs/4s/starCheck/zhankai.png) no-repeat;
       background-size: 3.2vw auto;
       width: 3.2vw;

@@ -1,15 +1,20 @@
 <!--  -->
 <template>
-  <div class="leader-check">
+  <div class="leader-check"
+       ref="shops">
     <div class="header">
-      <star-header />
+      <star-header ref="header"
+                   @onSearch="onSearch" />
     </div>
-    <ul class="content">
+    <ul class="content"
+        v-if="shops&&shops.length>0">
       <list-item v-for="(item,index) in shops"
                  :key="item.id"
                  :item="item"
                  :listId="index" />
     </ul>
+    <div class="no-data"
+         v-else>暂无记录</div>
   </div>
 </template>
 
@@ -23,23 +28,41 @@ export default {
     StarHeader,
     ListItem
   },
-  data () {
+  data() {
     return {
       shops: []
     }
   },
-  created () {
+  created() {
     this._initData()
   },
+  provide() {
+    return {
+      proSort: this._initData
+    }
+  },
   methods: {
-    async _initData () {
-      let { code, msg, shops } = await gradeShops()
-      this.shops = shops;
+    async _initData(name = '', order = 'desc') {
+      let { code, msg, shops } = await gradeShops({
+        name,
+        order,
+        sidx: 'inspect_time'
+      })
+      this.shops = shops
+    },
+    onSearch(val) {
+      this._initData(val)
     }
   }
 }
 </script>
 <style lang='scss' scoped>
+.no-data {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+  padding: 20px;
+}
 .leader-check {
   background: #f5f5f5;
   height: 100vh;

@@ -6,8 +6,8 @@
       <egg-sort />
       <div class="search">
         <input type="text"
-               v-model="searchVal"
-               placeholder="搜索">
+               placeholder="搜索"
+               @input="bindSearch">
       </div>
     </div>
   </star-header>
@@ -17,16 +17,20 @@
 <script>
 import starHeader from '../record/header'
 import eggSort from '../filter/sort'
+import _ from 'lodash'
 
 export default {
   components: {
     starHeader,
     eggSort
   },
-  data () {
-    return {
-      searchVal: ''
-    };
+  data() {
+    return {}
+  },
+  methods: {
+    bindSearch: _.debounce(function(e) {
+      this.$emit('onSearch', e.target.value)
+    }, 300)
   }
 }
 </script>
@@ -45,7 +49,7 @@ export default {
   transform: translateY(-50%);
   right: 23px;
   &::before {
-    content: "";
+    content: '';
     display: block;
     width: 16px;
     height: 16px;

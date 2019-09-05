@@ -37,7 +37,7 @@ export default {
     ModuleConfig,
     starAttestation
   },
-  data () {
+  data() {
     return {
       soreClass: 5,
       shops: [{ name: '' }],
@@ -46,32 +46,33 @@ export default {
       storeType: {}
     }
   },
-  async created () {
+  async created() {
     let certPositionType = localStorage.getItem('certPositionType')
-    if (certPositionType == 'supervisor' || certPositionType == 'Dealer Boss') return
+    if (certPositionType == 'supervisor' || certPositionType == 'Dealer Boss')
+      return
     this._initData()
   },
-  beforeRouteEnter (to, from, next) {
+  // beforeRouteEnter (to, from, next) {
 
-    let routeName = ['work', 'Login']
-    if (routeName.includes(from.name)) {
-      to.meta.keepAlive = false
-    } else {
-      to.meta.keepAlive = true
-    }
-    next()
-  },
+  //   let routeName = ['work', 'Login']
+  //   if (routeName.includes(from.name)) {
+  //     to.meta.keepAlive = false
+  //   } else {
+  //     to.meta.keepAlive = true
+  //   }
+  //   next()
+  // },
   methods: {
     ...mapMutations(['setShopId']),
 
-    async  _initData () {
+    async _initData() {
       let { code, msg, shops } = await gradeShops()
       if (code != 0) {
         Toast({
           message: msg,
           position: 'middle',
           duration: 2000
-        });
+        })
         return
       }
       if (shops && shops.length > 0) {
@@ -81,10 +82,9 @@ export default {
         this.soreClass = shops[0].starLevel
         this.storeType = { shopName: shops[0].name, shopId: shops[0].id }
       }
-
     },
 
-    onGetStoreId (item) {
+    onGetStoreId(item) {
       this.setShopId(item.id)
       this.shopId = item.id
       this.soreClass = item.starLevel

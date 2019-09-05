@@ -2,13 +2,15 @@
 <template>
   <div class="sortContent">
     <ul class="content">
-      <li class="li border-bottom" 
-          v-for="(item,index) in list" :key="item + index"
+      <li class="li border-bottom"
+          v-for="(item,index) in list"
+          :key="item + index"
           @click="handleClick(index)">
-          <span :class="{active: activeIndex === index}">{{ item }}</span>
-          <img  v-show="activeIndex === index"
-                src="../../../assets/imgs/4s/starCheck/checked.png" alt="">
-      </li> 
+        <span :class="{active: activeIndex === index}">{{ item }}</span>
+        <img v-show="activeIndex === index"
+             src="../../../assets/imgs/4s/starCheck/checked.png"
+             alt="">
+      </li>
     </ul>
   </div>
 </template>
@@ -16,18 +18,20 @@
 <script>
 export default {
   props: ['list'],
-  data () {
+  data() {
     return {
       activeIndex: 0
-    };
+    }
   },
+  inject: ['proSort'],
   methods: {
     handleClick(index) {
       this.activeIndex = index
       const data = {
         index
       }
-      this.$emit('selectIndex',data)
+      this.proSort('', index == 0 ? 'desc' : 'asc')
+      this.$emit('selectIndex', data)
     }
   }
 }
@@ -56,7 +60,7 @@ export default {
     }
     .active {
       color: #363636;
-      font-weight: 500
+      font-weight: 500;
     }
   }
 }

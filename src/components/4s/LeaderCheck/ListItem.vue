@@ -12,10 +12,10 @@
           <span>检查周期:</span>
           <span> {{item.cycle*4}}周</span>
         </li>
-        <!-- <li>
+        <li>
           <span>检查时间:</span>
-          <span>2019-07-14</span>
-        </li> -->
+          <span>{{item.inspectTime.split(' ')[0]}}</span>
+        </li>
       </ul>
       <div class="right-box"
            :class="{'has-check':item.isGrade==1}"
@@ -33,17 +33,16 @@
 <script>
 export default {
   props: ['item', 'listId'],
-  data () {
+  data() {
     return {
       score: 99
-    };
+    }
   },
   methods: {
     //去星级检查
-    bindNavigatorStartCheck (shopId) {
+    bindNavigatorStartCheck(shopId) {
       this.$router.push({ path: '/starCheck', query: { shopId } })
     }
-
   }
 }
 </script>
@@ -89,7 +88,7 @@ export default {
       margin-top: -2vw;
       padding: 0 2vw;
       ::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -111,7 +110,7 @@ export default {
       margin-top: -2vw;
       padding: 0 2vw;
       ::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -156,7 +155,7 @@ export default {
       }
     }
     .details {
-      padding-top: 12px;
+      // padding-top: 12px;
       box-sizing: border-box;
       li {
         color: #666;

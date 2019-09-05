@@ -18,18 +18,17 @@ export default {
   components: {
     AtestHeader,
     AtestRecordCard
-
   },
   methods: {
     //搜索
-    onSearch (searchVal) {
+    onSearch(searchVal) {
       let params = {
         page: 1,
         limit: 10,
-        starLevel: 1,
+        // starLevel: 1,
         // status: 1,
-        startDate: parseTime(new Date(), '{y}-{m}') + '-01',
-        endDate: parseTime(geMonthLastDay(), '{y}-{m}-{d}'),
+        // startDate: parseTime(new Date(), '{y}-{m}') + '-01',
+        // endDate: parseTime(geMonthLastDay(), '{y}-{m}-{d}'),
         sort: 'desc',
         key: searchVal
       }
