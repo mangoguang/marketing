@@ -15,7 +15,7 @@
           <div class="header">
             <div class="left_text">
               <p class="name">{{item.distributor}}</p>
-              <p claas='star'>认证星级：{{item.approveLevel||'-'}}</p>
+              <p claas='star'>认证星级：{{item.approveLevelStr||'-'}}</p>
             </div>
             <div class="right_text">
               <img src="../../../assets/imgs/4s/via.png"
@@ -85,12 +85,11 @@
 <script>
 import { distributorList, distributorApply } from '@/api/4s'
 import Vue from 'vue'
-import { Loadmore, Toast } from 'mint-ui';
-Vue.component(Loadmore.name, Loadmore);
+import { Loadmore, Toast } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
 export default {
-  data () {
+  data() {
     return {
-
       nameVal: '',
       telVal: '',
       dataList: [],
@@ -99,62 +98,63 @@ export default {
       noData: false,
       wrapperHeight: 0,
       level: ['一星', '二星', '三星', '四星', '五星']
-    };
+    }
   },
-  created () {
+  created() {
     this._initData()
   },
-  mounted () {
-    this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+  mounted() {
+    this.wrapperHeight =
+      document.documentElement.clientHeight -
+      this.$refs.wrapper.getBoundingClientRect().top
   },
   methods: {
-    async  _initData (page = 1, key = "") {
+    async _initData(page = 1, key = '') {
       let { code, data } = await distributorList({ page, limit: 20, key })
       console.log(data)
       data.list.map(item => {
         item.isEdit = true
         item.isReadOnly = true
-        item.approveLevel = this.level[item.approveLevel - 1] || '-'
+        item.approveLevelStr = this.level[item.approveLevel - 1] || '-'
       })
 
       this.dataList = page == 1 ? data.list : this.dataList.concat(data.list)
-      this.allLoaded = false;
+      this.allLoaded = false
       if (data.totalPage == 1) {
         this.allLoaded = true
       }
       if (page == 1 && data.list.length == 0) {
         this.noData = true
       }
-
     },
-    loadTop () {
-      this.page = 1;
+    loadTop() {
+      this.page = 1
       this._initData()
-      this.$refs.loadmore.onTopLoaded();
+      this.$refs.loadmore.onTopLoaded()
     },
-    loadBottom () {
+    loadBottom() {
       this.page++
       this._initData(this.page)
-      this.allLoaded = true;// 若数据已全部获取完毕
-      this.$refs.loadmore.onBottomLoaded();
+      this.allLoaded = true // 若数据已全部获取完毕
+      this.$refs.loadmore.onBottomLoaded()
     },
-    bindBottomChange (status) {
+    bindBottomChange(status) {
       console.log(status)
     },
-    handleEdit (index) {
+    handleEdit(index) {
       let item = this.dataList[index]
       item.isEdit = !item.isEdit
       item.isReadOnly = !item.isReadOnly
       this.$refs['inputName' + index][0].focus()
     },
-    handleCloseBtn (index) {
+    handleCloseBtn(index) {
       let item = this.dataList[index]
       item.isEdit = !item.isEdit
       item.isReadOnly = !item.isReadOnly
       item.nameVal = ''
       item.telVal = ''
     },
-    handleComfirmBtn (index) {
+    handleComfirmBtn(index) {
       let item = this.dataList[index]
       item.isEdit = !item.isEdit
       item.isReadOnly = !item.isReadOnly
@@ -164,24 +164,30 @@ export default {
       }
       this.$emit('getMeg', val)
     },
-    async  bindApply (index) {
+    async bindApply(index) {
       let item = this.dataList[index]
       let { province, empowerCity } = item
       if (!item.nameVal) {
-        Toast('请填写对接人姓名');
+        Toast('请填写对接人姓名')
         return
       }
       if (!item.telVal) {
-        Toast('请填写对接人电话');
+        Toast('请填写对接人电话')
         return
       }
-      let { code, msg, data } = await distributorApply({ province, empowerCity, agentName: item.nameVal, agentPhone: item.telVal, starLevel: item.approveLevel })
+      let { code, msg, data } = await distributorApply({
+        province,
+        empowerCity,
+        agentName: item.nameVal,
+        agentPhone: item.telVal,
+        starLevel: item.approveLevel
+      })
       if (code == 0) {
         item.nameVal = ''
         item.telVal = ''
         this._initData()
       }
-      Toast(msg);
+      Toast(msg)
     }
   }
 }
@@ -249,7 +255,7 @@ export default {
     .head_line {
       position: relative;
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -314,7 +320,7 @@ export default {
       margin-top: 1.4vw;
       position: relative;
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
