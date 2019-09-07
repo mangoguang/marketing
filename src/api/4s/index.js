@@ -20,7 +20,7 @@ export const loginAcount = params => {
 }
 
 
-//获取星级
+//获取用户信息
 export const userinfo = params => {
   return http({
     url: '/api/app/userinfo',
@@ -77,6 +77,18 @@ export const gradeSubcategories = params => {
 export const uploadFile = params => {
   return http({
     url: '/api/upload/file',
+    method: 'post',
+    params
+  }, true)
+}
+
+/**
+ *  4 上传视频或图片
+ * @param {*} params 
+ */
+export const uploadFiles = params => {
+  return http({
+    url: '/api/upload/files',
     method: 'post',
     params
   }, true)

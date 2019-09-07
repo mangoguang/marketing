@@ -18,9 +18,13 @@
             <div class="text"
                  v-for="(items) in item.typeList"
                  :key="items.id">
-              <p>{{items.createTime+' '+items.remark}}</p>
-              <span :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}"
-                    @click="handleDetailClick(items)">{{status[items.status-1]['name'] }}</span>
+              <p>
+                {{items.createTime}}
+                <span @click="handleDetailClick(items)"
+                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}">{{status[items.status-1]['name'] }}</span>
+              </p>
+              <!-- <span :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}"
+                    @click="handleDetailClick(items)">{{status[items.status-1]['name'] }}</span> -->
             </div>
             <div v-if="item&&item.length==0"
                  class="nodata">-</div>
@@ -52,28 +56,28 @@
 <script>
 import { parseTime } from '@/utils/tools'
 export default {
-  props: ['cofirmList', 'star', 'status', 'comfirmTitle'],      //几星
-  data () {
+  props: ['cofirmList', 'star', 'status', 'comfirmTitle'], //几星
+  data() {
     return {
       itemName: ['经销商', '区域片区', '4s认证部', '总部', '总部'],
 
       lineStyle: {}
-    };
+    }
   },
 
   methods: {
-    handleCloseClick () {
+    handleCloseClick() {
       this.$emit('onNodeCardClose', true)
     },
-    handleDetailClick (items) {
+    handleDetailClick(items) {
       if (items.status == 1) return
       this.$router.push({
         path: '/attest-detail',
         query: {
           shopId: items.shopId,
-          qualificationId: items.id,    //认证id
-          starLevelId: items.starLevelId,   //星级1,2,3,4,5
-          type: items.type   //类型， 3：区域经理 评分项      4：4S
+          qualificationId: items.id, //认证id
+          starLevelId: items.starLevelId, //星级1,2,3,4,5
+          type: items.type //类型， 3：区域经理 评分项      4：4S
         }
       })
     }
@@ -154,7 +158,7 @@ export default {
             left: 50%;
             transform: translateX(-50%);
             &::after {
-              content: "";
+              content: '';
               display: block;
               width: 7px;
               height: 7px;
@@ -168,7 +172,7 @@ export default {
           .step-circle {
             background: rgba(144, 144, 144, 0.3);
             &::after {
-              content: "";
+              content: '';
               display: block;
               width: 7px;
               height: 7px;

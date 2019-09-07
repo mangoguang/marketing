@@ -23,15 +23,21 @@ export default {
       activeIndex: 0
     }
   },
-  inject: ['proSort'],
+  inject: {
+    proSort: {
+      default: () => {
+        return () => 'desc'
+      }
+    }
+  },
   methods: {
     handleClick(index) {
       this.activeIndex = index
       const data = {
         index
       }
-      this.proSort('', index == 0 ? 'desc' : 'asc')
       this.$emit('selectIndex', data)
+      this.proSort && this.proSort('', index == 0 ? 'desc' : 'asc')
     }
   }
 }

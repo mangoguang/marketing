@@ -34,7 +34,7 @@
           <input type="file"
                  ref="upload"
                  hidden
-                 multiple="multiple"
+                 multiple
                  @change="bindUpload">
 
           <div class="up-btn"
@@ -87,14 +87,14 @@
 <script>
 import Vue from 'vue'
 import mybanner from '../../../components/banner'
-import { Range, Actionsheet, Toast, Indicator } from 'mint-ui';
-Vue.component(Actionsheet.name, Actionsheet);
-Vue.component(Range.name, Range);
+import { Range, Actionsheet, Toast, Indicator } from 'mint-ui'
+Vue.component(Actionsheet.name, Actionsheet)
+Vue.component(Range.name, Range)
 
-import { videoPlayer } from 'vue-video-player';
+import { videoPlayer } from 'vue-video-player'
 
-import { uploadFile } from '@/api/4s'
-import { async, Promise } from 'q';
+import { uploadFile, uploadFiles } from '@/api/4s'
+import { async, Promise } from 'q'
 
 import { mapState, mapMutations, mapGetters } from 'vuex'
 
@@ -103,9 +103,8 @@ export default {
   components: {
     mybanner
   },
-  data () {
+  data() {
     return {
-
       rangeValue: 0,
       sheetVisible: false,
       picVal: [],
@@ -123,18 +122,20 @@ export default {
         language: 'zh-CN',
         aspectRatio: '3:4', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-        sources: [{
-          src: 'http://vjs.zencdn.net/v/oceans.mp4',
-          type: 'video/mp4'
-        }],
-        poster: "", //你的封面地址
+        sources: [
+          {
+            src: 'http://vjs.zencdn.net/v/oceans.mp4',
+            type: 'video/mp4'
+          }
+        ],
+        poster: '', //你的封面地址
         // width: document.documentElement.clientWidth,
         notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
           timeDivider: true,
           durationDisplay: true,
           remainingTimeDisplay: false,
-          fullscreenToggle: true  //全屏按钮
+          fullscreenToggle: true //全屏按钮
         },
         defaltVal: 0
       },
@@ -152,21 +153,22 @@ export default {
     })
     // ...mapGetters(['getSubmitScoreData'])
   },
-  created () {
+  created() {
     this.isGrade = this.$route.query.isGrade
 
-    let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
+    let standardList = this.submitScoreData.categoryList[this.categoryListIndex]
+      .standardList[this.standardListIndex]
 
     this.textareaVal = standardList.reason //扣分原因
     var urls = [].concat(standardList.urls || [])
-    this.picVal = urls || []  //上传文件
+    this.picVal = urls || [] //上传文件
 
     this.defaltVal = standardList.deduct || 0
     this.rangeValue = standardList.deduct || 0 //分数
 
     this.maxScore = this.subcategories[this.categoryListIndex].total
   },
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     let pswp = document.querySelector('.pswp')
     let domColse = document.querySelector('.pswp__button--close')
 
@@ -175,25 +177,26 @@ export default {
       next(false)
     } else {
       if (this.uploading) {
-        Indicator.close();
+        Indicator.close()
         this.uploading = false
         next(false)
       } else {
         next()
       }
-
     }
-
   },
   methods: {
-    ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setdeductMarks']),
-    bindTexareaChange: _.debounce(function (e) {
+    ...mapMutations([
+      'setSubmitScoreData',
+      'setSubcategories',
+      'setdeductMarks'
+    ]),
+    bindTexareaChange: _.debounce(function(e) {
       let val = this.textareaVal.replace(/<\/?[^>]*>/g, '')
       val = val.replace(/[^\w\d.?!,;"。？《》！；<> “”\u4e00-\u9fa5]/g, '')
       this.textareaVal = val
-
     }, 300),
-    bindSave () {
+    bindSave() {
       // if (!this.textareaVal) {
       //   Toast('填写扣分原因')
       //   return
@@ -207,53 +210,57 @@ export default {
         return
       }
 
-      let standardList = this.submitScoreData.categoryList[this.categoryListIndex].standardList[this.standardListIndex]
+      let standardList = this.submitScoreData.categoryList[
+        this.categoryListIndex
+      ].standardList[this.standardListIndex]
 
       standardList.reason = textareaVal //扣分原因
-      standardList.urls = picVal  //上传文件
+      standardList.urls = picVal //上传文件
       standardList.deduct = rangeValue //分数
-
-
-
-
 
       this.setdeductMarks(totle)
 
       this.setSubmitScoreData(this.submitScoreData)
 
-      this.subcategories[this.categoryListIndex].standardList[this.$route.query.standardListIndex].status = true
-      this.subcategories[this.categoryListIndex].standardList[this.$route.query.standardListIndex].deductMarks = rangeValue
+      this.subcategories[this.categoryListIndex].standardList[
+        this.$route.query.standardListIndex
+      ].status = true
+      this.subcategories[this.categoryListIndex].standardList[
+        this.$route.query.standardListIndex
+      ].deductMarks = rangeValue
 
       this.setSubcategories(this.subcategories)
-
 
       this.$router.go(-1)
     },
     //文件上传
-    _uploadFile (e) {
-      var _this = this;
+    _uploadFile(e) {
+      var _this = this
 
       let files = Array.from(e.target.files)
-      let imgSize = 1 * 1024 * 1024;
+      let imgSize = 1 * 1024 * 1024
       return new Promise((resolve, reject) => {
         files.map(async (item, index) => {
-          if (/^image/.test(item.type)) {
-            if (item.size < imgSize) { console.log(item); resolve(item); return }
-            let reader = new FileReader();
-            reader.readAsDataURL(item);
-            reader.onloadend = async function () {
-              let img = new Image();
-              img.src = this.result;
-              img.onload = async function () {
-                let data = _this.compress(img);
-                let blob = _this.dataURItoBlob(data);
+          if (/^image|^video/.test(item.type)) {
+            if (item.size < imgSize) {
+              // console.log(item)
+              // resolve(item)
+
+              return
+            }
+            let reader = new FileReader()
+            reader.readAsDataURL(item)
+            reader.onloadend = async function() {
+              let img = new Image()
+              img.src = this.result
+              img.onload = async function() {
+                let data = _this.compress(img)
+                let blob = _this.dataURItoBlob(data)
                 let file = new File([blob], item.name, { type: item.type })
-                resolve(file)
+                item = file
+                // resolve(file)
               }
             }
-
-          } else if (/^video/.test(item.type)) {
-            resolve(files[0])
           } else {
             Toast({
               message: `上传正确的格式`,
@@ -261,95 +268,93 @@ export default {
               duration: 2000
             })
           }
-
-
-        });
+        })
+        resolve(files)
       })
-
-
     },
-    async  bindUpload (e) {
+    async bindUpload(e) {
       if (e.target.files.length == 0) return
       if (this.picVal.length > 4) {
         Toast('文件数量不可大于5个')
         return
       }
       let file = await this._uploadFile(e)
-      var formData = new FormData();
-      formData.append('dataFile', file);
-      formData.append('prefix', 'cert-check-log');
+      var formData = new FormData()
+      file.map(item => {
+        formData.append('dataFiles', item)
+      })
+      formData.append('prefix', 'cert-check-log')
       this.uploading = true
       Indicator.open({
         text: '上传中...',
         spinnerType: 'fading-circle'
-      });
-      let { data } = await uploadFile(formData)
-
-      this.picVal.push(data.url)
+      })
+      let { data } = await uploadFiles(formData)
+      let url = data.list.map(item => item.url)
+      this.picVal = this.picVal.concat(url)
       this.uploading = false
-      Indicator.close();
-
-
+      Indicator.close()
     },
     // 压缩图片
-    compress (img) {
-      let canvas = document.createElement("canvas");
-      let ctx = canvas.getContext("2d");
-      let initSize = img.src.length;
-      let width = img.width;
-      let height = img.height;
-      canvas.width = width;
-      canvas.height = height;
+    compress(img) {
+      let canvas = document.createElement('canvas')
+      let ctx = canvas.getContext('2d')
+      let initSize = img.src.length
+      let width = img.width
+      let height = img.height
+      canvas.width = width
+      canvas.height = height
       // 铺底色
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0, width, height);
+      ctx.fillStyle = '#fff'
+      ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.drawImage(img, 0, 0, width, height)
 
       //进行最小压缩
-      let ndata = canvas.toDataURL("image/jpeg", 0.1);
-      return ndata;
+      let ndata = canvas.toDataURL('image/jpeg', 0.1)
+      return ndata
     },
     // base64转成bolb对象
-    dataURItoBlob (base64Data) {
-      var byteString;
-      if (base64Data.split(",")[0].indexOf("base64") >= 0) { byteString = atob(base64Data.split(",")[1]); }
-      else byteString = unescape(base64Data.split(",")[1]);
+    dataURItoBlob(base64Data) {
+      var byteString
+      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(base64Data.split(',')[1])
+      } else byteString = unescape(base64Data.split(',')[1])
       var mimeString = base64Data
-        .split(",")[0]
-        .split(":")[1]
-        .split(";")[0];
-      var ia = new Uint8Array(byteString.length);
+        .split(',')[0]
+        .split(':')[1]
+        .split(';')[0]
+      var ia = new Uint8Array(byteString.length)
       for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
+        ia[i] = byteString.charCodeAt(i)
       }
-      return new Blob([ia], { type: mimeString });
+      return new Blob([ia], { type: mimeString })
     },
-    getCamcorder () {
-      this.$refs.upload.setAttribute("capture", 'camcorder');
-      this.$refs.upload.setAttribute("accept", 'video/*');
-      this.$refs.upload.removeAttribute("multiple");
-      this.$refs.upload.click();
+    getCamcorder() {
+      this.$refs.upload.setAttribute('capture', 'camcorder')
+      this.$refs.upload.setAttribute('accept', 'video/*')
+      // this.$refs.upload.removeAttribute('multiple')
+      this.$refs.upload.click()
     },
-    getCamera () {
-      this.$refs.upload.setAttribute("capture", 'camera');
-      this.$refs.upload.setAttribute("accept", 'image/*');
-      this.$refs.upload.removeAttribute("multiple");
-      this.$refs.upload.click();
+    getCamera() {
+      this.$refs.upload.setAttribute('capture', 'camera')
+      this.$refs.upload.setAttribute('accept', 'image/*')
+      // this.$refs.upload.removeAttribute('multiple')
+      this.$refs.upload.click()
     },
-    getPhoto () {
-      this.$refs.upload.removeAttribute("capture");
-      this.$refs.upload.setAttribute("accept", 'image/*,video/*');
-      this.$refs.upload.setAttribute("multiple", 'multiple');
-      this.$refs.upload.click();
+    getPhoto() {
+      this.$refs.upload.removeAttribute('capture')
+      this.$refs.upload.setAttribute('accept', 'image/*,video/*')
+      // this.$refs.upload.setAttribute('multiple', 'multiple')
+      this.$refs.upload.click()
     },
-    bindDeleteImg (index) {
+    bindDeleteImg(index) {
       this.picVal.splice(index, 1)
       sessionStorage.setItem('urls', JSON.stringify(this.picVal))
     },
-    bindVideoClose () {
+    bindVideoClose() {
       this.showVideo = false
     },
-    bindPlay (item, index) {
+    bindPlay(item, index) {
       this.showVideo = true
       this.playerOptions.sources[0].src = item
     }
@@ -416,7 +421,7 @@ export default {
     background: #000;
   }
   .video-close {
-    background: url("../../../assets/imgs/4s/cuowu@2x.png") center center / 100%
+    background: url('../../../assets/imgs/4s/cuowu@2x.png') center center / 100%
       100%;
     height: 20px;
     width: 20px;
@@ -471,9 +476,9 @@ export default {
         justify-content: center;
         z-index: 2;
         &::after {
-          content: "";
+          content: '';
           display: block;
-          background: url("../../../assets/imgs/4s/cuowu@2x.png") center center /
+          background: url('../../../assets/imgs/4s/cuowu@2x.png') center center /
             100% 100%;
           width: 8px;
           height: 8px;
@@ -487,7 +492,7 @@ export default {
         position: relative;
         background: #2d2d2d;
         &::after {
-          content: "";
+          content: '';
           display: block;
           height: 0;
           width: 0;
@@ -519,7 +524,7 @@ export default {
       max-height: 200px;
       font-size: 14px;
       color: #2d2d2d;
-      font-family: "Microsoft Yahei,PingFang-SC-Medium";
+      font-family: 'Microsoft Yahei,PingFang-SC-Medium';
       outline: none;
     }
     .editor-readonly {

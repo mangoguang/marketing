@@ -40,8 +40,8 @@
             <span>扣分：{{total.deductMarks}}分</span>
           </p>
           <!-- <p>注意：提交后无法修改分数</p> -->
-          <div class="bot"
-               @click="$router.push('/recordJxs')">查看检查记录 >></div>
+          <!-- <div class="bot"
+               @click="$router.push('/recordJxs')">查看检查记录 >></div> -->
         </div>
       </template>
       <template v-slot:bottons>
@@ -78,8 +78,7 @@ import ToastBox from '@/components/4s/tipsBox/ToastBox'
 import { Toast } from 'mint-ui'
 import { gradeSubcategories, gradeSubmit } from '@/api/4s'
 import { mapGetters, mapMutations, mapState } from 'vuex'
-import { setTimeout } from 'timers';
-
+import { setTimeout } from 'timers'
 
 export default {
   components: {
@@ -89,15 +88,14 @@ export default {
     CheckTitle,
     ToastBox
   },
-  data () {
+  data() {
     return {
       total: {
         totalPoints: 0,
         deductMarks: 0
       },
       btnBotStatus: true,
-      bigCategoryList: [
-      ],
+      bigCategoryList: [],
       subData: {},
       selectIndex: 0,
       isPageCheck: false,
@@ -105,7 +103,7 @@ export default {
       toastReset: false
     }
   },
-  beforeRouteLeave (to, from, next) {
+  beforeRouteLeave(to, from, next) {
     let routeName = ['checkDetail', 'recordJxs', 'checkTip', 'recordJxs']
     if (routeName.includes(to.name)) {
       from.meta.keepAlive = true
@@ -114,7 +112,7 @@ export default {
     }
     next()
   },
-  created () {
+  created() {
     this._initData()
 
     this.setdeductMarks(0)
@@ -124,7 +122,7 @@ export default {
     subcategories: state => state.eggRecordDetails.subcategories,
     deductMarks: state => state.eggRecordDetails.deductMarks
   }),
-  activated () {
+  activated() {
     let totalPoints = 0
     let deductMarks = 0
 
@@ -132,26 +130,31 @@ export default {
       totalPoints += item.total
       // deductMarks += item.deductLimit
       item.standardList.map(items => {
-
         deductMarks += items.deductMarks
       })
     })
     this.bigCategoryList = this.subcategories
-    this.total.totalPoints = totalPoints;
-    this.total.deductMarks = deductMarks;
-    document.querySelector('#app').scrollTop = sessionStorage.getItem('scrollTop');
-
+    this.total.totalPoints = totalPoints
+    this.total.deductMarks = deductMarks
+    document.querySelector('#app').scrollTop = sessionStorage.getItem(
+      'scrollTop'
+    )
   },
   methods: {
-    ...mapMutations(['setSubmitScoreData', 'setSubcategories', 'setTotalPoints', 'setdeductMarks']),
+    ...mapMutations([
+      'setSubmitScoreData',
+      'setSubcategories',
+      'setTotalPoints',
+      'setdeductMarks'
+    ]),
     // 控制评分细则的显示/隐藏
-    changeStatus (index, status) {
+    changeStatus(index, status) {
       this.bigCategoryList[index].status = status
     },
     // 重置表单
-    bindReset () {
+    bindReset() {
       this.total.deductMarks = 0
-      this.toastReset = false;
+      this.toastReset = false
       this.btnBotStatus = false
       this.submitScoreData.categoryList.map(item => {
         item.standardList = []
@@ -166,7 +169,7 @@ export default {
       this.setdeductMarks(0)
       this.setSubcategories(this.subcategories)
     },
-    bindSubmit () {
+    bindSubmit() {
       this.btnBotStatus = true
       let standardListNameArr = []
       this.subcategories.map(item => {
@@ -180,11 +183,11 @@ export default {
         Toast(`请给${standardListNameArr[0]}评分`)
         return
       }
-      this.toastShow = true;
+      this.toastShow = true
     },
     // 提交表单
-    async  bindComfirmSubmit () {
-      this.toastShow = false;
+    async bindComfirmSubmit() {
+      this.toastShow = false
 
       var params = this.submitScoreData
       let { code, msg, data } = await gradeSubmit(params)
@@ -192,12 +195,11 @@ export default {
       if (code != 0) return
       this.$router.go(-1)
     },
-    async  _initData () {
+    async _initData() {
       let params = {
         shopId: this.$route.query.shopId,
         categoryId: this.$route.query.id
       }
-
 
       let { code, msg, categories } = await gradeSubcategories(params)
       if (code != 0) {
@@ -211,7 +213,9 @@ export default {
       let { isGrade } = this.$route.query
       let totalScore = 0
       categories.map((item, index) => {
-        (index == 0 || isGrade == 1) ? item.status = true : item.status = false
+        index == 0 || isGrade == 1
+          ? (item.status = true)
+          : (item.status = false)
         totalPoints += item.total
         deductMarks += item.deductLimit
         let standardList = []
@@ -225,7 +229,12 @@ export default {
           totalScore += items.deduct
 
           let { id, deduct, reason, urls } = items
-          standardList.push({ standardId: id, deduct, reason, urls: urls || [] })
+          standardList.push({
+            standardId: id,
+            deduct,
+            reason,
+            urls: urls || []
+          })
         })
         categoryList.push({ categoryId: item.id, standardList })
       })
@@ -233,17 +242,14 @@ export default {
       this.submitScoreData.categoryList = categoryList
       this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
       console.log(this.submitScoreData)
-      this.total.totalPoints = totalPoints;
-      this.total.deductMarks = (isGrade == 1) ? totalScore : this.deductMarks;
+      this.total.totalPoints = totalPoints
+      this.total.deductMarks = isGrade == 1 ? totalScore : this.deductMarks
       if (isGrade == 1) {
         this.setdeductMarks(totalScore)
       }
       this.setTotalPoints(totalPoints)
       this.setSubcategories(categories)
       this.bigCategoryList = categories
-
-
-
     }
   }
 }

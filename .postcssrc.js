@@ -8,7 +8,8 @@ module.exports = {
     "postcss-write-svg": {
       utf8: false
     },
-    "postcss-preset-env": {},
+    // "postcss-preset-env": {},
+    "autoprefixer": {},
     "postcss-px-to-viewport": {
       viewportWidth: 375, // (Number) The width of the viewport.
       viewportHeight: 667, // (Number) The height of the viewport.
@@ -18,9 +19,9 @@ module.exports = {
       minPixelValue: 1, // (Number) Set the minimum pixel value to replace.
       mediaQuery: false // (Boolean) Allow px to be converted in media queries.
     },
-    "postcss-viewport-units": {
-      filterRule: rule => rule.selector.indexOf('::after') === -1 && rule.selector.indexOf('::before') === -1 && rule.selector.indexOf(':after') === -1 && rule.selector.indexOf(':before') === -1
-    },
+    // "postcss-viewport-units": {
+    //   filterRule: rule => rule.selector.indexOf('::after') === -1 && rule.selector.indexOf('::before') === -1 && rule.selector.indexOf(':after') === -1 && rule.selector.indexOf(':before') === -1
+    // },
     "cssnano": {
       preset: "default",
     }

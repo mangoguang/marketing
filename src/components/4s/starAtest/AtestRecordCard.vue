@@ -182,7 +182,7 @@ export default {
         : cofirmList[7].passFail
       cofirmList.splice(2, 4)
       this.cofirmList = cofirmList
-
+      console.log(cofirmList)
       this.showNodeCard = true
     },
     async onComfim(val) {

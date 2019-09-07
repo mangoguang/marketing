@@ -14,14 +14,14 @@ import VueRouter from 'vue-router'
 //let baseUrl = "http://10.11.8.7"
 //let baseUrl = "http://172.16.4.201"
 //let baseUrl="http://10.11.8.17"
-// let baseUrl = "https://mobiletest.derucci.net/cd-sys-web"
+let baseUrl = "https://mobiletest.derucci.net/cd-sys-web"
 //let baseUrl = 'https://agency.derucci.com'
 // let baseUrl="http://172.16.9.212/"
 // let baseUrl = "http://172.16.12.86/"
 // let baseUrl = 'http://10.11.8.181/'
 // let baseUrl = 'http://10.11.8.7:8086/'
 // let baseUrl = 'http://10.11.8.186:8080' //
-let baseUrl = 'http://10.11.8.8:8090' //王哲力
+// let baseUrl = 'http://10.11.8.8:8090' //王哲力
 // let baseUrl = 'http://10.11.8.186:8080' //刘照君
 
 export {
@@ -677,7 +677,7 @@ export default class Common {
     } else {
       if (str.slice(0, 3) === "99猪") {
         //console.log('原来的',str)
-        let newStr = str.slice(3,);
+        let newStr = str.slice(3);
         //console.log('之后的',newStr)
         string = Base64.decode(newStr)
         //console.log('最后的',string)
