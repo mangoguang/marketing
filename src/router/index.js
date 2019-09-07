@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import caseRoutes from './caseRoutes'
 const index = () => import('../pages/index')
 const ReportForms = () => import('../pages/ReportForms')
 const Login = () => import('../pages/login')
@@ -616,7 +617,8 @@ export var router = new VueRouter({
       path: '/attest-item',
       name: 'AttestItem',
       component: () => import('@/pages/4S/starAtest/AttestItem')
-    }
+    },
+    ...caseRoutes
   ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {

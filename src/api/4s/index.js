@@ -6,7 +6,7 @@ import mango from '@/js/'
 import {
   http, //带token
   httpDef
-} from './http'
+} from '@/api/http'
 
 const request = new Request()
 
