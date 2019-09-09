@@ -21,7 +21,7 @@ axios.defaults.timeout = 500000
 axios.defaults.headers = {
   'Content-Type': 'application/x-www-form-urlencoded'
 }
-//axios.defaults.baseURL = baseUrl
+// axios.defaults.baseURL = baseUrl
 axios.defaults.baseURL = 'https://mobiletest.derucci.net'
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line

@@ -168,22 +168,22 @@ export default {
     async bindApproveFlowInfo(id, statusString) {
       this.comfirmTitle = statusString
       let { code, data } = await getApproveFlowInfo({ qualificationId: id })
-      let cofirmList = Object.keys(data).map(key => {
+      let cofirmList = Object.keys(data).map((key, index) => {
+        console.log(index)
         var passFail = false
-        data[key].map(item => {
-          passFail = [1, 4, 5, 7, 8, 9, 11, 12].includes(item.status)
+        data[key].map((item, idx) => {
+          if (index == 7) {
+            passFail = item.status == 2 ? false : true
+          } else {
+            passFail = [1, 4, 5, 7, 8, 9, 11, 12].includes(item.status)
+          }
         })
         return { typeList: data[key], passFail }
       })
-
+      cofirmList[7].passFail = false
       cofirmList.push(cofirmList[7])
-      cofirmList[7].passFail
-        ? (cofirmList[7].passFail = false)
-        : cofirmList[7].passFail
       cofirmList.splice(2, 4)
-
       this.cofirmList = cofirmList
-      console.log(cofirmList)
       this.showNodeCard = true
     },
     async onComfim(val) {

@@ -212,9 +212,8 @@ export default {
     async getUserInfo() {
       let data = await userinfo()
       let res = data.data
-      console.log(res)
       if (res) {
-        console.log(11223344, this.mergeBoxShow)
+        localStorage.setItem('userInfo', JSON.stringify(res))
         let typename = this.getName(res.positionList)
         let ajaxData = {
           account: res.account,
@@ -273,76 +272,6 @@ export default {
           this.$router.replace({ path: '/' })
         }
       }
-      // indexModel
-      //   .getUserInfo()
-      //   .then(res => {
-      //     if (res) {
-      //       console.log(11223344, this.mergeBoxShow)
-      //       let typename = this.getName(res.positionList)
-      //       let ajaxData = {
-      //         account: res.account,
-      //         tenantId: res.tenantId,
-      //         timestamp: Date.parse(new Date()),
-      //         name: res.username,
-      //         phone: res.phone,
-      //         sex: res.sex,
-      //         type: res.type,
-      //         typename: typename,
-      //         positionList: res.positionList[0],
-      //         userId: res.userId
-      //         //crmAccount:res.crmAccount
-      //       }
-      //       let crmAccount = JSON.stringify({
-      //         crmAccount: res.crmAccount
-      //       })
-      //       let shops = JSON.stringify(res.shopList)
-      //       localStorage.setItem('crmAccount', crmAccount)
-      //       localStorage.setItem('shops', shops)
-      //       localStorage.setItem('ajaxData', JSON.stringify(ajaxData))
-      //       localStorage.setItem('certPositionType', res.certPositionType)
-      //       this.$root.ajaxData = ajaxData
-      //       //alert("2:"+localStorage.getItem('deviceId'))
-      //       //this.$router.replace({ path: "/" })
-      //       // 检测app账号跟crm账号是否一致
-      //       //this.mergeBoxShow = res.account !== res.crmAccount
-      //       // debugger
-      //       if (res.account !== res.crmAccount) {
-      //         //console.log(1)
-      //         if (
-      //           typename === 'Dealer Boss' ||
-      //           typename === 'Boss&Consultant' ||
-      //           typename === 'Boss&Manager'
-      //         ) {
-      //           this.mergeBoxShow = false
-      //           this.$router.replace({ path: '/' })
-      //           //console.log(2)
-      //         } else {
-      //           //console.log(3)
-      //           let obj = {
-      //             tip: `当前APP登录账号为${res.account}，CRM登录账号${
-      //               res.crmAccount
-      //             }，不一致，是否修改CRM登录账号为${res.account}，修改后使用${
-      //               res.account
-      //             }登录APP和CRM,是否确定修改？`,
-      //             btnNum: 2,
-      //             type: false
-      //           }
-      //           this.mergeBox = obj
-      //           this.mergeBoxShow = true
-      //         }
-      //       } else {
-      //         //console.log(4)
-      //         this.mergeBoxShow = false
-      //         this.$router.replace({ path: '/' })
-      //       }
-      //     }
-      // })
-      // .catch(reject => {
-      //   // console.log('reject',reject)
-      //   if (reject === 510) {
-      //     this.getUserInfo()
-      //   }
-      // })
     },
 
     // 合并app与crm账号

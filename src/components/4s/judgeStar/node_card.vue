@@ -21,7 +21,7 @@
               <p>
                 {{items.createTime}}
                 <span @click="handleDetailClick(items)"
-                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}">{{status[items.status-1]['name'] }}</span>
+                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}">{{items.statusString}}</span>
               </p>
               <!-- <span :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}"
                     @click="handleDetailClick(items)">{{status[items.status-1]['name'] }}</span> -->
