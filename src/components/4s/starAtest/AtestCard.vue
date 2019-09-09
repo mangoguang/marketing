@@ -71,7 +71,8 @@
             <div class="footer"></div>
           </div>
           <div class="atest">
-            <button @click="bindApply(index)">发起申请</button>
+            <div class="btn"
+                 @click="bindApply(index)">发起申请</div>
           </div>
         </div>
         <div class="no-data"
@@ -339,7 +340,7 @@ export default {
     width: 100%;
     padding: 2.26vw 0 1.6vw 0;
     box-sizing: border-box;
-    button {
+    .btn {
       width: 21.33vw;
       height: 8vw;
       border-radius: 4vw;

@@ -542,10 +542,7 @@ export var router = new VueRouter({
     {
       path: '/recordJxs',
       name: 'recordJxs',
-      component: recordJxs,
-      meta: {
-        keepAlive: true
-      }
+      component: recordJxs
     },
     {
       path: '/recordDetails',

@@ -21,7 +21,7 @@ let baseUrl = "https://mobiletest.derucci.net/cd-sys-web"
 // let baseUrl = 'http://10.11.8.181/'
 // let baseUrl = 'http://10.11.8.7:8086/'
 // let baseUrl = 'http://10.11.8.186:8080' //
-// let baseUrl = 'http://10.11.8.8:8090' //王哲力
+//let baseUrl = 'http://10.11.8.8:8090' //王哲力
 // let baseUrl = 'http://10.11.8.186:8080' //刘照君
 
 export {

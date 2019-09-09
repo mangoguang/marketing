@@ -1,10 +1,15 @@
 <template>
   <ul class="m-left">
-    <li v-for="(item, index) in leftNavList" :key="index" 
-      :class="{active : item.status}"
-      @touchend="toggleNav(index)">
-      <div class="wrapper" :class="{leftline_active : item.status}">
-        <img src="../../../assets/imgs/hot.png" alt="" class="hot" v-if="index == 0">
+    <li v-for="(item, index) in navList"
+        :key="index"
+        :class="{active : item.status}"
+        @touchend="toggleNav(index)">
+      <div class="wrapper"
+           :class="{leftline_active : item.status}">
+        <img src="../../../assets/imgs/hot.png"
+             alt=""
+             class="hot"
+             v-if="index == 0">
         <span>{{ item.aliasBrand }}</span>
       </div>
     </li>
@@ -12,13 +17,14 @@
 </template>
 
 <script>
-import {getAjax, myBtnList} from '../../../utils/gallery'
-import {mapState, mapMutations} from 'vuex'
-import {IndexModel} from '../../../utils/index'
+import { getAjax, myBtnList } from '../../../utils/gallery'
+import { mapState, mapMutations } from 'vuex'
+import { IndexModel } from '../../../utils/index'
 const indexModel = new IndexModel()
 export default {
   data() {
     return {
+      list: []
     }
   },
   computed: {
@@ -26,7 +32,16 @@ export default {
       leftNavList: state => state.leftNavList.leftNavList,
       listVal: state => state.leftNavList.listVal,
       initlist: state => state.leftNavList.initlist
-    })
+    }),
+    navList() {
+      var nav = [].concat(this.leftNavList)
+      this.list.map((item, index) => {
+        nav[index].goodsCount = item.goodsCount
+      })
+      return nav.filter(item => {
+        return item.goodsCount
+      })
+    }
   },
   created() {
     this.initNav()
@@ -35,7 +50,7 @@ export default {
     ...mapMutations(['setLeftNavList', 'getListVal', 'setInitList']),
     //初始化默认选热门
     initNav() {
-      if(this.leftNavList.length) {
+      if (this.leftNavList.length) {
         return
       }
       this.getBrand()
@@ -44,9 +59,10 @@ export default {
     getBrand() {
       let account = getAjax().account
       indexModel.getBrand(account).then(res => {
-        if(res.data) {
-          let hot = {name: '慕思',aliasBrand: '慕思'}
+        if (res.data) {
+          let hot = { name: '慕思', aliasBrand: '慕思', goodsCount: 1 }
           let list = res.data.list
+          this.list = res.data.list
           list.unshift(hot)
           this.setInitList(list)
           this.setLeftNavList(myBtnList(this.initlist, 0))
@@ -56,7 +72,7 @@ export default {
     },
     //切换导航
     toggleNav(index) {
-      if(this.leftNavList[index].status) {
+      if (this.leftNavList[index].status) {
         return
       }
       this.setLeftNavList(myBtnList(this.initlist, index))
@@ -83,7 +99,7 @@ export default {
       justify-content: center;
     }
     .leftline_active {
-      margin: 4vw 0; 
+      margin: 4vw 0;
       border-left: 0.8vw solid #363636;
       padding: 0 3vw;
     }

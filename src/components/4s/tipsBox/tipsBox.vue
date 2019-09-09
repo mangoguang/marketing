@@ -7,7 +7,7 @@
              alt="">
         <p class="text">{{tipsData.title}}</p>
       </div>
-      <div class="content border-bottom">{{tipsData.content}}</div>
+      <div class="tips-content border-bottom">{{tipsData.content}}</div>
       <div class="btn">
         <button class="cancle"
                 @click="handleCancle"
@@ -22,16 +22,14 @@
 <script>
 export default {
   props: ['tipsData'],
-  data () {
-    return {
-
-    };
+  data() {
+    return {}
   },
   methods: {
-    handleCancle () {
+    handleCancle() {
       this.$emit('onCancel')
     },
-    handleComfirm () {
+    handleComfirm() {
       this.$emit('onComfim', this.tipsData.btn)
     }
   }
@@ -71,7 +69,7 @@ export default {
         font-weight: bold;
       }
     }
-    .content {
+    .tips-content {
       padding: 0 7.6vw;
       box-sizing: border-box;
       color: #666;
@@ -89,7 +87,7 @@ export default {
         font-size: 4.8vw;
         position: relative;
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           top: 0;
           left: 0;

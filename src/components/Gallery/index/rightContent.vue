@@ -124,7 +124,6 @@ export default {
     getAdvert() {
       let brand = this.listVal
       indexModel.getAdvert(brand).then(res => {
-        console.log(res)
         this.imgSliderList = res.data.list
       })
     },

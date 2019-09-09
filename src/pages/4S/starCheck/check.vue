@@ -179,10 +179,10 @@ export default {
           }
         })
       })
-      if (standardListNameArr.length != 0) {
-        Toast(`请给${standardListNameArr[0]}评分`)
-        return
-      }
+      // if (standardListNameArr.length != 0) {
+      //   Toast(`请给${standardListNameArr[0]}评分`)
+      //   return
+      // }
       this.toastShow = true
     },
     // 提交表单
@@ -231,8 +231,8 @@ export default {
           let { id, deduct, reason, urls } = items
           standardList.push({
             standardId: id,
-            deduct,
-            reason,
+            deduct: deduct || 0,
+            reason: reason || '',
             urls: urls || []
           })
         })
@@ -241,7 +241,6 @@ export default {
 
       this.submitScoreData.categoryList = categoryList
       this.setSubmitScoreData(this.submitScoreData) //设置提交数据初始值
-      console.log(this.submitScoreData)
       this.total.totalPoints = totalPoints
       this.total.deductMarks = isGrade == 1 ? totalScore : this.deductMarks
       if (isGrade == 1) {

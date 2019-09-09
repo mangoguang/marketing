@@ -171,16 +171,17 @@ export default {
       let cofirmList = Object.keys(data).map(key => {
         var passFail = false
         data[key].map(item => {
-          passFail = [2, 3, 6, 10, 13].includes(item.status)
+          passFail = [1, 4, 5, 7, 8, 9, 11, 12].includes(item.status)
         })
-        // console.log({ typeList: data[key], passFail })
         return { typeList: data[key], passFail }
       })
+
       cofirmList.push(cofirmList[7])
       cofirmList[7].passFail
         ? (cofirmList[7].passFail = false)
         : cofirmList[7].passFail
       cofirmList.splice(2, 4)
+
       this.cofirmList = cofirmList
       console.log(cofirmList)
       this.showNodeCard = true

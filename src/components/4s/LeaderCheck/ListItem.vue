@@ -14,7 +14,7 @@
         </li>
         <li>
           <span>检查时间:</span>
-          <span>{{item.inspectTime.split(' ')[0]}}</span>
+          <span>{{item.inspectTime&&item.inspectTime.split(' ')[0]}}</span>
         </li>
       </ul>
       <div class="right-box"

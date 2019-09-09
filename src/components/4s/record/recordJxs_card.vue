@@ -31,7 +31,7 @@
         </li>
 
       </ul>
-      <div class="more"
+      <div class="more-info"
            v-if="item.shopList.length>4"
            @click="$emit('onToggleMore',parentIndex)"
            :class="{'more-active':item.more}">{{item.more?'收起':'点击更多'}}</div>
@@ -47,15 +47,15 @@ export default {
     starCard
   },
   props: ['item', 'parentIndex'],
-  data () {
-    return {
-    };
+  data() {
+    return {}
   },
   methods: {
-    handleClick (item) {
+    handleClick(item) {
       let { shopName, shopId } = item
       this.$router.push({
-        name: 'record', query: { shopName, shopId }
+        name: 'record',
+        query: { shopName, shopId }
       })
     }
   }
@@ -103,7 +103,7 @@ export default {
   }
 
   %foot {
-    content: "";
+    content: '';
     display: block;
     width: 5px;
     height: 5px;
@@ -116,7 +116,7 @@ export default {
   }
   .content-box {
     padding-bottom: 5px;
-    .more {
+    .more-info {
       height: 20px;
       line-height: 20px;
       text-align: center;
