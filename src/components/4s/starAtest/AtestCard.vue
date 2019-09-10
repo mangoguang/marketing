@@ -102,7 +102,12 @@ export default {
     }
   },
   created() {
-    this._initData()
+    let searchVal = this.$route.query.searchVal
+    if (searchVal) {
+      this._initData(1, searchVal)
+    } else {
+      this._initData()
+    }
   },
   mounted() {
     this.wrapperHeight =

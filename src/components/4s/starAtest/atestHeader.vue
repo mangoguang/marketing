@@ -7,11 +7,9 @@
              alt="返回按钮">
       </div>
       <div class="title">{{title}}</div>
-      <div class="serach">
-        <input type="text"
-               v-model="searchVal"
-               @input="bindSearch"
-               placeholder="经销商">
+      <div class="search"
+           @click="$router.push('/searchIndex')">
+        <span>经销商</span>
       </div>
     </div>
   </div>
@@ -26,13 +24,13 @@ export default {
   components: {
     starHeader
   },
-  data () {
+  data() {
     return {
       searchVal: ''
-    };
+    }
   },
   methods: {
-    bindSearch: _.debounce(function (e) {
+    bindSearch: _.debounce(function(e) {
       this.$emit('onSearch', e.target.value)
     }, 300)
   }
@@ -56,31 +54,49 @@ export default {
   height: 37px;
   padding-bottom: 5px;
   position: relative;
-  .serach {
-    position: absolute;
-    bottom: 10px;
-    right: 22px;
+  .search {
     width: 92px;
     height: 24px;
-    background-color: #fff;
+    line-height: 24px;
+    background: rgba(247, 247, 247, 1);
     border-radius: 12px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 23px;
+    text-align: center;
+    color: #999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    span {
+      height: 24px;
+      line-height: 24px;
+      display: block;
+      border: 1px solid transparent;
+      box-sizing: border-box;
+    }
     &::before {
-      content: "";
+      content: '';
       display: block;
       width: 16px;
       height: 16px;
-      background: url(../../../assets/imgs/4s/search@2x.png) center center /
-        14px 14px no-repeat;
-      position: absolute;
-      top: 50%;
-      left: 19px;
-      transform: translateY(-50%);
+      background: url(../../../assets/imgs/4s/search@2x.png) center center
+        no-repeat;
+      background-size: contain;
+      // position: absolute;
+      // top: 50%;
+      // left: 19px;
+      // transform: translateY(-50%);
     }
     input {
       width: 100%;
       box-sizing: border-box;
-      padding-left: 39px;
+      padding-left: 38px;
       padding-right: 5px;
+    }
+    ::-webkit-input-placeholder {
+      padding-left: 5px;
     }
   }
   .back_icon {

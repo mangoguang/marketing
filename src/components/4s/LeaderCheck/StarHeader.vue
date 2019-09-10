@@ -4,10 +4,12 @@
   <star-header :title="'星级检查'">
     <div class="tool">
       <egg-sort />
-      <div class="search">
-        <input type="text"
+      <div class="search"
+           @click="$router.push('/searchIndex')">
+        <span>搜索</span>
+        <!-- <input type="text"
                placeholder="搜索"
-               @input="bindSearch">
+               @input="bindSearch"> -->
       </div>
     </div>
   </star-header>
@@ -42,23 +44,37 @@ export default {
 .search {
   width: 92px;
   height: 24px;
+  line-height: 24px;
   background: rgba(247, 247, 247, 1);
   border-radius: 12px;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   right: 23px;
+  text-align: center;
+  color: #999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  span {
+    height: 24px;
+    line-height: 24px;
+    display: block;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+  }
   &::before {
     content: '';
     display: block;
     width: 16px;
     height: 16px;
-    background: url(../../../assets/imgs/4s/search@2x.png) center center / 100%
-      100% no-repeat;
-    position: absolute;
-    top: 50%;
-    left: 19px;
-    transform: translateY(-50%);
+    background: url(../../../assets/imgs/4s/search@2x.png) center center
+      no-repeat;
+    background-size: contain;
+    // position: absolute;
+    // top: 50%;
+    // left: 19px;
+    // transform: translateY(-50%);
   }
   input {
     width: 100%;

@@ -114,6 +114,10 @@ export default {
       padding: 0 4.4vw;
       color: #909090;
       background: #fff;
+      text-align: center;
+      &:first-child {
+        padding-top: 10px;
+      }
       span {
         display: inline-block;
         padding-right: 5vw;

@@ -19,6 +19,7 @@
                   :type="type1"
                   :labelContent="account"
                   v-model.trim="inputValue1"
+                  :value="inputValue1"
                   autocomplete="off"
                   :Msg="nameMsg"
                   @myFocus="myFocus"
@@ -26,6 +27,7 @@
               <li is="myinput"
                   :type="type2"
                   :labelContent="pwd"
+                  :value="inputValue2"
                   v-model.trim="inputValue2"
                   :Msg="pwdMsg"
                   @myFocus="myFocus"
@@ -124,8 +126,8 @@ export default {
       type2: 'password',
       account: '账号',
       pwd: '密码',
-      inputValue1: '',
-      inputValue2: '',
+      inputValue1: '19040014',
+      inputValue2: '123456',
       nameMsg: '',
       pwdMsg: '',
       h: '',

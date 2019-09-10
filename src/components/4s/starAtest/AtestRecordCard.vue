@@ -15,7 +15,7 @@
         <div class="atest_record_card"
              v-for="(item,index) in comDataList"
              :key="index"
-             @click="bindApproveFlowInfo(item.id,item.statusString)">
+             @click="bindApproveFlowInfo(item)">
           <div class="header">
             <div class="via">
               <img src="../../../assets/imgs/4s/via.png"
@@ -23,7 +23,7 @@
             </div>
             <div class="message">
               <p class="name">{{item.distributor}}</p>
-              <p class="level">认证星级：{{item.approveLevel}}</p>
+              <p class="level">认证星级：{{item.approveLevelStr}}</p>
             </div>
             <div class="date">
               <span>{{item.createTime}}</span>
@@ -58,9 +58,10 @@
           </div>
         </div>
       </div>
+      <div class="no-data"
+           v-if="noData">暂无数据</div>
     </mt-loadmore>
-    <div class="no-data"
-         v-if="noData">暂无数据</div>
+
     <TipsBox @onComfim="onComfim"
              @onCancel="onCancel"
              v-show="tipsStatus"
@@ -138,14 +139,20 @@ export default {
     }
   },
   created() {
-    this._initData(this.params)
+    let searchVal = this.$route.query.searchVal
+    if (searchVal) {
+      this.params.key = searchVal
+      this._initData(this.params)
+    } else {
+      this._initData(this.params)
+    }
   },
   computed: {
     comDataList() {
       let list = this.dataList
 
       list.map(item => {
-        item.approveLevel = this.level[item.approveLevel - 1] || '-'
+        item.approveLevelStr = this.level[item.approveLevel - 1] || '-'
         item.statusString =
           (this.status[item.status - 1] &&
             this.status[item.status - 1]['name']) ||
@@ -165,14 +172,15 @@ export default {
     }
   },
   methods: {
-    async bindApproveFlowInfo(id, statusString) {
+    async bindApproveFlowInfo(item) {
+      let { id, statusString, approveLevel } = item
       this.comfirmTitle = statusString
       let { code, data } = await getApproveFlowInfo({ qualificationId: id })
+      data.typeList9 = data.typeList8
       let cofirmList = Object.keys(data).map((key, index) => {
-        console.log(index)
         var passFail = false
         data[key].map((item, idx) => {
-          if (index == 7) {
+          if (index == 7 || index == 8) {
             passFail = item.status == 2 ? false : true
           } else {
             passFail = [1, 4, 5, 7, 8, 9, 11, 12].includes(item.status)
@@ -180,9 +188,17 @@ export default {
         })
         return { typeList: data[key], passFail }
       })
-      cofirmList[7].passFail = false
-      cofirmList.push(cofirmList[7])
-      cofirmList.splice(2, 4)
+      if (approveLevel > 2) {
+        cofirmList.splice(2, 4)
+      } else {
+        console.log(cofirmList)
+        cofirmList.splice(1, 5)
+        console.log(cofirmList)
+      }
+
+      if (cofirmList[3].passFail) {
+        cofirmList[3].typeList[0].statusString = '已申请'
+      }
       this.cofirmList = cofirmList
       this.showNodeCard = true
     },
@@ -257,8 +273,12 @@ export default {
     },
     //上拉刷新
     loadTop() {
-      this.params.page = 1
-      this._initData(this.params)
+      // this.params.page = 1
+      this._initData({
+        page: 1,
+        limit: 10,
+        sort: 'desc'
+      })
       this.allLoaded = false
       this.$refs.loadmore.onTopLoaded()
     },
@@ -308,6 +328,7 @@ export default {
   left: 0;
   width: 100%;
 }
+
 .atest_record_card {
   width: 91.46vw;
   // height: 35.33vw;

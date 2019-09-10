@@ -3,8 +3,7 @@
   <div class="leader-check"
        ref="shops">
     <div class="header">
-      <star-header ref="header"
-                   @onSearch="onSearch" />
+      <star-header ref="header" />
     </div>
     <ul class="content"
         v-if="shops&&shops.length>0">
@@ -34,7 +33,12 @@ export default {
     }
   },
   created() {
-    this._initData()
+    let searchVal = this.$route.query.searchVal
+    if (searchVal) {
+      this._initData(searchVal)
+    } else {
+      this._initData()
+    }
   },
   provide() {
     return {
@@ -49,10 +53,10 @@ export default {
         sidx: 'inspect_time'
       })
       this.shops = shops
-    },
-    onSearch(val) {
-      this._initData(val)
     }
+    // onSearch(val) {
+    //   this._initData(val)
+    // }
   }
 }
 </script>

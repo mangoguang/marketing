@@ -8,9 +8,9 @@
             v-for="(item, index) in cofirmList"
             :key="index">
           <div class="node_left_text">
-            <p class="text">{{ itemName[index] }}</p>
+            <p class="text">{{ department[index] }}</p>
             <div class="step "
-                 :class="{'un-line':!item.passFail}">
+                 :class="{'pass':item.passFail}">
               <div class="step-circle"></div>
             </div>
           </div>
@@ -21,7 +21,7 @@
               <p>
                 {{items.createTime}}
                 <span @click="handleDetailClick(items)"
-                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}">{{items.statusString}}</span>
+                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}&&items.type!=8">{{items.statusString}}</span>
               </p>
               <!-- <span :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}"
                     @click="handleDetailClick(items)">{{status[items.status-1]['name'] }}</span> -->
@@ -64,7 +64,14 @@ export default {
       lineStyle: {}
     }
   },
-
+  computed: {
+    department() {
+      if (this.cofirmList.length == 4) {
+        this.itemName.splice(2, 1)
+      }
+      return this.itemName
+    }
+  },
   methods: {
     handleCloseClick() {
       this.$emit('onNodeCardClose', true)
@@ -144,11 +151,13 @@ export default {
           left: 63px;
           height: 100%;
           width: 2px;
-          background: #5ac8fa;
+          background: #f8f8f8;
+          // background: #5ac8fa;
           .step-circle {
             width: 10px;
             height: 10px;
-            background: rgba(90, 200, 250, 0.3);
+            background: rgba(144, 144, 144, 0.3);
+            // background: rgba(90, 200, 250, 0.3);
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -162,22 +171,21 @@ export default {
               display: block;
               width: 7px;
               height: 7px;
-              background: #5ac8fa;
+              // background: #5ac8fa;
+              background: #909090;
               border-radius: 50%;
             }
           }
         }
-        .un-line {
-          background: #f8f8f8;
+        .pass {
+          // background: #f8f8f8;
+          background: #5ac8fa;
           .step-circle {
-            background: rgba(144, 144, 144, 0.3);
+            // background: rgba(144, 144, 144, 0.3);
+            background: rgba(90, 200, 250, 0.3);
             &::after {
-              content: '';
-              display: block;
-              width: 7px;
-              height: 7px;
-              background: #909090;
-              border-radius: 50%;
+              // background: #909090;
+              background: #5ac8fa;
             }
           }
         }

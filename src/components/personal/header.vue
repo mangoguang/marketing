@@ -69,12 +69,15 @@ export default {
     userTypeName() {
       let userInfo = JSON.parse(localStorage.getItem('userInfo'))
       let type = ['经销商老板', '门店店长', '睡眠顾问', '跟单员']
-      for (let item of userInfo.positionList) {
-        if (type.includes(item.typeName)) {
-          return item.typeName
+      let arr = []
+      userInfo.positionList.map(item => {
+        let pos = type.indexOf(item.typeName)
+        if (pos != -1) {
+          arr.push(pos)
         }
-      }
-      return userInfo.positionList[0].typeName
+      })
+      let index = arr.sort()[0]
+      return type[index] || userInfo.positionList[index].typeName
     }
   },
   mounted() {

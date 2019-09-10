@@ -13,11 +13,9 @@
 import { mapGetters, mapMutations, mapState } from 'vuex'
 export default {
   props: ['standardList', 'status', 'paprentIndex'],
-  components: {
-  },
-  data () {
-    return {
-    }
+  components: {},
+  data() {
+    return {}
   },
   computed: {
     ...mapState({
@@ -25,11 +23,15 @@ export default {
     })
   },
   methods: {
-    ...mapMutations(['setSubmitScoreData', 'setCategoryListIndex', 'setStandardListIndex']),
-    toCheckDetail (item, index) {
-
+    ...mapMutations([
+      'setSubmitScoreData',
+      'setCategoryListIndex',
+      'setStandardListIndex'
+    ]),
+    toCheckDetail(item, index) {
       let standardListObj = { standardId: item.id }
-      let submitScoreData = this.submitScoreData.categoryList[this.paprentIndex].standardList
+      let submitScoreData = this.submitScoreData.categoryList[this.paprentIndex]
+        .standardList
       let includeIndex = -1 //已经填写过打分获取下标值
       let chaildIndex = -1 //将要提交打分的下标值
       submitScoreData.map((items, index) => {
@@ -38,7 +40,7 @@ export default {
         }
       })
       if (includeIndex == -1) {
-        submitScoreData.push(standardListObj)  //设置当前选中分类细项id
+        submitScoreData.push(standardListObj) //设置当前选中分类细项id
         chaildIndex = submitScoreData.indexOf(standardListObj)
       } else {
         chaildIndex = includeIndex
@@ -50,7 +52,14 @@ export default {
 
       let s = document.querySelector('#app').scrollTop
       sessionStorage.setItem('scrollTop', s)
-      this.$router.push({ path: '/checkDetail', query: { name: item.name, standardListIndex: index, isGrade: this.$route.query.isGrade } })
+      this.$router.push({
+        path: '/checkDetail',
+        query: {
+          name: item.name,
+          standardListIndex: index,
+          isGrade: this.$route.query.isGrade
+        }
+      })
     }
   }
 }
@@ -60,14 +69,15 @@ export default {
   li {
     position: relative;
     color: #2d2d2d;
-    padding: 0 24px;
+    padding-left: 24px;
+    padding-right: 48px;
     font-size: 16px;
     line-height: 3em;
     background: #fff;
   }
   li::after {
     display: block;
-    content: "";
+    content: '';
     width: 100%;
     height: 1px;
     position: absolute;

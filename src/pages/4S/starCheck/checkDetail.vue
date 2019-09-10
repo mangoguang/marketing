@@ -274,10 +274,23 @@ export default {
     },
     async bindUpload(e) {
       if (e.target.files.length == 0) return
+      var img = Object.keys(e.target.files).map(item =>
+        /image/g.test(item.type)
+      )
+      if (img.length > 4) {
+        Toast('图片上传数量最多不超过5张')
+        return
+      }
       if (this.picVal.length > 4) {
         Toast('文件数量不可大于5个')
         return
       }
+      var len = this.picVal.map(item => /.mp4$/.test(item))
+      if (len.length > 1) {
+        Toast('视频最多上传一个')
+        return
+      }
+
       let file = await this._uploadFile(e)
       var formData = new FormData()
       file.map(item => {
