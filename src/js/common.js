@@ -1,5 +1,6 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
+var http = axios.create()
 import {
   Indicator,
   Toast
@@ -42,7 +43,7 @@ export default class Common {
   }
   // 如果输出年份顺序不对，则重新排序
   sortYears(res) {
-    if (res.series && res.series[0]) {
+    if (res && res.series && res.series[0]) {
       if (res.series[0].name < res.series[1].name) {
         let temp = res.series[0]
         res.series[0] = res.series[1]
@@ -171,7 +172,7 @@ export default class Common {
       let sign = this.getSign(params, token.access_token)
       // 显示加载动画，并在10秒后隐藏
       this.loading('open')
-      axios({
+      http({
           method: thatType,
           async: false,
           timeout: 30000,
@@ -239,7 +240,7 @@ export default class Common {
       //   _this.loading('close')
       //   clearTimeout(loadingTimeOut)
       // }, 15000)
-      axios({
+      http({
           method: 'post',
           // async: false,
           url: url,
@@ -313,7 +314,7 @@ export default class Common {
       console.log('sign', sign)
       // 显示加载动画
       this.loading('open')
-      axios({
+      http({
           method: 'post',
           // async: false,
           timeout: 30000,
@@ -327,11 +328,12 @@ export default class Common {
         })
         .then((res) => {
           this.loading('close')
-          if (res.data) {
-            resolve(res.data)
-          } else {
-            resolve(false)
+          if (res) {
+            res.data ? resolve(res.data) : resolve(res)
           }
+          //else {
+          //   resolve(false)
+          // }
         })
         .catch((error) => {
           // console.log('请求失败！：', error.response, error.request)
@@ -372,7 +374,7 @@ export default class Common {
       console.log('sign', sign)
       // 显示加载动画
       this.loading('open')
-      axios({
+      http({
           method: 'post',
           // async: false,
           timeout: 30000,
@@ -433,7 +435,7 @@ export default class Common {
     console.log(123123, path)
     let url = `${this.port}${path}`
     return new Promise((resolve, reject) => {
-      axios({
+      http({
         method: 'post',
         url: url,
         data: data,

@@ -23,15 +23,13 @@
 import ContentBox from './contentBox'
 import iconBox from './iconBox'
 
-
-
 export default {
   props: ['shopId'],
   components: {
     ContentBox,
     iconBox
   },
-  data () {
+  data() {
     return {
       storeClass: 2,
       data: {
@@ -44,8 +42,9 @@ export default {
   },
 
   methods: {
-    handleClick (linkName) {
-      let positionType = JSON.parse(localStorage.getItem('ajaxData')).positionList.positionType
+    handleClick(linkName) {
+      let positionType = JSON.parse(localStorage.getItem('ajaxData'))
+        .positionList.positionType
       let certPositionType = localStorage.getItem('certPositionType')
       if (certPositionType == 'supervisor') {
         //督导
@@ -54,8 +53,13 @@ export default {
         })
         return
       }
-      this.$router.push({ path: '/starCheck', query: { shopId: this.shopId } })
-
+      let shops = JSON.parse(localStorage.getItem('shops'))
+      let starLevel =
+        shops[sessionStorage.getItem('selectIndex') || 0].starLevel
+      this.$router.push({
+        path: '/starCheck',
+        query: { shopId: this.shopId, starLevel }
+      })
     }
   }
 }

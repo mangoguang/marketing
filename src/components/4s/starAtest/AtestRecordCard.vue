@@ -188,17 +188,17 @@ export default {
         })
         return { typeList: data[key], passFail }
       })
+
+      // if (cofirmList[7].passFail) {
+      //   cofirmList[7].typeList[0].statusString = '已申请'
+      // }
+
       if (approveLevel > 2) {
         cofirmList.splice(2, 4)
       } else {
-        console.log(cofirmList)
         cofirmList.splice(1, 5)
-        console.log(cofirmList)
       }
 
-      if (cofirmList[3].passFail) {
-        cofirmList[3].typeList[0].statusString = '已申请'
-      }
       this.cofirmList = cofirmList
       this.showNodeCard = true
     },

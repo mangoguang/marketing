@@ -5,7 +5,7 @@
         v-for="(item,index) in starList"
         :key='item + index'
         @click="selectStar(item,index)"
-        :style="index === activeStar||index==activeIndex? activeColor : ''">
+        :style="activeStyle(index)">
       <span>{{ item.name }}</span>
       <span class="text">|</span>
     </li>
@@ -15,7 +15,7 @@
 <script>
 export default {
   props: ['starList', 'activeIndex'],
-  data () {
+  data() {
     return {
       list: ['五星', '四星', '三星', '二星', '一星'],
       activeStar: -1,
@@ -23,15 +23,23 @@ export default {
       activeColor: {
         color: '#007aff'
       }
-    };
+    }
   },
-  created () {
+  created() {
     this.setStar()
     this.setActivityColor()
   },
   methods: {
+    activeStyle(index) {
+      if (this.activeStar == -1 && index == 0) {
+        return this.activeColor
+      }
+      if (this.activeStar == index) {
+        return this.activeColor
+      }
+    },
     //设置颜色
-    setActivityColor () {
+    setActivityColor() {
       const color = this.$route.query && this.$route.query.color
       if (color) {
         this.activeColor = {
@@ -40,7 +48,7 @@ export default {
       }
     },
     //初始的时候展示几颗星
-    setStar () {
+    setStar() {
       const len = this.list.length
       if (!this.star) {
         this.list = this.list.slice(len - 1)
@@ -49,7 +57,7 @@ export default {
       }
     },
     //点击切换
-    selectStar (item, index) {
+    selectStar(item, index) {
       this.activeStar = index
       this.$emit('changeStar', item)
     }

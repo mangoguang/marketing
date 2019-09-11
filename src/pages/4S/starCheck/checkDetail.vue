@@ -11,7 +11,8 @@
                   @input="bindTexareaChange"
                   maxlength="100"></textarea>
         <div class="editor-readonly"
-             v-else>{{textareaVal}}</div>
+             :class="{'no-data':!textareaVal}"
+             v-else>{{textareaVal||'暂无数据'}}</div>
         <div class="upload">
           <div class="up-img"
                v-for="(item,index) in picVal"
@@ -547,6 +548,10 @@ export default {
       color: #2d2d2d;
       overflow: hidden;
       word-wrap: break-word;
+    }
+    .no-data {
+      color: #999;
+      font-size: 14px;
     }
   }
   .form {

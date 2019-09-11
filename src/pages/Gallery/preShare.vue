@@ -54,11 +54,11 @@ export default {
         {
           name: '分享给QQ好友',
           imgUrl: './static/images/qq.png'
-        },
-        {
-          name: '分享到微博',
-          imgUrl: './static/images/weibo.png'
         }
+        // {
+        //   name: '分享到微博',
+        //   imgUrl: './static/images/weibo.png'
+        // }
       ],
       url: '',
       loadImgUrl: '',
@@ -211,6 +211,7 @@ export default {
       // }, 1500)
     },
     shareBtn(index) {
+      Toast('正在开分享应用...')
       switch (index) {
         case 0:
           this.shareWeixin('session', this.msg.goodsName)

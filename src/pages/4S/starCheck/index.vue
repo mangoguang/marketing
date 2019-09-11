@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="index">
-    <Header :storeClass="parseInt(5)" />
+    <Header :storeClass="$route.query.starLevel" />
     <StarContentBox />
   </div>
 </template>
@@ -15,10 +15,8 @@ export default {
     Header,
     StarContentBox
   },
-  data () {
-    return {
-
-    }
+  data() {
+    return {}
   }
 }
 </script>
