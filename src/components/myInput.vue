@@ -10,6 +10,7 @@
            @focus='focusInput()'
            @blur="blurInput()"
            v-on:input="$emit('input',$event.target.value)"
+           @keyup.enter="$emit('onSubmit')"
            :value='value'
            maxlength="20">
   </li>

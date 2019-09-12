@@ -7,6 +7,7 @@
                  v-permission="['Store Manager','Sleep Consultant']" />
     <!-- 日常检查 -->
     <DailyCheck :shopId="shopId"
+                :shops="shops"
                 v-permission="['Store Manager','Sleep Consultant','supervisor']" />
     <!--星级认证-->
     <starAttestation v-permission="['Dealer Boss','supervisor']" />

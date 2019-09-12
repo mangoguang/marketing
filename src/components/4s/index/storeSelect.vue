@@ -38,23 +38,23 @@ export default {
     })
   },
   methods: {
-    async _initData() {
-      let { code, msg, shops } = await gradeShops()
-      if (code != 0) {
-        Toast({
-          message: msg,
-          position: 'middle',
-          duration: 2000
-        })
-        return
-      }
-      if (shops.length > 0) {
-        this.shops = shops
-        this.shopId = shops[0].id
-        this.setShopId(shops[0].id)
-        this.soreClass = shops[0].starLevel
-      }
-    },
+    // async _initData() {
+    //   let { code, msg, shops } = await gradeShops()
+    //   if (code != 0) {
+    //     Toast({
+    //       message: msg,
+    //       position: 'middle',
+    //       duration: 2000
+    //     })
+    //     return
+    //   }
+    //   if (shops.length > 0) {
+    //     this.shops = shops
+    //     this.shopId = shops[0].id
+    //     this.setShopId(shops[0].id)
+    //     this.soreClass = shops[0].starLevel
+    //   }
+    // },
     showStoreList() {
       this.storeSelectShow = !this.storeSelectShow
     },

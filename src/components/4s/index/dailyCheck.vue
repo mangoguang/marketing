@@ -24,7 +24,7 @@ import ContentBox from './contentBox'
 import iconBox from './iconBox'
 
 export default {
-  props: ['shopId'],
+  props: ['shopId', 'shops'],
   components: {
     ContentBox,
     iconBox
@@ -36,11 +36,11 @@ export default {
         icon: './static/images/4s/star_re.png',
         bgIcon: './static/images/4s/starCheck.png',
         text: '星级检查',
-        link: 'starCheckW'
+        link: 'starCheckW',
+        shops: []
       }
     }
   },
-
   methods: {
     handleClick(linkName) {
       let positionType = JSON.parse(localStorage.getItem('ajaxData'))
@@ -53,9 +53,8 @@ export default {
         })
         return
       }
-      let shops = JSON.parse(localStorage.getItem('shops'))
-      let starLevel =
-        shops[sessionStorage.getItem('selectIndex') || 0].starLevel
+      let starLevel = this.shops[sessionStorage.getItem('selectIndex') || 0]
+        .starLevel
       this.$router.push({
         path: '/starCheck',
         query: { shopId: this.shopId, starLevel }

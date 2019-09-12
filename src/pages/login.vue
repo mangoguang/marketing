@@ -31,7 +31,8 @@
                   v-model.trim="inputValue2"
                   :Msg="pwdMsg"
                   @myFocus="myFocus"
-                  @myBlur="myBlur"></li>
+                  @myBlur="myBlur"
+                  @onSubmit="onSubmit"></li>
               <li class="tips clearfix">
                 <input type="checkbox"
                        id="remember"
@@ -157,6 +158,12 @@ export default {
     },
     myBlur() {
       this.botContentShow = true
+    },
+    onSubmit() {
+      this.key = false
+      this.display = 'none'
+      this.display1 = 'none'
+      this.login(this.inputValue1, this.inputValue2)
     },
     //提交时如果勾选记住密码，则缓存账号密码。否则清除缓存。
     submitForm() {
