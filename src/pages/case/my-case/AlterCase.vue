@@ -12,19 +12,63 @@
     <div class="postion">
       <span> 广东 东莞</span>
     </div>
+    <div class="upload">
+      <h2>请按要求添加案例图片</h2>
+      <div class="up-box">
+        <div class="li"
+             v-for="(item,index) in defaultImg"
+             :key="index">
+          <p><span>*</span>{{item}}</p>
+          <div class="img"
+               :class="`img${index}`">
+            <div class="add"></div>
+            <input type="file"
+                   hidden>
+          </div>
+        </div>
+      </div>
+      <h2>其他（不超过3张）</h2>
+      <div class="up-box">
+        <div class="li">
+          <div class="img">
+            <div class="tip">添加图片</div>
+            <input type="file"
+                   hidden>
+          </div>
+        </div>
+      </div>
+      <div class="notice">注意：图片大小不能超过3M</div>
+    </div>
+    <div class="release">
+      <div class="re-btn">发布案例</div>
+    </div>
+    <toast-box class="toast"
+               v-if="true"
+               :content="'是否确认重置？555'">
+
+      <template v-slot:bottons>
+        <div class="but">
+          <div class="btns">取消</div>
+          <div class="btns">确定</div>
+        </div>
+      </template>
+    </toast-box>
   </div>
 </template>
 
 <script>
 import Banner from '@/components/banner'
+import ToastBox from '@/components/case/ToastBox/Index'
 export default {
   name: 'AlterCase',
   components: {
-    Banner
+    Banner,
+    ToastBox
   },
   data() {
     return {
-      description: ''
+      description: '',
+      defaultImg: ['正面', '侧面', '对角']
     }
   }
 }
@@ -44,16 +88,113 @@ export default {
     background-size: contain;
   }
 }
+
 .alter {
   background-color: #fff;
   height: 100vh;
   padding: 0 10px;
   overflow: auto;
+  .release {
+    height: 52px;
+    margin-top: 30px;
+    .re-btn {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 52px;
+      background-color: #007aff;
+      color: #fff;
+      text-align: center;
+      line-height: 52px;
+      z-index: 9;
+      font-size: 16px;
+    }
+  }
+  .upload {
+    padding: 0 6px;
+    & > h2 {
+      font-size: 12px;
+      color: #363636;
+      line-height: 1;
+      padding-bottom: 11px;
+    }
+    .notice {
+      font-size: 11px;
+      color: #cc2934;
+      padding-left: 20px;
+      background: url('~@/assets/imgs/case/注意 拷贝@2x.png') left center / 16px
+        16px no-repeat;
+    }
+    .up-box {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      .li {
+        & > p {
+          color: #909090;
+          font-size: 11px;
+          line-height: 1;
+          padding-bottom: 10px;
+          span {
+            color: #cc2934;
+          }
+        }
+      }
+      .img {
+        width: 110px;
+        height: 110px;
+        position: relative;
+        background: #e1e1e1;
+        border: 1px solid rgba(225, 225, 225, 1);
+        border-radius: 4px;
+      }
+      .tip {
+        background: #e1e1e1 url(~@/assets/imgs/case/拍照@2x.png) top center /
+          20px 16px no-repeat;
+        padding-top: 27px;
+        text-align: center;
+        position: absolute;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        line-height: 1;
+        font-size: 12px;
+        color: #909090;
+      }
+      .img0 {
+        background: #e1e1e1 url(~@/assets/imgs/case/正面@2x.png) center center /
+          70px 70px no-repeat;
+      }
+      .img1 {
+        background: #e1e1e1 url(~@/assets/imgs/case/侧面@2x.png) center center /
+          70px 70px no-repeat;
+      }
+      .img2 {
+        background: #e1e1e1 url(~@/assets/imgs/case/对角@2x.png) center center /
+          70px 70px no-repeat;
+      }
+      .add {
+        width: 27px;
+        height: 27px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: url('~@/assets/imgs/case/圆角矩形 1007@2x.png') center
+          center / 100% 100% no-repeat;
+      }
+    }
+  }
   .postion {
     border-top: 1px solid #e1e1e1;
     border-bottom: 1px solid #e1e1e1;
     margin-top: 10px;
     margin-bottom: 15px;
+    margin-left: 6px;
+    margin-right: 6px;
     height: 45px;
     color: #007aff;
     padding-right: 17px;
