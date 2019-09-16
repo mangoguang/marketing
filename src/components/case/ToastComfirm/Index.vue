@@ -7,7 +7,8 @@
       </div>
       <div class="content">
         <slot name="content">
-          <div class="def-cont">{{content}}</div>
+          <div class="def-cont"
+               v-html="content"></div>
         </slot>
       </div>
       <div class="buttons">
@@ -51,6 +52,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow: hidden;
   }
   .title {
     padding-top: 20px;
@@ -73,11 +75,13 @@ export default {
   }
   .def-cont,
   .content {
-    min-height: 35px;
+    min-height: 65px;
     .def-cont {
       display: flex;
       justify-content: center;
       align-items: center;
+      color: #666666;
+      font-size: 14px;
     }
   }
   .buttons {

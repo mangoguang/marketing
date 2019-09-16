@@ -10,9 +10,9 @@
       handler: ''
     }
   ]" />
-    <div class="no-data">
+    <!-- <div class="no-data">
       <p>您还没有添加过案例哦<br>快去新增吧~</p>
-    </div>
+    </div> -->
     <float-add-nav />
   </div>
 </template>

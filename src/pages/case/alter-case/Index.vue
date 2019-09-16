@@ -42,33 +42,35 @@
     <div class="release">
       <div class="re-btn">发布案例</div>
     </div>
-    <toast-box class="toast"
-               v-if="true"
-               :content="'是否确认重置？555'">
+    <toast-comfirm class="toast"
+                   v-if="ShowToast"
+                   :content="'是否确认重置？'">
 
       <template v-slot:bottons>
         <div class="but">
-          <div class="btns">取消</div>
-          <div class="btns">确定</div>
+          <div class="btns commit">确定</div>
+          <div class="btns"
+               @click="ShowToast=false">取消</div>
         </div>
       </template>
-    </toast-box>
+    </toast-comfirm>
   </div>
 </template>
 
 <script>
 import Banner from '@/components/banner'
-import ToastBox from '@/components/case/ToastBox/Index'
+import ToastComfirm from '@/components/case/ToastComfirm/Index'
 export default {
   name: 'AlterCase',
   components: {
     Banner,
-    ToastBox
+    ToastComfirm
   },
   data() {
     return {
       description: '',
-      defaultImg: ['正面', '侧面', '对角']
+      defaultImg: ['正面', '侧面', '对角'],
+      ShowToast: true
     }
   }
 }
@@ -88,7 +90,22 @@ export default {
     background-size: contain;
   }
 }
-
+.but {
+  display: flex;
+  .btns {
+    flex: 1;
+    font-size: 18px;
+    color: #909090;
+    &:active {
+      background-color: #b2d7ff;
+      color: #007aff;
+    }
+  }
+  .commit {
+    color: #363636;
+    border-right: 1px solid #ddd;
+  }
+}
 .alter {
   background-color: #fff;
   height: 100vh;
