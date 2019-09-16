@@ -7,6 +7,17 @@ import api from './js/api.js'
 import VueTouch from 'vue-touch'
 import VueLazyload from 'vue-lazyload'
 
+//mint-ui
+import {
+  Actionsheet,
+  Swipe,
+  SwipeItem
+} from 'mint-ui';
+Vue.component(Actionsheet.name, Actionsheet);
+Vue.component(Swipe.name, Swipe)
+Vue.component(SwipeItem.name, SwipeItem)
+
+
 //图片预览
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'

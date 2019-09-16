@@ -18,11 +18,21 @@
              @click="bindResetPosition">重新定位</div>
       </div>
     </div>
+    <index-list></index-list>
+    <ul class="search-list">
+      <li>广州</li>
+      <li class="no-data">抱歉，未找到相关位置，请修改后重试</li>
+    </ul>
+
   </div>
 </template>
 <script>
 import { setTimeout } from 'timers'
+import IndexList from './components/IndexList'
 export default {
+  components: {
+    IndexList
+  },
   data() {
     return {
       resetPosition: false
@@ -48,6 +58,19 @@ export default {
     height: $height;
     background: $url;
     background-size: contain;
+  }
+}
+.provice .search-list {
+  height: 40px;
+  line-height: 40px;
+  color: #ff2d55;
+  padding-left: 16px;
+  font-size: 14px;
+  li {
+    border-bottom: 1px solid #e1e1e1;
+  }
+  .no-data {
+    color: #666666;
   }
 }
 .position {
@@ -101,28 +124,18 @@ export default {
       }
     }
     .pos-active {
-      animation: posrotate 0.5s;
       &::before {
+        animation: pos-roate 1s linear infinite;
       }
     }
   }
 }
-@keyframes posrotate {
+@keyframes pos-roate {
   from {
-    .pos-active {
-      background: red;
-      &::before {
-        transform: rotateZ(0deg);
-      }
-    }
+    transform: rotateZ(0deg);
   }
   to {
-    .pos-active {
-      background: blue;
-      &::before {
-        transform: rotateZ(360deg);
-      }
-    }
+    transform: rotateZ(360deg);
   }
 }
 .search {

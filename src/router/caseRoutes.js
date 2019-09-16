@@ -1,6 +1,6 @@
 let caseRoutes = [{
     path: '/case',
-    name: 'Case',
+    name: 'case',
     component: () => import('@/pages/case/index/Index'),
     meta: {
       title: '案例主页'
@@ -8,7 +8,7 @@ let caseRoutes = [{
   },
   {
     path: '/my-case',
-    name: 'MyCase',
+    name: 'myCase',
     component: () => import('@/pages/case/my-case/Index'),
     meta: {
       title: '我的案例'
@@ -16,14 +16,14 @@ let caseRoutes = [{
   },
   {
     path: '/detail',
-    name: 'Detail',
-    component: () => import('@/pages/case/my-case/Detail'),
+    name: 'setail',
+    component: () => import('@/pages/case/detail/Index'),
     meta: {
       title: '案例详情'
     }
   }, {
     path: '/alter-case',
-    name: 'AlterCase',
+    name: 'alterCase',
     component: () => import('@/pages/case/alter-case/Index'),
     meta: {
       title: '新增、修改案例'
@@ -31,10 +31,26 @@ let caseRoutes = [{
   },
   {
     path: '/provice',
-    name: 'Provice',
+    name: 'provice',
     component: () => import('@/pages/case/provice/Index'),
     meta: {
       title: '获取省份城市'
+    }
+  },
+  {
+    path: '/browse',
+    name: 'browse',
+    component: () => import('@/pages/case/browse/Index'),
+    meta: {
+      title: '案例详情图片浏览'
+    }
+  },
+  {
+    path: '/preview',
+    name: 'preview',
+    component: () => import('@/pages/case/preview/Index'),
+    meta: {
+      title: '图片预览'
     }
   }
 ]

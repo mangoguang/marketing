@@ -18,8 +18,8 @@
 </template>
 <script>
 import Banner from '@/components/banner'
-import GoodsList from '@/components/case/MyCase/GoodsList'
-import FloatAddNav from '@/components/case/MyCase/FloatAddNav'
+import GoodsList from './components/GoodsList'
+import FloatAddNav from './components/FloatAddNav'
 export default {
   components: {
     Banner,

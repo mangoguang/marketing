@@ -3,7 +3,7 @@
     <ul class="main">
       <li class="view">2152</li>
       <li class="love"
-          @click="$emt('onLove')">666</li>
+          @click="$emit('onLove')">666</li>
       <li class="share"
           @click="$emit('onShare')">分享</li>
       <li class="del"

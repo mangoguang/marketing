@@ -8,7 +8,7 @@
 </template>
 <script>
 import FilterBar from './components/FilterBar'
-import List from '@/components/case/MyCase/List'
+import List from '@/components/case/List/Index'
 export default {
   components: {
     FilterBar,

@@ -54,7 +54,7 @@
 <script>
 import { once } from 'mint-ui/src/utils/dom'
 import XCell from './Cell'
-import List from './List'
+import List from '@/components/case/List/Index'
 import Clickoutside from 'mint-ui/src/utils/clickoutside'
 
 /**
