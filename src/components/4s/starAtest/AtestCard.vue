@@ -172,6 +172,10 @@ export default {
     },
     async bindApply(index) {
       let item = this.dataList[index]
+      if (!item.isEdit) {
+        Toast('请先点击确认')
+        return
+      }
       let { province, empowerCity } = item
       if (!item.nameVal) {
         Toast('请填写对接人姓名')

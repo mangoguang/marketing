@@ -140,6 +140,9 @@ export default {
       'scrollTop'
     )
   },
+  mounted() {
+    document.querySelector('#app').scrollTop = 0
+  },
   methods: {
     ...mapMutations([
       'setSubmitScoreData',

@@ -103,6 +103,7 @@ import myinput from '../components/myInput'
 import messageBox from '../components/msManage/yanMessageBox'
 import { IndexModel } from '../utils/index'
 import { loginAcount, userinfo } from '@/api/4s'
+import Cookies from 'js-cookie'
 const indexModel = new IndexModel()
 export default {
   name: 'login',
@@ -127,8 +128,8 @@ export default {
       type2: 'password',
       account: '账号',
       pwd: '密码',
-      inputValue1: '19040014',
-      inputValue2: '123456',
+      inputValue1: '',
+      inputValue2: '',
       nameMsg: '',
       pwdMsg: '',
       h: '',
@@ -147,6 +148,8 @@ export default {
     this.$root.author = 'mangoguang'
   },
   created() {
+    this.inputValue1 = Cookies.get('userName') || ''
+    this.inputValue2 = Cookies.get('password') || ''
     this.getAccountMsg()
     this.isIPhoneX()
   },
@@ -203,6 +206,8 @@ export default {
         mango.tip(data.msg)
         return
       }
+      Cookies.set('userName', account)
+      Cookies.set('password', pwd)
       // 将账号信息添加到对象
       Object.assign(data, {
         account,

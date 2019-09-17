@@ -1,32 +1,51 @@
 <template>
   <div class="article paddingTop">
-    <banner :title="'文章详情'"/>
-    <collect-btn class="collentBtn" 
-        :collection='collection'
-        v-on:touchend.native='changeCollectBtn'
-        :style="{'top': top}"
-        />
+    <banner :title="'文章详情'" />
+    <collect-btn class="collentBtn"
+                 :collection='collection'
+                 v-on:touchend.native='changeCollectBtn'
+                 :style="{'top': top}" />
     <div class="titleBar">
-      <div class="title"><img v-show="logoImageUrl!==''" :src="logoImageUrl"/>{{articleDetails.title}}</div>
+      <div class="title"><img v-show="logoImageUrl!==''"
+             :src="logoImageUrl" />{{articleDetails.title}}</div>
       <!-- <span>{{ articleDetails.createTime }}</span> -->
-      <div v-if="articleDetails.author" style="color:#909090;font-size:14px">
+      <div v-if="articleDetails.author"
+           style="color:#909090;font-size:14px">
         作者：{{articleDetails.author}}&nbsp;&nbsp;
         <span v-if="articleDetails.createTime">{{articleDetails.createTime.split(' ')[0].split('-').join('.')}}</span>
       </div>
     </div>
-    <div class="content" v-html="myhtml" @click.stop="showImage">
+    <div class="content"
+         v-html="myhtml"
+         @click="showImage">
     </div>
   </div>
 </template>
 
 <script>
-import {IndexModel} from '../../utils/index'
+var fullscreen = function(elem) {
+  var prefix = 'webkit'
+  if (elem[prefix + 'EnterFullScreen']) {
+    return prefix + 'EnterFullScreen'
+  } else if (elem[prefix + 'RequestFullScreen']) {
+    return prefix + 'RequestFullScreen'
+  }
+  return false
+}
+import { IndexModel } from '../../utils/index'
 const indexModel = new IndexModel()
-import {removeItem, addItem, b64DecodeUnicode, changeImgStyle, changeVedioStyle,waterMark} from '../../utils/msManage'
+import {
+  removeItem,
+  addItem,
+  b64DecodeUnicode,
+  changeImgStyle,
+  changeVedioStyle,
+  waterMark
+} from '../../utils/msManage'
 import Banner from '../../components/banner'
 import CollectBtn from '../../components/msManage/eggCollectBtn'
 export default {
-  components: {CollectBtn,Banner},
+  components: { CollectBtn, Banner },
   data() {
     return {
       isBegin: true,
@@ -36,8 +55,8 @@ export default {
       articleDetails: '',
       top: '',
       account: '',
-      imgSrc:[],
-      logoImageUrl:''
+      imgSrc: [],
+      logoImageUrl: ''
     }
   },
   created() {
@@ -49,43 +68,77 @@ export default {
   mounted() {
     // var a = document.getElementsByTagName("html")
     // console.log(a)
-    waterMark('.article',1);
-   
-    
+    waterMark('.article', 1)
+
+    var isFullScreen = function() {
+      return !!(
+        document.fullScreen ||
+        document.webkitIsFullScreen ||
+        document.mozFullScreen ||
+        document.msFullscreenElement ||
+        document.fullscreenElement
+      )
+    }
+    document.addEventListener('webkitfullscreenchange', e => {
+      if (isFullScreen()) {
+        api.setScreenOrientation({
+          orientation: 'auto'
+        })
+      } else {
+        api.setScreenOrientation({
+          orientation: 'portrait_up'
+        })
+      }
+    })
   },
   methods: {
     browser() {
-      let flag;
-      let sUserAgent = navigator.userAgent.toLowerCase();
-      let bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
-      let bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
-      let bIsMidp = sUserAgent.match(/midp/i) == "midp";
-      let bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
-      let bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
-      let bIsAndroid = sUserAgent.match(/android/i) == "android";
-      let bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
-      let bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
-      if (!(bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM)){
+      let flag
+      let sUserAgent = navigator.userAgent.toLowerCase()
+      let bIsIpad = sUserAgent.match(/ipad/i) == 'ipad'
+      let bIsIphoneOs = sUserAgent.match(/iphone os/i) == 'iphone os'
+      let bIsMidp = sUserAgent.match(/midp/i) == 'midp'
+      let bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == 'rv:1.2.3.4'
+      let bIsUc = sUserAgent.match(/ucweb/i) == 'ucweb'
+      let bIsAndroid = sUserAgent.match(/android/i) == 'android'
+      let bIsCE = sUserAgent.match(/windows ce/i) == 'windows ce'
+      let bIsWM = sUserAgent.match(/windows mobile/i) == 'windows mobile'
+      if (
+        !(
+          bIsIpad ||
+          bIsIphoneOs ||
+          bIsMidp ||
+          bIsUc7 ||
+          bIsUc ||
+          bIsAndroid ||
+          bIsCE ||
+          bIsWM
+        )
+      ) {
         //alert('pc')
-        flag=false
-      }else{
+        flag = false
+      } else {
         //alert('phone')
-        flag=true
+        flag = true
       }
       return flag
     },
-    showImage(e){
-      console.log(e.target.nodeName.toLowerCase());
-      if(e.target.nodeName.toLowerCase()==='img'){
-          console.log(e.target.src);
-          if(this.imgSrc.length>0){
-            let index=this.imgSrc.indexOf(e.target.src)
-            if(index>-1){
-              console.log(index);
-              let that = this
-               this.browser();
+    showImage(e) {
+      // if (e.target.nodeName.toLowerCase == 'video') {
+      //   var fl = fullscreen(e.target)
+      //   alert(fl)
+      // }
+      console.log(e.target.nodeName.toLowerCase())
+      if (e.target.nodeName.toLowerCase() === 'img') {
+        console.log(e.target.src)
+        if (this.imgSrc.length > 0) {
+          let index = this.imgSrc.indexOf(e.target.src)
+          if (index > -1) {
+            console.log(index)
+            let that = this
+            this.browser()
             /*   if(this.browser()){ */
-               /*  var UIPhotoViewer=api.require('UIPhotoViewer');
+            /*  var UIPhotoViewer=api.require('UIPhotoViewer');
                 alert(UIPhotoViewer);
                 UIPhotoViewer.open({
                     images: that.imgSrc,
@@ -98,12 +151,11 @@ export default {
                         alert(JSON.stringify(err));
                     }
                 }); */
-              /* } */
-              
-            }else{
-              this.activeImg=0;
-            }
+            /* } */
+          } else {
+            this.activeImg = 0
           }
+        }
       }
     },
     //获取文章详情
@@ -112,19 +164,18 @@ export default {
       indexModel.getArticleDetail(id, this.account).then(res => {
         this.articleDetails = res.data
         this.logoImageUrl = res.data.logoImageUrl
-        if(res.data.remark) {
+        if (res.data.remark) {
           let temp = res.data.remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
           this.myhtml = changeVedioStyle(this.myhtml)
-          let imgReg=/<img.*?(?:>|\/>)/gi;
-          let srcReg=/src=[\'\"]?([^\'\"]*)[\'\"]?/i;
-          let arr=this.myhtml.match(imgReg);
-          if(arr){
-            for(let i=0;i<arr.length;i++){
-              this.imgSrc.push(arr[i].match(srcReg)[1]);
+          let imgReg = /<img.*?(?:>|\/>)/gi
+          let srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i
+          let arr = this.myhtml.match(imgReg)
+          if (arr) {
+            for (let i = 0; i < arr.length; i++) {
+              this.imgSrc.push(arr[i].match(srcReg)[1])
             }
           }
-          
         }
         this.collection = res.data.collect
       })
@@ -146,26 +197,25 @@ export default {
     // 切换收藏按钮
     changeCollectBtn() {
       this.collection = !this.collection
-      if(this.collection) {
+      if (this.collection) {
         //收藏接口
         this.collect()
-      }else {
+      } else {
         //移除收藏接口
         this.cancelCollect()
       }
     },
     //收藏的样式
-    isIPhoneX (){
+    isIPhoneX() {
       let phone = this.phoneSize()
-      if(phone === 'iphonex') {
+      if (phone === 'iphonex') {
         this.top = '11vw'
-      }else if(phone === 'iphone') {
+      } else if (phone === 'iphone') {
         this.top = '6vw'
-      }else {
+      } else {
         this.top = '6vw'
       }
     }
-    
   }
 }
 </script>
@@ -177,16 +227,16 @@ export default {
   padding-top: 20vw;
   position: relative;
   box-sizing: border-box;
-  
+  min-height: 100vh;
   // width: 100vw;
   // overflow: hidden;
 
   .collentBtn {
-      position: fixed;
-      right: 4.26vw;
-      top: 0;
-      z-index: 99;
-    }
+    position: fixed;
+    right: 4.26vw;
+    top: 0;
+    z-index: 99;
+  }
   .titleBar {
     .title {
       color: #353535;
@@ -195,17 +245,17 @@ export default {
       text-align: center;
       margin: 0 auto;
       font-weight: bold;
-      margin-bottom:1.4vw;
-      img{
-          display: inline-block;
-          width: 4.8vw;
-          height: 4.8vw;
-         // background: red;
-          vertical-align:-3px;
-          margin-right:2px;
-          background-repeat: no-repeat;
-          background-position: center center;
-          background-size: 4.8vw 4.8vw;
+      margin-bottom: 1.4vw;
+      img {
+        display: inline-block;
+        width: 4.8vw;
+        height: 4.8vw;
+        // background: red;
+        vertical-align: -3px;
+        margin-right: 2px;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 4.8vw 4.8vw;
       }
     }
     span {
@@ -220,11 +270,11 @@ export default {
     overflow: hidden;
     padding: 4.26vw;
     box-sizing: border-box;
-    h2,p {
+    h2,
+    p {
       color: #363636;
       font-size: 3.73vw;
     }
   }
-    
 }
 </style>
