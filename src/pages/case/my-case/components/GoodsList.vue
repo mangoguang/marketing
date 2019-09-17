@@ -13,7 +13,7 @@
           ref="cell"
           :value="value">
     <template slot="content">
-      <list />
+      <list :item="item" />
     </template>
     <div slot="right"
          class="mint-cell-swipe-buttongroup"
@@ -26,7 +26,7 @@
          @click.prevent.stop="showDel=!showDel"
          v-show="showDel"></a>
       <div class="mint-cell-comfirm"
-           @click.prevent.stop="showDel=!showDel, swipeMove()"
+           @click.prevent.stop="showDel=!showDel,$emit('onDelete',item), swipeMove()"
            v-show="!showDel">确认<br>删除</div>
     </div>
     <div slot="left"
@@ -87,7 +87,8 @@ export default {
     title: String,
     label: String,
     isLink: Boolean,
-    value: {}
+    value: {},
+    item: {}
   },
 
   data() {

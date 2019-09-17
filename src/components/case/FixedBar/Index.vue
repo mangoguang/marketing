@@ -1,7 +1,7 @@
 <template>
   <div class="fixed-bar">
     <ul class="main">
-      <li class="view">2152</li>
+      <li class="view">{{detailData.pageView}}</li>
       <li class="love"
           @click="$emit('onLove')">666</li>
       <li class="share"
@@ -12,7 +12,11 @@
   </div>
 </template>
 <script>
-export default {}
+export default {
+  props: {
+    detailData: {}
+  }
+}
 </script>
 <style lang="scss" scoped>
 @mixin before-bg($url) {

@@ -55,12 +55,15 @@ import employeeList from './modules/employee/employeeList'
 import shopList from './modules/store/shopList'
 import storeEmployeeList from './modules/store/storeEmployeeList'
 import plan from './modules/work/plan'
-import eggRecordDetails from './modules/4s/recordDetails' 
-import noticeList from './modules/notice/noticeList' 
+import eggRecordDetails from './modules/4s/recordDetails'
+import noticeList from './modules/notice/noticeList'
+import
+caseStore from './modules/caseStore'
 export default new Vuex.Store({
   state,
   mutations,
   modules: {
+    caseStore,
     common,
     customer,
     select,

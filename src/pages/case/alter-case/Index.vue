@@ -92,6 +92,7 @@ export default {
 }
 .but {
   display: flex;
+  width: 100%;
   .btns {
     flex: 1;
     font-size: 18px;

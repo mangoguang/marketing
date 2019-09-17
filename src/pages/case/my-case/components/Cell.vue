@@ -84,6 +84,9 @@ export default {
 .mint-cell {
   background: #f8f8f8;
 }
+.mint-cell-wrapper {
+  padding: 0;
+}
 @component-namespace mint {
   @component cell {
     background-color: $color-white;

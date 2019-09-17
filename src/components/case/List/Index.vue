@@ -1,25 +1,26 @@
 <template>
   <div :class="listStyle">
-    <div class="cell-img cell-hot">
-      <img src="https://op.derucci.com/web/marketingTest/static/img/login_icon.221d2f1.png"
+    <div class="cell-img cell-hot"
+         :class="{'cell-hot':item.top}">
+      <img :src="item.frontImg"
            alt="">
     </div>
     <div class="cell-text">
       <div class="cell-top">
-        <h2>V6 时尚 BFB1-019</h2>
-        <div class="cell-pos">广东 东莞</div>
-        <div class="cell-view">3662</div>
+        <h2>{{item.remark}}</h2>
+        <div class="cell-pos">{{item.source}}</div>
+        <div class="cell-view">{{item.pageView}}</div>
       </div>
       <div class="cell-bot">
         <span class="cell-date"
-              v-if="isDate">2018.12.17</span>
+              v-if="isDate">{{item.createTime}}</span>
         <div class="cell-info"
              v-else>
           <div class="cell-face">
-            <img src="https://op.derucci.com/web/marketingTest/static/img/login_icon.221d2f1.png"
+            <img :src="item.frontImg"
                  alt="">
           </div>
-          <h3>张三</h3>
+          <h3>{{item.createByName}}</h3>
         </div>
         <span class="cell-love">16235</span>
       </div>
@@ -29,6 +30,7 @@
 <script>
 export default {
   props: {
+    item: {},
     isDate: {
       type: Boolean,
       default: false
@@ -152,7 +154,10 @@ export default {
 .cell-list {
   display: flex;
   margin-bottom: 10px;
-
+  padding: 0 10px;
+  &:active {
+    background-color: #fff;
+  }
   .cell-img {
     width: 135px;
     height: 135px;
@@ -235,6 +240,7 @@ export default {
         border-radius: 50%;
         overflow: hidden;
         display: flex;
+        margin-right: 5px;
         @include com-img;
       }
       h3 {

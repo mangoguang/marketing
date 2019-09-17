@@ -8,35 +8,25 @@
     <div class="img">
       <mt-swipe :auto="100000"
                 :show-indicators="false"
-                :defaultIndex="dotIndex"
+                :defaultIndex="$route.query.imgIndex"
                 @change="bindChange">
-        <mt-swipe-item>
+        <mt-swipe-item v-for="(item,index) in browseData.imgs"
+                       :key="index">
           <div class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/train-advert/20190803/c4ffa40fb7e9f0070a8514ddd494dbb5.jpg"
-                 alt="">
-          </div>
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <div class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/train-advert/20190503/273a01ea255e0621dc16d486ee5a6ee8.jpg"
-                 alt="">
-          </div>
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <div class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/train-advert/20190506/d3e4b8bcb5b5d21aeb99dda2e50600b1.jpg"
+            <img :src="item"
                  alt="">
           </div>
         </mt-swipe-item>
       </mt-swipe>
     </div>
     <div class="tips">
-      <h2>@陈小美</h2>
-      <p>@陈小美 宝贝到货很快，一直很信赖慕思的品牌，送货师傅服务也很好，客服也很耐心！床垫的颜值超级高，躺上去很舒服，还有一层乳胶，</p>
+      <h2>@{{browseData.createByName}}</h2>
+      <p>{{browseData.remark}}</p>
     </div>
   </div>
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     dotIndex: {
@@ -48,6 +38,11 @@ export default {
     return {
       imgIndex: 1
     }
+  },
+  computed: {
+    ...mapState({
+      browseData: state => state.caseStore.browseData
+    })
   },
   methods: {
     bindChange(index) {

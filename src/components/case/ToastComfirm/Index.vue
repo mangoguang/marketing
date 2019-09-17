@@ -3,7 +3,7 @@
     <div class="box">
       <div class="title">
         <div class="icon"></div>
-        <h2>{{title}}</h2>
+        <h2 v-if="title">{{title}}</h2>
       </div>
       <div class="content">
         <slot name="content">
@@ -13,8 +13,11 @@
       </div>
       <div class="buttons">
         <slot name="bottons">
-          <div class="btn"
-               @click="$eimt('onComfirm')">确定</div>
+          <div class="btn com"
+               @click="$emit('onComfirm')">确定</div>
+          <div class="btn cancel"
+               @click="$emit('onCancel')">取消</div>
+
         </slot>
       </div>
     </div>
@@ -89,9 +92,24 @@ export default {
     border-top: 1px solid #dddddd;
     line-height: 51px;
     text-align: center;
+    display: flex;
+    width: 100%;
     .btn {
-      color: #007aff;
-      font-size: 15px;
+      font-size: 18px;
+      text-align: center;
+      flex: 1;
+      &:active {
+        background-color: #b2d7ff;
+        color: #007aff;
+      }
+    }
+    .com {
+      color: #363636;
+      border-right: 1px solid #e1e1e1;
+    }
+    .cancel {
+      color: #909090;
+      font-size: 18px;
     }
   }
 }

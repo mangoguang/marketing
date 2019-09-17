@@ -9,20 +9,14 @@
       <div class="banner">
         <mt-swipe :show-indicators="false"
                   @change="bindSwipeChange">
-          <mt-swipe-item class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/upload/20190425/b169d7e844e653fecb41dc2edb5a7d32.jpg"
-                 alt="">
-          </mt-swipe-item>
-          <mt-swipe-item class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/upload/20190425/cd2134b17784c8c6896c9a34743d3083.jpg"
-                 alt="">
-          </mt-swipe-item>
-          <mt-swipe-item class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/upload/20190425/204bf75af8b5cb257f0c5f207c0175b3.jpg"
-                 alt="">
+          <mt-swipe-item class="slider"
+                         v-for="(item,index) in slider"
+                         :key="index"
+                         @click.native="$router.push({path:'/browse',query:{imgIndex:swipeIndex-1}})">
+            <img :src="item">
           </mt-swipe-item>
         </mt-swipe>
-        <div class="dot">{{swipeIndex}}/3</div>
+        <div class="dot">{{swipeIndex}}/{{slider.length}}</div>
       </div>
     </div>
     <div class="info">
@@ -32,10 +26,10 @@
                alt="">
         </div>
         <div class="name">
-          <h2>陈晓梅</h2>
-          <p class="pos">广东 广州</p>
+          <h2>{{detailData.createByName}}</h2>
+          <p class="pos">{{detailData.source}}</p>
         </div>
-        <div class="date">2018.12.7</div>
+        <div class="date">{{detailData.createTime}}</div>
       </div>
       <div class="content">
         <div class="brand">
@@ -47,35 +41,86 @@
           </h2>
         </div>
         <div class="dec">
-          宝贝到货很快，一直很信赖慕思的品牌，送货师傅服务也很好，客服也很耐心！床垫的颜值超级高，躺上去很舒服，还有一层乳胶，家里几套房子都是一直用这个品牌！十分好评！
+          {{detailData.remark}}
         </div>
       </div>
     </div>
-    <fixed-bar @onShare="onShare" />
+    <fixed-bar @onShare="onShare"
+               @onDelete="onDelete"
+               :detailData="detailData" />
     <share-toast v-show="showShare"
                  @onCloseShare="showShare=false"></share-toast>
+    <toast-comfirm :content="content"
+                   v-if="showComfirm"
+                   @onComfirm="onComfirm"
+                   @onCancel="showComfirm=false"
+                   title=""></toast-comfirm>
   </div>
 </template>
 <script>
 import FixedBar from '@/components/case/FixedBar/Index'
 import ShareToast from '@/components/case/FixedBar/ShareToast'
+import ToastComfirm from '@/components/case/ToastComfirm/Index'
+import { goodCaseDetails, goodCaseDelete } from '@/api/case'
+import { Toast } from 'mint-ui'
+import { mapMutations } from 'vuex'
 export default {
   components: {
     FixedBar,
-    ShareToast
+    ShareToast,
+    ToastComfirm
   },
   data() {
     return {
       swipeIndex: 1,
-      showShare: false
+      showShare: false,
+      slider: [],
+      detailData: {},
+      content: '',
+      showComfirm: false
     }
   },
+  async created() {
+    let { data } = await goodCaseDetails({ id: this.$route.query.id })
+    let imgs = ['flankImg', 'frontImg', 'diagonalImg', 'img1', 'img2']
+    let arr = []
+    for (var item in data) {
+      if (imgs.includes(item) && data[item]) {
+        arr.push(data[item])
+      }
+    }
+    this.slider = arr
+    this.detailData = data
+    let { createByName, remark } = data
+    this.setBrowseData({
+      imgs: arr,
+      createByName,
+      remark
+    })
+  },
   methods: {
+    ...mapMutations(['setBrowseData']),
     bindSwipeChange(index) {
       this.swipeIndex = index + 1
     },
     onShare() {
       this.showShare = true
+    },
+    onDelete() {
+      this.showComfirm = true
+      this.content = '删除后将不能恢复<br>确定删除案例？'
+    },
+    async onComfirm(item) {
+      this.showComfirm = false
+      let { code, msg } = await goodCaseDelete({ id: this.$route.query.id })
+      if (code == 0) {
+        Toast('删除成功')
+        setTimeout(() => {
+          this.$router.back()
+        }, 1000)
+      } else {
+        Toast('删除失败')
+      }
     }
   }
 }

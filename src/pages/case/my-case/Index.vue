@@ -1,25 +1,29 @@
 <template>
   <div class="my-case">
     <banner title="我的案例" />
-    <goods-list v-for="i in 5"
-                :key="i"
-                title="标题文字"
-                :right="[
-    {
-      content: '删除',
-      handler: ''
-    }
-  ]" />
-    <!-- <div class="no-data">
+    <div class="line"></div>
+    <div class="list"
+         v-if="list&&list.length>0">
+      <goods-list v-for="(item,index) in list"
+                  :key="index"
+                  :item="item"
+                  @onDelete="onDelete"
+                  @click.native="$router.push({path:'/detail',query:{id:item.id}})"
+                  :right="[{content: '删除'}]" />
+    </div>
+    <div class="no-data"
+         v-else>
       <p>您还没有添加过案例哦<br>快去新增吧~</p>
-    </div> -->
-    <float-add-nav />
+    </div>
+    <float-add-nav @click.native="$router.push({path:'/alter-case'})" />
   </div>
 </template>
 <script>
 import Banner from '@/components/banner'
 import GoodsList from './components/GoodsList'
 import FloatAddNav from './components/FloatAddNav'
+import { goodCaseList, goodCaseDelete } from '@/api/case'
+import { Toast } from 'mint-ui'
 export default {
   components: {
     Banner,
@@ -27,11 +31,39 @@ export default {
     FloatAddNav
   },
   data() {
-    return {}
+    return {
+      list: []
+    }
+  },
+  created() {
+    this._initData()
+  },
+  methods: {
+    async _initData(page = 1, orderType = 1) {
+      let account = JSON.parse(localStorage.getItem('userInfo'))['account']
+      let res = await goodCaseList({
+        account,
+        orderType,
+        page
+      })
+      this.list = res.page.list
+    },
+    async onDelete(item) {
+      let { code, msg } = await goodCaseDelete({ id: item.id })
+      if (code == 0) {
+        this._initData()
+        Toast('删除成功')
+      } else {
+        Toast('删除失败')
+      }
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
+.line {
+  height: 72px;
+}
 .no-data {
   position: absolute;
   bottom: 151px;
