@@ -15,7 +15,7 @@ import VueRouter from 'vue-router'
 //let baseUrl = "http://10.11.8.7"
 //let baseUrl = "http://172.16.4.201"
 //let baseUrl="http://10.11.8.17"
-let baseUrl = "https://mobiletest.derucci.net/cd-sys-web"
+let baseUrl = "https://mobiletest.derucci.net"
 //let baseUrl = 'https://agency.derucci.com'
 // let baseUrl="http://172.16.9.212/"
 // let baseUrl = "http://172.16.12.86/"
@@ -33,11 +33,11 @@ export {
 export default class Common {
   constructor() {
 
-    this.port = baseUrl
+    this.port = baseUrl + '/cd-sys-web'
 
-    this.path = `${this.port}v1/app/report/`
-    this.v2path = `${this.port}v2/app/`
-    this.apipath = `${this.port}v1/api/public/`
+    this.path = `${this.port}/cd-sys-web/v1/app/report/`
+    this.v2path = `${this.port}/cd-sys-web/v2/app/`
+    this.apipath = `${this.port}/cd-sys-web/v1/api/public/`
     this.version = 'web'
     this.key = true
   }

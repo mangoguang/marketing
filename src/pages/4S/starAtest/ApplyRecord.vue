@@ -1,7 +1,8 @@
 
 <template>
   <div class="progress">
-    <atest-header title="认证进度" />
+    <atest-header title="认证进度"
+                  href="/index4s" />
 
     <div class="content">
       <atest-recordCard ref="recordCard" />

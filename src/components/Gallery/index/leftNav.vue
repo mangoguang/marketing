@@ -1,9 +1,10 @@
 <template>
   <ul class="m-left">
+    <!-- {{JSON.stringify(navList)}} -->
     <li v-for="(item, index) in navList"
         :key="index"
         :class="{active : item.status}"
-        @touchend="toggleNav(index)">
+        @click="toggleNav(index)">
       <div class="wrapper"
            :class="{leftline_active : item.status}">
         <img src="../../../assets/imgs/hot.png"
@@ -35,6 +36,7 @@ export default {
     }),
     navList() {
       var nav = [].concat(this.leftNavList)
+
       this.list.map((item, index) => {
         nav[index].goodsCount = item.goodsCount
       })
@@ -53,18 +55,21 @@ export default {
       if (this.leftNavList.length) {
         return
       }
+
       this.getBrand()
     },
     //获取导航栏
     getBrand() {
       let account = getAjax().account
       indexModel.getBrand(account).then(res => {
+        console.log(res)
         if (res.data) {
           let hot = { name: '慕思', aliasBrand: '慕思', goodsCount: 1 }
           let list = res.data.list
           this.list = res.data.list
           list.unshift(hot)
           this.setInitList(list)
+
           this.setLeftNavList(myBtnList(this.initlist, 0))
           this.getListVal()
         }

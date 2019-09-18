@@ -1,7 +1,8 @@
 <!--  -->
 <template>
 
-  <star-header :title="'星级检查'">
+  <star-header :title="'星级检查'"
+               href="/index4s">
     <div class="tool">
       <egg-sort />
       <div class="search"

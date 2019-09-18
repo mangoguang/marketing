@@ -2,7 +2,8 @@
 <template>
   <div :class="`header class${storeClass}`">
     <div class="headerBox">
-      <button @click="back" type="button"></button>
+      <button @click="back"
+              type="button"></button>
     </div>
     <h3>4S星级认证</h3>
   </div>
@@ -13,14 +14,12 @@
 // import iconBox from './iconBox'
 export default {
   props: ['storeClass'],
-  data () {
-    return {
-
-    }
+  data() {
+    return {}
   },
   methods: {
     back() {
-      this.$router.go(-1)
+      this.$router.replace('/')
     }
   }
 }
@@ -32,23 +31,24 @@ export default {
   justify-content: space-between;
   width: 100%;
   height: 47vw;
-  background: url(../../../assets/imgs/4s/starCheck/star0.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+  background: url(../../../assets/imgs/4s/starCheck/star0.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
-  .headerBox{
+  .headerBox {
     padding-top: 40px;
     height: 8vw;
-    button{
+    button {
       display: block;
       background: url(../../../assets/imgs/4s/back.png) no-repeat center;
       background-size: 2.66vw auto;
       width: 4.66vw;
-      height:8vw;
+      height: 8vw;
       margin-top: 1vw;
       margin-left: 3vw;
     }
   }
-  &>h3{
+  & > h3 {
     width: 100%;
     font-size: 18px;
     color: #fff;
@@ -57,30 +57,34 @@ export default {
     padding-bottom: 8vw;
   }
 }
-.class1{
-  background: url(../../../assets/imgs/4s/starCheck/star1.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class1 {
+  background: url(../../../assets/imgs/4s/starCheck/star1.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
-.class2{
-  background: url(../../../assets/imgs/4s/starCheck/star2.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class2 {
+  background: url(../../../assets/imgs/4s/starCheck/star2.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
-.class3{
-  background: url(../../../assets/imgs/4s/starCheck/star3.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class3 {
+  background: url(../../../assets/imgs/4s/starCheck/star3.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
-.class4{
-  background: url(../../../assets/imgs/4s/starCheck/star4.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class4 {
+  background: url(../../../assets/imgs/4s/starCheck/star4.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
-.class5{
-  background: url(../../../assets/imgs/4s/starCheck/star5.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class5 {
+  background: url(../../../assets/imgs/4s/starCheck/star5.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
- 
 </style>

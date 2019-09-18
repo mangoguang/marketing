@@ -196,9 +196,8 @@ export default {
       if (approveLevel > 2) {
         cofirmList.splice(2, 4)
       } else {
-        cofirmList.splice(1, 5)
+        cofirmList.splice(2, 5)
       }
-
       this.cofirmList = cofirmList
       this.showNodeCard = true
     },

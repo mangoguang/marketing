@@ -78,10 +78,21 @@ export default {
       }
       if (shops && shops.length > 0) {
         this.shops = shops
-        this.shopId = shops[0].id
-        this.setShopId(shops[0].id)
-        this.soreClass = shops[0].starLevel
-        this.storeType = { shopName: shops[0].name, shopId: shops[0].id }
+        var selectIndex = sessionStorage.getItem('selectIndex')
+        if (selectIndex) {
+          this.shopId = shops[selectIndex].id
+          this.setShopId(shops[selectIndex].id)
+          this.soreClass = shops[selectIndex].starLevel
+          this.storeType = {
+            shopName: shops[selectIndex].name,
+            shopId: shops[selectIndex].id
+          }
+        } else {
+          this.shopId = shops[0].id
+          this.setShopId(shops[0].id)
+          this.soreClass = shops[0].starLevel
+          this.storeType = { shopName: shops[0].name, shopId: shops[0].id }
+        }
       }
     },
 

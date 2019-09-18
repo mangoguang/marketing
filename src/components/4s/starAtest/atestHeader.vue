@@ -2,7 +2,7 @@
   <div class="atest-header">
     <div class="record_header">
       <div class="back_icon"
-           @click="$router.go(-1)">
+           @click="bindBack">
         <img src="../../../assets/imgs/4s/backicon.png"
              alt="返回按钮">
       </div>
@@ -20,7 +20,7 @@ import starHeader from '../record/header'
 import _ from 'lodash'
 
 export default {
-  props: ['title'],
+  props: ['title', 'href'],
   components: {
     starHeader
   },
@@ -32,7 +32,14 @@ export default {
   methods: {
     bindSearch: _.debounce(function(e) {
       this.$emit('onSearch', e.target.value)
-    }, 300)
+    }, 300),
+    bindBack() {
+      if (this.href) {
+        this.$router.push(this.href)
+        return
+      }
+      this.$router.go(-1)
+    }
   }
 }
 </script>

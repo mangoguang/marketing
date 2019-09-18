@@ -201,13 +201,18 @@ export default {
         password: md5(pwd) //MD5(密码)
       }
       let data = await loginAcount(params)
-      console.log(data)
       if (data.code == 500) {
         mango.tip(data.msg)
         return
       }
-      Cookies.set('userName', account)
-      Cookies.set('password', pwd)
+      if (this.checked) {
+        Cookies.set('userName', account)
+        Cookies.set('password', pwd)
+      } else {
+        Cookies.remove('userName')
+        Cookies.remove('password')
+      }
+
       // 将账号信息添加到对象
       Object.assign(data, {
         account,

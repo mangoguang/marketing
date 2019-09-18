@@ -14,22 +14,26 @@
 
 <script>
 export default {
-  props: ['title'],
-  data () {
+  props: ['title', 'href'],
+  data() {
     return {
       top: ''
-    };
+    }
   },
-  mounted () {
+  mounted() {
     this.isIPhoneX()
   },
   methods: {
-    goBack () {
+    goBack() {
+      if (this.href) {
+        this.$router.push(this.href)
+        return
+      }
       this.$router.go(-1)
     },
-    isIPhoneX () {
-      let phone = this.phoneSize();
-      if (phone === "iphonex") {
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if (phone === 'iphonex') {
         //this.top = "-5.86";
       }
     }

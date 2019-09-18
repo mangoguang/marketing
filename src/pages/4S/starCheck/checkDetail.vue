@@ -194,7 +194,7 @@ export default {
     ]),
     bindTexareaChange: _.debounce(function(e) {
       let val = this.textareaVal.replace(/<\/?[^>]*>/g, '')
-      val = val.replace(/[^\w\d.?!,;"。？《》！；<> “”\u4e00-\u9fa5]/g, '')
+      val = val.replace(/[^\w\d.?!,;"。，？《》！；<> “”\u4e00-\u9fa5]/g, '')
       this.textareaVal = val
     }, 300),
     bindSave() {
@@ -276,18 +276,26 @@ export default {
     async bindUpload(e) {
       if (e.target.files.length == 0) return
       var img = Object.keys(e.target.files).map(item =>
-        /image/g.test(item.type)
+        /image/g.test(e.target.files[item]['type'])
       )
-      if (img.length > 4) {
+      if (img.length > 5) {
         Toast('图片上传数量最多不超过5张')
         return
       }
-      if (this.picVal.length > 4) {
+      if (this.picVal.length > 5) {
         Toast('文件数量不可大于5个')
         return
       }
-      var len = this.picVal.map(item => /.mp4$/.test(item))
-      if (len.length > 1) {
+      var len = this.picVal.map(item => /.mp4$/g.test(item))
+      let flg = false
+      Object.keys(e.target.files).map(item => {
+        console.log(e.target.files[item])
+        if (/video/g.test(e.target.files[item]['type'])) {
+          flg = true
+        }
+      })
+
+      if (len.length > 1 && flg) {
         Toast('视频最多上传一个')
         return
       }
