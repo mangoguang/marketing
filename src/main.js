@@ -11,12 +11,15 @@ import VueLazyload from 'vue-lazyload'
 import {
   Actionsheet,
   Swipe,
-  SwipeItem
+  SwipeItem,
+  InfiniteScroll,
+  Spinner
 } from 'mint-ui';
 Vue.component(Actionsheet.name, Actionsheet);
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
-
+Vue.component(Spinner.name, Spinner);
+Vue.use(InfiniteScroll);
 
 //图片预览
 import preview from 'vue-photo-preview'
