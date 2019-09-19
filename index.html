@@ -21,19 +21,10 @@
       let version = api.appVersion;
       localStorage.setItem('deviceId', deviceID)
       localStorage.setItem('appVersion', version)
-      //返回
-      api.addEventListener({
-        name: 'keyback'
-      }, function (ret, err) {
-        api.execScript({
-          name: 'root',
-          script: 'history.back()',
-        });
-      });
     }
 
     function historyBack() {
-      if (sesstionStorage.getItem('isIndex')) {
+      if (sessionStorage.getItem('isIndex')) {
         api.closeWin();
         return
       }

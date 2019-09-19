@@ -630,3 +630,11 @@ export var router = new VueRouter({
     }
   }
 })
+router.beforeEach((to, from, next) => {
+  if (to.fullPath == '/' || to.fullPath == '/login') {
+    sessionStorage.setItem('isIndex', 1)
+  } else {
+    sessionStorage.setItem('isIndex', '')
+  }
+  next()
+})
