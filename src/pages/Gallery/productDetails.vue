@@ -57,6 +57,8 @@ export default {
           let temp = res.data.details;
           this.myhtml = changeGalleryStyle(b64DecodeUnicode(temp));
           this.productList = res.data;
+          console.log(this.productList);
+          
         }
       });
     },

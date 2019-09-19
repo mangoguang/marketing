@@ -125,6 +125,10 @@ export var router = new VueRouter({
     path: '/customerSource',
     name: '/CustomerSource',
     component: resolve => require(['../pages/charts/Customer/customerSource'],resolve)
+  },{ //top榜
+    path: '/top',
+    name: '/top',
+    component: resolve => require(['../pages/charts/top/top'],resolve)
   },
   /**** 客户模块 ****/
   {

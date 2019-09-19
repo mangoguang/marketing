@@ -1,14 +1,15 @@
 <!-- <keep-alive> -->
 <template>
   <div class="banner"
-       :style="{'margin-top':`${top}vw`}">
+      :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`}">
     <div :class="`${fix}`"></div>
     <div class="icon-back"
          @click='cilck'>
-      <div class="icon"></div>
+      <div class="icon iconfont icon-fanhui1" :style="{'color':`${titleColor}`}">
+      </div>
     </div>
     <div class="my_title"
-          :class="left? 'myLeftStyle':''"><span>{{title}}</span><slot></div>
+          :class="left? 'myLeftStyle':''" :style="{'color':`${titleColor}`}"><span>{{title}}</span><slot/></div>
     
     <!-- <more-details class="details"  v-show='MoreBtn'/> -->
   </div>
@@ -26,7 +27,10 @@ export default {
   data () {
     return {
       fix: '',
-      top: ''
+      top: '',
+      boderBottom:this.$route.name=="/top"?"none":'1px solid #ccc',
+      titleColor:this.$route.name=="/top"?'#fff':'#363636',
+      bgColor:this.$route.name=="/top"?'none':'#f8f8f8',
     }
   },
   mounted () {
@@ -80,15 +84,18 @@ export default {
     z-index: 99;
   }
   .icon-back {
-    width: 8vw;
+    width: 7vw;
     height: 6.66vw;
     padding-left: 4.266vw;
     .icon {
-      background: url(../assets/imgs/back.png) no-repeat center;
-      background-size: 100%;
+      // background: url(../assets/imgs/back.png) no-repeat center;
+      // background-size: 100%;
+      font-size: 18px;
+      // color: #fff;
       width: 2.66vw;
       height: 4.66vw;
-      margin-top: 1vw;
+      margin-top: -1vw;
+      // padding-bottom: 1vw;
     }
   }
   .my_title {

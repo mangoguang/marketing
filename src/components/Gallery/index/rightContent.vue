@@ -83,7 +83,7 @@ export default {
           this.dataList.list = res.data.list
           this.setInitNavList(res.data.list)
           var str = JSON.stringify(res.data.list);
-          alert(str)
+          // alert(str)
         }
       })
     },

@@ -76,10 +76,10 @@ export default {
 
 <style lang="scss" scoped>
 .moreDetails {
-  position:fixed;
   right: 4.266vw;
   top: 3vw;
   z-index:100;
+  position: absolute;
   .icon_more {
     padding: 4vw;
     margin-top: 0vw;

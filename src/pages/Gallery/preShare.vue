@@ -206,6 +206,8 @@ export default {
           this.shareWeixin("timeline", this.msg.goodsName);
           break;
         case 2:
+          console.log(this.imgUrl);
+          
           this.shareQQ(this.msg.goodsName);
           break;
         case 3:

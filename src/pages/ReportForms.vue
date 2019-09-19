@@ -3,18 +3,18 @@
     <div :class="`${myStyle.loginFix}`"></div>
     <div class="search">
       <div class="search-icon"></div>
-      <input type="text" placeholder="请输入门店、职员、品牌、产品等关键字" >
+      <input type="text" placeholder="请输入门店、职员、品牌、产品等关键字" />
     </div>
     <div class="topList">
-      <div class="shopTop"></div>
-      <div class="peopleTop"></div>
+      <div class="peopleTop" @click="topSales('person')"></div>
+      <div class="shopTop" @click="topSales('product')"></div>
     </div>
     <div class="forms">
       <div class="title">报表模块</div>
       <ul>
         <li v-for="(item,index) in forms" :key="index" @click="linkTo(index)" :class="`${index}`">
           <div class="icon" :style="{background:item.color}">
-            <div class="icon-forms" :style="{'background-position':`${item.iconPosition}`}" >
+            <div class="icon-forms" :style="{'background-position':`${item.iconPosition}`}">
               <!-- <img :src ="`./static/images/char${index+1}.png`" alt=""> -->
             </div>
           </div>
@@ -22,59 +22,86 @@
         </li>
       </ul>
     </div>
-    <Footer/>
+    <Footer />
   </div>
 </template>
 
 
 <script>
-import axios from 'axios'
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Footer from '../components/Footer'
-import mango from '../js'
+import axios from "axios";
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Footer from "../components/Footer";
+import mango from "../js";
 // import Vuex, { mapMutations, mapState } from "vuex";
 
 export default {
-  components:{
+  components: {
     Footer
   },
-  data(){
-    return{
-      forms:[
+  data() {
+    return {
+      forms: [
         {
-          color:'#007aff',text:'销售额',iconPosition:'158.4vw -2vw'
-        },{
-          color:'#5856d6',text:'铁三角',iconPosition:'135.4vw -2vw'
-        },{
-          color:'#5ac8fa',text:'品牌',iconPosition:'112.8vw -1.8vw'
-        },{
-          color:'#ff2d55',text:'品类',iconPosition:'90.4vw -1.8vw'
-        },{
-          color:'#ff964b',text:'坪效',iconPosition:'67.4vw -1.8vw'
-        },{
-          color:'#ffcc00',text:'人效',iconPosition:'45vw -2vw'
-        },{
-          color:'#f93580',text:'客户来源',iconPosition:'22vw -2vw'
+          color: "#007aff",
+          text: "销售额",
+          iconPosition: "158.4vw -2vw"
+        },
+        {
+          color: "#5856d6",
+          text: "铁三角",
+          iconPosition: "135.4vw -2vw"
+        },
+        {
+          color: "#5ac8fa",
+          text: "品牌",
+          iconPosition: "112.8vw -1.8vw"
+        },
+        {
+          color: "#ff2d55",
+          text: "品类",
+          iconPosition: "90.4vw -1.8vw"
+        },
+        {
+          color: "#ff964b",
+          text: "坪效",
+          iconPosition: "67.4vw -1.8vw"
+        },
+        {
+          color: "#ffcc00",
+          text: "人效",
+          iconPosition: "45vw -2vw"
+        },
+        {
+          color: "#f93580",
+          text: "客户来源",
+          iconPosition: "22vw -2vw"
         }
       ],
       slots: [
         {
           flex: 1,
-          values: ['2015年-01月', '2015年-02月', '2015年-03月', '2015年-04月', '2015年-05月', '2015年-06月'],
-          className: 'slot1',
-          textAlign: 'center'
+          values: [
+            "2015年-01月",
+            "2015年-02月",
+            "2015年-03月",
+            "2015年-04月",
+            "2015年-05月",
+            "2015年-06月"
+          ],
+          className: "slot1",
+          textAlign: "center"
         }
       ]
-    }
+    };
   },
   // created(){
   //   this.checkLogin()
   // //  console.log(this.forms[0].text)
 
   // //到时候放在初始页面
-  //   localStorage.removeItem('limit');  
-  //   localStorage.removeItem('selectLimit');  
+  //   localStorage.removeItem('limit');
+  //   localStorage.removeItem('selectLimit');
   //   this.setCustomerScroll(0);
   //   this.setOrderScroll(0);
   //   this.setDealScroll(0)
@@ -82,21 +109,19 @@ export default {
   //   this.$store.commit('setIsSelectStatus', false)
   // },
   mounted() {
-    if (mango.version === 'app') {
-      console.log(api.deviceId)
+    if (mango.version === "app") {
+      console.log(api.deviceId);
     }
   },
-  props:['myStyle'],
-  methods:{
+  props: ["myStyle"],
+  methods: {
     //  ...mapMutations([
     //   "setCustomerScroll",
     //   "setOrderScroll",
     //   'setDealScroll',
     //   'setIsSelectStatus'
     //    ]),
-    cancle() {
-
-    },
+    cancle() {},
     checkLogin() {
       // let ajaxData = localStorage.getItem('ajaxData')
       // // console.log(Date.parse(new Date()) - timeLong)
@@ -113,53 +138,61 @@ export default {
       //   }
       // }
     },
-    linkTo:function(index){
-      if(index == 0){
-        this.$router.push({path:'/sales'})
-      }else if(index == 1){
-        this.$router.push({path:'/audioTechnica'})
-      }else if(index == 2){
-        this.$router.push({path:'/brand?type=brand'})
-      }else if(index == 3){
-        this.$router.push({path:'/brand?type=category'})
-      }else if(index == 4){
-        this.$router.push({path:'/areaEffectiveness'})
-      }else if(index == 5){
-        this.$router.push({path:'/peopleWork'})
-      }else if(index == 6){
-        this.$router.push({path:'/customerSource'})
+    linkTo: function(index) {
+      if (index == 0) {
+        this.$router.push({ path: "/sales" });
+      } else if (index == 1) {
+        this.$router.push({ path: "/audioTechnica" });
+      } else if (index == 2) {
+        this.$router.push({ path: "/brand?type=brand" });
+      } else if (index == 3) {
+        this.$router.push({ path: "/brand?type=category" });
+      } else if (index == 4) {
+        this.$router.push({ path: "/areaEffectiveness" });
+      } else if (index == 5) {
+        this.$router.push({ path: "/peopleWork" });
+      } else if (index == 6) {
+        this.$router.push({ path: "/customerSource" });
       }
-     
+    },
+    topSales(to) {
+      switch (to) {
+        case "person":
+          this.$router.push({ path: "/top?type=person" });
+          break;
+
+        case "product":
+          this.$router.push({ path: "/top?type=product" });
+          break;
+      }
     }
-     
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
-.reportForms{
+.reportForms {
   // font-family: PINGPANG;
   background: #f8f8f8;
   position: relative;
-   .fix{
-      position: absolute;
-      background: #f8f8f8;
-      left: 0;
-      top: -14vw;
-      height: 14.1vw;
-      width: 100vw;
-      z-index: 99;
-    }
-  .search{
+  .fix {
+    position: absolute;
+    background: #f8f8f8;
+    left: 0;
+    top: -14vw;
+    height: 14.1vw;
+    width: 100vw;
+    z-index: 99;
+  }
+  .search {
     height: 7.73vw;
     width: 91.46vw;
-    border-radius:2.66vw;
+    border-radius: 2.66vw;
     margin: 3vw auto;
     background: #e1e1e1;
     position: relative;
     margin-top: 8vw;
-    .search-icon{
+    .search-icon {
       background: url(../assets/imgs/search.png) no-repeat;
       background-size: 100% 100%;
       width: 3.2vw;
@@ -168,7 +201,7 @@ export default {
       top: 2.4vw;
       left: 3vw;
     }
-    input{
+    input {
       width: 80vw;
       padding-left: 7vw;
       height: 7.73vw;
@@ -176,33 +209,33 @@ export default {
       color: #8e8e93;
     }
   }
-  .topList{
+  .topList {
     width: 100vw;
     height: 26.66vw;
     border-top: 1px solid #a6a6a6;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .shopTop{
-      background: url(../assets/imgs/shopTop.png) no-repeat;
-      background-size: 100% 100%;
-      width: 44vw;
-      height: 21.33vw;
-      margin-left: 4.26vw;
-    }
-    .peopleTop{
-      background: url(../assets/imgs/peopleTop.png) no-repeat;
+    .shopTop {
+      background: url(../assets/imgs/productTop.png) no-repeat;
       background-size: 100% 100%;
       width: 44vw;
       height: 21.33vw;
       margin-right: 4.26vw;
     }
+    .peopleTop {
+      background: url(../assets/imgs/peopleTop.png) no-repeat;
+      background-size: 100% 100%;
+      width: 44vw;
+      height: 21.33vw;
+      margin-left: 4.26vw;
+    }
   }
-  .forms{
+  .forms {
     width: 100vw;
     background: #fff;
     padding-bottom: 30vw;
-    .title{
+    .title {
       font-size: 4.8vw;
       font-weight: bold;
       color: #363636;
@@ -212,27 +245,27 @@ export default {
       border-bottom: 4px solid #363636;
       width: 26.66vw;
     }
-    ul{
+    ul {
       width: 87.06vw;
       margin: 0 auto;
       padding-top: 10.8vw;
       border-top: 1px solid #e1e1e1;
       background: #fff;
       height: 100vw;
-      li{
+      li {
         width: 20vw;
         height: 26.66vw;
         float: left;
         margin-right: 12vw;
         margin-bottom: 8.1vw;
-        .icon{
+        .icon {
           width: 20vw;
           height: 20vw;
           border-radius: 2.66vw;
           position: relative;
-          .icon-forms{
-            background-image:url(../assets/imgs/icon.png);
-            width:20vw;
+          .icon-forms {
+            background-image: url(../assets/imgs/icon.png);
+            width: 20vw;
             height: 20vw;
             border-radius: 2.66vw;
             background-size: 800%;
@@ -244,18 +277,17 @@ export default {
           //   top: 4vw;
           //   left: 4.4vw;
           // }
-        } 
-        p{
+        }
+        p {
           text-align: center;
           color: #666;
           font-size: 4vw;
         }
       }
-      li:nth-child(3n){
-        margin-right: 0
+      li:nth-child(3n) {
+        margin-right: 0;
       }
     }
-
   }
 }
 </style>
