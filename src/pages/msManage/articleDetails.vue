@@ -69,27 +69,6 @@ export default {
     // var a = document.getElementsByTagName("html")
     // console.log(a)
     waterMark('.article', 1)
-
-    var isFullScreen = function() {
-      return !!(
-        document.fullScreen ||
-        document.webkitIsFullScreen ||
-        document.mozFullScreen ||
-        document.msFullscreenElement ||
-        document.fullscreenElement
-      )
-    }
-    document.addEventListener('webkitfullscreenchange', e => {
-      if (isFullScreen()) {
-        api.setScreenOrientation({
-          orientation: 'auto'
-        })
-      } else {
-        api.setScreenOrientation({
-          orientation: 'portrait_up'
-        })
-      }
-    })
   },
   methods: {
     browser() {

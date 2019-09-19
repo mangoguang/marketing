@@ -70,6 +70,7 @@ export default {
         font-weight: 500;
         font-size: 8.53vw;
         line-height: 10vw;
+        font-family: din;
       }
       .fen {
         color: #2d2d2d;
@@ -85,6 +86,7 @@ export default {
       border-radius: 0.8vw;
       line-height: 1;
       padding: 5px 0;
+      font-family: din;
     }
   }
   .center-box {

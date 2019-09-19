@@ -12,7 +12,7 @@
                  @click.native="bindNavigator(index)" /> -->
         <iconBox :type="'gradeReport'"
                  :iconData="data"
-                 :hasNew="'tip'"
+                 :hasNew="hasNew"
                  @click.native="handleClick(data.link)" />
       </div>
     </ContentBox>
@@ -24,7 +24,7 @@ import ContentBox from './contentBox'
 import iconBox from './iconBox'
 
 export default {
-  props: ['shopId', 'shops'],
+  props: ['shopId', 'shops', 'hasNew'],
   components: {
     ContentBox,
     iconBox
@@ -43,8 +43,6 @@ export default {
   },
   methods: {
     handleClick(linkName) {
-      let positionType = JSON.parse(localStorage.getItem('ajaxData'))
-        .positionList.positionType
       let certPositionType = localStorage.getItem('certPositionType')
       if (certPositionType == 'supervisor') {
         //督导

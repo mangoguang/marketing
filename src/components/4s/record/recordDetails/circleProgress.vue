@@ -14,9 +14,9 @@
       <div class="num_box">
         <p>
           <span class="num"
-                :class="{num1:index!=0,fail:score<80}"
+                :class="{num1:index!=0&&score!=100,fail:score<80}"
                 v-for="(item,index) in scoreArr"
-                :key="item">{{item}}</span>
+                :key="index">{{item}}</span>
           <!-- <span class="num1"
               :style="{color: textColor}">{{scoreArr[1]}}</span> -->
         </p>
@@ -30,29 +30,27 @@
 <script>
 export default {
   props: ['score', 'star'],
-  data () {
+  data() {
     return {
       textColor: ''
-    };
+    }
   },
 
   computed: {
-    scoreArr () {
+    scoreArr() {
       return (this.score + '').split('')
     },
-    RightStyle () {
+    RightStyle() {
       return {
         transform: 'rotate(' + 3.3 * this.score + 'deg)',
         borderColor: this.score >= 80 ? '#007aff' : '#F88675'
       }
     },
-    activeColor () {
+    activeColor() {
       return this.score >= 80 ? '#007aff' : '#F88675'
     }
   },
-  methods: {
-
-  }
+  methods: {}
 }
 </script>
 <style lang='scss' scoped>
@@ -62,6 +60,7 @@ div {
 .wrapper {
   height: 114px;
   margin-top: 7.33vw;
+  overflow: hidden;
 }
 .circleProgress {
   width: 30.4vw;
@@ -85,6 +84,7 @@ div {
   .num {
     color: #007aff;
     font-size: 13.3vw;
+    font-family: 'din';
   }
   .num1 {
     color: #007aff;
@@ -155,6 +155,6 @@ div {
   box-sizing: border-box;
 }
 .borderColor {
-  color: "#F88675";
+  color: '#F88675';
 }
 </style>

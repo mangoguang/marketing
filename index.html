@@ -1,27 +1,45 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta charset="utf-8">
-    <meta name="format-detection" content="telephone=no" />
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <!-- <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/> -->
-    <title>营销助手</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-    <script type="text/javascript">
-      window.apiready = function(){
-        let deviceID=api.deviceId;
-        let version=api.appVersion;
-        localStorage.setItem('deviceId',deviceID)
-        localStorage.setItem('appVersion',version)
-        //alert(localStorage.getItem('deviceId'))
-        //alert(deviceID)
-        //alert(version)
+
+<head>
+  <meta name="viewport"
+    content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <!-- <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0"/> -->
+  <title>营销助手</title>
+</head>
+
+<body>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+  <script type="text/javascript">
+    window.apiready = function () {
+      let deviceID = api.deviceId;
+      let version = api.appVersion;
+      localStorage.setItem('deviceId', deviceID)
+      localStorage.setItem('appVersion', version)
+      //返回
+      api.addEventListener({
+        name: 'keyback'
+      }, function (ret, err) {
+        api.execScript({
+          name: 'root',
+          script: 'history.back()',
+        });
+      });
+    }
+
+    function historyBack() {
+      if (sesstionStorage.getItem('isIndex')) {
+        api.closeWin();
+        return
       }
-    </script>
-  </body>
+      history.back()
+    }
+  </script>
+</body>
+
 </html>

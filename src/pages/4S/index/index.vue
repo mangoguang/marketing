@@ -1,13 +1,15 @@
 <!--  -->
 <template>
   <div class="index">
-    <Header :storeClass="soreClass" />
+    <Header :storeClass="soreClass"
+            href="/" />
     <StoreSelect :shops="shops"
                  @onGetStoreId="onGetStoreId"
                  v-permission="['Store Manager','Sleep Consultant']" />
     <!-- 日常检查 -->
     <DailyCheck :shopId="shopId"
                 :shops="shops"
+                :hasNew="hasNew"
                 v-permission="['Store Manager','Sleep Consultant','supervisor']" />
     <!--星级认证-->
     <starAttestation v-permission="['Dealer Boss','supervisor']" />
@@ -25,7 +27,7 @@ import DailyCheck from '@/components/4s/index/dailyCheck'
 import GradeReport from '@/components/4s/index/gradeReport'
 import ModuleConfig from '@/components/4s/index/moduleConfig'
 import starAttestation from '@/components/4s/index/starAttestation'
-import { gradeShops } from '@/api/4s'
+import { gradeShops, gradeCategories } from '@/api/4s'
 import { Toast } from 'mint-ui'
 
 import { mapMutations } from 'vuex'
@@ -44,7 +46,8 @@ export default {
       shops: [{ name: '' }],
       categories: [],
       shopId: 0,
-      storeType: {}
+      storeType: {},
+      hasNew: 0
     }
   },
   async created() {
@@ -78,21 +81,15 @@ export default {
       }
       if (shops && shops.length > 0) {
         this.shops = shops
-        var selectIndex = sessionStorage.getItem('selectIndex')
-        if (selectIndex) {
-          this.shopId = shops[selectIndex].id
-          this.setShopId(shops[selectIndex].id)
-          this.soreClass = shops[selectIndex].starLevel
-          this.storeType = {
-            shopName: shops[selectIndex].name,
-            shopId: shops[selectIndex].id
-          }
-        } else {
-          this.shopId = shops[0].id
-          this.setShopId(shops[0].id)
-          this.soreClass = shops[0].starLevel
-          this.storeType = { shopName: shops[0].name, shopId: shops[0].id }
+        var selectIndex = sessionStorage.getItem('selectIndex') || 0
+        this.shopId = shops[selectIndex].id
+        this.setShopId(shops[selectIndex].id)
+        this.soreClass = shops[selectIndex].starLevel
+        this.storeType = {
+          shopName: shops[selectIndex].name,
+          shopId: shops[selectIndex].id
         }
+        // this._getHasNew(shops[selectIndex].id)
       }
     },
 
@@ -101,6 +98,11 @@ export default {
       this.shopId = item.id
       this.soreClass = item.starLevel
       this.storeType = { shopName: item.name, shopId: item.id }
+      // this._getHasNew(item.id)
+    },
+    async _getHasNew(shopId) {
+      let { categories } = await gradeCategories({ shopId })
+      this.hasNew = categories.length
     }
   }
 }

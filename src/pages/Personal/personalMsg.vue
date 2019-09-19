@@ -147,7 +147,6 @@ export default {
       let time = JSON.parse(localStorage.getItem('loginData')).expires_in
       let timer = setInterval(() => {
         count++
-        console.log(123, count)
         if (count === time) {
           clearInterval(timer)
           this.key = true
@@ -212,6 +211,7 @@ export default {
     remove() {
       let deviceId = localStorage.getItem('deviceId')
       localStorage.clear()
+      sessionStorage.clear()
       if (deviceId) {
         localStorage.setItem('deviceId', deviceId)
       }

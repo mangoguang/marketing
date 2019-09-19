@@ -23,8 +23,8 @@
             </div>
           </div>
           <div class="time">
-            <p>检查周期：{{item.cycleCheckTotal*4}}周</p>
-            <p>累计周期：{{item.accumulativeCycle*4}}周</p>
+            <p>检查周期：{{item.cycleCheckTotal}}月</p>
+            <p>累计周期：{{item.accumulativeCycle}}月</p>
             <p>开始时间：{{item.checkStartTime||'-'}}</p>
           </div>
           <div class="buttMan">

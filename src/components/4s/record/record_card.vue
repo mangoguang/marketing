@@ -75,12 +75,14 @@ export default {
     //跳转记录详情
     toDetails(item) {
       let { shopId, startTime, endTime } = item
+      let shopName = this.$route.query.shopName
       this.$router.push({
         name: 'recordDetails',
         query: {
           shopId,
           startTime,
-          endTime
+          endTime,
+          shopName
         }
       })
     }

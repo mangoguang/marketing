@@ -308,23 +308,28 @@ export default {
 .toast {
   .cont {
     text-align: center;
-    padding-top: 10px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     p {
-      font-size: 14px;
+      font-size: 15px;
       color: #363636;
       line-height: 1;
       padding-bottom: 10px;
       span:first-child {
         color: #007aff;
+        font-size: 15px;
       }
       span:last-child {
         color: #ff0718;
+        font-size: 15px;
       }
     }
     .bot {
       padding-top: 10px;
       color: #ff0718;
-      font-size: 14px;
+      font-size: 15px;
     }
   }
   .but {

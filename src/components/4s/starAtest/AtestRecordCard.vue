@@ -38,17 +38,20 @@
           </div>
           <div class="score_wrapper border-bottom">
             <div class="score_box">
-              <div class="wrapper">
+              <div class="wrapper"
+                   v-if="item.scoreShop">
                 <span class="text">门店评分：</span>
                 <span class="score">{{item.scoreShop||'-'}}</span>
               </div>
-              <div class="wrapper">
+              <div class="wrapper"
+                   v-if="item.scoreRegion">
                 <span class="text">区域评分：</span>
-                <span class="score">{{item.scoreregion||'-'}}</span>
+                <span class="score">{{item.scoreRegion||'-'}}</span>
               </div>
-              <div class="wrapper">
+              <div class="wrapper"
+                   v-if="item.scoreCertification">
                 <span class="text">4s评分：</span>
-                <span class="score">{{item.scorerCertifition||'-'}}</span>
+                <span class="score">{{item.scoreCertification||'-'}}</span>
               </div>
             </div>
             <div class="score_box"
@@ -198,6 +201,7 @@ export default {
       } else {
         cofirmList.splice(2, 5)
       }
+      console.log(cofirmList)
       this.cofirmList = cofirmList
       this.showNodeCard = true
     },

@@ -9,10 +9,10 @@
       </div>
       <ul class="details">
         <li>
-          <span>检查周期:</span>
-          <span> {{item.cycle*4}}周</span>
+          <span>累计周期:</span>
+          <span> {{item.cycle}}月</span>
         </li>
-        <li>
+        <li v-if="item.isGrade">
           <span>检查时间:</span>
           <span>{{item.inspectTime&&item.inspectTime.split(' ')[0]}}</span>
         </li>

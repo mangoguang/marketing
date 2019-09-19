@@ -13,13 +13,17 @@
 // import ContentBox from './contentBox'
 // import iconBox from './iconBox'
 export default {
-  props: ['storeClass'],
+  props: ['storeClass', 'href'],
   data() {
     return {}
   },
   methods: {
     back() {
-      this.$router.replace('/')
+      if (this.href) {
+        this.$router.replace(this.href)
+        return
+      }
+      this.$router.back()
     }
   }
 }
