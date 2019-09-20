@@ -30,6 +30,7 @@
     "lodash": "^4.17.15",
     "mint-ui": "^2.2.13",
     "mockjs": "^1.0.1-beta3",
+    "moment": "^2.24.0",
     "postcss-aspect-ratio-mini": "^0.0.2",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^11.1.0",
