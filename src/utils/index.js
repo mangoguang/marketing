@@ -86,10 +86,9 @@ class IndexModel extends Request {
   //文章详情接口
   getArticleDetail(articleId, account) {
     return this.getData({
-      url: '/api/train/repository/v1/get',
+      url: '/api/train/repository/v1/get2',
       params: {
         id: articleId,
-        account: account
       }
     })
   }
