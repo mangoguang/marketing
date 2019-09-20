@@ -213,7 +213,8 @@ export default {
         })
         return { typeList: data[key], passFail }
       })
-      if (cofirmList[3].typeList[0]) {
+
+      if (cofirmList[3].typeList[0] && cofirmList[3].passFail) {
         cofirmList[3].typeList.map((item, index) => {
           if (item.statusString == '已认证') {
             cofirmList[3].typeList.splice(index, 1)
