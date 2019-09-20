@@ -123,8 +123,8 @@ export default {
         { name: '4s已评分', color: 'ok' },
         { name: '4s未通过', color: 'red' },
         { name: '4s发起认证', color: 'blue' },
-        { name: 'OA认证通过', color: 'ok' },
-        { name: 'OA认证未通过', color: 'red' }
+        { name: '总部认证通过', color: 'ok' },
+        { name: '总部认证未通过', color: 'red' }
       ],
       noData: false,
       tipsStatus: false, //弹窗
@@ -179,7 +179,8 @@ export default {
       let { id, statusString, approveLevel } = item
       this.comfirmTitle = statusString
       let { code, data } = await getApproveFlowInfo({ qualificationId: id })
-      data.typeList9 = data.typeList8
+      data.typeList9 = JSON.parse(JSON.stringify(data.typeList8))
+      data.typeList9.map(item => (item.type = 9))
       let cofirmList = Object.keys(data).map((key, index) => {
         var passFail = false
         data[key].map((item, idx) => {
@@ -201,7 +202,6 @@ export default {
       } else {
         cofirmList.splice(2, 5)
       }
-      console.log(cofirmList)
       this.cofirmList = cofirmList
       this.showNodeCard = true
     },

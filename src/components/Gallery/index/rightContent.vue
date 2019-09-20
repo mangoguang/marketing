@@ -62,7 +62,8 @@ export default {
       'setClassifyScrollList',
       'initClassifyScrollList',
       'initClassifyScroll',
-      'getClassScroll'
+      'getClassScroll',
+      'setProductTabList'
     ]),
     // 获取滚动条高度
     recordScrollPosition(e) {
@@ -102,6 +103,8 @@ export default {
       indexModel.brandCategory(brand).then(res => {
         if (res.data) {
           this.dataList.list = res.data.list
+          res.data.list.map(item => (item.status = false))
+          this.setProductTabList(res.data.list)
           this.listenScrollTop()
         }
       })

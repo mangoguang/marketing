@@ -21,7 +21,7 @@
               <p>
                 {{items.createTime}}
                 <span @click="handleDetailClick(items)"
-                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}&&items.type!=8">{{items.statusString}}</span>
+                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}&&items.type!=8">{{items.status==3&&items.type==9?'已认证': items.statusString}}</span>
               </p>
               <!-- <span :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}"
                     @click="handleDetailClick(items)">{{status[items.status-1]['name'] }}</span> -->
@@ -77,16 +77,17 @@ export default {
       this.$emit('onNodeCardClose', true)
     },
     handleDetailClick(items) {
-      if (items.status == 1) return
-      this.$router.push({
-        path: '/attest-detail',
-        query: {
-          shopId: items.shopId,
-          qualificationId: items.id, //认证id
-          starLevelId: items.starLevelId, //星级1,2,3,4,5
-          type: items.type //类型， 3：区域经理 评分项      4：4S
-        }
-      })
+      if (items.statusString == '未通过') {
+        this.$router.push({
+          path: '/attest-detail',
+          query: {
+            shopId: items.shopId,
+            qualificationId: items.id, //认证id
+            starLevelId: items.starLevelId, //星级1,2,3,4,5
+            type: items.type //类型， 3：区域经理 评分项      4：4S
+          }
+        })
+      }
     }
   }
 }
