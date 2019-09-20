@@ -239,10 +239,11 @@ export default {
       var _this = this
 
       let files = Array.from(e.target.files)
-      let imgSize = 1 * 1024 * 1024
+      let imgSize = 0.3 * 1024 * 1024
       return new Promise((resolve, reject) => {
         files.map(async (item, index) => {
           if (/^image|^video/.test(item.type)) {
+            console.log(item.size, imgSize)
             if (item.size < imgSize) {
               resolve(item)
               return
@@ -254,7 +255,7 @@ export default {
               let img = new Image()
               img.src = this.result
               img.onload = async function() {
-                let data = _this.compress(img)
+                let data = _this.compress(img, item.size)
                 let blob = _this.dataURItoBlob(data)
                 let file = new File([blob], item.name, { type: item.type })
                 item = file
@@ -322,9 +323,11 @@ export default {
       Indicator.close()
     },
     // 压缩图片
-    compress(img) {
+    compress(img, size) {
       let canvas = document.createElement('canvas')
       let ctx = canvas.getContext('2d')
+      let imgSize = size > 1.5 * 1024 * 1024 ? 0.1 : 0.5
+
       let initSize = img.src.length
       let width = img.width
       let height = img.height
@@ -336,7 +339,7 @@ export default {
       ctx.drawImage(img, 0, 0, width, height)
 
       //进行最小压缩
-      let ndata = canvas.toDataURL('image/jpeg', 0.1)
+      let ndata = canvas.toDataURL('image/jpeg', imgSize)
       return ndata
     },
     // base64转成bolb对象
