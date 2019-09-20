@@ -179,29 +179,64 @@ export default {
       let { id, statusString, approveLevel } = item
       this.comfirmTitle = statusString
       let { code, data } = await getApproveFlowInfo({ qualificationId: id })
-      data.typeList9 = JSON.parse(JSON.stringify(data.typeList8))
-      data.typeList9.map(item => (item.type = 9))
+
+      let {
+        typeList1,
+        typeList2,
+        typeList3,
+        typeList4,
+        typeList5,
+        typeList6,
+        typeList7,
+        typeList8
+      } = data
+      data = {
+        typeList1,
+        typeList2,
+        typeList3,
+        typeList4: [
+          ...typeList4,
+          ...typeList5,
+          ...typeList6,
+          ...typeList7,
+          ...typeList8
+        ]
+      }
+
       let cofirmList = Object.keys(data).map((key, index) => {
         var passFail = false
         data[key].map((item, idx) => {
-          if (index == 7 || index == 8) {
-            passFail = item.status == 2 ? false : true
-          } else {
-            passFail = [1, 4, 5, 7, 8, 9, 11, 12].includes(item.status)
+          passFail = [1, 4, 5, 7, 8, 9, 11, 12].includes(item.status)
+          if (item.type > 3 && (item.status == 1 || item.status == 3)) {
+            passFail = true
           }
         })
         return { typeList: data[key], passFail }
       })
+      if (cofirmList[3].typeList[0]) {
+        cofirmList[3].typeList.map((item, index) => {
+          if (item.statusString == '已认证') {
+            cofirmList[3].typeList.splice(index, 1)
+          }
+        })
 
-      // if (cofirmList[7].passFail) {
-      //   cofirmList[7].typeList[0].statusString = '已申请'
-      // }
-
-      if (approveLevel > 2) {
-        cofirmList.splice(2, 4)
+        let typeList9 = JSON.parse(JSON.stringify(cofirmList[3].typeList[0]))
+        typeList9.type = 9
+        cofirmList.push({
+          passFail: cofirmList[3].passFail,
+          typeList: [typeList9]
+        })
       } else {
-        cofirmList.splice(2, 5)
+        cofirmList.push({
+          passFail: cofirmList[3].passFail,
+          typeList: []
+        })
       }
+
+      if (approveLevel < 2) {
+        cofirmList.splice(2, 1)
+      }
+
       this.cofirmList = cofirmList
       this.showNodeCard = true
     },

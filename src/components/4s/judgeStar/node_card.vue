@@ -21,10 +21,8 @@
               <p>
                 {{items.createTime}}
                 <span @click="handleDetailClick(items)"
-                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}&&items.type!=8">{{items.status==3&&items.type==9?'已认证': items.statusString}}</span>
+                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}&&[1,2,3].includes(items.type)">{{(items.status==3||items.status==1)&&items.type==9?'已认证': items.statusString}}</span>
               </p>
-              <!-- <span :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}"
-                    @click="handleDetailClick(items)">{{status[items.status-1]['name'] }}</span> -->
             </div>
             <div v-if="item&&item.length==0"
                  class="nodata">-</div>
@@ -66,9 +64,10 @@ export default {
   },
   computed: {
     department() {
-      if (this.cofirmList.length == 4) {
+      if (this.cofirmList.length == 3) {
         this.itemName.splice(2, 1)
       }
+      console.log()
       return this.itemName
     }
   },
