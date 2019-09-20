@@ -1,14 +1,16 @@
 <!-- <keep-alive> -->
 <template>
   <div class="banner"
-       :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`}">>
+       :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`}">
     <div :class="`${fix}`"></div>
     <div class="icon-back"
          @click='cilck'>
-      <div class="icon iconfont icon-fanhui1" :style="{'color':`${titleColor}`}"></div>
+      <div class="icon iconfont icon-fanhui1"
+           :style="{'color':`${titleColor}`}"></div>
     </div>
     <span class="my_title"
-          :class="left? 'myLeftStyle':''"  :style="{'color':`${titleColor}`}">{{title}}</span>
+          :class="left? 'myLeftStyle':''"
+          :style="{'color':`${titleColor}`}">{{title}}</span>
     <slot></slot>
     <!-- <more-details class="details"  v-show='MoreBtn'/> -->
   </div>
@@ -23,31 +25,33 @@ export default {
   name: 'routerLink',
   props: ['title', 'MoreBtn', 'left'],
   // components: {MoreDetails},
-  data () {
+  data() {
     return {
       fix: '',
       top: '',
-      boderBottom:this.$route.name=="/top"?"none":'1px solid #ccc',
-      titleColor:this.$route.name=="/top"?'#fff':'#363636',
-      bgColor:this.$route.name=="/top"?'none':'#f8f8f8',
+      boderBottom: this.$route.name == '/top' ? 'none' : '1px solid #ccc',
+      titleColor: this.$route.name == '/top' ? '#fff' : '#363636',
+      bgColor: this.$route.name == '/top' ? 'none' : '#f8f8f8'
     }
   },
-  mounted () {
+  mounted() {
     this.isIPhoneX()
   },
   methods: {
-    cilck: function () {
+    cilck: function() {
       this.$router.back(-1)
     },
-    isIPhoneX: function (fn) {
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    isIPhoneX: function(fn) {
+      var u = navigator.userAgent
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
       if (isIOS) {
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+        if (
+          (screen.height == 812 && screen.width == 375) ||
+          (screen.height == 896 && screen.width == 414)
+        ) {
           this.fix = 'fix'
           this.top = '6'
         } else {
-
         }
       }
     }

@@ -1,24 +1,33 @@
 <template>
-  <div class="share">
+  <div class="share-btn">
     <!-- 这是分享 -->
-    <img src="../../assets/imgs/more.png" alt class="moreImg" @click="shareBtn" />
-    <div class="shareList" v-show="isShow">
+    <img src="../../assets/imgs/more.png"
+         alt
+         class="moreImg"
+         @click="shareBtn" />
+    <div class="shareList"
+         v-show="isShow">
       <span class="shareTitle">分享到</span>
       <ul class="iconList">
-        <li v-for="(value,key) in list" :key="key" @click="shareTo(value.title)">
+        <li v-for="(value,key) in list"
+            :key="key"
+            @click="shareTo(value.title)">
           <i class="icon">
-            <img :src="value.image" alt />
+            <img :src="value.image"
+                 alt />
           </i>
           <span v-cloak>{{value.name}}</span>
         </li>
         <li @click="shareTo('shoucang')">
           <i class="icon">
-            <img :src="collectImg" alt />
+            <img :src="collectImg"
+                 alt />
           </i>
           <span v-cloak>{{collectionText}}</span>
         </li>
       </ul>
-      <div class="cencer" @click="centerShare">
+      <div class="cencer"
+           @click="centerShare">
         <span>取消</span>
       </div>
     </div>
@@ -26,46 +35,48 @@
 </template>
 
 <script>
-import { IndexModel } from "../../utils/index";
-import { mapState } from "vuex";
-const indexModel = new IndexModel();
+import { IndexModel } from '../../utils/index'
+import { mapState } from 'vuex'
+const indexModel = new IndexModel()
 export default {
-  props: ["collection", "sharetitle", "remark"],
+  props: ['collection', 'sharetitle', 'remark'],
   data() {
     return {
       isShow: false,
-      articleId: "", //文章详情id
-      account: "", //用户账号
-      collectionText: "收藏", //收藏文本
-      collectImg: "./static/images/shoucang.png", //收藏logo
+      articleId: '', //文章详情id
+      account: '', //用户账号
+      collectionText: '收藏', //收藏文本
+      collectImg: './static/images/shoucang.png', //收藏logo
       collectStatus: this.collection, //收藏状态
-      pageUrl: "",
+      pageUrl: '',
       list: [
         {
-          name: "微信好友",
-          title: "weixin",
-          image: "./static/images/weixin.png"
+          name: '微信好友',
+          title: 'weixin',
+          image: './static/images/weixin.png'
         },
         {
-          name: "微信朋友圈",
-          title: "pengyouquan",
-          image: "./static/images/pengyouquan.png"
+          name: '微信朋友圈',
+          title: 'pengyouquan',
+          image: './static/images/pengyouquan.png'
         },
         // {
         //   name: "新浪微博",
         //   title: "weibo",
         //   image: "./static/images/weibo1.png"
         // },
-        { name: "QQ好友", title: "QQ", image: "./static/images/QQ1.png" }
+        { name: 'QQ好友', title: 'QQ', image: './static/images/QQ1.png' }
       ]
-    };
+    }
   },
   created() {
-    this.articleId = this.$route.query.articleId;
+    this.articleId = this.$route.query.articleId
     // this.account = this._localAjax().account;
-    console.log(this.articleId, this.account);
+    console.log(this.articleId, this.account)
     // this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/articleDetails?articleId=" +this.articleId +"&name=产品知识&musi=1";
-    this.pageUrl = `https://mobiletest.derucci.net/web/marketing/#/articleDetails?articleId=${this.articleId}&musi=1`;
+    this.pageUrl = `https://mobiletest.derucci.net/web/marketing/#/articleDetails?articleId=${
+      this.articleId
+    }&musi=1`
   },
   computed: {
     ...mapState({
@@ -73,80 +84,79 @@ export default {
     })
   },
   mounted() {
-    this.title = this.sharetitle;
+    this.title = this.sharetitle
   },
   methods: {
-    
     shareBtn() {
-      this.isShow = !this.isShow;
+      this.isShow = !this.isShow
     },
     // 取消分享
     centerShare() {
-      this.isShow = false;
+      this.isShow = false
     },
     //收藏
     collect() {
-      let id = this.articleId;
+      let id = this.articleId
       indexModel.collect(1, id, this.account).then(res => {
-        console.log("res");
-      });
+        console.log('res')
+      })
     },
     //取消收藏
     cancelCollect() {
-      let id = this.articleId;
+      let id = this.articleId
       indexModel.remove(1, id, this.account).then(res => {
-        console.log("canclecollect");
-      });
+        console.log('canclecollect')
+      })
     },
     // 分享的路径
     shareTo(path) {
       switch (path) {
-        case "weixin":
-          this.sharewx("session");
-          // console.log(path);  
-          this.isShow = false;
-          break;
-        case "pengyouquan":
-          this.sharewx("timeline");
+        case 'weixin':
+          this.sharewx('session')
           // console.log(path);
-          this.isShow = false;
-          break;
-        case "weibo":
-          console.log(path);
-          this.sharewb();
-          this.isShow = false;
-          break;
-        case "QQ":
+          this.isShow = false
+          break
+        case 'pengyouquan':
+          this.sharewx('timeline')
           // console.log(path);
-          console.log(this.imgUrl);
-          
-          this.shareQQ();
-          this.isShow = false;
-          break;
-        case "shoucang":
-          this.collectStatus = !this.collectStatus;
+          this.isShow = false
+          break
+        case 'weibo':
+          console.log(path)
+          this.sharewb()
+          this.isShow = false
+          break
+        case 'QQ':
+          // console.log(path);
+          console.log(this.imgUrl)
+
+          this.shareQQ()
+          this.isShow = false
+          break
+        case 'shoucang':
+          this.collectStatus = !this.collectStatus
           if (this.collectStatus) {
-            this.collectImg = "./static/images/yishoucang.png";
-            this.collectionText = "取消收藏";
-            this.collect();
+            this.collectImg = './static/images/yishoucang.png'
+            this.collectionText = '取消收藏'
+            this.collect()
           } else {
-            this.collectImg = "./static/images/shoucang.png";
-            this.collectionText = "收藏";
-            this.cancelCollect();
+            this.collectImg = './static/images/shoucang.png'
+            this.collectionText = '收藏'
+            this.cancelCollect()
           }
-          console.log(path);
+          console.log(path)
           // this.isShow = false
-          break;
+          break
       }
     },
     // 分享到微信
     sharewx(Vscene) {
-      var wx = api.require("wx");
+      var wx = api.require('wx')
       // console.log(this.remark);
 
       wx.shareWebpage(
         {
-          apiKey: "",
+          apiKey: '',
           scene: Vscene,
           title: this.sharetitle,
           description: this.remark,
@@ -159,14 +169,14 @@ export default {
             // this.isShow = false;
           } else {
             // alert(err.code);
-            alert("分享失败");
+            alert('分享失败')
           }
         }
-      );
+      )
     },
     // 分享到微博
     sharewb() {
-      var weiboPlus = api.require("weiboPlus");
+      var weiboPlus = api.require('weiboPlus')
       weiboPlus.shareWebPage(
         {
           text: this.sharetitle,
@@ -181,31 +191,31 @@ export default {
             // this.isShow = false;
           } else {
             alert(err.code)
-            alert("分享失败");
+            alert('分享失败')
           }
         }
-      );
+      )
     },
     // 分享到QQ
     shareQQ() {
-      var qq = api.require("QQPlus");
+      var qq = api.require('QQPlus')
       qq.shareNews(
         {
           url: this.pageUrl,
           title: this.sharetitle,
           description: this.remark,
           imgUrl: this.imgUrl,
-          type: "QFriend"
+          type: 'QFriend'
         },
         function(ret, err) {
           if (ret.status) {
             // alert("分享成功");
             // this.isShow = false;
           } else {
-            alert("分享失败");
+            alert('分享失败')
           }
         }
-      );
+      )
     }
   },
   watch: {
@@ -218,21 +228,21 @@ export default {
     // },
     // 监听弹窗的显示条件
     isShow() {
-      this.$emit("centerShare", false);
+      this.$emit('centerShare', false)
     },
     collection() {
       if (this.collection) {
-        this.collectStatus = true;
-        this.collectImg = "./static/images/yishoucang.png";
-        this.collectionText = "取消收藏";
+        this.collectStatus = true
+        this.collectImg = './static/images/yishoucang.png'
+        this.collectionText = '取消收藏'
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scope>
-.share {
+.share-btn {
   width: 24px;
   height: 30px;
   display: flex;
