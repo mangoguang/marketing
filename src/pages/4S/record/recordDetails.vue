@@ -66,7 +66,7 @@ export default {
         return
       }
       this.score = checkLogInfo.score
-      this.cycle = checkLogInfo.cycle
+      this.cycle = checkLogInfo.cycle || 1
       this.checkCategories = checkLogInfo.checkCategories
     },
     async _initData(params) {

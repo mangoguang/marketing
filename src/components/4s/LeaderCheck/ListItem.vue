@@ -10,7 +10,7 @@
       <ul class="details">
         <li>
           <span>累计周期:</span>
-          <span> {{item.cycle}}月</span>
+          <span> {{item.cycle||1}}月</span>
         </li>
         <li v-if="item.isGrade">
           <span>检查时间:</span>

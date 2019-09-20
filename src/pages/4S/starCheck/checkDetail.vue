@@ -244,11 +244,10 @@ export default {
         files.map(async (item, index) => {
           if (/^image|^video/.test(item.type)) {
             if (item.size < imgSize) {
-              // console.log(item)
-              // resolve(item)
-
+              resolve(item)
               return
             }
+
             let reader = new FileReader()
             reader.readAsDataURL(item)
             reader.onloadend = async function() {
@@ -259,7 +258,7 @@ export default {
                 let blob = _this.dataURItoBlob(data)
                 let file = new File([blob], item.name, { type: item.type })
                 item = file
-                // resolve(file)
+                resolve(file)
               }
             }
           } else {
@@ -270,41 +269,46 @@ export default {
             })
           }
         })
-        resolve(files)
+        //resolve(files)
       })
     },
     async bindUpload(e) {
       if (e.target.files.length == 0) return
-      var img = Object.keys(e.target.files).map(item =>
+      var img = Object.keys(e.target.files).filter(item =>
         /image/g.test(e.target.files[item]['type'])
       )
-      if (img.length > 5) {
+      if (img.length + this.picVal.length > 5) {
         Toast('图片上传数量最多不超过5张')
         return
       }
-      if (this.picVal.length > 5) {
+      if (this.picVal.length > 4) {
         Toast('文件数量不可大于5个')
         return
       }
-      var len = this.picVal.map(item => /.mp4$/g.test(item))
+      var len = this.picVal.filter(item => /.mp4$/g.test(item))
       let flg = false
+      console.log(len)
       Object.keys(e.target.files).map(item => {
-        console.log(e.target.files[item])
         if (/video/g.test(e.target.files[item]['type'])) {
           flg = true
         }
       })
 
-      if (len.length > 1 && flg) {
+      if (len.length >= 1 && flg) {
         Toast('视频最多上传一个')
         return
       }
 
       let file = await this._uploadFile(e)
       var formData = new FormData()
-      file.map(item => {
-        formData.append('dataFiles', item)
-      })
+
+      if (file.length) {
+        file.map(item => {
+          formData.append('dataFiles', item)
+        })
+      } else {
+        formData.append('dataFiles', file)
+      }
       formData.append('prefix', 'cert-check-log')
       this.uploading = true
       Indicator.open({
