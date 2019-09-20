@@ -233,7 +233,7 @@ export default {
         })
       }
 
-      if (approveLevel < 2) {
+      if (approveLevel <= 2) {
         cofirmList.splice(2, 1)
       }
 
