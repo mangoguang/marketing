@@ -27,7 +27,12 @@ import DailyCheck from '@/components/4s/index/dailyCheck'
 import GradeReport from '@/components/4s/index/gradeReport'
 import ModuleConfig from '@/components/4s/index/moduleConfig'
 import starAttestation from '@/components/4s/index/starAttestation'
-import { gradeShops, gradeCategories } from '@/api/4s'
+import {
+  gradeShops,
+  gradeCategories,
+  supervisorNotGradeShopsCount,
+  guideNotGradeCategoriesCount
+} from '@/api/4s'
 import { Toast } from 'mint-ui'
 
 import { mapMutations } from 'vuex'
@@ -52,6 +57,7 @@ export default {
   },
   async created() {
     let certPositionType = localStorage.getItem('certPositionType')
+    this._GradeShopsCount(certPositionType)
     if (certPositionType == 'supervisor' || certPositionType == 'Dealer Boss')
       return
     this._initData()
@@ -89,10 +95,15 @@ export default {
           shopName: shops[selectIndex].name,
           shopId: shops[selectIndex].id
         }
-        // this._getHasNew(shops[selectIndex].id)
+        this._getGradeCategoriesCount(shops[selectIndex].id)
       }
     },
-
+    async _GradeShopsCount(certPositionType) {
+      if (certPositionType == 'supervisor') {
+        let { notGradeCount } = await supervisorNotGradeShopsCount()
+        this.hasNew = notGradeCount
+      }
+    },
     onGetStoreId(item) {
       this.setShopId(item.id)
       this.shopId = item.id
@@ -100,9 +111,9 @@ export default {
       this.storeType = { shopName: item.name, shopId: item.id }
       // this._getHasNew(item.id)
     },
-    async _getHasNew(shopId) {
-      let { categories } = await gradeCategories({ shopId })
-      this.hasNew = categories.length
+    async _getGradeCategoriesCount(shopId) {
+      let { notGradeCount } = await guideNotGradeCategoriesCount({ shopId })
+      this.hasNew = notGradeCount
     }
   }
 }

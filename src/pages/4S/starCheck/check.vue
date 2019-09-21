@@ -4,7 +4,7 @@
        ref="check">
     <RecordHeader :title="$route.query.name">
       <div class="tips"
-           @click="$router.push('/checkTip')"></div>
+           @click="$router.push({path:'/checkTip',query:{remark:$route.query.remark}})"></div>
     </RecordHeader>
     <div class="contentBox">
       <div v-for="(item, index) in bigCategoryList"

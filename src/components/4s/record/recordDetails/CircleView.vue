@@ -41,6 +41,7 @@ export default {
   }
 }
 .shop-name {
+  padding: 0 24px;
   padding-top: 10px;
   padding-bottom: 5px;
   font-size: 14px;

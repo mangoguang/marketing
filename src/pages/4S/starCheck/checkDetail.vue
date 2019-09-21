@@ -242,7 +242,7 @@ export default {
       let imgSize = 0.3 * 1024 * 1024
       return new Promise((resolve, reject) => {
         files.map(async (item, index) => {
-          if (/^image|^video/.test(item.type)) {
+          if (/^image/.test(item.type)) {
             console.log(item.size, imgSize)
             if (item.size < imgSize) {
               resolve(item)
@@ -262,6 +262,8 @@ export default {
                 resolve(file)
               }
             }
+          } else if (/^video/.test(item.type)) {
+            resolve(item)
           } else {
             Toast({
               message: `上传正确的格式`,
@@ -372,7 +374,7 @@ export default {
     },
     getPhoto() {
       this.$refs.upload.removeAttribute('capture')
-      this.$refs.upload.setAttribute('accept', 'image/*,video/*')
+      this.$refs.upload.setAttribute('accept', '*')
       // this.$refs.upload.setAttribute('multiple', 'multiple')
       this.$refs.upload.click()
     },

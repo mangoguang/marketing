@@ -17,19 +17,28 @@ import { mapGetters } from 'vuex'
 export default {
   props: ['subCategoryList'],
   components: { BigCategoryBox },
-  data () {
+  data() {
     return {
       categories: [],
       categoryList: []
     }
   },
-  async created () {
+  async created() {
     this.categories = this.getCategories()
   },
   methods: {
     ...mapGetters(['getCategories']),
-    bindNavigatorCheck (item) {
-      this.$router.push({ path: '/check', query: { id: item.id, name: item.name, shopId: this.$route.query.shopId, isGrade: item.isGrade } })
+    bindNavigatorCheck(item) {
+      this.$router.push({
+        path: '/check',
+        query: {
+          id: item.id,
+          name: item.name,
+          shopId: this.$route.query.shopId,
+          isGrade: item.isGrade,
+          remark: item.remark
+        }
+      })
     }
   }
 }

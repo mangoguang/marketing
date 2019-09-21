@@ -190,17 +190,31 @@ export default {
         typeList7,
         typeList8
       } = data
+      let list4 = [...typeList4, ...typeList5, ...typeList6, ...typeList7]
+
+      let res = list4.map(item => item.status == 1 || item.status == 3)
+
+      if (
+        Array.from(new Set(res)).length == 1 &&
+        Array.from(new Set(res))[0] == true
+      ) {
+        list4[list4.length - 1].statusString = '已通过'
+        list4 = [list4[list4.length - 1]]
+      } else {
+        if (res.length != 0 && res.indexOf(false)) {
+          list4[res.indexOf(false)].statusString = '未通过'
+          list4 = [list4[res.indexOf(false)]]
+        } else {
+          list4 = []
+        }
+      }
+
       data = {
         typeList1,
         typeList2,
         typeList3,
-        typeList4: [
-          ...typeList4,
-          ...typeList5,
-          ...typeList6,
-          ...typeList7,
-          ...typeList8
-        ]
+        typeList4: list4,
+        typeList8
       }
 
       let cofirmList = Object.keys(data).map((key, index) => {
@@ -214,25 +228,25 @@ export default {
         return { typeList: data[key], passFail }
       })
 
-      if (cofirmList[3].typeList[0] && cofirmList[3].passFail) {
-        cofirmList[3].typeList.map((item, index) => {
-          if (item.statusString == '已认证') {
-            cofirmList[3].typeList.splice(index, 1)
-          }
-        })
+      // if (cofirmList[3].typeList[0] && cofirmList[3].passFail) {
+      //   cofirmList[3].typeList.map((item, index) => {
+      //     if (item.statusString == '已认证') {
+      //       cofirmList[3].typeList.splice(index, 1)
+      //     }
+      //   })
 
-        let typeList9 = JSON.parse(JSON.stringify(cofirmList[3].typeList[0]))
-        typeList9.type = 9
-        cofirmList.push({
-          passFail: cofirmList[3].passFail,
-          typeList: [typeList9]
-        })
-      } else {
-        cofirmList.push({
-          passFail: cofirmList[3].passFail,
-          typeList: []
-        })
-      }
+      //   let typeList9 = JSON.parse(JSON.stringify(cofirmList[3].typeList[0]))
+      //   typeList9.type = 9
+      //   cofirmList.push({
+      //     passFail: cofirmList[3].passFail,
+      //     typeList: [typeList9]
+      //   })
+      // } else {
+      //   cofirmList.push({
+      //     passFail: cofirmList[3].passFail,
+      //     typeList: []
+      //   })
+      // }
 
       if (approveLevel <= 2) {
         cofirmList.splice(2, 1)
