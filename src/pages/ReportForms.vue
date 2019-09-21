@@ -6,8 +6,8 @@
       <input type="text" placeholder="请输入门店、职员、品牌、产品等关键字" >
     </div>
     <div class="topList">
-      <div class="shopTop"></div>
-      <div class="peopleTop"></div>
+      <div class="peopleTop" @click="topSales('person')"></div>
+      <div class="shopTop" @click="topSales('product')"></div>
     </div>
     <div class="forms">
       <div class="title">报表模块</div>
@@ -19,6 +19,14 @@
             </div>
           </div>
           <p>{{item.text}}</p>
+        </li>
+        <li @click="linkTo(7)">
+          <div class="icon" >
+            <div class="iconBrand">
+              <img src ="../assets/imgs/brandCategory.png" alt="">
+            </div>
+          </div>
+          <p>品牌品类</p>
         </li>
       </ul>
     </div>
@@ -128,10 +136,21 @@ export default {
         this.$router.push({path:'/peopleWork'})
       }else if(index == 6){
         this.$router.push({path:'/customerSource'})
+      }else if (index == 7) {
+        this.$router.push({ path: "/brandCetagory" });
       }
      
-    }
-     
+    },
+    topSales(to) {
+      switch (to) {
+        case "person":
+          this.$router.push({ path: "/top?type=person" });
+          break;
+        case "product":
+          this.$router.push({ path: "/top?type=product" });
+          break;
+      }
+    },
   }
 }
 </script>
@@ -184,18 +203,18 @@ export default {
     justify-content: space-between;
     align-items: center;
     .shopTop{
-      background: url(../assets/imgs/shopTop.png) no-repeat;
+      background: url(../assets/imgs/productTop.png) no-repeat;
       background-size: 100% 100%;
       width: 44vw;
       height: 21.33vw;
-      margin-left: 4.26vw;
+      margin-right: 4.26vw;
     }
     .peopleTop{
       background: url(../assets/imgs/peopleTop.png) no-repeat;
       background-size: 100% 100%;
       width: 44vw;
       height: 21.33vw;
-      margin-right: 4.26vw;
+      margin-left: 4.26vw;
     }
   }
   .forms{
@@ -236,6 +255,15 @@ export default {
             height: 20vw;
             border-radius: 2.66vw;
             background-size: 800%;
+          }
+          .iconBrand {
+            width: 20vw;
+            height: 20vw;
+            border-radius: 2.66vw;
+            img {
+              width: 100%;
+              height: 100%;
+            }
           }
           // .icon-forms img{
           //   width: 11.46vw;

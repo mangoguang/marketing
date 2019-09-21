@@ -127,6 +127,14 @@ export var router = new VueRouter({
       path: '/customerSource',
       name: '/CustomerSource',
       component: resolve => require(['../pages/charts/Customer/customerSource'], resolve)
+    },{ //top榜
+      path: '/top',
+      name: '/top',
+      component: resolve => require(['../pages/charts/top/top'],resolve)
+    },{ //品牌品类
+      path: '/brandCetagory',
+      name: '/brandCetagory',
+      component: resolve => require(['../pages/charts/brandCategory/brandCategory'],resolve)
     },
     /**** 客户模块 ****/
     {

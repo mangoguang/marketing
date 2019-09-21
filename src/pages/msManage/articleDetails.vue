@@ -10,7 +10,6 @@
               :remark="articleDetails.keyWords"
               :sharetitle="articleDetails.title"
               :collection="collection"
-              @centerShare="centerShare"
               :style="{'top': top}" />
 
     <div class="titleBar">
