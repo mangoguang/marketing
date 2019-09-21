@@ -79,7 +79,7 @@ export default {
   right: 4.266vw;
   top: 3vw;
   z-index:100;
-  position: absolute;
+  position: fixed;
   .icon_more {
     padding: 4vw;
     margin-top: 0vw;
