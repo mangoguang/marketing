@@ -94,6 +94,11 @@ export default {
         if (res.data) {
           this.dataList.list = res.data.list
           this.setInitNavList(res.data.list)
+
+          res.data.list.map(item => {
+            item.categoryName = item.name
+          })
+          this.setProductTabList(res.data.list)
         }
       })
     },

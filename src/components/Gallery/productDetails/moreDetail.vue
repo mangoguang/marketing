@@ -1,12 +1,18 @@
 <template>
-  <div class="moreDetails" :style={top:top}>
-    <div class="icon_more" @click="changeShow">
-      <img src="../../../assets/imgs/more.png" alt>
+  <div class="moreDetails"
+       :style={top:top}>
+    <div class="icon_more"
+         @click="changeShow">
+      <img src="../../../assets/imgs/more.png"
+           alt>
     </div>
-    <div class="more_content" v-show="isShow">
+    <div class="more_content"
+         v-show="isShow">
       <div class="trigon"></div>
       <ul>
-        <li v-for="(item, index) in list" :key="index" @click="skipTo(index)">{{item}}</li>
+        <li v-for="(item, index) in list"
+            :key="index"
+            @click="skipTo(index)">{{item}}</li>
       </ul>
     </div>
   </div>
@@ -17,9 +23,9 @@ export default {
   data() {
     return {
       isShow: false,
-      list: ["图库首页", "我的收藏", "扫一扫"],
+      list: ['图库首页', '我的收藏', '扫一扫'],
       top: ''
-    };
+    }
   },
   created() {
     this.isIPhoneX()
@@ -28,50 +34,50 @@ export default {
     //判断是否iphoneX
     isIPhoneX() {
       let phone = this.phoneSize()
-      if(phone === 'iphonex') {
+      if (phone === 'iphonex') {
         this.top = '8vw'
-      }else {
+      } else {
         this.top = '3vw'
       }
     },
     changeShow() {
-      this.isShow = !this.isShow;
+      this.isShow = !this.isShow
     },
     skipTo(index) {
       this.list.forEach(item => {
         switch (index) {
           case 0:
-            this.$router.push({ path: "/gallery" });
-            break;
+            this.$router.push({ path: '/gallery' })
+            break
           case 1:
-            this.$router.push({ path: "/collectList" });
-            break;
+            this.$router.push({ path: '/collectList' })
+            break
           case 2:
-            this.openscan();
-            break;
+            this.openscan()
+            break
         }
-      });
+      })
     },
     openscan() {
-      var FNScanner = api.require("FNScanner");
+      var FNScanner = api.require('FNScanner')
       FNScanner.open(
         {
           autorotation: true,
-          verticalLineColor: "##94f8fa",
+          verticalLineColor: '##94f8fa',
           isAlbum: true,
-          hintText: "将二维码放入取景框内即可自动扫描"
+          hintText: '将二维码放入取景框内即可自动扫描'
         },
         function(ret, err) {
           if (ret) {
-            console.log(JSON.stringify(ret));
+            console.log(JSON.stringify(ret))
           } else {
-            console.log(JSON.stringify(err));
+            console.log(JSON.stringify(err))
           }
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -79,7 +85,7 @@ export default {
   position: fixed;
   right: 4.266vw;
   top: 3vw;
-  z-index:100;
+  z-index: 100;
   .icon_more {
     padding: 4vw;
     margin-top: 0vw;
