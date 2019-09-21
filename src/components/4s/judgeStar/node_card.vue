@@ -64,10 +64,9 @@ export default {
   },
   computed: {
     department() {
-      if (this.cofirmList.length == 3) {
+      if (this.cofirmList.length == 4) {
         this.itemName.splice(2, 1)
       }
-      console.log()
       return this.itemName
     }
   },
