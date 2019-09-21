@@ -237,6 +237,7 @@ export default {
   position: relative;
   box-sizing: border-box;
   min-height: 100vh;
+  background-color: #fff;
   // width: 100vw;
   // overflow: hidden;
 
