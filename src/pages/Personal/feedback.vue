@@ -95,7 +95,7 @@ export default {
   },
   watch: {
     remark(newVal, oldVal) {
-      newVal = newVal.replace(/[^\w\s,./()?，。、！（）]/g, '')
+      newVal = newVal.replace(/[^\w\s,./()?，。、！（）[\u4e00-\u9fa5]]/g, '')
       this.remark = newVal
       this.updateRemark(newVal)
     }

@@ -54,6 +54,10 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+@font-face {
+  font-family: din;
+  src: url(~@/assets/font/DIN-Medium.otf);
+}
 .rec_content {
   width: 100vw;
   box-sizing: border-box;
@@ -68,7 +72,7 @@ export default {
       .num {
         color: #007aff;
         font-weight: 500;
-        font-size: 8.53vw;
+        font-size: 30px;
         line-height: 10vw;
         font-family: din;
       }
