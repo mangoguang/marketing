@@ -159,7 +159,7 @@ export default {
       indexModel.getArticleDetail(id).then(res => {
         this.articleDetails = res.data
         this.logoImageUrl = res.data.logoImageUrl
-        this.setImgUrl(res.imageURL)
+        this.setImgUrl(res.data.image)
         if (res.data.remark) {
           let temp = res.data.remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
