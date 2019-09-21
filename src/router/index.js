@@ -357,7 +357,7 @@ export var router = new VueRouter({
     //营销助手图库主页
     {
       path: '/gallery',
-      name: 'index',
+      name: 'gallery',
       component: gallery
     },
     //搜索页

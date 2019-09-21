@@ -76,7 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 .moreDetails {
-  position: absolute;
+  position: fixed;
   right: 4.266vw;
   top: 3vw;
   z-index:100;

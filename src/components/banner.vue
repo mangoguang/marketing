@@ -1,7 +1,7 @@
 <!-- <keep-alive> -->
 <template>
   <div class="banner"
-       :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`}">>
+       :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`}">
     <div :class="`${fix}`"></div>
     <div class="icon-back"
          @click='cilck'>

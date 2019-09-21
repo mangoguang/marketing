@@ -1,6 +1,6 @@
 <template>
   <div class="article paddingTop">
-    <banner :title="'文章详情'" v-show="status"/>
+    <Banner :title="'文章详情'" v-show="status"/>
     <!-- <collect-btn class="collentBtn"
                  :collection='collection'
                  v-on:touchend.native='changeCollectBtn'
@@ -158,7 +158,7 @@ export default {
       indexModel.getArticleDetail(id).then(res => {
         this.articleDetails = res.data;
         this.logoImageUrl = res.data.logoImageUrl;
-        this.setImgUrl(imageURL);
+        this.setImgUrl(res.imageURL);
         if (res.data.remark) {
           let temp = res.data.remark;
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp));
@@ -200,10 +200,6 @@ export default {
     //     this.cancelCollect();
     //   }
     // },
-    // 点击取消按钮
-    centerShare(val) {
-      this.shareStatus = val;
-    },
     // 判断是否是分享页面
     sharePage() {
       let url = window.location.href;
