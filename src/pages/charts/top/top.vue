@@ -1,171 +1,60 @@
 <template>
   <div class="top">
-    <div class="topSale">
-      <mybanner :title="title" />
-      <img :src="bgUrlL" class="bgImage" />
-      <div class="topTitle">
-        <img class="fly" src="../../../assets/imgs/topleft.png" alt />
-        <span style="padding:0 4px">{{topTitle}}</span>
-        <img class="fly" src="../../../assets/imgs/topright.png" alt />
-      </div>
-      <div class="main">
-        <div class="top">
-          <div class="time">
-            <span @click="changeTime">
-              时间：
-              <span class="timeName">{{timeContent}}</span>
-            </span>
-            <img class="downicon" src="../../../assets/imgs/clickdown.png" alt />
-            <div class="date" v-show="showTime">
-              <ul>
-                <li
-                  :class="['dateList',{'active':index==dateIndex}]"
-                  v-for="(date,index) in dateContent"
-                  :key="index"
-                  @click="getDate(index)"
-                >
-                  <span>{{date}}</span>
-                </li>
-              </ul>
+    <v-touch v-on:swiperight="swiperright">
+      <div class="topSale">
+        <mybanner :title="title" />
+        <img :src="bgUrlL" class="bgImage" />
+        <div class="topTitle">
+          <img class="fly" src="../../../assets/imgs/topleft.png" alt />
+          <span style="padding:0 4px">{{topTitle}}</span>
+          <img class="fly" src="../../../assets/imgs/topright.png" alt />
+        </div>
+        <div class="main">
+          <div class="top">
+            <div class="time">
+              <span @click="changeTime">
+                时间：
+                <span class="timeName">{{timeContent}}</span>
+              </span>
+              <img class="downicon" src="../../../assets/imgs/clickdown.png" alt />
+              <div class="date" v-show="showTime">
+                <ul>
+                  <li
+                    :class="['dateList',{'active':index==dateIndex}]"
+                    v-for="(date,index) in dateContent"
+                    :key="index"
+                    @click="getDate(index)"
+                  >
+                    <span>{{date}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="unit">
+              <span class="unitCon">单位：万元</span>
             </div>
           </div>
-          <div class="unit">
-            <span class="unitCon">单位：万元</span>
+          <topList :list="list" />
+          <div class="space" v-show="list.length==0">
+            <span>暂无数据</span>
           </div>
         </div>
-        <div class="topList">
-          <ul>
-            <li>
-              <div class="left">
-                <div class="num">
-                  <img src="../../../assets/imgs/topone.png" class="rank" alt />
-                </div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">
-                  <img src="../../../assets/imgs/toptwo.png" class="rank" alt />
-                </div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">
-                  <img src="../../../assets/imgs/topthree.png" class="rank" alt />
-                </div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">1</div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">1</div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">1</div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">1</div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">1</div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">1</div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">1</div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-            <li>
-              <div class="left">
-                <div class="num">1</div>
-                <div class="picture">
-                  <img src alt />
-                </div>
-                <div class="name">张三</div>
-              </div>
-              <div class="price">125555</div>
-            </li>
-          </ul>
-        </div>
       </div>
-    </div>
+    </v-touch>
   </div>
 </template>
 
 <script>
-let moment = require("moment");
+// let moment = require("moment");
+import moment from 'moment'
 import mybanner from "../../../components/banner";
+import topList from "../../../components/charts/topList";
 import Vuex, { mapState, mapMutations, mapGetters } from "vuex";
-import mango from '../../../js'
+import mango from "../../../js";
 export default {
   components: {
-    mybanner
+    mybanner,
+    topList
   },
   data() {
     return {
@@ -179,38 +68,49 @@ export default {
       startDate: new Date(),
       endDate: new Date(),
       ajaxData: {},
-      cityMsg:{}
+      cityMsg: {},
+      list: [],
+      url: "/v1/app/top/employee/sales"
     };
   },
   created() {
     // 获取本地存储信息
-    let [ajaxData, cityMsg] = [localStorage.getItem('ajaxData'), localStorage.getItem('cityMsg')]
-    this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {}
+    // let [ajaxData, cityMsg] = [
+    //   localStorage.getItem("ajaxData"),
+    //   localStorage.getItem("cityMsg")
+    // ];
+    // this.cityMsg = cityMsg ? JSON.parse(cityMsg) : {};
     // let ajaxData = localStorage.getItem('ajaxData')
-    this.ajaxData = JSON.parse(ajaxData)
+    // this.ajaxData = JSON.parse(ajaxData);
     // let shops = localStorage.getItem('shops')
     // console.log('本地存储的shops:', JSON.parse(shops))
   },
   computed: {
-    ...mapState({
-      citySelect: state => state.select.citySelect,
-      startTimeSelect: state => state.select.startTimeSelect,
-      endTimeSelect: state => state.select.endTimeSelect
-    })
+    // ...mapState({
+    // citySelect: state => state.select.citySelect,
+    // startTimeSelect: state => state.select.startTimeSelect,
+    // endTimeSelect: state => state.select.endTimeSelect
+    // })
   },
   methods: {
+    // 右侧滑动
+    swiperright() {
+      this.$router.push({'path':'/ReportForms'})
+    },
     // vuex数据
-    ...mapMutations(["setStartTimeSelect", "setEndTimeSelect"]),
+    // ...mapMutations(["setStartTimeSelect", "setEndTimeSelect"]),
     // 打开时间选择面板
     changeTime() {
       this.showTime = !this.showTime;
     },
     // 选择时间
     getDate(index) {
+      index = +index;
       this.dateIndex = index;
       this.showTime = false;
       this.timeContent = this.dateContent[index];
-
+      // 记录时间选择到本地
+      localStorage.setItem("dateLine", index);
       var date = new Date();
       var week = date.getDay(); //当前周的天数
       var month = date.getDate(); //当前月的天数
@@ -242,12 +142,12 @@ export default {
             this.startDate = `${year}-0${curmon - 2}-01`;
             var last = moment().endOf("month");
             this.endDate = last._d;
-          }else if(curmon == 2) {
-            this.startDate = `${year-1}-12-01`;
+          } else if (curmon == 2) {
+            this.startDate = `${year - 1}-12-01`;
             var last = moment().endOf("month");
             this.endDate = last._d;
-          }else {
-            this.startDate = `${year-1}-11-01`;
+          } else {
+            this.startDate = `${year - 1}-11-01`;
             var last = moment().endOf("month");
             this.endDate = last._d;
           }
@@ -259,12 +159,21 @@ export default {
       }
       this.startDate = moment(this.startDate).format("YYYY-MM-DD");
       this.endDate = moment(this.endDate).format("YYYY-MM-DD");
-      this.setStartTimeSelect(this.startDate)
-      this.setEndTimeSelect(this.endDate)
+      // this.setStartTimeSelect(this.startDate);
+      // this.setEndTimeSelect(this.endDate);
+      this.getTopList(this.startDate, this.endDate);
     },
     // 获取top榜数据
-    getTopList(startDate,endDate) {
-
+    async getTopList(startDate, endDate) {
+      var parmas = {
+        startDate,
+        endDate
+      };
+      let res = await mango.getAjax(this.url, parmas);
+      let { status, data } = res;
+      if (status == 1) {
+        this.list = data;
+      }
     }
   },
   mounted() {
@@ -273,6 +182,13 @@ export default {
       this.title = "产品Top榜";
       this.bgUrlL = "./static/images/productbg.png";
       this.topTitle = "产品销售Top10";
+      this.url = "/v1/app/top/product/sales";
+    }
+    var dateLine = localStorage.getItem("dateLine");
+    if (dateLine) {
+      this.getDate(dateLine);
+    } else {
+      this.getTopList(this.startDate, this.endDate);
     }
   }
 };
@@ -310,8 +226,10 @@ export default {
   }
   .main {
     width: 100vw;
+    // height: 100%;
     background-color: #007aff;
     padding-bottom: 15px;
+    margin-top: -7px;
     .top {
       // width: 100vw;
       height: 30px;
@@ -385,45 +303,13 @@ export default {
         margin-right: 17px;
       }
     }
-    .topList {
-      width: 100vw;
-      ul {
-        padding: 0 16px;
-        li {
-          .left {
-            display: flex;
-            align-items: center;
-            .num {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              width: 23px;
-              height: 23px;
-              .rank {
-                width: 23px;
-                height: 23px;
-              }
-            }
-            .picture {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              background: #fff;
-              margin: 0 9px;
-            }
-          }
-          display: flex;
-          justify-content: space-between;
-          height: 59px;
-          line-height: 59px;
-          border-top: 1px solid #0066d4;
-          font-size: 16px;
-          color: #fff;
-          &:last-child {
-            border-bottom: 1px solid #0066d4;
-          }
-        }
-      }
+    .space {
+      height: 100%;
+      color: #fff;
+      font-weight: 800;
+      font-size: 30px;
+      text-align: center;
+      padding-top: 60px;
     }
   }
 }

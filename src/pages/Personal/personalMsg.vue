@@ -118,7 +118,7 @@ export default {
     var imgs=document.getElementsByTagName("img")
     for(var i =0;i<imgs.length;i++){
       console.log(imgs[i].src);
-      alert(imgs[i].src)
+      // alert(imgs[i].src)
     }
   },
   methods:{

@@ -180,6 +180,7 @@ export default {
             // alert("分享成功");
             // this.isShow = false;
           } else {
+            alert(err.code)
             alert("分享失败");
           }
         }
@@ -230,7 +231,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .share {
   width: 24px;
   height: 30px;

@@ -20,6 +20,14 @@
           </div>
           <p>{{item.text}}</p>
         </li>
+        <li @click="linkTo(7)">
+          <div class="icon" >
+            <div class="iconBrand">
+              <img src ="../../src/assets/imgs/brandCategory.png" alt="">
+            </div>
+          </div>
+          <p>品牌品类</p>
+        </li>
       </ul>
     </div>
     <Footer />
@@ -76,7 +84,7 @@ export default {
           color: "#f93580",
           text: "客户来源",
           iconPosition: "22vw -2vw"
-        }
+        },
       ],
       slots: [
         {
@@ -153,6 +161,8 @@ export default {
         this.$router.push({ path: "/peopleWork" });
       } else if (index == 6) {
         this.$router.push({ path: "/customerSource" });
+      }else if (index == 7) {
+        this.$router.push({ path: "/brandCetagory" });
       }
     },
     topSales(to) {
@@ -269,6 +279,15 @@ export default {
             height: 20vw;
             border-radius: 2.66vw;
             background-size: 800%;
+          }
+          .iconBrand {
+            width: 20vw;
+            height: 20vw;
+            border-radius: 2.66vw;
+            img {
+              width: 100%;
+              height: 100%;
+            }
           }
           // .icon-forms img{
           //   width: 11.46vw;

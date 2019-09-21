@@ -129,6 +129,10 @@ export var router = new VueRouter({
     path: '/top',
     name: '/top',
     component: resolve => require(['../pages/charts/top/top'],resolve)
+  },{ //品牌品类
+    path: '/brandCetagory',
+    name: '/brandCetagory',
+    component: resolve => require(['../pages/charts/brandCategory/brandCategory.vue'],resolve)
   },
   /**** 客户模块 ****/
   {
