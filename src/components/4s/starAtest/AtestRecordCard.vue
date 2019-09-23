@@ -195,6 +195,7 @@ export default {
       let res = list4.map(item => item.status == 1 || item.status == 3)
       // debugger
       if (
+        res.length == 4 &&
         Array.from(new Set(res)).length == 1 &&
         Array.from(new Set(res))[0] == true
       ) {

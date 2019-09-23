@@ -39,7 +39,7 @@
                  @change="bindUpload">
 
           <div class="up-btn"
-               @click="sheetVisible=true"
+               @click="bindMediaSelect"
                v-if="isGrade!=1"></div>
 
         </div>
@@ -71,7 +71,7 @@
       <button @click="bindSave"
               v-if="isGrade!=1">保存</button>
     </div>
-    <mt-actionsheet :actions="[{ name:'拍照', method:getCamera },{ name:'录像', method:getCamcorder }, { name:'从手机相册选择', method:getPhoto}]"
+    <mt-actionsheet :actions="actions"
                     v-model="sheetVisible"></mt-actionsheet>
     <div class="video-box"
          v-if="showVideo">
@@ -140,6 +140,12 @@ export default {
         },
         defaltVal: 0
       },
+      actions: [
+        { name: '拍照', method: this.getCamera },
+        { name: '录像', method: this.getCamcorder },
+        { name: '从手机相册选择', method: this.getPhoto }
+      ],
+      actionType: 0,
       showVideo: false
     }
   },
@@ -234,6 +240,25 @@ export default {
 
       this.$router.go(-1)
     },
+    bindMediaSelect() {
+      let standardList = this.subcategories[this.categoryListIndex]
+        .standardList[this.standardListIndex]
+      let actionType = standardList.type
+      this.actionType = actionType
+      if (actionType == 1) {
+        this.actions = [
+          { name: '拍照', method: this.getCamera },
+          { name: '从手机相册选择', method: this.getPhoto }
+        ]
+      }
+      if (actionType == 2) {
+        this.actions = [
+          { name: '录像', method: this.getCamcorder },
+          { name: '从手机相册选择', method: this.getPhoto }
+        ]
+      }
+      this.sheetVisible = true
+    },
     //文件上传
     _uploadFile(e) {
       var _this = this
@@ -243,6 +268,10 @@ export default {
       return new Promise((resolve, reject) => {
         files.map(async (item, index) => {
           if (/^image/.test(item.type)) {
+            if (this.actionType == 2) {
+              Toast('请上传视频')
+              return
+            }
             console.log(item.size, imgSize)
             if (item.size < imgSize) {
               resolve(item)
@@ -263,6 +292,10 @@ export default {
               }
             }
           } else if (/^video/.test(item.type)) {
+            if (this.actionType == 1) {
+              Toast('请上传图片')
+              return
+            }
             resolve(item)
           } else {
             Toast({
@@ -290,7 +323,7 @@ export default {
       }
       var len = this.picVal.filter(item => /.mp4$/g.test(item))
       let flg = false
-      console.log(len)
+
       Object.keys(e.target.files).map(item => {
         if (/video/g.test(e.target.files[item]['type'])) {
           flg = true
@@ -374,6 +407,16 @@ export default {
     },
     getPhoto() {
       this.$refs.upload.removeAttribute('capture')
+      // if (this.actionType == 1) {
+      //   this.$refs.upload.setAttribute(
+      //     'accept',
+      //     'image/jpg,image/png,image/jpeg'
+      //   )
+      // } else if (this.actionType == 2) {
+      //   this.$refs.upload.setAttribute('accept', 'image/mp4')
+      // } else {
+      //   this.$refs.upload.setAttribute('accept', '*')
+      // }
       this.$refs.upload.setAttribute('accept', '*')
       // this.$refs.upload.setAttribute('multiple', 'multiple')
       this.$refs.upload.click()
