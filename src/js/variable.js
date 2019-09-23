@@ -2,7 +2,7 @@ import axios from 'axios'
 import sha1 from 'js-sha1'
 import mango from '../js'
 
-let init = (function() {
+let init = (function () {
   let key = true
 
   function Port() {
@@ -22,57 +22,58 @@ let init = (function() {
       }
       key = false
       let _this = this
-      let promise = new Promise(function(resolve, reject) {
+      let promise = new Promise(function (resolve, reject) {
         if (_this.testPhone(phone)) {
           let timestamp = _this.getTimestamp()
           if (_this.token) {
-            _this.token.then(function(token) {
-              let arr = [
-                ['phone', phone],
-                ['secretKey', _this.secretKey],
-                ['timestamp', timestamp]
-              ]
-              let sign = _this.getSign(arr)
-              mango.loading('open')
-              axios({
-                method: 'post',
-                url: url,
-                headers: {
-                  'Authorization': token
-                },
-                params: {
-                  phone: phone,
-                  secretKey: _this.secretKey,
-                  timestamp: timestamp,
-                  sign: sign
-                }
-              })
-              .then(function (response) {
-                key = true
-                let data = response.data
-                if (data.status) {
-                  alert('验证码发送成功。')
-                  resolve(true)
-                } else {
-                  alert(data.msg)
-                }
+            _this.token.then(function (token) {
+                let arr = [
+                  ['phone', phone],
+                  ['secretKey', _this.secretKey],
+                  ['timestamp', timestamp]
+                ]
+                let sign = _this.getSign(arr)
+                mango.loading('open')
+                axios({
+                    method: 'post',
+                    url: url,
+                    headers: {
+                      'Authorization': token
+                    },
+                    params: {
+                      phone: phone,
+                      secretKey: _this.secretKey,
+                      timestamp: timestamp,
+                      sign: sign
+                    }
+                  })
+                  .then(function (response) {
+                    key = true
+                    let data = response.data
+                    if (data.status) {
+                      alert('验证码发送成功。')
+                      resolve(true)
+                    } else {
+                      alert(data.msg)
+                    }
+                  })
+                  .catch(function (error) {
+                    mango.loading('close')
+                    console.log(error)
+                  })
               })
               .catch(function (error) {
                 mango.loading('close')
-                console.log(error)
+                if (error) {
+                  key = true
+                  alert('获取token失败！')
+                } else {
+                  key = true
+                  alert('获取token失败！')
+                }
               })
-            })
-            .catch(function (error) {
-              mango.loading('close')
-              if (error) {
-                key = true
-                alert('获取token失败！')
-              } else {
-                key = true
-                alert('获取token失败！')
-              }
-            })
-          } else {key = true
+          } else {
+            key = true
             alert('token promise未定义。')
           }
         } else {
@@ -91,10 +92,10 @@ let init = (function() {
       if (!url) {
         url = `${this.publicPath}verifySnsCode`
       }
-      let promise = new Promise(function(resolve, reject) {
+      let promise = new Promise(function (resolve, reject) {
         // 获取token
         if (_this.token) {
-          _this.token.then(function(token) {
+          _this.token.then(function (token) {
             let arr = [
               ['phone', phone],
               ['secretKey', _this.secretKey],
@@ -103,30 +104,30 @@ let init = (function() {
             ]
             let sign = _this.getSign(arr)
             axios({
-              method: 'post',
-              url: url,
-              headers: {
-                'Authorization': token
-              },
-              params: {
-                phone: phone,
-                verifyCode: verifyCode,
-                secretKey: _this.secretKey,
-                timestamp: timestamp,
-                verifyCode: verifyCode,
-                sign: sign
-              }
-            })
-            .then(function (response) {
-              resolve(response.data)
-            })
-            .catch(function (error) {
-              if (error) {
-                alert('验证失败！')
-              } else {
-                alert('验证失败！')
-              }
-            })
+                method: 'post',
+                url: url,
+                headers: {
+                  'Authorization': token
+                },
+                params: {
+                  phone: phone,
+                  verifyCode: verifyCode,
+                  secretKey: _this.secretKey,
+                  timestamp: timestamp,
+                  verifyCode: verifyCode,
+                  sign: sign
+                }
+              })
+              .then(function (response) {
+                resolve(response.data)
+              })
+              .catch(function (error) {
+                if (error) {
+                  alert('验证失败！')
+                } else {
+                  alert('验证失败！')
+                }
+              })
           })
           // .catch(function (error) {
           //   alert('获取token失败！')
@@ -140,7 +141,7 @@ let init = (function() {
 
     // 校验手机格式
     this.testPhone = (phone) => {
-      const phoneReg = /(^1[3|4|5|6|7|8|9]\d{9}$)|(^09\d{8}$)/
+      const phoneReg = /(^1\d{10}$)|(^09\d{8}$)/
       return phoneReg.test(phone)
     }
 
@@ -172,28 +173,28 @@ let init = (function() {
     }
 
     // 获取token码
-    this.token = (function() {
-      let promise = new Promise(function(resolve, reject) {
+    this.token = () => {
+      let promise = new Promise(function (resolve, reject) {
         axios({
-          method: 'post',
-          url: 'https://derucci.net/app/token.api',
-          params: {
-            key: '994061370314006529',
-            secretKey: _this.secretKey
-          }
-        })
-        .then((response) => {
-          if (response) {
-            resolve(response.data.token)
-          }
-        }).catch((error) => {
-          if (error) {
-            alert('token获取失败！')
-          }
-        })
+            method: 'post',
+            url: 'https://derucci.net/app/token.api',
+            params: {
+              key: '994061370314006529',
+              secretKey: _this.secretKey
+            }
+          })
+          .then((response) => {
+            if (response) {
+              resolve(response.data.token)
+            }
+          }).catch((error) => {
+            if (error) {
+              console.log('token获取失败！')
+            }
+          })
       })
       return promise
-    }())
+    }
 
     // 获取url参数
     this.getQueryString = (name) => {
