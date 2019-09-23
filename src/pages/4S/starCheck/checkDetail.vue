@@ -20,13 +20,15 @@
             <div class="up-del"
                  @click="bindDeleteImg(index)"
                  v-if="isGrade!=1"></div>
-            <img class="source"
-                 v-if="/png|jpg|jpeg|bmp/.test(item)"
-                 :src="item"
-                 :preview='true'
-                 alt="">
+            <div class="imgs"
+                 v-if="/.png$|.jpg$|.jpeg$/gi.test(item)">
+              <img class="source"
+                   :src="item"
+                   :preview='true'
+                   alt="">
+            </div>
             <div class="video"
-                 v-if="/mp4/.test(item)"
+                 v-if="/.mp4$|.mov$/gi.test(item)"
                  @click="bindPlay(item,index)">
             </div>
 
@@ -98,7 +100,7 @@ import { uploadFile, uploadFiles } from '@/api/4s'
 import { async, Promise } from 'q'
 
 import { mapState, mapMutations, mapGetters } from 'vuex'
-
+import lrz from 'lrz'
 import _ from 'lodash'
 export default {
   components: {
@@ -261,22 +263,37 @@ export default {
     },
     //文件上传
     _uploadFile(e) {
+      console.log(e.target.files)
       var _this = this
 
       let files = Array.from(e.target.files)
       let imgSize = 0.3 * 1024 * 1024
       return new Promise((resolve, reject) => {
+        if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+          resolve(files[0])
+          return
+        }
         files.map(async (item, index) => {
           if (/^image/.test(item.type)) {
             if (this.actionType == 2) {
               Toast('请上传视频')
               return
             }
-            console.log(item.size, imgSize)
             if (item.size < imgSize) {
               resolve(item)
               return
             }
+
+            // lrz(item)
+            //   .then(function(rst) {
+            //     // 处理成功会执行
+            //     let file = new File([rst.file], item.name, { type: item.type })
+
+            //     resolve(file)
+            //   })
+            //   .catch(function(err) {
+            //     // 处理失败会执行
+            //   })
 
             let reader = new FileReader()
             reader.readAsDataURL(item)
@@ -286,9 +303,8 @@ export default {
               img.onload = async function() {
                 let data = _this.compress(img, item.size)
                 let blob = _this.dataURItoBlob(data)
-                let file = new File([blob], item.name, { type: item.type })
-                item = file
-                resolve(file)
+                // let file = new File([blob], item.name, { type: item.type })
+                resolve(blob)
               }
             }
           } else if (/^video/.test(item.type)) {
@@ -352,6 +368,7 @@ export default {
         spinnerType: 'fading-circle'
       })
       let { data } = await uploadFiles(formData)
+      // alert(JSON.stringify(data))
       let url = data.list.map(item => item.url)
       this.picVal = this.picVal.concat(url)
       this.uploading = false
@@ -558,8 +575,12 @@ export default {
           height: 8px;
         }
       }
-      .source {
+      .imgs {
         @extend %up_width;
+      }
+      .source {
+        width: 100%;
+        height: 100%;
       }
       .video {
         @extend %up_width;
