@@ -46,6 +46,11 @@
 
         </div>
       </div>
+      <div class="progress">
+        <mt-progress v-if="progress"
+                     :value="progress"
+                     :bar-height="5"></mt-progress>
+      </div>
       <div class="rangeBox"
            v-if="!uploading">
         <h2>扣分：</h2>
@@ -100,8 +105,13 @@ import { uploadFile, uploadFiles } from '@/api/4s'
 import { async, Promise } from 'q'
 
 import { mapState, mapMutations, mapGetters } from 'vuex'
+import { getSign } from '@/utils/tools.js'
 import lrz from 'lrz'
 import _ from 'lodash'
+import { Progress } from 'mint-ui'
+Vue.component(Progress.name, Progress)
+
+import { baseUrl } from '@/js/common'
 export default {
   components: {
     mybanner
@@ -145,10 +155,12 @@ export default {
       actions: [
         { name: '拍照', method: this.getCamera },
         { name: '录像', method: this.getCamcorder },
-        { name: '从手机相册选择', method: this.getPhoto }
+        { name: '上传图片', method: this.getPhoto },
+        { name: '上传视频', method: this.getVideo }
       ],
       actionType: 0,
-      showVideo: false
+      showVideo: false,
+      progress: 0
     }
   },
   computed: {
@@ -250,16 +262,101 @@ export default {
       if (actionType == 1) {
         this.actions = [
           { name: '拍照', method: this.getCamera },
-          { name: '从手机相册选择', method: this.getPhoto }
+          { name: '上传图片', method: this.getPhoto }
         ]
       }
       if (actionType == 2) {
         this.actions = [
           { name: '录像', method: this.getCamcorder },
-          { name: '从手机相册选择', method: this.getPhoto }
+          { name: '上传视频', method: this.getVideo }
         ]
       }
       this.sheetVisible = true
+    },
+    _getVideoSource(sourceType = 'camera') {
+      let _this = this
+      api.getPicture(
+        {
+          sourceType,
+          encodingType: 'jpg',
+          mediaValue: 'video',
+          destinationType: 'url',
+          allowEdit: true,
+          saveToPhotoAlbum: true
+        },
+        function(ret, err) {
+          if (ret) {
+            _this.videoCompress(ret.data)
+          } else {
+            Toast('获取文件资源失败')
+          }
+        }
+      )
+    },
+    videoCompress(path) {
+      let _this = this
+      var videoCompression = api.require('videoCompression')
+      videoCompression.compression(
+        {
+          path,
+          quality: 'medium'
+        },
+        function(ret) {
+          if (ret.eventType == 'exporting') {
+            _this.progress = ret.progress
+          } else {
+            _this._nativeUpload(ret.path)
+          }
+        }
+      )
+    },
+    _nativeUpload(path) {
+      let _this = this
+      if (_this.picVal.length > 4) {
+        Toast('文件数量不可大于5个')
+        return
+      }
+      var len = this.picVal.filter(item => /.mp4$|.mov$/gi.test(item))
+      if (len.length >= 1) {
+        Toast('视频最多上传一个')
+        return
+      }
+
+      Indicator.open({
+        text: '上传中...',
+        spinnerType: 'fading-circle'
+      })
+
+      let token = JSON.parse(localStorage.getItem('token')) || {}
+      api.ajax(
+        {
+          url: baseUrl + '/api/upload/files',
+          method: 'post',
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+            sign: getSign({ prefix: 'cert-check-log' }, token.access_token)
+          },
+          data: {
+            prefix: 'cert-check-log',
+            files: {
+              dataFiles: path
+            }
+          }
+        },
+        function(rets, errs) {
+          if (rets) {
+            let url = rets.list.map(item => item.url)
+            _this.picVal = _this.picVal.concat(url)
+            _this.uploading = false
+            _this.progress = 0
+            Indicator.close()
+          } else {
+            api.alert({
+              msg: JSON.stringify(errs)
+            })
+          }
+        }
+      )
     },
     //文件上传
     _uploadFile(e) {
@@ -300,7 +397,7 @@ export default {
         Toast('文件数量不可大于5个')
         return
       }
-      var len = this.picVal.filter(item => /.mp4$/g.test(item))
+      var len = this.picVal.filter(item => /.mp4$|.mov$/gi.test(item))
       let flg = false
 
       Object.keys(e.target.files).map(item => {
@@ -337,10 +434,11 @@ export default {
       Indicator.close()
     },
     getCamcorder() {
-      this.$refs.upload.setAttribute('capture', 'camcorder')
-      this.$refs.upload.setAttribute('accept', 'video/*')
-      // this.$refs.upload.removeAttribute('multiple')
-      this.$refs.upload.click()
+      this._getVideoSource()
+      // this.$refs.upload.setAttribute('capture', 'camcorder')
+      // this.$refs.upload.setAttribute('accept', 'video/*')
+      // // this.$refs.upload.removeAttribute('multiple')
+      // this.$refs.upload.click()
     },
     getCamera() {
       this.$refs.upload.setAttribute('capture', 'camera')
@@ -349,8 +447,11 @@ export default {
     },
     getPhoto() {
       this.$refs.upload.removeAttribute('capture')
-      this.$refs.upload.setAttribute('accept', '*')
+      this.$refs.upload.setAttribute('accept', 'image/*')
       this.$refs.upload.click()
+    },
+    getVideo() {
+      this._getVideoSource('library')
     },
     bindDeleteImg(index) {
       this.picVal.splice(index, 1)
@@ -400,6 +501,10 @@ export default {
 %up_width {
   width: 90px;
   height: 90px;
+}
+.progress {
+  width: 300px;
+  margin: 0 auto;
 }
 .checkDetail {
   .video-box {
