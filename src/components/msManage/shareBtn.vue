@@ -1,7 +1,9 @@
 <template>
-  <div class="share-btn" @click="shareBtn">
+  <div class="share-btn" >
     <!-- 这是分享 -->
-    <img src="../../assets/imgs/more.png" alt class="moreImg"  />
+    <div class="btn" @click="shareBtn">
+      <img src="../../assets/imgs/more.png" alt class="moreImg" />
+    </div>
     <div class="shareList" v-show="isShow">
       <span class="shareTitle">分享到</span>
       <ul class="iconList">
@@ -237,9 +239,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  .moreImg {
-    width: 16px;
-    height: 4px;
+  .btn {
+    width: 100%;
+    width: 100%;
+    .moreImg {
+      width: 16px;
+      height: 4px;
+    }
   }
   .shareList {
     position: fixed;
