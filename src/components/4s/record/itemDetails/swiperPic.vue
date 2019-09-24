@@ -11,7 +11,7 @@
                v-if='/jpg|jpeg|png|bmp/g.test(item)'
                :preview='isPreview'
                alt="">
-          <video-player v-if="/mp4/g.test(item)"
+          <video-player v-if="/.mp4$|.mov$/ig.test(item)"
                         class="video-player vjs-custom-skin player"
                         ref="myVideoPlayer"
                         :playsinline="true"
@@ -28,7 +28,7 @@
 
 <script>
 let vm = null
-import { videoPlayer } from 'vue-video-player';
+import { videoPlayer } from 'vue-video-player'
 import 'video.js/dist/video-js.css'
 import 'swiper/dist/css/swiper.css'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
@@ -39,19 +39,20 @@ export default {
     swiperSlide,
     videoPlayer
   },
-  data () {
+  data() {
     return {
       activeIndex: 0,
-      isPreview: true,        //能否全屏
+      isPreview: true, //能否全屏
       swiperOption: {
         slideToClickedSlide: true,
         threshold: 50, //拖动的临界值，大于才能被拖动
-        lazy: {				//图片懒加载
+        lazy: {
+          //图片懒加载
           loadPrevNext: true,
           oadPrevNextAmount: 1
         },
         slideActiveClass: 'swiper-slide-active',
-        preventClicksPropagation: false,//拖动释放不会触发click
+        preventClicksPropagation: false, //拖动释放不会触发click
         effect: 'coverflow',
         grabCursor: true,
         centeredSlides: true,
@@ -65,7 +66,7 @@ export default {
         },
         // loop : true,
         on: {
-          click: function (e) {
+          click: function(e) {
             // console.log(vm.activeIndex,this.clickedIndex)
             // if(vm.activeIndex !== this.clickedIndex) {
             // }
@@ -74,28 +75,33 @@ export default {
             //   vm.$previewRefresh()
             // }
           },
-          slideChange: function () {
-            vm.handleClickSlide(this.realIndex);
+          slideChange: function() {
+            vm.handleClickSlide(this.realIndex)
           }
         }
       },
-      list: [{
-        text: './static/images/4s/1.png',
-        color: 'pink',
-        type: 'image'
-      }, {
-        text: './static/images/4s/1.png',
-        color: '#ccc',
-        type: 'vedio'
-      }, {
-        text: './static/images/4s/1.png',
-        color: '#007aff',
-        type: 'image'
-      }, {
-        text: './static/images/4s/1.png',
-        color: '#666',
-        type: 'image'
-      }],
+      list: [
+        {
+          text: './static/images/4s/1.png',
+          color: 'pink',
+          type: 'image'
+        },
+        {
+          text: './static/images/4s/1.png',
+          color: '#ccc',
+          type: 'vedio'
+        },
+        {
+          text: './static/images/4s/1.png',
+          color: '#007aff',
+          type: 'image'
+        },
+        {
+          text: './static/images/4s/1.png',
+          color: '#666',
+          type: 'image'
+        }
+      ],
       playerOptions: {
         // playbackRates: [0.7, 1.0, 1.5, 2.0], //播放速度
         autoplay: false, //如果true,浏览器准备好时开始回放。
@@ -105,50 +111,51 @@ export default {
         language: 'zh-CN',
         aspectRatio: '3:4', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
-        sources: [{
-          src: 'http://vjs.zencdn.net/v/oceans.mp4',
-          type: 'video/mp4'
-        }],
-        poster: "", //你的封面地址
+        sources: [
+          {
+            src: 'http://vjs.zencdn.net/v/oceans.mp4',
+            type: 'video/mp4'
+          }
+        ],
+        poster: '', //你的封面地址
         // width: document.documentElement.clientWidth,
         notSupportedMessage: '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
         controlBar: {
           timeDivider: true,
           durationDisplay: true,
           remainingTimeDisplay: false,
-          fullscreenToggle: true  //全屏按钮
+          fullscreenToggle: true //全屏按钮
         }
       }
-
     }
   },
   computed: {
-    player () {
+    player() {
       return this.$refs.videoPlayer.player
     },
-    swiper () {
+    swiper() {
       return this.$refs.mySwiper.swiper
     }
   },
-  mounted () {
+  mounted() {
     //如果图片是异步生成的，在图片数据更新后调用：
     // this.$previewRefresh()
     vm = this
   },
   methods: {
     //当前图片的索引
-    handleClickSlide (index) {
+    handleClickSlide(index) {
       this.activeIndex = index
-      console.log('当前点击索引：', index);
+      console.log('当前点击索引：', index)
     },
     //点击播放的时候全屏
-    onPlayerPlay (player, src) {
+    onPlayerPlay(player, src) {
       if (!player.isFullscreen()) {
-        player.requestFullscreen();
-        player.isFullscreen(true);
+        player.requestFullscreen()
+        player.isFullscreen(true)
       }
     },
-    getPlayerOptions (src) {
+    getPlayerOptions(src) {
       this.playerOptions.sources[0].src = src
       return this.playerOptions
     }
