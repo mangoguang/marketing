@@ -288,7 +288,7 @@ export default {
           if (ret) {
             _this.videoCompress(ret.data)
           } else {
-            Toast('获取文件资源失败')
+            //Toast('获取文件资源失败')
           }
         }
       )
@@ -312,6 +312,7 @@ export default {
     },
     _nativeUpload(path) {
       let _this = this
+      this.progress = 0
       if (_this.picVal.length > 4) {
         Toast('文件数量不可大于5个')
         return
@@ -451,7 +452,7 @@ export default {
       this.$refs.upload.click()
     },
     getVideo() {
-      this._getVideoSource('library')
+      this._getVideoSource('album')
     },
     bindDeleteImg(index) {
       this.picVal.splice(index, 1)
@@ -616,8 +617,8 @@ export default {
     .up-btn {
       @extend %up_width;
       border: 1px dashed #e1e1e1;
-      background: url(../../../assets/imgs/4s/up.png) center center no-repeat /
-        39px 39px;
+      background: url(../../../assets/imgs/4s/up.png) center center no-repeat;
+      background-size: 39px 39px;
     }
   }
   .editor {

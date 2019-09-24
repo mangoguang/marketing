@@ -105,7 +105,7 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     let routeName = ['checkDetail', 'recordJxs', 'checkTip', 'recordJxs']
-    if (routeName.includes(to.name)) {
+    if (routeName.indexOf(to.name) != -1) {
       from.meta.keepAlive = true
     } else {
       from.meta.keepAlive = false

@@ -37,7 +37,7 @@ Vue.prototype.getType = (type) => {
 }
 Vue.prototype._getPosition = (position) => {
   let arr = ['Store Manager', 'Boss&Consultant', 'Boss&Manager', 'Dealer Boss']
-  return arr.includes(position)
+  return arr.indexOf(position) != -1
 }
 
 export default Vue

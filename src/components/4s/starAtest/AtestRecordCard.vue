@@ -222,7 +222,7 @@ export default {
       let cofirmList = Object.keys(data).map((key, index) => {
         var passFail = false
         data[key].map((item, idx) => {
-          passFail = [1, 4, 5, 7, 8, 9, 11, 12].includes(item.status)
+          passFail = [1, 4, 5, 7, 8, 9, 11, 12].indexOf(item.status) != -1
           if (item.type > 3 && (item.status == 1 || item.status == 3)) {
             passFail = true
           }
