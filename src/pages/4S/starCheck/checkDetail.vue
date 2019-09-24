@@ -303,8 +303,8 @@ export default {
               img.onload = async function() {
                 let data = _this.compress(img, item.size)
                 let blob = _this.dataURItoBlob(data)
-                // let file = new File([blob], item.name, { type: item.type })
-                resolve(blob)
+                let file = new File([blob], item.name, { type: item.type })
+                resolve(file)
               }
             }
           } else if (/^video/.test(item.type)) {
