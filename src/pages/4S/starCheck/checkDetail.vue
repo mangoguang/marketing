@@ -127,7 +127,7 @@ export default {
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
           {
-            src: 'http://vjs.zencdn.net/v/oceans.mp4',
+            src: '',
             type: 'video/mp4'
           }
         ],
@@ -263,65 +263,28 @@ export default {
     },
     //文件上传
     _uploadFile(e) {
-      console.log(e.target.files)
-      var _this = this
-
-      let files = Array.from(e.target.files)
-      let imgSize = 0.3 * 1024 * 1024
       return new Promise((resolve, reject) => {
-        if (!!navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-          resolve(files[0])
-          return
-        }
-        files.map(async (item, index) => {
-          if (/^image/.test(item.type)) {
-            if (this.actionType == 2) {
-              Toast('请上传视频')
-              return
-            }
-            if (item.size < imgSize) {
-              resolve(item)
-              return
-            }
-
-            // lrz(item)
-            //   .then(function(rst) {
-            //     // 处理成功会执行
-            //     let file = new File([rst.file], item.name, { type: item.type })
-
-            //     resolve(file)
-            //   })
-            //   .catch(function(err) {
-            //     // 处理失败会执行
-            //   })
-
-            let reader = new FileReader()
-            reader.readAsDataURL(item)
-            reader.onloadend = async function() {
-              let img = new Image()
-              img.src = this.result
-              img.onload = async function() {
-                let data = _this.compress(img, item.size)
-                let blob = _this.dataURItoBlob(data)
-                let file = new File([blob], item.name, { type: item.type })
-                resolve(file)
-              }
-            }
-          } else if (/^video/.test(item.type)) {
-            if (this.actionType == 1) {
-              Toast('请上传图片')
-              return
-            }
-            resolve(item)
-          } else {
-            Toast({
-              message: `上传正确的格式`,
-              position: 'middle',
-              duration: 2000
+        let file = e.target.files[0]
+        if (/^image/.test(file.type)) {
+          lrz(file, { quality: 0.5 })
+            .then(function(rst) {
+              // 处理成功会执行
+              let newFile = new File([rst.file], file.name, { type: file.type })
+              resolve(newFile)
             })
+            .catch(function(err) {
+              // 处理失败会执行
+              Toast('图片压缩处理失败了')
+            })
+        } else if (/^video/.test(file.type)) {
+          if (this.actionType == 1) {
+            Toast('请上传图片')
+            return
           }
-        })
-        //resolve(files)
+          resolve(file)
+        } else {
+          Toast('上传正确的格式')
+        }
       })
     },
     async bindUpload(e) {
@@ -368,47 +331,10 @@ export default {
         spinnerType: 'fading-circle'
       })
       let { data } = await uploadFiles(formData)
-      // alert(JSON.stringify(data))
       let url = data.list.map(item => item.url)
       this.picVal = this.picVal.concat(url)
       this.uploading = false
       Indicator.close()
-    },
-    // 压缩图片
-    compress(img, size) {
-      let canvas = document.createElement('canvas')
-      let ctx = canvas.getContext('2d')
-      let imgSize = size > 1.5 * 1024 * 1024 ? 0.1 : 0.5
-
-      let initSize = img.src.length
-      let width = img.width
-      let height = img.height
-      canvas.width = width
-      canvas.height = height
-      // 铺底色
-      ctx.fillStyle = '#fff'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.drawImage(img, 0, 0, width, height)
-
-      //进行最小压缩
-      let ndata = canvas.toDataURL('image/jpeg', imgSize)
-      return ndata
-    },
-    // base64转成bolb对象
-    dataURItoBlob(base64Data) {
-      var byteString
-      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
-        byteString = atob(base64Data.split(',')[1])
-      } else byteString = unescape(base64Data.split(',')[1])
-      var mimeString = base64Data
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0]
-      var ia = new Uint8Array(byteString.length)
-      for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i)
-      }
-      return new Blob([ia], { type: mimeString })
     },
     getCamcorder() {
       this.$refs.upload.setAttribute('capture', 'camcorder')
@@ -419,23 +345,11 @@ export default {
     getCamera() {
       this.$refs.upload.setAttribute('capture', 'camera')
       this.$refs.upload.setAttribute('accept', 'image/*')
-      // this.$refs.upload.removeAttribute('multiple')
       this.$refs.upload.click()
     },
     getPhoto() {
       this.$refs.upload.removeAttribute('capture')
-      // if (this.actionType == 1) {
-      //   this.$refs.upload.setAttribute(
-      //     'accept',
-      //     'image/jpg,image/png,image/jpeg'
-      //   )
-      // } else if (this.actionType == 2) {
-      //   this.$refs.upload.setAttribute('accept', 'image/mp4')
-      // } else {
-      //   this.$refs.upload.setAttribute('accept', '*')
-      // }
       this.$refs.upload.setAttribute('accept', '*')
-      // this.$refs.upload.setAttribute('multiple', 'multiple')
       this.$refs.upload.click()
     },
     bindDeleteImg(index) {
@@ -465,23 +379,14 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%) scale(0.5);
 }
-// /deep/ .mt-range-thumb {
-//   width: 17px;
-//   height: 17px;
-//   top: 50%;
-//   transform: translateY(-50%);
-// }
+
 /deep/ .mt-range {
   width: 245px;
   margin: 0 auto;
 }
 /deep/ .mt-range-runway {
   border-radius: 6px;
-  // margin-right: 17px;
 }
-// /deep/ .mt-range-content {
-//   margin-right: 17px;
-// }
 /deep/ .mt-range-progress {
   padding-right: 10px;
   border-radius: 6px 0 0 6px;
