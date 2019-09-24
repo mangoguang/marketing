@@ -72,7 +72,7 @@
     <node-card v-if="showNodeCard"
                :cofirmList="cofirmList"
                :status="status"
-               :comfirmTitle="comfirmTitle"
+               comfirmTitle="认证进度"
                @onNodeCardClose="showNodeCard=false" />
   </div>
 </template>
@@ -193,16 +193,16 @@ export default {
       let list4 = [...typeList4, ...typeList5, ...typeList6, ...typeList7]
 
       let res = list4.map(item => item.status == 1 || item.status == 3)
-      // debugger
-      if (
-        res.length == 4 &&
-        Array.from(new Set(res)).length == 1 &&
-        Array.from(new Set(res))[0] == true
-      ) {
+      // debugger res.length == 4 &&
+      // console.log(Array.from(new Set(res)))
+      // Array.from(new Set(res)).length == 1 &&
+      //   Array.from(new Set(res))[0] == true
+      let lastList = typeList8[0] || {}
+      if (lastList.status == 3) {
         list4[list4.length - 1].statusString = '已通过'
         list4 = [list4[list4.length - 1]]
       } else {
-        console.log(res.indexOf(false))
+        // console.log(res.indexOf(false))
         if (res.length != 0 && res.indexOf(false) != -1) {
           list4[res.indexOf(false)].statusString = '未通过'
           list4 = [list4[res.indexOf(false)]]
