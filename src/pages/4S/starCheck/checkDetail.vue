@@ -28,7 +28,7 @@
                    alt="">
             </div>
             <div class="video"
-                 v-if="/.mp4$|.mov$/gi.test(item)"
+                 v-if="/.3gp$|.mp4$|.mov$/gi.test(item)"
                  @click="bindPlay(item,index)">
             </div>
 
@@ -280,13 +280,20 @@ export default {
           sourceType,
           encodingType: 'jpg',
           mediaValue: 'video',
-          destinationType: 'url',
-          allowEdit: true,
-          saveToPhotoAlbum: true
+          destinationType: 'url'
+          // allowEdit: true,
+          // saveToPhotoAlbum: true
         },
         function(ret, err) {
           if (ret) {
-            _this.videoCompress(ret.data)
+            var model = api.deviceModel
+            var sVer = api.systemVersion
+            //小米8不压缩
+            if (model == 'MI 8' && sVer == 9) {
+              _this._nativeUpload(ret.data)
+            } else {
+              _this.videoCompress(ret.data)
+            }
           } else {
             //Toast('获取文件资源失败')
           }
@@ -317,7 +324,7 @@ export default {
         Toast('文件数量不可大于5个')
         return
       }
-      var len = this.picVal.filter(item => /.mp4$|.mov$/gi.test(item))
+      var len = this.picVal.filter(item => /.3gp$|.mp4$|.mov$/gi.test(item))
       if (len.length >= 1) {
         Toast('视频最多上传一个')
         return
@@ -353,8 +360,9 @@ export default {
             Indicator.close()
           } else {
             api.alert({
-              msg: JSON.stringify(errs)
+              msg: '网络错误'
             })
+            console.log(JSON.stringify(errs))
           }
         }
       )
@@ -398,7 +406,7 @@ export default {
         Toast('文件数量不可大于5个')
         return
       }
-      var len = this.picVal.filter(item => /.mp4$|.mov$/gi.test(item))
+      var len = this.picVal.filter(item => /.3gp$|.mp4$|.mov$/gi.test(item))
       let flg = false
 
       Object.keys(e.target.files).map(item => {
