@@ -3,6 +3,7 @@
   <div class="score_wrapper">
     <circleProgress :score="score"
                     :star="starData" />
+
     <div class="shop-name">{{$route.query.shopName}}</div>
     <div class="time">
       <p>第{{cycle}}月</p>

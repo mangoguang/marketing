@@ -62,13 +62,10 @@
           <span class="tips">扣{{rangeValue}}分</span>
           <div class="top"><span>0</span><span>{{maxScore}}</span></div>
           <div class="rule">
-            <div class="li"></div>
-            <div class="li"></div>
-            <div class="li"></div>
-            <div class="li lis"></div>
-            <div class="li"></div>
-            <div class="li"></div>
-            <div class="li"></div>
+            <div class="li"
+                 v-for="(li,index) in 7"
+                 :class="{lis:index==3}"
+                 :key="index"></div>
           </div>
         </div>
         <mt-range v-model="rangeValue"
