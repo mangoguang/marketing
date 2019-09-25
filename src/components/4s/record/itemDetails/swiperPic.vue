@@ -11,7 +11,7 @@
                v-if='/jpg|jpeg|png|bmp/g.test(item)'
                :preview='isPreview'
                alt="">
-          <video-player v-if="/.mp4$|.mov$/ig.test(item)"
+          <video-player v-if="/.3gp$|.mp4$|.mov$/ig.test(item)"
                         class="video-player vjs-custom-skin player"
                         ref="myVideoPlayer"
                         :playsinline="true"

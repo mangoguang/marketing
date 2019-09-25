@@ -1,6 +1,10 @@
 <template>
   <div class="checkDetail">
-    <mybanner :title='$route.query.name' />
+    <mybanner :title='$route.query.name'
+              :remark="0">
+      <div class="remark"
+           @click="$router.push({path:'/checkTip',query:{remark}})"></div>
+    </mybanner>
     <div class="form">
       <div class="editor">
         <textarea v-model="textareaVal"
@@ -160,7 +164,8 @@ export default {
       ],
       actionType: 0,
       showVideo: false,
-      progress: 0
+      progress: 0,
+      remark: ''
     }
   },
   computed: {
@@ -179,7 +184,7 @@ export default {
 
     let standardList = this.submitScoreData.categoryList[this.categoryListIndex]
       .standardList[this.standardListIndex]
-
+    this.remark = standardList.remark
     this.textareaVal = standardList.reason //扣分原因
     var urls = [].concat(standardList.urls || [])
     this.picVal = urls || [] //上传文件
@@ -516,6 +521,15 @@ export default {
   margin: 0 auto;
 }
 .checkDetail {
+  .remark {
+    position: absolute;
+    bottom: 13px;
+    right: 24px;
+    width: 19px;
+    height: 19px;
+    background: url(~@/assets/imgs/4s/tips.png) no-repeat;
+    background-size: contain;
+  }
   .video-box {
     position: fixed;
     width: 100vw;

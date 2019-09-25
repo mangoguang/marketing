@@ -5,7 +5,7 @@
     <li v-for="(item, index) in standardList"
         @click="toCheckDetail(item,index)"
         :key="`checkContent${index}`"
-        :class="{done: item.status}">{{item.name}}</li>
+        :class="item.status?'done':'enter'">{{item.name}}</li>
   </ul>
 </template>
 
@@ -72,8 +72,10 @@ export default {
     padding-left: 24px;
     padding-right: 48px;
     font-size: 16px;
-    line-height: 3em;
+    line-height: 1.3;
     background: #fff;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
   li::after {
     display: block;
@@ -85,6 +87,11 @@ export default {
     bottom: 0;
     background: #f8f8f8;
     transform: scaleY(0.5);
+  }
+  li.enter {
+    background: url(~@/assets/imgs/4s/down2.png) no-repeat, #fff;
+    background-size: 4.2vw auto;
+    background-position: right 24px top 50%;
   }
   li.done {
     background: url(../../../assets/imgs/4s/starCheck/yes_blue.png) no-repeat,

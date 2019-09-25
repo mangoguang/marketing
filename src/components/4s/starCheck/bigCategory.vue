@@ -4,6 +4,7 @@
     <BigCategoryBox v-for="(item, index) in subCategoryList"
                     @click.native="bindNavigatorCheck(item)"
                     :key="index"
+                    :item="item"
                     :status="item.status"
                     :isGrade="item.isGrade"
                     :text="item.name" />

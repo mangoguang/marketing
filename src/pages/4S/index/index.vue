@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      soreClass: 5,
+      soreClass: 99,
       shops: [{ name: '' }],
       categories: [],
       shopId: 0,

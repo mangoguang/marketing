@@ -12,7 +12,7 @@
            :class="{paddingTop10: index === 0}">
         <SubHeader class="firstTitle"
                    v-if="index === 0"
-                   :text="'分数统计：'"
+                   text="分数统计"
                    :totalPoints="total.totalPoints"
                    :deductMarks="total.deductMarks" />
         <CheckTitle :title="item.name"
@@ -271,8 +271,8 @@ export default {
     // transform: translateX(-50%);
     width: 19px;
     height: 37px;
-    background: url(../../../assets/imgs/4s/tips.png) no-repeat center center /
-      19px 19px;
+    background: url(../../../assets/imgs/4s/tips.png) center center no-repeat;
+    background-size: 19px 19px;
   }
   .contentBox {
     position: relative;

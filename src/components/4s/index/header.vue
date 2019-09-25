@@ -5,7 +5,7 @@
       <button @click="back"
               type="button"></button>
     </div>
-    <h3>4S星级认证</h3>
+    <h3 v-if="storeClass!=99">{{starText}}级认证</h3>
   </div>
 </template>
 
@@ -16,6 +16,12 @@ export default {
   props: ['storeClass', 'href'],
   data() {
     return {}
+  },
+  computed: {
+    starText() {
+      var arr = ['一星', '二星', '三星', '四星', '五星']
+      return arr[this.storeClass - 1]
+    }
   },
   methods: {
     back() {
@@ -90,5 +96,10 @@ export default {
     url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
+}
+.class99 {
+  background: url(../../../assets/imgs/4s/headerBg.png) no-repeat;
+  background-size: 100% auto;
+  // background-position: left 50% bottom 18vw, 0 0;
 }
 </style>

@@ -411,12 +411,20 @@ export default {
     align-items: center;
     .pass {
       color: #007aff;
+      background: rgba(0, 122, 255, 0.3);
+
+      height: 30px;
+      line-height: 30px;
+      border-radius: 15px;
+      padding: 0 10px;
     }
     .red {
       color: #ff2d55;
+      background: rgba(255, 45, 85, 0.3);
     }
     .ok {
       color: #4cd964;
+      background: rgba(76, 217, 100, 0.3);
     }
     .turnBack {
       text-align: center;
