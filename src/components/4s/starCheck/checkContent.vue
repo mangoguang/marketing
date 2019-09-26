@@ -89,8 +89,8 @@ export default {
     transform: scaleY(0.5);
   }
   li.enter {
-    background: url(~@/assets/imgs/4s/down2.png) no-repeat, #fff;
-    background-size: 4.2vw auto;
+    background: url(~@/assets/imgs/4s/箭头@2x.png) no-repeat, #fff;
+    background-size: 8px 15px;
     background-position: right 24px top 50%;
   }
   li.done {

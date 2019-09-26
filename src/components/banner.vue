@@ -102,7 +102,7 @@ export default {
   .my_title {
     width: 100%;
     text-align: center;
-    padding-right: 10.4vw;
+    padding-right: 50px;
     font-size: 5.06vw;
     letter-spacing: -1px;
     color: #363636;

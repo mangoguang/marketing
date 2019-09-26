@@ -21,7 +21,9 @@ export default {
     categoryListIndex: 0, //categoryList选中索引
     standardListIndex: 0, //standardList选中索引
     totalPoints: 0, //总分
-    deductMarks: 0 //扣分
+    deductMarks: 0, //扣分
+    shops: [], //门店列表信息
+    shopsSelectIndex: 0 //当前选中门店
   },
   mutations: {
     setType: (state, str) => state.type = str,
@@ -33,7 +35,9 @@ export default {
     setStandardListIndex: (state, standardListIndex) => state.standardListIndex = standardListIndex, //三级列表选中具体项索引
     setSubcategories: (state, subcategories) => state.subcategories = subcategories,
     setTotalPoints: (state, totalPoints) => state.totalPoints = totalPoints,
-    setdeductMarks: (state, deductMarks) => state.deductMarks = deductMarks
+    setdeductMarks: (state, deductMarks) => state.deductMarks = deductMarks,
+    setShops: (state, shops) => state.shops = shops,
+    setShopsSelectIndex: (state, index) => state.shopsSelectIndex = index
   },
   getters: {
     getCategories: (state) => state.categories, //日常检查二级列表

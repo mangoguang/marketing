@@ -5,7 +5,10 @@
       <div class="remark"
            @click="$router.push({path:'/checkTip',query:{remark}})"></div>
     </mybanner>
+
     <div class="form">
+      <div class="tip"
+           v-if="area.showAcreage||area.showDecorateDate">&nbsp;&nbsp;&nbsp;&nbsp;<span v-if="area.showAcreage">门店面积: {{shops[shopsSelectIndex]['acreage']||'-'}}平方 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span v-if="area.showDecorateDate">装修时间：{{shops[shopsSelectIndex]['decorateTime']||'-'}} </span></div>
       <div class="editor">
         <textarea v-model="textareaVal"
                   v-if="isGrade!=1"
@@ -162,7 +165,8 @@ export default {
       actionType: 0,
       showVideo: false,
       progress: 0,
-      remark: ''
+      remark: '',
+      area: { showAcreage: 0, showDecorateDate: 0 }
     }
   },
   computed: {
@@ -172,7 +176,9 @@ export default {
       standardListIndex: state => state.eggRecordDetails.standardListIndex,
       subcategories: state => state.eggRecordDetails.subcategories,
       deductMarks: state => state.eggRecordDetails.deductMarks,
-      totalPoints: state => state.eggRecordDetails.totalPoints
+      totalPoints: state => state.eggRecordDetails.totalPoints,
+      shopsSelectIndex: state => state.eggRecordDetails.shopsSelectIndex,
+      shops: state => state.eggRecordDetails.shops
     })
     // ...mapGetters(['getSubmitScoreData'])
   },
@@ -182,6 +188,10 @@ export default {
     let standardList = this.submitScoreData.categoryList[this.categoryListIndex]
       .standardList[this.standardListIndex]
     this.remark = standardList.remark
+    this.area = {
+      showAcreage: standardList.showAcreage,
+      showDecorateDate: standardList.showDecorateDate
+    }
     this.textareaVal = standardList.reason //扣分原因
     var urls = [].concat(standardList.urls || [])
     this.picVal = urls || [] //上传文件
@@ -192,6 +202,12 @@ export default {
     this.maxScore = this.subcategories[this.categoryListIndex].total
   },
   beforeRouteLeave(to, from, next) {
+    let routeName = ['checkTip']
+    if (routeName.indexOf(to.name) != -1) {
+      from.meta.keepAlive = true
+    } else {
+      from.meta.keepAlive = false
+    }
     let pswp = document.querySelector('.pswp')
     let domColse = document.querySelector('.pswp__button--close')
 
@@ -287,17 +303,23 @@ export default {
           // saveToPhotoAlbum: true
         },
         function(ret, err) {
-          if (ret) {
-            var model = api.deviceModel
-            var sVer = api.systemVersion
-            //小米8不压缩
-            if (model == 'MI 8' && sVer == 9) {
-              _this._nativeUpload(ret.data)
+          try {
+            if (ret) {
+              if (ret.duration == 0) return
+
+              var model = api.deviceModel
+              var sVer = api.systemVersion
+              //小米8不压缩
+              if (model == 'MI 8' && sVer == 9) {
+                _this._nativeUpload(ret.data)
+              } else {
+                _this.videoCompress(ret.data)
+              }
             } else {
-              _this.videoCompress(ret.data)
+              Toast('获取文件资源失败')
             }
-          } else {
-            //Toast('获取文件资源失败')
+          } catch (err) {
+            console.log(err)
           }
         }
       )
@@ -522,10 +544,10 @@ export default {
     position: absolute;
     bottom: 13px;
     right: 24px;
-    width: 19px;
-    height: 19px;
-    background: url(~@/assets/imgs/4s/tips.png) no-repeat;
-    background-size: contain;
+    width: 34px;
+    height: 34px;
+    background: url(~@/assets/imgs/4s/help拷贝3@2x.png) right bottom no-repeat;
+    background-size: 19px 19px;
   }
   .video-box {
     position: fixed;
@@ -670,6 +692,27 @@ export default {
     padding-top: 16.466vw;
     box-sizing: border-box;
     padding-bottom: 200px;
+    .tip {
+      height: 32px;
+      line-height: 32px;
+      border: 1px solid transparent;
+      background-color: #fec06d;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      &::before {
+        content: '';
+        display: block;
+        height: 16px;
+        width: 16px;
+        background: url(~@/assets/imgs/4s/29感叹号@2x.png) no-repeat;
+        background-size: contain;
+      }
+      span {
+        color: #915305;
+        font-size: 12px;
+      }
+    }
     .imgBox {
       li {
         width: 20vw;

@@ -35,7 +35,7 @@ import {
 } from '@/api/4s'
 import { Toast } from 'mint-ui'
 
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     Header,
@@ -72,8 +72,13 @@ export default {
   //   }
   //   next()
   // },
+  computed: {
+    ...mapState({
+      shopsSelectIndex: state => state.eggRecordDetails.shopsSelectIndex
+    })
+  },
   methods: {
-    ...mapMutations(['setShopId']),
+    ...mapMutations(['setShopId', 'setShops', 'setShopsSelectIndex']),
 
     async _initData() {
       let { code, msg, shops } = await gradeShops()
@@ -87,7 +92,7 @@ export default {
       }
       if (shops && shops.length > 0) {
         this.shops = shops
-        var selectIndex = sessionStorage.getItem('selectIndex') || 0
+        var selectIndex = this.shopsSelectIndex || 0 //sessionStorage.getItem('selectIndex') || 0
         this.shopId = shops[selectIndex].id
         this.setShopId(shops[selectIndex].id)
         this.soreClass = shops[selectIndex].starLevel
@@ -95,6 +100,7 @@ export default {
           shopName: shops[selectIndex].name,
           shopId: shops[selectIndex].id
         }
+        this.setShops(shops)
         this._getGradeCategoriesCount(shops[selectIndex].id)
       }
     },
@@ -104,12 +110,13 @@ export default {
         this.hasNew = notGradeCount
       }
     },
-    onGetStoreId(item) {
+    onGetStoreId(item, index) {
       this.setShopId(item.id)
       this.shopId = item.id
       this.soreClass = item.starLevel
       this.storeType = { shopName: item.name, shopId: item.id }
       // this._getHasNew(item.id)
+      this.setShopsSelectIndex(index)
     },
     async _getGradeCategoriesCount(shopId) {
       let { notGradeCount } = await guideNotGradeCategoriesCount({ shopId })
