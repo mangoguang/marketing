@@ -3,12 +3,25 @@
 </template>
 <script>
 export default {
+  props: {
+    score: 0
+  },
   mounted() {
     var canvas = this.$refs.circle
     canvas.width = this.toVw(180)
     canvas.height = this.toVw(180)
     var ctx = canvas.getContext('2d')
-    this.drawRing(ctx, 0.75 * Math.PI, 50)
+    this.drawRing(ctx, 0.75 * Math.PI, this.score)
+  },
+  watch: {
+    score(val) {
+      console.log(val)
+      var canvas = this.$refs.circle
+      canvas.width = this.toVw(180)
+      canvas.height = this.toVw(180)
+      var ctx = canvas.getContext('2d')
+      this.drawRing(ctx, 0.75 * Math.PI, val)
+    }
   },
   methods: {
     toVw(num) {
@@ -61,8 +74,14 @@ export default {
         this.toVw(200),
         0
       )
-      radialGradient.addColorStop(0, '#0055E3')
-      radialGradient.addColorStop(1, '#0FACF5')
+      if (this.score > 80) {
+        radialGradient.addColorStop(0, '#0055E3')
+        radialGradient.addColorStop(1, '#0FACF5')
+      } else {
+        radialGradient.addColorStop(0, '#FF6F5D')
+        radialGradient.addColorStop(1, '#FFB90A')
+      }
+
       ctx.strokeStyle = radialGradient
       ctx.lineCap = 'round'
       ctx.stroke()
