@@ -98,8 +98,10 @@ export default {
   background-position: left 50% bottom 18vw, 0 0;
 }
 .class99 {
-  background: url(../../../assets/imgs/4s/headerBg.png) no-repeat;
-  background-size: 100% auto;
-  // background-position: left 50% bottom 18vw, 0 0;
+  background: url(~@/assets/imgs/4s/logo.png) no-repeat,
+    url(~@/assets/imgs/4s/font.png) no-repeat,
+    url(~@/assets/imgs/4s/headerBg.png) no-repeat;
+  background-size: 40px 46px, 93px 19px, 100% auto;
+  background-position: center bottom 49px, center bottom 24px, center center;
 }
 </style>

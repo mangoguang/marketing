@@ -26,7 +26,7 @@ export default {
         { title: '员工', icon: 'employee' },
         { title: '门店', icon: 'store' },
         { title: '订单查询', icon: 'orderSearchIcon' },
-        { title: '4S认证', icon: 'orderSearchIcon' }
+        { title: '4S认证', icon: 'star' }
       ]
     }
   },

@@ -10,7 +10,11 @@
 
     <div class="form">
       <div class="tip"
-           v-if="area.showAcreage||area.showDecorateDate">&nbsp;&nbsp;&nbsp;&nbsp;<span v-if="area.showAcreage">门店面积: {{shops[shopsSelectIndex]['acreage']||'-'}}平方 </span>&nbsp;&nbsp;&nbsp;&nbsp;<span v-if="area.showDecorateDate">装修时间：{{shops[shopsSelectIndex]['decorateTime']||'-'}} </span></div>
+           v-if="area.showAcreage||area.showDecorateDate||area.showExpiryDate"><span v-if="area.showAcreage">
+          门店面积<br>{{shops[shopsSelectIndex]['acreage']||'-'}}平方 </span>
+        <span v-if="area.showDecorateDate">装修时间<br>{{shops[shopsSelectIndex]['decorateTime']||'-'}} </span>
+        <span v-if="area.showExpiryDate">装修结束时间<br>{{shops[shopsSelectIndex]['expiryDate']||'-'}} </span>
+      </div>
       <div class="editor">
         <textarea v-model="textareaVal"
                   v-if="isGrade!=1"
@@ -188,7 +192,7 @@ export default {
       showVideo: false,
       progress: 0,
       remark: '',
-      area: { showAcreage: 0, showDecorateDate: 0 },
+      area: { showAcreage: 0, showDecorateDate: 0, showExpiryDate: 0 },
       toastReset: false
     }
   },
@@ -224,7 +228,8 @@ export default {
 
     this.area = {
       showAcreage: standardList.showAcreage,
-      showDecorateDate: standardList.showDecorateDate
+      showDecorateDate: standardList.showDecorateDate,
+      showExpiryDate: standardList.showExpiryDate
     }
     this.textareaVal = standardList.reason //扣分原因
     var urls = [].concat(standardList.urls || [])
@@ -304,7 +309,6 @@ export default {
       standardList.deduct = rangeValue //分数
 
       this.setdeductMarks(totle)
-      console.log(this.submitScoreData)
       this.setSubmitScoreData(this.submitScoreData)
 
       this.subcategories[this.categoryListIndex].standardList[
@@ -772,23 +776,25 @@ export default {
     padding-bottom: 200px;
     .tip {
       height: 32px;
-      line-height: 32px;
       border: 1px solid transparent;
       background-color: #fec06d;
-      padding: 0 24px;
+      padding: 5px 24px;
       display: flex;
       align-items: center;
-      &::before {
-        content: '';
-        display: block;
-        height: 16px;
-        width: 16px;
-        background: url(~@/assets/imgs/4s/29感叹号@2x.png) no-repeat;
-        background-size: contain;
-      }
+      line-height: 1.4;
+      // &::before {
+      //   content: '';
+      //   display: block;
+      //   height: 16px;
+      //   width: 16px;
+      //   background: url(~@/assets/imgs/4s/29感叹号@2x.png) no-repeat;
+      //   background-size: contain;
+      // }
       span {
         color: #915305;
         font-size: 12px;
+        flex: 1;
+        text-align: center;
       }
     }
     .imgBox {

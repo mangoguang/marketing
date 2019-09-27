@@ -52,18 +52,18 @@ export default {
       categories: [],
       shopId: 0,
       storeType: {},
-      hasNew: 0
+      hasNew: 0,
+      certPositionType: localStorage.getItem('certPositionType')
     }
   },
   async created() {
-    let certPositionType = localStorage.getItem('certPositionType')
+    let { certPositionType } = this
     this._GradeShopsCount(certPositionType)
-    if (certPositionType == 'supervisor' || certPositionType == 'Dealer Boss')
+    if (certPositionType == 'Dealer Boss' || certPositionType == 'supervisor')
       return
     this._initData()
   },
   // beforeRouteEnter (to, from, next) {
-
   //   let routeName = ['work', 'Login']
   //   if (routeName.includes(from.name)) {
   //     to.meta.keepAlive = false

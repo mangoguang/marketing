@@ -1,6 +1,7 @@
 <template>
   <div class="starCheckW">
-    <AtestHeader title="申请认证" />
+    <AtestHeader title="申请认证"
+                 href="/index4s" />
     <div class="content">
       <AtestCard @getMeg="getMeg"
                  ref="atestcard" />
