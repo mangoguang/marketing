@@ -5,7 +5,7 @@
       <button @click="back"
               type="button"></button>
     </div>
-    <h3 v-if="storeClass!=99">{{starText}}级认证</h3>
+    <h3 v-if="storeClass!=99">{{starText}}</h3>
   </div>
 </template>
 
@@ -19,8 +19,20 @@ export default {
   },
   computed: {
     starText() {
-      var arr = ['一星', '二星', '三星', '四星', '五星']
-      return arr[this.storeClass - 1]
+      var arr = [
+        '一星级认证',
+        '二星级认证',
+        '三星级认证',
+        '四星级认证',
+        '五星级认证'
+      ]
+      let star =
+        localStorage.getItem('certPositionType') == 'supervisor'
+          ? this.storeClass
+          : this.storeClass - 1
+
+      console.log(this.storeClass)
+      return arr[star]
     }
   },
   methods: {

@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       isShow: false,
-      list: ['图库首页', '我的收藏', '扫一扫'],
+      list: ['图库首页', '我的收藏'], //['图库首页', '我的收藏', '扫一扫']
       top: ''
     }
   },

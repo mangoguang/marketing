@@ -221,16 +221,18 @@ export default {
     // this.submitScoreData.categoryList[this.categoryListIndex]
     //   .standardList[this.standardListIndex]
     //console.log(standardList)
-    this.remark = this.subcategories[this.categoryListIndex].standardList[
-      this.standardListIndex
-    ].remark
+    let subStandardList = this.subcategories[this.categoryListIndex]
+      .standardList[this.standardListIndex]
+
+    this.remark = subStandardList.remark
     this.setCheckingMsg(this.remark)
 
     this.area = {
-      showAcreage: standardList.showAcreage,
-      showDecorateDate: standardList.showDecorateDate,
-      showExpiryDate: standardList.showExpiryDate
+      showAcreage: subStandardList.showAcreage,
+      showDecorateDate: subStandardList.showDecorateDate,
+      showExpiryDate: subStandardList.showExpiryDate
     }
+    console.log(subStandardList)
     this.textareaVal = standardList.reason //扣分原因
     var urls = [].concat(standardList.urls || [])
     this.picVal = urls || [] //上传文件

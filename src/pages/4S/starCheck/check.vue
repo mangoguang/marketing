@@ -182,28 +182,28 @@ export default {
           }
         })
       })
-      // if (standardListNameArr.length != 0) {
-      //   Toast(`请给${standardListNameArr[0]}评分`)
-      //   return
-      // }
+      if (standardListNameArr.length != 0) {
+        Toast(`请给${standardListNameArr[0]}评分`)
+        return
+      }
       this.toastShow = true
     },
     // 提交表单
     async bindComfirmSubmit() {
       this.toastShow = false
 
-      let standardListNameArr = []
-      this.subcategories.map(item => {
-        item.standardList.map(items => {
-          if (!items.status) {
-            standardListNameArr.push(items.name)
-          }
-        })
-      })
-      if (standardListNameArr.length != 0) {
-        Toast(`请给${standardListNameArr[0]}评分`)
-        return
-      }
+      // let standardListNameArr = []
+      // this.subcategories.map(item => {
+      //   item.standardList.map(items => {
+      //     if (!items.status) {
+      //       standardListNameArr.push(items.name)
+      //     }
+      //   })
+      // })
+      // if (standardListNameArr.length != 0) {
+      //   Toast(`请给${standardListNameArr[0]}评分`)
+      //   return
+      // }
 
       var params = this.submitScoreData
       let { code, msg, data } = await gradeSubmit(params)

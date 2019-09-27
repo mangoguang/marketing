@@ -50,11 +50,11 @@ export default {
         {
           name: '分享到微信朋友圈',
           imgUrl: './static/images/timeline.png'
-        },
-        {
-          name: '分享给QQ好友',
-          imgUrl: './static/images/qq.png'
         }
+        // {
+        //   name: '分享给QQ好友',
+        //   imgUrl: './static/images/qq.png'
+        // }
         // {
         //   name: '分享到微博',
         //   imgUrl: './static/images/weibo.png'

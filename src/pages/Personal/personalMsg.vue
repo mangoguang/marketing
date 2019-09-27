@@ -7,7 +7,7 @@
           @click="routeTo(index)">
         <span v-if="index!==3">{{item}}</span>
         <div v-else
-             class="version"><span>{{item}}</span><span style="color:#666">版本&nbsp;1.1.2</span></div>
+             class="version"><span>{{item}}</span><span style="color:#666">版本&nbsp;2.1.0</span></div>
         <div class="icon-right">
           <img src="../../assets/imgs/rightside.png"
                alt="">
