@@ -8,7 +8,7 @@
                     :style="{backgroundColor:'#000'}">
         <div class="container">
           <img v-lazy="item"
-               v-if='/jpg|jpeg|png|bmp/g.test(item)'
+               v-if='/jpg|jpeg|png|bmp/ig.test(item)'
                :preview='isPreview'
                alt="">
           <video-player v-if="/.3gp$|.mp4$|.mov$/ig.test(item)"

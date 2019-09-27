@@ -7,7 +7,8 @@
       </div>
       <div class="content">
         <slot name="content">
-          <div class="def-cont">{{content}}</div>
+          <div class="def-cont"
+               v-html="content"></div>
         </slot>
       </div>
       <div class="buttons">
@@ -79,6 +80,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 0 20px;
     }
   }
   .buttons {

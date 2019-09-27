@@ -14,7 +14,7 @@
 <script>
 import BigCategoryBox from './bigCategoryBox'
 import { secondcategories } from '@/api/4s'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   props: ['subCategoryList'],
   components: { BigCategoryBox },
@@ -29,6 +29,7 @@ export default {
   },
   methods: {
     ...mapGetters(['getCategories']),
+    ...mapMutations(['setCheckLevelMsg']),
     bindNavigatorCheck(item) {
       this.$router.push({
         path: '/check',
@@ -40,6 +41,7 @@ export default {
           remark: item.remark
         }
       })
+      this.setCheckLevelMsg(item.remark)
     }
   }
 }

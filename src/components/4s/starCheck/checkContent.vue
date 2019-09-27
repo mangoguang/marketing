@@ -89,8 +89,8 @@ export default {
     transform: scaleY(0.5);
   }
   li.enter {
-    background: url(~@/assets/imgs/4s/箭头@2x.png) no-repeat, #fff;
-    background-size: 8px 15px;
+    background: url(~@/assets/imgs/4s/fanhui2x.png) no-repeat, #fff;
+    background-size: 6px 10px;
     background-position: right 24px top 50%;
   }
   li.done {

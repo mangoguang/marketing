@@ -2,8 +2,12 @@
 <template>
   <div class="bigCategoryBox">
     <p>{{text}}</p>
-    <div class="score"
-         v-if="isGrade==1"><span class="score1">{{item.deduct||0}}</span><span class="score2">/{{item.total||0}}分</span></div>
+    <div class="score">
+      <span class="score1"
+            v-if="isGrade==1">{{item.total-item.deduct||0}}</span>
+      <span class="score2"
+            v-if="isGrade==1">/{{item.total||0}}分</span>
+    </div>
     <button :class="{haveDon: isGrade==1}">{{isGrade==1 ? '已评分' : '去评分'}}</button>
   </div>
 </template>

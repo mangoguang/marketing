@@ -3,11 +3,20 @@
   <div class="banner"
        :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`}">
     <div :class="`${fix}`"></div>
+
     <div class="icon-back"
+         v-if="showLeft"
+         @click="$emit('onHandleBack')">
+      <div class="icon iconfont icon-fanhui1"
+           :style="{'color':`${titleColor}`}"></div>
+    </div>
+    <div class="icon-back"
+         v-else
          @click='cilck'>
       <div class="icon iconfont icon-fanhui1"
            :style="{'color':`${titleColor}`}"></div>
     </div>
+
     <span class="my_title"
           :class="left? 'myLeftStyle':''"
           :style="{'color':`${titleColor}`}">{{title}}</span>
@@ -23,7 +32,7 @@ import VueRouter from 'vue-router'
 // import MoreDetails from './Gallery/productDetails/moreDetail'
 export default {
   name: 'routerLink',
-  props: ['title', 'MoreBtn', 'left'],
+  props: ['title', 'MoreBtn', 'left', 'showLeft'],
   // components: {MoreDetails},
   data() {
     return {

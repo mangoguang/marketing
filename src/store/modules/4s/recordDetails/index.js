@@ -23,7 +23,9 @@ export default {
     totalPoints: 0, //总分
     deductMarks: 0, //扣分
     shops: [], //门店列表信息
-    shopsSelectIndex: 0 //当前选中门店
+    shopsSelectIndex: 0, //当前选中门店
+    checkingMsg: '', //细项检查标准
+    checkLevelMsg: '' //二级检查标准
   },
   mutations: {
     setType: (state, str) => state.type = str,
@@ -37,7 +39,9 @@ export default {
     setTotalPoints: (state, totalPoints) => state.totalPoints = totalPoints,
     setdeductMarks: (state, deductMarks) => state.deductMarks = deductMarks,
     setShops: (state, shops) => state.shops = shops,
-    setShopsSelectIndex: (state, index) => state.shopsSelectIndex = index
+    setShopsSelectIndex: (state, index) => state.shopsSelectIndex = index,
+    setCheckingMsg: (state, msg) => state.checkingMsg = msg,
+    setCheckLevelMsg: (state, checkLevelMsg) => state.checkLevelMsg = checkLevelMsg
   },
   getters: {
     getCategories: (state) => state.categories, //日常检查二级列表

@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import mybanner from '../../../components/banner'
 export default {
   components: {
@@ -19,14 +20,32 @@ export default {
   },
   data() {
     return {
-      msg: '',
+      // msg: '',
       title: '检查标准'
     }
   },
   mounted() {
-    this.msg = this.$route.query.remark
+    // this.msg = this.$route.query.remark.replace(/\\n/g, '<br>')
     document.querySelector('#app').scrollTop = 0
-  }
+  },
+  computed: {
+    ...mapState({
+      checkingMsg(state) {
+        return state.eggRecordDetails.checkingMsg
+      },
+      checkLevelMsg(state) {
+        return state.eggRecordDetails.checkLevelMsg
+      },
+      msg() {
+        if (this.$route.query.name == 'level') {
+          return this.checkLevelMsg.replace(/\\n/g, '<br>')
+        } else {
+          return this.checkingMsg.replace(/\\n/g, '<br>')
+        }
+      }
+    })
+  },
+  methods: {}
 }
 </script>
 <style lang='scss' scoped>
@@ -45,6 +64,7 @@ export default {
     line-height: 1.6em;
     font-size: 14px;
     padding: 0 6vw;
+    word-break: break-all;
   }
 }
 </style>

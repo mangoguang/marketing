@@ -1,9 +1,11 @@
 <template>
   <div class="checkDetail">
     <mybanner :title='$route.query.name'
-              :remark="0">
+              :showLeft="true"
+              :remark="0"
+              @onHandleBack="onHandleBack">
       <div class="remark"
-           @click="$router.push({path:'/checkTip',query:{remark}})"></div>
+           @click="$router.push({path:'/checkTip',query:{name:'detail'}})"></div>
     </mybanner>
 
     <div class="form">
@@ -93,6 +95,24 @@
                     :playsinline="true"
                     :options="playerOptions" />
     </div>
+    <ToastBox class="toast"
+              v-if="toastReset">
+      <template>
+        <div class="contents"
+             slot="content">
+          <p>不保存离开将会清空数据<br>确认返回吗？</p>
+        </div>
+
+      </template>
+      <template v-slot:bottons>
+        <div class="but">
+          <div class="btns"
+               @click="toastReset=false">取消</div>
+          <div class="btns"
+               @click="$router.go(-1)">确定</div>
+        </div>
+      </template>
+    </ToastBox>
   </div>
 </template>
 
@@ -114,11 +134,13 @@ import lrz from 'lrz'
 import _ from 'lodash'
 import { Progress } from 'mint-ui'
 Vue.component(Progress.name, Progress)
+import ToastBox from '@/components/4s/tipsBox/ToastBox'
 
 import { baseUrl } from '@/js/common'
 export default {
   components: {
-    mybanner
+    mybanner,
+    ToastBox
   },
   data() {
     return {
@@ -166,7 +188,8 @@ export default {
       showVideo: false,
       progress: 0,
       remark: '',
-      area: { showAcreage: 0, showDecorateDate: 0 }
+      area: { showAcreage: 0, showDecorateDate: 0 },
+      toastReset: false
     }
   },
   computed: {
@@ -185,9 +208,20 @@ export default {
   created() {
     this.isGrade = this.$route.query.isGrade
 
+    // let standardList = this.subcategories[this.categoryListIndex].standardList[
+    //   this.standardListIndex
+    // ]
+
     let standardList = this.submitScoreData.categoryList[this.categoryListIndex]
       .standardList[this.standardListIndex]
-    this.remark = standardList.remark
+    // this.submitScoreData.categoryList[this.categoryListIndex]
+    //   .standardList[this.standardListIndex]
+    //console.log(standardList)
+    this.remark = this.subcategories[this.categoryListIndex].standardList[
+      this.standardListIndex
+    ].remark
+    this.setCheckingMsg(this.remark)
+
     this.area = {
       showAcreage: standardList.showAcreage,
       showDecorateDate: standardList.showDecorateDate
@@ -202,12 +236,12 @@ export default {
     this.maxScore = this.subcategories[this.categoryListIndex].total
   },
   beforeRouteLeave(to, from, next) {
-    let routeName = ['checkTip']
-    if (routeName.indexOf(to.name) != -1) {
-      from.meta.keepAlive = true
-    } else {
-      from.meta.keepAlive = false
-    }
+    // let routeName = ['checkTip']
+    // if (routeName.indexOf(to.name) != -1) {
+    //   from.meta.keepAlive = true
+    // } else {
+    //   from.meta.keepAlive = false
+    // }
     let pswp = document.querySelector('.pswp')
     let domColse = document.querySelector('.pswp__button--close')
 
@@ -228,13 +262,25 @@ export default {
     ...mapMutations([
       'setSubmitScoreData',
       'setSubcategories',
-      'setdeductMarks'
+      'setdeductMarks',
+      'setCheckingMsg'
     ]),
     bindTexareaChange: _.debounce(function(e) {
       let val = this.textareaVal.replace(/<\/?[^>]*>/g, '')
       val = val.replace(/[^\w\d.?!,;"。，？《》！；<> “”\u4e00-\u9fa5]/g, '')
       this.textareaVal = val
     }, 300),
+    onHandleBack() {
+      if (
+        this.subcategories[this.categoryListIndex].standardList[
+          this.$route.query.standardListIndex
+        ].status
+      ) {
+        this.$router.back()
+      } else {
+        this.toastReset = true
+      }
+    },
     bindSave() {
       // if (!this.textareaVal) {
       //   Toast('填写扣分原因')
@@ -258,7 +304,7 @@ export default {
       standardList.deduct = rangeValue //分数
 
       this.setdeductMarks(totle)
-
+      console.log(this.submitScoreData)
       this.setSubmitScoreData(this.submitScoreData)
 
       this.subcategories[this.categoryListIndex].standardList[
@@ -396,6 +442,13 @@ export default {
       return new Promise((resolve, reject) => {
         let file = e.target.files[0]
         if (/^image/.test(file.type)) {
+          //iphone7 plus
+          var model = api.deviceModel
+          var sVer = api.systemVersion
+          if (model == 'iPhone 7 Plus' && sVer == '10.3.3') {
+            resolve(file)
+            return
+          }
           lrz(file, { quality: 0.5 })
             .then(function(rst) {
               // 处理成功会执行
@@ -540,6 +593,31 @@ export default {
   margin: 0 auto;
 }
 .checkDetail {
+  .contents {
+    height: 96px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p {
+      text-align: center;
+      font-size: 14px;
+    }
+  }
+  .but {
+    display: flex;
+    .btns {
+      flex: 1;
+      font-size: 15px;
+    }
+    .btns:first-child {
+      color: #909090;
+      border-right: 1px solid #ddd;
+    }
+    .btns:last-child {
+      color: #007aff;
+    }
+  }
   .remark {
     position: absolute;
     bottom: 13px;
