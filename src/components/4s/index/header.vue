@@ -19,19 +19,13 @@ export default {
   },
   computed: {
     starText() {
-      var arr = [
-        '一星级认证',
-        '二星级认证',
-        '三星级认证',
-        '四星级认证',
-        '五星级认证'
-      ]
+      var arr = ['一星认证', '二星认证', '三星认证', '四星认证', '五星认证']
       let star =
         localStorage.getItem('certPositionType') == 'supervisor'
           ? this.storeClass
           : this.storeClass - 1
 
-      console.log(this.storeClass)
+      // console.log(this.storeClass)
       return arr[star]
     }
   },

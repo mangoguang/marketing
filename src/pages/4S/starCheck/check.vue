@@ -2,7 +2,9 @@
 <template>
   <div class="check"
        ref="check">
-    <RecordHeader :title="$route.query.name">
+    <RecordHeader :title="$route.query.name"
+                  :showLeft="true"
+                  @onHandleBack="onHandleBack">
       <div class="tips"
            @click="$router.push({path:'/checkTip',query:{name:'level'}})"></div>
     </RecordHeader>
@@ -66,6 +68,24 @@
         </div>
       </template>
     </ToastBox>
+    <ToastBox class="toast"
+              v-if="toastLeave">
+      <template>
+        <div class="contents"
+             slot="content">
+          <p>未提交将清空数据<br>确定返回吗？</p>
+        </div>
+
+      </template>
+      <template v-slot:bottons>
+        <div class="but">
+          <div class="btns"
+               @click="toastLeave=false">取消</div>
+          <div class="btns"
+               @click="bindBackPage">确定</div>
+        </div>
+      </template>
+    </ToastBox>
   </div>
 </template>
 
@@ -100,7 +120,8 @@ export default {
       selectIndex: 0,
       isPageCheck: false,
       toastShow: false,
-      toastReset: false
+      toastReset: false,
+      toastLeave: false
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -123,6 +144,7 @@ export default {
     deductMarks: state => state.eggRecordDetails.deductMarks
   }),
   activated() {
+    this.toastLeave = false
     let totalPoints = 0
     let deductMarks = 0
 
@@ -150,6 +172,18 @@ export default {
       'setTotalPoints',
       'setdeductMarks'
     ]),
+    onHandleBack() {
+      if (this.$route.query.isGrade == 1) {
+        let { shopId, starLevel } = this.$route.query
+        this.$router.push({ path: '/starCheck', query: { shopId, starLevel } })
+      } else {
+        this.toastLeave = true
+      }
+    },
+    bindBackPage() {
+      let { shopId, starLevel } = this.$route.query
+      this.$router.push({ path: '/starCheck', query: { shopId, starLevel } })
+    },
     // 控制评分细则的显示/隐藏
     changeStatus(index, status) {
       this.bigCategoryList[index].status = status
@@ -182,34 +216,21 @@ export default {
           }
         })
       })
-      if (standardListNameArr.length != 0) {
-        Toast(`请给${standardListNameArr[0]}评分`)
-        return
-      }
+      // if (standardListNameArr.length != 0) {
+      //   Toast(`请给${standardListNameArr[0]}评分`)
+      //   return
+      // }
       this.toastShow = true
     },
     // 提交表单
     async bindComfirmSubmit() {
       this.toastShow = false
-
-      // let standardListNameArr = []
-      // this.subcategories.map(item => {
-      //   item.standardList.map(items => {
-      //     if (!items.status) {
-      //       standardListNameArr.push(items.name)
-      //     }
-      //   })
-      // })
-      // if (standardListNameArr.length != 0) {
-      //   Toast(`请给${standardListNameArr[0]}评分`)
-      //   return
-      // }
-
       var params = this.submitScoreData
       let { code, msg, data } = await gradeSubmit(params)
       Toast(msg)
       if (code != 0) return
-      this.$router.go(-1)
+      let { shopId, starLevel } = this.$route.query
+      this.$router.push({ path: '/starCheck', query: { shopId, starLevel } })
     },
     async _initData() {
       let params = {
@@ -277,6 +298,17 @@ export default {
 
 .check {
   padding-bottom: 30px;
+  .contents {
+    height: 96px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p {
+      text-align: center;
+      font-size: 14px;
+    }
+  }
   .tips {
     position: absolute;
     top: 52px;

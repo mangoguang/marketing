@@ -12,7 +12,7 @@
       <div class="tip"
            v-if="area.showAcreage||area.showDecorateDate||area.showExpiryDate"><span v-if="area.showAcreage">
           门店面积<br>{{shops[shopsSelectIndex]['acreage']||'-'}}平方 </span>
-        <span v-if="area.showDecorateDate">装修时间<br>{{shops[shopsSelectIndex]['decorateTime']||'-'}} </span>
+        <span v-if="area.showDecorateDate">最近装修时间<br>{{shops[shopsSelectIndex]['decorateTime']||'-'}} </span>
         <span v-if="area.showExpiryDate">装修结束时间<br>{{shops[shopsSelectIndex]['expiryDate']||'-'}} </span>
       </div>
       <div class="editor">
@@ -104,7 +104,7 @@
       <template>
         <div class="contents"
              slot="content">
-          <p>不保存离开将会清空数据<br>确认返回吗？</p>
+          <p>未保存将清空数据<br>确定返回吗？</p>
         </div>
 
       </template>
@@ -243,12 +243,15 @@ export default {
     this.maxScore = this.subcategories[this.categoryListIndex].total
   },
   beforeRouteLeave(to, from, next) {
-    // let routeName = ['checkTip']
-    // if (routeName.indexOf(to.name) != -1) {
-    //   from.meta.keepAlive = true
-    // } else {
-    //   from.meta.keepAlive = false
-    // }
+    if (
+      this.subcategories[this.categoryListIndex].standardList[
+        this.$route.query.standardListIndex
+      ].status
+    ) {
+      next(false)
+    } else {
+      next()
+    }
     let pswp = document.querySelector('.pswp')
     let domColse = document.querySelector('.pswp__button--close')
 
@@ -362,7 +365,10 @@ export default {
               var model = api.deviceModel
               var sVer = api.systemVersion
               //小米8不压缩
-              if (model == 'MI 8' && sVer == 9) {
+              if (
+                (model == 'MI 8' && sVer == 9) ||
+                (model == 'COL-AL10' && sVer == 9)
+              ) {
                 _this._nativeUpload(ret.data)
               } else {
                 _this.videoCompress(ret.data)
@@ -449,12 +455,12 @@ export default {
         let file = e.target.files[0]
         if (/^image/.test(file.type)) {
           //iphone7 plus
-          // var model = api.deviceModel
-          // var sVer = api.systemVersion
-          // if (model == 'iPhone 7 Plus' && sVer == '10.3.3') {
-          //   resolve(file)
-          //   return
-          // }
+          var model = api.deviceModel
+          var sVer = api.systemVersion
+          if (model == 'iPhone 7 Plus' && sVer == '10.3.3') {
+            resolve(file)
+            return
+          }
           lrz(file, { quality: 0.2 })
             .then(function(rst) {
               // 处理成功会执行

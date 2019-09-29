@@ -24,9 +24,12 @@ export default {
           if (ret) {
             if (ret.eventType == 'success') {
               _this.$router.push({
-                path: '/gSearch',
-                query: { type: 'gallery', searchVal: ret.content }
+                path: ret.content.split('#')[1]
               })
+              // _this.$router.push({
+              //   path: '/gSearch',
+              //   query: { type: 'gallery', searchVal: ret.content }
+              // })
             }
           } else {
             // alert(JSON.stringify(err))
