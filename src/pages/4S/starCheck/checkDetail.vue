@@ -225,14 +225,14 @@ export default {
       .standardList[this.standardListIndex]
 
     this.remark = subStandardList.remark
-    this.setCheckingMsg(this.remark)
+    this.setCheckingMsg(this.remark.replace(/\n/g, '<br>'))
 
     this.area = {
       showAcreage: subStandardList.showAcreage,
       showDecorateDate: subStandardList.showDecorateDate,
       showExpiryDate: subStandardList.showExpiryDate
     }
-    console.log(subStandardList)
+
     this.textareaVal = standardList.reason //扣分原因
     var urls = [].concat(standardList.urls || [])
     this.picVal = urls || [] //上传文件
@@ -449,13 +449,13 @@ export default {
         let file = e.target.files[0]
         if (/^image/.test(file.type)) {
           //iphone7 plus
-          var model = api.deviceModel
-          var sVer = api.systemVersion
-          if (model == 'iPhone 7 Plus' && sVer == '10.3.3') {
-            resolve(file)
-            return
-          }
-          lrz(file, { quality: 0.5 })
+          // var model = api.deviceModel
+          // var sVer = api.systemVersion
+          // if (model == 'iPhone 7 Plus' && sVer == '10.3.3') {
+          //   resolve(file)
+          //   return
+          // }
+          lrz(file, { quality: 0.2 })
             .then(function(rst) {
               // 处理成功会执行
               let newFile = new File([rst.file], file.name, { type: file.type })

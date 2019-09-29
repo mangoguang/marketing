@@ -38,9 +38,9 @@ export default {
       },
       msg() {
         if (this.$route.query.name == 'level') {
-          return this.checkLevelMsg.replace(/\\n/g, '<br>')
+          return this.checkLevelMsg.replace(/\\n|↵/g, '<br>')
         } else {
-          return this.checkingMsg.replace(/\\n/g, '<br>')
+          return this.checkingMsg.replace(/\\n|↵/g, '<br>')
         }
       }
     })

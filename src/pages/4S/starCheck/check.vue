@@ -285,7 +285,7 @@ export default {
     width: 19px;
     height: 37px;
     background: url(../../../assets/imgs/4s/tips.png) center center no-repeat;
-    background-size: 19px 19px;
+    background-size: contain;
   }
   .contentBox {
     position: relative;

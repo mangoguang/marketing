@@ -41,7 +41,7 @@ export default {
           remark: item.remark
         }
       })
-      this.setCheckLevelMsg(item.remark)
+      this.setCheckLevelMsg(item.remark.replace(/\n/g, '<br>'))
     }
   }
 }
