@@ -47,6 +47,7 @@
     </div>
     <fixed-bar @onShare="onShare"
                @onDelete="onDelete"
+               @onLove="onLove"
                :detailData="detailData" />
     <share-toast v-show="showShare"
                  @onCloseShare="showShare=false"></share-toast>
@@ -61,7 +62,7 @@
 import FixedBar from '@/components/case/FixedBar/Index'
 import ShareToast from '@/components/case/FixedBar/ShareToast'
 import ToastComfirm from '@/components/case/ToastComfirm/Index'
-import { goodCaseDetails, goodCaseDelete } from '@/api/case'
+import { goodCaseDetails, goodCaseDelete, cancelCollect } from '@/api/case'
 import { Toast } from 'mint-ui'
 import { mapMutations } from 'vuex'
 export default {
@@ -109,6 +110,13 @@ export default {
     onDelete() {
       this.showComfirm = true
       this.content = '删除后将不能恢复<br>确定删除案例？'
+    },
+    async onLove() {
+      let account = JSON.parse(localStorage.getItem('userInfo'))['account']
+      let { code, msg } = await cancelCollect({
+        account,
+        type: this.detailData.type
+      })
     },
     async onComfirm(item) {
       this.showComfirm = false

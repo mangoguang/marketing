@@ -21,7 +21,7 @@ Vue.prototype.phoneSize = () => {
 };
 Vue.prototype._localAjax = () => {
   let ajaxData = localStorage.getItem('ajaxData')
-  return JSON.parse(ajaxData)
+  return JSON.parse(ajaxData) || {}
 };
 Vue.prototype.getType = (type) => {
   mango.getAjax('/v2/app/reference', {

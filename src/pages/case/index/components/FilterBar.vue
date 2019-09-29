@@ -16,7 +16,8 @@
             </ul>
           </div>
         </div>
-        <div class="adress">地区</div>
+        <div class="adress"
+             @click="$router.push({path:'/provice'})">{{provice}}</div>
       </div>
       <div class="right">
         <div class="change"
@@ -26,7 +27,7 @@
         <div class="fil">
           <h3 @click="showFilter=!showFilter">筛选</h3>
           <filter-select v-show="showFilter"
-                         @onCloseFilter="showFilter=false"></filter-select>
+                         @onCloseFilter="onCloseFilter"></filter-select>
         </div>
       </div>
     </div>
@@ -34,9 +35,16 @@
 </template>
 <script>
 import FilterSelect from './FilterSelect'
+import { mapState } from 'vuex'
 export default {
   components: {
     FilterSelect
+  },
+  props: {
+    listStyle: {
+      type: String,
+      default: ''
+    }
   },
   data() {
     return {
@@ -56,32 +64,41 @@ export default {
         },
         {
           name: '浏览量 ↑',
-          type: 1
+          type: 2
         },
         {
           name: '浏览量 ↓',
-          type: 1
+          type: 3
         },
         {
           name: '收藏量 ↑',
-          type: 1
+          type: 4
         },
         {
           name: '收藏量 ↓',
-          type: 1
+          type: 5
         }
       ]
     }
+  },
+  computed: {
+    ...mapState({
+      provice: state => state.caseStore.provice
+    })
   },
   methods: {
     bindSelect(item, index) {
       this.selectName = item.name
       this.selectIndex = index
       this.showSelect = false
+      this.$emit('onOrderType', item.type)
     },
     bindChangeList() {
-      this.changeList = !this.changeList
+      this.changeList = this.listStyle == 'cell-box' ? true : false
       this.$emit('onChangeList', this.changeList)
+    },
+    onCloseFilter(val) {
+      this.showFilter = false
     }
   }
 }

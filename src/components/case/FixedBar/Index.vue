@@ -2,7 +2,7 @@
   <div class="fixed-bar">
     <ul class="main">
       <li class="view">{{detailData.pageView}}</li>
-      <li class="love"
+      <li class="love loved"
           @click="$emit('onLove')">666</li>
       <li class="share"
           @click="$emit('onShare')">分享</li>
@@ -56,6 +56,9 @@ export default {
     }
     .love {
       @include before-bg('~@/assets/imgs/case/关注(2)@2x.png');
+    }
+    .loved {
+      @include before-bg('~@/assets/imgs/case/实心桃心@2x.png');
     }
     .share {
       @include before-bg('~@/assets/imgs/case/分享@2x.png');

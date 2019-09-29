@@ -4,6 +4,7 @@
       <div class="input">
         <input type="text"
                maxlength="50"
+               @input="bindSearch"
                placeholder="请输入城市名">
       </div>
       <button class="cancel"
@@ -12,36 +13,77 @@
     <div class="position">
       <h3>当前定位</h3>
       <div class="pos">
-        <div class="pos-now">东莞</div>
+        <div class="pos-now">{{provice}}</div>
         <div class="pos-reset"
              :class="{'pos-active':resetPosition}"
              @click="bindResetPosition">重新定位</div>
       </div>
     </div>
-    <index-list></index-list>
-    <ul class="search-list">
-      <li>广州</li>
-      <li class="no-data">抱歉，未找到相关位置，请修改后重试</li>
+    <index-list v-show="showCityList"
+                @onSelectCity="onSelectCity"></index-list>
+    <ul class="search-list"
+        v-show="!showCityList">
+      <li v-for="(item,index) in saerchList"
+          :key="index"
+          @click="bindSetCity(item)">{{item}}</li>
+      <li class="no-data"
+          v-if="saerchList.length==0">抱歉，未找到相关位置，请修改后重试</li>
     </ul>
 
   </div>
 </template>
 <script>
-import { setTimeout } from 'timers'
 import IndexList from './components/IndexList'
+import { mapState, mapMutations } from 'vuex'
+import city from './components/city.json'
+import { getIpCity } from '@/api/case'
+import { Toast } from 'mint-ui'
 export default {
   components: {
     IndexList
   },
   data() {
     return {
-      resetPosition: false
+      resetPosition: false,
+      showCityList: true,
+      saerchList: [0]
     }
   },
+  computed: {
+    ...mapState({
+      provice: state => state.caseStore.provice
+    })
+  },
   methods: {
+    ...mapMutations(['setProvice']),
     bindResetPosition() {
       this.resetPosition = true
-      // setTimeout(() => (this.resetPosition = false), 1000)
+      setTimeout(async () => {
+        let res = await getIpCity({ ip: returnCitySN.cip })
+        this.resetPosition = false
+      }, 1000)
+    },
+    bindSetCity(city) {
+      this.setProvice(city)
+      this.$router.back()
+    },
+    bindSearch(e) {
+      if (e.target.value) {
+        this.showCityList = false
+        let arr = []
+        city.city.forEach((item, index) => {
+          arr[index] = item.lists.filter(items => {
+            return items.indexOf(e.target.value) != -1
+          })
+        })
+        this.saerchList = arr.flat()
+      } else {
+        this.showCityList = true
+      }
+    },
+    onSelectCity(val) {
+      this.setProvice(val)
+      this.$router.back()
     }
   }
 }
@@ -97,6 +139,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 0 10px;
       @include before-bg(
         10px,
         10px,

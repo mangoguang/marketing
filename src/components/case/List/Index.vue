@@ -152,6 +152,7 @@ export default {
 }
 
 .cell-list {
+  flex: 1;
   display: flex;
   margin-bottom: 10px;
   padding: 0 10px;

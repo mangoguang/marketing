@@ -1,17 +1,13 @@
 <template>
   <div class="list">
     <mt-index-list>
-      <mt-index-section index="热门">
-        <div class="li">阿里</div>
-        <div class="li">安吉</div>
-      </mt-index-section>
-      <mt-index-section index="B">
-        <div class="li">阿里</div>
-        <div class="li">安吉</div>
-      </mt-index-section>
-      <mt-index-section index="Z">
-        <div class="li">阿里</div>
-        <div class="li">安吉</div>
+      <mt-index-section :index="item.title"
+                        v-for="(item,index) in cityList"
+                        :key="index">
+        <div class="li"
+             v-for="(items,idx) in  item.lists"
+             :key="idx"
+             @click="$emit('onSelectCity',items)">{{items}}</div>
       </mt-index-section>
     </mt-index-list>
   </div>
@@ -21,7 +17,17 @@ import Vue from 'vue'
 import { IndexList, IndexSection } from 'mint-ui'
 Vue.component(IndexList.name, IndexList)
 Vue.component(IndexSection.name, IndexSection)
-export default {}
+import city from './city.json'
+export default {
+  data() {
+    return {
+      cityList: []
+    }
+  },
+  created() {
+    this.cityList = city.city
+  }
+}
 </script>
 <style lang="scss" scoped>
 /deep/ .mint-indexsection-index {

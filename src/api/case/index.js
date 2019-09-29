@@ -40,3 +40,21 @@ export const goodCaseDetails = params => {
     params
   })
 }
+
+//根据案例id查看详情
+export const cancelCollect = params => {
+  return http({
+    url: caseUrl + '/v1/api/user/collect/v1/cancelCollect',
+    method: 'get',
+    params
+  })
+}
+
+//获取城市阿里
+export const getIpCity = params => {
+  return http({
+    url: 'https://ip.taobao.com/service/getIpInfo.php',
+    method: 'get',
+    params
+  })
+}
