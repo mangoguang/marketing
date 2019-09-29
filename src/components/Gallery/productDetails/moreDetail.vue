@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       isShow: false,
-      list: ['图库首页', '我的收藏'], //['图库首页', '我的收藏', '扫一扫']
+      list: ['图库首页', '我的收藏', '扫一扫'],
       top: ''
     }
   },
@@ -59,22 +59,33 @@ export default {
       })
     },
     openscan() {
+      var _this = this
       var FNScanner = api.require('FNScanner')
-      FNScanner.open(
+      FNScanner.openScanner(
         {
-          autorotation: true,
-          verticalLineColor: '##94f8fa',
-          isAlbum: true,
-          hintText: '将二维码放入取景框内即可自动扫描'
+          autorotation: true
         },
         function(ret, err) {
           if (ret) {
-            console.log(JSON.stringify(ret))
+            if (ret.eventType == 'success') {
+              let id = _this.getUrlParams(ret.content, 'id')
+              _this.$router.replace({
+                path: ret.content.split('#')[1].split('?')[0],
+                query: { id }
+              })
+              location.reload()
+            }
           } else {
-            console.log(JSON.stringify(err))
+            Toast('扫码失败')
           }
         }
       )
+    },
+    getUrlParams(url, name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = url.split('?')[1].match(reg)
+      if (r != null) return decodeURIComponent(r[2])
+      return null
     }
   }
 }

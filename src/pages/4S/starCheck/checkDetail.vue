@@ -277,7 +277,7 @@ export default {
     ]),
     bindTexareaChange: _.debounce(function(e) {
       let val = this.textareaVal.replace(/<\/?[^>]*>/g, '')
-      val = val.replace(/[^\w\d.?!,;"。，？《》！；<> “”\u4e00-\u9fa5]/g, '')
+      val = val.replace(/[^\w\d.?!,;"。，？《》！； “”\u4e00-\u9fa5]/g, '')
       this.textareaVal = val
     }, 300),
     onHandleBack() {
