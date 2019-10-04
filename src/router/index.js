@@ -359,7 +359,18 @@ export var router = new VueRouter({
     {
       path: '/gallery',
       name: 'index',
-      component: gallery
+      component: gallery,
+      children: [{
+          name: 'galleryProduct',
+          path: 'product',
+          component: () => import('@/pages/Gallery/Product')
+        },
+        {
+          name: 'galleryCase',
+          path: 'case',
+          component: () => import('@/pages/case/index/Index')
+        }
+      ]
     },
     //搜索页
     {

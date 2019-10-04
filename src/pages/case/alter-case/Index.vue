@@ -1,7 +1,8 @@
 <template>
   <div class="alter">
     <!-- <banner title="修改案例" /> -->
-    <div class="title">产品<span>*</span> BCG-105</div>
+    <div class="title"
+         @click="$router.push('/search-product')">产品<span>*</span>{{goodCase.goodId}}</div>
     <div class="text">
       <textarea class="area"
                 maxlength="150"
@@ -9,8 +10,9 @@
       <p>描述<span>*</span></p>
       <div class="num">{{description.length}}/150</div>
     </div>
-    <div class="postion">
-      <span> 广东 东莞</span>
+    <div class="postion"
+         @click="$router.push('/provice')">
+      <span>{{provice}}</span>
     </div>
     <div class="upload">
       <h2>请按要求添加案例图片</h2>
@@ -18,29 +20,49 @@
         <div class="li"
              v-for="(item,index) in defaultImg"
              :key="index">
-          <p><span>*</span>{{item}}</p>
+          <p><span>*</span>{{item.name}}</p>
+          <div class="img-box"
+               @click="bindPreview(index)"
+               v-if="item.src">
+            <img :src="item.src"
+                 :alt="item.name">
+          </div>
           <div class="img"
+               v-else
+               @click="sheetVisible = true,activeIndex=index"
                :class="`img${index}`">
             <div class="add"></div>
-            <input type="file"
-                   hidden>
+
           </div>
+
         </div>
+        <input type="file"
+               accept="image/png,image/jpg,image/jpeg"
+               hidden
+               @change="bindUpload"
+               ref="uploadImg">
       </div>
       <h2>其他（不超过3张）</h2>
-      <div class="up-box">
-        <div class="li">
-          <div class="img">
+      <div class="up-box other">
+        <div class="li"
+             v-for="(item,index) in oether "
+             @click="bindPreview(index)"
+             :key="index">
+          <img :src="item">
+        </div>
+        <div class="li"
+             v-if="oether.length<3">
+          <div class="img"
+               @click="sheetVisible = true;activeIndex=-1">
             <div class="tip">添加图片</div>
-            <input type="file"
-                   hidden>
           </div>
         </div>
       </div>
       <div class="notice">注意：图片大小不能超过3M</div>
     </div>
     <div class="release">
-      <div class="re-btn">发布案例</div>
+      <div class="re-btn"
+           @click="bindRelease">发布案例</div>
     </div>
     <toast-comfirm class="toast"
                    v-if="ShowToast"
@@ -54,12 +76,16 @@
         </div>
       </template>
     </toast-comfirm>
+    <mt-actionsheet :actions="[{ name:'拍照', method:getCamera }, { name:'从手机相册选择', method:getPhoto}]"
+                    v-model="sheetVisible"></mt-actionsheet>
   </div>
 </template>
 
 <script>
 import Banner from '@/components/banner'
 import ToastComfirm from '@/components/case/ToastComfirm/Index'
+import { mapState, mapMutations } from 'vuex'
+import lrz from 'lrz'
 export default {
   name: 'AlterCase',
   components: {
@@ -69,8 +95,88 @@ export default {
   data() {
     return {
       description: '',
-      defaultImg: ['正面', '侧面', '对角'],
-      ShowToast: true
+      ShowToast: false,
+      sheetVisible: false,
+      activeIndex: -1,
+      oetherLength: 0
+    }
+  },
+  created() {
+    this.description = this.goodCase.remark
+  },
+  computed: {
+    ...mapState({
+      provice: state => state.caseStore.provice,
+      goodCase: state => state.caseStore.goodCase
+    }),
+    oether() {
+      let { goodCase } = this
+      let arr = [
+        goodCase.spareImgFile1,
+        goodCase.spareImgFile2,
+        goodCase.spareImgFile3
+      ]
+      return arr.filter(item => item)
+    },
+    defaultImg() {
+      let { goodCase } = this
+      return [
+        { name: '正面', src: goodCase.frontImgFile },
+        { name: '侧面', src: goodCase.flankImgFile },
+        { name: '对角', src: goodCase.diagonalImgFile }
+      ]
+    }
+  },
+  methods: {
+    ...mapMutations(['setGoodCase']),
+    async bindRelease() {},
+    async bindUpload(e) {
+      let file = e.target.files[0]
+      // var model = api.deviceModel
+      // var sVer = api.systemVersion
+      // if (model == 'iPhone 7 Plus' && sVer == '10.3.3') {
+      //   resolve(file)
+      //   return
+      // }
+      let { activeIndex } = this
+      try {
+        let res = await lrz(file, { quality: 0.2 })
+        if (activeIndex == -1) {
+          //其他
+          //this.oether.push(res.base64)
+          this.oetherLength += 1
+          this.setGoodCase({ ['spareImgFile' + this.oetherLength]: res.base64 })
+
+          return
+        }
+        //必须
+        var arr = ['frontImgFile', 'flankImgFile', 'diagonalImgFile']
+        var name = arr[this.activeIndex]
+        console.log(name)
+        this.setGoodCase({ [name]: res.base64 })
+        //this.defaultImg[activeIndex].src = res.base64
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    bindPreview(index) {
+      console.log(this.activeIndex)
+      this.$router.push({
+        path: '/preview',
+        query: { index, pre: this.activeIndex == -1 ? 1 : 0 }
+      })
+    },
+    getCamera() {
+      this.$refs.uploadImg.removeAttribute('capture')
+      this.$refs.uploadImg.setAttribute('accept', 'image/*,video/*')
+      this.$refs.uploadImg.setAttribute('multiple', 'multiple')
+      this.$refs.uploadImg.click()
+    },
+    getPhoto() {
+      this.$refs.uploadImg.removeAttribute('capture')
+      this.$refs.uploadImg.setAttribute('accept', 'image/*,video/*')
+      this.$refs.uploadImg.setAttribute('multiple', 'multiple')
+      this.$refs.uploadImg.click()
     }
   }
 }
@@ -160,6 +266,17 @@ export default {
           }
         }
       }
+      .img-box {
+        width: 110px;
+        height: 110px;
+        border-radius: 4px;
+        overflow: hidden;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
       .img {
         width: 110px;
         height: 110px;
@@ -203,6 +320,22 @@ export default {
         transform: translate(-50%, -50%);
         background: url('~@/assets/imgs/case/圆角矩形 1007@2x.png') center
           center / 100% 100% no-repeat;
+      }
+    }
+    .other {
+      display: flex;
+      justify-content: flex-start;
+      .li {
+        width: 110px;
+        height: 110px;
+        margin-right: 7px;
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
   }

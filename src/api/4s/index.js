@@ -75,11 +75,22 @@ export const gradeSubcategories = params => {
  * @param {*} params 
  */
 export const uploadFile = params => {
-  return http({
-    url: '/api/upload/file',
-    method: 'post',
-    params
-  }, true)
+  // return http({
+  //   url: '/api/upload/file',
+  //   method: 'post',
+  //   params
+  // }, true)
+  return http.post(
+    '/api/upload/file',
+    params, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 50000
+    }
+
+
+  )
 }
 
 /**
@@ -87,7 +98,7 @@ export const uploadFile = params => {
  * @param {*} params 
  */
 export const gradeSubmit = params => {
-  return httpDef.post('/api/cert/grade/submit',
+  return http.post('/api/cert/grade/submit',
     params, {
       headers: {
         'Content-Type': 'application/json'

@@ -3,7 +3,7 @@
     <div class="nav">
       <div class="back"
            @click="$router.back()"></div>
-      <div class="dot">{{changeIndex+1}}/5</div>
+      <div class="dot">{{changeIndex+1}}/{{imgList.length}}</div>
       <div class="del"
            @click="sheetVisible=true"></div>
     </div>
@@ -12,21 +12,10 @@
                 :show-indicators="false"
                 :defaultIndex="imgIndex"
                 @change="bindChange">
-        <mt-swipe-item>
+        <mt-swipe-item v-for="(item,index) in imgList"
+                       :key="index">
           <div class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/train-advert/20190803/c4ffa40fb7e9f0070a8514ddd494dbb5.jpg"
-                 alt="">
-          </div>
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <div class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/train-advert/20190803/c4ffa40fb7e9f0070a8514ddd494dbb5.jpg"
-                 alt="">
-          </div>
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <div class="slider">
-            <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/train-advert/20190803/c4ffa40fb7e9f0070a8514ddd494dbb5.jpg"
+            <img :src="item.src"
                  alt="">
           </div>
         </mt-swipe-item>
@@ -42,7 +31,10 @@ export default {
   props: {
     imgIndex: {
       type: Number,
-      default: 1
+      default: 0
+    },
+    imgList: {
+      type: Array
     }
   },
   data() {
@@ -62,7 +54,7 @@ export default {
     },
     _delete() {
       let delIndex = this.changeIndex
-      this.$emit('onDeleteImg', delIndex)
+      this.$emit('onDeleteImg', this.imgList[delIndex].name)
     }
   }
 }

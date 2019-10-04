@@ -7,30 +7,88 @@
         <h2>品牌</h2>
         <div class="ul">
           <div class="li"
-               :class="{active:selectIndex==index}"
-               v-for="(item,index) in 10"
+               :class="{active:item.status}"
+               v-for="(item,index) in brandList"
                :key="index"
-               @click="bindSelect(index)">慕思</div>
+               @click="bindBrandSelect(index)">{{item.brand}}</div>
+        </div>
+      </div>
+      <div class="list">
+        <h2>品类</h2>
+        <div class="ul">
+          <div class="li"
+               :class="{active:item.status}"
+               v-for="(item,index) in categoryList"
+               :key="index"
+               @click="bindCategoryIndexSelect(index)">{{item.category}}</div>
         </div>
       </div>
     </div>
     <div class="button">
-      <div class="btn light-blue">重置</div>
-      <div class="btn blue">完成</div>
+      <div class="btn light-blue"
+           @click="bindReset">重置</div>
+      <div class="btn blue"
+           @click="bindDoneSelect">完成</div>
     </div>
   </div>
 </template>
 <script>
+import { brandList, categoryList } from '@/api/case'
+import Bus from '@/utils/Bus'
 export default {
   components: {},
   data() {
     return {
-      selectIndex: 0
+      brandIndex: 0,
+      categoryIndex: 0,
+      brandList: [],
+      categoryList: []
     }
   },
+  created() {
+    this._getBrand()
+    this._getCategory()
+  },
   methods: {
-    bindSelect(index) {
-      this.selectIndex = index
+    bindBrandSelect(index) {
+      if (this.brandIndex != index) {
+        this.brandList.map(item => (item.status = false))
+      }
+      this.brandList[index].status = !this.brandList[index].status
+      this.brandIndex = index
+    },
+    bindCategoryIndexSelect(index) {
+      if (this.brandIndex != index) {
+        this.categoryList.map(item => (item.status = false))
+      }
+      this.categoryList[index].status = !this.categoryList[index].status
+      this.brandIndex = index
+    },
+    bindReset() {
+      this.brandList.map(item => (item.status = false))
+      this.categoryList.map(item => (item.status = false))
+      Bus.$emit('onDoneSelect', { brand: '', category: '' })
+    },
+    async _getBrand() {
+      let { data } = await brandList()
+      data.map(item => {
+        item.status = false
+      })
+      this.brandList = data
+    },
+    async _getCategory() {
+      let { data } = await categoryList()
+      data.map(item => {
+        item.status = false
+      })
+      this.categoryList = data
+    },
+    bindDoneSelect() {
+      let { brandList, brandIndex, categoryList, categoryIndex } = this
+      Bus.$emit('onDoneSelect', {
+        brand: brandList[brandIndex].brand,
+        category: categoryList[categoryIndex].category
+      })
     }
   }
 }

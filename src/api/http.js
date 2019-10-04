@@ -16,12 +16,6 @@ import {
   router
 } from '@/router'
 
-axios.defaults.timeout = 500000
-
-axios.defaults.headers = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-}
-axios.defaults.baseURL = 'https://mobiletest.derucci.net' // baseUrl
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line
   // axios.defaults.baseURL = 'https://agency.derucci.com'
@@ -29,15 +23,39 @@ if (process.env.NODE_ENV === 'production') {
 
 }
 
+let token = JSON.parse(localStorage.getItem('token')) || {}
+let instance = axios.create({
+  baseURL: 'https://mobiletest.derucci.net',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    "Authorization": `Bearer ${token.access_token}`,
+    'sign': token.access_token // getSign(options.params, token.access_token)
+  },
+  showLoading: true,
+  timeout: 3000
+})
+
+// axios.defaults.timeout = 500000
+
+// axios.defaults.headers = {
+//   'Content-Type': 'application/x-www-form-urlencoded'
+// }
+// axios.defaults.baseURL = 'https://mobiletest.derucci.net' // baseUrl
+// if (process.env.NODE_ENV === 'production') {
+//   // eslint-disable-next-line
+//   // axios.defaults.baseURL = 'https://agency.derucci.com'
+//   axios.defaults.baseURL = 'https://mobiletest.derucci.net/cd-sys-web'
+
+// }
+
 // http request 拦截器
-axios.interceptors.request.use((config) => {
+instance.interceptors.request.use((config) => {
     if (config.headers['Content-Type'] == 'application/x-www-form-urlencoded') {
       config.data = qs.stringify(config.data)
     }
     if (config.headers['Content-Type'] == 'application/json') {
       config.data = JSON.stringify(config.data)
     }
-
     Indicator.open({
       text: '数据请求中...',
       spinnerType: 'fading-circle'
@@ -52,7 +70,7 @@ axios.interceptors.request.use((config) => {
 )
 
 // http response 拦截器
-axios.interceptors.response.use(
+instance.interceptors.response.use(
   response => {
     Indicator.close();
     return response.data
@@ -71,22 +89,22 @@ axios.interceptors.response.use(
 )
 
 //默认的
-export const httpDef = axios
+export const http = instance
 
 //需要token
 
 
-export const http = (options, isFile) => {
-  let token = JSON.parse(localStorage.getItem('token')) || {}
-  axios.defaults.headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    "Authorization": `Bearer ${token.access_token}`,
-    'sign': getSign(options.params, token.access_token)
-  }
-  if (isFile) {
-    var instance = axios.create()
-    return instance.post(options.url, options.params);
+// export const http = (options, isFile) => {
 
-  }
-  return axios(options)
-}
+//   axios.defaults.headers = {
+//     'Content-Type': 'application/x-www-form-urlencoded',
+//     "Authorization": `Bearer ${token.access_token}`,
+//     'sign': getSign(options.params, token.access_token)
+//   }
+//   if (isFile) {
+//     var instance = axios.create()
+//     return instance.post(options.url, options.params);
+
+//   }
+//   return axios(options)
+// }

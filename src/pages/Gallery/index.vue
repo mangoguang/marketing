@@ -1,30 +1,40 @@
 <template>
   <div class="index">
-    <banner :title='"产品中心"'/>
+    <banner :title='"产品中心"' />
     <div class="top-bar">
-      <scan/>
-      <Search :origin="true" :type="'gallery'" class="search" style="margin-top:6vw"/>
+      <scan />
+      <Search :origin="true"
+              :type="'gallery'"
+              class="search"
+              style="margin-top:6vw" />
     </div>
-    <TopNav/>
-    <div class="content">
+    <div class="nav">
+      <TopNav @onTabChange="onTabChange" />
+    </div>
+    <router-view></router-view>
+
+    <!-- <div class="content"
+         v-show="tabIndex==0">
       <div class="nav-left">
-        <left-nav/>
+        <left-nav />
       </div>
       <div class="nav-right">
-        <RightContent/>
+        <RightContent />
       </div>
     </div>
+    <CaseIndex v-show="tabIndex==1"></CaseIndex> -->
   </div>
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 import banner from '../../components/banner'
-import Search from "../../components/msManage/search/eggSearchInp";
-import Scan from "../../components/Gallery/index/scan";
-import LeftNav from "../../components/Gallery/index/leftNav";
-import RightContent from "../../components/Gallery/index/rightContent";
-import TopNav from "../../components/Gallery/index/topNav";
+import Search from '../../components/msManage/search/eggSearchInp'
+import Scan from '../../components/Gallery/index/scan'
+import LeftNav from '../../components/Gallery/index/leftNav'
+import RightContent from '../../components/Gallery/index/rightContent'
+import TopNav from '../../components/Gallery/index/topNav'
+import CaseIndex from '@/pages/case/index/Index'
 export default {
   components: {
     Search,
@@ -32,21 +42,39 @@ export default {
     LeftNav,
     RightContent,
     TopNav,
-    banner
+    banner,
+    CaseIndex
   },
   data() {
     return {
-    };
+      tabIndex: 0
+    }
   },
   mounted() {
     this.setProductNavList([])
     this.setInitParmas()
     this.initPageList([])
   },
+  // beforeRouteLeave(){
+  //   if (routeName.indexOf(to.name) != -1) {
+  //     from.meta.keepAlive = true
+  //   } else {
+  //     from.meta.keepAlive = false
+  //   }
+  //   next()
+  // },
   methods: {
-    ...mapMutations(['setProductNavList', 'setInitParmas', 'initPageList'])
+    ...mapMutations(['setProductNavList', 'setInitParmas', 'initPageList']),
+    onTabChange(index) {
+      //this.tabIndex = index
+      if (index == 0) {
+        this.$router.replace('/gallery/detail')
+      } else {
+        this.$router.replace('/gallery/case')
+      }
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -66,9 +94,12 @@ export default {
       width: 76.66vw;
     }
   }
+  .nav {
+    border-bottom: 1px solid #e1e1e1;
+  }
   .content {
     width: 100vw;
-    border-top: 1px solid #e1e1e1;
+
     display: flex;
     .nav-left {
       flex: 0.21;

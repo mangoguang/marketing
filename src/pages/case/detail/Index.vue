@@ -34,10 +34,10 @@
       <div class="content">
         <div class="brand">
           <h2>
-            <span>品牌：</span><span>歌蒂娅</span>
+            <span>品牌：</span><span>{{detailData.brand}}</span>
           </h2>
           <h2>
-            <span>产品：</span><span>MFC1-021/非温感凝胶记忆绵/床垫/180*200*22</span>
+            <span>产品：</span><span>{{detailData.category}}</span>
           </h2>
         </div>
         <div class="dec">

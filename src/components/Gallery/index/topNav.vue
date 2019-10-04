@@ -1,11 +1,9 @@
 <template>
   <ul class="nav-bar">
-    <li
-      v-for="(item, index) in list"
-      :key="index"
-      :class="{active : item.status}"
-      @touchend="changeStatus(index)"
-    >
+    <li v-for="(item, index) in list"
+        :key="index"
+        :class="{active : item.status}"
+        @touchend="changeStatus(index)">
       {{item.name}}
       <hr v-show="item.status">
     </li>
@@ -16,27 +14,45 @@
 export default {
   data() {
     return {
-      list: [{
-        name:'详情',
-        status: true
-      },{
-        name: '案例',
-        status: false
-      }]
+      list: [
+        {
+          name: '详情',
+          status: true
+        },
+        {
+          name: '案例',
+          status: false
+        }
+      ]
+    }
+  },
+  created() {
+    if (this.$route.name == 'galleryCase') {
+      this.list = [
+        {
+          name: '详情',
+          status: false
+        },
+        {
+          name: '案例',
+          status: true
+        }
+      ]
     }
   },
   methods: {
-     //改变导航
+    //改变导航
     changeStatus(index) {
-      if(this.list[index].status) {
+      if (this.list[index].status) {
         return
       }
-      this.list.map((item,index) => {
+      this.list.map((item, index) => {
         item.status = !item.status
       })
+      this.$emit('onTabChange', index)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

@@ -2,8 +2,9 @@
   <div class="fixed-bar">
     <ul class="main">
       <li class="view">{{detailData.pageView}}</li>
-      <li class="love loved"
-          @click="$emit('onLove')">666</li>
+      <li class="love"
+          :class="{loved:detailData.collectStatus}"
+          @click="$emit('onLove')">{{detailData.collect}}</li>
       <li class="share"
           @click="$emit('onShare')">分享</li>
       <li class="del"

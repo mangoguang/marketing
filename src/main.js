@@ -13,12 +13,14 @@ import {
   Swipe,
   SwipeItem,
   InfiniteScroll,
-  Spinner
+  Spinner,
+  Loadmore
 } from 'mint-ui';
 Vue.component(Actionsheet.name, Actionsheet);
 Vue.component(Swipe.name, Swipe)
 Vue.component(SwipeItem.name, SwipeItem)
 Vue.component(Spinner.name, Spinner);
+Vue.component(Loadmore.name, Loadmore);
 Vue.use(InfiniteScroll);
 
 //图片预览

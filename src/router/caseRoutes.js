@@ -52,6 +52,14 @@ let caseRoutes = [{
     meta: {
       title: '图片预览'
     }
+  },
+  {
+    path: '/search-product',
+    name: 'searchProduct',
+    component: () => import('@/pages/case/search-product/Index'),
+    meta: {
+      title: '产品型号搜索'
+    }
   }
 ]
 
