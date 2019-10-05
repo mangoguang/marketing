@@ -1,7 +1,8 @@
 <template>
   <div class="search">
     <div class="search_box">
-      <div class="back"></div>
+      <div class="back"
+           @click="$router.back()"></div>
       <div class="eggSearchInp">
         <div class="search_icon"></div>
         <input class="eggInp"
@@ -32,7 +33,7 @@
 </template>
 
 <script>
-import { getNames } from '@/api/case'
+import { getModelno } from '@/api/case'
 import { mapMutations } from 'vuex'
 import _ from 'lodash'
 export default {
@@ -61,9 +62,9 @@ export default {
   methods: {
     ...mapMutations(['setGoodCase']),
     bindSearch: _.debounce(async function() {
-      let { namelist } = await getNames({ keys: this.searchVal })
-      if (namelist.length) {
-        this.list = namelist
+      let { modelNolist } = await getModelno({ keys: this.searchVal })
+      if (modelNolist.length) {
+        this.list = modelNolist
         this.matchTxt = true
       } else {
         this.matchTxt = false
@@ -165,7 +166,7 @@ export default {
     caret-color: #000;
   }
   .search_icon {
-    background: url(../../../assets/imgs/egg_search.png) no-repeat center center;
+    background: url(~@/assets/imgs/egg_search.png) no-repeat center center;
     background-size: 100% 100%;
     width: 4.26vw;
     height: 4.26vw;
@@ -185,7 +186,7 @@ export default {
     box-sizing: border-box;
   }
   .deleteVal {
-    background: url(../../../assets/imgs/egg_delete.png) no-repeat center;
+    background: url(~@/assets/imgs/egg_delete.png) no-repeat center;
     background-size: contain;
     width: 4.26vw;
     height: 4.26vw;

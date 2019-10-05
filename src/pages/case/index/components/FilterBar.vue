@@ -107,6 +107,8 @@ export default {
 $font-color: #666666;
 .filter {
   height: 45px;
+  position: relative;
+  z-index: 99;
 
   .filter-box {
     height: 45px;

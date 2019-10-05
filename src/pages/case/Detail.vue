@@ -4,7 +4,10 @@
       <div class="nav">
         <div class="back"
              @click="$router.go(-1)"></div>
-        <div class="fix">修改</div>
+        <div class="fix"
+             v-if="$route.query.alter==1"
+             @click="bindAlter">修改
+        </div>
       </div>
       <div class="banner">
         <mt-swipe :show-indicators="false"
@@ -26,7 +29,7 @@
                alt="">
         </div>
         <div class="name">
-          <h2>{{detailData.createByName}}</h2>
+          <h2>{{detailData.createByName||'-'}}</h2>
           <p class="pos">{{detailData.source}}</p>
         </div>
         <div class="date">{{detailData.createTime}}</div>
@@ -41,15 +44,17 @@
           </h2>
         </div>
         <div class="dec">
-          {{detailData.remark}}
+          {{detailData.remark||'-'}}
         </div>
       </div>
     </div>
     <fixed-bar @onShare="onShare"
                @onDelete="onDelete"
                @onLove="onLove"
-               :detailData="detailData" />
+               :detailData="detailData"
+               :showDel="$route.query.alter==1?1:0" />
     <share-toast v-show="showShare"
+                 :detailData="detailData"
                  @onCloseShare="showShare=false"></share-toast>
     <toast-comfirm :content="content"
                    v-if="showComfirm"
@@ -62,7 +67,12 @@
 import FixedBar from '@/components/case/FixedBar/Index'
 import ShareToast from '@/components/case/FixedBar/ShareToast'
 import ToastComfirm from '@/components/case/ToastComfirm/Index'
-import { goodCaseDetails, goodCaseDelete, cancelCollect } from '@/api/case'
+import {
+  goodCaseDetails,
+  goodCaseDelete,
+  cancelCollect,
+  collect
+} from '@/api/case'
 import { Toast } from 'mint-ui'
 import { mapMutations } from 'vuex'
 export default {
@@ -81,26 +91,58 @@ export default {
       showComfirm: false
     }
   },
-  async created() {
-    let { data } = await goodCaseDetails({ id: this.$route.query.id })
-    let imgs = ['flankImg', 'frontImg', 'diagonalImg', 'img1', 'img2']
-    let arr = []
-    for (var item in data) {
-      if (imgs.includes(item) && data[item]) {
-        arr.push(data[item])
-      }
-    }
-    this.slider = arr
-    this.detailData = data
-    let { createByName, remark } = data
-    this.setBrowseData({
-      imgs: arr,
-      createByName,
-      remark
-    })
+  created() {
+    this._initData()
   },
   methods: {
-    ...mapMutations(['setBrowseData']),
+    ...mapMutations(['setBrowseData', 'setGoodCase']),
+    async _initData() {
+      let account = JSON.parse(localStorage.getItem('userInfo'))['account']
+      let { entity } = await goodCaseDetails({
+        id: this.$route.query.id,
+        account
+      })
+      let imgs = ['flankImg', 'frontImg', 'diagonalImg', 'img1', 'img2']
+      let arr = []
+      for (var item in entity) {
+        if (imgs.includes(item) && entity[item]) {
+          arr.push(entity[item])
+        }
+      }
+      this.slider = arr
+      this.detailData = entity
+      let { createByName, remark } = entity
+      this.setBrowseData({
+        imgs: arr,
+        createByName,
+        remark
+      })
+    },
+    bindAlter() {
+      let {
+        diagonalImg,
+        flankImg,
+        frontImg,
+        img1,
+        img2,
+        img3,
+        remark,
+        goodId,
+        id
+      } = this
+      this.setGoodCase({
+        diagonalImg,
+        flankImg,
+        frontImg,
+        img1,
+        img2,
+        img3,
+        remark,
+        goodId,
+        id
+      })
+      this.$router.push({ path: '/alterCase', query: { alter: 1 } })
+    },
     bindSwipeChange(index) {
       this.swipeIndex = index + 1
     },
@@ -113,10 +155,18 @@ export default {
     },
     async onLove() {
       let account = JSON.parse(localStorage.getItem('userInfo'))['account']
-      let { code, msg } = await cancelCollect({
-        account,
-        type: this.detailData.type
-      })
+      if (this.detailData.collectStatus == 0) {
+        let { code, msg } = await cancelCollect({
+          account,
+          type: 5 //this.detailData.type
+        })
+      } else {
+        let { code, msg } = await collect({
+          account,
+          type: 5 //this.detailData.type
+        })
+      }
+      this._initData()
     },
     async onComfirm(item) {
       this.showComfirm = false

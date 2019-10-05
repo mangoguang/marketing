@@ -17,17 +17,22 @@
     <div class="goods"
          v-infinite-scroll="loadMore"
          :infinite-scroll-disabled="loading"
-         infinite-scroll-distance="10">
-      <mt-spinner :type="3"></mt-spinner>
+         infinite-scroll-distance="10"
+         v-if="list.length>0">
+
       <goods-list v-for="(item,index) in list"
                   :key="index"
                   :item="item"
                   @onDelete="onDelete"
-                  @click.native="$router.push({path:'/detail',query:{id:item.id}})"
+                  @click.native="$router.push({path:'/detail',query:{id:item.id,alter:1}})"
                   :right="[{content: '删除'}]" />
+      <mt-spinner class="loading"
+                  v-show="loading"
+                  :type="3"></mt-spinner>
 
-      <div class="no-data">暂无记录</div>
     </div>
+    <div class="no-data"
+         v-if="list.length==0">暂无记录</div>
     <!-- </mt-loadmore> -->
   </div>
 </template>
@@ -83,6 +88,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+.loading {
+  display: flex;
+  justify-content: center;
+}
 .no-data {
   text-align: center;
   background: #fff;
@@ -91,6 +100,9 @@ export default {
 .goods,
 .mint-loadmore {
   min-height: 100%;
+}
+.goods {
+  padding-top: 10px;
 }
 .collect-list {
   height: calc(100vh-110px);

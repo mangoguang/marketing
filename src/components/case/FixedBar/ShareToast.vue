@@ -6,14 +6,14 @@
            ref="saveImg">
         <div class="img">
           <img id="img"
-               src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/ueditor/20190604/4271ef14fe8a7beda3c89e8fb9d92c2b.jpg"
+               :src="detailData.frontImg"
                alt="">
         </div>
         <div class="dec">
 
           <div class="title">
-            <h2>歌蒂娅</h2>
-            <p>MFC1-021/非温感凝胶记忆绵/床垫/180*200*22 </p>
+            <h2>{{detailData.brand}}</h2>
+            <p>{{detailData.category}} </p>
           </div>
           <div class="qrcode"
                id="qrcode"></div>
@@ -43,6 +43,9 @@
 import html2canvas from 'html2canvas'
 import QRCode from 'qrcodejs2'
 export default {
+  props: {
+    detailData: {}
+  },
   mounted() {
     new QRCode('qrcode', {
       width: 35,

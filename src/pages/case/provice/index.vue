@@ -13,7 +13,8 @@
     <div class="position">
       <h3>当前定位</h3>
       <div class="pos">
-        <div class="pos-now">{{provice}}</div>
+        <div class="pos-now"
+             @click="$router.back()">{{provice}}</div>
         <div class="pos-reset"
              :class="{'pos-active':resetPosition}"
              @click="bindResetPosition">重新定位</div>
@@ -56,12 +57,15 @@ export default {
   },
   methods: {
     ...mapMutations(['setProvice']),
-    bindResetPosition() {
+    async bindResetPosition() {
       this.resetPosition = true
-      setTimeout(async () => {
-        let res = await getIpCity({ ip: returnCitySN.cip })
-        this.resetPosition = false
-      }, 1000)
+      var myCity = new BMap.LocalCity()
+      myCity.get(data => {
+        setTimeout(() => {
+          this.resetPosition = false
+        }, 1000)
+        this.setProvice(data.name.replace(/市$/, ''))
+      })
     },
     bindSetCity(city) {
       this.setProvice(city)

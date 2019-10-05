@@ -42,7 +42,7 @@ export const goodCaseDetails = params => {
   })
 }
 
-//根据案例id查看详情
+//取消用户收藏的案例
 export const cancelCollect = params => {
   return http({
     url: caseUrl + '/v1/api/user/collect/v1/cancelCollect',
@@ -51,14 +51,23 @@ export const cancelCollect = params => {
   })
 }
 
-//获取城市阿里
-export const getIpCity = params => {
+//用户收藏的案例
+export const collect = params => {
   return http({
-    url: 'https://ip.taobao.com/service/getIpInfo.php',
+    url: caseUrl + '/v1/api/user/collect/v1/collect',
     method: 'get',
     params
   })
 }
+
+//获取城市阿里
+// export const getIpCity = params => {
+//   return http({
+//     url: 'https://ip.taobao.com/service/getIpInfo.php',
+//     method: 'get',
+//     params
+//   })
+// }
 
 //获取所有有效品牌
 export const brandList = params => {
@@ -77,11 +86,59 @@ export const categoryList = params => {
     params
   })
 }
+//.关键字模糊搜索产品型号
+export const getModelno = params => {
+  return http({
+    url: caseUrl + '/v1/api/goodCase/getmodelno',
+    method: 'get',
+    params
+  })
+}
 
-//获取所有有效品类
+//关键字模糊搜索产品名称
 export const getNames = params => {
   return http({
     url: caseUrl + '/v1/api/goodCase/getnames',
+    method: 'get',
+    params
+  })
+}
+
+//.新增案例
+export const goodCaseSave = params => {
+  return http.post(
+    caseUrl + '/v1/api/goodCase/save',
+    params, {
+      headers: {
+        'Content-Type': 132,
+        name: 1321
+      }
+    }
+  )
+  // return http({
+  //   url: caseUrl + '/v1/api/goodCase/save',
+  //   method: 'post',
+  //   params,
+  //   headers: {
+  //     'Content-Type': 132,
+  //     name: 1321
+  //   }
+  // })
+}
+
+//.修改案例
+export const goodCaseUpdate = params => {
+  return http({
+    url: caseUrl + '/v1/api/goodCase/update',
+    method: 'post',
+    params
+  })
+}
+
+//.修改案例
+export const topNames = params => {
+  return http({
+    url: caseUrl + '/v1/api/goodCase/topNames',
     method: 'get',
     params
   })

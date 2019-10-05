@@ -1,18 +1,26 @@
 <template>
   <div class="alter">
-    <!-- <banner title="修改案例" /> -->
+    <div class="header">
+      <div class="back"
+           @click="$router.back()"></div>
+      <h3>{{alter==1?'修改案例':'发布案例'}}</h3>
+    </div>
     <div class="title"
-         @click="$router.push('/search-product')">产品<span>*</span>{{goodCase.goodId}}</div>
+         @click="$router.push('/searchType')">产品<span>*</span>{{goodCase.goodId}} <label v-if="ver==1">请选择案例产品</label></div>
     <div class="text">
       <textarea class="area"
                 maxlength="150"
-                v-model="description"></textarea>
+                v-model="description"
+                @focus="ver=0"
+                @input="bindAreaChange"></textarea>
       <p>描述<span>*</span></p>
+      <label v-if="ver==2">请输入案例描述</label>
       <div class="num">{{description.length}}/150</div>
     </div>
     <div class="postion"
-         @click="$router.push('/provice')">
+         @click="$router.push('/provice'),ver=0">
       <span>{{provice}}</span>
+      <label v-if="ver==3">请选择所在位置</label>
     </div>
     <div class="upload">
       <h2>请按要求添加案例图片</h2>
@@ -22,15 +30,15 @@
              :key="index">
           <p><span>*</span>{{item.name}}</p>
           <div class="img-box"
-               @click="bindPreview(index)"
+               @click="bindPreview(index,0)"
                v-if="item.src">
             <img :src="item.src"
                  :alt="item.name">
           </div>
           <div class="img"
                v-else
-               @click="sheetVisible = true,activeIndex=index"
-               :class="`img${index}`">
+               @click="sheetVisible = true,activeIndex=index,ver=0"
+               :class="`img${index} ${ver==index+4?'vertify':''}` ">
             <div class="add"></div>
 
           </div>
@@ -46,7 +54,7 @@
       <div class="up-box other">
         <div class="li"
              v-for="(item,index) in oether "
-             @click="bindPreview(index)"
+             @click="bindPreview(index,1)"
              :key="index">
           <img :src="item">
         </div>
@@ -60,10 +68,17 @@
       </div>
       <div class="notice">注意：图片大小不能超过3M</div>
     </div>
-    <div class="release">
+    <div class="release"
+         v-if="alter==1">
+      <div class="re-btn"
+           @click="bindUpdate">保存并发布</div>
+    </div>
+    <div class="release"
+         v-else>
       <div class="re-btn"
            @click="bindRelease">发布案例</div>
     </div>
+
     <toast-comfirm class="toast"
                    v-if="ShowToast"
                    :content="'是否确认重置？'">
@@ -84,8 +99,11 @@
 <script>
 import Banner from '@/components/banner'
 import ToastComfirm from '@/components/case/ToastComfirm/Index'
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapGetters } from 'vuex'
+import { goodCaseSave, goodCaseUpdate } from '@/api/case'
+import { Toast } from 'mint-ui'
 import lrz from 'lrz'
+import _ from 'lodash'
 export default {
   name: 'AlterCase',
   components: {
@@ -98,15 +116,31 @@ export default {
       ShowToast: false,
       sheetVisible: false,
       activeIndex: -1,
-      oetherLength: 0
+      oetherLength: 0,
+      ver: 0,
+      alter: 0
     }
   },
   created() {
+    if (!this.provice) {
+      var myCity = new BMap.LocalCity()
+      myCity.get(data => {
+        this.setProvice(data.name.replace(/市$/, ''))
+      })
+    }
+
+    this.alter = this.$route.query.alter
     this.description = this.goodCase.remark
   },
   computed: {
+    provice() {
+      this.setGoodCase({
+        source: this.$store.state.caseStore.provice
+      })
+      return this.$store.state.caseStore.provice
+    },
     ...mapState({
-      provice: state => state.caseStore.provice,
+      // provice: state => state.caseStore.provice,
       goodCase: state => state.caseStore.goodCase
     }),
     oether() {
@@ -128,8 +162,83 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setGoodCase']),
-    async bindRelease() {},
+    ...mapMutations(['setGoodCase', 'setProvice']),
+    _vertify() {
+      let {
+        goodId,
+        remark,
+        source,
+        frontImgFile,
+        flankImgFile,
+        diagonalImgFile
+      } = this.goodCase
+      let verify = [
+        goodId,
+        remark,
+        source,
+        frontImgFile,
+        flankImgFile,
+        diagonalImgFile
+      ]
+
+      let arr = [
+        '请选择产品型号',
+        '请填写描述',
+        '请选择地区',
+        '上传产品正面',
+        '上传产品侧面',
+        '上传产品对角'
+      ]
+      for (let i = 0; i < verify.length; i++) {
+        if (!verify[i]) {
+          this.ver = i + 1
+          Toast(arr[i])
+          break
+        }
+      }
+      return this.ver == 0 ? false : true
+    },
+    async bindRelease() {
+      if (this._vertify()) {
+        return
+      }
+      var formData = new FormData()
+      for (let obj in this.goodCase) {
+        if (this.goodCase[obj]) {
+          formData.append(obj, this.goodCase[obj])
+        }
+      }
+      console.log(formData)
+      let { status, msg } = await goodCaseSave(formData)
+      Toast(msg)
+      if (status == 1) {
+        this.setGoodCase({
+          enable: '',
+          goodId: '',
+          remark: '',
+          source: '',
+          frontImgFile: '',
+          flankImgFile: '',
+          diagonalImgFile: '',
+          spareImgFile1: '',
+          spareImgFile2: '',
+          spareImgFile3: ''
+        })
+        this.description = ''
+      }
+    },
+    async bindUpdate() {
+      if (this._vertify()) {
+        return
+      }
+      let { status, msg } = await goodCaseUpdate(this.goodCase)
+      Toast(msg)
+      if (status == 1) {
+        setTimeout(() => {
+          this.$router.back()
+        }, 2000)
+      }
+    },
     async bindUpload(e) {
       let file = e.target.files[0]
       // var model = api.deviceModel
@@ -152,18 +261,28 @@ export default {
         //必须
         var arr = ['frontImgFile', 'flankImgFile', 'diagonalImgFile']
         var name = arr[this.activeIndex]
-        console.log(name)
-        this.setGoodCase({ [name]: res.base64 })
+        var newFile = new File([res.file], res.file.name, {
+          type: res.file.type
+        })
+        console.log(newFile)
+        this.setGoodCase({
+          [name]: newFile
+        }) //res.base64
         //this.defaultImg[activeIndex].src = res.base64
       } catch (err) {
         console.log(err)
       }
     },
-    bindPreview(index) {
+    bindAreaChange: _.debounce(function() {
+      this.setGoodCase({
+        remark: this.description
+      })
+    }),
+    bindPreview(index, flag) {
       console.log(this.activeIndex)
       this.$router.push({
         path: '/preview',
-        query: { index, pre: this.activeIndex == -1 ? 1 : 0 }
+        query: { index, pre: flag }
       })
     },
     getCamera() {
@@ -196,6 +315,7 @@ export default {
     background-size: contain;
   }
 }
+
 .but {
   display: flex;
   width: 100%;
@@ -218,6 +338,28 @@ export default {
   height: 100vh;
   padding: 0 10px;
   overflow: auto;
+  .header {
+    height: 44px;
+    position: relative;
+    h3 {
+      font-size: 19px;
+      color: #363636;
+      text-align: center;
+      padding: 0 54px;
+      line-height: 44px;
+      font-weight: bold;
+    }
+    .back {
+      height: 30px;
+      width: 30px;
+      background: url(~@/assets/imgs/back.png) left center no-repeat;
+      background-size: 10px 18px;
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+    }
+  }
   .release {
     height: 52px;
     margin-top: 30px;
@@ -311,6 +453,9 @@ export default {
         background: #e1e1e1 url(~@/assets/imgs/case/对角@2x.png) center center /
           70px 70px no-repeat;
       }
+      .vertify {
+        border: 1px dashed #cc2934;
+      }
       .add {
         width: 27px;
         height: 27px;
@@ -356,6 +501,10 @@ export default {
     span {
       padding-left: 5px;
     }
+    label {
+      color: #cc2934;
+      font-size: 14px;
+    }
     @include before-bg(18px, 18px, '~@/assets/imgs/case/定位@2x.png');
   }
   .text {
@@ -384,6 +533,13 @@ export default {
         color: #fb222b;
       }
     }
+    & > label {
+      color: #cc2934;
+      font-size: 14px;
+      position: absolute;
+      top: 13px;
+      left: 55px;
+    }
     .num {
       position: absolute;
       bottom: 8px;
@@ -409,6 +565,10 @@ export default {
 
     span {
       color: #fb222b;
+    }
+    label {
+      color: #cc2934;
+      font-size: 14px;
     }
   }
 }

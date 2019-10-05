@@ -8,6 +8,7 @@
       <li class="share"
           @click="$emit('onShare')">分享</li>
       <li class="del"
+          v-if="showDel"
           @click="$emit('onDelete')">删除</li>
     </ul>
   </div>
@@ -15,7 +16,8 @@
 <script>
 export default {
   props: {
-    detailData: {}
+    detailData: {},
+    showDel: 0
   }
 }
 </script>

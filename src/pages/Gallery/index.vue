@@ -68,7 +68,7 @@ export default {
     onTabChange(index) {
       //this.tabIndex = index
       if (index == 0) {
-        this.$router.replace('/gallery/detail')
+        this.$router.replace('/gallery/product')
       } else {
         this.$router.replace('/gallery/case')
       }

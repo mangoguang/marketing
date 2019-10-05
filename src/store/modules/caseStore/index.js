@@ -8,9 +8,9 @@ export default {
     provice: '', //省市
     listStyle: 'cell-box',
     goodCase: {
-      enable: '',
+      // enable: '',
       goodId: '',
-      remark: '666',
+      remark: '',
       source: '',
       frontImgFile: '',
       flankImgFile: '',
@@ -27,6 +27,6 @@ export default {
     setGoodCase: (state, data) => state.goodCase = Object.assign(state.goodCase, data)
   },
   getters: {
-
+    getProvice: state => state.provice
   }
 }

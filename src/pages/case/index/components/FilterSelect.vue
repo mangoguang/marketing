@@ -124,18 +124,17 @@ export default {
       flex-wrap: wrap;
       padding-bottom: 20px;
       .li {
-        width: 80px;
-        height: 40px;
+        min-width: 75px;
+        padding: 8px 10px;
         background: #f8f8f8;
         border-radius: 6px;
         text-align: center;
-        line-height: 40px;
         border: 1px solid transparent;
         margin-right: 13px;
         margin-bottom: 10px;
-        &:nth-child(3n) {
-          margin-right: 0;
-        }
+        // &:nth-child(3n) {
+        //   margin-right: 0;
+        // }
       }
       .active {
         background: rgba(178, 215, 255, 1);

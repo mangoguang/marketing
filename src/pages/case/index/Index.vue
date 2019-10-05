@@ -22,18 +22,21 @@
     </div>
     <div class="no-data"
          v-else>暂无记录</div>
+    <float-add-nav @click.native="$router.push({path:'/alterCase'})" />
   </div>
 </template>
 <script>
 import FilterBar from './components/FilterBar'
 import List from '@/components/case/List/Index'
+import FloatAddNav from '@/pages/case/my-case/components/FloatAddNav'
 import { goodCaseList, getIpCity } from '@/api/case'
 import { mapState, mapMutations } from 'vuex'
 import Bus from '@/utils/Bus'
 export default {
   components: {
     FilterBar,
-    List
+    List,
+    FloatAddNav
   },
   data() {
     return {
@@ -50,10 +53,15 @@ export default {
   async created() {
     if (this.provice) {
       this.params.source = this.provice
+      this._initData(this.params)
     } else {
-      let res = await getIpCity({ ip: returnCitySN.cip })
-      this.params.source = '深圳'
-      this.setProvice('深圳')
+      var myCity = new BMap.LocalCity()
+      myCity.get(data => {
+        this.setProvice(data.name.replace(/市$/, ''))
+        this.params.source = data.name.replace(/市$/, '')
+        console.log(111)
+        //this._initData(this.params)
+      })
     }
     this._initData(this.params)
   },
@@ -69,11 +77,16 @@ export default {
       provice: state => state.caseStore.provice
     })
   },
+  // activated() {
+  //   this._initData(this.params)
+  // },
   methods: {
-    ...mapMutations(['setListStyle']),
+    ...mapMutations(['setListStyle', 'setProvice']),
     loadBottom() {
+      if (this.allLoaded) return
       let { params } = this
       this.params.page += 1
+      console.log(111)
       this._initData(this.params)
     },
     onChangeList(val) {
@@ -85,6 +98,7 @@ export default {
       this._initData(this.params)
     },
     async _initData(params) {
+      console.log(11122)
       let { page } = await goodCaseList(params)
       if (page.totalPage == params.page) {
         this.allLoaded = true
@@ -110,7 +124,14 @@ export default {
 }
 .load-more {
   overflow: scroll;
-  height: 100vh;
+  height: calc(100vh-209px);
+  padding-bottom: 84px;
+}
+.no-more {
+  text-align: center;
+  font-size: 14px;
+  color: #999;
+  width: 100%;
 }
 .list {
   display: flex;
