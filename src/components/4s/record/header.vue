@@ -3,7 +3,14 @@
   <div class="record_header"
        :style="{'margin-top':`${top}vw`}">
     <div class="back_icon"
-         @click="goBack">
+         @click="$emit('onHandleBack')"
+         v-if="showLeft">
+      <img src="../../../assets/imgs/4s/backicon.png"
+           alt="">
+    </div>
+    <div class="back_icon"
+         @click="goBack"
+         v-else>
       <img src="../../../assets/imgs/4s/backicon.png"
            alt="">
     </div>
@@ -14,7 +21,7 @@
 
 <script>
 export default {
-  props: ['title', 'href'],
+  props: ['title', 'href', 'showLeft'],
   data() {
     return {
       top: ''

@@ -5,8 +5,7 @@
       <scan />
       <Search :origin="true"
               :type="'gallery'"
-              class="search"
-              style="margin-top:6vw" />
+              class="search" />
     </div>
     <TopNav />
     <div class="content">

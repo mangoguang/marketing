@@ -84,7 +84,7 @@ export default {
     .all_score {
       text-align: center;
       color: #007aff;
-      font-size: 2.4vw;
+      font-size: 12px;
       font-weight: 500;
       border: 1px solid #007aff;
       border-radius: 0.8vw;

@@ -23,10 +23,15 @@ export default {
         function(ret, err) {
           if (ret) {
             if (ret.eventType == 'success') {
+              let id = _this.getUrlParams(ret.content, 'id')
               _this.$router.push({
-                path: '/gSearch',
-                query: { type: 'gallery', searchVal: ret.content }
+                path: ret.content.split('#')[1].split('?')[0],
+                query: { id }
               })
+              // _this.$router.push({
+              //   path: '/gSearch',
+              //   query: { type: 'gallery', searchVal: ret.content }
+              // })
             }
           } else {
             // alert(JSON.stringify(err))
@@ -47,6 +52,12 @@ export default {
       //       console.log(JSON.stringify(err));
       //   }
       // });
+    },
+    getUrlParams(url, name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = url.split('?')[1].match(reg)
+      if (r != null) return decodeURIComponent(r[2])
+      return null
     }
   }
 }

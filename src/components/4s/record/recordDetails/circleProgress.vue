@@ -2,15 +2,19 @@
 <template>
   <div class="wrapper">
     <div class="circleProgress">
-      <div class="clip"
+      <!-- <div class="clip"
            :class="score>=50? 'auto' : ''">
         <div class="left"
              :class="score>=50? '' : 'width-none'"
              :style="{borderColor: activeColor}"></div>
         <div class="right"
              :style="RightStyle"></div>
+      </div> -->
+      <div class="circle">
+        <CircleCavans :score="score"></CircleCavans>
       </div>
-      <div class="bottom"></div>
+
+      <!-- <div class="bottom"></div> -->
       <div class="num_box">
         <p>
           <span class="num"
@@ -28,8 +32,12 @@
 </template>
 
 <script>
+import CircleCavans from './CircleCavans'
 export default {
   props: ['score', 'star'],
+  components: {
+    CircleCavans
+  },
   data() {
     return {
       textColor: ''
@@ -58,24 +66,29 @@ div {
   box-sizing: border-box;
 }
 .wrapper {
-  height: 114px;
+  height: 145px;
   margin-top: 7.33vw;
   overflow: hidden;
 }
 .circleProgress {
-  width: 30.4vw;
-  height: 30.4vw;
+  // width: 30.4vw;
+  // height: 30.4vw;
   position: relative;
-  background-color: #dbdbdb;
+  // background-color: #dbdbdb;
   border-radius: 50%;
   margin: 0 auto;
+  .circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 .num_box {
   position: absolute;
   z-index: 99;
   top: 50%;
   left: 50%;
-  background: #f8f8f8;
+  // background: #f8f8f8;
   border-radius: 50%;
   width: 25.4vw;
   height: 25.4vw;

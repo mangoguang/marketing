@@ -157,7 +157,7 @@ export default {
       indexModel.getArticleDetail(id).then(res => {
         this.articleDetails = res.data
         this.logoImageUrl = res.data.logoImageUrl
-        this.setImgUrl(res.imageURL)
+        this.setImgUrl(res.data.image)
         if (res.data.remark) {
           let temp = res.data.remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
@@ -231,6 +231,7 @@ export default {
   position: relative;
   box-sizing: border-box;
   min-height: 100vh;
+  background-color: #fff;
   // width: 100vw;
   // overflow: hidden;
 
@@ -242,7 +243,7 @@ export default {
   }
   .shareBtn {
     position: fixed;
-    right: 4.26vw;
+    right:0;
     top: 0;
     z-index: 99;
   }

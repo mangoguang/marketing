@@ -2,7 +2,8 @@
 <template>
   <div class="index"
        ref="starCheck">
-    <Header :storeClass="$route.query.starLevel" />
+    <Header :storeClass="$route.query.starLevel"
+            href="/index4s" />
     <StarContentBox />
   </div>
 </template>

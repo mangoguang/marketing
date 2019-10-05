@@ -161,7 +161,7 @@ export default {
       let tempObj = {}
       let temp = {
         phone: this.phone,
-        feedbackInfo: this.remark //Base64.encode(this.remark)
+        feedbackInfo: Base64.encode(this.remark) //this.remark //
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

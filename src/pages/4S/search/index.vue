@@ -114,11 +114,13 @@ export default {
       margin-right: 1.2vw;
     }
     input {
+      height: 30px;
       width: 65vw;
+      font-size: 14px;
     }
     input::-webkit-input-placeholder {
       color: #999;
-      font-size: 3.46vw;
+      font-size: 13px;
     }
   }
 }
