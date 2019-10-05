@@ -38,7 +38,7 @@ export default {
           name: item.name,
           shopId: this.$route.query.shopId,
           isGrade: item.isGrade,
-          remark: item.remark
+          starLevel: this.$route.query.starLevel
         }
       })
       this.setCheckLevelMsg(item.remark.replace(/\n/g, '<br>'))

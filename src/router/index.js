@@ -547,7 +547,11 @@ export var router = new VueRouter({
     {
       path: '/recordDetails',
       name: 'recordDetails',
-      component: recordDetails
+      component: recordDetails,
+      meta: {
+        keepAlive: true,
+        title: '检查详情'
+      }
     },
     {
       path: '/itemDetails',

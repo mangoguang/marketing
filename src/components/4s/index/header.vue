@@ -1,6 +1,6 @@
 <!--  -->
 <template>
-  <div :class="`header class${storeClass}`">
+  <div :class="`header class${parseInt(storeClass)+1}`">
     <div class="headerBox">
       <button @click="back"
               type="button"></button>
@@ -20,13 +20,13 @@ export default {
   computed: {
     starText() {
       var arr = ['一星认证', '二星认证', '三星认证', '四星认证', '五星认证']
-      let star =
-        localStorage.getItem('certPositionType') == 'supervisor'
-          ? this.storeClass
-          : this.storeClass - 1
+      // let star =
+      //   localStorage.getItem('certPositionType') == 'supervisor'
+      //     ? this.storeClass
+      //     : this.storeClass - 1
 
       // console.log(this.storeClass)
-      return arr[star]
+      return arr[this.storeClass]
     }
   },
   methods: {

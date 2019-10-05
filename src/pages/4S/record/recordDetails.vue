@@ -48,12 +48,34 @@ export default {
       checkCategories: []
     }
   },
+  async activated() {
+    let params = this.$route.query
+    let { code, msg, checkCategories } = await checkcategories(params)
+
+    checkCategories.map(item => {
+      item.name = item.name.replace('检查', '')
+    })
+    this.starList = checkCategories
+    params.levelId =
+      sessionStorage.getItem('levelId') || checkCategories[0].levelId
+    this.starData = checkCategories[0].name
+    this._getCheckLogInfo(params)
+  },
   created() {
     let params = this.$route.query
     this._initData(params)
   },
   mounted() {
     this.isIPhoneX()
+  },
+  beforeRouteLeave(to, from, next) {
+    let routeName = ['itemDetails']
+    if (routeName.indexOf(to.name) != -1) {
+      from.meta.keepAlive = true
+    } else {
+      from.meta.keepAlive = false
+    }
+    next()
   },
   methods: {
     async _getCheckLogInfo(params) {
@@ -85,6 +107,7 @@ export default {
       this.starData = item.name
       let params = this.$route.query
       params.levelId = item.levelId
+      sessionStorage.levelId = item.levelId
       this._getCheckLogInfo(params)
     },
     isIPhoneX() {

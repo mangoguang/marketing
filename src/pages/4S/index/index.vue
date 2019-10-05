@@ -2,7 +2,7 @@
 <template>
   <div class="index">
     <Header :storeClass="soreClass"
-            href="/" />
+            href="/work" />
     <StoreSelect :shops="shops"
                  @onGetStoreId="onGetStoreId"
                  v-permission="['Store Manager','Sleep Consultant']" />

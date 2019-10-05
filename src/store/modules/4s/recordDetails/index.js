@@ -25,7 +25,8 @@ export default {
     shops: [], //门店列表信息
     shopsSelectIndex: 0, //当前选中门店
     checkingMsg: '', //细项检查标准
-    checkLevelMsg: '' //二级检查标准
+    checkLevelMsg: '', //二级检查标准
+    recordLevelId: '' //检查详情levelId
   },
   mutations: {
     setType: (state, str) => state.type = str,
@@ -41,7 +42,8 @@ export default {
     setShops: (state, shops) => state.shops = shops,
     setShopsSelectIndex: (state, index) => state.shopsSelectIndex = index,
     setCheckingMsg: (state, msg) => state.checkingMsg = msg,
-    setCheckLevelMsg: (state, checkLevelMsg) => state.checkLevelMsg = checkLevelMsg
+    setCheckLevelMsg: (state, checkLevelMsg) => state.checkLevelMsg = checkLevelMsg,
+    setRecordLevelId: (state, recordLevelId) => state.recordLevelId = recordLevelId
   },
   getters: {
     getCategories: (state) => state.categories, //日常检查二级列表
