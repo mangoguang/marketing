@@ -5,7 +5,7 @@
               :remark="0"
               @onHandleBack="onHandleBack">
       <div class="remark"
-           @click="$router.push({path:'/checkTip',query:{name:'detail'}})"></div>
+           @click="ShowCheckTip=true"></div>
     </mybanner>
 
     <div class="form">
@@ -117,12 +117,15 @@
         </div>
       </template>
     </ToastBox>
+    <CheckTip v-if="ShowCheckTip"
+              @onCloseTip="ShowCheckTip=false" />
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import mybanner from '../../../components/banner'
+import CheckTip from '@/components/4s/starCheck/CheckTip'
 import { Range, Actionsheet, Toast, Indicator } from 'mint-ui'
 Vue.component(Actionsheet.name, Actionsheet)
 Vue.component(Range.name, Range)
@@ -144,7 +147,8 @@ import { baseUrl } from '@/js/common'
 export default {
   components: {
     mybanner,
-    ToastBox
+    ToastBox,
+    CheckTip
   },
   data() {
     return {
@@ -193,7 +197,8 @@ export default {
       progress: 0,
       remark: '',
       area: { showAcreage: 0, showDecorateDate: 0, showExpiryDate: 0 },
-      toastReset: false
+      toastReset: false,
+      ShowCheckTip: false
     }
   },
   computed: {
@@ -348,39 +353,58 @@ export default {
     },
     _getVideoSource(sourceType = 'camera') {
       let _this = this
-      api.getPicture(
+
+      var zySmallVideo = api.require('zySmallVideo')
+      zySmallVideo.openNew(
         {
-          sourceType,
-          encodingType: 'jpg',
-          mediaValue: 'video',
-          destinationType: 'url'
-          // allowEdit: true,
-          // saveToPhotoAlbum: true
+          videoInfo: {
+            videoSize_w: 480,
+            videoSize_h: 640
+          },
+          MaxRecordTime: 10
         },
         function(ret, err) {
-          try {
-            if (ret) {
-              if (ret.duration == 0) return
-
-              var model = api.deviceModel
-              var sVer = api.systemVersion
-              //小米8不压缩
-              if (
-                (model == 'MI 8' && sVer == 9) ||
-                (model == 'COL-AL10' && sVer == 9)
-              ) {
-                _this._nativeUpload(ret.data)
-              } else {
-                _this.videoCompress(ret.data)
-              }
-            } else {
-              Toast('获取文件资源失败')
-            }
-          } catch (err) {
-            console.log(err)
+          //alert(JSON.stringify(ret))
+          if (ret.status) {
+            _this.videoCompress(ret.url)
           }
         }
       )
+      return
+
+      // api.getPicture(
+      //   {
+      //     sourceType,
+      //     encodingType: 'jpg',
+      //     mediaValue: 'video',
+      //     destinationType: 'url'
+      //     // allowEdit: true,
+      //     // saveToPhotoAlbum: true
+      //   },
+      //   function(ret, err) {
+      //     try {
+      //       if (ret) {
+      //         if (ret.duration == 0) return
+
+      //         var model = api.deviceModel
+      //         var sVer = api.systemVersion
+      //         //小米8不压缩
+      //         if (
+      //           (model == 'MI 8' && sVer == 9) ||
+      //           (model == 'COL-AL10' && sVer == 9)
+      //         ) {
+      //           _this._nativeUpload(ret.data)
+      //         } else {
+      //           _this.videoCompress(ret.data)
+      //         }
+      //       } else {
+      //         Toast('获取文件资源失败')
+      //       }
+      //     } catch (err) {
+      //       console.log(err)
+      //     }
+      //   }
+      // )
     },
     videoCompress(path) {
       let _this = this
@@ -388,7 +412,7 @@ export default {
       videoCompression.compression(
         {
           path,
-          quality: 'medium'
+          quality: 'low'
         },
         function(ret) {
           if (ret.eventType == 'exporting') {
@@ -461,7 +485,7 @@ export default {
             resolve(file)
             return
           }
-          lrz(file, { quality: 0.2 })
+          lrz(file, { width: window.innerWidth, quality: 0.1 })
             .then(function(rst) {
               // 处理成功会执行
               let newFile = new File([rst.file], file.name, { type: file.type })
