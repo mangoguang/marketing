@@ -64,7 +64,7 @@ export default {
   },
   created() {
     this.articleId = this.$route.query.articleId;
-    // this.account = this._localAjax().account;
+    this.account = this._localAjax().account;
     console.log(this.articleId, this.account);
     // this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/articleDetails?articleId=" +this.articleId +"&name=产品知识&musi=1";
     this.pageUrl = `https://mobiletest.derucci.net/web/marketing/#/articleDetails?articleId=${this.articleId}&musi=1`;
