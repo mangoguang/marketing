@@ -16,8 +16,7 @@ export default {
       flankImgFile: '',
       diagonalImgFile: '',
       spareImgFile1: '',
-      spareImgFile2: '',
-      spareImgFile3: ''
+      spareImgFile2: ''
     },
     alterUploadImg: { //发布案例上传的图片
       frontImgFile: '',

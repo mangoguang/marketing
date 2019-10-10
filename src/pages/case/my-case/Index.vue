@@ -64,6 +64,9 @@ export default {
 .line {
   height: 72px;
 }
+.my-case {
+  padding-bottom: 85px;
+}
 .no-data {
   position: absolute;
   bottom: 151px;

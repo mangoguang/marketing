@@ -32,7 +32,7 @@ let instance = axios.create({
     'sign': token.access_token // getSign(options.params, token.access_token)
   },
   showLoading: true,
-  timeout: 3000
+  timeout: 5000
 })
 
 // axios.defaults.timeout = 500000

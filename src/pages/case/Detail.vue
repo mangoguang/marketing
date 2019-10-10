@@ -29,7 +29,7 @@
                alt="">
         </div>
         <div class="name">
-          <h2>{{detailData.goodsName||'-'}}</h2>
+          <h2>{{detailData.goodId||'-'}}</h2>
           <p class="pos">{{detailData.source}}</p>
         </div>
         <div class="date">{{detailData.createTime}}</div>
@@ -95,7 +95,7 @@ export default {
     this._initData()
   },
   methods: {
-    ...mapMutations(['setBrowseData', 'setGoodCase']),
+    ...mapMutations(['setBrowseData', 'setGoodCase', 'setAlterUploadImg']),
     async _initData() {
       let account = JSON.parse(localStorage.getItem('userInfo'))['account']
       let { entity } = await goodCaseDetails({
@@ -125,21 +125,28 @@ export default {
         frontImg,
         img1,
         img2,
-        img3,
         remark,
         goodId,
-        id
-      } = this
+        id,
+        source
+      } = this.detailData
       this.setGoodCase({
         diagonalImg,
         flankImg,
         frontImg,
         img1,
         img2,
-        img3,
         remark,
         goodId,
-        id
+        id,
+        source
+      })
+      this.setAlterUploadImg({
+        diagonalImgFile: diagonalImg,
+        flankImgFile: flankImg,
+        frontImgFile: frontImg,
+        spareImgFile1: img1,
+        spareImgFile2: img2
       })
       this.$router.push({ path: '/alterCase', query: { alter: 1 } })
     },

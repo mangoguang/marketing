@@ -26,9 +26,9 @@
                   @onDelete="onDelete"
                   @click.native="$router.push({path:'/detail',query:{id:item.id,alter:1}})"
                   :right="[{content: '删除'}]" />
-      <mt-spinner class="loading"
+      <!-- <mt-spinner class="loading"
                   v-show="loading"
-                  :type="3"></mt-spinner>
+                  :type="3"></mt-spinner> -->
 
     </div>
     <div class="no-data"
@@ -38,7 +38,7 @@
 </template>
 <script>
 import GoodsList from '@/pages/case/my-case/components/GoodsList'
-import { goodCaseList, goodCaseDelete } from '@/api/case'
+import { goodCaseList, goodCaseDelete, collectlist } from '@/api/case'
 import { Toast } from 'mint-ui'
 export default {
   components: {
@@ -56,24 +56,23 @@ export default {
     this._initData()
   },
   methods: {
-    loadMore() {
-      this.loading = true
-      this.page += 1
-      console.log(this.page)
-      this._initData(this.page)
-    },
+    // loadMore() {
+    //   this.loading = true
+    //   this.page += 1
+    //   console.log(this.page)
+    //   this._initData(this.page)
+    // },
     async _initData(page = 1, orderType = 1) {
       let account = JSON.parse(localStorage.getItem('userInfo'))['account']
-      let res = await goodCaseList({
-        account,
-        orderType,
-        page
+      let { data } = await collectlist({
+        account
       })
-      if (page == 1) {
-        this.list = res.page.list
-      } else {
-        this.list = this.list.concat(res.page.list)
-      }
+      this.list = data
+      // if (page == 1) {
+      //   this.list = res.page.list
+      // } else {
+      //   this.list = this.list.concat(res.page.list)
+      // }
     },
     async onDelete(item) {
       let { code, msg } = await goodCaseDelete({ id: item.id })

@@ -108,30 +108,30 @@ export const goodCaseSave = params => {
   return http.post(
     baseUrl + '/consumer-admin/v1/api/goodCase/save',
     params, {
+      timeout: 50000,
       headers: {
-        'Content-Type': 132,
-        name: 1321
+        'Content-Type': 'multipart/form-data'
       }
     }
   )
-  // return http({
-  //   url: baseUrl + '/v1/api/goodCase/save',
-  //   method: 'post',
-  //   params,
-  //   headers: {
-  //     'Content-Type': 132,
-  //     name: 1321
-  //   }
-  // })
 }
 
 //.修改案例
 export const goodCaseUpdate = params => {
-  return http({
-    url: baseUrl + '/consumer-admin/v1/api/goodCase/update',
-    method: 'post',
-    params
-  })
+  return http.post(
+    baseUrl + '/consumer-admin/v1/api/goodCase/update',
+    params, {
+      timeout: 50000,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+  )
+  // return http({
+  //   url: baseUrl + '/consumer-admin/v1/api/goodCase/update',
+  //   method: 'post',
+  //   params
+  // })
 }
 
 //.修改案例

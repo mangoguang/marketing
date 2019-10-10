@@ -57,8 +57,8 @@ export default {
     } else {
       var myCity = new BMap.LocalCity()
       myCity.get(data => {
-        this.setProvice(data.name.replace(/市$/, ''))
-        this.params.source = data.name.replace(/市$/, '')
+        // this.setProvice(data.name.replace(/市$/, ''))
+        // this.params.source = data.name.replace(/市$/, '')
         //this._initData(this.params)
       })
     }

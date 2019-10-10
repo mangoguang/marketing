@@ -7,7 +7,7 @@
     </div>
     <div class="cell-text">
       <div class="cell-top">
-        <h2>{{item.brand}}</h2>
+        <h2>{{item.goodId}}</h2>
         <div class="cell-pos">{{item.source}}</div>
         <div class="cell-view">{{item.pageView}}</div>
       </div>

@@ -3,7 +3,7 @@
     <div class="nav">
       <div class="back"
            @click="$router.back()"></div>
-      <div class="dot">{{imgIndex}}/5</div>
+      <div class="dot">{{imgIndex}}/{{browseData.imgs.length}}</div>
     </div>
     <div class="img">
       <mt-swipe :auto="100000"

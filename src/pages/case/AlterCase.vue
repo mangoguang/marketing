@@ -148,12 +148,10 @@ export default {
     oether() {
       let { alterUploadImg } = this
       let arr = [alterUploadImg.spareImgFile1, alterUploadImg.spareImgFile2]
-      console.log(arr)
       return arr.filter(item => item)
     },
     defaultImg() {
       let { alterUploadImg } = this
-      console.log(alterUploadImg)
       return [
         { name: '正面', src: alterUploadImg.frontImgFile },
         { name: '侧面', src: alterUploadImg.flankImgFile },
@@ -192,23 +190,20 @@ export default {
       for (let i = 0; i < verify.length; i++) {
         if (!verify[i]) {
           this.ver = i + 1
-          Toast(arr[i])
+          //Toast(arr[i])
           break
         }
       }
       return this.ver == 0 ? false : true
     },
     async bindRelease() {
-      if (this._vertify()) {
-        return
-      }
+      if (this._vertify()) return
       var formData = new FormData()
       for (let obj in this.goodCase) {
         if (this.goodCase[obj]) {
           formData.append(obj, this.goodCase[obj])
         }
       }
-      console.log(formData)
       let { status, msg } = await goodCaseSave(formData)
       Toast(msg)
       if (status == 1) {
@@ -223,19 +218,65 @@ export default {
           spareImgFile1: '',
           spareImgFile2: ''
         })
+        this.setAlterUploadImg({
+          frontImgFile: '',
+          flankImgFile: '',
+          diagonalImgFile: '',
+          spareImgFile1: '',
+          spareImgFile2: ''
+        })
         this.description = ''
+        this.setProvice('')
       }
     },
     async bindUpdate() {
-      if (this._vertify()) {
-        return
+      // if (this._vertify()) {
+      //   return
+      // }
+
+      let imgList = Object.keys(this.alterUploadImg)
+      for (let j = 0; j <= imgList.length; j++) {
+        let a = imgList[j]
+        this.ver = j + 4
+        if (!this.alterUploadImg[imgList[j]] && j < 3) return
       }
-      let { status, msg } = await goodCaseUpdate(this.goodCase)
-      Toast(msg)
+
+      var formData = new FormData()
+      for (let obj in this.goodCase) {
+        let uparr = ['diagonalImg', 'flankImg', 'frontImg', 'img1', 'img2']
+        if (this.goodCase[obj] || uparr.indexOf(obj) != -1) {
+          formData.append(obj, this.goodCase[obj])
+        }
+      }
+      let { status, msg } = await goodCaseUpdate(formData)
+
       if (status == 1) {
+        Toast('更新成功')
         setTimeout(() => {
+          this.setGoodCase({
+            enable: '',
+            goodId: '',
+            remark: '',
+            source: '',
+            frontImgFile: '',
+            flankImgFile: '',
+            diagonalImgFile: '',
+            spareImgFile1: '',
+            spareImgFile2: ''
+          })
+          this.setAlterUploadImg({
+            frontImgFile: '',
+            flankImgFile: '',
+            diagonalImgFile: '',
+            spareImgFile1: '',
+            spareImgFile2: ''
+          })
+          this.description = ''
+          this.setProvice('')
           this.$router.back()
-        }, 2000)
+        }, 1000)
+      } else {
+        Toast('更新失败')
       }
     },
     async bindUpload(e) {
@@ -247,9 +288,10 @@ export default {
       //   return
       // }
       let { activeIndex } = this
+      let alterFlag = this.$route.query.alter
       try {
         let res = await lrz(file, { quality: 0.2 })
-        var newFile = new File([res.file], res.file.name, {
+        var newFile = new File([res.file], res.origin.name, {
           type: res.file.type
         })
         if (activeIndex == -1) {
@@ -260,19 +302,27 @@ export default {
           this.setAlterUploadImg({
             ['spareImgFile' + this.oetherLength]: res.base64
           })
+          if (alterFlag == 1) {
+            this.setGoodCase({ ['img' + this.oetherLength]: '' })
+          }
           return
         }
         //必须
         var arr = ['frontImgFile', 'flankImgFile', 'diagonalImgFile']
         var name = arr[this.activeIndex]
-
-        console.log(newFile)
         this.setGoodCase({
           [name]: newFile
         }) //res.base64
         this.setAlterUploadImg({
           [name]: res.base64
         })
+        if (alterFlag == 1) {
+          let alterArr = ['frontImg', 'flankImg', 'diagonalImg']
+          let alterImg = alterArr[this.activeIndex]
+          this.setGoodCase({
+            [alterImg]: ''
+          })
+        }
         //this.defaultImg[activeIndex].src = res.base64
       } catch (err) {
         console.log(err)
@@ -284,7 +334,6 @@ export default {
       })
     }),
     bindPreview(index, flag) {
-      console.log(this.activeIndex)
       this.$router.push({
         path: '/preview',
         query: { index, pre: flag }
