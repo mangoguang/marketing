@@ -263,7 +263,7 @@ export default {
       }
       let addressReg = /^[\u4E00-\u9FA5a-zA-Z0-9]{1,200}$/
       if (!addressReg.test(this.newCustomerInfo.address)) {
-        MessageBox.alert('客户地址只能输入中英文或数字,不能包含空格')
+        MessageBox.alert('客户地址不能输入特殊字符及表情符号')
         return
       }
       let check
@@ -289,16 +289,16 @@ export default {
         if (!checkQQ) {
           return
         }
-        let dutyReg = /^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/
+        let dutyReg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
         if (
           this.newCustomerInfo.duty !== '' &&
           !dutyReg.test(this.newCustomerInfo.duty)
         ) {
-          MessageBox.alert('客户职业只能输入中英文或数字,不能包含空格')
+          MessageBox.alert('客户职业不能输入特殊字符及表情符号')
           return
         }
 
-        let reg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？“”：！（）《》]{1,}$/
+        let reg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
         let remarkReg = /[\ud800-\udbff][\udc00-\udfff]/g
         if (
           this.newCustomerInfo.remark !== '' &&
@@ -307,7 +307,7 @@ export default {
           this.newCustomerInfo.remark = this.changeStr(
             this.newCustomerInfo.remark
           )
-          MessageBox.alert('客户描述不支持表情')
+          MessageBox.alert('客户描述不能输入特殊字符及表情符号')
           return
         }
 
@@ -315,14 +315,14 @@ export default {
           this.newCustomerInfo.remark !== '' &&
           !reg.test(this.newCustomerInfo.remark)
         ) {
-          MessageBox.alert('客户描述不支持特殊符号')
+          MessageBox.alert('客户描述不能输入特殊字符及表情符号')
           return
         }
         if (
           this.newCustomerInfo.competingGoods !== '' &&
           !dutyReg.test(this.newCustomerInfo.competingGoods)
         ) {
-          MessageBox.alert('竞品产品只能输入中英文或数字,不能包含空格')
+          MessageBox.alert('竞品产品不能输入特殊字符及表情符号')
           return
         }
         if (
@@ -332,14 +332,14 @@ export default {
           this.newCustomerInfo.remark2 = this.changeStr(
             this.newCustomerInfo.remark2
           )
-          MessageBox.alert('意向信息里备注不支持表情')
+          MessageBox.alert('意向信息不能输入特殊字符及表情符号')
           return
         }
         if (
           this.newCustomerInfo.remark2 !== '' &&
           !reg.test(this.newCustomerInfo.remark2)
         ) {
-          MessageBox.alert('意向信息里备注不支持特殊符号')
+          MessageBox.alert('意向信息不能输入特殊字符及表情符号')
           return
         }
         if (
@@ -349,14 +349,14 @@ export default {
           this.newCustomerInfo.situation = this.changeStr(
             this.newCustomerInfo.situation
           )
-          MessageBox.alert('跟进情况不支持表情')
+          MessageBox.alert('跟进情况不能输入特殊字符及表情符号')
           return
         }
         if (
           this.newCustomerInfo.situation !== '' &&
           !reg.test(this.newCustomerInfo.situation)
         ) {
-          MessageBox.alert('跟进情况不支持特殊符号')
+          MessageBox.alert('跟进情况不能输入特殊字符及表情符号')
           return
         }
         if (
@@ -364,14 +364,14 @@ export default {
           remarkReg.test(this.newCustomerInfo.plan)
         ) {
           this.newCustomerInfo.plan = this.changeStr(this.newCustomerInfo.plan)
-          MessageBox.alert('下一步跟进计划不支持表情')
+          MessageBox.alert('下一步跟进计划不能输入特殊字符及表情符号')
           return
         }
         if (
           this.newCustomerInfo.plan !== '' &&
           !reg.test(this.newCustomerInfo.plan)
         ) {
-          MessageBox.alert('下一步跟进计划不支持特殊符号')
+          MessageBox.alert('下一步跟进计划不能输入特殊字符及表情符号')
           return
         }
         let formdata = new FormData()

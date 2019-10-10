@@ -353,58 +353,59 @@ export default {
     },
     _getVideoSource(sourceType = 'camera') {
       let _this = this
-
-      var zySmallVideo = api.require('zySmallVideo')
-      zySmallVideo.openNew(
-        {
-          videoInfo: {
-            videoSize_w: 480,
-            videoSize_h: 640
+      if (sourceType == 'camera') {
+        var zySmallVideo = api.require('zySmallVideo')
+        zySmallVideo.open(
+          {
+            MaxRecordTime: 10,
+            videoColor: api.systemType == 'ios' ? 0x007aff : '#007AFF',
+            AVAssetExportPreset: 'AVAssetExportPreset1280x720',
+            mVideoSizeW: 720,
+            mVideoSizeH: 1280
           },
-          MaxRecordTime: 10
+          function(ret, err) {
+            if (ret.result == 'success') {
+              _this.videoCompress(ret.fileUrl)
+            }
+          }
+        )
+
+        return
+      }
+
+      api.getPicture(
+        {
+          sourceType,
+          encodingType: 'jpg',
+          mediaValue: 'video',
+          destinationType: 'url'
+          // allowEdit: true,
+          // saveToPhotoAlbum: true
         },
         function(ret, err) {
-          //alert(JSON.stringify(ret))
-          if (ret.status) {
-            _this.videoCompress(ret.url)
+          try {
+            if (ret) {
+              if (ret.duration == 0) return
+
+              var model = api.deviceModel
+              var sVer = api.systemVersion
+              //小米8不压缩
+              if (
+                (model == 'MI 8' && sVer == 9) ||
+                (model == 'COL-AL10' && sVer == 9)
+              ) {
+                _this._nativeUpload(ret.data)
+              } else {
+                _this.videoCompress(ret.data)
+              }
+            } else {
+              Toast('获取文件资源失败')
+            }
+          } catch (err) {
+            console.log(err)
           }
         }
       )
-      return
-
-      // api.getPicture(
-      //   {
-      //     sourceType,
-      //     encodingType: 'jpg',
-      //     mediaValue: 'video',
-      //     destinationType: 'url'
-      //     // allowEdit: true,
-      //     // saveToPhotoAlbum: true
-      //   },
-      //   function(ret, err) {
-      //     try {
-      //       if (ret) {
-      //         if (ret.duration == 0) return
-
-      //         var model = api.deviceModel
-      //         var sVer = api.systemVersion
-      //         //小米8不压缩
-      //         if (
-      //           (model == 'MI 8' && sVer == 9) ||
-      //           (model == 'COL-AL10' && sVer == 9)
-      //         ) {
-      //           _this._nativeUpload(ret.data)
-      //         } else {
-      //           _this.videoCompress(ret.data)
-      //         }
-      //       } else {
-      //         Toast('获取文件资源失败')
-      //       }
-      //     } catch (err) {
-      //       console.log(err)
-      //     }
-      //   }
-      // )
     },
     videoCompress(path) {
       let _this = this
