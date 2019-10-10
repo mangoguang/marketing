@@ -1,32 +1,30 @@
 <template>
-  <div class="enquiryOrder" ref="order">
-    <TopBar :topBarTitle="topbar"/>
+  <div class="enquiryOrder"
+       ref="order">
+    <TopBar :topBarTitle="topbar" />
     <ul>
-      <mt-loadmore
-        :bottom-method="loadBottom"
-        :bottom-all-loaded="allLoaded"
-        ref="loadmore"
-        :auto-fill="false"
-      >
-        <li
-          :class="{active : compareTime[index]}"
-          v-for="(item, index) in orderList.records"
-          :key="`list${index}`"
-          @click="orderInfoIn(item.accntId)"
-        >
+      <mt-loadmore :bottom-method="loadBottom"
+                   :bottom-all-loaded="allLoaded"
+                   ref="loadmore"
+                   :auto-fill="false">
+        <li :class="{active : compareTime[index]}"
+            v-for="(item, index) in orderList.records"
+            :key="`list${index}`"
+            @click="orderInfoIn(item.accntId)">
           <div class="name">
             <i :class="`important${item.level}`"></i>
-              <!-- <span
+            <!-- <span
               :class="{active : compareTime[index]}"
             >{{`*${item.username ? item.username.slice(1, 10) : ''}`}}</span> -->
-            <span
-              :class="{active : compareTime[index]}"
-            >{{item.username}}</span>
+            <span :class="{active : compareTime[index]}">{{item.username}}</span>
             <strong :class="`urgency${item.urgency}`"></strong>
           </div>
-          <span class="phone" v-if="item.phone!=='0'">{{item.phone}}</span>
-          <span class="phone" v-else>未收集</span>
-          <span class="date" :class="{active : compareTime[index]}">{{item.followDate}}</span>
+          <span class="phone"
+                v-if="item.phone!=='0'">{{item.phone}}</span>
+          <span class="phone"
+                v-else>未收集</span>
+          <span class="date"
+                :class="{active : compareTime[index]}">{{item.followDate}}</span>
         </li>
       </mt-loadmore>
     </ul>
@@ -34,41 +32,41 @@
 </template>
 
 <script>
-import { deepclone } from "../../../utils/customer";
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Vuex, { mapMutations, mapState } from "vuex";
-import TopBar from "../topBar";
-import mango from "../../../js";
-import dealOrderInfoDetails from "../../../store/modules/components/dealOrderInfoDetails";
-import { Loadmore } from "mint-ui";
-Vue.component(Loadmore.name, Loadmore);
+import { deepclone } from '../../../utils/customer'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Vuex, { mapMutations, mapState } from 'vuex'
+import TopBar from '../topBar'
+import mango from '../../../js'
+import dealOrderInfoDetails from '../../../store/modules/components/dealOrderInfoDetails'
+import { Loadmore } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
 
 export default {
-  name: "enquiryOrder",
+  name: 'enquiryOrder',
   components: { TopBar },
-  props: ["changeResultTit"],
+  props: ['changeResultTit'],
   data() {
     return {
-      account: "",
+      account: '',
       ajaxData: [],
       dealCusList: [],
       addPullData: [],
       page: 3,
       limit: 10,
-      allPage: "",
+      allPage: '',
       baceLimit: 30,
       allLoaded: false,
-      id: "",
+      id: '',
       compareTime: [],
       activecolor: [],
       topbar: {
-        leftTitle: "客户信息",
-        centerTitle: "电话",
-        rightTitle: "最近跟进"
+        leftTitle: '客户信息',
+        centerTitle: '电话',
+        rightTitle: '最近跟进'
       },
       parmas: {}
-    };
+    }
   },
   computed: {
     ...mapState({
@@ -89,220 +87,223 @@ export default {
       if (this.headerStatus[1].status) {
         if (this.orderScroll == 0) {
           if (this.isSelectStatus) {
-            this.loadSelectData(this.customerTime);
+            this.loadSelectData(this.customerTime)
           } else {
-            this.loadData();
+            this.loadData()
           }
         }
-        this.$refs.order.addEventListener("scroll", this.handleScroll, true);
-        this.$refs.order.scrollTop = this.orderScroll;
+        this.$refs.order.addEventListener('scroll', this.handleScroll, true)
+        this.$refs.order.scrollTop = this.orderScroll
       }
     },
     //根据加载的limit改变颜色
     baceLimit() {
-      this.isExpire(this.baceLimit);
+      this.isExpire(this.baceLimit)
     },
     //根据筛选时间变化改变列表
     customerTime() {
-      this.setIsSelectStatus(true);
+      this.setIsSelectStatus(true)
       //每次改变初始化
-      this.initData();
-      this.loadSelectData(this.customerTime);
-      if (this.customerTime.startTime === "") {
-        this.setIsSelectStatus(false);
-        this.loadData();
+      this.initData()
+      this.loadSelectData(this.customerTime)
+      if (this.customerTime.startTime === '') {
+        this.setIsSelectStatus(false)
+        this.loadData()
       }
     }
   },
   mounted() {
-    this.$refs.order.addEventListener("scroll", this.handleScroll, true);
-    this.$refs.order.scrollTop = this.orderScroll;
+    this.$refs.order.addEventListener('scroll', this.handleScroll, true)
+    this.$refs.order.scrollTop = this.orderScroll
   },
   created() {
     //获取本地缓存信息
     // let ajaxData = localStorage.getItem("ajaxData");
     // this.ajaxData = JSON.parse(ajaxData);
     // this.account = this.ajaxData.account
-    this.parmas = deepclone(this.customerAjaxParams, this.parmas);
-    this.parmas.type = "Approved";
+    this.parmas = deepclone(this.customerAjaxParams, this.parmas)
+    this.parmas.type = 'Approved'
     if (!this.isSelectStatus) {
-      this.loadData();
+      this.loadData()
     } else {
-      this.loadSelectData(this.customerTime);
+      this.loadSelectData(this.customerTime)
     }
   },
   methods: {
     initData() {
-      this.baceLimit = 30;
-      this.setOrderScroll(0);
-      this.$refs.order.scrollTop = this.orderScroll;
-      localStorage.removeItem("selectLimit");
-      localStorage.removeItem("limit");
-      this.getSelectLimit();
+      this.baceLimit = 30
+      this.setOrderScroll(0)
+      this.$refs.order.scrollTop = this.orderScroll
+      localStorage.removeItem('selectLimit')
+      localStorage.removeItem('limit')
+      this.getSelectLimit()
     },
     //获取滚动条
     handleScroll(e) {
-      let top = e.target.scrollTop;
-      this.setOrderScroll(top);
+      let top = e.target.scrollTop
+      this.setOrderScroll(top)
     },
     //需求日期是否到期
     isExpire(len) {
       if (this.orderList.records) {
-        let temp = this.orderList.records;
-        let today = new Date();
+        let temp = this.orderList.records
+        let today = new Date()
         for (var i = 0; i < len; i++) {
           if (temp[i]) {
-            let isActive = mango.compareTimeStamp(temp[i].demandTime, today); //t1<t2,true/actived
-            if (temp[i].orderStatus === "关闭") {
+            let isActive = mango.compareTimeStamp(temp[i].demandTime, today) //t1<t2,true/actived
+            if (temp[i].orderStatus === '关闭') {
             } else {
-              this.$set(this.compareTime, i, isActive);
+              this.$set(this.compareTime, i, isActive)
             }
           }
         }
       }
     },
     ...mapMutations([
-      "setOrderList",
-      "setOrderInfoDetails",
-      "setOrderScroll",
-      "setIsSelectStatus",
-      "setOrderTotalPrice",
-      "setOrderDiscountPrice",
+      'setOrderList',
+      'setOrderInfoDetails',
+      'setOrderScroll',
+      'setIsSelectStatus',
+      'setOrderTotalPrice',
+      'setOrderDiscountPrice',
       'setDealTabStatus'
     ]),
     //下拉刷新
     loadBottom() {
-      this.$refs.loadmore.onBottomLoaded();
+      this.$refs.loadmore.onBottomLoaded()
       if (!this.isSelectStatus) {
-        this.pullDownData();
+        this.pullDownData()
       } else {
         this.pullDownData(
           this.customerTime.startTime,
           this.customerTime.endTime
-        );
+        )
       }
     },
     //获取数据
     getOrderList(page, limit, startTime, endTime) {
-      this.parmas.page = page;
-      this.parmas.limit = limit;
-      this.parmas.sd = startTime;
-      this.parmas.ed = endTime;
+      this.parmas.page = page
+      this.parmas.limit = limit
+      this.parmas.sd = startTime
+      this.parmas.ed = endTime
       this.parmas.sort = ''
       this.parmas.u = ''
       this.parmas.l = ''
-      mango.getAjax("/v3/app/customer/list", this.parmas).then(res => {
-        if (res) {
-          this.allLoaded = false;
-          this.allPage = Math.ceil(res.data.total / 10);
-          if (page <= 3) {
-            this.setOrderList(res.data);
-            this.dealCusList = this.orderList;
-            this.$emit(
-              "changeResultTit",
-              `全部客户 (${
-                this.orderList.total == null ? "0" : this.orderList.total
-              })`
-            );
-          } else {
-            //筛选和非筛选时候缓存的limit
-            this.getDiffLimit();
-            //上啦刷新加载数据
-            this.addPullData = res.data;
-            this.dealCusList.records = this.dealCusList.records.concat(
-              this.addPullData.records
-            );
-            this.setOrderList(this.dealCusList);
+      mango
+        .getAjax('/v3/app/customer/list', this.parmas)
+        .then(res => {
+          if (res) {
+            this.allLoaded = false
+            this.allPage = Math.ceil(res.data.total / 10)
+            if (page <= 3) {
+              this.setOrderList(res.data)
+              this.dealCusList = this.orderList
+              this.$emit(
+                'changeResultTit',
+                `全部客户 (${
+                  this.orderList.total == null ? '0' : this.orderList.total
+                })`
+              )
+            } else {
+              //筛选和非筛选时候缓存的limit
+              this.getDiffLimit()
+              //上啦刷新加载数据
+              this.addPullData = res.data
+              this.dealCusList.records = this.dealCusList.records.concat(
+                this.addPullData.records
+              )
+              this.setOrderList(this.dealCusList)
+            }
+            this.isExpire(this.baceLimit)
           }
-          this.isExpire(this.baceLimit);
-        }
-      }).catch((reject) => {
-        if (reject === 510) {
-          this.getOrderList(page, limit, startTime, endTime)
-        }
-      })
+        })
+        .catch(reject => {
+          if (reject === 510) {
+            this.getOrderList(page, limit, startTime, endTime)
+          }
+        })
     },
     //加载数据
     loadData() {
-      this.getLimit();
-      let tempage = (this.baceLimit - 30) / 10;
-      this.page = 3 + tempage;
-      this.getOrderList(1, this.baceLimit);
+      this.getLimit()
+      let tempage = (this.baceLimit - 30) / 10
+      this.page = 3 + tempage
+      this.getOrderList(1, this.baceLimit)
     },
     //加载筛选数据
     loadSelectData(time) {
       if (time.startTime) {
-        this.getSelectLimit();
-        let tempage = (this.baceLimit - 30) / 10;
-        this.page = 3 + tempage;
-        this.getOrderList(1, this.baceLimit, time.startTime, time.endTime);
+        this.getSelectLimit()
+        let tempage = (this.baceLimit - 30) / 10
+        this.page = 3 + tempage
+        this.getOrderList(1, this.baceLimit, time.startTime, time.endTime)
       }
     },
     //下拉加载数据
     pullDownData(startTime, endTime) {
       if (this.page < this.allPage) {
-        this.allLoaded = true;
-        this.page++;
-        this.getOrderList(this.page, this.limit, startTime, endTime);
+        this.allLoaded = true
+        this.page++
+        this.getOrderList(this.page, this.limit, startTime, endTime)
       } else {
         this.allLoaded = true
-        mango.tip("没有更多数据了");
+        mango.tip('没有更多数据了')
       }
     },
     //判断是否订单筛选时间来获取不同的缓存limit
     getDiffLimit() {
       if (!this.isSelectStatus) {
-        this.setLimit(this.baceLimit + 10);
-        this.getLimit();
+        this.setLimit(this.baceLimit + 10)
+        this.getLimit()
       } else {
-        this.setSelectLimit(this.baceLimit + 10);
-        this.getSelectLimit();
+        this.setSelectLimit(this.baceLimit + 10)
+        this.getSelectLimit()
       }
     },
     setLimit(limit) {
-      let string = `{"limit":" ${limit}"}`;
-      localStorage.setItem("limit", string);
+      let string = `{"limit":" ${limit}"}`
+      localStorage.setItem('limit', string)
     },
     setSelectLimit(selectLimit) {
-      let string = `{"selectLimit":" ${selectLimit}"}`;
-      localStorage.setItem("selectLimit", string);
+      let string = `{"selectLimit":" ${selectLimit}"}`
+      localStorage.setItem('selectLimit', string)
     },
     //获取本地数据
     getLimit() {
-      let temp = localStorage.getItem("limit");
+      let temp = localStorage.getItem('limit')
       if (temp) {
-        this.baceLimit = parseInt(JSON.parse(temp).limit);
+        this.baceLimit = parseInt(JSON.parse(temp).limit)
       } else {
-        this.setLimit(this.baceLimit);
+        this.setLimit(this.baceLimit)
       }
     },
     //缓存筛选的limit
     getSelectLimit(time) {
-      let temp = localStorage.getItem("selectLimit");
+      let temp = localStorage.getItem('selectLimit')
       if (temp) {
-        this.baceLimit = parseInt(JSON.parse(temp).selectLimit);
+        this.baceLimit = parseInt(JSON.parse(temp).selectLimit)
       } else {
-        this.setSelectLimit(this.baceLimit);
+        this.setSelectLimit(this.baceLimit)
       }
     },
     // 计算总额和折扣金额
     calcPrice(list) {
       if (list.orderItemList) {
-        let itemList = list.orderItemList;
-        let priceArr = [];
-        let total = 0;
-        let discount = 0;
+        let itemList = list.orderItemList
+        let priceArr = []
+        let total = 0
+        let discount = 0
         itemList.forEach((item, index) => {
-          total += item.price * item.quantity;
-        });
-        discount = total - list.totalAmount;
-        this.setOrderTotalPrice(total);
-        this.setOrderDiscountPrice(discount);
+          total += item.price * item.quantity
+        })
+        discount = total - list.totalAmount
+        this.setOrderTotalPrice(total)
+        this.setOrderDiscountPrice(discount)
       }
     },
     //点击进入详情页面
     orderInfoIn(accntId) {
-      // mango.getAjax('/v3/app/customer/details',{ 
+      // mango.getAjax('/v3/app/customer/details',{
       //   type: 'order',
       //   customerId: accntId
       //   })
@@ -313,11 +314,16 @@ export default {
       //       // this.calcPrice(this.orderInfoDetails);
       //     }
       //   });
-      this.setDealTabStatus(mango.btnList(['订单信息', '客户信息', '意向信息'], 0))
-      this.$router.push({ path: "/enquiryInfo",query: {id: accntId,status:3} });
+      this.setDealTabStatus(
+        mango.btnList(['订单信息', '客户信息', '意向信息'], 0)
+      )
+      this.$router.push({
+        path: '/enquiryInfo',
+        query: { id: accntId, status: 3 }
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -362,6 +368,12 @@ export default {
           width: 10.6vw;
           height: 4vw;
           margin-right: -3vw;
+        }
+        span {
+          white-space: nowrap;
+          max-width: 80px;
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
         .importantA {
           background: url(../../../assets/imgs/A.png) no-repeat;

@@ -47,7 +47,7 @@ export default {
   },
   data() {
     return {
-      soreClass: 99,
+      soreClass: 98,
       shops: [{ name: '' }],
       categories: [],
       shopId: 0,
@@ -111,6 +111,7 @@ export default {
       }
     },
     onGetStoreId(item, index) {
+      this._getGradeCategoriesCount(item.id)
       this.setShopId(item.id)
       this.shopId = item.id
       this.soreClass = item.starLevel

@@ -5,7 +5,7 @@
               :remark="0"
               @onHandleBack="onHandleBack">
       <div class="remark"
-           @click="$router.push({path:'/checkTip',query:{name:'detail'}})"></div>
+           @click="ShowCheckTip=true"></div>
     </mybanner>
 
     <div class="form">
@@ -117,12 +117,15 @@
         </div>
       </template>
     </ToastBox>
+    <CheckTip v-if="ShowCheckTip"
+              @onCloseTip="ShowCheckTip=false" />
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import mybanner from '../../../components/banner'
+import CheckTip from '@/components/4s/starCheck/CheckTip'
 import { Range, Actionsheet, Toast, Indicator } from 'mint-ui'
 Vue.component(Actionsheet.name, Actionsheet)
 Vue.component(Range.name, Range)
@@ -144,7 +147,8 @@ import { baseUrl } from '@/js/common'
 export default {
   components: {
     mybanner,
-    ToastBox
+    ToastBox,
+    CheckTip
   },
   data() {
     return {
@@ -193,7 +197,8 @@ export default {
       progress: 0,
       remark: '',
       area: { showAcreage: 0, showDecorateDate: 0, showExpiryDate: 0 },
-      toastReset: false
+      toastReset: false,
+      ShowCheckTip: false
     }
   },
   computed: {
@@ -348,6 +353,26 @@ export default {
     },
     _getVideoSource(sourceType = 'camera') {
       let _this = this
+      if (sourceType == 'camera') {
+        var zySmallVideo = api.require('zySmallVideo')
+        zySmallVideo.open(
+          {
+            MaxRecordTime: 10,
+            videoColor: api.systemType == 'ios' ? 0x007aff : '#007AFF',
+            AVAssetExportPreset: 'AVAssetExportPreset1280x720',
+            mVideoSizeW: 720,
+            mVideoSizeH: 1280
+          },
+          function(ret, err) {
+            if (ret.result == 'success') {
+              _this.videoCompress(ret.fileUrl)
+            }
+          }
+        )
+
+        return
+      }
+
       api.getPicture(
         {
           sourceType,
@@ -388,7 +413,7 @@ export default {
       videoCompression.compression(
         {
           path,
-          quality: 'medium'
+          quality: 'low'
         },
         function(ret) {
           if (ret.eventType == 'exporting') {
@@ -461,7 +486,7 @@ export default {
             resolve(file)
             return
           }
-          lrz(file, { quality: 0.2 })
+          lrz(file, { width: window.innerWidth, quality: 0.1 })
             .then(function(rst) {
               // 处理成功会执行
               let newFile = new File([rst.file], file.name, { type: file.type })

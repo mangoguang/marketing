@@ -73,7 +73,7 @@ export default {
   },
   created() {
     this.articleId = this.$route.query.articleId
-    // this.account = this._localAjax().account;
+    this.account = this._localAjax().account;
     this.getArticleDetail()
     this.isIPhoneX()
     this.sharePage()
@@ -154,7 +154,7 @@ export default {
     //获取文章详情
     getArticleDetail() {
       const id = this.articleId
-      indexModel.getArticleDetail(id).then(res => {
+      indexModel.getArticleDetail(id,this.account).then(res => {
         this.articleDetails = res.data
         this.logoImageUrl = res.data.logoImageUrl
         this.setImgUrl(res.data.image)
