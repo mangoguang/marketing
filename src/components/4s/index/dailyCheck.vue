@@ -12,7 +12,7 @@
                  @click.native="bindNavigator(index)" /> -->
         <iconBox :type="'gradeReport'"
                  :iconData="data"
-                 :hasNew="'tip'"
+                 :hasNew="hasNew"
                  @click.native="handleClick(data.link)" />
       </div>
     </ContentBox>
@@ -23,29 +23,26 @@
 import ContentBox from './contentBox'
 import iconBox from './iconBox'
 
-
-
 export default {
-  props: ['shopId'],
+  props: ['shopId', 'shops', 'hasNew'],
   components: {
     ContentBox,
     iconBox
   },
-  data () {
+  data() {
     return {
       storeClass: 2,
       data: {
         icon: './static/images/4s/star_re.png',
         bgIcon: './static/images/4s/starCheck.png',
         text: '星级检查',
-        link: 'starCheckW'
+        link: 'starCheckW',
+        shops: []
       }
     }
   },
-
   methods: {
-    handleClick (linkName) {
-      let positionType = JSON.parse(localStorage.getItem('ajaxData')).positionList.positionType
+    handleClick(linkName) {
       let certPositionType = localStorage.getItem('certPositionType')
       if (certPositionType == 'supervisor') {
         //督导
@@ -54,8 +51,12 @@ export default {
         })
         return
       }
-      this.$router.push({ path: '/starCheck', query: { shopId: this.shopId } })
-
+      let starLevel = this.shops[sessionStorage.getItem('selectIndex') || 0]
+        .starLevel
+      this.$router.push({
+        path: '/starCheck',
+        query: { shopId: this.shopId, starLevel }
+      })
     }
   }
 }

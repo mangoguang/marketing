@@ -1,16 +1,26 @@
 <!-- <keep-alive> -->
 <template>
   <div class="banner"
-      :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`,'position':`${pos}`}">
+       :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`,'position':`${pos}`}">
     <div :class="`${fix}`"></div>
+
     <div class="icon-back"
-         @click='cilck'>
-      <div class="icon iconfont icon-fanhui1" :style="{'color':`${titleColor}`}">
-      </div>
+         v-if="showLeft"
+         @click="$emit('onHandleBack')">
+      <div class="icon iconfont icon-fanhui1"
+           :style="{'color':`${titleColor}`}"></div>
     </div>
-    <div class="my_title"
-          :class="left? 'myLeftStyle':''" :style="{'color':`${titleColor}`}"><span>{{title}}</span><slot/></div>
-    
+    <div class="icon-back"
+         v-else
+         @click='cilck'>
+      <div class="icon iconfont icon-fanhui1"
+           :style="{'color':`${titleColor}`}"></div>
+    </div>
+
+    <span class="my_title"
+          :class="left? 'myLeftStyle':''"
+          :style="{'color':`${titleColor}`}">{{title}}</span>
+    <slot></slot>
     <!-- <more-details class="details"  v-show='MoreBtn'/> -->
   </div>
 </template>
@@ -22,34 +32,36 @@ import VueRouter from 'vue-router'
 // import MoreDetails from './Gallery/productDetails/moreDetail'
 export default {
   name: 'routerLink',
-  props: ['title', 'MoreBtn', 'left'],
+  props: ['title', 'MoreBtn', 'left', 'showLeft'],
   // components: {MoreDetails},
-  data () {
+  data() {
     return {
       fix: '',
       top: '',
-      boderBottom:this.$route.name=="/top"?"none":'1px solid #ccc',
-      titleColor:this.$route.name=="/top"?'#fff':'#363636',
-      bgColor:this.$route.name=="/top"?'none':'#f8f8f8',
+      boderBottom: this.$route.name == '/top' ? 'none' : '1px solid #ccc',
+      titleColor: this.$route.name == '/top' ? '#fff' : '#363636',
+      bgColor: this.$route.name == '/top' ? 'none' : '#f8f8f8',
       pos:this.$route.name=="/top"?'absolute':'fixed'
     }
   },
-  mounted () {
+  mounted() {
     this.isIPhoneX()
   },
   methods: {
-    cilck: function () {
+    cilck: function() {
       this.$router.back(-1)
     },
-    isIPhoneX: function (fn) {
-      var u = navigator.userAgent;
-      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    isIPhoneX: function(fn) {
+      var u = navigator.userAgent
+      var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
       if (isIOS) {
-        if ((screen.height == 812 && screen.width == 375) || (screen.height == 896 && screen.width == 414)) {
+        if (
+          (screen.height == 812 && screen.width == 375) ||
+          (screen.height == 896 && screen.width == 414)
+        ) {
           this.fix = 'fix'
           this.top = '6'
         } else {
-
         }
       }
     }
@@ -92,26 +104,33 @@ export default {
       // background: url(../assets/imgs/back.png) no-repeat center;
       // background-size: 100%;
       font-size: 18px;
-      // color: #fff;
       width: 2.66vw;
       height: 4.66vw;
       margin-top: -1vw;
-      // padding-bottom: 1vw;
     }
   }
   .my_title {
     width: 100%;
     text-align: center;
-    /* padding-right: 10.4vw; */
+    padding-right: 50px;
     font-size: 5.06vw;
     letter-spacing: -1px;
     color: #363636;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    flex: 1;
-    padding-right:9.606vw;
-    position: relative;
+  }
+  button {
+    position: absolute;
+    right: 0;
+    font-size: 14px;
+    line-height: 11vw;
+    //width: 25vw;
+    padding: 0 5vw;
+    text-align: right;
+    color: #007aff;
+    font-weight: bold;
+    z-index: 1000;
   }
   .myLeftStyle {
     color: #222444;
@@ -119,17 +138,6 @@ export default {
     font-weight: 500;
     padding-left: 2vw;
     text-align: left;
-  }
-  button{
-    font-weight: bold;
-    align-self: flex-end;
-    position: absolute;
-    right:4.266vw;
-    top:50%;
-    transform: translate(0,-50%);
-    color:#007fff;
-    font-weight: bold;
-    font-size: 15px;
   }
 }
 </style>

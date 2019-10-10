@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 const index = () => import('../pages/index')
 const ReportForms = () => import('../pages/ReportForms')
 const Login = () => import('../pages/login')
+
 //客户模块
 const Customer = () => import('../pages/customer')
 const customerInfo = () => import('../pages/customer/customerInfo')
@@ -46,7 +47,7 @@ const employeeDailyReport = () => import('../pages/work/employeeDailyReport')
 const shopList = () => import("../pages/work/shopList")
 const shopDetail = () => import("../pages/work/storeDetail")
 const employeeDetail = () => import("../pages/work/employeeDetail")
-const workPlan  = () => import("../pages/work/workPlan")
+const workPlan = () => import("../pages/work/workPlan")
 const newWorkPlan = () => import("../pages/work/newWorkPlan")
 const searchCustomer = () => import("../pages/work/searchCustomer")
 const searchIntention = () => import("../pages/work/searchIntention")
@@ -66,6 +67,7 @@ const recordJxs = () => import('../pages/4S/record/recordJxs')
 const judgeStar = () => import('../pages/4S/judgeStar/judgeStar')
 const searchIndex = () => import('../pages/4S/search')
 const starAtest = () => import('../pages/4S/starAtest/starAtest')
+
 Vue.use(VueRouter)
 
 
@@ -73,185 +75,185 @@ Vue.use(VueRouter)
 
 export var router = new VueRouter({
   routes: [{
-    path: '/index',
-    name: 'index',
-    component: index
-  },{
-    path: '/ReportForms',
-    name: 'ReportForms',
-    component: ReportForms
-  },{
-    path: '/Login',
-    name: 'Login',
-    component: Login
-  }, {
-    /***报表模块***/
-    path: '/brand',
-    name: 'Brand',
-    component: resolve => require(['../pages/charts/Brand/brand'], resolve)
-  }, {  // 销售
-    path: '/sales',
-    name: 'Sales',
-    component: resolve => require(['../pages/charts/Sales/sales'], resolve)
-  },{
-    path: '/areaStoreSales',
-    name: '/AreaStoreSales',
-    component: resolve => require(['../pages/charts/Sales/areaStoreSales'],resolve)
-  },{
-    path: '/storeSales',
-    name: 'StoreSales',
-    component: resolve => require(['../pages/charts/Sales/storeSales'], resolve)
-  },{
-    path: '/personalSales',
-    name: '/PersonalSales',
-    component: resolve => require(['../pages/charts/Sales/personalSales'],resolve)
-  },{  // 铁三角
-    path: '/audioTechnica',
-    name: '/AudioTechnica',
-    component: resolve => require(['../pages/charts/AudioTechnica/audioTechnica'],resolve)
-  },{
-    path: '/Personal',
-    name: '/Personal',
-    component: resolve => require(['../pages/charts/AudioTechnica/personal'],resolve)
-  },{
-    path: '/areaEffectiveness',
-    name: '/AreaEffectiveness',
-    component: resolve => require(['../pages/charts/AreaEffectiveness/areaEffectiveness'],resolve)
-  },{
-    path: '/peopleWork',
-    name: '/PeopleWork',
-    component: resolve => require(['../pages/charts/PerCapita/PeopleWork'],resolve)
-  },{
-    path: '/customerSource',
-    name: '/CustomerSource',
-    component: resolve => require(['../pages/charts/Customer/customerSource'],resolve)
-  },{ //top榜
-    path: '/top',
-    name: '/top',
-    component: resolve => require(['../pages/charts/top/top'],resolve)
-  },{ //品牌品类
-    path: '/brandCetagory',
-    name: '/brandCetagory',
-    component: resolve => require(['../pages/charts/brandCategory/brandCategory.vue'],resolve)
-  },
-  /**** 客户模块 ****/
-  {
-    path: '/customer',
-    name: '/Customer',
-    component: Customer
-  },
-  {
-    path: '/customerInfo',
-    name: '/CustomerInfo',
-    component: customerInfo,
-    meta: {        
-      isUseCache: false,  // 这个字段的意思稍后再说      
-      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
-    }
-  },
-  {
-    path: '/newCustomerInfo',
-    name: '/NewCustomerInfo',
-    component: newCustomerInfo
-  },
-  {
-    path: '/newCustomer',
-    name: 'NewCustomer',
-    component: newCustomer
-  },
-  {
-    path: '/dealDetails',
-    name: '/dealDetails',
-    component: dealDetails
-  },
-  {
-    path: '/trackDetails',
-    name: '/trackDetails',
-    component: trackDetails
-  },
-  {
-    path: '/newTrack',
-    name: '/newTrack',
-    component: newTrack
-  },
-  {
-    path: '/newCustomerDemand/:customerId',
-    name: '/newCustomerDemand',
-    component: newCustomerDemand
-  },
-  {
-    path: '/changeDemand',
-    name: '/changeDemand',
-    component: changeDemand
-  },
-  {
-    path: '/enquiryInfo',
-    name: '/enquiryInfo',
-    component: enquiryInfo,
-    meta: {        
-      isUseCache: false,  // 这个字段的意思稍后再说      
-      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
-    }
-  },
-  {
-    path: '/searchResult',
-    name: '/searchResult',
-    component: searchResult,
-    meta: {        
-      isUseCache: false,  // 这个字段的意思稍后再说      
-      keepAlive: true  // 通过此字段判断是否需要缓存当前组件  
-    }
-  },
-  {
-    path: '/newIntention',
-    name: 'newIntention',
-    component: newIntention
-  },
-  /****个人模块****/
-  {
-    path: '/personalCenter',
-    name: '/personalCenter',
-    component: personalMsg
-  },
-  {
-    path: '/dailyPaper',
-    name: '/dailyPaper',
-    component: dailyPaper
-  },
-  {
-    path: '/ForgetPwd',
-    name: '/ForgetPwd',
-    component: ForgetPwd
-  },{
-    path: '/ResetPwd',
-    name: '/ResetPwd',
-    component: ResetPwd
-  },{
-    path: '/aboutUs',
-    name: '/aboutUs',
-    component: aboutUs
-  },{
-    path: '/personalData',
-    name: '/personalData',
-    component: personalData
-  },
-  {
-    path: '/feedback',
-    name: '/feedback',
-    component: feedback,
-    meta:{
-      keepAlive:true,
-      isUseCache:false
-    }
-  },{
-    path: '/security',
-    name: 'security',
-    component: security
-  },{
-    path: '/resetMyPwd',
-    name: 'resetMyPwd',
-    component: resetMyPwd
-  },
+      path: '/index',
+      name: 'index',
+      component: index
+    }, {
+      path: '/ReportForms',
+      name: 'ReportForms',
+      component: ReportForms
+    }, {
+      path: '/Login',
+      name: 'Login',
+      component: Login
+    }, {
+      /***报表模块***/
+      path: '/brand',
+      name: 'Brand',
+      component: resolve => require(['../pages/charts/Brand/brand'], resolve)
+    }, { // 销售
+      path: '/sales',
+      name: 'Sales',
+      component: resolve => require(['../pages/charts/Sales/sales'], resolve)
+    }, {
+      path: '/areaStoreSales',
+      name: '/AreaStoreSales',
+      component: resolve => require(['../pages/charts/Sales/areaStoreSales'], resolve)
+    }, {
+      path: '/storeSales',
+      name: 'StoreSales',
+      component: resolve => require(['../pages/charts/Sales/storeSales'], resolve)
+    }, {
+      path: '/personalSales',
+      name: '/PersonalSales',
+      component: resolve => require(['../pages/charts/Sales/personalSales'], resolve)
+    }, { // 铁三角
+      path: '/audioTechnica',
+      name: '/AudioTechnica',
+      component: resolve => require(['../pages/charts/AudioTechnica/audioTechnica'], resolve)
+    }, {
+      path: '/Personal',
+      name: '/Personal',
+      component: resolve => require(['../pages/charts/AudioTechnica/personal'], resolve)
+    }, {
+      path: '/areaEffectiveness',
+      name: '/AreaEffectiveness',
+      component: resolve => require(['../pages/charts/AreaEffectiveness/areaEffectiveness'], resolve)
+    }, {
+      path: '/peopleWork',
+      name: '/PeopleWork',
+      component: resolve => require(['../pages/charts/PerCapita/PeopleWork'], resolve)
+    }, {
+      path: '/customerSource',
+      name: '/CustomerSource',
+      component: resolve => require(['../pages/charts/Customer/customerSource'], resolve)
+    },{ //top榜
+      path: '/top',
+      name: '/top',
+      component: resolve => require(['../pages/charts/top/top'],resolve)
+    },{ //品牌品类
+      path: '/brandCetagory',
+      name: '/brandCetagory',
+      component: resolve => require(['../pages/charts/brandCategory/brandCategory'],resolve)
+    },
+    /**** 客户模块 ****/
+    {
+      path: '/customer',
+      name: '/Customer',
+      component: Customer
+    },
+    {
+      path: '/customerInfo',
+      name: '/CustomerInfo',
+      component: customerInfo,
+      meta: {
+        isUseCache: false, // 这个字段的意思稍后再说      
+        keepAlive: true // 通过此字段判断是否需要缓存当前组件  
+      }
+    },
+    {
+      path: '/newCustomerInfo',
+      name: '/NewCustomerInfo',
+      component: newCustomerInfo
+    },
+    {
+      path: '/newCustomer',
+      name: 'NewCustomer',
+      component: newCustomer
+    },
+    {
+      path: '/dealDetails',
+      name: '/dealDetails',
+      component: dealDetails
+    },
+    {
+      path: '/trackDetails',
+      name: '/trackDetails',
+      component: trackDetails
+    },
+    {
+      path: '/newTrack',
+      name: '/newTrack',
+      component: newTrack
+    },
+    {
+      path: '/newCustomerDemand/:customerId',
+      name: '/newCustomerDemand',
+      component: newCustomerDemand
+    },
+    {
+      path: '/changeDemand',
+      name: '/changeDemand',
+      component: changeDemand
+    },
+    {
+      path: '/enquiryInfo',
+      name: '/enquiryInfo',
+      component: enquiryInfo,
+      meta: {
+        isUseCache: false, // 这个字段的意思稍后再说      
+        keepAlive: true // 通过此字段判断是否需要缓存当前组件  
+      }
+    },
+    {
+      path: '/searchResult',
+      name: '/searchResult',
+      component: searchResult,
+      meta: {
+        isUseCache: false, // 这个字段的意思稍后再说      
+        keepAlive: true // 通过此字段判断是否需要缓存当前组件  
+      }
+    },
+    {
+      path: '/newIntention',
+      name: 'newIntention',
+      component: newIntention
+    },
+    /****个人模块****/
+    {
+      path: '/personalCenter',
+      name: '/personalCenter',
+      component: personalMsg
+    },
+    {
+      path: '/dailyPaper',
+      name: '/dailyPaper',
+      component: dailyPaper
+    },
+    {
+      path: '/ForgetPwd',
+      name: '/ForgetPwd',
+      component: ForgetPwd
+    }, {
+      path: '/ResetPwd',
+      name: '/ResetPwd',
+      component: ResetPwd
+    }, {
+      path: '/aboutUs',
+      name: '/aboutUs',
+      component: aboutUs
+    }, {
+      path: '/personalData',
+      name: '/personalData',
+      component: personalData
+    },
+    {
+      path: '/feedback',
+      name: '/feedback',
+      component: feedback,
+      meta: {
+        keepAlive: true,
+        isUseCache: false
+      }
+    }, {
+      path: '/security',
+      name: 'security',
+      component: security
+    }, {
+      path: '/resetMyPwd',
+      name: 'resetMyPwd',
+      component: resetMyPwd
+    },
 
     {
       path: '/previewImg',
@@ -315,300 +317,316 @@ export var router = new VueRouter({
         isUseCache: false
       }
     },
-    
-  
-  //金管家模块-我的收藏
-  {
-    path: '/collectList',
-    name: '/collectList',
-    component: () => import('../pages/Personal/msManage/collect')
-  },
-  //金管家模块
-  {
-    path: '/msManage',
-    name: '/msManage',
-    component: () => import('../pages/msManage/msIndex')
-  },
-  {
-    path: '/policy',
-    name: '/policy',
-    component: () => import('../pages/msManage/policy')
-  },
-  {
-    path: '/story',
-    name: '/story',
-    component: () => import('../pages/msManage/story')
-  },
-  {
-    path: '/question',
-    name: '/question',
-    component: () => import('../pages/msManage/question')
-  },
-  //首页搜索
-  {
-    path: '/search',
-    name: '/search',
-    component: () => import('../pages/msManage/search')
-  },
-  //文章详情
-  {
-    path: '/articleDetails',
-    name: '/articleDetails',
-    component: () => import('../pages/msManage/articleDetails')
-  },
-  //常见问题详情
-  {
-    path: '/questionDetail',
-    name: '/questionDetail',
-    component: () => import('../pages/msManage/questionDetail')
-  },
-  //营销助手图库主页
-  {
-    path: '/gallery',
-    name: 'gallery',
-    component: gallery
-  },
-  //搜索页
-  {
-    path: '/gSearch',
-    name: 'gSearch',
-    component: gSearch
-  },
-  //产品详情
-  {
-    path: '/productDetails',
-    name: 'productDetails',
-    component: productDetails
-  },
-  //产品列表
-  {
-    path: '/productList',
-    name: 'productList',
-    component: productList
-  },
-  //介绍页
-  {
-    path: '/recommend',
-    name: 'recommend',
-    component: recommend
-  },
-  //分享页
-  {
-    path: '/share',
-    name: 'share',
-    component: share
-  },
-  {
-    path: '/preShare',
-    name: 'preShare',
-    component:preShare
-  },
-  {
-    path: '/',
-    name: 'home',
-    component: () => import('../pages/home/index')
-  },
-  /***工作模块***/
-  {
-    path: '/work',
-    name: 'work',
-    component: () => import('../pages/work')
-  },
-  {
-    path: '/dailyReport',
-    name: 'dailyReport',
-    component: () => import('../pages/work/dailyReport')
-    // meta: {
-    //   keepAlive: true // 需要被缓存
-    // }
-  },
-  {
-    path: '/orderSearch',
-    name: 'orderSearch',
-    component: () => import('../pages/work/orderSearch')
-  },
-  {
-    path: '/orderDetail',
-    name: 'orderDetail',
-    component: () => import('../pages/work/orderDetail')
-  },
-  {
-    path: '/newPlan',
-    name: 'newPlan',
-    component: () => import('../pages/work/newPlan')
-    // meta: {
-    //   keepAlive: true // 需要被缓存
-    // }
-  },
-  //app二期迭代
-  {
-    path: '/chooseShop',
-    name: 'chooseShop',
-    component: () => import('../pages/customer/newCustomer/chooseShop')
-  },
-  {
-    path: '/newAddress',
-    name: 'newAddress',
-    component: () => import('../pages/customer/newCustomer/newAddress')
-  },
-  //店长
-  {
-    path:'/storeCustomer',
-    name:'storeCustomer',
-    component: storeCustomer
-  },
-  {
-    path:'/employeeList',
-    name:'employeeList',
-    component:employeeList
-  },
-  {
-    path:'/storeDailyReport',
-    name:'storeDailyReport',
-    component:storeDailyReport
-  },
-  {
-    path:'/employeeDailyReport/:id/:username/:date/:shopId',
-    name:'employeeDailyReport',
-    component:employeeDailyReport,
-    props:true
-  },
-  //经销商s
-  {
-    path:'/shopList',
-    name:'shopList',
-    component:shopList
-  },
-  {
-    path:'/shopDetail/:id/:name',
-    name:'shopDetail',
-    component:shopDetail,
-    props:true
-  },
-  {
-    path:'/employeeDetail/:id/:name/:shopId',
-    name:'employeeDetail',
-    component:employeeDetail,
-    props:true
-  },
-  {
-    path:'/workPlan',
-    name:'workPlan',
-    component:workPlan,
-    meta:{
-      keepAlive:true,
-      isUseCache:false
-    }
-  },
-  {
-    path:'/newWorkPlan',
-    name:'newWorkPlan',
-    component:newWorkPlan,
-    meta:{
-      keepAlive:true,
-      isUseCache:false
+    //金管家模块-我的收藏
+    {
+      path: '/collectList',
+      name: '/collectList',
+      component: () => import('../pages/Personal/msManage/collect')
     },
-    props:(route) => ({id: route.query.id})
-  },
-  {
-    path:'/searchCustomer',
-    name:'searchCustomer',
-    component:searchCustomer
-  },
-  {
-    path:'/searchIntention',
-    name:'searchIntention',
-    component:searchIntention
-  },
-  //公告
-  {
-    path:'/noticeList',
-    name:'noticeList',
-    component:noticeList
-  },
-  {
-    path:'/noticeDetails',
-    name:'noticeDetails',
-    component:noticeDetails,
-    props:(route) => ({id: route.query.id})
-  },
-  //4s
-  {
-    path: '/index4s',
-    name: 'index4s',
-    component: index4s
-  },
-  {
-    path: '/record',
-    name: 'record',
-    component: record
-  },
-  {
-    path: '/recordJxs',
-    name: 'recordJxs',
-    component: recordJxs
-  },
-  {
-    path: '/recordDetails',
-    name: 'recordDetails',
-    component: recordDetails
-  },
-  {
-    path: '/itemDetails',
-    name: 'itemDetails',
-    component: itemDetails
-  },
-  // 星级检查
-  {
-    path: '/starCheck',
-    name: 'starCheck',
-    component: starCheck
-  },
-  {
-    path: '/checkTip',
-    name: 'checkTip',
-    component: checkTip
-  },
-  {
-    path: '/check',
-    name: 'check',
-    component: check,
-    meta: {
-      keepAlive: true,
-      isUseCache: false
+    //金管家模块
+    {
+      path: '/msManage',
+      name: '/msManage',
+      component: () => import('../pages/msManage/msIndex')
+    },
+    {
+      path: '/policy',
+      name: '/policy',
+      component: () => import('../pages/msManage/policy')
+    },
+    {
+      path: '/story',
+      name: '/story',
+      component: () => import('../pages/msManage/story')
+    },
+    {
+      path: '/question',
+      name: '/question',
+      component: () => import('../pages/msManage/question')
+    },
+    //首页搜索
+    {
+      path: '/search',
+      name: '/search',
+      component: () => import('../pages/msManage/search')
+    },
+    //文章详情
+    {
+      path: '/articleDetails',
+      name: '/articleDetails',
+      component: () => import('../pages/msManage/articleDetails')
+    },
+    //常见问题详情
+    {
+      path: '/questionDetail',
+      name: '/questionDetail',
+      component: () => import('../pages/msManage/questionDetail')
+    },
+    //营销助手图库主页
+    {
+      path: '/gallery',
+      name: 'gallery',
+      component: gallery
+    },
+    //搜索页
+    {
+      path: '/gSearch',
+      name: 'gSearch',
+      component: gSearch
+    },
+    //产品详情
+    {
+      path: '/productDetails',
+      name: 'productDetails',
+      component: productDetails
+    },
+    //产品列表
+    {
+      path: '/productList',
+      name: 'productList',
+      component: productList
+    },
+    //介绍页
+    {
+      path: '/recommend',
+      name: 'recommend',
+      component: recommend
+    },
+    //分享页
+    {
+      path: '/share',
+      name: 'share',
+      component: share
+    },
+    {
+      path: '/preShare',
+      name: 'preShare',
+      component: preShare
+    },
+    {
+      path: '/',
+      name: 'home',
+      component: () => import('../pages/home/index')
+    },
+    /***工作模块***/
+    {
+      path: '/work',
+      name: 'work',
+      component: () => import('../pages/work')
+    },
+    {
+      path: '/dailyReport',
+      name: 'dailyReport',
+      component: () => import('../pages/work/dailyReport')
+      // meta: {
+      //   keepAlive: true // 需要被缓存
+      // }
+    },
+    {
+      path: '/orderSearch',
+      name: 'orderSearch',
+      component: () => import('../pages/work/orderSearch')
+    },
+    {
+      path: '/orderDetail',
+      name: 'orderDetail',
+      component: () => import('../pages/work/orderDetail')
+    },
+    {
+      path: '/newPlan',
+      name: 'newPlan',
+      component: () => import('../pages/work/newPlan')
+      // meta: {
+      //   keepAlive: true // 需要被缓存
+      // }
+    },
+    //app二期迭代
+    {
+      path: '/chooseShop',
+      name: 'chooseShop',
+      component: () => import('../pages/customer/newCustomer/chooseShop')
+    },
+    {
+      path: '/newAddress',
+      name: 'newAddress',
+      component: () => import('../pages/customer/newCustomer/newAddress')
+    },
+    //店长
+    {
+      path: '/storeCustomer',
+      name: 'storeCustomer',
+      component: storeCustomer
+    },
+    {
+      path: '/employeeList',
+      name: 'employeeList',
+      component: employeeList
+    },
+    {
+      path: '/storeDailyReport',
+      name: 'storeDailyReport',
+      component: storeDailyReport
+    },
+    {
+      path: '/employeeDailyReport/:id/:username/:date',
+      name: 'employeeDailyReport',
+      component: employeeDailyReport,
+      props: true
+    },
+    //经销商s
+    {
+      path: '/shopList',
+      name: 'shopList',
+      component: shopList
+    },
+    {
+      path: '/shopDetail/:id/:name',
+      name: 'shopDetail',
+      component: shopDetail,
+      props: true
+    },
+    {
+      path: '/employeeDetail/:id/:name',
+      name: 'employeeDetail',
+      component: employeeDetail,
+      props: true
+    },
+    {
+      path: '/workPlan',
+      name: 'workPlan',
+      component: workPlan,
+      meta: {
+        keepAlive: true,
+        isUseCache: false
+      }
+    },
+    {
+      path: '/newWorkPlan',
+      name: 'newWorkPlan',
+      component: newWorkPlan,
+      meta: {
+        keepAlive: true,
+        isUseCache: false
+      },
+      props: (route) => ({
+        id: route.query.id
+      })
+    },
+    {
+      path: '/searchCustomer',
+      name: 'searchCustomer',
+      component: searchCustomer
+    },
+    {
+      path: '/searchIntention',
+      name: 'searchIntention',
+      component: searchIntention
+    },
+    //公告
+    {
+      path: '/noticeList',
+      name: 'noticeList',
+      component: noticeList
+    },
+    {
+      path: '/noticeDetails',
+      name: 'noticeDetails',
+      component: noticeDetails,
+      props: (route) => ({
+        id: route.query.id
+      })
+    },
+    //4s
+    {
+      path: '/index4s',
+      name: 'index4s',
+      component: index4s
+    },
+    {
+      path: '/record',
+      name: 'record',
+      component: record
+    },
+    {
+      path: '/recordJxs',
+      name: 'recordJxs',
+      component: recordJxs
+    },
+    {
+      path: '/recordDetails',
+      name: 'recordDetails',
+      component: recordDetails,
+      meta: {
+        keepAlive: true,
+        title: '检查详情'
+      }
+    },
+    {
+      path: '/itemDetails',
+      name: 'itemDetails',
+      component: itemDetails
+    },
+    // 星级检查
+    {
+      path: '/starCheck',
+      name: 'starCheck',
+      component: starCheck
+    },
+    {
+      path: '/checkTip',
+      name: 'checkTip',
+      component: checkTip
+    },
+    {
+      path: '/check',
+      name: 'check',
+      component: check,
+      meta: {
+        keepAlive: true,
+        isUseCache: false
+      }
+    },
+    {
+      path: '/checkDetail',
+      name: 'checkDetail',
+      component: checkDetail
+    },
+    {
+      path: '/judgeStar',
+      name: 'judgeStar',
+      component: judgeStar
+    },
+    {
+      path: '/leader-check',
+      name: 'LeaderCheck',
+      component: () => import('@/pages/4S/leader-check/')
+    },
+    {
+      path: '/searchIndex',
+      name: 'searchIndex',
+      component: searchIndex
+    },
+    {
+      path: '/starAtest',
+      name: 'starAtest',
+      component: starAtest
+    },
+    {
+      path: '/apply-record',
+      name: 'ApplyRecord',
+      component: () => import('@/pages/4S/starAtest/ApplyRecord')
+    },
+    {
+      path: '/attest-detail',
+      name: 'AttestDetail',
+      component: () => import('@/pages/4S/starAtest/AttestDetail')
+    },
+    {
+      path: '/attest-item',
+      name: 'AttestItem',
+      component: () => import('@/pages/4S/starAtest/AttestItem')
     }
-  },
-  {
-    path: '/checkDetail',
-    name: 'checkDetail',
-    component: checkDetail
-  },
-  {
-    path: '/judgeStar',
-    name: 'judgeStar',
-    component: judgeStar
-  },
-  {
-    path: '/leader-check',
-    name: 'LeaderCheck',
-    component: () => import('@/pages/4S/leader-check/')
-  },
-  {
-    path: '/searchIndex',
-    name: 'searchIndex',
-    component: searchIndex
-  },
-  {
-    path: '/starAtest',
-    name: 'starAtest',
-    component: starAtest
-  },
-  {
-    path: '/apply-record',
-    name: 'ApplyRecord',
-    component: () => import('@/pages/4S/starAtest/ApplyRecord')
-  }
-],
+  ],
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
       // console.log(324242,savedPosition)      
@@ -623,4 +641,12 @@ export var router = new VueRouter({
       }
     }
   }
+})
+router.beforeEach((to, from, next) => {
+  if (to.fullPath == '/' || to.fullPath == '/login') {
+    sessionStorage.setItem('isIndex', 1)
+  } else {
+    sessionStorage.setItem('isIndex', '')
+  }
+  next()
 })

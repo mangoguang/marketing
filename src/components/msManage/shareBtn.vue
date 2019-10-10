@@ -1,7 +1,9 @@
 <template>
-  <div class="share">
+  <div class="share-btn" >
     <!-- 这是分享 -->
-    <img src="../../assets/imgs/more.png" alt class="moreImg" @click="shareBtn" />
+    <div class="btn" @click="shareBtn">
+      <img src="../../assets/imgs/more.png" alt class="moreImg" />
+    </div>
     <div class="shareList" v-show="isShow">
       <span class="shareTitle">分享到</span>
       <ul class="iconList">
@@ -62,7 +64,7 @@ export default {
   },
   created() {
     this.articleId = this.$route.query.articleId;
-    // this.account = this._localAjax().account;
+    this.account = this._localAjax().account;
     console.log(this.articleId, this.account);
     // this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/articleDetails?articleId=" +this.articleId +"&name=产品知识&musi=1";
     this.pageUrl = `https://mobiletest.derucci.net/web/marketing/#/articleDetails?articleId=${this.articleId}&musi=1`;
@@ -76,7 +78,6 @@ export default {
     this.title = this.sharetitle;
   },
   methods: {
-    
     shareBtn() {
       this.isShow = !this.isShow;
     },
@@ -103,7 +104,7 @@ export default {
       switch (path) {
         case "weixin":
           this.sharewx("session");
-          // console.log(path);  
+          // console.log(path);
           this.isShow = false;
           break;
         case "pengyouquan":
@@ -119,7 +120,7 @@ export default {
         case "QQ":
           // console.log(path);
           console.log(this.imgUrl);
-          
+
           this.shareQQ();
           this.isShow = false;
           break;
@@ -180,7 +181,7 @@ export default {
             // alert("分享成功");
             // this.isShow = false;
           } else {
-            alert(err.code)
+            alert(err.code);
             alert("分享失败");
           }
         }
@@ -231,16 +232,20 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.share {
-  width: 24px;
+<style lang="scss" scope>
+.share-btn {
+  width: 60px;
   height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
-  .moreImg {
-    width: 16px;
-    height: 4px;
+  .btn {
+    width: 100%;
+    height: 100%;
+    .moreImg {
+      width: 16px;
+      height: 4px;
+    }
   }
   .shareList {
     position: fixed;

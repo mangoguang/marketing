@@ -29,6 +29,8 @@
         <!-- <span>
         </span> -->
       </li>
+      <div class="no-data"
+           v-if="checkLogs.length==0">暂无记录</div>
 
       <!-- <div class="show_more" @click="showMore" v-if="list.length > 3">
         <span>{{moreText}}</span>
@@ -41,7 +43,7 @@
 <script>
 export default {
   props: ['checkLogs'],
-  data () {
+  data() {
     return {
       num: 2,
       showList: [],
@@ -53,14 +55,14 @@ export default {
       rotateUp: {
         transform: 'rotate(-90deg)'
       }
-    };
+    }
   },
-  created () {
+  created() {
     this.getInitList()
   },
   methods: {
     //初始展示的数据
-    getInitList () {
+    getInitList() {
       // const len = this.list && this.list.length
       // this.showList = len > 3 ? this.list.slice(0,3) : this.list
     },
@@ -71,14 +73,16 @@ export default {
     //   this.moreText = this.key? '点击收起' : '点击更多'
     // },
     //跳转记录详情
-    toDetails (item) {
+    toDetails(item) {
       let { shopId, startTime, endTime } = item
+      let shopName = this.$route.query.shopName
       this.$router.push({
         name: 'recordDetails',
         query: {
           shopId,
           startTime,
-          endTime
+          endTime,
+          shopName
         }
       })
     }
@@ -86,6 +90,11 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+.no-data {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+}
 .record_card_wrapper {
   width: 100%;
   box-shadow: 0px 0px 1.33vw 0px rgba(204, 204, 204, 0.6);
@@ -128,13 +137,13 @@ export default {
       margin-bottom: 1vw;
     }
     .content_li {
-      font-size: 3.2vw;
+      font-size: 12px;
       line-height: 8vw;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
       color: #0e0e0e;
-      padding-left: 4.06vw;
-      padding-right: 2.66vw;
+      // padding-left: 4.06vw;
+      // padding-right: 2.66vw;
       margin-bottom: 1vw;
       box-sizing: border-box;
       &:nth-child(2n + 1) {

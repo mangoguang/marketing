@@ -4,7 +4,7 @@
     <div class="border-bottom">
       <p class="title">{{title}}</p>
     </div>
-    <div class="content">
+    <div class="content-box">
       <slot></slot>
     </div>
   </div>
@@ -13,10 +13,8 @@
 <script>
 export default {
   props: ['title'],
-  data () {
-    return {
-
-    };
+  data() {
+    return {}
   }
 }
 </script>
@@ -26,7 +24,7 @@ export default {
   min-height: 34.13vw;
   background: #fff;
   border-radius: 1.33vw;
-  margin: 0 4.4vw 4.4vw 4.4vw;
+  margin: 4.4vw;
   h1 {
     font-weight: normal;
     color: #666;
@@ -39,7 +37,7 @@ export default {
   .title {
     line-height: 3em;
     padding-left: 4vw;
-    color:#666;
+    color: #666;
   }
 }
 </style>

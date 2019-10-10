@@ -2,13 +2,15 @@
 <template>
   <div class="sortContent">
     <ul class="content">
-      <li class="li border-bottom" 
-          v-for="(item,index) in list" :key="item + index"
+      <li class="li border-bottom"
+          v-for="(item,index) in list"
+          :key="item + index"
           @click="handleClick(index)">
-          <span :class="{active: activeIndex === index}">{{ item }}</span>
-          <img  v-show="activeIndex === index"
-                src="../../../assets/imgs/4s/starCheck/checked.png" alt="">
-      </li> 
+        <span :class="{active: activeIndex === index}">{{ item }}</span>
+        <img v-show="activeIndex === index"
+             src="../../../assets/imgs/4s/starCheck/checked.png"
+             alt="">
+      </li>
     </ul>
   </div>
 </template>
@@ -16,10 +18,17 @@
 <script>
 export default {
   props: ['list'],
-  data () {
+  data() {
     return {
       activeIndex: 0
-    };
+    }
+  },
+  inject: {
+    proSort: {
+      default: () => {
+        return () => 'desc'
+      }
+    }
   },
   methods: {
     handleClick(index) {
@@ -27,7 +36,8 @@ export default {
       const data = {
         index
       }
-      this.$emit('selectIndex',data)
+      this.$emit('selectIndex', data)
+      this.proSort && this.proSort('', index == 0 ? 'desc' : 'asc')
     }
   }
 }
@@ -39,13 +49,13 @@ export default {
   .content {
     width: 100vw;
     background: #f8f8f8;
-    padding: 0 4.4vw;
+    padding: 0 24px;
     box-sizing: border-box;
     position: absolute;
     .li {
       line-height: 10.66vw;
       color: #909090;
-      font-size: 4vw;
+      font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -56,7 +66,7 @@ export default {
     }
     .active {
       color: #363636;
-      font-weight: 500
+      font-weight: 500;
     }
   }
 }

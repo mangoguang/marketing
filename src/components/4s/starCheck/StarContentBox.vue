@@ -21,23 +21,25 @@ export default {
   components: {
     BigCategory
   },
-  data () {
+  data() {
     return {
       categories: []
     }
   },
-  created () {
+  created() {
+    console.log(this.$attrs)
     this._getCategories(this.$route.query.shopId)
   },
   methods: {
-    ...mapMutations(['setLevelId']),
-    async _getCategories (shopId) {
+    ...mapMutations(['setLevelId', 'setShopId']),
+    async _getCategories(shopId) {
       let { code, categories, msg } = await gradeCategories({ shopId })
       this.categories = categories || []
     },
     //保存几星检查
-    bindSetLevelId (levelId) {
+    bindSetLevelId(levelId) {
       this.setLevelId(levelId)
+      this.setShopId(this.$route.query.shopId)
     }
   }
 }

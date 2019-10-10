@@ -1,30 +1,32 @@
 <template>
   <div class="index">
-    <banner :title='"产品中心"'/>
+    <banner :title='"产品中心"' />
     <div class="top-bar">
-      <scan/>
-      <Search :origin="true" :type="'gallery'" class="search" style="margin-top:6vw"/>
+      <scan />
+      <Search :origin="true"
+              :type="'gallery'"
+              class="search" />
     </div>
-    <TopNav/>
+    <TopNav />
     <div class="content">
       <div class="nav-left">
-        <left-nav/>
+        <left-nav />
       </div>
       <div class="nav-right">
-        <RightContent/>
+        <RightContent />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {mapMutations} from 'vuex'
+import { mapMutations } from 'vuex'
 import banner from '../../components/banner'
-import Search from "../../components/msManage/search/eggSearchInp";
-import Scan from "../../components/Gallery/index/scan";
-import LeftNav from "../../components/Gallery/index/leftNav";
-import RightContent from "../../components/Gallery/index/rightContent";
-import TopNav from "../../components/Gallery/index/topNav";
+import Search from '../../components/msManage/search/eggSearchInp'
+import Scan from '../../components/Gallery/index/scan'
+import LeftNav from '../../components/Gallery/index/leftNav'
+import RightContent from '../../components/Gallery/index/rightContent'
+import TopNav from '../../components/Gallery/index/topNav'
 export default {
   components: {
     Search,
@@ -35,18 +37,17 @@ export default {
     banner
   },
   data() {
-    return {
-    };
+    return {}
   },
   mounted() {
-    this.setProductNavList([])
-    this.setInitParmas()
-    this.initPageList([])
+    // this.setProductNavList([])
+    // this.setInitParmas()
+    // this.initPageList([])
   },
   methods: {
     ...mapMutations(['setProductNavList', 'setInitParmas', 'initPageList'])
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

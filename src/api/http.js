@@ -22,9 +22,12 @@ axios.defaults.headers = {
   'Content-Type': 'application/x-www-form-urlencoded'
 }
 axios.defaults.baseURL = baseUrl
+// axios.defaults.baseURL = 'https://mobiletest.derucci.net'
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line
-  axios.defaults.baseURL = 'https://agency.derucci.com'
+  // axios.defaults.baseURL = 'https://agency.derucci.com'
+  axios.defaults.baseURL = 'https://mobiletest.derucci.net'
+
 }
 
 // http request 拦截器

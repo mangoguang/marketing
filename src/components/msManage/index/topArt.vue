@@ -4,25 +4,31 @@
       <h1>热门推荐</h1>
     </div>
     <ul>
-      <li v-for="(item, index) in list" :key="index" @click.prevent="toArticle(index)" >
-          <div class="list_left">
-            <h1><img v-show="item.logoImageUrl!==''" :src="item.logoImageUrl"/>{{item.title}}</h1>
-            <div class="list_bottom">
-              <!-- <span class="top">置顶</span> -->
-              <span class="time">{{item.createTime}}&nbsp;&nbsp;{{item.author}}</span>
-            </div>
+      <li v-for="(item, index) in list"
+          :key="index"
+          @click.prevent="toArticle(index)">
+        <div class="list_left">
+          <h1><img v-show="item.logoImageUrl!==''"
+                 :src="item.logoImageUrl" />{{item.title}}</h1>
+          <div class="list_bottom">
+            <!-- <span class="top">置顶</span> -->
+            <span class="time">{{item.createTime}}&nbsp;&nbsp;作者: {{item.author||'-'}}</span>
           </div>
-          <div class="list_right">
-            <img v-lazy="item.image" alt="" class="img" :key="item.image">
-          </div>
-        </li>
-      </ul>
+        </div>
+        <div class="list_right">
+          <img v-lazy="item.image"
+               alt=""
+               class="img"
+               :key="item.image">
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import { IndexModel } from "../../../utils/index";
-const indexModel = new IndexModel();
+import { IndexModel } from '../../../utils/index'
+const indexModel = new IndexModel()
 export default {
   data() {
     return {
@@ -36,20 +42,19 @@ export default {
     toArticle(index) {
       this.$router.push({
         path: '/articleDetails',
-        query:{articleId: this.list[index].id}
+        query: { articleId: this.list[index].id }
       })
     },
     getData() {
       let account = this._localAjax().account
       let classify = this.$route.query.classify
       indexModel.getTopArt(account, classify).then(res => {
-        if(res.data) {
+        if (res.data) {
           this.list = res.data
         }
       })
     }
   }
-  
 }
 </script>
 
@@ -66,17 +71,16 @@ export default {
       color: #363636;
       font-size: 4.8vw;
       font-weight: bold;
-      border-bottom: .53vw solid #363636;
+      border-bottom: 0.53vw solid #363636;
       text-align: center;
-       line-height: normal;
-       
+      line-height: normal;
     }
   }
   ul {
     li {
       width: 100vw;
       height: 26.66vw;
-      box-shadow:0px 2px 6px 0px rgba(136,136,136,0.2);
+      box-shadow: 0px 2px 6px 0px rgba(136, 136, 136, 0.2);
       padding: 4.4vw;
       box-sizing: border-box;
       margin-bottom: 2.4vw;
@@ -95,16 +99,16 @@ export default {
           //font-weight: bold;
           flex: 0.8;
           line-height: 1.5em;
-          img{
-              display: inline-block;
-              width: 4.8vw;
-              height: 4.8vw;
-              background: red;
-              vertical-align:-3px;
-              margin-right:2px;
-              background-repeat: no-repeat;
-              background-position: center center;
-              background-size: 4.8vw 4.8vw;
+          img {
+            display: inline-block;
+            width: 4.8vw;
+            height: 4.8vw;
+            background: red;
+            vertical-align: -3px;
+            margin-right: 2px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 4.8vw 4.8vw;
           }
         }
         .list_bottom {
@@ -122,7 +126,7 @@ export default {
         flex: 0.25;
         width: 21.33vw;
         height: 21.33vw;
-        border:1px solid rgba(225,225,225,1);
+        border: 1px solid rgba(225, 225, 225, 1);
         .img {
           width: 21.33vw;
           height: 21.33vw;

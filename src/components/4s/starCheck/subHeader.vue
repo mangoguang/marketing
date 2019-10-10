@@ -25,7 +25,9 @@ export default {
 .subHeader {
   height: 54px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-sizing: border-box;
   position: fixed;
   top: 25vw;
   width: 100%;

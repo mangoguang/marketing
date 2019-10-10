@@ -6,7 +6,7 @@ import mango from '@/js/'
 import {
   http, //带token
   httpDef
-} from './http'
+} from '../http'
 
 const request = new Request()
 
@@ -20,7 +20,7 @@ export const loginAcount = params => {
 }
 
 
-//获取星级
+//获取用户信息
 export const userinfo = params => {
   return http({
     url: '/api/app/userinfo',
@@ -83,6 +83,18 @@ export const uploadFile = params => {
 }
 
 /**
+ *  4 上传视频或图片
+ * @param {*} params 
+ */
+export const uploadFiles = params => {
+  return http({
+    url: '/api/upload/files',
+    method: 'post',
+    params
+  }, true)
+}
+
+/**
  *  5 店长（导购）提交打分数据（username:19040049）
  * @param {*} params 
  */
@@ -123,7 +135,7 @@ export const distributorApply = params => {
  *  app - 经销商申请记录列表
  * @param {*} params 
  */
-export const distributorApplys = params => {
+export const distributorLogList = params => {
   return http({
     url: '/api/4s/cert/approve/distributor/logList',
     params
@@ -273,6 +285,30 @@ export const gradeDetailInfo = params => {
   return http({
     url: '/api/4s/cert/approve/approveCheckLog/gradeDetailInfo',
     method: 'post',
+    params
+  })
+}
+
+/**
+ * 首页督导获取未评分门店数量红色角标（account:19070037）
+ * @param {*} params 
+ */
+export const supervisorNotGradeShopsCount = params => {
+  return http({
+    url: '/api/cert/grade/supervisorNotGradeShopsCount',
+    method: 'get',
+    params
+  })
+}
+
+/**
+ * 首页店长或导购获取未评分模块数量红色角标（account:19070025）
+ * @param {*} params 
+ */
+export const guideNotGradeCategoriesCount = params => {
+  return http({
+    url: '/api/cert/grade/guideNotGradeCategoriesCount',
+    method: 'get',
     params
   })
 }

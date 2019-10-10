@@ -20,7 +20,7 @@ Vue.prototype.phoneSize = () => {
   return phone
 };
 Vue.prototype._localAjax = () => {
-  let ajaxData = localStorage.getItem('ajaxData')
+  let ajaxData = localStorage.getItem('ajaxData') || '{}'
   return JSON.parse(ajaxData)
 };
 Vue.prototype.getType = (type) => {
@@ -37,7 +37,7 @@ Vue.prototype.getType = (type) => {
 }
 Vue.prototype._getPosition = (position) => {
   let arr = ['Store Manager', 'Boss&Consultant', 'Boss&Manager', 'Dealer Boss']
-  return arr.includes(position)
+  return arr.indexOf(position) != -1
 }
 
 export default Vue

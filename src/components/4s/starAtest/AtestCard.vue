@@ -1,8 +1,7 @@
 <!--  -->
 <template>
   <div class="loadmore-wrapper"
-       ref="wrapper"
-       :style="{ height: wrapperHeight + 'px' }">
+       ref="wrapper">
     <mt-loadmore :top-method="loadTop"
                  :bottom-method="loadBottom"
                  :bottom-all-loaded="allLoaded"
@@ -16,7 +15,7 @@
           <div class="header">
             <div class="left_text">
               <p class="name">{{item.distributor}}</p>
-              <p claas='star'>认证星级：{{item.approveLevel||'-'}}</p>
+              <p claas='star'>认证星级：{{item.approveLevelStr||'-'}}</p>
             </div>
             <div class="right_text">
               <img src="../../../assets/imgs/4s/via.png"
@@ -24,9 +23,9 @@
             </div>
           </div>
           <div class="time">
-            <p>检查周期：{{item.cycleCheckTotal}}周</p>
-            <p>累计周期：{{item.accumulativeCycle}}周</p>
-            <p>开始时间：{{item.checkStartTime}}</p>
+            <p>检查周期：{{item.cycleCheckTotal}}月</p>
+            <p>累计周期：{{item.accumulativeCycle}}月</p>
+            <p>开始时间：{{item.checkStartTime||'-'}}</p>
           </div>
           <div class="buttMan">
             <div class="head_line"></div>
@@ -72,7 +71,8 @@
             <div class="footer"></div>
           </div>
           <div class="atest">
-            <button @click="bindApply(index)">发起申请</button>
+            <div class="btn"
+                 @click="bindApply(index)">发起申请</div>
           </div>
         </div>
         <div class="no-data"
@@ -86,73 +86,81 @@
 <script>
 import { distributorList, distributorApply } from '@/api/4s'
 import Vue from 'vue'
-import { Loadmore, Toast } from 'mint-ui';
-Vue.component(Loadmore.name, Loadmore);
+import { Loadmore, Toast } from 'mint-ui'
+Vue.component(Loadmore.name, Loadmore)
 export default {
-  data () {
+  data() {
     return {
-
       nameVal: '',
       telVal: '',
       dataList: [],
       allLoaded: false,
       page: 1,
       noData: false,
-      wrapperHeight: 0
-    };
+      wrapperHeight: 0,
+      level: ['一星', '二星', '三星', '四星', '五星']
+    }
   },
-  created () {
-    this._initData()
+  created() {
+    let searchVal = this.$route.query.searchVal
+    if (searchVal) {
+      this._initData(1, searchVal)
+    } else {
+      this._initData()
+    }
   },
-  mounted () {
-    this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+  mounted() {
+    this.wrapperHeight =
+      document.documentElement.clientHeight -
+      this.$refs.wrapper.getBoundingClientRect().top
   },
   methods: {
-    async  _initData (page = 1, key = "") {
+    async _initData(page = 1, key = '') {
       let { code, data } = await distributorList({ page, limit: 20, key })
+      console.log(data)
       data.list.map(item => {
         item.isEdit = true
         item.isReadOnly = true
+        item.approveLevelStr = this.level[item.approveLevel - 1] || '-'
       })
 
       this.dataList = page == 1 ? data.list : this.dataList.concat(data.list)
-      this.allLoaded = false;
+      this.allLoaded = false
       if (data.totalPage == 1) {
         this.allLoaded = true
       }
       if (page == 1 && data.list.length == 0) {
         this.noData = true
       }
-
     },
-    loadTop () {
-      this.page = 1;
+    loadTop() {
+      this.page = 1
       this._initData()
-      this.$refs.loadmore.onTopLoaded();
+      this.$refs.loadmore.onTopLoaded()
     },
-    loadBottom () {
+    loadBottom() {
       this.page++
       this._initData(this.page)
-      this.allLoaded = true;// 若数据已全部获取完毕
-      this.$refs.loadmore.onBottomLoaded();
+      this.allLoaded = true // 若数据已全部获取完毕
+      this.$refs.loadmore.onBottomLoaded()
     },
-    bindBottomChange (status) {
+    bindBottomChange(status) {
       console.log(status)
     },
-    handleEdit (index) {
+    handleEdit(index) {
       let item = this.dataList[index]
       item.isEdit = !item.isEdit
       item.isReadOnly = !item.isReadOnly
       this.$refs['inputName' + index][0].focus()
     },
-    handleCloseBtn (index) {
+    handleCloseBtn(index) {
       let item = this.dataList[index]
       item.isEdit = !item.isEdit
       item.isReadOnly = !item.isReadOnly
       item.nameVal = ''
       item.telVal = ''
     },
-    handleComfirmBtn (index) {
+    handleComfirmBtn(index) {
       let item = this.dataList[index]
       item.isEdit = !item.isEdit
       item.isReadOnly = !item.isReadOnly
@@ -162,23 +170,34 @@ export default {
       }
       this.$emit('getMeg', val)
     },
-    async  bindApply (index) {
+    async bindApply(index) {
       let item = this.dataList[index]
+      if (!item.isEdit) {
+        Toast('请先点击确认')
+        return
+      }
       let { province, empowerCity } = item
       if (!item.nameVal) {
-        Toast('请填写对接人姓名');
+        Toast('请填写对接人姓名')
         return
       }
       if (!item.telVal) {
-        Toast('请填写对接人电话');
+        Toast('请填写对接人电话')
         return
       }
-      let { code, msg, data } = await distributorApply({ province, empowerCity, agentName: item.nameVal, agentPhone: item.telVal, starLevel: item.approveLevel })
+      let { code, msg, data } = await distributorApply({
+        province,
+        empowerCity,
+        agentName: item.nameVal,
+        agentPhone: item.telVal,
+        starLevel: item.approveLevel
+      })
       if (code == 0) {
         item.nameVal = ''
         item.telVal = ''
+        this._initData()
       }
-      Toast(msg);
+      Toast(msg)
     }
   }
 }
@@ -208,7 +227,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 0 1.6vw;
+    padding: 0 13px;
     padding-top: 4vw;
     box-sizing: border-box;
     .left_text {
@@ -233,18 +252,20 @@ export default {
   .time {
     color: #666;
     font-size: 3.73vw;
-    padding-left: 1.6vw;
+    padding-left: 13px;
   }
   .buttMan {
     width: 100%;
     height: 23.86vw;
     margin-top: 2.4vw;
+    padding: 0 13px;
+    box-sizing: border-box;
     // border-top:1px solid #ff964c;
     // border-bottom:1px solid #ff964c;
     .head_line {
       position: relative;
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -261,10 +282,11 @@ export default {
       font-size: 3.73vw;
       display: flex;
       justify-content: space-between;
-      padding: 1.4vw 2.4vw 0 1.6vw;
+      padding-top: 1.4vw;
       box-sizing: border-box;
       height: 8vw;
       .edit_btn {
+        padding-top: 1.4vw;
         img {
           width: 5.06vw;
           height: 5.06vw;
@@ -286,7 +308,7 @@ export default {
       }
     }
     .content {
-      padding: 0 2.4vw 0 1.6vw;
+      padding: 0;
       box-sizing: border-box;
 
       .name,
@@ -308,7 +330,7 @@ export default {
       margin-top: 1.4vw;
       position: relative;
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -325,9 +347,9 @@ export default {
     display: flex;
     justify-content: flex-end;
     width: 100%;
-    padding: 2.26vw 1.6vw 1.6vw 1.6vw;
+    padding: 2.26vw 0 1.6vw 0;
     box-sizing: border-box;
-    button {
+    .btn {
       width: 21.33vw;
       height: 8vw;
       border-radius: 4vw;
@@ -336,6 +358,8 @@ export default {
       font-size: 4vw;
       font-weight: 500;
       text-align: center;
+      padding: 0;
+      margin-right: 13px;
     }
   }
 }

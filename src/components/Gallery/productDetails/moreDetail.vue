@@ -1,12 +1,18 @@
 <template>
-  <div class="moreDetails" :style={top:top}>
-    <div class="icon_more" @click="changeShow">
-      <img src="../../../assets/imgs/more.png" alt>
+  <div class="moreDetails"
+       :style={top:top}>
+    <div class="icon_more"
+         @click="changeShow">
+      <img src="../../../assets/imgs/more.png"
+           alt>
     </div>
-    <div class="more_content" v-show="isShow">
+    <div class="more_content"
+         v-show="isShow">
       <div class="trigon"></div>
       <ul>
-        <li v-for="(item, index) in list" :key="index" @click="skipTo(index)">{{item}}</li>
+        <li v-for="(item, index) in list"
+            :key="index"
+            @click="skipTo(index)">{{item}}</li>
       </ul>
     </div>
   </div>
@@ -17,9 +23,9 @@ export default {
   data() {
     return {
       isShow: false,
-      list: ["图库首页", "我的收藏", "扫一扫"],
+      list: ['图库首页', '我的收藏', '扫一扫'],
       top: ''
-    };
+    }
   },
   created() {
     this.isIPhoneX()
@@ -28,58 +34,69 @@ export default {
     //判断是否iphoneX
     isIPhoneX() {
       let phone = this.phoneSize()
-      if(phone === 'iphonex') {
+      if (phone === 'iphonex') {
         this.top = '8vw'
-      }else {
+      } else {
         this.top = '3vw'
       }
     },
     changeShow() {
-      this.isShow = !this.isShow;
+      this.isShow = !this.isShow
     },
     skipTo(index) {
       this.list.forEach(item => {
         switch (index) {
           case 0:
-            this.$router.push({ path: "/gallery" });
-            break;
+            this.$router.push({ path: '/gallery' })
+            break
           case 1:
-            this.$router.push({ path: "/collectList" });
-            break;
+            this.$router.push({ path: '/collectList' })
+            break
           case 2:
-            this.openscan();
-            break;
+            this.openscan()
+            break
         }
-      });
+      })
     },
     openscan() {
-      var FNScanner = api.require("FNScanner");
-      FNScanner.open(
+      var _this = this
+      var FNScanner = api.require('FNScanner')
+      FNScanner.openScanner(
         {
-          autorotation: true,
-          verticalLineColor: "##94f8fa",
-          isAlbum: true,
-          hintText: "将二维码放入取景框内即可自动扫描"
+          autorotation: true
         },
         function(ret, err) {
           if (ret) {
-            console.log(JSON.stringify(ret));
+            if (ret.eventType == 'success') {
+              let id = _this.getUrlParams(ret.content, 'id')
+              _this.$router.replace({
+                path: ret.content.split('#')[1].split('?')[0],
+                query: { id }
+              })
+              location.reload()
+            }
           } else {
-            console.log(JSON.stringify(err));
+            Toast('扫码失败')
           }
         }
-      );
+      )
+    },
+    getUrlParams(url, name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+      var r = url.split('?')[1].match(reg)
+      if (r != null) return decodeURIComponent(r[2])
+      return null
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
 .moreDetails {
+  position: fixed;
   right: 4.266vw;
   top: 3vw;
-  z-index:100;
-  position: fixed;
+  z-index: 100;
   .icon_more {
     padding: 4vw;
     margin-top: 0vw;

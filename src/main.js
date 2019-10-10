@@ -9,6 +9,7 @@ import VueLazyload from 'vue-lazyload'
 
 // 字体图标
 import './assets/iconfont/iconfont.css'
+
 //图片预览
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'

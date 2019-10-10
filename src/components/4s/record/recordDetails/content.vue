@@ -35,16 +35,16 @@
 <script>
 export default {
   props: ['item'],
-  data () {
+  data() {
     return {
       activeColor: ''
-    };
+    }
   },
-  mounted () {
+  mounted() {
     this.getActiviColor()
   },
   methods: {
-    getActiviColor () {
+    getActiviColor() {
       const color = this.$route.query && this.$route.query.color
       if (color) {
         this.activeColor = '#F88675'
@@ -54,6 +54,10 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
+@font-face {
+  font-family: din;
+  src: url(~@/assets/font/DIN-Medium.otf);
+}
 .rec_content {
   width: 100vw;
   box-sizing: border-box;
@@ -68,8 +72,9 @@ export default {
       .num {
         color: #007aff;
         font-weight: 500;
-        font-size: 8.53vw;
+        font-size: 30px;
         line-height: 10vw;
+        font-family: din;
       }
       .fen {
         color: #2d2d2d;
@@ -79,10 +84,13 @@ export default {
     .all_score {
       text-align: center;
       color: #007aff;
-      font-size: 2.4vw;
+      font-size: 12px;
       font-weight: 500;
       border: 1px solid #007aff;
       border-radius: 0.8vw;
+      line-height: 1;
+      padding: 5px 0;
+      font-family: din;
     }
   }
   .center-box {

@@ -31,10 +31,10 @@
         </li>
 
       </ul>
-      <div class="more"
+      <div class="more-info"
            v-if="item.shopList.length>4"
            @click="$emit('onToggleMore',parentIndex)"
-           :class="{'more-acitve':item.more}">{{item.more?'收起':'点击更多'}}</div>
+           :class="{'more-active':item.more}">{{item.more?'收起':'点击更多'}}</div>
     </div>
 
   </div>
@@ -47,15 +47,15 @@ export default {
     starCard
   },
   props: ['item', 'parentIndex'],
-  data () {
-    return {
-    };
+  data() {
+    return {}
   },
   methods: {
-    handleClick (item) {
+    handleClick(item) {
       let { shopName, shopId } = item
       this.$router.push({
-        name: 'record', query: { shopName, shopId }
+        name: 'record',
+        query: { shopName, shopId }
       })
     }
   }
@@ -78,6 +78,7 @@ export default {
     box-sizing: border-box;
     .via {
       height: 61px;
+      padding-left: 8px;
       img {
         width: 61px;
         height: 61px;
@@ -102,7 +103,7 @@ export default {
   }
 
   %foot {
-    content: "";
+    content: '';
     display: block;
     width: 5px;
     height: 5px;
@@ -115,7 +116,7 @@ export default {
   }
   .content-box {
     padding-bottom: 5px;
-    .more {
+    .more-info {
       height: 20px;
       line-height: 20px;
       text-align: center;
@@ -131,10 +132,12 @@ export default {
     .more-active {
       &::after {
         @extend %foot;
-        transform: rotateZ(0);
+        transform: rotateZ(-225deg);
+        transform-origin: center 5px;
       }
     }
   }
+
   .content {
     margin-top: 5px;
     padding: 1.4vw;
@@ -146,7 +149,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 1.2vw;
+      padding-right: 1.2vw;
       box-sizing: border-box;
       height: 30px;
       line-height: 30px;

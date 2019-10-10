@@ -54,10 +54,10 @@ export default {
   },
   methods: {
     filterVal (val) {
-      let pass = ''
-      if (val == '及格') {
+      var pass = ''
+      if (val == '合格') {
         pass = 1
-      } else if (val == '不及格') {
+      } else if (val == '不合格') {
         pass = 0
       }
       let params = {
@@ -82,7 +82,7 @@ export default {
       checkLogs.map(item => {
         item.sTime = item.startTime.split(' ')[0]
         item.eTime = item.endTime.split(' ')[0]
-        item.pass == 0 ? item.passVal = '不及格' : '及格'
+        item.passVal = item.pass == 0 ? '不合格' : '合格'
       })
       this.checkLogs = checkLogs
     }

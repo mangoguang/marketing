@@ -9,6 +9,7 @@
       </li>
       <li id="2" v-if="_localAjax().typename === 'Dealer Boss'
                       ||_localAjax().typename ==='Boss&Consultant'
+                      ||_localAjax().typename === 'Store Manager' 
                       ||_localAjax().typename === 'Boss&Manager'">
          <router-link to="/ReportForms" replace>
           <div class="iconChar"></div>

@@ -9,18 +9,20 @@
       </div>
       <ul class="details">
         <li>
-          <span>检查周期:</span>
-          <span> {{item.cycle*4}}周</span>
+          <span>累计周期:</span>
+          <span> {{item.cycle||1}}月</span>
         </li>
-        <!-- <li>
+        <li v-if="item.isGrade">
           <span>检查时间:</span>
-          <span>2019-07-14</span>
-        </li> -->
+          <span>{{item.inspectTime&&item.inspectTime.split(' ')[0]}}</span>
+        </li>
       </ul>
       <div class="right-box"
-           @click="bindNavigatorStartCheck(item.id)">
-        <span>去评分</span>
-        <img src="../../../assets/imgs/4s/right_2.png"
+           :class="{'has-check':item.isGrade==1}"
+           @click="bindNavigatorStartCheck(item)">
+        <span>{{item.isGrade!=1?'去评分':'已评分'}}</span>
+        <img v-if="item.isGrade!=1"
+             src="../../../assets/imgs/4s/right_2.png"
              alt="">
       </div>
     </div>
@@ -31,17 +33,19 @@
 <script>
 export default {
   props: ['item', 'listId'],
-  data () {
+  data() {
     return {
       score: 99
-    };
+    }
   },
   methods: {
     //去星级检查
-    bindNavigatorStartCheck (shopId) {
-      this.$router.push({ path: '/starCheck', query: { shopId } })
+    bindNavigatorStartCheck(item) {
+      this.$router.push({
+        path: '/starCheck',
+        query: { shopId: item.id, starLevel: item.starLevel }
+      })
     }
-
   }
 }
 </script>
@@ -87,7 +91,7 @@ export default {
       margin-top: -2vw;
       padding: 0 2vw;
       ::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -109,7 +113,7 @@ export default {
       margin-top: -2vw;
       padding: 0 2vw;
       ::after {
-        content: "";
+        content: '';
         position: absolute;
         top: 0;
         left: 0;
@@ -154,7 +158,7 @@ export default {
       }
     }
     .details {
-      padding-top: 12px;
+      // padding-top: 12px;
       box-sizing: border-box;
       li {
         color: #666;
@@ -190,6 +194,16 @@ export default {
       width: 1.6vw;
       height: auto;
       margin-left: 1vw;
+    }
+  }
+  .has-check {
+    box-sizing: border-box;
+    padding-left: 17px;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAALVBMVEVHcExM2WRM2mNP2WBL2WRM2WRM2WNM2mRH12ZM2WNM2WRM2mNM2mRL12NM2WT1w2PbAAAADnRSTlMA79sPMcyhcRlAkbVJFgfB9OUAAAEySURBVDjLY2CAAsuyQEFB0fTJDGjATe8dGDxNQRX3fgcHW5DF294hgQyEOI8essSjA3CJunco4DlMnOsdGlgAlViHLvEKIs7+DgMUgCXmYUq8BInzymFKPLwAlGB7hwUkACX8sEk8AUrswybxmoGB5R1W4IDpO5gfjdCFNCeBSGUMXzy9wALxCVoAvtOA2PqcIQ9dA0MTiH7GEIeugRcs8pRBDquGdw/RJGAa0CXgGuAS4oWoGuASB1j0UDTAJQwYHFE0ACXioOEP1IKkAejcPFj0OyJrAHqwDhaaLEJIGoBBMg+eYjyQNAAD0QgpkSE0AIOdC5HIkDSAjEYwm1CiFp4YXnnGoSQG3MkHZ4LDmURxJmrc2QBnxsGd1XBmTtzZGWcBgLvIQBQyj1LQix/0YgkAyhwLOF2lENkAAAAASUVORK5CYII=)
+        5px center/ 3.2vw auto no-repeat,
+      #cff4d2;
+    span {
+      color: #4cd964;
     }
   }
 }

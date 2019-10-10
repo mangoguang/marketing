@@ -1,14 +1,17 @@
 <template>
-  <div class="search" :style="marginTop">
-    <div class="search_box" :style='paddingTop'>
-      <button class="cancle" @click="cancleBtn"></button>
-      <Search class="searchComp" 
-        v-model.trim="searchVal"
-        :deleteVal='deleteVal'
-        @keypress.native="search"
-      />
+  <div class="search"
+       :style="marginTop">
+    <div class="search_box"
+         :style='paddingTop'>
+      <button class="cancle"
+              @click="cancleBtn"></button>
+      <Search class="searchComp"
+              v-model.trim="searchVal"
+              :deleteVal='deleteVal'
+              @keypress.native="search" />
     </div>
-    <div class="matchTxt" v-show="matchTxt">
+    <div class="matchTxt"
+         v-show="matchTxt">
       <!-- <div class="nav_function">
         <sort-list  class="sortList" :changeStatus='changeStatus' :reset='reset'/>
         <div class="changeStyle" @click="changStyle">
@@ -17,29 +20,39 @@
         </div>
         <m-filter @click.native="changeSortListStatus" :time='time'/>
       </div> -->
-      <div class="productList" ref="searchLoadMore">
+      <div class="productList"
+           ref="searchLoadMore">
         <!-- 列表 -->
-        <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="searchLoad" :auto-fill="false"> 
-        <div class="m-list" v-show="!type">
-          <div v-for="(item, index) in list" :key='index'> 
-            <router-link :to='{name:"productDetails",query: {id: item.id}}'>
-              <m-list :list='item'/>
-            </router-link>
+        <mt-loadmore :bottom-method="loadBottom"
+                     :bottom-all-loaded="allLoaded"
+                     ref="searchLoad"
+                     :auto-fill="false">
+          <div class="m-list"
+               v-show="!type">
+            <div v-for="(item, index) in list"
+                 :key='index'>
+              <router-link :to='{name:"productDetails",query: {id: item.id}}'>
+                <m-list :list='item' />
+              </router-link>
+            </div>
           </div>
-        </div>
-        <!-- 瀑布流 -->
-        <div class="list" v-show="type">
-          <div class="item" v-for="(item, index) in list" :key='index'>
-            <router-link :to='{name:"productDetails",query: {id: item.id}}'>
-              <w-list :list='item'/>
-            </router-link>
-          </div>  
-        </div>
+          <!-- 瀑布流 -->
+          <div class="list"
+               v-show="type">
+            <div class="item"
+                 v-for="(item, index) in list"
+                 :key='index'>
+              <router-link :to='{name:"productDetails",query: {id: item.id}}'>
+                <w-list :list='item' />
+              </router-link>
+            </div>
+          </div>
         </mt-loadmore>
       </div>
-  </div>
+    </div>
     <!-- 没有匹配到相关内容 -->
-    <div class="search_nothing" v-show="!unMatchTxt">
+    <div class="search_nothing"
+         v-show="!unMatchTxt">
       <p>未找到相关产品</p>
     </div>
   </div>
@@ -49,16 +62,16 @@
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
 import Vue from 'vue'
-import {IndexModel} from '../../utils/index'
+import { IndexModel } from '../../utils/index'
 const indexModel = new IndexModel()
 import { mapMutations, mapState } from 'vuex'
-import {fliterItem} from '../../utils/gallery'
+import { fliterItem } from '../../utils/gallery'
 import mango from '../../js'
 import Search from '../../components/msManage/search/eggSearchInp'
-import SortList from '../../components/Gallery/productList/sortList';
-import MFilter from '../../components/Gallery/productList/filter';
-import MList from '../../components/Gallery/productList/listStyle';
-import WList from '../../components/Gallery/productList/waterfallList';
+import SortList from '../../components/Gallery/productList/sortList'
+import MFilter from '../../components/Gallery/productList/filter'
+import MList from '../../components/Gallery/productList/listStyle'
+import WList from '../../components/Gallery/productList/waterfallList'
 export default {
   components: { Search, SortList, MFilter, MList, WList },
   data() {
@@ -73,7 +86,7 @@ export default {
       key: true,
       list: [],
       searchTurn: true,
-      obj:{
+      obj: {
         brand: '',
         key: '',
         st: 0,
@@ -88,15 +101,15 @@ export default {
     }
   },
   //判断是初始还是后退
-  beforeRouteEnter (to, from, next) {
-    if(from.path === '/gallery' || from.path === '/productList') {
+  beforeRouteEnter(to, from, next) {
+    if (from.path === '/gallery' || from.path === '/productList') {
       next(vm => {
         vm.$set(vm.obj, 'account', vm._localAjax().account)
         vm.setSearchParmas(vm.obj)
       })
-    }else {
+    } else {
       next(vm => {
-        let limit = (vm.searchParmas.page)* 10
+        let limit = vm.searchParmas.page * 10
         vm.setParmas('page', 1)
         vm.setParmas('limit', limit)
         vm.searchVal = vm.searchParmas.key
@@ -107,7 +120,7 @@ export default {
   },
   watch: {
     searchVal() {
-      if(this.searchVal === '') {
+      if (this.searchVal === '') {
         this.matchTxt = false
         this.unMatchTxt = true
       }
@@ -142,29 +155,39 @@ export default {
   },
   created() {
     this.isIPhoneX()
+    var searchVal = this.$route.query.searchVal
+    if (searchVal) {
+      this.initSearch(searchVal)
+      this.searchVal = searchVal
+    }
   },
   methods: {
     ...mapMutations([
-      'setSearchParmas', 
-      'setDownList', 
+      'setSearchParmas',
+      'setDownList',
       'setDownListVal',
       'resetFilterList',
       'setSearchScroll'
     ]),
-     //获取滚动条高度
+    //获取滚动条高度
     recordScrollPosition(e) {
       this.setSearchScroll(e.target.scrollTop)
     },
     //监听滚动条高度
     listenScrollTop() {
-      this.$refs.searchLoadMore.addEventListener('scroll',this.recordScrollPosition,true);
+      this.$refs.searchLoadMore.addEventListener(
+        'scroll',
+        this.recordScrollPosition,
+        true
+      )
       this.$nextTick(() => {
-        this.$refs.searchLoadMore.scrollTop = this.searchScroll; 
+        this.$refs.searchLoadMore.scrollTop = this.searchScroll
       })
     },
     //键盘搜索事件
     search(event) {
-      if (event.keyCode == 13 && this.searchVal) { //如果按的是enter键 13是enter 
+      if (event.keyCode == 13 && this.searchVal) {
+        //如果按的是enter键 13是enter
         this.time += 1
         this.list = []
         this.setSearchScroll(0)
@@ -196,13 +219,13 @@ export default {
     //搜索请求
     searchKey(obj) {
       indexModel.fliterList(obj).then(res => {
-        if(res.status == 1 && res.data.list.length) {
+        if (res.status == 1 && res.data.list.length) {
           this.list = this.list.concat(res.data.list)
           this.matchTxt = true
           this.unMatchTxt = true
           this.allLoaded = false
           this.listenScrollTop()
-        }else {
+        } else {
           this.matchTxt = false
           this.unMatchTxt = false
           this.list = []
@@ -230,51 +253,51 @@ export default {
     //切换展示模式
     changStyle() {
       this.changeStatus = true
-      if(this.key) {
+      if (this.key) {
         this.key = false
         setTimeout(() => {
           this.type = !this.type
           this.key = true
-        }, 200);
+        }, 200)
       }
     },
     //获取价格参数
     getPrice() {
-      if(this.price.price2 === '') {
+      if (this.price.price2 === '') {
         return this.price.price1 + ''
-      }else {
+      } else {
         return this.price.price1 + '-' + this.price.price2
       }
     },
     //下拉刷新
     loadBottom() {
-      this.$refs.searchLoad.onBottomLoaded();
+      this.$refs.searchLoad.onBottomLoaded()
       this.pullDownData()
     },
-     //下拉加载数据
+    //下拉加载数据
     pullDownData() {
       this.allLoaded = true
-      let len = (this.list.length)/10 + 1
-      if(Math.floor(len) < len) {
+      let len = this.list.length / 10 + 1
+      if (Math.floor(len) < len) {
         this.allLoaded = true
-      }else {
+      } else {
         this.setParmas('page', len)
         this.setParmas('limit', 10)
         this.searchKey(this.obj)
       }
     },
-     //判断是否iphoneX
+    //判断是否iphoneX
     isIPhoneX() {
       let phone = this.phoneSize()
-      if(phone === 'iphonex') {
-        this.marginTop = {marginTop: '-5.86vw'};
-        this.paddingTop = {paddingTop: '11vw'}
-      }else if(phone === 'iphone') {
-        this.marginTop = "";
-        this.paddingTop = {paddingTop: '5vw'}
-      }else {
-        this.marginTop = "";
-        this.paddingTop = {paddingTop: '5vw'}
+      if (phone === 'iphonex') {
+        this.marginTop = { marginTop: '-5.86vw' }
+        this.paddingTop = { paddingTop: '11vw' }
+      } else if (phone === 'iphone') {
+        this.marginTop = ''
+        this.paddingTop = { paddingTop: '5vw' }
+      } else {
+        this.marginTop = ''
+        this.paddingTop = { paddingTop: '5vw' }
       }
     }
   }
@@ -284,7 +307,7 @@ export default {
 <style lang="scss" scoped>
 .search {
   height: 100vh;
-  width:100vw;
+  width: 100vw;
   // background: #f7f7f7;
   box-sizing: border-box;
   overflow: hidden;
@@ -295,7 +318,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding:2.7vw 0 2.6vw;
+    padding: 2.7vw 0 2.6vw;
     .searchComp {
       width: 78.66vw;
       // margin-left: 2vw;
@@ -315,14 +338,14 @@ export default {
     align-items: center;
     justify-content: space-between;
     line-height: 10.6vw;
-    background:rgba(255,255,255,1);
-    box-shadow:0px 1px 3px 0px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
     margin-bottom: 2vw;
     .sortList {
       flex: 0.94;
     }
     .changeStyle {
-        // padding-top: 1vw;
+      // padding-top: 1vw;
       img {
         width: 3.46vw;
         height: 3.46vw;
@@ -351,14 +374,22 @@ export default {
     // margin-top: 4vw;
   }
   a {
-    color: #666
+    color: #666;
   }
   .m-list {
     margin-top: 0;
-    background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(
+      0deg,
+      rgba(248, 248, 248, 1) 0%,
+      rgba(255, 255, 255, 1) 100%
+    );
   }
   .list {
-    background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(
+      0deg,
+      rgba(248, 248, 248, 1) 0%,
+      rgba(255, 255, 255, 1) 100%
+    );
     margin: 3vw;
     display: flex;
     flex-wrap: wrap;
@@ -378,7 +409,7 @@ export default {
     padding-bottom: 30vw; ///有头部30vw
     box-sizing: border-box;
     margin-top: 2vw;
-    -webkit-overflow-scrolling: touch
+    -webkit-overflow-scrolling: touch;
   }
 }
 </style>

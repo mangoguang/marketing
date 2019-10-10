@@ -12,7 +12,7 @@ export default {
       const permissionRoles = value
 
 
-      const hasPermission = permissionRoles.includes(roles)
+      const hasPermission = permissionRoles.indexOf(roles) != -1
 
 
       if (!hasPermission) {
