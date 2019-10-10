@@ -138,7 +138,13 @@ export default {
       'setCustomerScroll',
       'setOrderScroll',
       'setDealScroll',
-      'setIsSelectStatus'
+      'setIsSelectStatus',
+      'setArea',
+      'setBrand',
+      'setDate',
+      "setStartTime",
+      "setEndTime",
+      "setAreaLine", "setAreaName","setdateLine"
     ]),
     //判断token过期时间，设置定时器
     setTime() {
@@ -209,6 +215,14 @@ export default {
       this.messageTip.showMessageBox = true
     },
     remove() {
+      this.setArea(null)
+      this.setBrand(null)
+      this.setDate(null)
+      this.setStartTime('')
+      this.setEndTime('')
+      this.setAreaLine(0)
+      this.setAreaName('')
+      this.setdateLine(0)
       let deviceId = localStorage.getItem('deviceId')
       localStorage.clear()
       sessionStorage.clear()

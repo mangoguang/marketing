@@ -73,7 +73,7 @@ export default {
   },
   created() {
     this.articleId = this.$route.query.articleId
-    // this.account = this._localAjax().account;
+    this.account = this._localAjax().account;
     this.getArticleDetail()
     this.isIPhoneX()
     this.sharePage()
@@ -154,10 +154,10 @@ export default {
     //获取文章详情
     getArticleDetail() {
       const id = this.articleId
-      indexModel.getArticleDetail(id).then(res => {
+      indexModel.getArticleDetail(id,this.account).then(res => {
         this.articleDetails = res.data
         this.logoImageUrl = res.data.logoImageUrl
-        this.setImgUrl(res.imageURL)
+        this.setImgUrl(res.data.image)
         if (res.data.remark) {
           let temp = res.data.remark
           this.myhtml = changeImgStyle(b64DecodeUnicode(temp))
@@ -172,6 +172,7 @@ export default {
           }
         }
         this.collection = res.data.collect
+        
       })
     },
     // //收藏
@@ -242,7 +243,7 @@ export default {
   }
   .shareBtn {
     position: fixed;
-    right: 4.26vw;
+    right: 0;
     top: 0;
     z-index: 99;
   }

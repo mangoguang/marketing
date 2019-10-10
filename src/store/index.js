@@ -57,6 +57,8 @@ import storeEmployeeList from './modules/store/storeEmployeeList'
 import plan from './modules/work/plan'
 import eggRecordDetails from './modules/4s/recordDetails' 
 import noticeList from './modules/notice/noticeList' 
+import chartSelect from './modules/chart/select/index'
+import topLine from './modules/chart/top/index'
 export default new Vuex.Store({
   state,
   mutations,
@@ -115,6 +117,8 @@ export default new Vuex.Store({
     storeEmployeeList,
     plan,
     eggRecordDetails,
-    noticeList
+    noticeList,
+    chartSelect,
+    topLine
   }
 })

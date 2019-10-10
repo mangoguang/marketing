@@ -68,7 +68,7 @@ export default {
                 this.toplist = []
             }
             this.toplist = this.list
-            console.log(this.toplist);
+            // console.log(this.toplist);
             
         }
     },
