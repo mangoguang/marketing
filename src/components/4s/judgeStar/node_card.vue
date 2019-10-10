@@ -21,7 +21,7 @@
               <p>
                 {{items.createTime}}
                 <span @click="handleDetailClick(items)"
-                      :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}&&[1,2,3].includes(items.type)">{{(items.status==3||items.status==1)&&items.type==9?'已认证': items.statusString}}</span>
+                      :class="{unPass:items.statusString.indexOf('未通过')!=-1}">{{items.statusString}}</span>
               </p>
             </div>
             <div v-if="item&&item.length==0"
@@ -57,7 +57,7 @@ export default {
   props: ['cofirmList', 'star', 'status', 'comfirmTitle'], //几星
   data() {
     return {
-      itemName: ['经销商', '区域片区', '4s认证部', '总部', '总部'],
+      itemName: ['经销商', '区域片区', '4s认证部', '总部', '归档'],
 
       lineStyle: {}
     }

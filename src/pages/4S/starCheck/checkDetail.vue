@@ -1,7 +1,20 @@
 <template>
   <div class="checkDetail">
-    <mybanner :title='$route.query.name' />
+    <mybanner :title='$route.query.name'
+              :showLeft="true"
+              :remark="0"
+              @onHandleBack="onHandleBack">
+      <div class="remark"
+           @click="ShowCheckTip=true"></div>
+    </mybanner>
+
     <div class="form">
+      <div class="tip"
+           v-if="area.showAcreage||area.showDecorateDate||area.showExpiryDate"><span v-if="area.showAcreage">
+          门店面积<br>{{shops[shopsSelectIndex]['acreage']||'-'}}平方 </span>
+        <span v-if="area.showDecorateDate">最近装修时间<br>{{shops[shopsSelectIndex]['decorateTime']||'-'}} </span>
+        <span v-if="area.showExpiryDate">装修结束时间<br>{{shops[shopsSelectIndex]['expiryDate']||'-'}} </span>
+      </div>
       <div class="editor">
         <textarea v-model="textareaVal"
                   v-if="isGrade!=1"
@@ -20,13 +33,15 @@
             <div class="up-del"
                  @click="bindDeleteImg(index)"
                  v-if="isGrade!=1"></div>
-            <img class="source"
-                 v-if="/png|jpg|jpeg|bmp/.test(item)"
-                 :src="item"
-                 :preview='true'
-                 alt="">
+            <div class="imgs"
+                 v-if="/.png$|.jpg$|.jpeg$/gi.test(item)">
+              <img class="source"
+                   :src="item"
+                   :preview='true'
+                   alt="">
+            </div>
             <div class="video"
-                 v-if="/mp4/.test(item)"
+                 v-if="/.3gp$|.mp4$|.mov$/gi.test(item)"
                  @click="bindPlay(item,index)">
             </div>
 
@@ -39,10 +54,15 @@
                  @change="bindUpload">
 
           <div class="up-btn"
-               @click="sheetVisible=true"
+               @click="bindMediaSelect"
                v-if="isGrade!=1"></div>
 
         </div>
+      </div>
+      <div class="progress">
+        <mt-progress v-if="progress"
+                     :value="progress"
+                     :bar-height="5"></mt-progress>
       </div>
       <div class="rangeBox"
            v-if="!uploading">
@@ -51,13 +71,10 @@
           <span class="tips">扣{{rangeValue}}分</span>
           <div class="top"><span>0</span><span>{{maxScore}}</span></div>
           <div class="rule">
-            <div class="li"></div>
-            <div class="li"></div>
-            <div class="li"></div>
-            <div class="li lis"></div>
-            <div class="li"></div>
-            <div class="li"></div>
-            <div class="li"></div>
+            <div class="li"
+                 v-for="(li,index) in 7"
+                 :class="{lis:index==3}"
+                 :key="index"></div>
           </div>
         </div>
         <mt-range v-model="rangeValue"
@@ -71,7 +88,7 @@
       <button @click="bindSave"
               v-if="isGrade!=1">保存</button>
     </div>
-    <mt-actionsheet :actions="[{ name:'拍照', method:getCamera },{ name:'录像', method:getCamcorder }, { name:'从手机相册选择', method:getPhoto}]"
+    <mt-actionsheet :actions="actions"
                     v-model="sheetVisible"></mt-actionsheet>
     <div class="video-box"
          v-if="showVideo">
@@ -82,12 +99,33 @@
                     :playsinline="true"
                     :options="playerOptions" />
     </div>
+    <ToastBox class="toast"
+              v-if="toastReset">
+      <template>
+        <div class="contents"
+             slot="content">
+          <p>未保存将清空数据<br>确定返回吗？</p>
+        </div>
+
+      </template>
+      <template v-slot:bottons>
+        <div class="but">
+          <div class="btns"
+               @click="toastReset=false">取消</div>
+          <div class="btns"
+               @click="$router.go(-1)">确定</div>
+        </div>
+      </template>
+    </ToastBox>
+    <CheckTip v-if="ShowCheckTip"
+              @onCloseTip="ShowCheckTip=false" />
   </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import mybanner from '../../../components/banner'
+import CheckTip from '@/components/4s/starCheck/CheckTip'
 import { Range, Actionsheet, Toast, Indicator } from 'mint-ui'
 Vue.component(Actionsheet.name, Actionsheet)
 Vue.component(Range.name, Range)
@@ -98,11 +136,19 @@ import { uploadFile, uploadFiles } from '@/api/4s'
 import { async, Promise } from 'q'
 
 import { mapState, mapMutations, mapGetters } from 'vuex'
-
+import { getSign } from '@/utils/tools.js'
+import lrz from 'lrz'
 import _ from 'lodash'
+import { Progress } from 'mint-ui'
+Vue.component(Progress.name, Progress)
+import ToastBox from '@/components/4s/tipsBox/ToastBox'
+
+import { baseUrl } from '@/js/common'
 export default {
   components: {
-    mybanner
+    mybanner,
+    ToastBox,
+    CheckTip
   },
   data() {
     return {
@@ -125,7 +171,7 @@ export default {
         fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
         sources: [
           {
-            src: 'http://vjs.zencdn.net/v/oceans.mp4',
+            src: '',
             type: 'video/mp4'
           }
         ],
@@ -140,7 +186,19 @@ export default {
         },
         defaltVal: 0
       },
-      showVideo: false
+      actions: [
+        { name: '拍照', method: this.getCamera },
+        { name: '录像', method: this.getCamcorder },
+        { name: '上传图片', method: this.getPhoto },
+        { name: '上传视频', method: this.getVideo }
+      ],
+      actionType: 0,
+      showVideo: false,
+      progress: 0,
+      remark: '',
+      area: { showAcreage: 0, showDecorateDate: 0, showExpiryDate: 0 },
+      toastReset: false,
+      ShowCheckTip: false
     }
   },
   computed: {
@@ -150,15 +208,35 @@ export default {
       standardListIndex: state => state.eggRecordDetails.standardListIndex,
       subcategories: state => state.eggRecordDetails.subcategories,
       deductMarks: state => state.eggRecordDetails.deductMarks,
-      totalPoints: state => state.eggRecordDetails.totalPoints
+      totalPoints: state => state.eggRecordDetails.totalPoints,
+      shopsSelectIndex: state => state.eggRecordDetails.shopsSelectIndex,
+      shops: state => state.eggRecordDetails.shops
     })
     // ...mapGetters(['getSubmitScoreData'])
   },
   created() {
     this.isGrade = this.$route.query.isGrade
 
+    // let standardList = this.subcategories[this.categoryListIndex].standardList[
+    //   this.standardListIndex
+    // ]
+
     let standardList = this.submitScoreData.categoryList[this.categoryListIndex]
       .standardList[this.standardListIndex]
+    // this.submitScoreData.categoryList[this.categoryListIndex]
+    //   .standardList[this.standardListIndex]
+    //console.log(standardList)
+    let subStandardList = this.subcategories[this.categoryListIndex]
+      .standardList[this.standardListIndex]
+
+    this.remark = subStandardList.remark
+    this.setCheckingMsg(this.remark.replace(/\n/g, '<br>'))
+
+    this.area = {
+      showAcreage: subStandardList.showAcreage,
+      showDecorateDate: subStandardList.showDecorateDate,
+      showExpiryDate: subStandardList.showExpiryDate
+    }
 
     this.textareaVal = standardList.reason //扣分原因
     var urls = [].concat(standardList.urls || [])
@@ -170,6 +248,15 @@ export default {
     this.maxScore = this.subcategories[this.categoryListIndex].total
   },
   beforeRouteLeave(to, from, next) {
+    if (
+      this.subcategories[this.categoryListIndex].standardList[
+        this.$route.query.standardListIndex
+      ].status
+    ) {
+      next(false)
+    } else {
+      next()
+    }
     let pswp = document.querySelector('.pswp')
     let domColse = document.querySelector('.pswp__button--close')
 
@@ -190,13 +277,25 @@ export default {
     ...mapMutations([
       'setSubmitScoreData',
       'setSubcategories',
-      'setdeductMarks'
+      'setdeductMarks',
+      'setCheckingMsg'
     ]),
     bindTexareaChange: _.debounce(function(e) {
       let val = this.textareaVal.replace(/<\/?[^>]*>/g, '')
-      val = val.replace(/[^\w\d.?!,;"。，？《》！；<> “”\u4e00-\u9fa5]/g, '')
+      val = val.replace(/[^\w\d.?!,;"。，？《》！； “”\u4e00-\u9fa5]/g, '')
       this.textareaVal = val
     }, 300),
+    onHandleBack() {
+      if (
+        this.subcategories[this.categoryListIndex].standardList[
+          this.$route.query.standardListIndex
+        ].status
+      ) {
+        this.$router.back()
+      } else {
+        this.toastReset = true
+      }
+    },
     bindSave() {
       // if (!this.textareaVal) {
       //   Toast('填写扣分原因')
@@ -220,7 +319,6 @@ export default {
       standardList.deduct = rangeValue //分数
 
       this.setdeductMarks(totle)
-
       this.setSubmitScoreData(this.submitScoreData)
 
       this.subcategories[this.categoryListIndex].standardList[
@@ -234,43 +332,179 @@ export default {
 
       this.$router.go(-1)
     },
+    bindMediaSelect() {
+      let standardList = this.subcategories[this.categoryListIndex]
+        .standardList[this.standardListIndex]
+      let actionType = standardList.type
+      this.actionType = actionType
+      if (actionType == 1) {
+        this.actions = [
+          { name: '拍照', method: this.getCamera },
+          { name: '上传图片', method: this.getPhoto }
+        ]
+      }
+      if (actionType == 2) {
+        this.actions = [
+          { name: '录像', method: this.getCamcorder },
+          { name: '上传视频', method: this.getVideo }
+        ]
+      }
+      this.sheetVisible = true
+    },
+    _getVideoSource(sourceType = 'camera') {
+      let _this = this
+      if (sourceType == 'camera') {
+        var zySmallVideo = api.require('zySmallVideo')
+        zySmallVideo.open(
+          {
+            MaxRecordTime: 10,
+            videoColor: api.systemType == 'ios' ? 0x007aff : '#007AFF',
+            AVAssetExportPreset: 'AVAssetExportPreset1280x720',
+            mVideoSizeW: 720,
+            mVideoSizeH: 1280
+          },
+          function(ret, err) {
+            if (ret.result == 'success') {
+              _this.videoCompress(ret.fileUrl)
+            }
+          }
+        )
+
+        return
+      }
+
+      api.getPicture(
+        {
+          sourceType,
+          encodingType: 'jpg',
+          mediaValue: 'video',
+          destinationType: 'url'
+          // allowEdit: true,
+          // saveToPhotoAlbum: true
+        },
+        function(ret, err) {
+          try {
+            if (ret) {
+              if (ret.duration == 0) return
+
+              var model = api.deviceModel
+              var sVer = api.systemVersion
+              //小米8不压缩
+              if (
+                (model == 'MI 8' && sVer == 9) ||
+                (model == 'COL-AL10' && sVer == 9)
+              ) {
+                _this._nativeUpload(ret.data)
+              } else {
+                _this.videoCompress(ret.data)
+              }
+            } else {
+              Toast('获取文件资源失败')
+            }
+          } catch (err) {
+            console.log(err)
+          }
+        }
+      )
+    },
+    videoCompress(path) {
+      let _this = this
+      var videoCompression = api.require('videoCompression')
+      videoCompression.compression(
+        {
+          path,
+          quality: 'low'
+        },
+        function(ret) {
+          if (ret.eventType == 'exporting') {
+            _this.progress = ret.progress
+          } else {
+            _this._nativeUpload(ret.path)
+          }
+        }
+      )
+    },
+    _nativeUpload(path) {
+      let _this = this
+      this.progress = 0
+      if (_this.picVal.length > 4) {
+        Toast('文件数量不可大于5个')
+        return
+      }
+      var len = this.picVal.filter(item => /.3gp$|.mp4$|.mov$/gi.test(item))
+      if (len.length >= 1) {
+        Toast('视频最多上传一个')
+        return
+      }
+
+      Indicator.open({
+        text: '上传中...',
+        spinnerType: 'fading-circle'
+      })
+
+      let token = JSON.parse(localStorage.getItem('token')) || {}
+      api.ajax(
+        {
+          url: baseUrl + '/api/upload/files',
+          method: 'post',
+          headers: {
+            Authorization: `Bearer ${token.access_token}`,
+            sign: getSign({ prefix: 'cert-check-log' }, token.access_token)
+          },
+          data: {
+            prefix: 'cert-check-log',
+            files: {
+              dataFiles: path
+            }
+          }
+        },
+        function(rets, errs) {
+          if (rets) {
+            let url = rets.list.map(item => item.url)
+            _this.picVal = _this.picVal.concat(url)
+            _this.uploading = false
+            _this.progress = 0
+            Indicator.close()
+          } else {
+            api.alert({
+              msg: '网络错误'
+            })
+            console.log(JSON.stringify(errs))
+          }
+        }
+      )
+    },
     //文件上传
     _uploadFile(e) {
-      var _this = this
-
-      let files = Array.from(e.target.files)
-      let imgSize = 0.3 * 1024 * 1024
       return new Promise((resolve, reject) => {
-        files.map(async (item, index) => {
-          if (/^image|^video/.test(item.type)) {
-            console.log(item.size, imgSize)
-            if (item.size < imgSize) {
-              resolve(item)
-              return
-            }
-
-            let reader = new FileReader()
-            reader.readAsDataURL(item)
-            reader.onloadend = async function() {
-              let img = new Image()
-              img.src = this.result
-              img.onload = async function() {
-                let data = _this.compress(img, item.size)
-                let blob = _this.dataURItoBlob(data)
-                let file = new File([blob], item.name, { type: item.type })
-                item = file
-                resolve(file)
-              }
-            }
-          } else {
-            Toast({
-              message: `上传正确的格式`,
-              position: 'middle',
-              duration: 2000
-            })
+        let file = e.target.files[0]
+        if (/^image/.test(file.type)) {
+          //iphone7 plus
+          var model = api.deviceModel
+          var sVer = api.systemVersion
+          if (model == 'iPhone 7 Plus' && sVer == '10.3.3') {
+            resolve(file)
+            return
           }
-        })
-        //resolve(files)
+          lrz(file, { width: window.innerWidth, quality: 0.1 })
+            .then(function(rst) {
+              // 处理成功会执行
+              let newFile = new File([rst.file], file.name, { type: file.type })
+              resolve(newFile)
+            })
+            .catch(function(err) {
+              // 处理失败会执行
+              Toast('图片压缩处理失败了')
+            })
+        } else if (/^video/.test(file.type)) {
+          if (this.actionType == 1) {
+            Toast('请上传图片')
+            return
+          }
+          resolve(file)
+        } else {
+          Toast('上传正确的格式')
+        }
       })
     },
     async bindUpload(e) {
@@ -286,9 +520,9 @@ export default {
         Toast('文件数量不可大于5个')
         return
       }
-      var len = this.picVal.filter(item => /.mp4$/g.test(item))
+      var len = this.picVal.filter(item => /.3gp$|.mp4$|.mov$/gi.test(item))
       let flg = false
-      console.log(len)
+
       Object.keys(e.target.files).map(item => {
         if (/video/g.test(e.target.files[item]['type'])) {
           flg = true
@@ -322,59 +556,25 @@ export default {
       this.uploading = false
       Indicator.close()
     },
-    // 压缩图片
-    compress(img, size) {
-      let canvas = document.createElement('canvas')
-      let ctx = canvas.getContext('2d')
-      let imgSize = size > 1.5 * 1024 * 1024 ? 0.1 : 0.5
-
-      let initSize = img.src.length
-      let width = img.width
-      let height = img.height
-      canvas.width = width
-      canvas.height = height
-      // 铺底色
-      ctx.fillStyle = '#fff'
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.drawImage(img, 0, 0, width, height)
-
-      //进行最小压缩
-      let ndata = canvas.toDataURL('image/jpeg', imgSize)
-      return ndata
-    },
-    // base64转成bolb对象
-    dataURItoBlob(base64Data) {
-      var byteString
-      if (base64Data.split(',')[0].indexOf('base64') >= 0) {
-        byteString = atob(base64Data.split(',')[1])
-      } else byteString = unescape(base64Data.split(',')[1])
-      var mimeString = base64Data
-        .split(',')[0]
-        .split(':')[1]
-        .split(';')[0]
-      var ia = new Uint8Array(byteString.length)
-      for (var i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i)
-      }
-      return new Blob([ia], { type: mimeString })
-    },
     getCamcorder() {
-      this.$refs.upload.setAttribute('capture', 'camcorder')
-      this.$refs.upload.setAttribute('accept', 'video/*')
-      // this.$refs.upload.removeAttribute('multiple')
-      this.$refs.upload.click()
+      this._getVideoSource()
+      // this.$refs.upload.setAttribute('capture', 'camcorder')
+      // this.$refs.upload.setAttribute('accept', 'video/*')
+      // // this.$refs.upload.removeAttribute('multiple')
+      // this.$refs.upload.click()
     },
     getCamera() {
       this.$refs.upload.setAttribute('capture', 'camera')
       this.$refs.upload.setAttribute('accept', 'image/*')
-      // this.$refs.upload.removeAttribute('multiple')
       this.$refs.upload.click()
     },
     getPhoto() {
       this.$refs.upload.removeAttribute('capture')
-      this.$refs.upload.setAttribute('accept', 'image/*,video/*')
-      // this.$refs.upload.setAttribute('multiple', 'multiple')
+      this.$refs.upload.setAttribute('accept', 'image/*')
       this.$refs.upload.click()
+    },
+    getVideo() {
+      this._getVideoSource('album')
     },
     bindDeleteImg(index) {
       this.picVal.splice(index, 1)
@@ -403,23 +603,14 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%) scale(0.5);
 }
-// /deep/ .mt-range-thumb {
-//   width: 17px;
-//   height: 17px;
-//   top: 50%;
-//   transform: translateY(-50%);
-// }
+
 /deep/ .mt-range {
   width: 245px;
   margin: 0 auto;
 }
 /deep/ .mt-range-runway {
   border-radius: 6px;
-  // margin-right: 17px;
 }
-// /deep/ .mt-range-content {
-//   margin-right: 17px;
-// }
 /deep/ .mt-range-progress {
   padding-right: 10px;
   border-radius: 6px 0 0 6px;
@@ -434,7 +625,45 @@ export default {
   width: 90px;
   height: 90px;
 }
+.progress {
+  width: 300px;
+  margin: 0 auto;
+}
 .checkDetail {
+  .contents {
+    height: 96px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    p {
+      text-align: center;
+      font-size: 14px;
+    }
+  }
+  .but {
+    display: flex;
+    .btns {
+      flex: 1;
+      font-size: 15px;
+    }
+    .btns:first-child {
+      color: #909090;
+      border-right: 1px solid #ddd;
+    }
+    .btns:last-child {
+      color: #007aff;
+    }
+  }
+  .remark {
+    position: absolute;
+    bottom: 13px;
+    right: 24px;
+    width: 34px;
+    height: 34px;
+    background: url(~@/assets/imgs/4s/help拷贝3@2x.png) right bottom no-repeat;
+    background-size: 19px 19px;
+  }
   .video-box {
     position: fixed;
     width: 100vw;
@@ -513,8 +742,12 @@ export default {
           height: 8px;
         }
       }
-      .source {
+      .imgs {
         @extend %up_width;
+      }
+      .source {
+        width: 100%;
+        height: 100%;
       }
       .video {
         @extend %up_width;
@@ -540,8 +773,8 @@ export default {
     .up-btn {
       @extend %up_width;
       border: 1px dashed #e1e1e1;
-      background: url(../../../assets/imgs/4s/up.png) center center no-repeat /
-        39px 39px;
+      background: url(../../../assets/imgs/4s/up.png) center center no-repeat;
+      background-size: 39px 39px;
     }
   }
   .editor {
@@ -574,6 +807,29 @@ export default {
     padding-top: 16.466vw;
     box-sizing: border-box;
     padding-bottom: 200px;
+    .tip {
+      height: 32px;
+      border: 1px solid transparent;
+      background-color: #fec06d;
+      padding: 5px 24px;
+      display: flex;
+      align-items: center;
+      line-height: 1.4;
+      // &::before {
+      //   content: '';
+      //   display: block;
+      //   height: 16px;
+      //   width: 16px;
+      //   background: url(~@/assets/imgs/4s/29感叹号@2x.png) no-repeat;
+      //   background-size: contain;
+      // }
+      span {
+        color: #915305;
+        font-size: 12px;
+        flex: 1;
+        text-align: center;
+      }
+    }
     .imgBox {
       li {
         width: 20vw;

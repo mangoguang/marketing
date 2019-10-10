@@ -1,56 +1,56 @@
-<!-- <keep-alive> -->
+<!--  -->
 <template>
-  <div class="banner"
-       :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`,'position':`${pos}`}">
-    <div :class="`${fix}`"></div>
+  <div class="checkTip">
+    <div class="banner"
+         :style="{'margin-top':`${top}vw`}">
+      <div class="icon-back"
+           @click="$emit('onCloseTip')">
+        <div class="icon iconfont icon-fanhui1"></div>
+      </div>
+      <span class="my_title">检查标准</span>
 
-    <div class="icon-back"
-         v-if="showLeft"
-         @click="$emit('onHandleBack')">
-      <div class="icon iconfont icon-fanhui1"
-           :style="{'color':`${titleColor}`}"></div>
+      <!-- <more-details class="details"  v-show='MoreBtn'/> -->
     </div>
-    <div class="icon-back"
-         v-else
-         @click='cilck'>
-      <div class="icon iconfont icon-fanhui1"
-           :style="{'color':`${titleColor}`}"></div>
+    <div class="content">
+      <p v-html="msg"
+         v-if="msg"></p>
+      <p v-else
+         class="no-data">无记录</p>
     </div>
-
-    <span class="my_title"
-          :class="left? 'myLeftStyle':''"
-          :style="{'color':`${titleColor}`}">{{title}}</span>
-    <slot></slot>
-    <!-- <more-details class="details"  v-show='MoreBtn'/> -->
   </div>
 </template>
-<!-- </keep-alive> -->
 
 <script>
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-// import MoreDetails from './Gallery/productDetails/moreDetail'
+import { mapState } from 'vuex'
 export default {
-  name: 'routerLink',
-  props: ['title', 'MoreBtn', 'left', 'showLeft'],
-  // components: {MoreDetails},
   data() {
     return {
-      fix: '',
-      top: '',
-      boderBottom: this.$route.name == '/top' ? 'none' : '1px solid #ccc',
-      titleColor: this.$route.name == '/top' ? '#fff' : '#363636',
-      bgColor: this.$route.name == '/top' ? 'none' : '#f8f8f8',
-      pos:this.$route.name=="/top"?'absolute':'fixed'
+      top: 0
     }
   },
   mounted() {
+    // this.msg = this.$route.query.remark.replace(/\\n/g, '<br>')
+    document.querySelector('#app').scrollTop = 0
     this.isIPhoneX()
   },
+  computed: {
+    ...mapState({
+      checkingMsg(state) {
+        return state.eggRecordDetails.checkingMsg
+      },
+      checkLevelMsg(state) {
+        return state.eggRecordDetails.checkLevelMsg
+      },
+      msg() {
+        if (this.$route.query.name == 'level') {
+          return this.checkLevelMsg.replace(/\\n|↵/g, '<br>')
+        } else {
+          return this.checkingMsg.replace(/\\n|↵/g, '<br>')
+        }
+      }
+    })
+  },
   methods: {
-    cilck: function() {
-      this.$router.back(-1)
-    },
     isIPhoneX: function(fn) {
       var u = navigator.userAgent
       var isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) //ios终端
@@ -68,9 +68,31 @@ export default {
   }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang='scss' scoped>
+.no-data {
+  text-align: center;
+}
+.checkTip {
+  width: 100vw;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgb(248, 248, 248);
+  z-index: 100;
+  .content {
+    padding-top: 61px;
+    padding-bottom: 107px;
+  }
+  p {
+    color: #666;
+    margin-top: 6vw;
+    line-height: 1.6em;
+    font-size: 14px;
+    padding: 0 6vw;
+    word-break: break-all;
+  }
+}
 .banner {
   // font-family: PINGPANG;
   font-weight: 600;

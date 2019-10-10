@@ -27,6 +27,7 @@ export default {
     }
   },
   created() {
+    console.log(this.$attrs)
     this._getCategories(this.$route.query.shopId)
   },
   methods: {

@@ -1,11 +1,11 @@
 <!--  -->
 <template>
-  <div :class="`header class${storeClass}`">
+  <div :class="`header class${parseInt(storeClass)+1}`">
     <div class="headerBox">
       <button @click="back"
               type="button"></button>
     </div>
-    <h3>4S星级认证</h3>
+    <h3 v-if="storeClass!=99">{{starText}}</h3>
   </div>
 </template>
 
@@ -16,6 +16,18 @@ export default {
   props: ['storeClass', 'href'],
   data() {
     return {}
+  },
+  computed: {
+    starText() {
+      var arr = ['一星认证', '二星认证', '三星认证', '四星认证', '五星认证']
+      // let star =
+      //   localStorage.getItem('certPositionType') == 'supervisor'
+      //     ? this.storeClass
+      //     : this.storeClass - 1
+
+      // console.log(this.storeClass)
+      return arr[this.storeClass]
+    }
   },
   methods: {
     back() {
@@ -90,5 +102,12 @@ export default {
     url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
+}
+.class99 {
+  background: url(~@/assets/imgs/4s/logo.png) no-repeat,
+    url(~@/assets/imgs/4s/font.png) no-repeat,
+    url(~@/assets/imgs/4s/headerBg.png) no-repeat;
+  background-size: 40px 46px, 93px 19px, 100% auto;
+  background-position: center bottom 49px, center bottom 24px, center center;
 }
 </style>

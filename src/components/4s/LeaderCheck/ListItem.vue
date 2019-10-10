@@ -19,7 +19,7 @@
       </ul>
       <div class="right-box"
            :class="{'has-check':item.isGrade==1}"
-           @click="bindNavigatorStartCheck(item.id)">
+           @click="bindNavigatorStartCheck(item)">
         <span>{{item.isGrade!=1?'去评分':'已评分'}}</span>
         <img v-if="item.isGrade!=1"
              src="../../../assets/imgs/4s/right_2.png"
@@ -40,8 +40,11 @@ export default {
   },
   methods: {
     //去星级检查
-    bindNavigatorStartCheck(shopId) {
-      this.$router.push({ path: '/starCheck', query: { shopId } })
+    bindNavigatorStartCheck(item) {
+      this.$router.push({
+        path: '/starCheck',
+        query: { shopId: item.id, starLevel: item.starLevel }
+      })
     }
   }
 }

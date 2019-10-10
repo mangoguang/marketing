@@ -95,7 +95,7 @@ export default {
   },
   watch: {
     remark(newVal, oldVal) {
-      newVal = newVal.replace(/[^\w\s,./()?，。、！（）]/g, '')
+      newVal = newVal.replace(/[^\w\s,./()?，。、！（）[\u4e00-\u9fa5]]/g, '')
       this.remark = newVal
       this.updateRemark(newVal)
     }
@@ -161,7 +161,7 @@ export default {
       let tempObj = {}
       let temp = {
         phone: this.phone,
-        feedbackInfo: this.remark //Base64.encode(this.remark)
+        feedbackInfo: Base64.encode(this.remark) //this.remark //
       }
       for (let key in temp) {
         if (temp[key] || temp[key] === 0) {

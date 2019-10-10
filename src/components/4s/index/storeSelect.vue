@@ -62,7 +62,7 @@ export default {
       this.selectIndex = index
       sessionStorage.setItem('selectIndex', index)
       this.storeSelectShow = false
-      this.$emit('onGetStoreId', item)
+      this.$emit('onGetStoreId', item, index)
     }
   }
 }

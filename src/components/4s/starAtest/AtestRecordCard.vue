@@ -72,7 +72,7 @@
     <node-card v-if="showNodeCard"
                :cofirmList="cofirmList"
                :status="status"
-               :comfirmTitle="comfirmTitle"
+               comfirmTitle="认证进度"
                @onNodeCardClose="showNodeCard=false" />
   </div>
 </template>
@@ -190,49 +190,45 @@ export default {
         typeList7,
         typeList8
       } = data
+      let list4 = [...typeList4, ...typeList5, ...typeList6, ...typeList7]
+
+      let res = list4.map(item => item.status == 1 || item.status == 3)
+      // debugger res.length == 4 &&
+      // console.log(Array.from(new Set(res)))
+      // Array.from(new Set(res)).length == 1 &&
+      //   Array.from(new Set(res))[0] == true
+      let lastList = typeList8[0] || {}
+      if (lastList.status == 3) {
+        list4[list4.length - 1].statusString = '已通过'
+        list4 = [list4[list4.length - 1]]
+      } else {
+        // console.log(res.indexOf(false))
+        if (res.length != 0 && res.indexOf(false) != -1) {
+          list4[res.indexOf(false)].statusString = '未通过'
+          list4 = [list4[res.indexOf(false)]]
+        } else {
+          list4 = []
+        }
+      }
+
       data = {
         typeList1,
         typeList2,
         typeList3,
-        typeList4: [
-          ...typeList4,
-          ...typeList5,
-          ...typeList6,
-          ...typeList7,
-          ...typeList8
-        ]
+        typeList4: list4,
+        typeList8
       }
 
       let cofirmList = Object.keys(data).map((key, index) => {
         var passFail = false
         data[key].map((item, idx) => {
-          passFail = [1, 4, 5, 7, 8, 9, 11, 12].includes(item.status)
+          passFail = [1, 4, 5, 7, 8, 9, 11, 12].indexOf(item.status) != -1
           if (item.type > 3 && (item.status == 1 || item.status == 3)) {
             passFail = true
           }
         })
         return { typeList: data[key], passFail }
       })
-
-      if (cofirmList[3].typeList[0] && cofirmList[3].passFail) {
-        cofirmList[3].typeList.map((item, index) => {
-          if (item.statusString == '已认证') {
-            cofirmList[3].typeList.splice(index, 1)
-          }
-        })
-
-        let typeList9 = JSON.parse(JSON.stringify(cofirmList[3].typeList[0]))
-        typeList9.type = 9
-        cofirmList.push({
-          passFail: cofirmList[3].passFail,
-          typeList: [typeList9]
-        })
-      } else {
-        cofirmList.push({
-          passFail: cofirmList[3].passFail,
-          typeList: []
-        })
-      }
 
       if (approveLevel <= 2) {
         cofirmList.splice(2, 1)
@@ -415,12 +411,20 @@ export default {
     align-items: center;
     .pass {
       color: #007aff;
+      background: rgba(0, 122, 255, 0.3);
+
+      height: 30px;
+      line-height: 30px;
+      border-radius: 15px;
+      padding: 0 10px;
     }
     .red {
       color: #ff2d55;
+      background: rgba(255, 45, 85, 0.3);
     }
     .ok {
       color: #4cd964;
+      background: rgba(76, 217, 100, 0.3);
     }
     .turnBack {
       text-align: center;

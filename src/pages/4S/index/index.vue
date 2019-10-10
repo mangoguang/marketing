@@ -2,7 +2,7 @@
 <template>
   <div class="index">
     <Header :storeClass="soreClass"
-            href="/" />
+            href="/work" />
     <StoreSelect :shops="shops"
                  @onGetStoreId="onGetStoreId"
                  v-permission="['Store Manager','Sleep Consultant']" />
@@ -27,10 +27,15 @@ import DailyCheck from '@/components/4s/index/dailyCheck'
 import GradeReport from '@/components/4s/index/gradeReport'
 import ModuleConfig from '@/components/4s/index/moduleConfig'
 import starAttestation from '@/components/4s/index/starAttestation'
-import { gradeShops, gradeCategories } from '@/api/4s'
+import {
+  gradeShops,
+  gradeCategories,
+  supervisorNotGradeShopsCount,
+  guideNotGradeCategoriesCount
+} from '@/api/4s'
 import { Toast } from 'mint-ui'
 
-import { mapMutations } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 export default {
   components: {
     Header,
@@ -42,22 +47,23 @@ export default {
   },
   data() {
     return {
-      soreClass: 5,
+      soreClass: 98,
       shops: [{ name: '' }],
       categories: [],
       shopId: 0,
       storeType: {},
-      hasNew: 0
+      hasNew: 0,
+      certPositionType: localStorage.getItem('certPositionType')
     }
   },
   async created() {
-    let certPositionType = localStorage.getItem('certPositionType')
-    if (certPositionType == 'supervisor' || certPositionType == 'Dealer Boss')
+    let { certPositionType } = this
+    this._GradeShopsCount(certPositionType)
+    if (certPositionType == 'Dealer Boss' || certPositionType == 'supervisor')
       return
     this._initData()
   },
   // beforeRouteEnter (to, from, next) {
-
   //   let routeName = ['work', 'Login']
   //   if (routeName.includes(from.name)) {
   //     to.meta.keepAlive = false
@@ -66,8 +72,13 @@ export default {
   //   }
   //   next()
   // },
+  computed: {
+    ...mapState({
+      shopsSelectIndex: state => state.eggRecordDetails.shopsSelectIndex
+    })
+  },
   methods: {
-    ...mapMutations(['setShopId']),
+    ...mapMutations(['setShopId', 'setShops', 'setShopsSelectIndex']),
 
     async _initData() {
       let { code, msg, shops } = await gradeShops()
@@ -81,7 +92,7 @@ export default {
       }
       if (shops && shops.length > 0) {
         this.shops = shops
-        var selectIndex = sessionStorage.getItem('selectIndex') || 0
+        var selectIndex = this.shopsSelectIndex || 0 //sessionStorage.getItem('selectIndex') || 0
         this.shopId = shops[selectIndex].id
         this.setShopId(shops[selectIndex].id)
         this.soreClass = shops[selectIndex].starLevel
@@ -89,20 +100,28 @@ export default {
           shopName: shops[selectIndex].name,
           shopId: shops[selectIndex].id
         }
-        // this._getHasNew(shops[selectIndex].id)
+        this.setShops(shops)
+        this._getGradeCategoriesCount(shops[selectIndex].id)
       }
     },
-
-    onGetStoreId(item) {
+    async _GradeShopsCount(certPositionType) {
+      if (certPositionType == 'supervisor') {
+        let { notGradeCount } = await supervisorNotGradeShopsCount()
+        this.hasNew = notGradeCount
+      }
+    },
+    onGetStoreId(item, index) {
+      this._getGradeCategoriesCount(item.id)
       this.setShopId(item.id)
       this.shopId = item.id
       this.soreClass = item.starLevel
       this.storeType = { shopName: item.name, shopId: item.id }
       // this._getHasNew(item.id)
+      this.setShopsSelectIndex(index)
     },
-    async _getHasNew(shopId) {
-      let { categories } = await gradeCategories({ shopId })
-      this.hasNew = categories.length
+    async _getGradeCategoriesCount(shopId) {
+      let { notGradeCount } = await guideNotGradeCategoriesCount({ shopId })
+      this.hasNew = notGradeCount
     }
   }
 }

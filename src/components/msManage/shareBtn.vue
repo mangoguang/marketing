@@ -1,5 +1,5 @@
 <template>
-  <div class="share-btn">
+  <div class="share-btn" >
     <!-- 这是分享 -->
     <div class="btn" @click="shareBtn">
       <img src="../../assets/imgs/more.png" alt class="moreImg" />
@@ -217,6 +217,10 @@ export default {
     //     this.isShow = true;
     //   }
     // },
+    // 监听弹窗的显示条件
+    isShow() {
+      this.$emit("centerShare", false);
+    },
     collection() {
       if (this.collection) {
         this.collectStatus = true;
@@ -228,7 +232,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" scope>
 .share-btn {
   width: 60px;
   height: 30px;

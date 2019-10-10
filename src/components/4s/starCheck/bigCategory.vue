@@ -4,6 +4,7 @@
     <BigCategoryBox v-for="(item, index) in subCategoryList"
                     @click.native="bindNavigatorCheck(item)"
                     :key="index"
+                    :item="item"
                     :status="item.status"
                     :isGrade="item.isGrade"
                     :text="item.name" />
@@ -13,23 +14,34 @@
 <script>
 import BigCategoryBox from './bigCategoryBox'
 import { secondcategories } from '@/api/4s'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 export default {
   props: ['subCategoryList'],
   components: { BigCategoryBox },
-  data () {
+  data() {
     return {
       categories: [],
       categoryList: []
     }
   },
-  async created () {
+  async created() {
     this.categories = this.getCategories()
   },
   methods: {
     ...mapGetters(['getCategories']),
-    bindNavigatorCheck (item) {
-      this.$router.push({ path: '/check', query: { id: item.id, name: item.name, shopId: this.$route.query.shopId, isGrade: item.isGrade } })
+    ...mapMutations(['setCheckLevelMsg']),
+    bindNavigatorCheck(item) {
+      this.$router.push({
+        path: '/check',
+        query: {
+          id: item.id,
+          name: item.name,
+          shopId: this.$route.query.shopId,
+          isGrade: item.isGrade,
+          starLevel: this.$route.query.starLevel
+        }
+      })
+      this.setCheckLevelMsg(item.remark.replace(/\n/g, '<br>'))
     }
   }
 }
