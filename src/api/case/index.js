@@ -1,15 +1,14 @@
 import {
-  caseUrl
+  baseUrl
 } from '@/api/baseUrl'
 import {
-  http,
-  upload
+  http
 } from '@/api/http'
 
 //根据用户账号查询用户收藏的案例
 export const collectlist = params => {
   return http({
-    url: caseUrl + '/v1/api/goodCase/collectlist',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/collectlist',
     method: 'get',
     params
   })
@@ -18,7 +17,7 @@ export const collectlist = params => {
 //我的案例
 export const goodCaseList = params => {
   return http({
-    url: caseUrl + '/v1/api/goodCase/list',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/list',
     method: 'get',
     params
   })
@@ -27,7 +26,7 @@ export const goodCaseList = params => {
 //删除案例
 export const goodCaseDelete = params => {
   return http({
-    url: caseUrl + '/v1/api/goodCase/delete',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/delete',
     method: 'get',
     params
   })
@@ -36,7 +35,7 @@ export const goodCaseDelete = params => {
 //根据案例id查看详情
 export const goodCaseDetails = params => {
   return http({
-    url: caseUrl + '/v1/api/goodCase/details',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/details',
     method: 'get',
     params
   })
@@ -45,7 +44,7 @@ export const goodCaseDetails = params => {
 //取消用户收藏的案例
 export const cancelCollect = params => {
   return http({
-    url: caseUrl + '/v1/api/user/collect/v1/cancelCollect',
+    url: baseUrl + '/consumer-admin/api/user/collect/v1/cancelCollect',
     method: 'get',
     params
   })
@@ -54,7 +53,7 @@ export const cancelCollect = params => {
 //用户收藏的案例
 export const collect = params => {
   return http({
-    url: caseUrl + '/v1/api/user/collect/v1/collect',
+    url: baseUrl + '/consumer-admin/api/user/collect/v1/collect',
     method: 'get',
     params
   })
@@ -72,7 +71,7 @@ export const collect = params => {
 //获取所有有效品牌
 export const brandList = params => {
   return http({
-    url: caseUrl + '/api/good/brand/list',
+    url: baseUrl + '/consumer-admin/api/good/brand/list',
     method: 'get',
     params
   })
@@ -81,7 +80,7 @@ export const brandList = params => {
 //获取所有有效品类
 export const categoryList = params => {
   return http({
-    url: caseUrl + '/api/good/category/list',
+    url: baseUrl + '/consumer-admin/api/good/category/list',
     method: 'get',
     params
   })
@@ -89,7 +88,7 @@ export const categoryList = params => {
 //.关键字模糊搜索产品型号
 export const getModelno = params => {
   return http({
-    url: caseUrl + '/v1/api/goodCase/getmodelno',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/getmodelno',
     method: 'get',
     params
   })
@@ -98,7 +97,7 @@ export const getModelno = params => {
 //关键字模糊搜索产品名称
 export const getNames = params => {
   return http({
-    url: caseUrl + '/v1/api/goodCase/getnames',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/getnames',
     method: 'get',
     params
   })
@@ -107,7 +106,7 @@ export const getNames = params => {
 //.新增案例
 export const goodCaseSave = params => {
   return http.post(
-    caseUrl + '/v1/api/goodCase/save',
+    baseUrl + '/consumer-admin/v1/api/goodCase/save',
     params, {
       headers: {
         'Content-Type': 132,
@@ -116,7 +115,7 @@ export const goodCaseSave = params => {
     }
   )
   // return http({
-  //   url: caseUrl + '/v1/api/goodCase/save',
+  //   url: baseUrl + '/v1/api/goodCase/save',
   //   method: 'post',
   //   params,
   //   headers: {
@@ -129,7 +128,7 @@ export const goodCaseSave = params => {
 //.修改案例
 export const goodCaseUpdate = params => {
   return http({
-    url: caseUrl + '/v1/api/goodCase/update',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/update',
     method: 'post',
     params
   })
@@ -138,7 +137,7 @@ export const goodCaseUpdate = params => {
 //.修改案例
 export const topNames = params => {
   return http({
-    url: caseUrl + '/v1/api/goodCase/topNames',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/topNames',
     method: 'get',
     params
   })

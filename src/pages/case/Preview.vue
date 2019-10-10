@@ -17,32 +17,33 @@ export default {
   },
   computed: {
     ...mapState({
-      goodCase: state => state.caseStore.goodCase
+      goodCase: state => state.caseStore.goodCase,
+      alterUploadImg: state => state.caseStore.alterUploadImg
     }),
     imgList() {
       let pre = this.$route.query.pre
-      let { goodCase } = this
+      let { alterUploadImg } = this
       if (pre == 1) {
         let arr = [
-          { src: goodCase.spareImgFile1, name: 'spareImgFile1' },
-          { src: goodCase.spareImgFile2, name: 'spareImgFile2' },
-          { src: goodCase.spareImgFile3, name: 'spareImgFile3' }
+          { src: alterUploadImg.spareImgFile1, name: 'spareImgFile1' },
+          { src: alterUploadImg.spareImgFile2, name: 'spareImgFile2' }
         ]
         return arr.filter(item => item.src)
       } else {
         let list = [
-          { name: 'frontImgFile', src: goodCase.frontImgFile },
-          { name: 'flankImgFile', src: goodCase.flankImgFile },
-          { name: 'diagonalImgFile', src: goodCase.diagonalImgFile }
+          { name: 'frontImgFile', src: alterUploadImg.frontImgFile },
+          { name: 'flankImgFile', src: alterUploadImg.flankImgFile },
+          { name: 'diagonalImgFile', src: alterUploadImg.diagonalImgFile }
         ]
         return list.filter(item => item.src)
       }
     }
   },
   methods: {
-    ...mapMutations(['setGoodCase']),
+    ...mapMutations(['setGoodCase', 'setAlterUploadImg']),
     onDeleteImg(val) {
       this.setGoodCase({ [val]: '' })
+      this.setAlterUploadImg({ [val]: '' })
     }
   }
 }

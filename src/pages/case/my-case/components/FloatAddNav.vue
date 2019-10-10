@@ -13,17 +13,18 @@ export default {}
 .float-btn {
   padding-top: 20px;
   min-height: 62px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   .float-main {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     height: 62px;
     background: linear-gradient(
       0deg,
       rgba(0, 122, 255, 1) 0%,
       rgba(0, 122, 255, 0.96) 100%
     );
+    position: relative;
     .float-img {
       width: 46px;
       height: 46px;

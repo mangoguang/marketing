@@ -59,7 +59,6 @@ export default {
       myCity.get(data => {
         this.setProvice(data.name.replace(/市$/, ''))
         this.params.source = data.name.replace(/市$/, '')
-        console.log(111)
         //this._initData(this.params)
       })
     }
@@ -86,7 +85,6 @@ export default {
       if (this.allLoaded) return
       let { params } = this
       this.params.page += 1
-      console.log(111)
       this._initData(this.params)
     },
     onChangeList(val) {
@@ -98,7 +96,6 @@ export default {
       this._initData(this.params)
     },
     async _initData(params) {
-      console.log(11122)
       let { page } = await goodCaseList(params)
       if (page.totalPage == params.page) {
         this.allLoaded = true

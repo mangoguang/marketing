@@ -1,13 +1,13 @@
 <template>
   <div :class="listStyle">
-    <div class="cell-img cell-hot"
-         :class="{'cell-hot':item.top}">
+    <div class="cell-img"
+         :class="{'cell-hot':item.top&&item.type==1,'cell-best':item.top&&item.type==2}">
       <img :src="item.frontImg"
            alt="">
     </div>
     <div class="cell-text">
       <div class="cell-top">
-        <h2>{{item.remark}}</h2>
+        <h2>{{item.brand}}</h2>
         <div class="cell-pos">{{item.source}}</div>
         <div class="cell-view">{{item.pageView}}</div>
       </div>
@@ -17,12 +17,12 @@
         <div class="cell-info"
              v-else>
           <div class="cell-face">
-            <img :src="item.frontImg"
+            <img :src="item.diagonalImg"
                  alt="">
           </div>
           <h3>{{item.createByName}}</h3>
         </div>
-        <span class="cell-love">16235</span>
+        <span class="cell-love">{{item.collect}}</span>
       </div>
     </div>
   </div>

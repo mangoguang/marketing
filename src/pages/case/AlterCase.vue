@@ -59,7 +59,7 @@
           <img :src="item">
         </div>
         <div class="li"
-             v-if="oether.length<3">
+             v-if="oether.length<2">
           <div class="img"
                @click="sheetVisible = true;activeIndex=-1">
             <div class="tip">添加图片</div>
@@ -123,46 +123,46 @@ export default {
   },
   created() {
     if (!this.provice) {
-      var myCity = new BMap.LocalCity()
-      myCity.get(data => {
-        this.setProvice(data.name.replace(/市$/, ''))
+      var myCity = new BMap.Geolocation()
+      myCity.getCurrentPosition(data => {
+        this.setProvice(data.address.city.replace(/市$/, ''))
       })
     }
 
     this.alter = this.$route.query.alter
-    this.description = this.goodCase.remark
+    this.description = this.goodCase.remark || ''
   },
   computed: {
     provice() {
+      let { provice } = this.$store.state.caseStore
       this.setGoodCase({
-        source: this.$store.state.caseStore.provice
+        source: provice
       })
-      return this.$store.state.caseStore.provice
+      return provice
     },
     ...mapState({
       // provice: state => state.caseStore.provice,
-      goodCase: state => state.caseStore.goodCase
+      goodCase: state => state.caseStore.goodCase,
+      alterUploadImg: state => state.caseStore.alterUploadImg
     }),
     oether() {
-      let { goodCase } = this
-      let arr = [
-        goodCase.spareImgFile1,
-        goodCase.spareImgFile2,
-        goodCase.spareImgFile3
-      ]
+      let { alterUploadImg } = this
+      let arr = [alterUploadImg.spareImgFile1, alterUploadImg.spareImgFile2]
+      console.log(arr)
       return arr.filter(item => item)
     },
     defaultImg() {
-      let { goodCase } = this
+      let { alterUploadImg } = this
+      console.log(alterUploadImg)
       return [
-        { name: '正面', src: goodCase.frontImgFile },
-        { name: '侧面', src: goodCase.flankImgFile },
-        { name: '对角', src: goodCase.diagonalImgFile }
+        { name: '正面', src: alterUploadImg.frontImgFile },
+        { name: '侧面', src: alterUploadImg.flankImgFile },
+        { name: '对角', src: alterUploadImg.diagonalImgFile }
       ]
     }
   },
   methods: {
-    ...mapMutations(['setGoodCase', 'setProvice']),
+    ...mapMutations(['setGoodCase', 'setProvice', 'setAlterUploadImg']),
     _vertify() {
       let {
         goodId,
@@ -221,8 +221,7 @@ export default {
           flankImgFile: '',
           diagonalImgFile: '',
           spareImgFile1: '',
-          spareImgFile2: '',
-          spareImgFile3: ''
+          spareImgFile2: ''
         })
         this.description = ''
       }
@@ -250,24 +249,30 @@ export default {
       let { activeIndex } = this
       try {
         let res = await lrz(file, { quality: 0.2 })
+        var newFile = new File([res.file], res.file.name, {
+          type: res.file.type
+        })
         if (activeIndex == -1) {
           //其他
           //this.oether.push(res.base64)
           this.oetherLength += 1
-          this.setGoodCase({ ['spareImgFile' + this.oetherLength]: res.base64 })
-
+          this.setGoodCase({ ['spareImgFile' + this.oetherLength]: newFile })
+          this.setAlterUploadImg({
+            ['spareImgFile' + this.oetherLength]: res.base64
+          })
           return
         }
         //必须
         var arr = ['frontImgFile', 'flankImgFile', 'diagonalImgFile']
         var name = arr[this.activeIndex]
-        var newFile = new File([res.file], res.file.name, {
-          type: res.file.type
-        })
+
         console.log(newFile)
         this.setGoodCase({
           [name]: newFile
         }) //res.base64
+        this.setAlterUploadImg({
+          [name]: res.base64
+        })
         //this.defaultImg[activeIndex].src = res.base64
       } catch (err) {
         console.log(err)

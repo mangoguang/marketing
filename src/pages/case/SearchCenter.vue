@@ -26,8 +26,12 @@
     </div>
     <div class="keyword"
          v-show="showKeyword">
-      <div class="history">
-        <h5>历史搜索</h5>
+      <div class="history"
+           v-if="history.length>0">
+        <div class="title">
+          <h5>历史搜索</h5>
+          <button @click="bindClearHistory">清除</button>
+        </div>
         <ul>
           <li @click="bindHistory(index,item)"
               v-for="(item,index) in history"
@@ -70,6 +74,10 @@
             @click.native="$router.push({path:'/detail',query:{id:item.id}})"
             :item="item"
             :key="index"></list>
+      <ul class="matchTxt"
+          v-show="dataList.length==0">
+        <li>未找到相关产品</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -149,6 +157,10 @@ export default {
 
       // this.historyIndex = -1
     },
+    bindClearHistory() {
+      localStorage.setItem('keyword', '')
+      this.history = []
+    },
     bindHistory(index, item) {
       this.historyIndex = index
       this.showKeyword = false
@@ -163,8 +175,9 @@ export default {
       this.showSearch = false
       this.showList = true
       let arr = JSON.parse(localStorage.getItem('keyword') || '[]')
-      arr.push(item)
+      arr.unshift(item)
       arr = Array.from(new Set(arr))
+      this.history = arr
       localStorage.setItem('keyword', JSON.stringify(arr))
       //this.setGoodCase({ goodId })
       //this.$router.back()
@@ -196,6 +209,16 @@ export default {
 <style lang="scss" scoped>
 .keyword {
   padding: 20px 17px;
+  .history {
+    .title {
+      display: flex;
+      justify-content: space-between;
+      button {
+        color: #007aff;
+        font-size: 12px;
+      }
+    }
+  }
   h5 {
     font-size: 13px;
     color: #363636;
@@ -252,7 +275,7 @@ export default {
       height: 30px;
       background-color: #f7f7f7;
       border-radius: 15px;
-      // width: 295px;
+      width: 295px;
       margin: 8px 40px;
       display: flex;
       align-items: center;
@@ -267,6 +290,9 @@ export default {
         background: #fff url(~@/assets/imgs/case/iconfont-cha@2x.png) right 7px
           center no-repeat;
         background-size: 8px 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
     .back {

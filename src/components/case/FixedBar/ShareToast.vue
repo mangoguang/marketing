@@ -6,7 +6,7 @@
            ref="saveImg">
         <div class="img">
           <img id="img"
-               :src="detailData.frontImg"
+               :src="src"
                alt="">
         </div>
         <div class="dec">
@@ -46,18 +46,44 @@ export default {
   props: {
     detailData: {}
   },
+  data() {
+    return {
+      src: ''
+    }
+  },
   mounted() {
     new QRCode('qrcode', {
       width: 35,
       height: 35, // 高度
-      text: 'https://op.derucci.com',
+      text: `http://10.11.8.156:8080/#/detail?id=${this.$route.query.id}`,
       colorDark: '#000',
       colorLight: '#dcbf8a',
       correctLevel: QRCode.CorrectLevel.L,
       QRCodeVersion: 1
     })
   },
+  watch: {
+    detailData() {
+      this._tobase64()
+    }
+  },
   methods: {
+    async _tobase64() {
+      let _this = this
+      var canvas = document.createElement('canvas')
+      var ctx = canvas.getContext('2d')
+      var img = new Image()
+      img.crossOrigin = 'Anonymous'
+      img.src = this.detailData.frontImg
+      img.onload = function() {
+        canvas.width = img.width
+        canvas.height = img.height
+        ctx.drawImage(img, 0, 0, img.width, img.height)
+        var dataURL = canvas.toDataURL('image/png')
+        _this.src = dataURL
+        canvas = null
+      }
+    },
     bindSave() {
       var width = 258
       var height = 312
@@ -98,8 +124,8 @@ export default {
   position: absolute;
   bottom: 0;
   left: 0;
-  background: #fff url(~@/assets/imgs/case/share_bottom.jpg) center center /
-    248px 80px no-repeat;
+  background: url(~@/assets/imgs/case/share_bottom.jpg) center center / 248px
+    80px no-repeat;
   display: flex;
   justify-content: space-between;
   padding: 0px 16px;

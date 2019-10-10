@@ -1,6 +1,6 @@
 import {
   baseUrl
-} from '@/js/common'
+} from '@/api/baseUrl'
 
 import axios from 'axios'
 import qs from 'qs'
@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'production') {
 
 let token = JSON.parse(localStorage.getItem('token')) || {}
 let instance = axios.create({
-  baseURL: 'https://mobiletest.derucci.net',
+  baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
     "Authorization": `Bearer ${token.access_token}`,

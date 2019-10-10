@@ -25,11 +25,11 @@
     <div class="info">
       <div class="user">
         <div class="img">
-          <img src="https://derucci-app.oss-cn-hangzhou.aliyuncs.com/upload/20190425/204bf75af8b5cb257f0c5f207c0175b3.jpg"
+          <img :src="detailData.diagonalImg"
                alt="">
         </div>
         <div class="name">
-          <h2>{{detailData.createByName||'-'}}</h2>
+          <h2>{{detailData.goodsName||'-'}}</h2>
           <p class="pos">{{detailData.source}}</p>
         </div>
         <div class="date">{{detailData.createTime}}</div>
@@ -114,8 +114,8 @@ export default {
       let { createByName, remark } = entity
       this.setBrowseData({
         imgs: arr,
-        createByName,
-        remark
+        createByName: createByName || '-',
+        remark: remark || '-'
       })
     },
     bindAlter() {
@@ -153,20 +153,26 @@ export default {
       this.showComfirm = true
       this.content = '删除后将不能恢复<br>确定删除案例？'
     },
-    async onLove() {
+    async onLove(id) {
       let account = JSON.parse(localStorage.getItem('userInfo'))['account']
-      if (this.detailData.collectStatus == 0) {
+      if (this.detailData.collectStatus == true) {
         let { code, msg } = await cancelCollect({
+          id,
           account,
           type: 5 //this.detailData.type
         })
+        this.detailData.collectStatus = false
+        this.detailData.collect -= 1
       } else {
         let { code, msg } = await collect({
+          id,
           account,
           type: 5 //this.detailData.type
         })
+        this.detailData.collectStatus = true
+        this.detailData.collect += 1
       }
-      this._initData()
+      //this._initData()
     },
     async onComfirm(item) {
       this.showComfirm = false

@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getModelno } from '@/api/case'
+import { getModelno, getNames } from '@/api/case'
 import { mapMutations } from 'vuex'
 import _ from 'lodash'
 export default {
@@ -62,9 +62,9 @@ export default {
   methods: {
     ...mapMutations(['setGoodCase']),
     bindSearch: _.debounce(async function() {
-      let { modelNolist } = await getModelno({ keys: this.searchVal })
-      if (modelNolist.length) {
-        this.list = modelNolist
+      let { namelist } = await getNames({ keys: this.searchVal })
+      if (namelist.length) {
+        this.list = namelist
         this.matchTxt = true
       } else {
         this.matchTxt = false

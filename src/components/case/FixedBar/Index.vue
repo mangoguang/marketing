@@ -4,7 +4,7 @@
       <li class="view">{{detailData.pageView}}</li>
       <li class="love"
           :class="{loved:detailData.collectStatus}"
-          @click="$emit('onLove')">{{detailData.collect}}</li>
+          @click="$emit('onLove',detailData.id)">{{detailData.collect}}</li>
       <li class="share"
           @click="$emit('onShare')">分享</li>
       <li class="del"
