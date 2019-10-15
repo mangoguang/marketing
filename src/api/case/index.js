@@ -127,11 +127,6 @@ export const goodCaseUpdate = params => {
       }
     }
   )
-  // return http({
-  //   url: baseUrl + '/consumer-admin/v1/api/goodCase/update',
-  //   method: 'post',
-  //   params
-  // })
 }
 
 //.修改案例

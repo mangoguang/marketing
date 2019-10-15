@@ -131,6 +131,10 @@ export default {
 
     this.alter = this.$route.query.alter
     this.description = this.goodCase.remark || ''
+
+    this.setGoodCase({
+      account: JSON.parse(localStorage.getItem('userInfo'))['account']
+    })
   },
   computed: {
     provice() {
