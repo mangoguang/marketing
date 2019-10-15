@@ -220,7 +220,7 @@ export default {
       if (!check) {
         return
       }
-      let dutyReg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
+      let dutyReg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
       if (
         this.newCustomerInfo.duty !== '' &&
         !dutyReg.test(this.newCustomerInfo.duty)
@@ -229,7 +229,7 @@ export default {
         return
       }
       let remarkReg = /[\ud800-\udbff][\udc00-\udfff]/g
-      let reg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
+      let reg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
       if (
         this.newCustomerInfo.remark !== '' &&
         remarkReg.test(this.newCustomerInfo.remark)

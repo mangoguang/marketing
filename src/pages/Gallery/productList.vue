@@ -407,7 +407,7 @@ export default {
     box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
     //margin-bottom: 2vw;
     .sortList {
-      flex: 0.94;
+      flex: 1;
     }
     .changeStyle {
       padding-top: 1vw;
