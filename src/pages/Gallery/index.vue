@@ -51,9 +51,9 @@ export default {
     }
   },
   mounted() {
-    this.setProductNavList([])
-    this.setInitParmas()
-    this.initPageList([])
+    // this.setProductNavList([])
+    // this.setInitParmas()
+    // this.initPageList([])
   },
   // beforeRouteLeave(){
   //   if (routeName.indexOf(to.name) != -1) {

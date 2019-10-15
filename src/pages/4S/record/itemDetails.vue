@@ -51,16 +51,18 @@ export default {
     selectList,
     swiperPic
   },
-  data () {
+  data() {
     return {
       list: [
         {
           text: '店面面积',
           score: '1'
-        }, {
+        },
+        {
           text: '店面类型',
           score: '2'
-        }, {
+        },
+        {
           text: '装修时间/到期时间',
           score: '2'
         }
@@ -71,29 +73,39 @@ export default {
         reason: '-',
         urls: []
       }
-    };
+    }
   },
-  created () {
+  created() {
     this._initData()
   },
   computed: {
-    rangeWidth () {
-      return this.standardinfo.deduct / this.$route.query.total * 100 + '%'
+    rangeWidth() {
+      return (this.standardinfo.deduct / this.$route.query.total) * 100 + '%'
     }
   },
   methods: {
-    async  _initData () {
+    async _initData() {
       let { shopId, categoryId, startTime, endTime } = this.$route.query
-      let { code, standards } = await checklogStandards({ shopId, categoryId, startTime, endTime });
+      let { code, standards } = await checklogStandards({
+        shopId,
+        categoryId,
+        startTime,
+        endTime
+      })
       if (standards.length > 0) {
         this.standards = standards
       } else {
-        Toast('暂无数据');
+        Toast('暂无数据')
         this.$router.go(-1)
       }
-      this._getStandardinfo({ shopId, startTime, endTime, standardId: standards[0] && standards[0].standardId || '' })
+      this._getStandardinfo({
+        shopId,
+        startTime,
+        endTime,
+        standardId: (standards[0] && standards[0].standardId) || ''
+      })
     },
-    async _getStandardinfo (params) {
+    async _getStandardinfo(params) {
       let { code, standardinfo } = await checklogStandardinfo(params)
       if (standardinfo) {
         this.standardinfo = standardinfo
@@ -106,10 +118,14 @@ export default {
       }
     },
     //获取下啦选择框的值
-    getActiveData (val) {
+    getActiveData(val) {
       let { shopId, categoryId, startTime, endTime } = this.$route.query
-      this._getStandardinfo({ shopId, startTime, endTime, standardId: val.standardId })
-
+      this._getStandardinfo({
+        shopId,
+        startTime,
+        endTime,
+        standardId: val.standardId
+      })
     }
   }
 }
@@ -200,6 +216,7 @@ export default {
       font-weight: 500;
       font-size: 3.46vw;
       word-break: break-all;
+      overflow: hidden;
     }
   }
 }

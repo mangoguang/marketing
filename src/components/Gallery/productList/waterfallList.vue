@@ -1,17 +1,25 @@
 <template>
   <div class="waterfall">
-    <div class="img_icon" :style="{backgroundImage:'url(' + list.image + ')'}"></div>
+    <div class="img_icon"
+         :style="{backgroundImage:'url(' + list.image + ')'}"></div>
     <div class="text_box">
       <p class="title">{{ list.goodsName }}</p>
       <div class="type">
-        <div class="type_icon" v-for="(el, v) in getLabel(list.label)" :key='v'>
+        <div class="type_icon"
+             v-for="(el, v) in getLabel(list.label)"
+             :key='v'>
           {{ el }}
         </div>
       </div>
       <p class="price">¥{{ Math.round(list.price*100)/100 }}</p>
-      <div class="like_btn" @click.prevent="changLike">
-        <img src="../../../assets/imgs/like.png" alt="收藏" v-if="like">
-        <img src="../../../assets/imgs/unlike.png" alt="未收藏" v-else>
+      <div class="like_btn"
+           @click.prevent="changLike">
+        <img src="../../../assets/imgs/like.png"
+             alt="收藏"
+             v-if="like">
+        <img src="../../../assets/imgs/unlike.png"
+             alt="未收藏"
+             v-else>
         <span>{{ num }}</span>
       </div>
     </div>
@@ -19,7 +27,7 @@
 </template>
 
 <script>
-import {IndexModel} from '../../../utils/index'
+import { IndexModel } from '../../../utils/index'
 const indexModel = new IndexModel()
 export default {
   props: ['list'],
@@ -41,15 +49,15 @@ export default {
   },
   methods: {
     changLike() {
-      if(!this.like) {
+      if (!this.like) {
         this.collect()
-      }else {
+      } else {
         this.cancleCollect()
       }
     },
     //字符串转为数组
     getLabel(label) {
-      if(label) {
+      if (label) {
         return this.list.label.split('、')
       }
     },
@@ -57,7 +65,7 @@ export default {
     collect() {
       let obj = this.getParmas()
       indexModel.galleryCollect(obj).then(res => {
-        if(res.status == 1) {
+        if (res.status == 1) {
           this.like = !this.like
           this.num += 1
         }
@@ -67,7 +75,7 @@ export default {
     cancleCollect() {
       let obj = this.getParmas()
       indexModel.galleryCancelCollect(obj).then(res => {
-        if(res.status == 1) {
+        if (res.status == 1) {
           this.like = !this.like
           this.num -= 1
         }
@@ -76,9 +84,9 @@ export default {
     //获取参数
     getParmas() {
       let obj = {
-        id :this.list.id,
-        account : this.account,
-        type : 3
+        id: this.list.id,
+        account: this.account,
+        type: 3
       }
       return obj
     },
@@ -92,14 +100,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.waterfall{
+.waterfall {
   width: 45.6vw;
   display: flex;
   flex-direction: column;
   position: relative;
-  background:rgba(255,255,255,1);
-  box-shadow:0px 0.4vw 1.2vw 0px rgba(200,219,239,0.2);
-  border-radius:1.33vw; 
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0px 0.4vw 1.2vw 0px rgba(200, 219, 239, 0.2);
+  border-radius: 1.33vw;
   margin-bottom: 2.666vw;
   height: 68.66vw;
   .img_icon {
@@ -123,7 +131,7 @@ export default {
       overflow: hidden;
       line-height: 1.8em;
     }
-    .type{
+    .type {
       display: flex;
       flex-wrap: wrap;
       min-height: 6vw;
@@ -135,19 +143,22 @@ export default {
       //line-height: 1.4em;
       margin-right: 2vw;
       max-width: 42vw;
-      word-wrap:break-word;
-      word-break:break-all;
+      word-wrap: break-word;
+      word-break: break-all;
       display: flex;
-      padding:0 1.6vw;
-      border:1px solid #FF2D55;
-      color:#FF2D55;
+      padding: 0 1.6vw;
+      border: 1px solid #ff2d55;
+      color: #ff2d55;
       border-radius: 1.333vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       //margin-bottom:1.333vw;
     }
     .price {
       font-size: 4.8vw;
       color: #e93d3d;
-      line-height: 1.4em
+      line-height: 1.4em;
     }
     .like_btn {
       position: absolute;
@@ -167,11 +178,6 @@ export default {
       }
     }
   }
-  
 }
-
-            
-
-
 </style>
 

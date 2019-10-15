@@ -15,7 +15,7 @@
         <div class="atest_record_card"
              v-for="(item,index) in comDataList"
              :key="index"
-             @click="bindApproveFlowInfo(item.id,item.statusString)">
+             @click="bindApproveFlowInfo(item)">
           <div class="header">
             <div class="via">
               <img src="../../../assets/imgs/4s/via.png"
@@ -23,7 +23,7 @@
             </div>
             <div class="message">
               <p class="name">{{item.distributor}}</p>
-              <p class="level">认证星级：{{item.approveLevel}}</p>
+              <p class="level">认证星级：{{item.approveLevelStr}}</p>
             </div>
             <div class="date">
               <span>{{item.createTime}}</span>
@@ -38,17 +38,20 @@
           </div>
           <div class="score_wrapper border-bottom">
             <div class="score_box">
-              <div class="wrapper">
+              <div class="wrapper"
+                   v-if="item.scoreShop">
                 <span class="text">门店评分：</span>
                 <span class="score">{{item.scoreShop||'-'}}</span>
               </div>
-              <div class="wrapper">
+              <div class="wrapper"
+                   v-if="item.scoreRegion">
                 <span class="text">区域评分：</span>
-                <span class="score">{{item.scoreregion||'-'}}</span>
+                <span class="score">{{item.scoreRegion||'-'}}</span>
               </div>
-              <div class="wrapper">
+              <div class="wrapper"
+                   v-if="item.scoreCertification">
                 <span class="text">4s评分：</span>
-                <span class="score">{{item.scorerCertifition||'-'}}</span>
+                <span class="score">{{item.scoreCertification||'-'}}</span>
               </div>
             </div>
             <div class="score_box"
@@ -58,9 +61,10 @@
           </div>
         </div>
       </div>
+      <div class="no-data"
+           v-if="noData">暂无数据</div>
     </mt-loadmore>
-    <div class="no-data"
-         v-if="noData">暂无数据</div>
+
     <TipsBox @onComfim="onComfim"
              @onCancel="onCancel"
              v-show="tipsStatus"
@@ -68,7 +72,7 @@
     <node-card v-if="showNodeCard"
                :cofirmList="cofirmList"
                :status="status"
-               :comfirmTitle="comfirmTitle"
+               comfirmTitle="认证进度"
                @onNodeCardClose="showNodeCard=false" />
   </div>
 </template>
@@ -119,8 +123,8 @@ export default {
         { name: '4s已评分', color: 'ok' },
         { name: '4s未通过', color: 'red' },
         { name: '4s发起认证', color: 'blue' },
-        { name: 'OA认证通过', color: 'ok' },
-        { name: 'OA认证未通过', color: 'red' }
+        { name: '总部认证通过', color: 'ok' },
+        { name: '总部认证未通过', color: 'red' }
       ],
       noData: false,
       tipsStatus: false, //弹窗
@@ -138,14 +142,20 @@ export default {
     }
   },
   created() {
-    this._initData(this.params)
+    let searchVal = this.$route.query.searchVal
+    if (searchVal) {
+      this.params.key = searchVal
+      this._initData(this.params)
+    } else {
+      this._initData(this.params)
+    }
   },
   computed: {
     comDataList() {
       let list = this.dataList
 
       list.map(item => {
-        item.approveLevel = this.level[item.approveLevel - 1] || '-'
+        item.approveLevelStr = this.level[item.approveLevel - 1] || '-'
         item.statusString =
           (this.status[item.status - 1] &&
             this.status[item.status - 1]['name']) ||
@@ -165,24 +175,66 @@ export default {
     }
   },
   methods: {
-    async bindApproveFlowInfo(id, statusString) {
+    async bindApproveFlowInfo(item) {
+      let { id, statusString, approveLevel } = item
       this.comfirmTitle = statusString
       let { code, data } = await getApproveFlowInfo({ qualificationId: id })
-      let cofirmList = Object.keys(data).map(key => {
+
+      let {
+        typeList1,
+        typeList2,
+        typeList3,
+        typeList4,
+        typeList5,
+        typeList6,
+        typeList7,
+        typeList8
+      } = data
+      let list4 = [...typeList4, ...typeList5, ...typeList6, ...typeList7]
+
+      let res = list4.map(item => item.status == 1 || item.status == 3)
+      // debugger res.length == 4 &&
+      // console.log(Array.from(new Set(res)))
+      // Array.from(new Set(res)).length == 1 &&
+      //   Array.from(new Set(res))[0] == true
+      let lastList = typeList8[0] || {}
+      if (lastList.status == 3) {
+        list4[list4.length - 1].statusString = '已通过'
+        list4 = [list4[list4.length - 1]]
+      } else {
+        // console.log(res.indexOf(false))
+        if (res.length != 0 && res.indexOf(false) != -1) {
+          list4[res.indexOf(false)].statusString = '未通过'
+          list4 = [list4[res.indexOf(false)]]
+        } else {
+          list4 = []
+        }
+      }
+
+      data = {
+        typeList1,
+        typeList2,
+        typeList3,
+        typeList4: list4,
+        typeList8
+      }
+
+      let cofirmList = Object.keys(data).map((key, index) => {
         var passFail = false
-        data[key].map(item => {
-          passFail = [2, 3, 6, 10, 13].includes(item.status)
+        data[key].map((item, idx) => {
+          passFail = [1, 4, 5, 7, 8, 9, 11, 12].indexOf(item.status) != -1
+          if (item.type > 3 && (item.status == 1 || item.status == 3)) {
+            passFail = true
+          }
         })
-        // console.log({ typeList: data[key], passFail })
         return { typeList: data[key], passFail }
       })
-      cofirmList.push(cofirmList[7])
-      cofirmList[7].passFail
-        ? (cofirmList[7].passFail = false)
-        : cofirmList[7].passFail
-      cofirmList.splice(2, 4)
-      this.cofirmList = cofirmList
 
+      if (approveLevel <= 2) {
+        cofirmList.splice(2, 1)
+      }
+
+      this.cofirmList = cofirmList
       this.showNodeCard = true
     },
     async onComfim(val) {
@@ -256,8 +308,12 @@ export default {
     },
     //上拉刷新
     loadTop() {
-      this.params.page = 1
-      this._initData(this.params)
+      // this.params.page = 1
+      this._initData({
+        page: 1,
+        limit: 10,
+        sort: 'desc'
+      })
       this.allLoaded = false
       this.$refs.loadmore.onTopLoaded()
     },
@@ -307,6 +363,7 @@ export default {
   left: 0;
   width: 100%;
 }
+
 .atest_record_card {
   width: 91.46vw;
   // height: 35.33vw;
@@ -354,12 +411,20 @@ export default {
     align-items: center;
     .pass {
       color: #007aff;
+      background: rgba(0, 122, 255, 0.3);
+
+      height: 30px;
+      line-height: 30px;
+      border-radius: 15px;
+      padding: 0 10px;
     }
     .red {
       color: #ff2d55;
+      background: rgba(255, 45, 85, 0.3);
     }
     .ok {
       color: #4cd964;
+      background: rgba(76, 217, 100, 0.3);
     }
     .turnBack {
       text-align: center;

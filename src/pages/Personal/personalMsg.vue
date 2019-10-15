@@ -3,17 +3,14 @@
     <Header />
     <ul>
       <li v-for="(item,index) in ListItem"
-          :key="index"
+          :key='index'
           @click="routeTo(index)">
         <span v-if="index!==3">{{item}}</span>
         <div v-else
-             class="version">
-          <span>{{item}}</span>
-          <span style="color:#666">版本&nbsp;1.1.2</span>
-        </div>
+             class="version"><span>{{item}}</span><span style="color:#666">版本&nbsp;2.1.0</span></div>
         <div class="icon-right">
           <img src="../../assets/imgs/rightside.png"
-               alt />
+               alt="">
         </div>
       </li>
       <li @click="crmMerge"
@@ -21,14 +18,14 @@
         <span>同步CRM账号</span>
         <div class="icon-right">
           <img src="../../assets/imgs/rightside.png"
-               alt />
+               alt="">
         </div>
       </li>
     </ul>
-    <btn :text="text"
+    <btn :text='text'
          @click.native="quit()" />
     <message-box :type="messageTip.type"
-                 :btnNum="messageTip.btnNum"
+                 :btnNum='messageTip.btnNum'
                  v-if="messageTip.showMessageBox">
       {{messageTip.tip}}
       <template v-slot:btn-group>
@@ -121,9 +118,9 @@ export default {
     let crmAccount = JSON.parse(localStorage.getItem('crmAccount')).crmAccount
     if (account !== crmAccount) {
       if (
-        _localAjax().typename === 'Dealer Boss' ||
-        _localAjax().typename === 'Boss&Consultant' ||
-        _localAjax().typename === 'Boss&Manager'
+        this._localAjax().typename === 'Dealer Boss' ||
+        this._localAjax().typename === 'Boss&Consultant' ||
+        this._localAjax().typename === 'Boss&Manager'
       ) {
         this.isMerge = false
       } else {
@@ -150,7 +147,6 @@ export default {
       let time = JSON.parse(localStorage.getItem('loginData')).expires_in
       let timer = setInterval(() => {
         count++
-        console.log(123, count)
         if (count === time) {
           clearInterval(timer)
           this.key = true
@@ -218,6 +214,7 @@ export default {
     remove() {
       let deviceId = localStorage.getItem('deviceId')
       localStorage.clear()
+      sessionStorage.clear()
       if (deviceId) {
         localStorage.setItem('deviceId', deviceId)
       }

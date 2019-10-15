@@ -22,6 +22,8 @@ Vue.component(SwipeItem.name, SwipeItem)
 Vue.component(Spinner.name, Spinner);
 Vue.component(Loadmore.name, Loadmore);
 Vue.use(InfiniteScroll);
+// 字体图标
+import './assets/iconfont/iconfont.css'
 
 //图片预览
 import preview from 'vue-photo-preview'
@@ -40,6 +42,9 @@ Vue.use(preview, options)
 import VideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
 Vue.use(VideoPlayer);
+
+import bindScroll from '@/components/common/BindScroll/index.js'
+Vue.use(bindScroll)
 
 import 'mint-ui/lib/style.min.css'
 import './index.scss'

@@ -18,13 +18,18 @@
   <!-- built files will be auto injected -->
   <script type="text/javascript">
     window.apiready = function () {
-      let deviceID = api.deviceId;
-      let version = api.appVersion;
+      var deviceID = api.deviceId;
+      var version = api.appVersion;
       localStorage.setItem('deviceId', deviceID)
       localStorage.setItem('appVersion', version)
-      //alert(localStorage.getItem('deviceId'))
-      //alert(deviceID)
-      //alert(version)
+    }
+
+    function historyBack() {
+      if (sessionStorage.getItem('isIndex')) {
+        api.closeWin();
+        return
+      }
+      history.back()
     }
   </script>
 </body>

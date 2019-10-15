@@ -554,15 +554,16 @@ export var router = new VueRouter({
     {
       path: '/recordJxs',
       name: 'recordJxs',
-      component: recordJxs,
-      meta: {
-        keepAlive: true
-      }
+      component: recordJxs
     },
     {
       path: '/recordDetails',
       name: 'recordDetails',
-      component: recordDetails
+      component: recordDetails,
+      meta: {
+        keepAlive: true,
+        title: '检查详情'
+      }
     },
     {
       path: '/itemDetails',
@@ -645,4 +646,12 @@ export var router = new VueRouter({
       }
     }
   }
+})
+router.beforeEach((to, from, next) => {
+  if (to.fullPath == '/' || to.fullPath == '/login') {
+    sessionStorage.setItem('isIndex', 1)
+  } else {
+    sessionStorage.setItem('isIndex', '')
+  }
+  next()
 })

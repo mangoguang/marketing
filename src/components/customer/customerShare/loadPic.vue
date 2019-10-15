@@ -1,30 +1,49 @@
 <template>
   <div id="demo">
     <!-- 遮罩层 -->
-    <div class="container" v-show="panel">
+    <div class="container"
+         v-show="panel">
       <div>
-        <img id="image" :src="url" alt="Picture">
+        <img id="image"
+             :src="url"
+             alt="Picture">
       </div>
-      <button type="button" id="button1" @click="crop">确定</button>
-      <button type="button" id="button2" @click="cancle">取消</button>
-      <button type="button" id="button3" @click="turnBack">还原</button>
+      <button type="button"
+              id="button1"
+              @click="crop">确定</button>
+      <button type="button"
+              id="button2"
+              @click="cancle">取消</button>
+      <button type="button"
+              id="button3"
+              @click="turnBack">还原</button>
     </div>
-    <div class="hasPic" v-show="hasImgStatus">
+    <div class="hasPic"
+         v-show="hasImgStatus">
       <div id="has_header">
-        <div id="backicon" @click="backTo"></div>
+        <div id="backicon"
+             @click="backTo"></div>
         <div class="has_text">编辑头像</div>
-        <div class="more" @click="loadMore"></div>
+        <div class="more"
+             @click="loadMore"></div>
       </div>
       <div id="has_Img">
-        <img :src="headerImage" alt="">
+        <img :src="headerImage"
+             alt="">
       </div>
     </div>
     <div @click="changeImg">
-      <div >
-        <input type="file" id="change" accept="image" @change="change" ref="file" name='dataFile'>
+      <div>
+        <input type="file"
+               id="change"
+               accept="image"
+               @change="change"
+               ref="file"
+               name='dataFile'>
         <label for="change">
           <div class="show">
-            <div class="picture" :style="'backgroundImage:url('+headerImage+')'"></div>
+            <div class="picture"
+                 :style="'backgroundImage:url('+headerImage+')'"></div>
           </div>
         </label>
       </div>
@@ -33,23 +52,25 @@
 </template>
  
 <script>
-import {mapState,mapMutations} from 'vuex'
-import Cropper from "cropperjs";
+import { mapState, mapMutations } from 'vuex'
+import Cropper from 'cropperjs'
+
+import lrz from 'lrz'
 export default {
-  props: ['select','customerImage'],
+  props: ['select', 'customerImage'],
   components: {},
   data() {
     return {
-      headerImage: "", //头像
-      picValue: "",
-      cropper: "",
+      headerImage: '', //头像
+      picValue: '',
+      cropper: '',
       croppable: false,
       panel: false, //遮罩层
-      url: "",
+      url: '',
       hasImgStatus: false,
       selectStatus: '',
-      imageData:''
-    };
+      imageData: ''
+    }
   },
   watch: {
     customerImage() {
@@ -64,11 +85,11 @@ export default {
   mounted() {
     //初始化这个裁剪框
     this.selectStatus = this.select
-    if(this.customerImage) {
+    if (this.customerImage) {
       this.headerImage = this.customerImage
     }
-    var self = this;
-    var image = document.getElementById("image");
+    var self = this
+    var image = document.getElementById('image')
     this.cropper = new Cropper(image, {
       aspectRatio: 1,
       // viewMode: 1,
@@ -77,12 +98,12 @@ export default {
       center: false,
       guides: false,
       ready: function() {
-        self.croppable = true;
+        self.croppable = true
       }
-    });
+    })
 
-     if(this.upLoadUrl) {
-       console.log('hasurl')
+    if (this.upLoadUrl) {
+      console.log('hasurl')
       this.headerImage = this.upLoadUrl
       this.selectStatus = false
       // this.hasImgStatus = true
@@ -92,18 +113,18 @@ export default {
     ...mapMutations(['setUpLoadUrl']),
     //截取图片 blob地址
     getObjectURL(file) {
-      var url = null;
+      var url = null
       if (window.createObjectURL != undefined) {
         // basic
-        url = window.createObjectURL(file);
+        url = window.createObjectURL(file)
       } else if (window.URL != undefined) {
         // mozilla(firefox)
-        url = window.URL.createObjectURL(file);
+        url = window.URL.createObjectURL(file)
       } else if (window.webkitURL != undefined) {
         // webkit or chrome
-        url = window.webkitURL.createObjectURL(file);
+        url = window.webkitURL.createObjectURL(file)
       }
-      return url;
+      return url
     },
     //头部点击出现上传
     loadMore() {
@@ -112,87 +133,88 @@ export default {
     },
     //头部后退
     backTo() {
-      this.hasImgStatus = false 
+      this.hasImgStatus = false
       this.selectStatus = false
     },
     //判断是否出现上传
     changeImg(e) {
-      if(!this.selectStatus) {
-        e.preventDefault();
+      if (!this.selectStatus) {
+        e.preventDefault()
         this.hasImgStatus = true
       }
     },
     //上传图片
-    change(e) {
-      let files = e.target.files || e.dataTransfer.files;
+    async change(e) {
+      let files = e.target.files || e.dataTransfer.files
       //console.log(files);
-      if (!files.length) return;
-      let size = Math.floor(files.size / 1024);
+      if (!files.length) return
+      let minImg = await lrz(files[0], { quality: 0.2 })
+      let size = Math.floor(minImg.file.size / 1024)
       if (size > 3 * 1024 * 1024) {
-        alert("请选择3M以内的图片！");
-        return false;
+        alert('请选择3M以内的图片！')
+        return false
       }
       this.hasImgStatus = false
-      this.panel = true;
-      this.picValue = files[0];
-      this.url = this.getObjectURL(this.picValue);
+      this.panel = true
+      this.picValue = minImg.file
+      this.url = this.getObjectURL(this.picValue)
       //每次替换图片要重新得到新的url
       if (this.cropper) {
-        this.cropper.replace(this.url);
+        this.cropper.replace(this.url)
       }
     },
     //确定
     crop() {
-      this.panel = false;
+      this.panel = false
       //出现编辑头像顶部条
       this.selectStatus = false
-      var croppedCanvas;
-      var roundedCanvas;
+      var croppedCanvas
+      var roundedCanvas
       if (!this.croppable) {
-        return;
+        return
       }
       // Crop
-      croppedCanvas = this.cropper.getCroppedCanvas();
+      croppedCanvas = this.cropper.getCroppedCanvas()
       // console.log(111,croppedCanvas)
       // Round
-      roundedCanvas = this.getRoundedCanvas(croppedCanvas);
-      this.headerImage = roundedCanvas.toDataURL();
+      roundedCanvas = this.getRoundedCanvas(croppedCanvas)
+      this.headerImage = roundedCanvas.toDataURL()
       this.setUpLoadUrl(this.headerImage)
       // console.log(this.headerImage)
       //上传图片
-      this.$refs.file.value = "";
+      this.$refs.file.value = ''
     },
     //取消
     cancle() {
-      this.$refs.file.value = "";
-      this.panel = false;
-      if(this.headerImage) {
+      this.$refs.file.value = ''
+      this.panel = false
+      if (this.headerImage) {
         this.selectStatus = false
       }
     },
     //还原
     turnBack() {
-      this.cropper.reset();
+      this.cropper.reset()
     },
     //绘制canvas
     getRoundedCanvas(sourceCanvas) {
-      var canvas = document.createElement("canvas");
-      var context = canvas.getContext("2d");
-      var width = sourceCanvas.width;
-      var height = sourceCanvas.height;
-      canvas.width = width;
-      canvas.height = height;
-      context.imageSmoothingEnabled = true;
-      context.drawImage(sourceCanvas, 0, 0, width, height);
-      context.globalCompositeOperation = "destination-in";
-      context.beginPath();
+      var canvas = document.createElement('canvas')
+      var context = canvas.getContext('2d')
+      var width = sourceCanvas.width
+      var height = sourceCanvas.height
+      canvas.width = width
+      canvas.height = height
+      context.imageSmoothingEnabled = true
+      context.drawImage(sourceCanvas, 0, 0, width, height)
+      context.globalCompositeOperation = 'destination-in'
+      context.beginPath()
       // context.arc(width / 2, height / 2, Math.min(width, height) / 2, 0, 2 * Math.PI, true);
-      context.fill();
+      context.fill()
 
-      return canvas;
+      return canvas
     }
   }
-};
+}
 </script>
  
 <style >
@@ -232,11 +254,11 @@ export default {
   width: 4.26vw;
   height: 4.06vw;
 }
-#has_Img{
+#has_Img {
   width: 100vw;
   height: 100vw;
 }
-#has_Img img{
+#has_Img img {
   width: 100%;
   height: 100%;
 }
@@ -245,11 +267,11 @@ export default {
   display: none;
   /* opacity: 0; */
 }
- button {
-    margin: 0;
-    padding: 0;
-    border: 1px solid transparent; 
-    outline: none;
+button {
+  margin: 0;
+  padding: 0;
+  border: 1px solid transparent;
+  outline: none;
 }
 #demo #button1 {
   position: absolute;
@@ -448,7 +470,7 @@ export default {
 .cropper-center:after {
   position: absolute;
   display: block;
-  content: " ";
+  content: ' ';
   background-color: #eee;
 }
 
@@ -620,7 +642,7 @@ export default {
 }
 
 .cropper-bg {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC");
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC');
 }
 
 .cropper-hide {

@@ -1,5 +1,6 @@
 import sha1 from 'js-sha1'
 import axios from 'axios'
+var http = axios.create()
 import {
   Indicator,
   Toast
@@ -14,7 +15,7 @@ import VueRouter from 'vue-router'
 //let baseUrl = "http://10.11.8.7"
 //let baseUrl = "http://172.16.4.201"
 //let baseUrl="http://10.11.8.17"
-let baseUrl = "https://mobiletest.derucci.net/cd-sys-web"
+let baseUrl = "https://mobiletest.derucci.net"
 //let baseUrl = 'https://agency.derucci.com'
 // let baseUrl="http://172.16.9.212/"
 // let baseUrl = "http://172.16.12.86/"
@@ -32,17 +33,17 @@ export {
 export default class Common {
   constructor() {
 
-    this.port = baseUrl
+    this.port = baseUrl + '/cd-sys-web'
 
-    this.path = `${this.port}v1/app/report/`
-    this.v2path = `${this.port}v2/app/`
-    this.apipath = `${this.port}v1/api/public/`
+    this.path = `${this.port}/cd-sys-web/v1/app/report/`
+    this.v2path = `${this.port}/cd-sys-web/v2/app/`
+    this.apipath = `${this.port}/cd-sys-web/v1/api/public/`
     this.version = 'web'
     this.key = true
   }
   // 如果输出年份顺序不对，则重新排序
   sortYears(res) {
-    if (res.series && res.series[0]) {
+    if (res && res.series && res.series[0]) {
       if (res.series[0].name < res.series[1].name) {
         let temp = res.series[0]
         res.series[0] = res.series[1]
@@ -171,7 +172,7 @@ export default class Common {
       let sign = this.getSign(params, token.access_token)
       // 显示加载动画，并在10秒后隐藏
       this.loading('open')
-      axios({
+      http({
           method: thatType,
           async: false,
           timeout: 30000,
@@ -184,6 +185,7 @@ export default class Common {
           params: params
         })
         .then((res) => {
+          _this.loading('close')
           if (res.code === 510) { // token失效
             if (token.access_token && token.access_token.length < 48) { // 有效token
               refreshToken.call(this).then(res => {
@@ -193,7 +195,6 @@ export default class Common {
               toLogin()
             }
           } else {
-            _this.loading('close')
             res = res.data
             resolve(res)
           }
@@ -201,6 +202,69 @@ export default class Common {
         .catch((error) => {
           // console.log('请求失败！：', error.response, error.request)
           _this.loading('close')
+          if (error.response) { // 如果服务器响应
+            if (error.response.status === 510) {
+              console.log('非法令牌，需要刷新。', token)
+              // 检测token是否存在
+              if (token.access_token && token.access_token.length < 48) { // 有效token
+                console.log('开始刷新令牌')
+                refreshToken.call(this).then(res => {
+                  reject(510)
+                })
+              } else {
+                toLogin()
+              }
+            } else {
+              //this.tip('请求失败!')
+              console.log(error.response.data.msg)
+              this.tip(error.response.data.msg)
+            }
+          } else if (error.request) {
+            this.tip('网络异常!')
+          } else {
+            this.tip('网络异常!')
+          }
+        })
+    })
+  }
+  httpWithoutLoading(path, params, type) {
+
+    let _this = this
+    let token = JSON.parse(localStorage.getItem('token')) || {}
+    // console.log('ajax出token::', token)
+    return new Promise((resolve, reject) => {
+      let thatType = type == 'post' ? 'post' : 'get'
+      let url = `${this.port}${path}`
+      let sign = this.getSign(params, token.access_token)
+      http({
+          method: thatType,
+          async: false,
+          timeout: 30000,
+          url: url,
+          contentType: "application/json",
+          headers: {
+            "Authorization": `Bearer ${token.access_token}`,
+            'sign': sign
+          },
+          params: params
+        })
+        .then((res) => {
+
+          if (res.code === 510) { // token失效
+            if (token.access_token && token.access_token.length < 48) { // 有效token
+              refreshToken.call(this).then(res => {
+                reject(510)
+              })
+            } else {
+              toLogin()
+            }
+          } else {
+            res = res.data
+            resolve(res)
+          }
+        })
+        .catch((error) => {
+
           if (error.response) { // 如果服务器响应
             if (error.response.status === 510) {
               console.log('非法令牌，需要刷新。', token)
@@ -239,7 +303,7 @@ export default class Common {
       //   _this.loading('close')
       //   clearTimeout(loadingTimeOut)
       // }, 15000)
-      axios({
+      http({
           method: 'post',
           // async: false,
           url: url,
@@ -313,10 +377,10 @@ export default class Common {
       console.log('sign', sign)
       // 显示加载动画
       this.loading('open')
-      axios({
+      http({
           method: 'post',
           // async: false,
-          timeout: 30000,
+          timeout: 500000,
           url: url,
           data: data,
           headers: {
@@ -327,11 +391,12 @@ export default class Common {
         })
         .then((res) => {
           this.loading('close')
-          if (res.data) {
-            resolve(res.data)
-          } else {
-            resolve(false)
+          if (res) {
+            res.data ? resolve(res.data) : resolve(res)
           }
+          //else {
+          //   resolve(false)
+          // }
         })
         .catch((error) => {
           // console.log('请求失败！：', error.response, error.request)
@@ -372,7 +437,7 @@ export default class Common {
       console.log('sign', sign)
       // 显示加载动画
       this.loading('open')
-      axios({
+      http({
           method: 'post',
           // async: false,
           timeout: 30000,
@@ -433,7 +498,7 @@ export default class Common {
     console.log(123123, path)
     let url = `${this.port}${path}`
     return new Promise((resolve, reject) => {
-      axios({
+      http({
         method: 'post',
         url: url,
         data: data,
@@ -677,7 +742,7 @@ export default class Common {
     } else {
       if (str.slice(0, 3) === "99猪") {
         //console.log('原来的',str)
-        let newStr = str.slice(3,);
+        let newStr = str.slice(3);
         //console.log('之后的',newStr)
         string = Base64.decode(newStr)
         //console.log('最后的',string)

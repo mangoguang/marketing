@@ -23,15 +23,21 @@ export default {
       activeIndex: 0
     }
   },
-  inject: ['proSort'],
+  inject: {
+    proSort: {
+      default: () => {
+        return () => 'desc'
+      }
+    }
+  },
   methods: {
     handleClick(index) {
       this.activeIndex = index
       const data = {
         index
       }
-      this.proSort('', index == 0 ? 'desc' : 'asc')
       this.$emit('selectIndex', data)
+      this.proSort && this.proSort('', index == 0 ? 'desc' : 'asc')
     }
   }
 }
@@ -43,13 +49,13 @@ export default {
   .content {
     width: 100vw;
     background: #f8f8f8;
-    padding: 0 4.4vw;
+    padding: 0 24px;
     box-sizing: border-box;
     position: absolute;
     .li {
       line-height: 10.66vw;
       color: #909090;
-      font-size: 4vw;
+      font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;

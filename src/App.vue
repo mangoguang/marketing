@@ -1,52 +1,52 @@
 <template>
-  <div
-    id="app"
-    :style="{'min-height': `${height}px`, background: '#f8f8f8', 'padding-top':`${padding}vw`}"
-  >
+  <div id="app"
+       :style="{'min-height': `${height}px`, background: '#f8f8f8', 'padding-top':`${padding}vw`}">
     <keep-alive>
-      <router-view v-if="$route.meta.keepAlive"  :myStyle="myStyle"></router-view>
+      <router-view v-if="$route.meta.keepAlive"
+                   :myStyle="myStyle"></router-view>
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"  :myStyle="myStyle"></router-view>
+    <router-view v-if="!$route.meta.keepAlive"
+                 :myStyle="myStyle"></router-view>
     <!-- </v-touch> -->
   </div>
 </template>
 
 <script>
-import Vue from "vue";
-import Vuex from "vuex";
-import store from "./store";
+import Vue from 'vue'
+import Vuex from 'vuex'
+import store from './store'
 const Bus = new Vue()
 
 export default {
-  name: "app",
-  props: ["title"],
+  name: 'app',
+  props: ['title'],
   store,
   // components:{mybanner},
   data() {
     return {
       Bus,
       height: window.innerHeight,
-      padding: "",
+      padding: '',
       myStyle: [
         {
-          fgPwdTop: ""
+          fgPwdTop: ''
         },
         {
-          loginFix: ""
+          loginFix: ''
         },
         {
-          formOverFlow: ""
+          formOverFlow: ''
         }
       ]
-    };
+    }
   },
   mounted() {
-    this.isIPhoneX();
+    this.isIPhoneX()
   },
   methods: {
     //左右滑动前进/后退
     onSwipeRight() {
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
     onSwipeLeft() {
       // this.$router.go(+1);
@@ -54,21 +54,21 @@ export default {
     //判断是否iphoneX
     isIPhoneX() {
       let phone = this.phoneSize()
-      if(phone === 'iphonex') {
-        this.padding = "5.86";
-        this.height = window.innerHeight - 44;
-        this.myStyle.fgPwdTop = "-6";
-        this.myStyle.loginFix = "fix";
-        this.myStyle.formOverFlow = "";
-      }else if(phone === 'iphone') {
-        this.padding = "";
-        this.myStyle.formOverFlow = "hidden";
-      }else {
-        this.myStyle.formOverFlow = "hidden";
+      if (phone === 'iphonex') {
+        this.padding = '5.86'
+        this.height = window.innerHeight - 44
+        this.myStyle.fgPwdTop = '-6'
+        this.myStyle.loginFix = 'fix'
+        this.myStyle.formOverFlow = ''
+      } else if (phone === 'iphone') {
+        this.padding = ''
+        this.myStyle.formOverFlow = 'hidden'
+      } else {
+        this.myStyle.formOverFlow = 'hidden'
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss">
@@ -84,8 +84,8 @@ $bgcolor: #31c3b0;
 #app {
   box-sizing: border-box;
   background-color: #fff;
-  height: 100vh;
-  overflow:scroll
+  // height: 100vh;
+  // overflow: scroll;
 }
 body {
   background: #fff;
@@ -221,12 +221,12 @@ a:hover {
   &:before {
     display: table;
     line-height: 0;
-    content: "";
+    content: '';
   }
   &:after {
     display: table;
     line-height: 0;
-    content: "";
+    content: '';
     clear: both;
   }
 }
@@ -243,7 +243,7 @@ a:hover {
 .line100 {
   height: 100px;
 }
-input::-webkit-search-cancel-button{
+input::-webkit-search-cancel-button {
   display: none;
 }
 //设置input框的placeholder样式
@@ -274,35 +274,36 @@ input::-webkit-search-cancel-button{
 .paddingTop2 {
   padding-top: 16vw;
 }
-ul.infoNav{
+ul.infoNav {
   display: flex;
   justify-content: space-between;
   padding: 0 4.26vw;
   margin-top: -8vw;
-  li{
+  li {
     // width: 29.3vw;
     width: 49%;
     line-height: 8vw;
-    height:9vw;
+    height: 9vw;
     text-align: center;
     background: #f8f8f8;
     border-radius: 1.6vw 1.6vw 0 0;
     color: #007aff;
     font-size: 3.73vw;
-    span{
+    span {
       border-radius: 1.6vw 1.6vw 0 0;
       background: #b2d7ff;
       display: block;
-      height:8vw;
+      height: 8vw;
     }
   }
-  .active, .on{
+  .active,
+  .on {
     // background: #007aff;
     background: #f8f8f8;
-    color: #fff
+    color: #fff;
   }
 }
-button.new{
+button.new {
   display: block;
   position: fixed;
   width: 12.8vw;
@@ -312,7 +313,25 @@ button.new{
   bottom: 30vw;
   right: 5vw;
 }
-.mint-popup{
+.mint-popup {
   width: 100vw;
+}
+a {
+  outline: none;
+}
+a:active {
+  outline: none;
+  star: expression(this.onFocus=this.blur());
+}
+a,
+button,
+input {
+  -webkit-tap-highlight-color: rgba(255, 0, 0, 0);
+}
+input::-webkit-input-placeholder {
+  line-height: normal;
+}
+.mint-msgbox-btn {
+  font-size: 14px;
 }
 </style>

@@ -1,5 +1,9 @@
 import axios from 'axios'
-import { Indicator, Toast } from 'mint-ui'
+var http = axios.create()
+import {
+  Indicator,
+  Toast
+} from 'mint-ui'
 //let baseUrl = 'https://op.derucci.com'
 let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
 //let baseUrl = 'http://10.11.8.17:8088'
@@ -12,12 +16,18 @@ let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
 //let baseUrl = 'http://172.16.10.107'
 // let baseUrl = 'http://10.11.8.250:8088'
 let token = JSON.parse(localStorage.getItem('token'))
-export {baseUrl}
+export {
+  baseUrl
+}
 class Request {
-  getData ({ url, params, method = 'GET' }) {
+  getData({
+    url,
+    params,
+    method = 'GET'
+  }) {
     return new Promise((resolve, reject) => {
       this.loading('open')
-      axios({
+      http({
         url: baseUrl + url,
         params: params,
         method: method
@@ -31,15 +41,18 @@ class Request {
     })
   }
 
-  getPostData ({url, data}) {
+  getPostData({
+    url,
+    data
+  }) {
     return new Promise((resolve, reject) => {
-      axios({
+      http({
         method: 'post',
         url: baseUrl + url,
         data: data,
-        transformRequest: [function(data) {
+        transformRequest: [function (data) {
           let ret = ''
-          for(let it in data) {
+          for (let it in data) {
             ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
           }
           return ret
@@ -48,6 +61,7 @@ class Request {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
       }).then(res => {
+
         resolve(res)
       }).catch(err => {
         reject(err)
@@ -55,10 +69,14 @@ class Request {
     })
   }
 
-  getTokenData ({ url, params, method = 'GET' }) {
+  getTokenData({
+    url,
+    params,
+    method = 'GET'
+  }) {
     console.log('token123', token)
     return new Promise((resolve, reject) => {
-      axios({
+      http({
         url: baseUrl + url,
         headers: {
           'Authorization': token.access_token
@@ -87,4 +105,6 @@ class Request {
     }
   }
 }
-export {Request}
+export {
+  Request
+}

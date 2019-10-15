@@ -48,7 +48,10 @@ const mutations = {
   },
   clearSingleArt: (state, obj) => state.singleArt = obj,
   clearSingleFaq: (state, obj) => state.singleFaq = obj,
-  setArticleData: (state, array) => state.articleData = [...state.articleData, ...array],
+  setArticleData: (state, data) => {
+    let array = data.data
+    state.articleData = data.page == 1 ? array : [...state.articleData, ...array]
+  },
   setFaqList: (state, array) => state.FaqList = [...state.FaqList, ...array],
   clearArticleData: state => state.articleData = [],
   clearFaqList: state => state.FaqList = [],

@@ -19,7 +19,7 @@ import {
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line
   // axios.defaults.baseURL = 'https://agency.derucci.com'
-  axios.defaults.baseURL = 'https://mobiletest.derucci.net/cd-sys-web'
+  axios.defaults.baseURL = 'https://mobiletest.derucci.net'
 
 }
 

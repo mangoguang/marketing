@@ -4,7 +4,7 @@
     <div class="border-bottom">
       <p class="title">{{title}}</p>
     </div>
-    <div class="content">
+    <div class="content-box">
       <slot></slot>
     </div>
   </div>
@@ -13,10 +13,8 @@
 <script>
 export default {
   props: ['title'],
-  data () {
-    return {
-
-    };
+  data() {
+    return {}
   }
 }
 </script>

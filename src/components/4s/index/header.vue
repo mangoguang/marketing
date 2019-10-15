@@ -1,10 +1,11 @@
 <!--  -->
 <template>
-  <div :class="`header class${storeClass}`">
+  <div :class="`header class${parseInt(storeClass)+1}`">
     <div class="headerBox">
-      <button @click="back" type="button"></button>
+      <button @click="back"
+              type="button"></button>
     </div>
-    <h3>4S星级认证</h3>
+    <h3 v-if="storeClass!=99">{{starText}}</h3>
   </div>
 </template>
 
@@ -12,15 +13,32 @@
 // import ContentBox from './contentBox'
 // import iconBox from './iconBox'
 export default {
-  props: ['storeClass'],
-  data () {
-    return {
+  props: ['storeClass', 'href'],
+  data() {
+    return {}
+  },
+  computed: {
+    starText() {
+      var arr = ['一星认证', '二星认证', '三星认证', '四星认证', '五星认证']
+      // let star =
+      //   localStorage.getItem('certPositionType') == 'supervisor'
+      //     ? this.storeClass
+      //     : this.storeClass - 1
 
+      // console.log(this.storeClass)
+      return arr[this.storeClass]
     }
   },
   methods: {
     back() {
-      this.$router.go(-1)
+      if (
+        this.href &&
+        localStorage.getItem('certPositionType') != 'supervisor'
+      ) {
+        this.$router.replace(this.href)
+        return
+      }
+      this.$router.back()
     }
   }
 }
@@ -32,23 +50,24 @@ export default {
   justify-content: space-between;
   width: 100%;
   height: 47vw;
-  background: url(../../../assets/imgs/4s/starCheck/star0.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+  background: url(../../../assets/imgs/4s/starCheck/star0.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
-  .headerBox{
+  .headerBox {
     padding-top: 40px;
     height: 8vw;
-    button{
+    button {
       display: block;
       background: url(../../../assets/imgs/4s/back.png) no-repeat center;
       background-size: 2.66vw auto;
       width: 4.66vw;
-      height:8vw;
+      height: 8vw;
       margin-top: 1vw;
       margin-left: 3vw;
     }
   }
-  &>h3{
+  & > h3 {
     width: 100%;
     font-size: 18px;
     color: #fff;
@@ -57,30 +76,41 @@ export default {
     padding-bottom: 8vw;
   }
 }
-.class1{
-  background: url(../../../assets/imgs/4s/starCheck/star1.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class1 {
+  background: url(../../../assets/imgs/4s/starCheck/star1.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
-.class2{
-  background: url(../../../assets/imgs/4s/starCheck/star2.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class2 {
+  background: url(../../../assets/imgs/4s/starCheck/star2.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
-.class3{
-  background: url(../../../assets/imgs/4s/starCheck/star3.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class3 {
+  background: url(../../../assets/imgs/4s/starCheck/star3.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
-.class4{
-  background: url(../../../assets/imgs/4s/starCheck/star4.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class4 {
+  background: url(../../../assets/imgs/4s/starCheck/star4.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
-.class5{
-  background: url(../../../assets/imgs/4s/starCheck/star5.png) no-repeat, url(../../../assets/imgs/4s/headerBg.png)  no-repeat;
+.class5 {
+  background: url(../../../assets/imgs/4s/starCheck/star5.png) no-repeat,
+    url(../../../assets/imgs/4s/headerBg.png) no-repeat;
   background-size: 40vw auto, 100% auto;
   background-position: left 50% bottom 18vw, 0 0;
 }
- 
+.class99 {
+  background: url(~@/assets/imgs/4s/logo.png) no-repeat,
+    url(~@/assets/imgs/4s/font.png) no-repeat,
+    url(~@/assets/imgs/4s/headerBg.png) no-repeat;
+  background-size: 40px 46px, 93px 19px, 100% auto;
+  background-position: center bottom 49px, center bottom 24px, center center;
+}
 </style>

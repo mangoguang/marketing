@@ -13,37 +13,30 @@ export default {
   name: 'module',
   props: ['obj'],
   data() {
-    return{
-
-    }
+    return {}
   },
-  mounted(){
-
+  mounted() {},
+  created() {
+    console.log(this._localAjax().typename)
   },
-  created(){
-   console.log(this._localAjax().typename)
-  },
-  methods:{
-    
-  }
+  methods: {}
 }
 </script>
 
 <style lang="scss" scoped>
-  .module{
-    width: 20vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    div{
-      width: 13.3vw;
-      height: 13.3vw;
-    }
-    h3{
-      font-size: 14px;
-      color: #363636;
-    }
+.module {
+  width: 20vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  div {
+    width: 13.3vw;
+    height: 13.3vw;
   }
- 
+  h3 {
+    font-size: 13px;
+    color: #363636;
+  }
+}
 </style>
 

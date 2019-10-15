@@ -1,40 +1,64 @@
 <template>
-  <div class="prodectList" :style="marginTop">
-    <div class="topBar" :style="{'paddingTop':`${paddingTop}vw`}">
-      <button class="cancle" @click="backBtn"></button>
-      <Search :origin="true" :type="'gallery'" class="search"/>
+  <div class="prodectList"
+       :style="marginTop">
+    <div class="topBar"
+         :style="{'paddingTop':`${paddingTop}vw`}">
+      <button class="cancle"
+              @click="backBtn"></button>
+      <Search :origin="true"
+              :type="'gallery'"
+              class="search" />
     </div>
     <p-topNav />
     <div class="nav_function">
-      <sort-list  class="sortList" :changeStatus='changeStatus' :reset='reset'/>
-      <div class="changeStyle" @click="changStyle">
-        <img src="../../assets/imgs/waterfall.png" alt="瀑布流" v-if="showType">
-        <img src="../../assets/imgs/listStyle.png" alt="列表" v-else>
+      <sort-list class="sortList"
+                 :changeStatus='changeStatus'
+                 :reset='reset' />
+      <div class="changeStyle"
+           @click="changStyle">
+        <img src="../../assets/imgs/waterfall.png"
+             alt="瀑布流"
+             v-if="showType">
+        <img src="../../assets/imgs/listStyle.png"
+             alt="列表"
+             v-else>
       </div>
-      <m-filter @click.native="changeSortListStatus"/>
+      <m-filter @click.native="changeSortListStatus" />
     </div>
-    <div class="productList" ref="productListScroll">
-      <mt-loadmore :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="prodectListLoad" :auto-fill="false"> 
+    <div class="productList"
+         ref="productListScroll">
+      <mt-loadmore :bottom-method="loadBottom"
+                   :bottom-all-loaded="allLoaded"
+                   ref="prodectListLoad"
+                   :auto-fill="false">
         <!-- 列表 -->
-        <div class="m-list" v-show="!showType">
-          <div v-for="(item, index) in list" :key='index'> 
+        <div class="m-list"
+             v-show="!showType">
+          <div v-for="(item, index) in list"
+               :key='index'>
             <router-link :to='{name:"productDetails",query: {id: item.id}}'>
-              <m-list :list='item'/>
+              <m-list :list='item' />
             </router-link>
           </div>
-          <div v-if='!list.length' class='noTips'>暂无产品</div>
+          <div v-if='!list.length'
+               class='noTips'>暂无产品</div>
         </div>
         <!-- 瀑布流 -->
-        <div class="list" v-show="showType">
-          <div class="item" v-for="(item, index) in list" :key='index'>
+        <div class="list"
+             v-show="showType">
+          <div class="item"
+               v-for="(item, index) in list"
+               :key='index'>
             <router-link :to='{name:"productDetails",query: {id: item.id}}'>
-              <w-list :list='item'/>
+              <w-list :list='item' />
             </router-link>
-          </div>  
-          <div v-if='!list.length' class='noTips'>暂无产品</div>
+          </div>
+          <div v-if='!list.length'
+               class='noTips'>暂无产品</div>
         </div>
       </mt-loadmore>
-    <div class="tips" v-show="showTips">已经到底了</div>
+      <div class="tips"
+           v-show="showTips">已经到底了</div>
     </div>
   </div>
 </template>
@@ -43,17 +67,17 @@
 import { Loadmore } from 'mint-ui'
 Vue.component(Loadmore.name, Loadmore)
 import Vue from 'vue'
-import {IndexModel} from '../../utils/index'
+import { IndexModel } from '../../utils/index'
 const indexModel = new IndexModel()
-import {mapState, mapMutations} from 'vuex'
-import mango from "../../js";
-import {fliterItem} from '../../utils/gallery'
-import Search from "../../components/msManage/search/eggSearchInp";
-import PTopNav from "../../components/Gallery/productList/pTopNav";
-import SortList from '../../components/Gallery/productList/sortList';
-import MFilter from '../../components/Gallery/productList/filter';
-import MList from '../../components/Gallery/productList/listStyle';
-import WList from '../../components/Gallery/productList/waterfallList';
+import { mapState, mapMutations } from 'vuex'
+import mango from '../../js'
+import { fliterItem } from '../../utils/gallery'
+import Search from '../../components/msManage/search/eggSearchInp'
+import PTopNav from '../../components/Gallery/productList/pTopNav'
+import SortList from '../../components/Gallery/productList/sortList'
+import MFilter from '../../components/Gallery/productList/filter'
+import MList from '../../components/Gallery/productList/listStyle'
+import WList from '../../components/Gallery/productList/waterfallList'
 export default {
   components: {
     Search,
@@ -64,14 +88,14 @@ export default {
     WList
   },
   data() {
-    return{
+    return {
       marginTop: '',
-      paddingTop:'',
+      paddingTop: '',
       key: true,
       changeStatus: false,
       list: [],
       init: false,
-      obj:{
+      obj: {
         category: '',
         brand: '',
         key: '',
@@ -103,7 +127,7 @@ export default {
   },
   watch: {
     downListVal() {
-      if(this.init) {
+      if (this.init) {
         //this.list = []
         this.allLoaded = false
         this.showTips = false
@@ -113,7 +137,7 @@ export default {
       }
     },
     filterVal() {
-      if(this.init) {
+      if (this.init) {
         //this.list = []
         this.allLoaded = false
         this.showTips = false
@@ -123,7 +147,7 @@ export default {
       }
     },
     price() {
-      if(this.init) {
+      if (this.init) {
         //this.list = []
         this.allLoaded = false
         this.showTips = false
@@ -133,7 +157,7 @@ export default {
       }
     },
     productNavlistVal() {
-      if(this.init) {
+      if (this.init) {
         //this.list = []
         this.allLoaded = false
         this.showTips = false
@@ -153,11 +177,11 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'setParmas', 
-      'setDownList', 
-      'setShowType', 
-      'setAllCategoryList', 
-      'setProductScroll', 
+      'setParmas',
+      'setDownList',
+      'setShowType',
+      'setAllCategoryList',
+      'setProductScroll',
       'initAllCategoryScroll',
       'getProductScroll',
       'initPageList',
@@ -167,7 +191,7 @@ export default {
     //获取滚动条高度
     recordScrollPosition(e) {
       let category = this.productNavlistVal
-      if(e.target.scrollTop === 0) {
+      if (e.target.scrollTop === 0) {
         return
       }
       let obj = {
@@ -179,18 +203,22 @@ export default {
     //监听滚动条高度
     listenScrollTop() {
       let category = this.productNavlistVal
-      this.$refs.productListScroll.addEventListener('scroll',this.recordScrollPosition,false);
+      this.$refs.productListScroll.addEventListener(
+        'scroll',
+        this.recordScrollPosition,
+        false
+      )
       this.$nextTick(() => {
         this.getProductScroll(category)
-        this.$refs.productListScroll.scrollTop = this.productScroll; 
+        this.$refs.productListScroll.scrollTop = this.productScroll
       })
     },
     //初始请求数据
     initGetData() {
-      if(typeof this.$route.query.index == 'number') {
+      if (typeof this.$route.query.index == 'number') {
         this.setDownList('')
         this.initParmas()
-      }else {
+      } else {
         //后退
         this.getLimit()
         this.$nextTick(() => {
@@ -200,14 +228,13 @@ export default {
     },
     //请求数据
     filterData(obj) {
-     
       indexModel.fliterList(obj).then(res => {
-        if(res.data) {
+        if (res.data) {
           this.allLoaded = false
           this.init = true
-          if(obj.page===1){
-            this.list=res.data.list;
-          }else{
+          if (obj.page === 1) {
+            this.list = res.data.list
+          } else {
             this.list = this.list.concat(res.data.list)
           }
           this.saveLimit()
@@ -223,20 +250,19 @@ export default {
       // console.log(123,this.productLimit)
       let limit
       this.$nextTick(() => {
-        if(this.productLimit) {
-          if(this.productLimit > 10) {
-            limit = {'limit': this.productLimit}
-          }else {
-            limit = {'limit': 10}
+        if (this.productLimit) {
+          if (this.productLimit > 10) {
+            limit = { limit: this.productLimit }
+          } else {
+            limit = { limit: 10 }
           }
-        }else {
-          limit = {'limit': 10}
+        } else {
+          limit = { limit: 10 }
         }
-        let page = {'page': 1}
+        let page = { page: 1 }
         this.setParmas(limit)
         this.setParmas(page)
       })
-     
     },
     //缓存limit
     saveLimit() {
@@ -249,7 +275,7 @@ export default {
     },
     //初始化参数
     initParmas() {
-      this.setProductScroll(0);
+      this.setProductScroll(0)
       this.initAllCategoryScroll([])
       this.obj.account = this._localAjax().account
       this.obj.category = this.$route.query.categoryName
@@ -259,9 +285,9 @@ export default {
     },
     //初始化品牌
     initBrand() {
-      if(this.listVal === '慕思') {
+      if (this.listVal === '慕思') {
         this.obj.brand = ''
-      }else {
+      } else {
         this.obj.brand = this.listVal
       }
     },
@@ -273,9 +299,9 @@ export default {
     },
     //获取价格参数
     getPrice() {
-      if(this.price.price2 === '') {
+      if (this.price.price2 === '') {
         return this.price.price1 + ''
-      }else {
+      } else {
         return this.price.price1 + '-' + this.price.price2
       }
     },
@@ -293,47 +319,47 @@ export default {
     //切换展示模式
     changStyle() {
       this.changeStatus = true
-      if(this.key) {
+      if (this.key) {
         this.key = false
         setTimeout(() => {
           this.setShowType(!this.showType)
           this.key = true
-        }, 200);
+        }, 200)
       }
     },
     //下拉刷新
     loadBottom() {
-      this.$refs.prodectListLoad.onBottomLoaded();
+      this.$refs.prodectListLoad.onBottomLoaded()
       this.pullDownData()
     },
-     //下拉加载数据
+    //下拉加载数据
     pullDownData() {
       this.allLoaded = true
-      let len = (this.list.length)/10 + 1
-      if(Math.floor(len) < len) {
+      let len = this.list.length / 10 + 1
+      if (Math.floor(len) < len) {
         this.allLoaded = true
         this.showTips = true
-      }else {
+      } else {
         // this.getProductLimit(this.productNavlistVal)
-        let obj = {'page': len}
-        let obj1 = {'limit': 10}
+        let obj = { page: len }
+        let obj1 = { limit: 10 }
         this.setParmas(obj)
         this.setParmas(obj1)
         this.filterData(this.filterParmas)
       }
     },
-      //判断是否iphoneX
+    //判断是否iphoneX
     isIPhoneX() {
       let phone = this.phoneSize()
-      if(phone === 'iphonex') {
-        this.marginTop = {marginTop: '-5.86vw'};
-        this.paddingTop=11
-      }else if(phone === 'iphone') {
-        this.marginTop = "";
-        this.paddingTop=5
-      }else {
-        this.marginTop = "";
-        this.paddingTop=5
+      if (phone === 'iphonex') {
+        this.marginTop = { marginTop: '-5.86vw' }
+        this.paddingTop = 11
+      } else if (phone === 'iphone') {
+        this.marginTop = ''
+        this.paddingTop = 5
+      } else {
+        this.marginTop = ''
+        this.paddingTop = 5
       }
     }
   }
@@ -346,12 +372,16 @@ export default {
   height: 100vh;
   overflow: hidden;
   box-sizing: border-box;
-  background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
+  background: linear-gradient(
+    0deg,
+    rgba(248, 248, 248, 1) 0%,
+    rgba(255, 255, 255, 1) 100%
+  );
   .topBar {
     background: #fff;
     padding: 3vw 1.66vw;
-    padding-right:0;
-    padding-bottom:1vw;
+    padding-right: 0;
+    padding-bottom: 1vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -373,14 +403,14 @@ export default {
     align-items: center;
     justify-content: space-between;
     line-height: 10.6vw;
-    background:rgba(255,255,255,1);
-    box-shadow:0px 1px 1px 0px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
     //margin-bottom: 2vw;
     .sortList {
-      flex: 0.94;
+      flex: 1;
     }
     .changeStyle {
-        padding-top: 1vw;
+      padding-top: 1vw;
       img {
         width: 3.46vw;
         height: 3.46vw;
@@ -388,12 +418,16 @@ export default {
     }
   }
   .m-list {
-    background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
+    background: linear-gradient(
+      0deg,
+      rgba(248, 248, 248, 1) 0%,
+      rgba(255, 255, 255, 1) 100%
+    );
   }
   .list {
     //background:linear-gradient(0deg,rgba(248,248,248,1) 0%,rgba(255,255,255,1) 100%);
     margin: 3vw;
-    margin-top:2.666vw;
+    margin-top: 2.666vw;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -410,21 +444,21 @@ export default {
 .changbg {
   background: rgba(0, 0, 0, 0.5);
 }
- .productList {
-    height: 100vh;
-    overflow: scroll;
-    padding-bottom: 50vw;
-    box-sizing: border-box;
-    -webkit-overflow-scrolling: touch
-  }
-  .tips {
-    color: #666;
-    text-align: center;
-    // font-size: 4vw;
-  }
-  .noTips {
-    width:100vw;
-    text-align: center;
-    background:#fff;
-  }
+.productList {
+  height: 100vh;
+  overflow: scroll;
+  padding-bottom: 50vw;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+.tips {
+  color: #666;
+  text-align: center;
+  // font-size: 4vw;
+}
+.noTips {
+  width: 100vw;
+  text-align: center;
+  background: #fff;
+}
 </style>

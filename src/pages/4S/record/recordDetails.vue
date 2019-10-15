@@ -35,7 +35,7 @@ export default {
     CircleView,
     recordContent
   },
-  data () {
+  data() {
     return {
       top: '',
       height: '',
@@ -46,31 +46,52 @@ export default {
       score: 0,
       cycle: 0,
       checkCategories: []
-    };
+    }
   },
-  created () {
+  async activated() {
     let params = this.$route.query
-    console.log(params)
+    let { code, msg, checkCategories } = await checkcategories(params)
+
+    checkCategories.map(item => {
+      item.name = item.name.replace('检查', '')
+    })
+    this.starList = checkCategories
+    params.levelId =
+      sessionStorage.getItem('levelId') || checkCategories[0].levelId
+    this.starData = checkCategories[0].name
+    this._getCheckLogInfo(params)
+  },
+  created() {
+    let params = this.$route.query
     this._initData(params)
   },
-  mounted () {
+  mounted() {
     this.isIPhoneX()
   },
+  beforeRouteLeave(to, from, next) {
+    let routeName = ['itemDetails']
+    if (routeName.indexOf(to.name) != -1) {
+      from.meta.keepAlive = true
+    } else {
+      from.meta.keepAlive = false
+    }
+    next()
+  },
   methods: {
-    async  _getCheckLogInfo (params) {
+    async _getCheckLogInfo(params) {
       let { code, msg, checkLogInfo } = await checkloginfo(params)
       if (!checkLogInfo) {
         Toast('暂无数据')
-        setTimeout(() => {
-          this.$router.go(-1)
-        }, 1000)
+        this.score = 0
+        this.cycle = '-'
+        this.checkCategories = []
         return
       }
       this.score = checkLogInfo.score
-      this.cycle = checkLogInfo.cycle
+      this.cycle = checkLogInfo.cycle || 1
       this.checkCategories = checkLogInfo.checkCategories
     },
-    async   _initData (params) {
+    async _initData(params) {
       let { code, msg, checkCategories } = await checkcategories(params)
 
       checkCategories.map(item => {
@@ -82,16 +103,17 @@ export default {
       this._getCheckLogInfo(params)
     },
     //选择星级  1星不可选
-    changeStar (item) {
+    changeStar(item) {
       this.starData = item.name
       let params = this.$route.query
       params.levelId = item.levelId
+      sessionStorage.levelId = item.levelId
       this._getCheckLogInfo(params)
     },
-    isIPhoneX () {
-      let phone = this.phoneSize();
-      if (phone === "iphonex") {
-        this.top = "-5.86";
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if (phone === 'iphonex') {
+        this.top = '-5.86'
         this.starTop = '20'
         this.headerHeight = 29.5
       }

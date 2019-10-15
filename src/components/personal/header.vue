@@ -1,14 +1,27 @@
 <template>
-  <div class="header" :style="{'height':`${height}vw`,'marginTop':`${marginTop}vw`}">
+  <div class="header"
+       :style="{'height':`${height}vw`,'marginTop':`${marginTop}vw`}">
     <div class="compile">编辑</div>
     <div class="personalMsg">
       <!-- <div class="via" @click="go"></div> -->
-      <img v-if="ajaxData.sex===1" :src="via" alt="" class="via" @click="go">
-      <img v-else-if="ajaxData.sex===2" :src="svia" alt="" class="via" @click="go">
-      <img v-else :src="unknow" alt="" class="via" @click="go">
+      <img v-if="ajaxData.sex===1"
+           :src="via"
+           alt=""
+           class="via"
+           @click="go">
+      <img v-else-if="ajaxData.sex===2"
+           :src="svia"
+           alt=""
+           class="via"
+           @click="go">
+      <img v-else
+           :src="unknow"
+           alt=""
+           class="via"
+           @click="go">
       <div class="personal-content">
         <div class="name">
-          <span><span v-if="ajaxData.positionList">{{ajaxData.positionList.typeName}}</span>{{ajaxData.name}}</span>
+          <span><span v-if="ajaxData.positionList">{{userTypeName}}</span>{{ajaxData.name}}</span>
           <span>|</span>
           <span>{{ajaxData.sex === 0 ? '未知' : (ajaxData.sex === 1?'男' : '女')}}</span>
         </div>
@@ -31,15 +44,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 export default {
-  data(){
-    return{
-      height:'',
-      marginTop:'',
+  data() {
+    return {
+      height: '',
+      marginTop: '',
       ajaxData: {},
       shop: '',
-      unknow:'./static/images/avatar.png',
-      svia:'./static/images/svia.png',
-      via:'./static/images/via.png',
+      unknow: './static/images/avatar.png',
+      svia: './static/images/svia.png',
+      via: './static/images/via.png',
       typeName: ''
     }
   },
@@ -48,42 +61,56 @@ export default {
     let ajaxData = localStorage.getItem('ajaxData')
     this.ajaxData = JSON.parse(ajaxData)
     let shop = localStorage.getItem('shops')
-    if(JSON.parse(shop).length>0){
+    if (JSON.parse(shop).length > 0) {
       this.shop = JSON.parse(shop)[0].name
     }
-    
   },
-  mounted(){
+  computed: {
+    userTypeName() {
+      let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+      let type = ['经销商老板', '门店店长', '睡眠顾问', '跟单员']
+      let arr = []
+      userInfo.positionList.map(item => {
+        let pos = type.indexOf(item.typeName)
+        if (pos != -1) {
+          arr.push(pos)
+        }
+      })
+      let index = arr.sort()[0]
+      return type[index] || userInfo.positionList[index].typeName
+    }
+  },
+  mounted() {
     this.isIPhoneX()
   },
-  methods:{
-    isIPhoneX(){
+  methods: {
+    isIPhoneX() {
       let phone = this.phoneSize()
-      if(phone === 'iphonex') {
+      if (phone === 'iphonex') {
         this.height = '54.4'
         this.marginTop = '-5.86'
-      }else if(phone === 'iphone') {
+      } else if (phone === 'iphone') {
         this.height = '49.26'
-      }else {
+      } else {
         this.height = '49.26'
       }
     },
-    go(){
-      this.$router.push({path:'/personalData'});
+    go() {
+      this.$router.push({ path: '/personalData' })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.header{
+.header {
   width: 100vw;
   height: 46.26vw;
   background: url('../../assets/imgs/viaBg.png') no-repeat center;
   background-size: 100% 100%;
   position: relative;
-  overflow-x:hidden;
-  .compile{
+  overflow-x: hidden;
+  .compile {
     color: #fff;
     font-size: 4vw;
     padding: 5vw;
@@ -91,7 +118,7 @@ export default {
     right: -0.6vw;
     top: 7.13vw;
   }
-  .personalMsg{
+  .personalMsg {
     position: absolute;
     top: 20.53vw;
     left: 6.93vw;
@@ -100,28 +127,27 @@ export default {
     color: #fff;
     font-size: 4.266vw;
     height: 30vw;
-    .via{
+    .via {
       // background: url('../../assets/imgs/via.png') no-repeat center;
       // background-size: 100% 100%;
       width: 16vw;
       height: auto;
       //height: 16vw;
     }
-    .personal-content{
+    .personal-content {
       margin-left: 5.6vw;
-      .phoneNumber{
+      .phoneNumber {
         // display: flex;
-        line-height:1.4em;
-        .phone-icon{
+        line-height: 1.4em;
+        .phone-icon {
           padding-left: 2vw;
           padding-right: 4vw;
-          img{
+          img {
             width: 3.06vw;
             height: 3.06vw;
-          } 
+          }
+        }
       }
-      }
-     
     }
   }
 }

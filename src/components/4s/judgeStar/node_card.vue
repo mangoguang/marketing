@@ -8,9 +8,9 @@
             v-for="(item, index) in cofirmList"
             :key="index">
           <div class="node_left_text">
-            <p class="text">{{ itemName[index] }}</p>
+            <p class="text">{{ department[index] }}</p>
             <div class="step "
-                 :class="{'un-line':!item.passFail}">
+                 :class="{'pass':item.passFail}">
               <div class="step-circle"></div>
             </div>
           </div>
@@ -18,9 +18,11 @@
             <div class="text"
                  v-for="(items) in item.typeList"
                  :key="items.id">
-              <p>{{items.createTime+' '+items.remark}}</p>
-              <span :class="{unPass:[2, 3, 6, 10, 13].includes(items.status)}"
-                    @click="handleDetailClick(items)">{{status[items.status-1]['name'] }}</span>
+              <p>
+                {{items.createTime}}
+                <span @click="handleDetailClick(items)"
+                      :class="{unPass:items.statusString.indexOf('未通过')!=-1}">{{items.statusString}}</span>
+              </p>
             </div>
             <div v-if="item&&item.length==0"
                  class="nodata">-</div>
@@ -52,30 +54,38 @@
 <script>
 import { parseTime } from '@/utils/tools'
 export default {
-  props: ['cofirmList', 'star', 'status', 'comfirmTitle'],      //几星
-  data () {
+  props: ['cofirmList', 'star', 'status', 'comfirmTitle'], //几星
+  data() {
     return {
-      itemName: ['经销商', '区域片区', '4s认证部', '总部', '总部'],
+      itemName: ['经销商', '区域片区', '4s认证部', '总部', '归档'],
 
       lineStyle: {}
-    };
+    }
   },
-
+  computed: {
+    department() {
+      if (this.cofirmList.length == 4) {
+        this.itemName.splice(2, 1)
+      }
+      return this.itemName
+    }
+  },
   methods: {
-    handleCloseClick () {
+    handleCloseClick() {
       this.$emit('onNodeCardClose', true)
     },
-    handleDetailClick (items) {
-      if (items.status == 1) return
-      this.$router.push({
-        path: '/attest-detail',
-        query: {
-          shopId: items.shopId,
-          qualificationId: items.id,    //认证id
-          starLevelId: items.starLevelId,   //星级1,2,3,4,5
-          type: items.type   //类型， 3：区域经理 评分项      4：4S
-        }
-      })
+    handleDetailClick(items) {
+      if (items.statusString == '未通过') {
+        this.$router.push({
+          path: '/attest-detail',
+          query: {
+            shopId: items.shopId,
+            qualificationId: items.id, //认证id
+            starLevelId: items.starLevelId, //星级1,2,3,4,5
+            type: items.type //类型， 3：区域经理 评分项      4：4S
+          }
+        })
+      }
     }
   }
 }
@@ -140,11 +150,13 @@ export default {
           left: 63px;
           height: 100%;
           width: 2px;
-          background: #5ac8fa;
+          background: #f8f8f8;
+          // background: #5ac8fa;
           .step-circle {
             width: 10px;
             height: 10px;
-            background: rgba(90, 200, 250, 0.3);
+            background: rgba(144, 144, 144, 0.3);
+            // background: rgba(90, 200, 250, 0.3);
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -154,26 +166,25 @@ export default {
             left: 50%;
             transform: translateX(-50%);
             &::after {
-              content: "";
+              content: '';
               display: block;
               width: 7px;
               height: 7px;
-              background: #5ac8fa;
+              // background: #5ac8fa;
+              background: #909090;
               border-radius: 50%;
             }
           }
         }
-        .un-line {
-          background: #f8f8f8;
+        .pass {
+          // background: #f8f8f8;
+          background: #5ac8fa;
           .step-circle {
-            background: rgba(144, 144, 144, 0.3);
+            // background: rgba(144, 144, 144, 0.3);
+            background: rgba(90, 200, 250, 0.3);
             &::after {
-              content: "";
-              display: block;
-              width: 7px;
-              height: 7px;
-              background: #909090;
-              border-radius: 50%;
+              // background: #909090;
+              background: #5ac8fa;
             }
           }
         }

@@ -3,7 +3,14 @@
   <div class="record_header"
        :style="{'margin-top':`${top}vw`}">
     <div class="back_icon"
-         @click="goBack">
+         @click="$emit('onHandleBack')"
+         v-if="showLeft">
+      <img src="../../../assets/imgs/4s/backicon.png"
+           alt="">
+    </div>
+    <div class="back_icon"
+         @click="goBack"
+         v-else>
       <img src="../../../assets/imgs/4s/backicon.png"
            alt="">
     </div>
@@ -14,22 +21,26 @@
 
 <script>
 export default {
-  props: ['title'],
-  data () {
+  props: ['title', 'href', 'showLeft'],
+  data() {
     return {
       top: ''
-    };
+    }
   },
-  mounted () {
+  mounted() {
     this.isIPhoneX()
   },
   methods: {
-    goBack () {
+    goBack() {
+      if (this.href) {
+        this.$router.push(this.href)
+        return
+      }
       this.$router.go(-1)
     },
-    isIPhoneX () {
-      let phone = this.phoneSize();
-      if (phone === "iphonex") {
+    isIPhoneX() {
+      let phone = this.phoneSize()
+      if (phone === 'iphonex') {
         //this.top = "-5.86";
       }
     }

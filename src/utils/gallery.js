@@ -2,10 +2,12 @@ function getAjax() {
   let ajaxData = localStorage.getItem('ajaxData')
   return JSON.parse(ajaxData)
 }
-export { getAjax }
+export {
+  getAjax
+}
 
 function btnList(names, i) {
-  if(names) {
+  if (names) {
     return names.map((item, index) => {
       return {
         name: item.name,
@@ -15,13 +17,16 @@ function btnList(names, i) {
   }
 }
 
-export { btnList }
+export {
+  btnList
+}
 
 function myBtnList(names, i) {
-  if(names) {
+  if (names) {
     return names.map((item, index) => {
       return {
         name: item.name,
+        goodsCount: item.goodsCount,
         aliasBrand: item.aliasBrand,
         status: index === i
       }
@@ -29,7 +34,9 @@ function myBtnList(names, i) {
   }
 }
 
-export { myBtnList }
+export {
+  myBtnList
+}
 
 function fliterItem(str) {
   switch (str) {
@@ -46,4 +53,6 @@ function fliterItem(str) {
   }
 }
 
-export {fliterItem}
+export {
+  fliterItem
+}

@@ -13,7 +13,8 @@ export default {
       price1: '',
       price2: ''
     },
-    showType: true
+    showType: true,
+    productTabList: []
   },
   mutations: {
     //列表展现形式
@@ -21,11 +22,12 @@ export default {
     //获取产品列表顶部导航栏
     setProductNavList: (state, arr) => state.productNavList = arr,
     setInitNavList: (state, arr) => state.initNavList = arr,
+    setProductTabList: (state, arr) => state.productTabList = arr,
     //获取选中的值
     getProductNavListVal(state) {
       state.productNavList.forEach(item => {
-        if(item.status) {
-          state.productNavlistVal =  item.name
+        if (item.status) {
+          state.productNavlistVal = item.name
         }
       });
     },
@@ -34,8 +36,8 @@ export default {
     //获取下啦排序选择值
     setDownListVal(state) {
       state.downList.forEach(item => {
-        if(item.status) {
-          state.downListVal =  item.name
+        if (item.status) {
+          state.downListVal = item.name
         }
       });
     },
@@ -68,7 +70,7 @@ export default {
     getFilterVal(state) {
       state.filterVal = []
       state.filterList.forEach(el => {
-        if(el.status) {
+        if (el.status) {
           state.filterVal.push(el.name)
         }
       })

@@ -9,17 +9,17 @@
       </div>
       <ul class="details">
         <li>
-          <span>检查周期:</span>
-          <span> {{item.cycle*4}}周</span>
+          <span>累计周期:</span>
+          <span> {{item.cycle||1}}月</span>
         </li>
-        <li>
+        <li v-if="item.isGrade">
           <span>检查时间:</span>
-          <span>{{item.inspectTime.split(' ')[0]}}</span>
+          <span>{{item.inspectTime&&item.inspectTime.split(' ')[0]}}</span>
         </li>
       </ul>
       <div class="right-box"
            :class="{'has-check':item.isGrade==1}"
-           @click="bindNavigatorStartCheck(item.id)">
+           @click="bindNavigatorStartCheck(item)">
         <span>{{item.isGrade!=1?'去评分':'已评分'}}</span>
         <img v-if="item.isGrade!=1"
              src="../../../assets/imgs/4s/right_2.png"
@@ -40,8 +40,11 @@ export default {
   },
   methods: {
     //去星级检查
-    bindNavigatorStartCheck(shopId) {
-      this.$router.push({ path: '/starCheck', query: { shopId } })
+    bindNavigatorStartCheck(item) {
+      this.$router.push({
+        path: '/starCheck',
+        query: { shopId: item.id, starLevel: item.starLevel }
+      })
     }
   }
 }

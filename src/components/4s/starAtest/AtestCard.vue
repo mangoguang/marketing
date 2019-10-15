@@ -23,8 +23,8 @@
             </div>
           </div>
           <div class="time">
-            <p>检查周期：{{item.cycleCheckTotal}}周</p>
-            <p>累计周期：{{item.accumulativeCycle}}周</p>
+            <p>检查周期：{{item.cycleCheckTotal}}月</p>
+            <p>累计周期：{{item.accumulativeCycle}}月</p>
             <p>开始时间：{{item.checkStartTime||'-'}}</p>
           </div>
           <div class="buttMan">
@@ -71,7 +71,8 @@
             <div class="footer"></div>
           </div>
           <div class="atest">
-            <button @click="bindApply(index)">发起申请</button>
+            <div class="btn"
+                 @click="bindApply(index)">发起申请</div>
           </div>
         </div>
         <div class="no-data"
@@ -101,7 +102,12 @@ export default {
     }
   },
   created() {
-    this._initData()
+    let searchVal = this.$route.query.searchVal
+    if (searchVal) {
+      this._initData(1, searchVal)
+    } else {
+      this._initData()
+    }
   },
   mounted() {
     this.wrapperHeight =
@@ -166,6 +172,10 @@ export default {
     },
     async bindApply(index) {
       let item = this.dataList[index]
+      if (!item.isEdit) {
+        Toast('请先点击确认')
+        return
+      }
       let { province, empowerCity } = item
       if (!item.nameVal) {
         Toast('请填写对接人姓名')
@@ -339,7 +349,7 @@ export default {
     width: 100%;
     padding: 2.26vw 0 1.6vw 0;
     box-sizing: border-box;
-    button {
+    .btn {
       width: 21.33vw;
       height: 8vw;
       border-radius: 4vw;

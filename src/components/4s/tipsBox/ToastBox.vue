@@ -7,7 +7,8 @@
       </div>
       <div class="content">
         <slot name="content">
-          <div class="def-cont">{{content}}</div>
+          <div class="def-cont"
+               v-html="content"></div>
         </slot>
       </div>
       <div class="buttons">
@@ -31,7 +32,6 @@ export default {
       default: ''
     }
   }
-
 }
 </script>
 <style lang="scss" scoped>
@@ -69,16 +69,18 @@ export default {
       line-height: 44px;
       text-align: center;
       line-height: 1;
-      padding-top: 5px;
+      padding-top: 10px;
     }
   }
   .def-cont,
   .content {
     min-height: 96px;
+    font-size: 15px;
     .def-cont {
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 0 20px;
     }
   }
   .buttons {

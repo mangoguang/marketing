@@ -13,7 +13,7 @@ const mutations = {
 }
 
 const getters = {
-  orderList: state => state.orderData.records || []
+  orderList: state => state.orderData.records || ['1']
 }
 
 export default {

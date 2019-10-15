@@ -117,6 +117,10 @@ export default {
   width: 91.46vw;
   position: relative;
   box-sizing: border-box;
+  position: relative;
+  form {
+    position: relative;
+  }
   input {
     caret-color: #000;
   }
@@ -127,17 +131,23 @@ export default {
     height: 4.26vw;
     position: absolute;
     left: 3vw;
-    top: 2.13vw;
+    top: 50%;
+    transform: translateY(-50%);
   }
   .eggInp {
     width: 100%;
-    height: 8vw;
-    line-height: 8vw;
+    // height: 8vw;
     background: #f7f7f7;
     border-radius: 4vw;
-    font-size: 3.46vw;
+    font-size: 14px;
     padding: 0 9.33vw;
     box-sizing: border-box;
+    padding-top: 7px;
+    padding-bottom: 7px;
+  }
+  input::-webkit-input-placeholder {
+    line-height: normal;
+    //transform: translateY(1px);
   }
   .deleteVal {
     background: url(../../../assets/imgs/egg_delete.png) no-repeat center;

@@ -43,7 +43,7 @@
 <script>
 export default {
   props: ['checkLogs'],
-  data () {
+  data() {
     return {
       num: 2,
       showList: [],
@@ -55,14 +55,14 @@ export default {
       rotateUp: {
         transform: 'rotate(-90deg)'
       }
-    };
+    }
   },
-  created () {
+  created() {
     this.getInitList()
   },
   methods: {
     //初始展示的数据
-    getInitList () {
+    getInitList() {
       // const len = this.list && this.list.length
       // this.showList = len > 3 ? this.list.slice(0,3) : this.list
     },
@@ -73,14 +73,16 @@ export default {
     //   this.moreText = this.key? '点击收起' : '点击更多'
     // },
     //跳转记录详情
-    toDetails (item) {
+    toDetails(item) {
       let { shopId, startTime, endTime } = item
+      let shopName = this.$route.query.shopName
       this.$router.push({
         name: 'recordDetails',
         query: {
           shopId,
           startTime,
-          endTime
+          endTime,
+          shopName
         }
       })
     }
@@ -135,7 +137,7 @@ export default {
       margin-bottom: 1vw;
     }
     .content_li {
-      font-size: 3.2vw;
+      font-size: 12px;
       line-height: 8vw;
       display: flex;
       justify-content: space-around;

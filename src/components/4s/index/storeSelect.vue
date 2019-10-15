@@ -38,23 +38,23 @@ export default {
     })
   },
   methods: {
-    async _initData() {
-      let { code, msg, shops } = await gradeShops()
-      if (code != 0) {
-        Toast({
-          message: msg,
-          position: 'middle',
-          duration: 2000
-        })
-        return
-      }
-      if (shops.length > 0) {
-        this.shops = shops
-        this.shopId = shops[0].id
-        this.setShopId(shops[0].id)
-        this.soreClass = shops[0].starLevel
-      }
-    },
+    // async _initData() {
+    //   let { code, msg, shops } = await gradeShops()
+    //   if (code != 0) {
+    //     Toast({
+    //       message: msg,
+    //       position: 'middle',
+    //       duration: 2000
+    //     })
+    //     return
+    //   }
+    //   if (shops.length > 0) {
+    //     this.shops = shops
+    //     this.shopId = shops[0].id
+    //     this.setShopId(shops[0].id)
+    //     this.soreClass = shops[0].starLevel
+    //   }
+    // },
     showStoreList() {
       this.storeSelectShow = !this.storeSelectShow
     },
@@ -62,7 +62,7 @@ export default {
       this.selectIndex = index
       sessionStorage.setItem('selectIndex', index)
       this.storeSelectShow = false
-      this.$emit('onGetStoreId', item)
+      this.$emit('onGetStoreId', item, index)
     }
   }
 }
@@ -114,6 +114,10 @@ export default {
       padding: 0 4.4vw;
       color: #909090;
       background: #fff;
+      text-align: center;
+      &:first-child {
+        padding-top: 10px;
+      }
       span {
         display: inline-block;
         padding-right: 5vw;
