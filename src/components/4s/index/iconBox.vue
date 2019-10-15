@@ -140,6 +140,7 @@ export default {
   .news_icon {
     width: 15px;
     height: 15px;
+    line-height: 15px;
     border-radius: 50%;
     background: url('../../../assets/imgs/4s/news.png') no-repeat center;
     position: absolute;

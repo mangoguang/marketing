@@ -7,14 +7,14 @@
     <div class="icon-back"
          v-if="showLeft"
          @click="$emit('onHandleBack')">
-      <div class="icon iconfont icon-fanhui1"
-           :style="{'color':`${titleColor}`}"></div>
+      <!-- <div class="icon iconfont icon-fanhui1"
+           :style="{'color':`${titleColor}`}"></div> -->
     </div>
     <div class="icon-back"
          v-else
          @click='cilck'>
-      <div class="icon iconfont icon-fanhui1"
-           :style="{'color':`${titleColor}`}"></div>
+      <!-- <div class="icon iconfont icon-fanhui1"
+           :style="{'color':`${titleColor}`}"></div> -->
     </div>
 
     <span class="my_title"
@@ -97,16 +97,18 @@ export default {
   }
   .icon-back {
     width: 7vw;
-    height: 6.66vw;
+    height: 34px;
     padding-left: 4.266vw;
-    .icon {
-      // background: url(../assets/imgs/back.png) no-repeat center;
-      // background-size: 100%;
-      font-size: 18px;
-      width: 2.66vw;
-      height: 4.66vw;
-      margin-top: -1vw;
-    }
+    background: url(../assets/imgs/back.png) left 16px center no-repeat;
+    background-size: 10px 18px;
+    // .icon {
+    //   background: url(../assets/imgs/back.png) no-repeat center;
+    //   background-size: 100%;
+    //   font-size: 18px;
+    //   width: 2.66vw;
+    //   height: 4.66vw;
+    //   margin-top: -1vw;
+    // }
   }
   .my_title {
     width: 100%;

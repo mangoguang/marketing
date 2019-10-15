@@ -185,6 +185,7 @@ export default class Common {
           params: params
         })
         .then((res) => {
+          _this.loading('close')
           if (res.code === 510) { // token失效
             if (token.access_token && token.access_token.length < 48) { // 有效token
               refreshToken.call(this).then(res => {
@@ -194,7 +195,6 @@ export default class Common {
               toLogin()
             }
           } else {
-            _this.loading('close')
             res = res.data
             resolve(res)
           }
@@ -202,6 +202,69 @@ export default class Common {
         .catch((error) => {
           // console.log('请求失败！：', error.response, error.request)
           _this.loading('close')
+          if (error.response) { // 如果服务器响应
+            if (error.response.status === 510) {
+              console.log('非法令牌，需要刷新。', token)
+              // 检测token是否存在
+              if (token.access_token && token.access_token.length < 48) { // 有效token
+                console.log('开始刷新令牌')
+                refreshToken.call(this).then(res => {
+                  reject(510)
+                })
+              } else {
+                toLogin()
+              }
+            } else {
+              //this.tip('请求失败!')
+              console.log(error.response.data.msg)
+              this.tip(error.response.data.msg)
+            }
+          } else if (error.request) {
+            this.tip('网络异常!')
+          } else {
+            this.tip('网络异常!')
+          }
+        })
+    })
+  }
+  httpWithoutLoading(path, params, type) {
+
+    let _this = this
+    let token = JSON.parse(localStorage.getItem('token')) || {}
+    // console.log('ajax出token::', token)
+    return new Promise((resolve, reject) => {
+      let thatType = type == 'post' ? 'post' : 'get'
+      let url = `${this.port}${path}`
+      let sign = this.getSign(params, token.access_token)
+      http({
+          method: thatType,
+          async: false,
+          timeout: 30000,
+          url: url,
+          contentType: "application/json",
+          headers: {
+            "Authorization": `Bearer ${token.access_token}`,
+            'sign': sign
+          },
+          params: params
+        })
+        .then((res) => {
+
+          if (res.code === 510) { // token失效
+            if (token.access_token && token.access_token.length < 48) { // 有效token
+              refreshToken.call(this).then(res => {
+                reject(510)
+              })
+            } else {
+              toLogin()
+            }
+          } else {
+            res = res.data
+            resolve(res)
+          }
+        })
+        .catch((error) => {
+
           if (error.response) { // 如果服务器响应
             if (error.response.status === 510) {
               console.log('非法令牌，需要刷新。', token)
@@ -317,7 +380,7 @@ export default class Common {
       http({
           method: 'post',
           // async: false,
-          timeout: 30000,
+          timeout: 500000,
           url: url,
           data: data,
           headers: {

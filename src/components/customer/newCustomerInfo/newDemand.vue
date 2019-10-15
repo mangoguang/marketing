@@ -1,10 +1,15 @@
 <template>
   <div class="newDemand">
     <ul>
-      <li is="customerLi" :leftText="'意向产品'" :icon='true'  @click.native='addIntention'>
+      <li is="customerLi"
+          :leftText="'意向产品'"
+          :icon='true'
+          @click.native='addIntention'>
         <span>{{productList && productList.length? productList.join('、'): '请选择意向产品'}}</span>
       </li>
-      <li is="customerLi" :leftText="'所属门店'" :start="'*'" >
+      <li is="customerLi"
+          :leftText="'所属门店'"
+          :start="'*'">
         <span class='shop'>{{ shopName }}</span>
       </li>
       <!-- <li is="shopSelect" :start='"*"' :type='type'></li> -->
@@ -13,62 +18,101 @@
       </li> -->
       <li is="arrivalDate"></li>
       <!-- <li is="leaveStoreSelect" :start="true"  @leaveStoreChange="leaveStoreChange"></li> -->
-      <li is="sourceSelect" @sourceChange="sourceChange" @codeChange='codeChange'></li>
-      
+      <li is="sourceSelect"
+          @sourceChange="sourceChange"
+          @codeChange='codeChange'></li>
+
       <template v-if='addressType !== "intention"'>
-        <li is="customerLi" :leftText="'客户地区'"  :start="'*'">
+        <li is="customerLi"
+            :leftText="'客户地区'"
+            :start="'*'">
           <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.countryName || '请选择客户地区'}}</span>
         </li>
-        <li is="customerLi" :leftText="'客户地址'"  :start="'*'">
+        <li is="customerLi"
+            :leftText="'客户地址'"
+            :start="'*'">
           <span>{{newCustomerInfo.address || '请选择客户地址'}}</span>
         </li>
-        <li is="houseType"  @houseTypeChange="houseTypeChange" @htCodeChange='htCodeChange'></li>
-        <li is="elevatorSelect"  @elevatorChange="elevatorChange" ></li>
+        <li is="houseType"
+            @houseTypeChange="houseTypeChange"
+            @htCodeChange='htCodeChange'></li>
+        <li is="elevatorSelect"
+            @elevatorChange="elevatorChange"></li>
       </template>
       <template v-else>
-        <li is='customerLi' :leftText='"客户地址"' :start="'*'" @click.native='toSelectAddress' :icon="true">
+        <li is='customerLi'
+            :leftText='"客户地址"'
+            :start="'*'"
+            @click.native='toSelectAddress'
+            :icon="true">
           <span>{{newCustomerInfo.provinceName + newCustomerInfo.cityName + newCustomerInfo.districtName || '请选择客户地址'}}</span>
         </li>
-        <li is='customerLi' :leftText='"户型大小"'>
+        <li is='customerLi'
+            :leftText='"户型大小"'>
           <span>{{newCustomerInfo.apartmentTypeName || '请先选择客户地址'}}</span>
         </li>
-        <li is='customerLi' :leftText='"有无电梯"'>
+        <li is='customerLi'
+            :leftText='"有无电梯"'>
           <span>{{newCustomerInfo.elevatorName || '请先选择客户地址'}}</span>
         </li>
       </template>
-      <li is="BuyReason"  @buyReasonChange="buyReasonChange" @brCodeChange='brCodeChange'></li>
-      <li is="StylePref"  @stylePrefChange="stylePrefChange" @spCodeChange='spCodeChange'></li>
-      <li is="progressSelect"  @progressChange="progressChange" @pgCodeChange='pgCodeChange'></li>
-      <li is="customerLi" :leftText="'竞品产品'">
-        <input v-model.trim="newCustomerInfo.competingGoods" type="text" placeholder="请填写竞品产品" oninput="if(value.length>100)value=value.slice(0,100)">
+      <li is="BuyReason"
+          @buyReasonChange="buyReasonChange"
+          @brCodeChange='brCodeChange'></li>
+      <li is="StylePref"
+          @stylePrefChange="stylePrefChange"
+          @spCodeChange='spCodeChange'></li>
+      <li is="progressSelect"
+          @progressChange="progressChange"
+          @pgCodeChange='pgCodeChange'></li>
+      <li is="customerLi"
+          :leftText="'竞品产品'">
+        <input v-model.trim="newCustomerInfo.competingGoods"
+               type="text"
+               placeholder="请填写竞品产品"
+               oninput="if(value.length>100)value=value.slice(0,100)">
       </li>
-      <li is="colorSelect"  @colorChange="colorChange" @colorCodeChange='colorCodeChange'></li>
-      <li is="customerLi" :leftText="'预算金额'">
-        <input v-model.trim="newCustomerInfo.budget" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写预算金额" oninput="if(value.length>8)value=value.slice(0,8)">
+      <li is="colorSelect"
+          @colorChange="colorChange"
+          @colorCodeChange='colorCodeChange'></li>
+      <li is="customerLi"
+          :leftText="'预算金额'">
+        <input v-model.trim="newCustomerInfo.budget"
+               type="number"
+               onkeypress="if(event.keyCode == 101){return false}"
+               placeholder="请填写预算金额"
+               oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
       <!-- <li is="customerLi" :leftText="'需求日期'"  :icon="true" @click.native="selectFollowTime">
         <span :style="timeColor">{{turnDate(newCustomerInfo.deliverDate) || '请选择需求日期'}}</span>
       </li> -->
       <li is="deliverDate"></li>
-      <li is="customerLi" :leftText="'已交定金'">
-        <input v-model.trim="newCustomerInfo.depositPaid" type="number" onkeypress="if(event.keyCode == 101){return false}" placeholder="请填写已交金额" oninput="if(value.length>8)value=value.slice(0,8)">
+      <li is="customerLi"
+          :leftText="'已交定金'">
+        <input v-model.trim="newCustomerInfo.depositPaid"
+               type="number"
+               onkeypress="if(event.keyCode == 101){return false}"
+               placeholder="请填写已交金额"
+               oninput="if(value.length>8)value=value.slice(0,8)">
       </li>
 
-      <li is="discountSelect" @discountChange="discountChange"></li>
+      <li is="discountSelect"
+          @discountChange="discountChange"></li>
       <li class="textarea">
         <h3>备注信息</h3>
-        <textarea v-model.trim="newCustomerInfo.remark2" placeholder="添加备注信息" oninput="if(value.length>200)value=value.slice(0,200)"></textarea>
+        <textarea v-model.trim="newCustomerInfo.remark2"
+                  placeholder="添加备注信息"
+                  oninput="if(value.length>200)value=value.slice(0,200)"></textarea>
       </li>
-      <intentionSelect :intentionVal='intentionVal'/>
-      <urgentSelect :urgentVal='urgentVal'/>
+      <intentionSelect :intentionVal='intentionVal' />
+      <urgentSelect :urgentVal='urgentVal' />
     </ul>
-   
-    
+
   </div>
 </template>
 
 <script>
-import {IndexModel} from '../../../utils/index'
+import { IndexModel } from '../../../utils/index'
 const indexModel = new IndexModel()
 import Vue from 'vue'
 import Vuex, { mapMutations, mapState } from 'vuex'
@@ -96,10 +140,10 @@ import elevatorSelect from '../../select/elevatorSelect'
 import arrivalDate from '../../select/arrivalDate'
 import deliverDate from '../../select/deliverDate'
 import mango from '../../../js'
-import {btnList} from '../../../utils/gallery'
+import { btnList } from '../../../utils/gallery'
 export default {
-  name:'newDemand',
-  props: ['btns', 'fromName', 'changeCode', 'type','addressType'],
+  name: 'newDemand',
+  props: ['btns', 'fromName', 'changeCode', 'type', 'addressType'],
   components: {
     customerLi,
     bigBtn,
@@ -121,8 +165,8 @@ export default {
     arrivalDate,
     deliverDate
   },
-  data(){
-    return{
+  data() {
+    return {
       shopId: '',
       timeColor: 'color: #999',
       today: new Date(),
@@ -130,13 +174,12 @@ export default {
       styleColor: 'color: #999',
       proColor: 'color: #999',
       Color: 'color: #999',
-      shops:'',
+      shops: '',
       day: '',
       codeList: {},
       productList: [],
-      shopName:''
-     
-   }
+      shopName: ''
+    }
   },
   computed: {
     ...mapState({
@@ -151,9 +194,9 @@ export default {
   watch: {
     //初始进来的时候初始化数据
     fromName() {
-      if(this.fromName === 'NewCustomer' && this.type == 'demand') {
+      if (this.fromName === 'NewCustomer' && this.type == 'demand') {
         this.setInitData()
-      }else if(this.fromName !='NewCustomer'){
+      } else if (this.fromName != 'NewCustomer') {
         this.setIntentionProduct()
         this.hasAddressId()
         this.initShop()
@@ -170,17 +213,33 @@ export default {
     this.day = mango.indexTimeB(this.today)[1]
   },
   methods: {
-    ...mapMutations(['setAddressId','initShopList','getShopVal','setCheckedList',"setNewCustomerInfo",'setShopVal','setLeaveStoreVal', 'setDiscountVal', 'setSourceVal','setBuyReason','setStylePref','setProgress','setColorPref','setHouseType','setElevatorVal']),
+    ...mapMutations([
+      'setAddressId',
+      'initShopList',
+      'getShopVal',
+      'setCheckedList',
+      'setNewCustomerInfo',
+      'setShopVal',
+      'setLeaveStoreVal',
+      'setDiscountVal',
+      'setSourceVal',
+      'setBuyReason',
+      'setStylePref',
+      'setProgress',
+      'setColorPref',
+      'setHouseType',
+      'setElevatorVal'
+    ]),
     setInitData() {
       this.$set(this.newCustomerInfo, 'arrivalDate', this.day)
-      this.$set(this.newCustomerInfo,'source','自然进店')
+      this.$set(this.newCustomerInfo, 'source', '自然进店')
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.codeList.sourceCode = 'Natural'
       this.changeCode(this.codeList)
       //初始化门店的值
-    /*   let shopsList = btnList(this.shops,0)
+      /*   let shopsList = btnList(this.shops,0)
       this.initShopList(shopsList) */
-      this.initShop();
+      this.initShop()
       this.getShopVal()
       this.setBuyReason('')
       this.setLeaveStoreVal('')
@@ -188,60 +247,76 @@ export default {
       this.setCheckedList([])
       this.setAddressId('')
     },
-    initShop(){
-      let orgId=this.$route.query.orgId;
-      let shops=JSON.parse(localStorage.getItem('shops'))
-       if(shops&&shops.length){
-          shops.map((item,index) => {
-            if(item.crmId===orgId){
-              this.shopName=item.name;
-              this.shopId=item.id;
-            }
-          })
-        }
-        this.newCustomerInfo.shopId=this.shopId;
+    initShop() {
+      let orgId = this.$route.query.orgId
+      let shops = JSON.parse(localStorage.getItem('shops'))
+      if (shops && shops.length) {
+        shops.map((item, index) => {
+          if (item.crmId === orgId) {
+            this.shopName = item.name
+            this.shopId = item.id
+          }
+        })
+      }
+      this.newCustomerInfo.shopId = this.shopId
     },
     //请求客户地址
     hasAddressId() {
-      if(this.$store.state.addressId) {
+      if (this.$store.state.addressId) {
         let id = this.$store.state.addressId
-        indexModel.getAddress(id).then(res => {
-          if(res.status == 1) {
-            this.$set(this.newCustomerInfo,'provinceName',res.data.provinceName)
-            this.$set(this.newCustomerInfo,'cityName',res.data.cityName)
-            this.$set(this.newCustomerInfo,'districtName',res.data.districtName)
-            this.newCustomerInfo.apartmentTypeName = res.data.apartmentTypeName
-            this.newCustomerInfo.elevatorName = res.data.elevator === "Y"? '有' : '无'
-            this.newCustomerInfo.addressId = res.data.id
-            this.setNewCustomerInfo(this.newCustomerInfo)
-          }else {
-            mango.tips('地址选择失败')
-          }
-        })
-        .catch(reject => {
-          if(reject === 510) {
-            this.hasAddressId()
-          }
-        })
+        indexModel
+          .getAddress(id)
+          .then(res => {
+            if (res.status == 1) {
+              this.$set(
+                this.newCustomerInfo,
+                'provinceName',
+                res.data.provinceName
+              )
+              this.$set(this.newCustomerInfo, 'cityName', res.data.cityName)
+              this.$set(
+                this.newCustomerInfo,
+                'districtName',
+                res.data.districtName
+              )
+              this.newCustomerInfo.apartmentTypeName =
+                res.data.apartmentTypeName
+              this.newCustomerInfo.elevatorName =
+                res.data.elevator === 'Y' ? '有' : '无'
+              this.newCustomerInfo.addressId = res.data.id
+              this.setNewCustomerInfo(this.newCustomerInfo)
+            } else {
+              mango.tips('地址选择失败')
+            }
+          })
+          .catch(reject => {
+            if (reject === 510) {
+              this.hasAddressId()
+            }
+          })
       }
     },
     //跳转客户地址
     toSelectAddress() {
-      this.$router.push({name:'selectAddress',params:{customerId:this.$route.query.id},query:{type: 'intention'}})
+      this.$router.push({
+        name: 'selectAddress',
+        params: { customerId: this.$route.query.id },
+        query: { type: 'intention' }
+      })
     },
     //跳转到选择意向产品页面
     addIntention() {
       this.$router.push({
-        name:'intentionProduct',
-        query:{
-            redirect: this.$route.path
-          }
-        })
+        name: 'intentionProduct',
+        query: {
+          redirect: this.$route.path
+        }
+      })
       // this.$router.push({name:'intentionProduct',query:{redirect:this.url}})
     },
     // 保存意向产品
     setIntentionProduct() {
-      if(this.checkedList && this.checkedList.length) {
+      if (this.checkedList && this.checkedList.length) {
         let arr = this.checkedList
         let newArr = []
         arr.map((item, index) => {
@@ -259,9 +334,9 @@ export default {
     //获取门店的值
     getShopVal() {
       let val
-      if(this.shopList && this.shopList.length) {
+      if (this.shopList && this.shopList.length) {
         this.shopList.forEach((item, index) => {
-          if(item.status) {
+          if (item.status) {
             val = item.name
           }
         })
@@ -270,21 +345,21 @@ export default {
     },
     //获取门店id
     getShopId(name) {
-      if(this.shops && this.shops.length) {
+      if (this.shops && this.shops.length) {
         this.shops.forEach((item, index) => {
-          if(item.name === name) {
+          if (item.name === name) {
             this.shopId = item.id
           }
-      });
+        })
       }
       this.newCustomerInfo.shopId = this.shopId
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
     areaChange(val) {
       // console.log('选择的地区：', val)
-      this.$set(this.newCustomerInfo,'provinceName',val.provinceName)
-      this.$set(this.newCustomerInfo,'cityName',val.cityName)
-      this.$set(this.newCustomerInfo,'countryName',val.countryName)
+      this.$set(this.newCustomerInfo, 'provinceName', val.provinceName)
+      this.$set(this.newCustomerInfo, 'cityName', val.cityName)
+      this.$set(this.newCustomerInfo, 'countryName', val.countryName)
       this.newCustomerInfo.province = val.provinceCode
       this.newCustomerInfo.city = val.cityCode
       this.newCustomerInfo.area = val.countyCode
@@ -297,7 +372,7 @@ export default {
       this.newCustomerInfo.residentTime = val
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
-  
+
     //转变日期格式
     turnDate(date) {
       if (date) {
@@ -332,7 +407,7 @@ export default {
       this.codeList.brCode = val
       this.changeCode(this.codeList)
     },
-     //户型大小
+    //户型大小
     houseTypeChange(val) {
       this.setHouseType(val)
       this.newCustomerInfo.apartmentType = val
@@ -347,13 +422,12 @@ export default {
     elevatorChange(val) {
       // console.log('age改变了：', val)
       this.setElevatorVal(val)
-      if(val){
-        this.newCustomerInfo.elevator = val === '有'? 'Y' : 'N'
+      if (val) {
+        this.newCustomerInfo.elevator = val === '有' ? 'Y' : 'N'
         this.setNewCustomerInfo(this.newCustomerInfo)
       }
-     
     },
-     //选择装修风格
+    //选择装修风格
     stylePrefChange(val) {
       // console.log('sex改变了：', val)
       this.setStylePref(val)
@@ -365,7 +439,7 @@ export default {
       this.codeList.spCode = val
       this.changeCode(this.codeList)
     },
-     //选择装修进度
+    //选择装修进度
     progressChange(val) {
       // console.log('sex改变了：', val)
       this.setProgress(val)
@@ -377,7 +451,7 @@ export default {
       this.codeList.pgCode = val
       this.changeCode(this.codeList)
     },
-     //选择颜色偏好
+    //选择颜色偏好
     colorChange(val) {
       // console.log('sex改变了：', val)
       this.setColorPref(val)
@@ -402,7 +476,7 @@ export default {
     },
     //是否紧急
     urgentVal(val) {
-      this.newCustomerInfo.urgency = val? 'true' : 'false'
+      this.newCustomerInfo.urgency = val ? 'true' : 'false'
       this.setNewCustomerInfo(this.newCustomerInfo)
     }
   }
@@ -410,48 +484,48 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/common.scss";  
-input:-moz-input-placeholder{
-    font-size: 14px;
-    color:#999;
-    //color:rgb(154,154,154);
-    //font-family: "Microsoft YaHei";
-  }
-  input::-moz-input-placeholder{
-    font-size: 14px;
-    color:#999;
-    //color:rgb(154,154,154);
-    //font-family: "Microsoft YaHei"
-  }
-  input::-ms-input-placeholder{
-    font-size: 14px;
-    color:#999;
-    //color:rgb(154,154,154);
-    //font-family: "Microsoft YaHei";
-  }
-  input::-webkit-input-placeholder{
-    font-size: 14px;
-    color:#999;
-    //color:rgb(154,154,154);
-    //font-family: "Microsoft YaHei"
-  }
-   textarea::-moz-placeholder{
-      color:#999;
-      font-size:14px;
-    }
-     textarea:-moz-placeholder{
-      color:#999;
-      font-size:14px;
-    }
-    textarea::-ms-input-placeholder{
-      color:#999;
-      font-size:14px;
-    }
-    textarea::-webkit-input-placeholder{
-      color:#999;
-      font-size:14px;
-    }
-.newDemand{
+@import '../../../assets/common.scss';
+input:-moz-input-placeholder {
+  font-size: 14px;
+  color: #999;
+  //color:rgb(154,154,154);
+  //font-family: "Microsoft YaHei";
+}
+input::-moz-input-placeholder {
+  font-size: 14px;
+  color: #999;
+  //color:rgb(154,154,154);
+  //font-family: "Microsoft YaHei"
+}
+input::-ms-input-placeholder {
+  font-size: 14px;
+  color: #999;
+  //color:rgb(154,154,154);
+  //font-family: "Microsoft YaHei";
+}
+input::-webkit-input-placeholder {
+  font-size: 14px;
+  color: #999;
+  //color:rgb(154,154,154);
+  //font-family: "Microsoft YaHei"
+}
+textarea::-moz-placeholder {
+  color: #999;
+  font-size: 14px;
+}
+textarea:-moz-placeholder {
+  color: #999;
+  font-size: 14px;
+}
+textarea::-ms-input-placeholder {
+  color: #999;
+  font-size: 14px;
+}
+textarea::-webkit-input-placeholder {
+  color: #999;
+  font-size: 14px;
+}
+.newDemand {
   background: #f8f8f8;
   .address {
     background: #fff;
@@ -461,25 +535,29 @@ input:-moz-input-placeholder{
     box-sizing: border-box;
     padding: 0 5vw;
     border-bottom: 1px #ccc solid;
-    min-height:11.3vw
+    min-height: 11.3vw;
   }
-  input{
-    color:#363636;
+  input {
+    color: #363636;
     font-size: 3.2vw;
+    line-height: normal;
+  }
+  input::-webkit-input-placeholder {
+    line-height: 16px;
   }
   // input::-webkit-input-placeholder{
   //   color:red;
   // }
-  li{
+  li {
     display: flex;
-    h3{
+    h3 {
       color: $fontCol;
       font-size: $fontSize;
       padding: 0 5vw;
       line-height: 3em;
       border-bottom: 1px solid #ccc;
     }
-    textarea{
+    textarea {
       background: #fff;
       width: 100vw;
       height: 40vw;
@@ -493,17 +571,17 @@ input:-moz-input-placeholder{
     margin-top: 3vw;
     border-top: 1px solid #ccc;
   }
-   li:nth-child(12) {
+  li:nth-child(12) {
     margin-top: 3vw;
     border-top: 1px solid #ccc;
   }
-  li.textarea{
+  li.textarea {
     display: block;
   }
-  button{
+  button {
     margin: 5vw;
   }
-  .picker{
+  .picker {
     width: 100vw;
   }
 }

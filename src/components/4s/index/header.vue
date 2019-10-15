@@ -31,7 +31,10 @@ export default {
   },
   methods: {
     back() {
-      if (this.href) {
+      if (
+        this.href &&
+        localStorage.getItem('certPositionType') != 'supervisor'
+      ) {
         this.$router.replace(this.href)
         return
       }

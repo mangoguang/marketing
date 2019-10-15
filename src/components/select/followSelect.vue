@@ -1,37 +1,39 @@
 <template>
   <li class="selectFollow">
     <ul>
-      <li is="customerLi" :leftText="'跟进方式'" :start='"*"' :icon="true" @click.native="selectFollow">
+      <li is="customerLi"
+          :leftText="'跟进方式'"
+          :start='"*"'
+          :icon="true"
+          @click.native="selectFollow">
         <span :style="color">{{followVal || '请选择跟进方式'}}</span>
       </li>
       <!-- 性别选择插件 -->
       <li>
-      <mt-popup 
-      position="bottom"
-      v-model="popupVisible">
-        <mt-picker
-        :slots="slots"
-        @change="onValuesChange"
-        :showToolbar="true"
-        ref="selectFollow">
-        <div class="btn-group">
+        <mt-popup position="bottom"
+                  v-model="popupVisible">
+          <mt-picker :slots="slots"
+                     @change="onValuesChange"
+                     :showToolbar="true"
+                     ref="selectFollow">
+            <div class="btn-group">
               <div @click="cancel">取消</div>
               <div @click="update">确定</div>
-        </div>
-        </mt-picker>
-      </mt-popup>
+            </div>
+          </mt-picker>
+        </mt-popup>
       </li>
     </ul>
   </li>
 </template>
 
 <script>
-import { IndexModel } from "../../utils/index";
-const indexModel = new IndexModel();
-import {setSlot,getCode} from '../../utils/customer'
+import { IndexModel } from '../../utils/index'
+const indexModel = new IndexModel()
+import { setSlot, getCode } from '../../utils/customer'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Vuex, { mapMutations, mapState } from "vuex"
+import Vuex, { mapMutations, mapState } from 'vuex'
 import { DatetimePicker, Picker, Popup } from 'mint-ui'
 // import mango from '../../js'
 Vue.component(Picker.name, Picker)
@@ -40,19 +42,21 @@ import customerLi from '../customer/customerLi'
 
 export default {
   name: 'selectFollow',
-  components:{customerLi},
+  components: { customerLi },
   data() {
     return {
-      slots: [{values: ['到店沟通','电话沟通','微信沟通'],defaultIndex:0}],
+      slots: [
+        { values: ['到店沟通', '电话沟通', '微信沟通'], defaultIndex: 0 }
+      ],
       popupVisible: false,
       key: false,
-      color: "color: #363636",
+      color: 'color: #363636',
       typeList: [],
-      code:'',
-      value:''
+      code: '',
+      value: ''
     }
   },
-  computed:{
+  computed: {
     ...mapState({
       followVal: state => state.select.followVal,
       newCustomerInfo: state => state.customer.newCustomerInfo
@@ -61,11 +65,11 @@ export default {
   created() {
     this.init()
   },
-  methods:{
-    ...mapMutations(["setFollowVal"]),
+  methods: {
+    ...mapMutations(['setFollowVal']),
     //获取slot列表值
     init() {
-      if(this.newCustomerInfo && this.newCustomerInfo.source2) {
+      if (this.newCustomerInfo && this.newCustomerInfo.source2) {
         this.color = 'color: #363636'
         this.setFollowVal(this.newCustomerInfo.source2)
         this.key = false
@@ -80,11 +84,11 @@ export default {
       } else {
         this.$refs.selectFollow.setSlotValue(0, this.followVal);
       } */
-      this.popupVisible = true;
+      this.popupVisible = true
     },
     //进来的时候走两次change事件
     onValuesChange(picker, values) {
-     /*  if(this.key) {
+      /*  if(this.key) {
         if(this.followVal) {
           let code = getCode(values[0],this.typeList)
           this.$emit('followWayChange', values[0])
@@ -92,39 +96,39 @@ export default {
       }else {
         this.key = true
       } */
-      this.code = getCode(values[0],this.typeList);
+      this.code = getCode(values[0], this.typeList)
       this.value = values[0]
     },
-    cancel(){
-      this.popupVisible = false;
+    cancel() {
+      this.popupVisible = false
     },
-    update(){
-      this.color = "color: #363636";
+    update() {
+      this.color = 'color: #363636'
       this.$emit('followWayChange', this.value)
-      this.popupVisible = false;
+      this.popupVisible = false
     }
   }
-  }
-
+}
 </script>
 
 <style lang="scss">
-  .selectFollow{
-    ul{
-      width: 100%;
-    }
+.selectFollow {
+  ul {
+    width: 100%;
   }
-   .btn-group{
+}
+.btn-group {
   display: flex;
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
   //padding:0 4.266vw;
- height:100%;
-  div{
-    //flex:1;
-    color:#26a2ff;
+  height: 100%;
+  div {
+    flex: 1;
+    color: #26a2ff;
     font-size: 16px;
+    text-align: center;
   }
-  }
+}
 </style>

@@ -204,7 +204,7 @@ export default {
       display: block;
       height: 11.733vw;
       font-size: 12px;
-      line-height: 11.6vw;
+      // line-height: 11.6vw;
     }
     input {
       width: 80vw;
@@ -213,6 +213,9 @@ export default {
       box-sizing: border-box;
       border-radius: 5.8665vw;
       background: #eee;
+    }
+    input::-webkit-input-placeholder {
+      line-height: normal;
     }
   }
   .btn {
@@ -226,6 +229,7 @@ export default {
       color: #fff;
       background: #007aff;
       border: 1px solid #005dc2;
+      font-size: 14px;
     }
   }
   .tips {

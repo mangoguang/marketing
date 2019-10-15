@@ -43,7 +43,7 @@
             <div v-for="(item,index) in filterList"
                  :key="index">
               <span class="filterli"
-                    v-if="item.val===cusomerAjaxParams.sort">{{item.name}}</span>
+                    v-if="item.val===cusomerAjaxParams.sort">{{item.name}}({{newNum}})</span>
             </div>
           </li>
           <li>
@@ -113,6 +113,7 @@ export default {
       subHeaderStatus: state => state.storeHeader.subHeaderStatus,
       filterList: state => state.storeHeader.filterList,
       sort: state => state.storeHeader.sort,
+      newNum: state => state.storeCustomer.newNum,
       approvedNum: state => state.storeApproved.approvedNum,
       closedNum: state => state.storeClosed.closedNum,
       cusomerAjaxParams: state => state.storeCustomer.customerAjaxParams,
@@ -162,6 +163,7 @@ export default {
       'setStoreNum'
     ]),
     ...mapMutations('storeCustomer', [
+      'setNewNum',
       'setCustomerList',
       'setCustomerScroll',
       'setCustomerAllLoaded',
@@ -246,7 +248,7 @@ export default {
       if (this.subHeaderStatus[1].status) {
         this.setRightHeadTitle('订单交单日期')
       } else {
-        this.setRightHeadTitle('战败时间')
+        this.setRightHeadTitle('流失时间')
       }
     },
     // 显示右侧边栏
@@ -323,7 +325,7 @@ export default {
           this.setCustomerScroll(0)
           this.setCustomerAllLoaded(false)
           obj = {
-            type: 'New', //New:意向客户，Approved:成交客户，Closed:战败客户
+            type: 'New', //New:意向客户，Approved:成交客户，Closed:流失客户
             key: val, //搜索关键字，电话或名字、微信
             sort: '', //u:紧急排序，la:意向分类升序，ld:意向分类倒序
             sd: '', //跟进日期
@@ -341,7 +343,7 @@ export default {
           this.setApprovedScroll(0)
           this.setApprovedAllLoaded(false)
           obj = {
-            type: 'Approved', //New:意向客户，Approved:成交客户，Closed:战败客户
+            type: 'Approved', //New:意向客户，Approved:成交客户，Closed:流失客户
             key: val, //搜索关键字，电话或名字、微信
             sd: '', //跟进日期
             ed: '',
@@ -356,7 +358,7 @@ export default {
           this.setClosedScroll(0)
           this.setClosedAllLoaded(false)
           obj = {
-            type: 'Closed', //New:意向客户，Approved:成交客户，Closed:战败客户
+            type: 'Closed', //New:意向客户，Approved:成交客户，Closed:流失客户
             key: val, //搜索关键字，电话或名字、微信
             sd: '', //跟进日期
             ed: '',
@@ -371,7 +373,7 @@ export default {
           this.setAllCustomerScroll(0)
           this.setAllCustomerAllLoaded(false)
           obj = {
-            type: '', //New:意向客户，Approved:成交客户，Closed:战败客户
+            type: '', //New:意向客户，Approved:成交客户，Closed:流失客户
             key: val, //搜索关键字，电话或名字、微信
             page: 1, //页数
             limit: 30, //每页条数
@@ -388,7 +390,7 @@ export default {
       this.setCustomerScroll(0)
       this.setCustomerAllLoaded(false)
       let obj = {
-        type: 'New', //New:意向客户，Approved:成交客户，Closed:战败客户
+        type: 'New', //New:意向客户，Approved:成交客户，Closed:流失客户
         key: '', //搜索关键字，电话或名字、微信
         sort: val, //u:紧急排序，la:意向分类升序，ld:意向分类倒序
         sd: '', //跟进日期
@@ -415,6 +417,7 @@ export default {
                 this.setCustomerAllLoaded(false)
               }
               this.initCustomerList(res.data.records)
+              this.setNewNum(res.data.total)
             } else if (obj.type === 'Approved') {
               if (obj.page === res.data.pages) {
                 this.setApprovedAllLoaded(true)
@@ -483,6 +486,7 @@ export default {
     input {
       width: 65.333vw;
       height: 8vw;
+      line-height: 1;
       border-radius: 4vw;
       padding-left: 9.333vw;
       box-sizing: border-box;
@@ -491,9 +495,10 @@ export default {
       background-color: rgba(255, 255, 255, 0.2);
       background-size: 3vw 3vw;
       background-position: 4vw center;
-      &::-webkit-input-placeholder {
-        line-height: 1;
-      }
+      font-size: 14px;
+    }
+    input::-webkit-input-placeholder {
+      line-height: normal;
     }
   }
   .tabBox {

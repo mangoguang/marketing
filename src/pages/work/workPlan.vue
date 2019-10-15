@@ -193,6 +193,7 @@ export default {
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAABVklEQVRYR+2XP0rEQBjFf99mWQQrTyCCCIJ/CrWw8AjaeQELKy+QGCGiZg9gIQiewE48gaCCoqCWguIJtllhF3f3k6CImcKdxKymmJSTN+893nzzzYxQkk9y+4i0xhvbKBufHAfUCIikk4czvxFfQ4QdQzQklr2/NRLoNTBviN4Qizlm5es3idwjTKdUlAfqMmOlbICcETM1l4hLpN9OcjVS8hpJDrA2c3gM91vLr/89DoExA/9MhXVrji6vNLllX9pCoFPAKTBqTVAs8AWP5cTIBbBYLHdmtsvESBMyLElmDasJrcTIGbBkBR8c6FwIdZIeJ8D44HR+ZH7CY+WjoUVapcUsVUaszRSxazo0GOIuuV66zlryzmpdGN+Avro7azo3l4hZRy6R0iYS6BWw8P9v30A3gV3j7btFXdJjlj0q/1mzqh4TxChrQAU44hGfY+laaqdg78Xdql94U4u/AAAAAElFTkSuQmCC)
       no-repeat right center;
     background-size: 17px 17px;
+    bottom: 14px;
   }
   .planTimeList {
     background: #fff;

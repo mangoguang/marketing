@@ -238,6 +238,9 @@ export default {
           /[\ud800-\udbff][\udc00-\udfff]/g,
           ''
         )
+        this.newCustomerInfo.remark = this.textareatVal(
+          this.newCustomerInfo.remark
+        )
         MessageBox.alert('客户描述不能输入特殊字符及表情符号')
         return
       }
@@ -383,7 +386,7 @@ export default {
     },
     //获取参数
     updateParams(obj) {
-      console.log(555, obj)
+      console.log(555, obj) //.replace(/(“|”|’|‘)/g, '\\$1')
       let tempObj = {}
       let temp = {
         phone: obj.phone ? obj.phone : '0',
@@ -404,6 +407,13 @@ export default {
         }
       }
       return tempObj
+    },
+    textareatVal(temp) {
+      temp = temp.replace(/&lsquo;/g, '‘')
+      temp = temp.replace(/&rsquo;/g, '’')
+      temp = temp.replace(/&ldquo;/g, '“')
+      temp = temp.replace(/&rdquo;/g, '”')
+      return temp
     },
     //获取门店id
     getShopId(name) {
