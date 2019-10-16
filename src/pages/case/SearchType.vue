@@ -21,7 +21,7 @@
         v-show="matchTxt">
       <li v-for="(item, index) in searchList"
           :key="index"
-          v-html='item'
+          v-html='item.goodsName'
           @click="bindArticle(index)"></li>
     </ul>
     <!-- 没有匹配到相关内容 -->
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getModelno, getNames } from '@/api/case'
+import { getModelno, getGoods } from '@/api/case'
 import { mapMutations } from 'vuex'
 import _ from 'lodash'
 export default {
@@ -48,9 +48,9 @@ export default {
     searchList() {
       var arr = []
       this.list.map((item, index) => {
-        arr[index] = item
+        arr[index]['goodsName'] = item
         let reg = new RegExp(this.searchVal, 'g')
-        arr[index] = arr[index].replace(
+        arr[index]['goodsName'] = arr[index]['goodsName'].replace(
           reg,
           `<span style="color:#ff2d55">${this.searchVal}</span>`
         )
@@ -62,16 +62,16 @@ export default {
   methods: {
     ...mapMutations(['setGoodCase']),
     bindSearch: _.debounce(async function() {
-      let { namelist } = await getNames({ keys: this.searchVal })
-      if (namelist.length) {
-        this.list = namelist
+      let { goodslist } = await getGoods({ keys: this.searchVal })
+      if (goodslist.length) {
+        this.list = goodslist
         this.matchTxt = true
       } else {
         this.matchTxt = false
       }
     }, 500),
     bindArticle(index) {
-      let goodId = this.list[index]
+      let goodId = this.list[index]['id']
       this.setGoodCase({ goodId })
       this.$router.back()
     }

@@ -86,8 +86,10 @@ export default {
     bindDoneSelect() {
       let { brandList, brandIndex, categoryList, categoryIndex } = this
       Bus.$emit('onDoneSelect', {
-        brand: brandList[brandIndex].brand,
-        category: categoryList[categoryIndex].category
+        brand: brandList[brandIndex].status ? brandList[brandIndex].brand : '',
+        category: categoryList[categoryIndex].status
+          ? categoryList[categoryIndex].category
+          : ''
       })
     }
   }

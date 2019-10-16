@@ -17,7 +17,7 @@
           </div>
         </div>
         <div class="adress"
-             @click="$router.push({path:'/provice'})">{{provice}}</div>
+             @click="$router.push({path:'/provice'})">{{provice||'全国'}}</div>
       </div>
       <div class="right">
         <div class="change"

@@ -103,6 +103,15 @@ export const getNames = params => {
   })
 }
 
+//关键字模糊搜索产品名称
+export const getGoods = params => {
+  return http({
+    url: baseUrl + '/v1/api/goodCase/getGoods',
+    method: 'get',
+    params
+  })
+}
+
 //.新增案例
 export const goodCaseSave = params => {
   return http.post(

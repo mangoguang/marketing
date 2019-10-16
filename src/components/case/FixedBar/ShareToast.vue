@@ -115,7 +115,8 @@ export default {
 }
 .img {
   img {
-    width: 100%;
+    width: 248px;
+    height: 302px;
   }
 }
 .dec {

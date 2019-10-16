@@ -2,7 +2,7 @@
   <div class="alter">
     <div class="header">
       <div class="back"
-           @click="$router.back()"></div>
+           @click="ShowToast=true"></div>
       <h3>{{alter==1?'修改案例':'发布案例'}}</h3>
     </div>
     <div class="title"
@@ -81,11 +81,12 @@
 
     <toast-comfirm class="toast"
                    v-if="ShowToast"
-                   :content="'是否确认重置？'">
+                   content="退出编辑后将不保存<br>已编辑内容，确定退出？">
 
       <template v-slot:bottons>
         <div class="but">
-          <div class="btns commit">确定</div>
+          <div class="btns commit"
+               @click="bindExitPage">确定</div>
           <div class="btns"
                @click="ShowToast=false">取消</div>
         </div>
@@ -354,6 +355,31 @@ export default {
       this.$refs.uploadImg.setAttribute('accept', 'image/*,video/*')
       this.$refs.uploadImg.setAttribute('multiple', 'multiple')
       this.$refs.uploadImg.click()
+    },
+    bindExitPage() {
+      this.setGoodCase({
+        enable: '',
+        goodId: '',
+        remark: '',
+        source: '',
+        frontImgFile: '',
+        flankImgFile: '',
+        diagonalImgFile: '',
+        spareImgFile1: '',
+        spareImgFile2: ''
+      })
+      this.setAlterUploadImg({
+        frontImgFile: '',
+        flankImgFile: '',
+        diagonalImgFile: '',
+        spareImgFile1: '',
+        spareImgFile2: ''
+      })
+      this.description = ''
+      this.setProvice('')
+
+      this.ShowToast = false
+      this.$router.back()
     }
   }
 }
@@ -390,6 +416,9 @@ export default {
     color: #363636;
     border-right: 1px solid #ddd;
   }
+}
+.toast {
+  text-align: center;
 }
 .alter {
   background-color: #fff;

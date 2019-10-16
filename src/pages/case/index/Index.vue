@@ -66,6 +66,7 @@ export default {
   },
   mounted() {
     Bus.$on('onDoneSelect', val => {
+      this.params.page = 1
       let params = Object.assign(this.params, val)
       this._initData(params)
     })
