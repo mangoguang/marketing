@@ -25,11 +25,11 @@
     <div class="info">
       <div class="user">
         <div class="img">
-          <img :src="detailData.diagonalImg"
+          <img :src="detailData.userImage||'./static/images/default.jpg'"
                alt="">
         </div>
         <div class="name">
-          <h2>{{detailData.goodId||'-'}}</h2>
+          <h2>{{detailData.goodsName||'-'}}</h2>
           <p class="pos">{{detailData.source}}</p>
         </div>
         <div class="date">{{detailData.createTime}}</div>
@@ -95,7 +95,12 @@ export default {
     this._initData()
   },
   methods: {
-    ...mapMutations(['setBrowseData', 'setGoodCase', 'setAlterUploadImg']),
+    ...mapMutations([
+      'setBrowseData',
+      'setGoodCase',
+      'setAlterUploadImg',
+      'setSelectGoods'
+    ]),
     async _initData() {
       let account = JSON.parse(localStorage.getItem('userInfo'))['account']
       let { entity } = await goodCaseDetails({
@@ -111,11 +116,12 @@ export default {
       }
       this.slider = arr
       this.detailData = entity
-      let { createByName, remark } = entity
+      let { createByName, remark, username } = entity
       this.setBrowseData({
         imgs: arr,
         createByName: createByName || '-',
-        remark: remark || '-'
+        remark: remark || '-',
+        username
       })
     },
     bindAlter() {
@@ -128,7 +134,8 @@ export default {
         remark,
         goodId,
         id,
-        source
+        source,
+        goodsName
       } = this.detailData
       this.setGoodCase({
         diagonalImg,
@@ -148,6 +155,7 @@ export default {
         spareImgFile1: img1,
         spareImgFile2: img2
       })
+      this.setSelectGoods({ goodsName, goodId })
       this.$router.push({ path: '/alterCase', query: { alter: 1 } })
     },
     bindSwipeChange(index) {

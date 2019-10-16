@@ -7,6 +7,7 @@ export default {
     },
     provice: '', //省市
     listStyle: 'cell-box',
+    selectGoods: {},
     goodCase: {
       // enable: '',
       goodId: '',
@@ -31,7 +32,8 @@ export default {
     setProvice: (state, data) => state.provice = data,
     setListStyle: (state, data) => state.listStyle = data,
     setGoodCase: (state, data) => state.goodCase = Object.assign(state.goodCase, data),
-    setAlterUploadImg: (state, data) => state.alterUploadImg = Object.assign(state.alterUploadImg, data)
+    setAlterUploadImg: (state, data) => state.alterUploadImg = Object.assign(state.alterUploadImg, data),
+    setSelectGoods: (state, data) => state.selectGoods = data
   },
   getters: {
     getProvice: state => state.provice

@@ -25,13 +25,15 @@
         <h3>- 分享至 -</h3>
         <div class="btn">
           <img src="~@/assets/imgs/case/微信@2x.png"
-               alt="微信">
+               alt="微信"
+               @click="bindShareWeixin('session')">
           <img src="~@/assets/imgs/case/朋友圈@2x.png"
-               alt="朋友圈">
-          <img src="~@/assets/imgs/case/qq-(1)@2x.png"
+               alt="朋友圈"
+               @click="bindShareWeixin('timeline')">
+          <!-- <img src="~@/assets/imgs/case/qq-(1)@2x.png"
                alt="qq">
           <img src="~@/assets/imgs/case/微博@2x.png"
-               alt="微博">
+               alt="微博"> -->
         </div>
       </div>
       <div class="close"
@@ -42,13 +44,16 @@
 <script>
 import html2canvas from 'html2canvas'
 import QRCode from 'qrcodejs2'
+import { uploadFile } from '@/api/case'
+import { Toast } from 'mint-ui'
 export default {
   props: {
     detailData: {}
   },
   data() {
     return {
-      src: ''
+      src: '',
+      imgUrl: ''
     }
   },
   mounted() {
@@ -84,18 +89,76 @@ export default {
         canvas = null
       }
     },
-    bindSave() {
+    async bindSave() {
       var width = 258
       var height = 312
-      html2canvas(this.$refs.saveImg, {
+      let canvas = await html2canvas(this.$refs.saveImg, {
         backgroundColor: null,
         dpi: window.devicePixelRatio,
         width: width,
         height: height
-      }).then(canvas => {
-        var url = canvas.toDataURL()
-        console.log(url)
       })
+      var url = canvas.toDataURL()
+      var arr = url.split(','),
+        mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]),
+        n = bstr.length,
+        u8arr = new Uint8Array(n)
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n)
+      }
+      let imgFile = new File([u8arr], `img${new Date().getTime()}`, {
+        type: mime
+      })
+      let formData = new FormData()
+      formData.append('prefix', 'cert-check-log')
+      formData.append('dataFile', imgFile)
+      let res = await uploadFile(formData)
+      this.imgUrl = res.url
+      this._downloadFile(res.url)
+    },
+    _downloadFile(url) {
+      var timestamp = new Date().getTime()
+      api.download(
+        {
+          url,
+          savePath: 'fs://album' + timestamp + '.jpg'
+          // report: true,
+          // cache: true,
+          // allowResume: true
+        },
+        (ret, err) => {
+          api.saveMediaToAlbum(
+            {
+              path: 'fs://album' + timestamp + '.jpg'
+            },
+            function(ret, err) {
+              Toast('保存成功')
+            }
+          )
+        }
+      )
+    },
+    bindShareWeixin(scene) {
+      let { detailData, imgUrl } = this
+      var wx = api.require('wx')
+      wx.shareWebpage(
+        {
+          apiKey: '',
+          scene,
+          title: detailData.brand + detailData.category,
+          description: detailData.brand + detailData.category,
+          thumb: imgUrl,
+          contentUrl: 'https://op.derucci.com/web/marketingTest/#/'
+        },
+        function(ret, err) {
+          if (ret.status) {
+            alert('分享成功')
+          } else {
+            alert('分享失败')
+          }
+        }
+      )
     }
   }
 }
@@ -181,10 +244,11 @@ export default {
     }
     .btn {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       img {
         width: 42px;
         height: 42px;
+        margin: 0 20px;
       }
     }
   }
@@ -221,6 +285,7 @@ export default {
     background-color: #fff;
     position: relative;
     padding: 5px;
+    margin: 0 auto;
   }
 }
 </style>

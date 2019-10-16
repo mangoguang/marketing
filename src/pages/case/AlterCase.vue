@@ -1,12 +1,14 @@
 <template>
   <div class="alter">
-    <div class="header">
-      <div class="back"
-           @click="ShowToast=true"></div>
-      <h3>{{alter==1?'修改案例':'发布案例'}}</h3>
+    <div class="headers">
+      <div class="header">
+        <div class="back"
+             @click="ShowToast=true"></div>
+        <h3>{{alter==1?'修改案例':'发布案例'}}</h3>
+      </div>
     </div>
     <div class="title"
-         @click="$router.push('/searchType')">产品<span>*</span>{{goodCase.goodId}} <label v-if="ver==1">请选择案例产品</label></div>
+         @click="$router.push('/searchType')">产品<span>*</span>{{selectGoods.goodsName}} <label v-if="ver==1">请选择案例产品</label></div>
     <div class="text">
       <textarea class="area"
                 maxlength="150"
@@ -148,7 +150,8 @@ export default {
     ...mapState({
       // provice: state => state.caseStore.provice,
       goodCase: state => state.caseStore.goodCase,
-      alterUploadImg: state => state.caseStore.alterUploadImg
+      alterUploadImg: state => state.caseStore.alterUploadImg,
+      selectGoods: state => state.caseStore.selectGoods
     }),
     oether() {
       let { alterUploadImg } = this
@@ -165,7 +168,12 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['setGoodCase', 'setProvice', 'setAlterUploadImg']),
+    ...mapMutations([
+      'setGoodCase',
+      'setProvice',
+      'setAlterUploadImg',
+      'setSelectGoods'
+    ]),
     _vertify() {
       let {
         goodId,
@@ -232,6 +240,7 @@ export default {
         })
         this.description = ''
         this.setProvice('')
+        this.setSelectGoods({})
       }
     },
     async bindUpdate() {
@@ -278,6 +287,7 @@ export default {
           })
           this.description = ''
           this.setProvice('')
+          this.setSelectGoods({})
           this.$router.back()
         }, 1000)
       } else {
@@ -377,7 +387,7 @@ export default {
       })
       this.description = ''
       this.setProvice('')
-
+      this.setSelectGoods({})
       this.ShowToast = false
       this.$router.back()
     }
@@ -425,9 +435,17 @@ export default {
   height: 100vh;
   padding: 0 10px;
   overflow: auto;
+  .headers {
+    height: 64px;
+  }
   .header {
-    height: 44px;
-    position: relative;
+    padding-top: 20px;
+    height: 64px;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 9;
+    background-color: #fff;
     h3 {
       font-size: 19px;
       color: #363636;
@@ -442,9 +460,9 @@ export default {
       background: url(~@/assets/imgs/back.png) left center no-repeat;
       background-size: 10px 18px;
       position: absolute;
-      top: 50%;
+      bottom: 5px;
       left: 16px;
-      transform: translateY(-50%);
+      // transform: translateY(-50%);
     }
   }
   .release {

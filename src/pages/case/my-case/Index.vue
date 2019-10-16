@@ -66,6 +66,8 @@ export default {
 }
 .my-case {
   padding-bottom: 85px;
+  background-color: #f8f8f8;
+  min-height: 100vh;
 }
 .no-data {
   position: absolute;

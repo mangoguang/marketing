@@ -48,7 +48,8 @@ export default {
     searchList() {
       var arr = []
       this.list.map((item, index) => {
-        arr[index]['goodsName'] = item
+        arr[index] = item
+
         let reg = new RegExp(this.searchVal, 'g')
         arr[index]['goodsName'] = arr[index]['goodsName'].replace(
           reg,
@@ -60,7 +61,7 @@ export default {
   },
   created() {},
   methods: {
-    ...mapMutations(['setGoodCase']),
+    ...mapMutations(['setGoodCase', 'setSelectGoods']),
     bindSearch: _.debounce(async function() {
       let { goodslist } = await getGoods({ keys: this.searchVal })
       if (goodslist.length) {
@@ -73,6 +74,7 @@ export default {
     bindArticle(index) {
       let goodId = this.list[index]['id']
       this.setGoodCase({ goodId })
+      this.setSelectGoods(this.list[index])
       this.$router.back()
     }
   }
@@ -88,6 +90,7 @@ export default {
     display: flex;
     justify-content: space-between;
     position: relative;
+    margin-top: 20px;
     .back {
       height: 30px;
       width: 30px;

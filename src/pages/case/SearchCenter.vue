@@ -2,7 +2,7 @@
   <div class="search">
     <div class="search_box">
       <div class="back"
-           @click="$router.back()"></div>
+           @click="bindClearKeyword(),$router.back()"></div>
       <div class="search-box"
            v-if="params.goodsName">
         <div class="item"
@@ -16,6 +16,7 @@
                type="search"
                v-model="searchVal"
                @input="bindSearch"
+               @keyup.enter="bindSearchKey"
                placeholder="请输入搜索内容" />
 
         <button class="deleteVal"
@@ -30,7 +31,7 @@
            v-if="history.length>0">
         <div class="title">
           <h5>历史搜索</h5>
-          <button @click="bindClearHistory">清除</button>
+          <button @click="showToast=true">清除</button>
         </div>
         <ul>
           <li @click="bindHistory(index,item)"
@@ -79,24 +80,40 @@
         <li>未找到相关产品</li>
       </ul>
     </div>
+    <toast-comfirm class="toast"
+                   title=""
+                   v-if="showToast"
+                   content="确定清空历史搜索？">
+
+      <template v-slot:bottons>
+        <div class="but">
+          <div class="btns commit"
+               @click="bindClearHistory">确定</div>
+          <div class="btns"
+               @click="showToast=false">取消</div>
+        </div>
+      </template>
+    </toast-comfirm>
   </div>
 </template>
 
 <script>
 import List from '@/components/case/List/Index'
+import ToastComfirm from '@/components/case/ToastComfirm/Index'
 import { goodCaseList, getNames, topNames } from '@/api/case'
 import { mapMutations } from 'vuex'
 import _ from 'lodash'
 export default {
   components: {
-    List
+    List,
+    ToastComfirm
   },
   data() {
     return {
       matchTxt: true,
       searchVal: '',
       list: [],
-      showSearch: true,
+      showSearch: false,
       showList: false,
       dataList: [],
       namelist: [],
@@ -108,7 +125,8 @@ export default {
       history: JSON.parse(localStorage.getItem('keyword') || '[]'),
       historyIndex: -1,
       showKeyword: true,
-      keyword: ''
+      keyword: '',
+      showToast: false
     }
   },
   computed: {
@@ -116,7 +134,8 @@ export default {
       var arr = []
       this.list.map((item, index) => {
         arr[index] = item
-        let reg = new RegExp(this.searchVal, 'g')
+        arr[index]
+        let reg = new RegExp(this.searchVal, 'gi')
         arr[index] = arr[index].replace(
           reg,
           `<span style="color:#ff2d55">${this.searchVal}</span>`
@@ -132,14 +151,18 @@ export default {
     ...mapMutations(['setGoodCase']),
     async _initData() {
       let { namelist } = await topNames()
-      this.namelist = namelist
+      if (namelist) {
+        this.namelist = namelist
+      } else {
+        this.namelist = []
+      }
     },
     bindSearch: _.debounce(async function() {
       this.showKeyword = false
       this.showSearch = true
       this.showList = false
       let { namelist } = await getNames({ keys: this.searchVal })
-      if (namelist.length) {
+      if (namelist && namelist.length) {
         this.list = namelist
         //this.showList = true
         this.matchTxt = true
@@ -148,6 +171,13 @@ export default {
         this.matchTxt = false
       }
     }, 500),
+    bindSearchKey() {
+      this.showSearch = false
+      this.showList = true
+      this.params.goodsName = this.searchVal
+      this._getLocalSearch(this.searchVal)
+      this._getDataList(this.params)
+    },
     bindClearKeyword() {
       this.params.goodsName = ''
       this.showKeyword = true
@@ -158,6 +188,7 @@ export default {
       // this.historyIndex = -1
     },
     bindClearHistory() {
+      this.showToast = false
       localStorage.setItem('keyword', '')
       this.history = []
     },
@@ -169,16 +200,20 @@ export default {
       this.keyword = item
       this.params.goodsName = item
       this._getDataList(this.params)
+      this._getLocalSearch(item)
+    },
+    _getLocalSearch(keyword) {
+      let arr = JSON.parse(localStorage.getItem('keyword') || '[]')
+      arr.unshift(keyword)
+      arr = Array.from(new Set(arr))
+      this.history = arr
+      localStorage.setItem('keyword', JSON.stringify(arr))
     },
     async bindArticle(index, item) {
       let goodName = this.list[index]
       this.showSearch = false
       this.showList = true
-      let arr = JSON.parse(localStorage.getItem('keyword') || '[]')
-      arr.unshift(item)
-      arr = Array.from(new Set(arr))
-      this.history = arr
-      localStorage.setItem('keyword', JSON.stringify(arr))
+      this._getLocalSearch(item)
       //this.setGoodCase({ goodId })
       //this.$router.back()
       this.params.goodsName = goodName
@@ -187,6 +222,8 @@ export default {
     bindClear() {
       this.showKeyword = true
       this.showList = false
+      this.matchTxt = true
+      this.showSearch = false
       this.searchVal = ''
       this.list = []
       this.dataList = []
@@ -270,6 +307,7 @@ export default {
     display: flex;
     justify-content: space-between;
     position: relative;
+    margin-top: 20px;
     .search-box {
       flex: 1;
       height: 30px;
@@ -342,17 +380,23 @@ export default {
     }
   }
   .matchTxt {
-    width: 100%;
+    width: 100vw;
     line-height: 10.4vw;
     color: #666;
     font-size: 3.73vw;
     padding-left: 4vw;
+    padding-right: 4vw;
     border-top: 1px solid #ccc;
     max-height: 100vh;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    box-sizing: border-box;
     li {
       border-bottom: 1px solid #e1e1e1;
       font-size: 14px;
+      line-height: 1.2;
+      padding-top: 10px;
+      padding-bottom: 10px;
       span {
         color: #ff2d55;
       }

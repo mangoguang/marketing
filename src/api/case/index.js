@@ -106,7 +106,16 @@ export const getNames = params => {
 //关键字模糊搜索产品名称
 export const getGoods = params => {
   return http({
-    url: baseUrl + '/v1/api/goodCase/getGoods',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/getGoods',
+    method: 'get',
+    params
+  })
+}
+
+//关键字模糊搜索产品名称
+export const topNames = params => {
+  return http({
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/topNames',
     method: 'get',
     params
   })
@@ -138,10 +147,34 @@ export const goodCaseUpdate = params => {
   )
 }
 
-//.修改案例
-export const topNames = params => {
+//上传图片
+export const uploadFile = params => {
+  return http.post(
+    baseUrl + '/api/upload/file',
+    params, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      },
+      timeout: 50000
+    }
+  )
+}
+
+
+
+//.根据品牌查询案例产品列表(查每个品类的前6条数据)
+export const goodsbybrand = params => {
   return http({
-    url: baseUrl + '/consumer-admin/v1/api/goodCase/topNames',
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/product/goodsbybrand',
+    method: 'get',
+    params
+  })
+}
+
+//（更多）根据品牌品类查询案例产品列表
+export const productGoods = params => {
+  return http({
+    url: baseUrl + '/consumer-admin/v1/api/goodCase/product/goods',
     method: 'get',
     params
   })

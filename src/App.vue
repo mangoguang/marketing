@@ -84,7 +84,7 @@ $bgcolor: #31c3b0;
 #app {
   box-sizing: border-box;
   background-color: #fff;
-  // height: 100vh;
+  min-height: 100vh;
   // overflow: scroll;
 }
 body {
@@ -333,5 +333,9 @@ input::-webkit-input-placeholder {
 }
 .mint-msgbox-btn {
   font-size: 14px;
+}
+.mint-indicator {
+  position: relative;
+  z-index: 9999;
 }
 </style>

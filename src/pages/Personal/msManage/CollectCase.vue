@@ -14,17 +14,19 @@
                  :bottom-all-loaded="allLoaded"
                  ref="collectLoadMore"
                  :auto-fill="false"> -->
-    <div class="goods"
+    <!-- <div class="goods"
          v-infinite-scroll="loadMore"
          :infinite-scroll-disabled="loading"
          infinite-scroll-distance="10"
+         v-if="list.length>0"> -->
+    <div class="goods"
          v-if="list.length>0">
 
       <goods-list v-for="(item,index) in list"
                   :key="index"
                   :item="item"
                   @onDelete="onDelete"
-                  @click.native="$router.push({path:'/detail',query:{id:item.id,alter:1}})"
+                  @click.native="$router.push({path:'/detail',query:{id:item.id}})"
                   :right="[{content: '删除'}]" />
       <!-- <mt-spinner class="loading"
                   v-show="loading"

@@ -7,7 +7,7 @@
     </div>
     <div class="cell-text">
       <div class="cell-top">
-        <h2>{{item.goodId}}</h2>
+        <h2>{{item.goodsName}}</h2>
         <div class="cell-pos">{{item.source}}</div>
         <div class="cell-view">{{item.pageView}}</div>
       </div>
@@ -17,10 +17,10 @@
         <div class="cell-info"
              v-else>
           <div class="cell-face">
-            <img :src="item.diagonalImg"
+            <img :src="item.userImage||'./static/images/default.jpg'"
                  alt="">
           </div>
-          <h3>{{item.createByName}}</h3>
+          <h3>{{item.username}}</h3>
         </div>
         <span class="cell-love">{{item.collect}}</span>
       </div>
@@ -131,12 +131,14 @@ export default {
       display: flex;
       height: 20px;
       line-height: 20px;
+      align-items: center;
       .cell-face {
         width: 20px;
         height: 20px;
         border-radius: 50%;
         overflow: hidden;
         display: flex;
+        margin-right: 5px;
         @include com-img;
       }
       h3 {

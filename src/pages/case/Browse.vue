@@ -20,7 +20,7 @@
       </mt-swipe>
     </div>
     <div class="tips">
-      <h2>@{{browseData.createByName}}</h2>
+      <h2>@{{browseData.username}}</h2>
       <p>{{browseData.remark}}</p>
     </div>
   </div>

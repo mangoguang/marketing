@@ -193,6 +193,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 20px;
   .input {
     width: 295px;
     height: 30px;

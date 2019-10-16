@@ -2,7 +2,8 @@
   <div class="wrraper">
     <div class="box">
       <div class="title">
-        <div class="icon"></div>
+        <div class="icon"
+             :class="{'big-icon':!title}"></div>
         <h2 v-if="title">{{title}}</h2>
       </div>
       <div class="content">
@@ -66,6 +67,10 @@ export default {
         100% no-repeat;
       margin: 0 auto;
     }
+    .big-icon {
+      width: 38px;
+      height: 38px;
+    }
     h2 {
       font-size: 16px;
       font-weight: bold;
@@ -111,6 +116,23 @@ export default {
       color: #909090;
       font-size: 18px;
     }
+  }
+}
+.but {
+  display: flex;
+  width: 100%;
+  .btns {
+    flex: 1;
+    font-size: 18px;
+    color: #909090;
+    &:active {
+      background-color: #b2d7ff;
+      color: #007aff;
+    }
+  }
+  .commit {
+    color: #363636;
+    border-right: 1px solid #ddd;
   }
 }
 </style>
