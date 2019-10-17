@@ -137,7 +137,7 @@ export const goodCaseSave = params => {
 
 //.修改案例
 export const goodCaseUpdate = params => {
-  return http.post(
+  return upload(
     baseUrl + '/consumer-admin/v1/api/goodCase/update',
     params, {
       timeout: 50000,

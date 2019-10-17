@@ -18,13 +18,13 @@
     <div slot="right"
          class="mint-cell-swipe-buttongroup"
          ref="right">
-      <a class="mint-cell-swipe-button"
-         v-for="(btn,index) in right"
-         :style="btn.style"
-         :key="btn+index"
-         v-html="btn.content"
-         @click.prevent.stop="showDel=!showDel"
-         v-show="showDel"></a>
+      <div class="mint-cell-swipe-del"
+           v-for="(btn,index) in right"
+           :style="btn.style"
+           :key="btn+index"
+           v-html="btn.content"
+           @click.prevent.stop="showDel=!showDel"
+           v-show="showDel"></div>
       <div class="mint-cell-comfirm"
            @click.prevent.stop="showDel=!showDel,$emit('onDelete',item), swipeMove()"
            v-show="!showDel">确认<br>删除</div>
@@ -241,7 +241,8 @@ export default {
   background: red;
   color: #fff;
 }
-.mint-cell-swipe-button {
+.mint-cell-swipe-del {
+  height: 100%;
   padding: 0;
   @extend %del;
 }

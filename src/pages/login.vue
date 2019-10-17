@@ -548,7 +548,7 @@ export default {
   text-align: justify;
 }
 .login_box {
-  height: 100%;
+  height: 100vh;
   width: 100vw;
   background: #fff;
 }
