@@ -23,30 +23,12 @@ if (process.env.NODE_ENV === 'production') {
 
 }
 
-let token = JSON.parse(localStorage.getItem('token')) || {}
+
 let instance = axios.create({
   baseURL: baseUrl,
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-    "Authorization": `Bearer ${token.access_token}`,
-    'sign': token.access_token // getSign(options.params, token.access_token)
-  },
   showLoading: true,
   timeout: 5000
 })
-
-// axios.defaults.timeout = 500000
-
-// axios.defaults.headers = {
-//   'Content-Type': 'application/x-www-form-urlencoded'
-// }
-// axios.defaults.baseURL = 'https://mobiletest.derucci.net' // baseUrl
-// if (process.env.NODE_ENV === 'production') {
-//   // eslint-disable-next-line
-//   // axios.defaults.baseURL = 'https://agency.derucci.com'
-//   axios.defaults.baseURL = 'https://mobiletest.derucci.net/cd-sys-web'
-
-// }
 
 // http request 拦截器
 instance.interceptors.request.use((config) => {
@@ -89,22 +71,42 @@ instance.interceptors.response.use(
 )
 
 //默认的
-export const http = instance
+export const http = (options) => {
+  let token = JSON.parse(localStorage.getItem('token') || '{}')
+  let header = {
+    'Content-Type': 'application/json',
+    "Authorization": `Bearer ${token.access_token}`,
+    'sign': token.access_token
+  }
+  header = Object.assign(header, options.headers)
+  options.headers = header
+  return instance(options)
+}
 
-//需要token
+export const postJson = (url, params, mheader = {}) => {
+  let token = JSON.parse(localStorage.getItem('token') || '{}')
+  let dheader = {
+    'Content-Type': 'application/json',
+    "Authorization": `Bearer ${token.access_token}`,
+    'sign': token.access_token
+  }
+  let headers = Object.assign(dheader, mheader)
+  return instance.post(url, params, {
+    headers
+  })
+}
 
+export const req = instance
 
-// export const http = (options, isFile) => {
-
-//   axios.defaults.headers = {
-//     'Content-Type': 'application/x-www-form-urlencoded',
-//     "Authorization": `Bearer ${token.access_token}`,
-//     'sign': getSign(options.params, token.access_token)
-//   }
-//   if (isFile) {
-//     var instance = axios.create()
-//     return instance.post(options.url, options.params);
-
-//   }
-//   return axios(options)
-// }
+export const upload = (url, params) => {
+  let token = JSON.parse(localStorage.getItem('token') || '{}')
+  let options = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      "Authorization": `Bearer ${token.access_token}`,
+      'sign': token.access_token
+    },
+    timeout: 50000
+  }
+  return instance.post(url, params, options);
+}

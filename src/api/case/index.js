@@ -2,7 +2,8 @@ import {
   baseUrl
 } from '@/api/baseUrl'
 import {
-  http
+  http,
+  upload
 } from '@/api/http'
 
 //根据用户账号查询用户收藏的案例
@@ -123,7 +124,7 @@ export const topNames = params => {
 
 //.新增案例
 export const goodCaseSave = params => {
-  return http.post(
+  return upload(
     baseUrl + '/consumer-admin/v1/api/goodCase/save',
     params, {
       timeout: 50000,
@@ -149,7 +150,7 @@ export const goodCaseUpdate = params => {
 
 //上传图片
 export const uploadFile = params => {
-  return http.post(
+  return upload(
     baseUrl + '/api/upload/file',
     params, {
       headers: {

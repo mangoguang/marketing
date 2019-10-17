@@ -5,7 +5,8 @@ import mango from '@/js/'
 
 import {
   http, //带token
-  httpDef
+  postJson,
+  upload
 } from '@/api/http'
 
 const request = new Request()
@@ -80,17 +81,16 @@ export const uploadFile = params => {
   //   method: 'post',
   //   params
   // }, true)
-  return http.post(
-    '/api/upload/file',
-    params, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      timeout: 50000
-    }
-
-
-  )
+  // return http.post(
+  //   '/api/upload/file',
+  //   params, {
+  //     headers: {
+  //       'Content-Type': 'multipart/form-data'
+  //     },
+  //     timeout: 50000
+  //   }
+  // )
+  return upload('/api/upload/files', params)
 }
 
 /**
@@ -98,11 +98,12 @@ export const uploadFile = params => {
  * @param {*} params 
  */
 export const uploadFiles = params => {
-  return http({
-    url: '/api/upload/files',
-    method: 'post',
-    params
-  }, true)
+  // return http({
+  //   url: '/api/upload/files',
+  //   method: 'post',
+  //   params
+  // }, true)
+  return upload('/api/upload/files', params)
 }
 
 /**
@@ -110,12 +111,11 @@ export const uploadFiles = params => {
  * @param {*} params 
  */
 export const gradeSubmit = params => {
-  return http.post('/api/cert/grade/submit',
+  return postJson('/api/cert/grade/submit',
     params, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      'Content-Type': 'application/json'
     }
+
   )
 }
 

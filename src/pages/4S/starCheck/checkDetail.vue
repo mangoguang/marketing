@@ -550,8 +550,8 @@ export default {
         text: '上传中...',
         spinnerType: 'fading-circle'
       })
-      let { data } = await uploadFiles(formData)
-      let url = data.list.map(item => item.url)
+      let { list } = await uploadFiles(formData)
+      let url = list.map(item => item.url)
       this.picVal = this.picVal.concat(url)
       this.uploading = false
       Indicator.close()
