@@ -51,16 +51,16 @@ export default {
   },
   methods: {
     bindBrandSelect(index) {
-      if (this.brandIndex != index) {
-        this.brandList.map(item => (item.status = false))
-      }
+      // if (this.brandIndex != index) {
+      //   this.brandList.map(item => (item.status = false))
+      // }
       this.brandList[index].status = !this.brandList[index].status
       this.brandIndex = index
     },
     bindCategoryIndexSelect(index) {
-      if (this.categoryIndex != index) {
-        this.categoryList.map(item => (item.status = false))
-      }
+      // if (this.categoryIndex != index) {
+      //   this.categoryList.map(item => (item.status = false))
+      // }
       this.categoryList[index].status = !this.categoryList[index].status
       this.categoryIndex = index
     },
@@ -85,12 +85,29 @@ export default {
     },
     bindDoneSelect() {
       let { brandList, brandIndex, categoryList, categoryIndex } = this
-      Bus.$emit('onDoneSelect', {
-        brand: brandList[brandIndex].status ? brandList[brandIndex].brand : '',
-        category: categoryList[categoryIndex].status
-          ? categoryList[categoryIndex].category
-          : ''
+      let brand = brandList.filter(item => item.status)
+      brand = brand.map(item => {
+        if (item.status) {
+          return item.brand
+        }
       })
+
+      let category = categoryList.filter(item => item.status)
+      category = category.map(item => {
+        if (item.status) {
+          return item.category
+        }
+      })
+      Bus.$emit('onDoneSelect', {
+        brand: brand.join(';'),
+        category: category.join(';')
+      })
+      // Bus.$emit('onDoneSelect', {
+      //   brand: brandList[brandIndex].status ? brandList[brandIndex].brand : '',
+      //   category: categoryList[categoryIndex].status
+      //     ? categoryList[categoryIndex].category
+      //     : ''
+      // })
     }
   }
 }

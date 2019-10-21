@@ -20,7 +20,7 @@
       <div class="num">{{description.length}}/150</div>
     </div>
     <div class="postion"
-         @click="$router.push('/provice'),ver=0">
+         @click="bindNavigateProvice">
       <span>{{provice}}</span>
       <label v-if="ver==3">请选择所在位置</label>
     </div>
@@ -399,6 +399,12 @@ export default {
       this.setSelectGoods({})
       this.ShowToast = false
       this.$router.back()
+    },
+    bindNavigateProvice() {
+      setTimeout(() => {
+        this.$router.push('/provice')
+      }, 100)
+      this.ver = 0
     }
   }
 }

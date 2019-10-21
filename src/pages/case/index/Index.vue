@@ -8,7 +8,8 @@
       <mt-loadmore :bottom-method="loadBottom"
                    :bottom-all-loaded="allLoaded"
                    ref="loadmore">
-        <div class="list">
+        <div class="list"
+             :class="listStyle=='cell-box'?'list-nomal':'list-box'">
           <list :listStyle="listStyle"
                 v-for="(item,index) in dataList"
                 @click.native="$router.push({path:'/detail',query:{id:item.id}})"
@@ -133,8 +134,6 @@ export default {
   width: 100%;
 }
 .list {
-  display: flex;
-  flex-flow: wrap;
   padding: 0 10px;
   margin-top: 12px;
   width: 100%;
@@ -147,5 +146,9 @@ export default {
       margin-right: 0;
     }
   }
+}
+.list-nomal {
+  display: flex;
+  flex-flow: wrap;
 }
 </style>

@@ -109,6 +109,11 @@ export default {
     background-size: contain;
   }
 }
+.provice {
+  height: 100vh;
+  overflow: hidden;
+  background-color: #fff;
+}
 .provice .search-list {
   height: 40px;
   line-height: 40px;

@@ -167,6 +167,7 @@ export default {
     border-radius: 5px;
     margin-right: 10px;
     display: flex;
+    overflow: hidden;
     @include com-img;
   }
   .cell-best {

@@ -61,6 +61,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+/deep/ .banner {
+  border: none !important;
+  background-color: #fff !important;
+}
 .line {
   height: 72px;
 }

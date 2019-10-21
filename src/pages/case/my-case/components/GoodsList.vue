@@ -13,7 +13,8 @@
           ref="cell"
           :value="value">
     <template slot="content">
-      <list :item="item" />
+      <list :item="item"
+            :isDate="true" />
     </template>
     <div slot="right"
          class="mint-cell-swipe-buttongroup"

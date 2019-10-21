@@ -8,15 +8,19 @@
              v-for="(items,idx) in  item.lists"
              :key="idx"
              @click="$emit('onSelectCity',items)">{{items}}</div>
+        <!-- <mt-cell v-for="(items,idx) in  item.lists"
+                 :key="idx"
+                 :title="items"></mt-cell> -->
       </mt-index-section>
     </mt-index-list>
   </div>
 </template>
 <script>
 import Vue from 'vue'
-import { IndexList, IndexSection } from 'mint-ui'
+import { IndexList, IndexSection, Cell } from 'mint-ui'
 Vue.component(IndexList.name, IndexList)
 Vue.component(IndexSection.name, IndexSection)
+Vue.component(Cell.name, Cell)
 import city from './city.json'
 export default {
   data() {
@@ -25,7 +29,9 @@ export default {
     }
   },
   created() {
-    this.cityList = city.city
+    this.$nextTick(() => {
+      this.cityList = city.city
+    })
   }
 }
 </script>
@@ -41,10 +47,14 @@ export default {
   .mint-indexlist-navitem {
     color: #007aff;
     font-size: 12px;
+    padding-top: 0;
+    padding-bottom: 0;
+    // font-size: 10px;
   }
 }
 .list {
   background-color: #fff;
+  -webkit-overflow-scrolling: touch;
   .li {
     padding: 0 16px;
     height: 40px;
