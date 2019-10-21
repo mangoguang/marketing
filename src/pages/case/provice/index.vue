@@ -86,6 +86,9 @@ export default {
       }
     },
     onSelectCity(val) {
+      if (val == '全国') {
+        val = ''
+      }
       this.setProvice(val)
       this.$router.back()
     }

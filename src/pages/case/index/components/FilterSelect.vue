@@ -58,11 +58,11 @@ export default {
       this.brandIndex = index
     },
     bindCategoryIndexSelect(index) {
-      if (this.brandIndex != index) {
+      if (this.categoryIndex != index) {
         this.categoryList.map(item => (item.status = false))
       }
       this.categoryList[index].status = !this.categoryList[index].status
-      this.brandIndex = index
+      this.categoryIndex = index
     },
     bindReset() {
       this.brandList.map(item => (item.status = false))

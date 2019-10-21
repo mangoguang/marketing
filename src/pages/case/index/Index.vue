@@ -124,6 +124,7 @@ export default {
   overflow: scroll;
   height: calc(100vh-209px);
   padding-bottom: 84px;
+  -webkit-overflow-scrolling: touch;
 }
 .no-more {
   text-align: center;

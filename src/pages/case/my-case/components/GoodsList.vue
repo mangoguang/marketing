@@ -18,16 +18,19 @@
     <div slot="right"
          class="mint-cell-swipe-buttongroup"
          ref="right">
-      <div class="mint-cell-swipe-del"
-           v-for="(btn,index) in right"
-           :style="btn.style"
-           :key="btn+index"
-           v-html="btn.content"
-           @click.prevent.stop="showDel=!showDel"
-           v-show="showDel"></div>
-      <div class="mint-cell-comfirm"
-           @click.prevent.stop="showDel=!showDel,$emit('onDelete',item), swipeMove()"
-           v-show="!showDel">确认<br>删除</div>
+
+      <slot name="swipeRight">
+        <div class="mint-cell-swipe-del"
+             v-for="(btn,index) in right"
+             :style="btn.style"
+             :key="btn+index"
+             v-html="btn.content"
+             @click.prevent.stop="showDel=!showDel"
+             v-show="showDel"></div>
+        <div class="mint-cell-comfirm"
+             @click.prevent.stop="showDel=!showDel,$emit('onDelete',item), swipeMove()"
+             v-show="!showDel">确认<br>删除</div>
+      </slot>
     </div>
     <div slot="left"
          class="mint-cell-swipe-buttongroup"

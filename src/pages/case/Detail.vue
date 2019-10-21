@@ -29,7 +29,7 @@
                alt="">
         </div>
         <div class="name">
-          <h2>{{detailData.goodsName||'-'}}</h2>
+          <h2>{{detailData.username||'-'}}</h2>
           <p class="pos">{{detailData.source}}</p>
         </div>
         <div class="date">{{detailData.createTime}}</div>
@@ -40,11 +40,12 @@
             <span>品牌：</span><span>{{detailData.brand}}</span>
           </h2>
           <h2>
-            <span>产品：</span><span>{{detailData.category}}</span>
+            <span>产品：</span><span>{{detailData.goodsName}}</span>
           </h2>
         </div>
-        <div class="dec">
-          {{detailData.remark||'-'}}
+        <div class="dec"
+             v-html="detailData.remark||'-'">
+
         </div>
       </div>
     </div>
@@ -115,6 +116,7 @@ export default {
         }
       }
       this.slider = arr
+      entity.remark = entity.remark.replace(/\n/g, '<br>')
       this.detailData = entity
       let { createByName, remark, username } = entity
       this.setBrowseData({
@@ -297,7 +299,7 @@ export default {
 .head {
   position: relative;
   .nav {
-    position: absolute;
+    position: fixed;
     top: 20px;
     width: 100%;
     height: 30px;

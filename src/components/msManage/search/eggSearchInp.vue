@@ -133,6 +133,7 @@ export default {
     left: 3vw;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 9;
   }
   .eggInp {
     width: 100%;

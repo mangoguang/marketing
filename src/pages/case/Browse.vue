@@ -21,7 +21,7 @@
     </div>
     <div class="tips">
       <h2>@{{browseData.username}}</h2>
-      <p>{{browseData.remark}}</p>
+      <p v-html="browseData.remark"></p>
     </div>
   </div>
 </template>

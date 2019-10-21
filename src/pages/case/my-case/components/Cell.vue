@@ -83,9 +83,13 @@ export default {
 }
 .mint-cell {
   background: #f8f8f8;
+  border: none;
 }
-.mint-cell-wrapper {
-  padding: 0;
+.mint-cell {
+  .mint-cell-wrapper {
+    padding: 0;
+    background-image: none;
+  }
 }
 @component-namespace mint {
   @component cell {

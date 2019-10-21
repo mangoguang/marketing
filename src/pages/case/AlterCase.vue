@@ -52,7 +52,7 @@
                @change="bindUpload"
                ref="uploadImg">
       </div>
-      <h2>其他（不超过3张）</h2>
+      <h2>其他（不超过2张）</h2>
       <div class="up-box other">
         <div class="li"
              v-for="(item,index) in oether "
@@ -96,6 +96,8 @@
     </toast-comfirm>
     <mt-actionsheet :actions="[{ name:'拍照', method:getCamera }, { name:'从手机相册选择', method:getPhoto}]"
                     v-model="sheetVisible"></mt-actionsheet>
+    <div class="msg-tip"
+         v-show="showStatusToast"><span>发布成功</span></div>
   </div>
 </template>
 
@@ -121,7 +123,8 @@ export default {
       activeIndex: -1,
       oetherLength: 0,
       ver: 0,
-      alter: 0
+      alter: 0,
+      showStatusToast: false
     }
   },
   created() {
@@ -218,8 +221,12 @@ export default {
         }
       }
       let { status, msg } = await goodCaseSave(formData)
-      Toast(msg)
       if (status == 1) {
+        this.showStatusToast = true
+        setTimeout(() => {
+          this.showStatusToast = false
+          this.$router.back()
+        }, 2000)
         this.setGoodCase({
           enable: '',
           goodId: '',
@@ -344,6 +351,8 @@ export default {
       }
     },
     bindAreaChange: _.debounce(function() {
+      let reg = /[^\u0020-\u007E\u00A0-\u00BE\u2E80-\uA4CF\uF900-\uFAFF\uFE30-\uFE4F\uFF00-\uFFEF\u0080-\u009F\u2000-\u201f\u2026\u2022\u20ac\r\n]/g
+      this.description = this.description.replace(reg, '')
       this.setGoodCase({
         remark: this.description
       })
@@ -432,9 +441,33 @@ export default {
 }
 .alter {
   background-color: #fff;
-  height: 100vh;
+  min-height: 100vh;
   padding: 0 10px;
   overflow: auto;
+  .msg-tip {
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 99;
+    text-align: center;
+    & > span {
+      display: block;
+      min-width: 98px;
+      max-width: 90%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      border-radius: 8px;
+      text-align: center;
+      color: #007aff;
+      padding: 10px 0;
+    }
+  }
   .headers {
     height: 64px;
   }
@@ -634,6 +667,7 @@ export default {
       top: 13px;
       left: 5px;
       line-height: 1;
+      background-color: #f8f8f8;
       span {
         color: #fb222b;
       }

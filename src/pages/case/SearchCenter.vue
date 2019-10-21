@@ -213,7 +213,7 @@ export default {
       let goodName = this.list[index]
       this.showSearch = false
       this.showList = true
-      this._getLocalSearch(item)
+      this._getLocalSearch(this.list[index])
       //this.setGoodCase({ goodId })
       //this.$router.back()
       this.params.goodsName = goodName
@@ -246,6 +246,7 @@ export default {
 <style lang="scss" scoped>
 .keyword {
   padding: 20px 17px;
+  background-color: #fff;
   .history {
     .title {
       display: flex;
@@ -300,14 +301,15 @@ export default {
   }
 }
 .search {
-  background: #fff;
+  background: #f7f7f7;
   width: 100vw;
   overflow-x: hidden;
   .search_box {
     display: flex;
     justify-content: space-between;
     position: relative;
-    margin-top: 20px;
+    padding-top: 20px;
+    background-color: #fff;
     .search-box {
       flex: 1;
       height: 30px;
@@ -380,13 +382,14 @@ export default {
     }
   }
   .matchTxt {
+    background-color: #f7f7f7;
     width: 100vw;
     line-height: 10.4vw;
     color: #666;
     font-size: 3.73vw;
     padding-left: 4vw;
     padding-right: 4vw;
-    border-top: 1px solid #ccc;
+
     max-height: 100vh;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -429,12 +432,15 @@ export default {
   .eggInp {
     width: 100%;
     height: 8vw;
-    line-height: 8vw;
+    // line-height: 8vw;
     background: #f7f7f7;
     border-radius: 4vw;
     font-size: 3.46vw;
     padding: 0 9.33vw;
     box-sizing: border-box;
+    &::-webkit-input-placeholder {
+      line-height: normal;
+    }
   }
   .deleteVal {
     background: url(~@/assets/imgs/egg_delete.png) no-repeat center;

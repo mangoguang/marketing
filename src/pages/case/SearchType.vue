@@ -47,10 +47,11 @@ export default {
   computed: {
     searchList() {
       var arr = []
-      this.list.map((item, index) => {
+      let list = JSON.parse(JSON.stringify(this.list))
+      list.map((item, index) => {
         arr[index] = item
 
-        let reg = new RegExp(this.searchVal, 'g')
+        let reg = new RegExp(this.searchVal, 'ig')
         arr[index]['goodsName'] = arr[index]['goodsName'].replace(
           reg,
           `<span style="color:#ff2d55">${this.searchVal}</span>`
@@ -73,6 +74,7 @@ export default {
     }, 500),
     bindArticle(index) {
       let goodId = this.list[index]['id']
+      console.log(this.list[index])
       this.setGoodCase({ goodId })
       this.setSelectGoods(this.list[index])
       this.$router.back()
