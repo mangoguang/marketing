@@ -1,4 +1,5 @@
 import sha1 from 'js-sha1'
+import CryptoJS from 'crypto-js'
 import axios from 'axios'
 var http = axios.create()
 import {
@@ -146,8 +147,7 @@ export default class Common {
         str = str === '' ? `${key}=${obj[key]}` : `${str}&${key}=${obj[key]}`
       }
     }
-    // console.log('生成的sign字符串', str)
-    return sha1.hex(str + token)
+    return CryptoJS.SHA1(str + token).toString(CryptoJS.enc.Hex)
   }
   getFormSign(obj, token, keys) {
     let str = ''
@@ -160,7 +160,7 @@ export default class Common {
     // console.log('str',str)
     // let [phone, feedbackInfo] = [obj.get('phone'), obj.get('feedbackInfo')]
     // console.log('生成的sign字符串', `${str}:${token}`)
-    return sha1.hex(`${str}${token}`)
+    return sha1(`${str}${token}`)
   }
   getAjax(path, params, type) {
     let _this = this

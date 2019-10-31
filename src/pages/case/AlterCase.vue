@@ -319,12 +319,15 @@ export default {
         if (activeIndex == -1) {
           //其他
           //this.oether.push(res.base64)
+          this.oetherLength = this.oether.length
           this.oetherLength += 1
+          console.log(this.oetherLength)
           this.setGoodCase({ ['spareImgFile' + this.oetherLength]: newFile })
           this.setAlterUploadImg({
             ['spareImgFile' + this.oetherLength]: res.base64
           })
           if (alterFlag == 1) {
+            console.log(alterFlag)
             this.setGoodCase({ ['img' + this.oetherLength]: '' })
           }
           return

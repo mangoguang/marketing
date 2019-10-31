@@ -1,37 +1,48 @@
 <template>
   <div class="visitor">
     <ul>
-      <li is="leaveStoreSelect"  @leaveStoreChange="leaveStoreChange"></li>
-      <li is="customerLi" :leftText="'进店日期'" :icon="true" @click.native="selectStoreDate">
+      <li is="leaveStoreSelect"
+          @leaveStoreChange="leaveStoreChange"></li>
+      <li is="customerLi"
+          :leftText="'进店日期'"
+          :icon="true"
+          @click.native="selectStoreDate">
         <span :style="timeColor">{{newCustomerInfo.arrivalDate || Time}}</span>
       </li>
       <li is="shopSelect"></li>
       <li class="textarea">
         <remark :title="'备注'">
-          <textarea v-model="newCustomerInfo.remark" name="" id="" placeholder="描述一下情况吧" oninput="if(value.length>5)value=value.slice(0,200)"></textarea>
+          <textarea v-model="newCustomerInfo.remark"
+                    name=""
+                    id=""
+                    placeholder="描述一下情况吧"
+                    oninput="if(value.length>5)value=value.slice(0,200)"></textarea>
         </remark>
       </li>
-      <li class="saveBtn"><big-btn :text="'保存'" @click.native="saveCustomerInfo" class="myBtn"></big-btn></li>
+      <li class="saveBtn">
+        <big-btn :text="'保存'"
+                 @click.native="saveCustomerInfo"
+                 class="myBtn"></big-btn>
+      </li>
     </ul>
-        <mt-datetime-picker
-        ref="datePicker"
-        type="date"
-        v-model="today"
-        :startDate="new Date('1930-01-01')"
-        year-format="{value} 年"
-        month-format="{value} 月"
-        date-format="{value} 日"
-        @confirm="setStoreDate">
-      </mt-datetime-picker>
+    <mt-datetime-picker ref="datePicker"
+                        type="date"
+                        v-model="today"
+                        :startDate="new Date('1930-01-01')"
+                        year-format="{value} 年"
+                        month-format="{value} 月"
+                        date-format="{value} 日"
+                        @confirm="setStoreDate">
+    </mt-datetime-picker>
   </div>
 </template>
 
 <script>
-import { IndexModel } from "../../../utils/index";
-const indexModel = new IndexModel();
-import Vue from "vue"
-import {Picker, Popup, MessageBox, DatetimePicker} from 'mint-ui'
-import Vuex, { mapMutations, mapState} from 'vuex'
+import { IndexModel } from '../../../utils/index'
+const indexModel = new IndexModel()
+import Vue from 'vue'
+import { Picker, Popup, MessageBox, DatetimePicker } from 'mint-ui'
+import Vuex, { mapMutations, mapState } from 'vuex'
 import leaveStoreSelect from '../../select/leaveStoreSelect'
 import shopSelect from '../../select/shopSelect'
 Vue.component(Picker.name, Picker)
@@ -42,7 +53,7 @@ import bigBtn from '../bigBtn'
 import remark from '../remark'
 import mango from '../../../js'
 export default {
-  name:'visitor',
+  name: 'visitor',
   props: ['fromName'],
   components: {
     customerLi,
@@ -51,15 +62,15 @@ export default {
     leaveStoreSelect,
     shopSelect
   },
-  data(){
-    return{
+  data() {
+    return {
       info: {
         percent: 50
       },
       slots: [],
       proto: '',
       popupVisible: false,
-      shopNameList: [{values: []}],
+      shopNameList: [{ values: [] }],
       shopName: '',
       shopId: '',
       today: new Date(),
@@ -76,9 +87,11 @@ export default {
   },
   watch: {
     fromName() {
-      if(this.fromName === 'chooseShop') {
-        this.timeColor = this.newCustomerInfo.arrivalDate? 'color: #363636' :'color: #999'
-      }else {
+      if (this.fromName === 'chooseShop') {
+        this.timeColor = this.newCustomerInfo.arrivalDate
+          ? 'color: #363636'
+          : 'color: #999'
+      } else {
         this.initData()
       }
       let val = this.getShopVal()
@@ -86,18 +99,15 @@ export default {
     }
   },
   computed: {
-     ...mapState({
+    ...mapState({
       leaveStoreVal: state => state.select.leaveStoreVal,
       shopList: state => state.chooseShop.shopList,
       newCustomerInfo: state => state.customer.newCustomerInfo
     })
   },
   methods: {
-    ...mapMutations([
-      'setLeaveStoreVal',
-      'setNewCustomerInfo'
-    ]),
-     //初始化数据
+    ...mapMutations(['setLeaveStoreVal', 'setNewCustomerInfo']),
+    //初始化数据
     initData() {
       this.setNewCustomerInfo({})
       this.setLeaveStoreVal('')
@@ -105,9 +115,9 @@ export default {
     //获取门店的值
     getShopVal() {
       let val
-      if(this.shopList && this.shopList.length) {
+      if (this.shopList && this.shopList.length) {
         this.shopList.forEach((item, index) => {
-          if(item.status) {
+          if (item.status) {
             val = item.name
           }
         })
@@ -116,12 +126,12 @@ export default {
     },
     //获取门店id
     getShopId(name) {
-      if(this.shops && this.shops.length) {
+      if (this.shops && this.shops.length) {
         this.shops.forEach((item, index) => {
-          if(item.name === name) {
+          if (item.name === name) {
             this.shopId = item.id
           }
-      });
+        })
       }
       this.newCustomerInfo.shopId = this.shopId
       this.setNewCustomerInfo(this.newCustomerInfo)
@@ -144,26 +154,33 @@ export default {
     },
     saveCustomerInfo() {
       let parmas = this.getParmas()
-      indexModel.getVisitor(parmas,'post').then(res => {
-        if(res.status === 1) {
-          MessageBox.alert('保存成功！').then(action => {
-            this.$router.replace('/Customer')
-          })
-        }
-      }).catch((reject) => {
-        if (reject === 510) {
-          this.saveCustomerInfo()
-        }
-      })
+      indexModel
+        .getVisitor(parmas, 'post')
+        .then(res => {
+          if (res.status === 1) {
+            MessageBox.alert('保存成功！').then(action => {
+              this.$router.replace('/storeCustomer')
+            })
+          }
+        })
+        .catch(reject => {
+          if (reject === 510) {
+            this.saveCustomerInfo()
+          }
+        })
     },
     //获取参数
     getParmas() {
-       let [params,tempObj] = [{
-        'opportunity.residentTime': this.newCustomerInfo.residentTime,
-        'opportunity.shopId': this.newCustomerInfo.shopId,
-        'opportunity.arrivalDate': this.newCustomerInfo.arrivalDate || this.Time,
-        'remark': this.newCustomerInfo.remark
-      }, {}]
+      let [params, tempObj] = [
+        {
+          'opportunity.residentTime': this.newCustomerInfo.residentTime,
+          'opportunity.shopId': this.newCustomerInfo.shopId,
+          'opportunity.arrivalDate':
+            this.newCustomerInfo.arrivalDate || this.Time,
+          remark: this.newCustomerInfo.remark
+        },
+        {}
+      ]
       for (let key in params) {
         if (params[key]) {
           tempObj[key] = params[key]
@@ -187,20 +204,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/common.scss";
-ul{
+@import '../../../assets/common.scss';
+ul {
   display: flex;
   flex-direction: column;
-  li{
+  li {
     display: flex;
-    h3{
+    h3 {
       color: $fontCol;
       font-size: $fontSize;
       padding: 0 5vw;
       line-height: 3em;
       border-bottom: 1px solid #ccc;
     }
-    textarea{
+    textarea {
       background: #fff;
       width: 100vw;
       height: 40vw;
@@ -209,23 +226,23 @@ ul{
       font-size: $fontSize;
     }
   }
-  li.textarea{
+  li.textarea {
     display: block;
   }
-  li.range{
+  li.range {
     display: block;
     padding: 0 5vw;
   }
-  .saveBtn{
+  .saveBtn {
     margin-top: 10vw;
   }
 }
-.picker{
+.picker {
   width: 100vw;
 }
- .myBtn {
-    background:rgba(0,122,255,1)!important;
-    border: .13vw solid rgba(0,93,194,1)!important;
-    border-radius: 0.53vw;
-  }
+.myBtn {
+  background: rgba(0, 122, 255, 1) !important;
+  border: 0.13vw solid rgba(0, 93, 194, 1) !important;
+  border-radius: 0.53vw;
+}
 </style>
