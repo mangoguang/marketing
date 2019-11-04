@@ -30,10 +30,10 @@
 
 <script>
 import Vue from 'vue'
-import lrz from 'lrz'
 import { Actionsheet, Toast } from 'mint-ui'
 import { mapState, mapMutations } from 'vuex'
 Vue.component(Actionsheet.name, Actionsheet)
+import lrz from 'lrz'
 export default {
   props: ['path', 'picLen', 'clear'],
   data() {
@@ -112,26 +112,30 @@ export default {
       let imgSize = 3 * 1024 * 1024
       files.map(async (item, index) => {
         if (/^image/.test(item.type)) {
-          if (item.size > imgSize) {
-            Toast({
-              message: `每张图片不能超过3M`,
-              position: 'middle',
-              duration: 2000
-            })
-            return
-          } else {
-            // let reader=new FileReader();
-            // reader.readAsDataURL(item);
-            // reader.onloadend=function(){
-            //  _this.picVal.push({name:item.name,url:this.result});
-            //  _this.FilesList.push(item);
-            // }
-            let res = await lrz(item, { quality: 0.2 })
-            _this.picVal.push({ name: item.name, url: res.base64 })
-            _this.FilesList.push(res.file)
-          }
+          let res = await lrz(item, { width: window.innerWidth, quality: 0.5 })
+
+          // console.log(res)
+          _this.picVal.push({ name: item.name, url: res.base64 })
+          _this.FilesList.push(res.file)
+          // if(item.size>imgSize){
+          //   Toast({
+          //     message: `每张图片不能超过3M`,
+          //     position: 'middle',
+          //     duration: 2000
+          //   })
+          //   return;
+          // }else{
+          // let reader = new FileReader()
+          // reader.readAsDataURL(item)
+          // reader.onloadend = function() {
+          //   _this.picVal.push({ name: item.name, url: this.result })
+          //   _this.FilesList.push(item)
+          // }
+          // }
         }
       })
+      // console.log(this.FilesList)
+      // console.log(this.picVal)
       this.setFiles(this.FilesList)
       this.setPicVal(this.picVal)
     },

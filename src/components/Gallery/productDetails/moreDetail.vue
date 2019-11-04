@@ -13,7 +13,6 @@
         <li v-for="(item, index) in list"
             :key="index"
             @click="skipTo(index)">{{item}}</li>
-        <li @click="openscan">扫一扫</li>
       </ul>
     </div>
   </div>
@@ -24,7 +23,7 @@ export default {
   data() {
     return {
       isShow: false,
-      list: ['图库首页', '我的收藏'],
+      list: ['图库首页', '我的收藏', '扫一扫'],
       top: ''
     }
   },
@@ -53,9 +52,9 @@ export default {
           case 1:
             this.$router.push({ path: '/collectList' })
             break
-          // case 2:
-          //   this.openscan()
-          //   break
+          case 2:
+            this.openscan()
+            break
         }
       })
     },

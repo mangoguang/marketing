@@ -185,7 +185,7 @@ export default {
         mango.tip('反馈信息不能为空')
         return false
       }
-      let reg = /^1[34578]\d{9}$/
+      let reg = /^1\d{10}$/
       if (this.phone !== '' && !reg.test(this.phone)) {
         mango.tip('请输入正确的手机号码')
         return false

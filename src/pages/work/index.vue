@@ -2,9 +2,9 @@
   <div class="work">
     <WorkHeader :title="'工作'" />
     <WorkModules />
-    <Footer style="z-index:10" />
+    <Footer style="z-index:10"/>
     <Daily />
-    <planModule />
+    <planModule/>
     <!-- <div @click="changeToken" style="text-align: center;line-height: 10vw;">测试</div> -->
   </div>
 </template>
@@ -18,28 +18,32 @@ import Footer from '../../components/Footer'
 import WorkModules from '../../components/work/workModules/'
 import Daily from '../../components/work/daily/'
 import planModule from '../../components/work/plan/planModule'
-import { IndexModel } from '../../utils/'
-import { checkLogin } from '../../utils/token/toLogin'
+import { IndexModel } from "../../utils/"
+import {checkLogin} from '../../utils/token/toLogin'
 const indexModel = new IndexModel()
 
 export default {
   name: 'work',
-  components: {
+  components:{
     WorkHeader,
     Footer,
     WorkModules,
     Daily,
     planModule
   },
-  props: [],
-  data() {
-    return {}
+  props:[],
+  data(){
+    return{
+
+    }
   },
   created() {
     checkLogin()
   },
-  mounted() {},
-  methods: {
+  mounted() {
+
+  },
+  methods:{
     changeToken() {
       let token = JSON.parse(localStorage.getItem('token'))
       token.access_token = '1234567891234567891234567'
@@ -51,10 +55,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.work {
+
+.work{
   // box-sizing: border-box;
   // height: 100vh;
   background: #f8f8f8;
-  overflow: hidden;
 }
 </style>

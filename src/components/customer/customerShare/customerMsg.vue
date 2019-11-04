@@ -1,77 +1,54 @@
 <template>
   <div class="customerMsg">
     <ul>
-      <li is="customerLi"
-          :leftText="'客户生日'">
+      <li is="customerLi" :leftText="'客户生日'">
         <span v-if='list.birthday'>{{ turnDate(list.birthday) }}</span>
-        <span class='unspan'
-              v-else>未收集</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi"
-          :leftText="'客户年龄'">
+      <li is="customerLi" :leftText="'客户年龄'">
         <span v-if='list.age'>{{ list.age }}</span>
-        <span class='unspan'
-              v-else>未收集</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi"
-          :leftText="'客户微信'">
+      <li is="customerLi" :leftText="'客户微信'">
         <span v-if='list.weChat'>{{ list.weChat }}</span>
-        <span class='unspan'
-              v-else>未收集</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi"
-          :leftText="'客户 QQ'">
+      <li is="customerLi" :leftText="'客户 QQ'">
         <span v-if='list.qq'>{{ list.qq }}</span>
-        <span class='unspan'
-              v-else>未收集</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi"
-          :leftText="'客户职业'">
+      <li is="customerLi" :leftText="'客户职业'">
         <span v-if='list.duty'>{{ list.duty }}</span>
-        <span class='unspan'
-              v-else>未收集</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
       <!-- <li is="customerLi" class="customerLi2" :leftText="'客户地址'">
         <span v-if='list.address'>{{ list.address }}</span>
         <span class='unspan' v-else>未收集</span>
       </li> -->
-      <li is="customerLi"
-          :leftText="'客户地区'"
-          :icon="true"
-          @click.native="toAddress">
-        <span>地址管理</span>
+      <li is="customerLi" :leftText="'客户地区'"  :icon="true" @click.native="toAddress">
+          <span>地址管理</span>
       </li>
-      <li is="customerLi"
-          class="customerLi2"
-          :leftText="'客户描述'">
-        <span v-if='list.remark'
-              v-html=" list.remark"></span>
-        <span class='unspan'
-              v-else>未收集</span>
+      <li is="customerLi" class="customerLi2" :leftText="'客户描述'">
+        <span v-if='list.remark'>{{ list.remark.replace(/\\n/g,"\r\n") }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
-      <li is="customerLi"
-          :leftText="'所属门店'">
-        <span v-if='list.orgId'
-              class='shop'>{{ getShopId(list.orgId) }}</span>
-        <span class='unspan'
-              v-else>未收集</span>
+      <li is="customerLi" :leftText="'所属门店'">
+        <span v-if='list.orgId' class='shop'>{{ getShopId(list.orgId) }}</span>
+        <span class='unspan' v-else>未收集</span>
       </li>
     </ul>
-    <btn @click.native="edit()"
-         :text="'编辑资料'"
-         class="myBtn"
-         v-if="isedit==='no'?false:true"></btn>
+    <btn @click.native="edit()" :text="'编辑资料'" class="myBtn" v-if="isedit==='no'?false:true"></btn>
   </div>
 </template>
 
 <script>
 import customerLi from '../customerLi'
-import btn from '../../btn'
+import btn from "../../btn";
 import mango from '../../../js'
 let Base64 = require('js-base64').Base64
 export default {
-  props: ['list', 'editMsg', 'isedit'],
-  components: { customerLi, btn },
+  props: ['list', 'editMsg','isedit'],
+  components: {customerLi, btn},
   data() {
     return {
       shops: ''
@@ -82,42 +59,42 @@ export default {
     this.shops = JSON.parse(shops)
   },
   methods: {
-    edit() {
-      this.editMsg(true)
+   edit() {
+     this.editMsg(true)
+   },
+   toAddress() {
+     if(this.isedit==='no'){
+       return;
+     }
+      this.$router.push({path:`/address/${this.$route.query.id}`})
     },
-    toAddress() {
-      if (this.isedit === 'no') {
-        return
-      }
-      this.$router.push({ path: `/address/${this.$route.query.id}` })
-    },
-    turnRemark(str) {
+    turnRemark(str){
       let string = mango.textDecode(str)
       return string
     },
     //获取门店
     getShopId(id) {
       let name
-      if (this.shops && this.shops.length) {
+      if(this.shops && this.shops.length) {
         this.shops.forEach((item, index) => {
-          if (item.crmId === id) {
-            name = item.name
+          if(item.crmId === id) {
+             name = item.name
           }
-        })
+      });
       }
       return name
     },
-    //转化日期
-    turnDate(date) {
-      if (date) {
-        let arr = date.split('-')
-        if (arr.length > 1) {
-          return `${arr[0]}年${arr[1]}月${arr[2]}日`
-        } else {
-          return date
-        }
+   //转化日期
+  turnDate(date) {
+    if (date) {
+      let arr = date.split('-')
+      if (arr.length > 1) {
+        return `${arr[0]}年${arr[1]}月${arr[2]}日`
+      } else {
+        return date
       }
     }
+  }
   }
 }
 </script>
@@ -138,22 +115,23 @@ export default {
     }
     .shop {
       // margin-left:4vw;
-      box-sizing: border-box;
+      box-sizing:border-box;
     }
-    span:first-child {
-      // border: 1px solid red
-    }
-    li:last-child {
+     span:first-child  {
+        // border: 1px solid red
+      }
+    li:last-child{
       border-bottom: none;
       width: 100%;
+     
     }
-    .unspan {
-      color: #999;
+    .unspan{
+      color: #999
     }
   }
   .myBtn {
-    background: rgba(0, 122, 255, 1);
-    border: 0.13vw solid rgba(0, 93, 194, 1);
+    background:rgba(0,122,255,1);
+    border: .13vw solid rgba(0,93,194,1);
     width: 80%;
     margin-left: 10%;
     // position: absolute;

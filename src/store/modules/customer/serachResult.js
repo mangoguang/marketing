@@ -1,7 +1,7 @@
 const state = {
-  dealList: [],
-  orderList: [],
-  myCusList: []
+  dealList:[],
+  orderList:[],
+  myCusList:[]
 }
 
 const mutations = {

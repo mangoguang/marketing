@@ -1,11 +1,15 @@
 <template>
   <div class="share">
-    <Banner :title="'产品分享'"/>
-    <div class="saveTips" v-show="successSave">保存成功</div>
-    <div class="canvas" ref="creatImg">
-      <img :src="imgUrl" alt>
+    <Banner :title="'产品分享'" />
+    <div class="saveTips"
+         v-show="successSave">保存成功</div>
+    <div class="canvas"
+         ref="creatImg">
+      <img :src="imgUrl"
+           alt>
       <div class="content">
-        <img src="../../assets/imgs/share_bottom.png" alt>
+        <img src="../../assets/imgs/share_bottom.png"
+             alt>
         <div class="msg">
           <p class="title">{{msg.goodsName}}</p>
           <span class="price">¥{{Math.round(msg.price*100)/100}}</span>
@@ -13,27 +17,27 @@
         </div>
       </div>
     </div>
-    <div class="save" @click="saveImg">
-      <img src="../../assets/imgs/download.png" alt>
+    <div class="save"
+         @click="saveImg">
+      <img src="../../assets/imgs/download.png"
+           alt>
       <span>保存图片</span>
     </div>
-    <m-share
-      v-for="(item, index) in list"
-      :key="index"
-      :list="item"
-      @touchend.native="shareBtn(index)"
-    />
+    <m-share v-for="(item, index) in list"
+             :key="index"
+             :list="item"
+             @touchend.native="shareBtn(index)" />
   </div>
 </template>
 
 <script>
-import { baseUrl } from "../../Request/request";
-import axios from "axios";
-import QRCode from "qrcodejs2";
-import html2canvas from "html2canvas";
-import { mapState } from "vuex";
-import Banner from "../../components/banner";
-import MShare from "../../components/Gallery/productDetails/productShare";
+import { baseUrl } from '../../Request/request'
+import axios from 'axios'
+import QRCode from 'qrcodejs2'
+import html2canvas from 'html2canvas'
+import { mapState } from 'vuex'
+import Banner from '../../components/banner'
+import MShare from '../../components/Gallery/productDetails/productShare'
 export default {
   components: { MShare, Banner },
   data() {
@@ -41,30 +45,30 @@ export default {
       msg: {},
       list: [
         {
-          name: "分享给微信好友",
-          imgUrl: "./static/images/session.png"
+          name: '分享给微信好友',
+          imgUrl: './static/images/session.png'
         },
         {
-          name: "分享到微信朋友圈",
-          imgUrl: "./static/images/timeline.png"
+          name: '分享到微信朋友圈',
+          imgUrl: './static/images/timeline.png'
         },
         {
-          name: "分享给QQ好友",
-          imgUrl: "./static/images/qq.png"
+          name: '分享给QQ好友',
+          imgUrl: './static/images/qq.png'
         },
         {
-          name: "分享到微博",
-          imgUrl: "./static/images/weibo.png"
+          name: '分享到微博',
+          imgUrl: './static/images/weibo.png'
         }
       ],
-      url: "",
-      loadImgUrl: "",
+      url: '',
+      loadImgUrl: '',
       successSave: false,
-      imageData: "",
-      pageUrl: "",
-      test: "",
-      changeUrl: ""
-    };
+      imageData: '',
+      pageUrl: '',
+      test: '',
+      changeUrl: ''
+    }
   },
   computed: {
     ...mapState({
@@ -72,24 +76,27 @@ export default {
     })
   },
   created() {
-    this.msg = this.$route.query.list;
-    this.pageUrl ="https://mobiletest.derucci.net" +"/web/marketing/#/productDetails?id=" +this.msg.id +"&musi=1";
+    this.msg = this.$route.query.list
+    // let url = `https://mobiletest.derucci.net`
+    let url = `https://op.derucci.com`
+    this.pageUrl =
+      url + '/web/marketing/#/productDetails?id=' + this.msg.id + '&musi=1'
   },
   mounted() {
-    this.getCode();
+    this.getCode()
   },
   methods: {
     //生成二维码
     getCode() {
-      let qrcode = new QRCode("qrcode", {
+      let qrcode = new QRCode('qrcode', {
         width: 56,
         height: 56, // 高度
         text: this.pageUrl,
-        colorDark: "#000",
-        colorLight: "#fff",
+        colorDark: '#000',
+        colorLight: '#fff',
         correctLevel: QRCode.CorrectLevel.L,
         QRCodeVersion: 1
-      });
+      })
     },
     //点击保存图片
     saveImg() {
@@ -98,100 +105,100 @@ export default {
         // useCORS: true, // 【重要】开启跨域配置
         // taintTest: false//是否在渲染前测试图片
       }).then(canvas => {
-        this.url = canvas.toDataURL();
-        this.postImage();
-      });
+        this.url = canvas.toDataURL()
+        this.postImage()
+      })
     },
     //base64转成formdata形式上传
     changeFormData(url) {
-      let bytes = window.atob(url.split(",")[1]);
-      let temp = new ArrayBuffer(bytes.length);
-      let ia = new Uint8Array(temp);
+      let bytes = window.atob(url.split(',')[1])
+      let temp = new ArrayBuffer(bytes.length)
+      let ia = new Uint8Array(temp)
       for (var i = 0; i < bytes.length; i++) {
-        ia[i] = bytes.charCodeAt(i);
+        ia[i] = bytes.charCodeAt(i)
       }
       //Blob对象
-      let blob = new Blob([temp], { type: "image/jpeg" }); //type为图片的格式
+      let blob = new Blob([temp], { type: 'image/jpeg' }) //type为图片的格式
       //FormData对象
-      this.imageData = new FormData();
-      this.imageData.append("dataFile", blob, Date.now() + ".jpg");
+      this.imageData = new FormData()
+      this.imageData.append('dataFile', blob, Date.now() + '.jpg')
     },
     //上传图片获取图片地址
     postImage() {
       if (this.url) {
-        this.changeFormData(this.url);
+        this.changeFormData(this.url)
         if (this.imageData) {
           // console.log(this.imageData.get('dataFile'))
-          this.getImgUrl();
+          this.getImgUrl()
         }
       }
     },
     //请求服务器图片路径
     getImgUrl() {
       axios
-        .post(baseUrl + "/upload/file", this.imageData, {
+        .post(baseUrl + '/upload/file', this.imageData, {
           headers: {
-            "Content-Type": "multipart/form-data"
+            'Content-Type': 'multipart/form-data'
           }
         })
         .then(res => {
-          this.loadImgUrl = res.data.url;
+          this.loadImgUrl = res.data.url
           // this.savePicture();
-        });
+        })
     },
     //保存图片
     savePicture() {
-      var timestamp = new Date().getTime();
+      var timestamp = new Date().getTime()
       api.download(
         {
           url: this.loadImgUrl,
-          savePath: "fs://album" + timestamp + ".jpg"
+          savePath: 'fs://album' + timestamp + '.jpg'
           // report: true,
           // cache: true,
           // allowResume: true
         },
         (ret, err) => {
           if (ret) {
-            this.showTips();
+            this.showTips()
           }
           api.saveMediaToAlbum(
             {
-              path: "fs://album" + timestamp + ".jpg"
+              path: 'fs://album' + timestamp + '.jpg'
             },
             function(ret, err) {}
-          );
+          )
         }
-      );
+      )
     },
     //出现保存成功提示
     showTips() {
-      this.successSave = true;
+      this.successSave = true
       setTimeout(() => {
-        this.successSave = false;
-      }, 1500);
+        this.successSave = false
+      }, 1500)
     },
     shareBtn(index) {
       switch (index) {
         case 0:
-          this.shareWeixin("session", this.msg.goodsName);
-          break;
+          this.shareWeixin('session', this.msg.goodsName)
+          break
         case 1:
-          this.shareWeixin("timeline", this.msg.goodsName);
-          break;
+          this.shareWeixin('timeline', this.msg.goodsName)
+          break
         case 2:
-          this.shareQQ(this.msg.goodsName);
-          break;
+          this.shareQQ(this.msg.goodsName)
+          break
         case 3:
-          this.shareWeibo(this.msg.goodsName);
-          break;
+          this.shareWeibo(this.msg.goodsName)
+          break
       }
     },
     //微信和朋友圈
     shareWeixin(Vscene, title) {
-      var wx = api.require("wx");
+      var wx = api.require('wx')
       wx.shareWebpage(
         {
-          apiKey: "",
+          apiKey: '',
           scene: Vscene,
           title: title,
           description: this.msg.remark,
@@ -205,23 +212,23 @@ export default {
           //   alert("分享失败");
           // }
         }
-      );
+      )
     },
     shareQQ(title) {
-      var qq = api.require("qq");
+      var qq = api.require('qq')
       qq.shareNews({
         url: this.pageUrl,
         title: title,
         description: this.msg.remark,
         imgUrl: this.imgUrl,
-        type: "QFriend"
-      });
+        type: 'QFriend'
+      })
     },
     shareWeibo(title) {
-      var sinaWeiBo = api.require("sinaWeiBo");
+      var sinaWeiBo = api.require('sinaWeiBo')
       sinaWeiBo.sendRequest(
         {
-          contentType: "web_page",
+          contentType: 'web_page',
           text: this.pageUrl,
           media: {
             title: title,
@@ -232,22 +239,22 @@ export default {
         function(ret, err) {
           if (ret.status) {
             api.alert({
-              title: "发表微博",
-              msg: "发表成功",
-              buttons: ["确定"]
-            });
+              title: '发表微博',
+              msg: '发表成功',
+              buttons: ['确定']
+            })
           } else {
             api.alert({
-              title: "发表失败",
+              title: '发表失败',
               msg: err.msg,
-              buttons: ["确定"]
-            });
+              buttons: ['确定']
+            })
           }
         }
-      );
+      )
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

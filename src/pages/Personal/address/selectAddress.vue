@@ -6,7 +6,7 @@
           <template slot-scope="props">
               <span v-if="props.info.elevator">{{props.info.apartmentType?props.info.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}有电梯</span>
               <span v-else>{{props.info.apartmentType?props.info.apartmentType+'&nbsp;&nbsp;&nbsp;&nbsp;':''}}无电梯</span>
-              <p>{{props.info.province+props.info.city+textareatVal(props.info.district+props.info.address)}}</p>
+              <p>{{props.info.province+props.info.city+props.info.district+props.info.address}}</p>
           </template>
         </my-select>
         <div class="noRecord"  v-else>
@@ -64,13 +64,6 @@ export default {
   methods:{
    ...mapMutations(['updateAddress','setAddressId']),
    ...mapMutations('selectAddress',['updateHasRecord','updatePath']),
-     textareatVal(temp) {
-      temp = temp.replace(/&lsquo;/g, '‘')
-      temp = temp.replace(/&rsquo;/g, '’')
-      temp = temp.replace(/&ldquo;/g, '“')
-      temp = temp.replace(/&rdquo;/g, '”')
-      return temp
-    },
    turnAddress(str){
      let string = Base64.decode(str)
      return string

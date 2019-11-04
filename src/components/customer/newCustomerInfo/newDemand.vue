@@ -539,11 +539,6 @@ textarea::-webkit-input-placeholder {
   }
   input {
     color: #363636;
-    font-size: 3.2vw;
-    line-height: normal;
-  }
-  input::-webkit-input-placeholder {
-    line-height: 16px;
   }
   // input::-webkit-input-placeholder{
   //   color:red;

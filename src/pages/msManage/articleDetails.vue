@@ -1,7 +1,6 @@
 <template>
   <div class="article paddingTop">
-    <banner :title="'文章详情'"
-            v-show="status" />
+    <Banner :title="'文章详情'" v-show="status"/>
     <!-- <collect-btn class="collentBtn"
                  :collection='collection'
                  v-on:touchend.native='changeCollectBtn'
@@ -11,7 +10,6 @@
               :remark="articleDetails.keyWords"
               :sharetitle="articleDetails.title"
               :collection="collection"
-              @centerShare="centerShare"
               :style="{'top': top}" />
 
     <div class="titleBar">
@@ -174,6 +172,7 @@ export default {
           }
         }
         this.collection = res.data.collect
+        
       })
     },
     // //收藏
@@ -201,10 +200,6 @@ export default {
     //     this.cancelCollect();
     //   }
     // },
-    // 点击取消按钮
-    centerShare(val) {
-      this.shareStatus = val
-    },
     // 判断是否是分享页面
     sharePage() {
       let url = window.location.href
@@ -249,7 +244,7 @@ export default {
   }
   .shareBtn {
     position: fixed;
-    right:0;
+    right: 0;
     top: 0;
     z-index: 99;
   }

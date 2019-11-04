@@ -16,7 +16,7 @@ import VueRouter from 'vue-router'
 //let baseUrl = "http://172.16.4.201"
 //let baseUrl="http://10.11.8.17"
 let baseUrl = "https://mobiletest.derucci.net"
-//let baseUrl = 'https://agency.derucci.com'
+// let baseUrl = 'https://agency.derucci.com'
 // let baseUrl="http://172.16.9.212/"
 // let baseUrl = "http://172.16.12.86/"
 // let baseUrl = 'http://10.11.8.181/'
@@ -185,7 +185,6 @@ export default class Common {
           params: params
         })
         .then((res) => {
-          _this.loading('close')
           if (res.code === 510) { // token失效
             if (token.access_token && token.access_token.length < 48) { // 有效token
               refreshToken.call(this).then(res => {
@@ -195,6 +194,7 @@ export default class Common {
               toLogin()
             }
           } else {
+            _this.loading('close')
             res = res.data
             resolve(res)
           }
@@ -380,7 +380,7 @@ export default class Common {
       http({
           method: 'post',
           // async: false,
-          timeout: 500000,
+          timeout: 30000,
           url: url,
           data: data,
           headers: {

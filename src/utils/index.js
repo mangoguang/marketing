@@ -89,7 +89,7 @@ class IndexModel extends Request {
       url: '/api/train/repository/v1/get',
       params: {
         id: articleId,
-        account: account
+        account:account
       }
     })
   }
@@ -312,7 +312,7 @@ class IndexModel extends Request {
   }
   //获取参考系
   getArea(type) {
-    return mango.httpWithoutLoading('/v2/app/reference', {
+    return mango.getAjax('/v2/app/reference', {
       type: type
     })
   }

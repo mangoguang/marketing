@@ -46,14 +46,34 @@ export default {
       title:'销售额报表',
       endTime: mango.getLocalTime('end'),
       key:false,
-      peoSalchanrtDom1:''
+      peoSalchanrtDom1:'',
+      url:''
     }
   },
   created() {
     // 获取本地存储信息
     let ajaxData = localStorage.getItem('ajaxData')
+    let selectMsg = localStorage.getItem('selectMsg')
     this.ajaxData = JSON.parse(ajaxData)
-    this.getPersonalSalesData(this.endTime)
+    selectMsg = JSON.parse(selectMsg)
+    let { startDate, endDate, areaMsg, cityLevel } = selectMsg
+    if (this.ajaxData.typename == "Store Manager") {
+      this.url = '/v2/app/report/user/sales'
+        var data = {
+          shopId: areaMsg,
+          startDate,
+          endDate
+        };
+      }else {
+        this.url = '/v1/app/dealer/report/shop/sales'
+        var data = {
+          startDate,
+          endDate,
+          shopId:this.$route.query.shopId,
+          tenantId:this.ajaxData.tenantId
+        };
+      }
+    this.getPersonalSalesData(data)
   },
   mounted(){
     // console.log('路由参数', this.$route)
@@ -64,17 +84,21 @@ export default {
   },
   watch: {
     personalSalesData() {
+      console.log(1);
+      
       // 参数说明：
       // data：图标数据
       // vertical设置柱状图的横向排布和纵向排布
       // height设置图标容器main的高度
       // salesVal标记是否为销售额，主要用于改变数据单位
-      setTimeout(() => {
+      // setTimeout(() => {
          if(this.key) {
+           console.log(2);
+           
         chartsInit(this, 'personalSales', 'horizontal', true)
         this.peoSalchanrtDom1 = chanrtDom
       }
-      }, 200);
+      // }, 200);
     }
   },
   beforeDestroy(){
@@ -83,13 +107,11 @@ export default {
     }
   },
   methods:{
-    getPersonalSalesData(date) {
+    getPersonalSalesData(params) {
       let _this = this
-      mango.getAjax('/v1/app/report/shop/sales', {
-        date: date,
-        tenantId: this.ajaxData.tenantId,
-        shopId: this.$route.query.shopId
-      }).then((res) => {
+      mango.getAjax(this.url, params).then((res) => {
+        console.log(res);
+        
         if (res) {
           let newData = mango.getNewArr(res.data.series[0].data,res.data.series[1].data,res.data.yAxisData,res.data.idsData)
           this.$set(res.data,'idsData',newData[3])
@@ -97,13 +119,13 @@ export default {
           this.$set(res.data.series[1],'data',newData[2])
           this.$set(res.data,'yAxisData',newData[0])
           this.key = true
-          res = res.data
+          // res = res.data
           /* for (let i = 0; i < res.yAxisData.length; i++) {
             res.yAxisData[i] = `*${res.yAxisData[i].slice(1, 5)}`
           } */
           // res.average = res.shopAvg
           // console.log('店内员工销售额：', res)
-          _this.personalSalesData = res
+          _this.personalSalesData = res.data
         }
       })
     }
@@ -113,8 +135,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.audioTechnica{
 
-}
 </style>
  

@@ -220,7 +220,7 @@ export default {
       if (!check) {
         return
       }
-      let dutyReg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+      let dutyReg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
       if (
         this.newCustomerInfo.duty !== '' &&
         !dutyReg.test(this.newCustomerInfo.duty)
@@ -229,7 +229,7 @@ export default {
         return
       }
       let remarkReg = /[\ud800-\udbff][\udc00-\udfff]/g
-      let reg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+      let reg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
       if (
         this.newCustomerInfo.remark !== '' &&
         remarkReg.test(this.newCustomerInfo.remark)
@@ -237,9 +237,6 @@ export default {
         this.newCustomerInfo.remark = this.newCustomerInfo.remark.replace(
           /[\ud800-\udbff][\udc00-\udfff]/g,
           ''
-        )
-        this.newCustomerInfo.remark = this.textareatVal(
-          this.newCustomerInfo.remark
         )
         MessageBox.alert('客户描述不能输入特殊字符及表情符号')
         return
@@ -386,7 +383,7 @@ export default {
     },
     //获取参数
     updateParams(obj) {
-      console.log(555, obj) //.replace(/(“|”|’|‘)/g, '\\$1')
+      console.log(555, obj)
       let tempObj = {}
       let temp = {
         phone: obj.phone ? obj.phone : '0',
@@ -407,13 +404,6 @@ export default {
         }
       }
       return tempObj
-    },
-    textareatVal(temp) {
-      temp = temp.replace(/&lsquo;/g, '‘')
-      temp = temp.replace(/&rsquo;/g, '’')
-      temp = temp.replace(/&ldquo;/g, '“')
-      temp = temp.replace(/&rdquo;/g, '”')
-      return temp
     },
     //获取门店id
     getShopId(name) {

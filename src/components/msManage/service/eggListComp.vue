@@ -7,7 +7,7 @@
           <h1><img v-show="item.logoImageUrl!==''" :src="item.logoImageUrl"/>{{item.title}}</h1>
           <div class="list_bottom">
             <span v-if="item.top" class="top">置顶</span>
-            <span class="time">{{item.createTime}}&nbsp;&nbsp;{{item.author}}</span>
+            <span class="time">{{item.createTime}}&nbsp;&nbsp;<span class="time" v-if="item.author">作者:{{item.author}}</span></span>
           </div>
         </div>
         <div class="list_right">

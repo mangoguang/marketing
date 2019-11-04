@@ -31,10 +31,14 @@ export default {
   },
   methods: {
     back() {
-      if (
-        this.href &&
-        localStorage.getItem('certPositionType') != 'supervisor'
-      ) {
+      if (this.href) {
+        if (
+          localStorage.getItem('certPositionType') == 'supervisor' &&
+          this.$route.name == 'starCheck'
+        ) {
+          this.$router.replace('/leader-check')
+          return
+        }
         this.$router.replace(this.href)
         return
       }

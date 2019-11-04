@@ -4,8 +4,14 @@ import {
   Indicator,
   Toast
 } from 'mint-ui'
-//let baseUrl = 'https://op.derucci.com'
+if (location.hash.includes('brandCetagory')) {
+  //let baseUrl = 'https://qiang.derucci.com'
+} else {
+  //let baseUrl = 'https://op.derucci.com'
+}
+
 let baseUrl = 'https://mobiletest.derucci.net/consumer-admin'
+// let baseUrl = 'https://agency.derucci.com/consumer-admin'
 //let baseUrl = 'http://10.11.8.17:8088'
 //let baseUrl = 'http://172.16.4.201'
 //let baseUrl = 'http://10.11.8.250'

@@ -15,6 +15,7 @@
         tag="li"
         class="list"
         :style="{backgroundImage: `url(${item.image})`}"
+        @click.native="getFlow(item.id)"
       >
         <div class="title">
           <div class="Main-title">{{item.name}}</div>
@@ -97,6 +98,11 @@ export default {
           this.list = res.data
         }
       })
+    },
+    // 获取流量信息
+    getFlow(id){
+      console.log(id);
+      
     },
     toArt(index) {
       this.$router.push({

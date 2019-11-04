@@ -1,7 +1,7 @@
 <template>
   <div class="header"
        :style="{'height':`${height}vw`,'marginTop':`${marginTop}vw`}">
-    <div class="compile">编辑</div>
+    <!-- <div class="compile">编辑</div> -->
     <div class="personalMsg">
       <!-- <div class="via" @click="go"></div> -->
       <img v-if="ajaxData.sex===1"
@@ -68,7 +68,13 @@ export default {
   computed: {
     userTypeName() {
       let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-      let type = ['经销商老板', '门店店长', '睡眠顾问', '跟单员']
+      let type = [
+        '经销商老板',
+        '门店店长',
+        '睡眠顾问',
+        '跟单员',
+        '经销商跟单员'
+      ]
       let arr = []
       userInfo.positionList.map(item => {
         let pos = type.indexOf(item.typeName)
@@ -76,7 +82,7 @@ export default {
           arr.push(pos)
         }
       })
-      let index = arr.sort()[0]
+      let index = arr.sort()[0] || 0
       return type[index] || userInfo.positionList[index].typeName
     }
   },

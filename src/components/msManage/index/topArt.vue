@@ -12,7 +12,7 @@
                  :src="item.logoImageUrl" />{{item.title}}</h1>
           <div class="list_bottom">
             <!-- <span class="top">置顶</span> -->
-            <span class="time">{{item.createTime}}&nbsp;&nbsp;作者: {{item.author||'-'}}</span>
+            <span class="time">{{item.createTime}}&nbsp;&nbsp;<span class="time" v-if="item.author">作者: {{item.author}}</span></span>
           </div>
         </div>
         <div class="list_right">

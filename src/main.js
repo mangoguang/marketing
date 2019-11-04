@@ -28,9 +28,6 @@ import VideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
 Vue.use(VideoPlayer);
 
-import bindScroll from '@/components/common/BindScroll/index.js'
-Vue.use(bindScroll)
-
 import 'mint-ui/lib/style.min.css'
 import './index.scss'
 // import '../mockjs/index' 	

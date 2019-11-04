@@ -201,6 +201,9 @@ export default {
     color: #007aff;
     font-weight: bold;
     padding: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
   .planForm {
     margin-top: 16.466vw;

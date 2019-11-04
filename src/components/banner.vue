@@ -1,20 +1,20 @@
 <!-- <keep-alive> -->
 <template>
   <div class="banner"
-       :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`}">
+       :style="{'margin-top':`${top}vw`,'border-bottom':`${boderBottom}`,'background':`${bgColor}`,'position':`${pos}`}">
     <div :class="`${fix}`"></div>
 
     <div class="icon-back"
          v-if="showLeft"
          @click="$emit('onHandleBack')">
-      <!-- <div class="icon iconfont icon-fanhui1"
-           :style="{'color':`${titleColor}`}"></div> -->
+      <div class="icon iconfont icon-fanhui1"
+           :style="{'color':`${titleColor}`}"></div>
     </div>
     <div class="icon-back"
          v-else
          @click='cilck'>
-      <!-- <div class="icon iconfont icon-fanhui1"
-           :style="{'color':`${titleColor}`}"></div> -->
+      <div class="icon iconfont icon-fanhui1"
+           :style="{'color':`${titleColor}`}"></div>
     </div>
 
     <span class="my_title"
@@ -40,7 +40,8 @@ export default {
       top: '',
       boderBottom: this.$route.name == '/top' ? 'none' : '1px solid #ccc',
       titleColor: this.$route.name == '/top' ? '#fff' : '#363636',
-      bgColor: this.$route.name == '/top' ? 'none' : '#f8f8f8'
+      bgColor: this.$route.name == '/top' ? 'none' : '#f8f8f8',
+      pos:this.$route.name=="/top"?'absolute':'fixed'
     }
   },
   mounted() {
@@ -97,18 +98,16 @@ export default {
   }
   .icon-back {
     width: 7vw;
-    height: 34px;
+    height: 6.66vw;
     padding-left: 4.266vw;
-    background: url(../assets/imgs/back.png) left 16px center no-repeat;
-    background-size: 10px 18px;
-    // .icon {
-    //   background: url(../assets/imgs/back.png) no-repeat center;
-    //   background-size: 100%;
-    //   font-size: 18px;
-    //   width: 2.66vw;
-    //   height: 4.66vw;
-    //   margin-top: -1vw;
-    // }
+    .icon {
+      // background: url(../assets/imgs/back.png) no-repeat center;
+      // background-size: 100%;
+      font-size: 18px;
+      width: 2.66vw;
+      height: 4.66vw;
+      margin-top: -1vw;
+    }
   }
   .my_title {
     width: 100%;

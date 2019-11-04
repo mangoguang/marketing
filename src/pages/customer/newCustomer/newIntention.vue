@@ -147,7 +147,7 @@ export default {
       let temp = this.whichFollowData(this.newCustomerInfo)
       if (temp) {
         // let formdata = this.newCustomerInfo.dataFiles
-        let dutyReg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+        let dutyReg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
         if (
           this.newCustomerInfo.competingGoods !== '' &&
           !dutyReg.test(this.newCustomerInfo.competingGoods)
@@ -156,7 +156,7 @@ export default {
           return
         }
         let remarkReg = /[\ud800-\udbff][\udc00-\udfff]/g
-        let reg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+        let reg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
         if (
           this.newCustomerInfo.remark2 !== '' &&
           remarkReg.test(this.newCustomerInfo.remark2)

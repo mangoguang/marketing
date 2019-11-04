@@ -50,12 +50,14 @@ export default {
   span {
     color: #363636;
     line-height: 3em;
+    font-size: 3.73vw;
   }
   strong {
     font-weight: normal;
-    margin-right: -1vw;
-    box-sizing: border-box;
+    // margin-right: -1vw;
+    // box-sizing: border-box;
     display: inline-block;
+    width: 6px;
   }
   input {
     // border: 1px solid red;

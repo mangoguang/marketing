@@ -53,6 +53,7 @@
 <script>
 import {IndexModel} from '../utils'
 const indexModel=new IndexModel()
+import {  userinfo } from '@/api/4s'
 import mybanner from '../components/banner'
 export default {
   data () {
@@ -75,7 +76,7 @@ export default {
   },
   methods:{
     getUserInfo(){
-      indexModel.getUserInfo().then(res => {
+     userinfo().then(res => {
         console.log(res);
         if(res.code===0){
           this.headPortrait=res.data.headPortrait;

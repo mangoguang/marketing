@@ -84,8 +84,8 @@ $bgcolor: #31c3b0;
 #app {
   box-sizing: border-box;
   background-color: #fff;
-  // height: 100vh;
-  // overflow: scroll;
+  height: 100vh;
+  overflow: scroll;
 }
 body {
   background: #fff;
@@ -191,6 +191,7 @@ textarea {
   border: none;
   background: none;
   outline: none;
+  line-height: normal;
 }
 textarea {
   overflow: hidden;
@@ -274,6 +275,11 @@ input::-webkit-search-cancel-button {
 .paddingTop2 {
   padding-top: 16vw;
 }
+
+.paddingTop3 {
+  padding-top: 104px;
+}
+
 ul.infoNav {
   display: flex;
   justify-content: space-between;
@@ -303,19 +309,6 @@ ul.infoNav {
     color: #fff;
   }
 }
-button.new {
-  display: block;
-  position: fixed;
-  width: 12.8vw;
-  height: 12.8vw;
-  background: url(./assets/imgs/add.png) no-repeat;
-  background-size: 100% 100%;
-  bottom: 30vw;
-  right: 5vw;
-}
-.mint-popup {
-  width: 100vw;
-}
 a {
   outline: none;
 }
@@ -330,6 +323,19 @@ input {
 }
 input::-webkit-input-placeholder {
   line-height: normal;
+}
+button.new {
+  display: block;
+  position: fixed;
+  width: 12.8vw;
+  height: 12.8vw;
+  background: url(./assets/imgs/add.png) no-repeat;
+  background-size: 100% 100%;
+  bottom: 30vw;
+  right: 5vw;
+}
+.mint-popup {
+  width: 100vw;
 }
 .mint-msgbox-btn {
   font-size: 14px;

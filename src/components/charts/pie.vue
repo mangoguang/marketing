@@ -61,11 +61,12 @@ export default {
         grid: {
           left: '3%',
           top: 'center',
-          containLabel: true
+          containLabel: true,
         },
         tooltip: {
           trigger: 'item',
-          formatter: "{a} <br/>{b} : {c}"
+          formatter: "{a} <br/>{b} : {c}",
+          position: ['20%', '10%']
           // formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {

@@ -187,9 +187,6 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/common.scss';
 .timeSelect {
-  * {
-    font-size: 14px;
-  }
   div.content {
     display: flex;
     justify-content: flex-end;
@@ -227,7 +224,8 @@ export default {
           display: flex;
           justify-content: space-between;
           width: 100%;
-          li {
+          li * {
+            font-size: 14px;
           }
           button {
             padding: 0 10vw;
@@ -256,6 +254,7 @@ export default {
           background: #b2d7ff;
           color: #007aff;
           font-weight: 300;
+          font-size: 4.53vw;
         }
         button.on {
           background: #007aff;
@@ -281,7 +280,6 @@ export default {
         p,
         span {
           color: $fontSubCol;
-          font-size: 11px;
         }
       }
     }

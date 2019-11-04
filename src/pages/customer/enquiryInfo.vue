@@ -261,8 +261,7 @@ export default {
       if (!check) {
         return
       }
-      //@#$%^&*(){}<>
-      let dutyReg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+      let dutyReg = /^[\u4E00-\u9FA5a-zA-Z0-9，。？；：《》【】！、%]{1,}$/
       if (
         this.newCustomerInfo.duty !== '' &&
         !dutyReg.test(this.newCustomerInfo.duty)
@@ -271,7 +270,7 @@ export default {
         return
       }
       let remarkReg = /[\ud800-\udbff][\udc00-\udfff]/g
-      let reg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+      let reg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
       if (
         this.newCustomerInfo.remark !== '' &&
         remarkReg.test(this.newCustomerInfo.remark)
@@ -432,7 +431,7 @@ export default {
         qq: obj.qq,
         weChat: obj.weChat,
         duty: obj.duty,
-        remark: obj.remark, //!== '' ? mango.textEncode(obj.remark) : ''
+        remark: obj.remark !== '' ? mango.textEncode(obj.remark) : '',
         customerId: this.$route.query.id,
         orgId: obj.orgId || this.list.orgId
       }

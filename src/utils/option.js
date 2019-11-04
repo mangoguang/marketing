@@ -3,12 +3,12 @@ import {
   width
 } from 'window-size';
 // import chartsData from './data.js'
-export default function (data, vertical, salesVal, title, radio) {
+export default function (data, vertical, salesVal, title, radio,brands) {
   // console.log(998877, title)
   mango.sortArrs(data)
   // data = chartsData
   // mango.sortArrs(chartsData)
-  // console.log(data)
+  console.log(data)
   // 参数说明：
   // data：图标数据
   // vertical设置柱状图的横向排布和纵向排布
@@ -16,6 +16,7 @@ export default function (data, vertical, salesVal, title, radio) {
   // salesVal标记是否为销售额，主要用于改变数据单位
   // 图标标题
   //radio标记是否增加百分号显示
+  // brand 标签名的赋值
   let seriesPosition
   // vertical === horizontal,柱状图为水平方向，否则为垂直方向
   if (vertical === 'horizontal') {
@@ -24,7 +25,8 @@ export default function (data, vertical, salesVal, title, radio) {
     seriesPosition = 'top'
   }
   // console.log('option对象数据：', data)
-  let [xAxis, yAxis, series] = [{
+  let [xAxis, yAxis, series] = [
+    {
     // 直角坐标相关设置。
     axisTick: {
       show: false
@@ -37,9 +39,11 @@ export default function (data, vertical, salesVal, title, radio) {
       }
     },
     axisLabel: {
-      color: "#999"
+      color: "#999",
+      interval:0
     }
-  }, {
+  },
+   {
     triggerEvent: true,
     axisTick: {
       show: false
@@ -47,7 +51,7 @@ export default function (data, vertical, salesVal, title, radio) {
     axisLine: {
       show: false,
       lineStyle: {
-        color: '#ccc'
+        color: '#a8a8a8'
       }
     },
     axisLabel: {
@@ -55,12 +59,14 @@ export default function (data, vertical, salesVal, title, radio) {
       rotate: 60
 
     }
-  }, data.series.map((item, index) => {
+  }, 
+  data.series.map((item, index) => {
     // console.log('数据', item.data)
     // item.sort(mango.compare(''))
     return {
       name: item.name,
       type: 'bar',
+      barGap:'15%',
       label: {
         normal: {
           show: true,
@@ -79,14 +85,14 @@ export default function (data, vertical, salesVal, title, radio) {
           
         }
       }:{}, */
-      barWidth: '20',
+      barWidth: '15',
       //barMaxWidth:'15',
       //barWidth:'15',
       //barGap:'0',
       //barCategoryGap:'45',
       data: salesVal ? item.data.map((key) => {
         let temp = key
-        if (temp == 0) {
+        if (temp == 0|| temp == undefined) {
           return ''
         } else {
           // seriesPosition = 'insideRight'
@@ -94,7 +100,7 @@ export default function (data, vertical, salesVal, title, radio) {
         }
       }) : item.data.map((key) => {
         let temp = key
-        if (temp == 0) {
+        if (temp == 0 || temp == undefined) {
           return ''
         } else {
           // seriesPosition = 'insideRight'
@@ -122,9 +128,13 @@ export default function (data, vertical, salesVal, title, radio) {
   if (vertical === 'horizontal') {
     let arr = []
     data.yAxisData.map(item => {
-      item = item.replace(/(.{7})/g, '$1\n')
-      arr.push(item)
+      if(item) {
+        item = item.replace(/(.{7})/g, '$1\n')
+        arr.push(item)
+      }
     })
+    // console.log(arr);
+    
     yAxis.data = arr
     yAxis.axisLabel = {
       rotate: 0
@@ -147,7 +157,14 @@ export default function (data, vertical, salesVal, title, radio) {
     }
     series = obj;
     //console.log('坐标轴数据赋值：',series)
-    xAxis.data = data.yAxisData
+    if(brands) {
+      xAxis.data = data.yAxisData
+    }else {
+      xAxis.data = data.series.map(item => {
+        return item.name  
+      })
+    }
+    
     //console.log('data.yAxisData', data.yAxisData)
   }
 
@@ -186,8 +203,8 @@ export default function (data, vertical, salesVal, title, radio) {
     grid: {
       left: '3%',
       bottom: '3%',
-      top: title ? '80' : '40',
-      // height: 700,
+      top: title ? '36' : '25',
+      // height: '80%',
       containLabel: true
     },
     color: ['#007aff', '#5ac8fa', '#ff2d55', '#ffcc00', '#5856d6', '#ff964b', '#ca8622', '#bda29a', '#6e7074', '#546570', '#c4ccd3'],

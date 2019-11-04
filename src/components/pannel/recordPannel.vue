@@ -36,8 +36,8 @@
             <p class="title" v-if="item.imgUrl.length>0">附件图片</p>
             <div class="img-box" v-if="item.imgUrl.length>0">
                <ul class="img-list" >
-                <li v-for="(itemUrl,uIndex) in JSON.parse(item.imgUrl)" :key="uIndex">
-                  <img :src="itemUrl.url" alt="" :preview='true'>
+                <li v-for="(itemUrl,uIndex) in JSON.parse(item.imgUrl)" :key="uIndex" >
+                  <img :src="itemUrl.url" alt="">
                 </li>
               </ul>
               <span>{{JSON.parse(item.imgUrl).length}}/5</span>

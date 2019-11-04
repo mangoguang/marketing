@@ -1,133 +1,76 @@
 <template>
   <div class="customerDescript">
     <ul>
-      <li is="customerLi"
-          :leftText="'头像'">
-        <unLoadVia class="upload"
-                   :select='select'
-                   :customerImage='customerImage' />
+      <li is="customerLi" :leftText="'头像'" >
+        <unLoadVia class="upload" :select='select' :customerImage='customerImage'/>
         <!--select表示直接选择照片-->
       </li>
-      <li is="customerLi"
-          :leftText="'客户称呼'"
-          :start='"*"'>
-        <input v-model="newCustomerInfo.username"
-               type="text"
-               placeholder="请填写客户称呼"
-               class="name"
-               maxlength="30">
+      <li is="customerLi" :leftText="'客户称呼'" :start='"*"'>
+        <input v-model="newCustomerInfo.username" type="text" placeholder="请填写客户称呼" class="name"  maxlength="30">
       </li>
-      <li is="sexSelect"
-          :sexVal="newCustomerInfo.sex"
-          @sexChange="sexChange"
-          class="sex"></li>
-      <li is="customerLi"
-          :leftText="'客户生日'"
-          :icon="true"
-          @click.native="selectStoreDate">
+      <li is="sexSelect" :sexVal="newCustomerInfo.sex"  @sexChange="sexChange" class="sex"></li>
+       <li is="customerLi" :leftText="'客户生日'" :icon="true" @click.native="selectStoreDate">
         <span :style="newCustomerInfo.birthday?'color: #363636':color ">{{newCustomerInfo.birthday || '请选择客户生日'}}</span>
       </li>
-      <li is="ageSelect"
-          @ageChange="ageChange"></li>
+      <li is="ageSelect"   @ageChange="ageChange"></li>
       <template v-if="$route.query.phone">
-        <li is="customerLi"
-            :leftText="'客户电话'">
-          <input v-model="newCustomerInfo.phone"
-                 type="number"
-                 readonly>
+        <li is="customerLi" :leftText="'客户电话'">
+          <input v-model="newCustomerInfo.phone" type="number" readonly>
         </li>
       </template>
       <template v-else>
-        <li is="customerLi"
-            :leftText="'客户电话'">
-          <input v-model="newCustomerInfo.phone"
-                 type="number"
-                 placeholder="请填写客户电话"
-                 oninput="if(value.length>11)value=value.slice(0,11)">
+        <li is="customerLi" :leftText="'客户电话'">
+          <input v-model="newCustomerInfo.phone" type="number" placeholder="请填写客户电话"  oninput="if(value.length>11)value=value.slice(0,11)">
         </li>
       </template>
-      <template v-if="$route.query.wechat">
-        <li is="customerLi"
-            :leftText="'客户微信'">
-          <input v-model="newCustomerInfo.weChat"
-                 type="text"
-                 readonly>
+       <template v-if="$route.query.wechat">
+        <li is="customerLi" :leftText="'客户微信'">
+          <input v-model="newCustomerInfo.weChat" type="text" readonly>
         </li>
       </template>
       <template v-else>
-        <li is="customerLi"
-            :leftText="'客户微信'">
-          <input v-model.trim="newCustomerInfo.weChat"
-                 type="text"
-                 placeholder="请填写客户微信号"
-                 oninput="if(value.length>20)value=value.slice(0,20)">
+        <li is="customerLi" :leftText="'客户微信'">
+          <input v-model.trim="newCustomerInfo.weChat" type="text" placeholder="请填写客户微信号"  oninput="if(value.length>20)value=value.slice(0,20)">
         </li>
       </template>
-      <li is="customerLi"
-          :leftText="'客户  QQ'">
-        <input v-model.trim="newCustomerInfo.qq"
-               type="text"
-               onkeypress="if(event.keyCode == 101){return false}"
-               oninput="if(value.length>15)value=value.slice(0,15)"
-               placeholder="请填写客户 QQ">
+      <li is="customerLi" :leftText="'客户  QQ'">
+        <input v-model.trim="newCustomerInfo.qq" type="text"  onkeypress="if(event.keyCode == 101){return false}" oninput="if(value.length>15)value=value.slice(0,15)"  placeholder="请填写客户 QQ" >
       </li>
-      <li is="customerLi"
-          :leftText="'客户职业'">
-        <input v-model.trim="newCustomerInfo.duty"
-               type="text"
-               placeholder="请填写客户职业"
-               oninput="if(value.length>30)value=value.slice(0,30)">
+      <li is="customerLi" :leftText="'客户职业'">
+        <input v-model.trim="newCustomerInfo.duty" type="text" placeholder="请填写客户职业" oninput="if(value.length>30)value=value.slice(0,30)">
       </li>
       <template v-if="areaType">
-        <li is="customerLi"
-            :leftText="'客户地区'"
-            :icon="true"
-            @click.native="toAddress">
+        <li is="customerLi" :leftText="'客户地区'"  :icon="true" @click.native="toAddress">
           <span>地址管理</span>
         </li>
       </template>
       <template v-else>
-        <li class="area">
-          <area-select is='areaSelect'
-                       v-model='area'
-                       @update="updateArea"
-                       readonly
-                       placeholder="请选择客户地区"
-                       label='客户地区'
-                       :required="true"
-                       :showIcon="true" />
-        </li>
-        <li is="customerLi"
-            :leftText="'客户地址'"
-            :start='"*"'>
-          <input v-model.trim="newCustomerInfo.address"
-                 type="text"
-                 placeholder="请填写客户地址"
-                 oninput="if(value.length>200)value=value.slice(0,200)">
+        <li class="area"><area-select  is='areaSelect' v-model='area' @update="updateArea" readonly placeholder="请选择客户地区" label='客户地区' :required="true" :showIcon="true"/></li>
+        <li is="customerLi" :leftText="'客户地址'" :start='"*"'>
+          <input v-model.trim="newCustomerInfo.address" type="text"  placeholder="请填写客户地址" oninput="if(value.length>200)value=value.slice(0,200)">
         </li>
       </template>
-      <!-- <li is="shopSelect" :type='"descript"' :name="shopName"></li> -->
-      <li is="customerLi"
-          :leftText="'所属门店'">
+       <!-- <li is="shopSelect" :type='"descript"' :name="shopName"></li> -->
+      <li is="customerLi" :leftText="'所属门店'" >
         <span class='shop'>{{ shopName }}</span>
       </li>
       <li class="textarea">
         <h3>客户描述</h3>
-        <textarea v-model.trim="newCustomerInfo.remark"
-                  placeholder="描述一下情况吧"
-                  oninput="if(value.length>200)value=value.slice(0,200)"></textarea>
+        <textarea v-model.trim="newCustomerInfo.remark" placeholder="描述一下情况吧" oninput="if(value.length>200)value=value.slice(0,200)"></textarea>
       </li>
     </ul>
     <div class="mintComponent">
       <!-- 日期选择插件 -->
-      <mt-datetime-picker ref="datePicker1"
-                          type="date"
-                          v-model="today"
-                          :startDate="new Date('1930-01-01')"
-                          year-format="{value} 年"
-                          month-format="{value} 月"
-                          date-format="{value} 日"
-                          @confirm="setStoreDate1">
+      <mt-datetime-picker
+        ref="datePicker1"
+        type="date"
+        v-model="today"
+        :startDate="new Date('1930-01-01')"
+        year-format="{value} 年"
+        month-format="{value} 月"
+        date-format="{value} 日"
+        @confirm="setStoreDate1"
+        >
       </mt-datetime-picker>
     </div>
   </div>
@@ -135,7 +78,7 @@
 
 <script>
 import Vue from 'vue'
-import Vuex, { mapMutations, mapState } from 'vuex'
+import Vuex, { mapMutations, mapState } from "vuex"
 import { DatetimePicker, Picker, Popup, Switch } from 'mint-ui'
 
 Vue.component(DatetimePicker.name, DatetimePicker)
@@ -155,11 +98,11 @@ import areaSelect from '../../mySelect/areaSelect'
 import mango from '../../../js'
 import variable from '../../../js/variable'
 import shopSelect from '../../select/shopSelect'
-import { turnParams, changeFormData } from '../../../utils/customer'
-import { btnList } from '../../../utils/gallery'
+import {turnParams,changeFormData} from '../../../utils/customer'
+import {btnList} from '../../../utils/gallery'
 let Base64 = require('js-base64').Base64
 export default {
-  name: 'customerDescript',
+  name:'customerDescript',
   props: ['btns', 'select', 'fromName', 'list', 'areaType'],
   components: {
     customerLi,
@@ -173,8 +116,8 @@ export default {
     unLoadVia,
     shopSelect
   },
-  data() {
-    return {
+  data(){
+    return{
       areaList: [],
       today: new Date(),
       province: [],
@@ -187,14 +130,14 @@ export default {
       customerImage: '',
       shops: '',
       shopId: '',
-      area: '',
-      shopName: ''
+      area:'',
+      shopName:''
     }
   },
   watch: {
     //初始进来的时候初始化数据
     fromName() {
-      if (this.fromName === 'NewCustomer') {
+      if(this.fromName === 'NewCustomer') {
         this.setInitData()
       }
       // let val = this.getShopVal()
@@ -218,15 +161,15 @@ export default {
   },
   mounted() {
     //获取本地缓存信息
-    this.initShop()
-    this.initArea()
+    this.initShop();
+    this.initArea();
   },
   created() {
     this.hasList()
   },
   methods: {
     ...mapMutations([
-      'setNewCustomerInfo',
+      "setNewCustomerInfo",
       'setSexVal',
       'setAreaVal',
       'setSourceVal',
@@ -236,88 +179,73 @@ export default {
       'initDescriptShopList',
       'getDescriptShopVal'
     ]),
-    textareatVal(temp) {
-      temp = temp.replace(/&lsquo;/g, '‘')
-      temp = temp.replace(/&rsquo;/g, '’')
-      temp = temp.replace(/&ldquo;/g, '“')
-      temp = temp.replace(/&rdquo;/g, '”')
-      return temp
-    },
-    onlyNumber(e) {
-      if (/[^\d]/g.test(e.target.value)) {
-        e.target.value = e.target.value.replace(/[^\d]/g, '')
+    onlyNumber(e){
+      if(/[^\d]/g.test(e.target.value)){
+        e.target.value=e.target.value.replace(/[^\d]/g,'');
       }
-    },
-    initArea() {
-      if (!this.newCustomerInfo.provinceName) {
-        return
+     
+   },
+    initArea(){
+      if(!this.newCustomerInfo.provinceName){
+        return;
       }
-      this.area = `${this.newCustomerInfo.provinceName}${
-        this.newCustomerInfo.cityName
-      }${this.newCustomerInfo.countryName}`
+      this.area=`${this.newCustomerInfo.provinceName}${this.newCustomerInfo.cityName}${this.newCustomerInfo.countryName}`;
     },
     //编辑资料
     hasList() {
-      if (!this.list) {
+      if(!this.list) {
         return
       }
       this.newCustomerInfo.dataFiles = new FormData()
       //设置头像
-      if (this.list.headPortrait) {
+      if(this.list.headPortrait) {
         this.customerImage = this.list.headPortrait
       }
-      this.$set(this.newCustomerInfo, 'username', this.list.username)
+      this.$set(this.newCustomerInfo, 'username',this.list.username)
       //设置性别选框
       // this.newCustomerInfo.sex = this.list.sex
-      if (this.list.sex) {
-        this.$set(this.newCustomerInfo, 'sex', this.list.sex)
-        let sex =
-          this.list.sex === 'Ms.'
-            ? '女'
-            : this.list.sex === 'Mr.'
-            ? '男'
-            : '未知'
+      if(this.list.sex) {
+        this.$set(this.newCustomerInfo, 'sex',this.list.sex)
+        let sex = this.list.sex === 'Ms.'? '女' : this.list.sex ==='Mr.'? '男' : '未知'
         this.setSexVal(sex)
       }
       //设置日期组件初始日期
-      this.$set(this.newCustomerInfo, 'birthday', this.list.birthday)
+      this.$set(this.newCustomerInfo, 'birthday',this.list.birthday)
       this.today = this.list.birthday
       this.newCustomerInfo.duty = this.list.duty
       //设置年龄选框
-      if (this.list.age) {
-        this.$set(this.newCustomerInfo, 'age', this.list.age)
+       if(this.list.age) {
+        this.$set(this.newCustomerInfo,'age',this.list.age)
         this.setAgeVal(this.list.age)
       }
-      if (this.list.phone === '0') {
-        this.$set(this.newCustomerInfo, 'phone', '')
-      } else {
-        this.$set(this.newCustomerInfo, 'phone', this.list.phone)
+      if(this.list.phone==='0'){
+        this.$set(this.newCustomerInfo,'phone','')
+      }else{
+        this.$set(this.newCustomerInfo,'phone',this.list.phone)
       }
-
-      this.$set(this.newCustomerInfo, 'weChat', this.list.weChat)
-      this.$set(this.newCustomerInfo, 'qq', this.list.qq)
-      this.$set(
-        this.newCustomerInfo,
-        'remark',
-        this.textareatVal(this.list.remark.replace(/\\n/g, '\r\n'))
-      )
-      this.$set(this.newCustomerInfo, 'orgId', this.list.orgId)
+      
+      this.$set(this.newCustomerInfo,'weChat',this.list.weChat)
+      this.$set(this.newCustomerInfo,'qq',this.list.qq)
+      this.$set(this.newCustomerInfo,'remark',this.list.remark.replace(/\\n/g,"\r\n"))
+      this.$set(this.newCustomerInfo,'orgId',this.list.orgId)
       let shops = localStorage.getItem('shops')
       this.shops = JSON.parse(shops)
-      if (this.shops && this.shops.length) {
-        this.shops.map((item, index) => {
-          if (item.crmId === this.newCustomerInfo.orgId) {
-            this.shopName = item.name
-          }
-        })
-      }
+        if(this.shops&&this.shops.length){
+          this.shops.map((item,index) => {
+            if(item.crmId===this.newCustomerInfo.orgId){
+              this.shopName=item.name;
+            }
+          })
+        }
+      
+
     },
     //获取门店的值
     getShopVal() {
       let val
-      if (this.descriptShopList && this.descriptShopList.length) {
+      if(this.descriptShopList && this.descriptShopList.length) {
         this.descriptShopList.forEach((item, index) => {
-          if (item.status) {
+          if(item.status) {
             val = item.name
           }
         })
@@ -326,12 +254,12 @@ export default {
     },
     //获取门店id
     getShopId(name) {
-      if (this.shops && this.shops.length) {
+      if(this.shops && this.shops.length) {
         this.shops.forEach((item, index) => {
-          if (item.name === name) {
+          if(item.name === name) {
             this.shopId = item.crmId
           }
-        })
+      });
       }
       // console.log(123,this.shopId)
       this.newCustomerInfo.orgId = this.shopId
@@ -352,17 +280,17 @@ export default {
     // },
     setStoreDate1(value) {
       // this.newCustomerInfo.storeDate = mango.indexTimeB(value)[0]
-      this.$set(this.newCustomerInfo, 'birthday', mango.indexTimeB(value)[1])
+      this.$set(this.newCustomerInfo,'birthday',mango.indexTimeB(value)[1])
       this.setNewCustomerInfo(this.newCustomerInfo)
       // console.log('选择的日期', mango.indexTimeB(value)[0], this.newCustomerInfo.storeDate)
     },
-    updateArea(cityName, cityCode) {
-      this.area = cityName
-      let cityNameAttr = cityName.split(' ')
-      let cityCodeAttr = cityCode.split('-')
-      this.$set(this.newCustomerInfo, 'provinceName', cityNameAttr[0])
-      this.$set(this.newCustomerInfo, 'cityName', cityNameAttr[1])
-      this.$set(this.newCustomerInfo, 'countryName', cityNameAttr[2])
+    updateArea(cityName,cityCode){
+      this.area=cityName;
+      let cityNameAttr=cityName.split(' ');
+      let cityCodeAttr=cityCode.split('-');
+      this.$set(this.newCustomerInfo,'provinceName',cityNameAttr[0])
+      this.$set(this.newCustomerInfo,'cityName',cityNameAttr[1])
+      this.$set(this.newCustomerInfo,'countryName',cityNameAttr[2])
       this.newCustomerInfo.province = cityCodeAttr[0]
       this.newCustomerInfo.city = cityCodeAttr[1]
       this.newCustomerInfo.area = cityCodeAttr[2]
@@ -370,12 +298,11 @@ export default {
     },
     //跳转到地址管理页面
     toAddress() {
-      this.$router.push({ path: `/address/${this.$route.query.id}` })
+      this.$router.push({path:`/address/${this.$route.query.id}`})
     },
     sexChange(val) {
       // console.log('sex改变了：', val)
-      this.newCustomerInfo.sex =
-        val === '男' ? 'Mr.' : val === '女' ? 'Ms.' : 'Unknown'
+      this.newCustomerInfo.sex = val === '男' ? 'Mr.' :  (val === '女'? 'Ms.' : 'Unknown')
       this.setSexVal(val)
       this.setNewCustomerInfo(this.newCustomerInfo)
     },
@@ -408,32 +335,33 @@ export default {
       // let shopsList = btnList(this.shops,0)
       // this.initDescriptShopList(shopsList)
       // this.getDescriptShopVal()
-      this.initShop()
-      this.$set(this.newCustomerInfo, 'imgLen', 0)
-      this.$set(this.newCustomerInfo, 'imgs', '')
+      this.initShop();
+      this.$set(this.newCustomerInfo,'imgLen',0)
+      this.$set(this.newCustomerInfo,'imgs','')
       this.setAgeVal('')
       this.setSexVal('')
       this.setUpLoadUrl('')
       this.setNewCustomerInfo(this.newCustomerInfo)
       this.newCustomerInfo.dataFiles = new FormData()
-      if (this.$route.query.phone) {
+      if(this.$route.query.phone) {
         this.newCustomerInfo.phone = this.$route.query.phone
-      } else if (this.$route.query.wechat) {
+      }else if(this.$route.query.wechat) {
         this.newCustomerInfo.weChat = this.$route.query.wechat
       }
+     
     },
-    initShop() {
+    initShop(){
       let shops = localStorage.getItem('shops')
       this.shops = JSON.parse(shops)
-      if (this.$route.query.orgId) {
-        let orgId = this.$route.query.orgId
-        console.log('orgId', orgId)
-        this.newCustomerInfo.orgId = orgId
+      if(this.$route.query.orgId){
+        let orgId=this.$route.query.orgId;
+        console.log('orgId',orgId);
+        this.newCustomerInfo.orgId = orgId;
         // this.newCustomerInfo.shopId = orgId;
-        if (this.shops && this.shops.length) {
-          this.shops.map((item, index) => {
-            if (item.crmId === orgId) {
-              this.shopName = item.name
+        if(this.shops&&this.shops.length){
+          this.shops.map((item,index) => {
+            if(item.crmId===orgId){
+              this.shopName=item.name;
             }
           })
         }
@@ -454,10 +382,7 @@ export default {
     returnDate(date) {
       if (date) {
         if (date.indexOf('年') !== -1) {
-          return date
-            .replace(/年/, '-')
-            .replace(/月/, '-')
-            .replace(/日/, '')
+          return date.replace(/年/, "-").replace(/月/, "-").replace(/日/, "")
         } else {
           return date
         }
@@ -468,38 +393,38 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../assets/common.scss';
-.area {
-  border-bottom: 1px solid #ccc;
+@import "../../../assets/common.scss";
+.area{
+  border-bottom:1px solid #ccc;
   background: #fff;
-  .inputBox {
-    width: 100%;
-    padding-right: 5vw;
+  .inputBox{
+    width:100%;
+    padding-right:5vw;
     font-size: 3.73vw;
-    height: auto;
+    height:auto;
     line-height: 3em;
-    input {
+    input{
       font-size: 3.73vw;
-    }
+    }   
   }
 }
-.customerDescript {
+.customerDescript{
   background: $bgCol;
-  & > li {
+  &>li{
     padding: 0 5vw;
   }
-  li {
+  li{
     // display: flex;
     // direction: row;
-    color: $fontCol;
+    color: $fontCol ;
     line-height: 3em;
     // padding-left: 4vw;
-    div {
+    div{
       // display: flex;
       direction: row;
       margin-left: 5vw;
       align-items: center;
-      button {
+      button{
         display: block;
         background: #fff;
         width: 15vw;
@@ -510,7 +435,7 @@ export default {
         border-radius: 1vw;
         color: $fontSubCol;
       }
-      .on {
+      .on{
         color: $btnCol;
         background: $btnSubCol;
       }
@@ -518,7 +443,7 @@ export default {
   }
   li:nth-child(1) {
     padding: 2vw 5vw;
-    border-top: 1px solid #ccc;
+    border-top:1px solid #ccc;
     img {
       width: 14.66vw;
       height: 14.66vw;
@@ -526,32 +451,31 @@ export default {
       margin-left: 10vw;
     }
   }
-  li:nth-child(6) {
+  li:nth-child(6){
     margin-top: 2.666vw;
     border-top: 1px solid #ccc;
   }
-  .btnBox {
+  .btnBox{
     width: 100vw;
     display: flex;
     justify-content: center;
   }
-  .urgency,
-  .important {
+  .urgency,.important{
     padding: 4vw 5vw 0 5vw;
   }
-  .urgency {
+  .urgency{
     margin-bottom: 4vw;
   }
-  li {
+  li{
     display: flex;
-    h3 {
+    h3{
       color: $fontCol;
       font-size: $fontSize;
       padding: 0 5vw;
       line-height: 3em;
       border-bottom: 1px solid #ccc;
     }
-    textarea {
+    textarea{
       background: #fff;
       width: 100vw;
       height: 40vw;
@@ -561,12 +485,12 @@ export default {
       border-bottom: 1px solid #ccc;
     }
   }
-  li.textarea {
+  li.textarea{
     display: block;
     //border-bottom: 1px solid #ccc;
     //margin-bottom: 10.666vw;
   }
-  .name {
+  .name{
     // margin-left: -3vw;
     box-sizing: border-box;
   }

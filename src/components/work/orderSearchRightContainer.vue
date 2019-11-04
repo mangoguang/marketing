@@ -273,9 +273,6 @@ export default {
   // top: 0;
   // right: 0;
   // z-index: 999;
-  * {
-    font-size: 14px;
-  }
   div.content {
     box-sizing: border-box;
     display: flex;
@@ -314,7 +311,8 @@ export default {
           display: flex;
           // justify-content: space-between;
           width: 100%;
-          li {
+          li * {
+            font-size: 14px;
           }
           button {
             padding: 0 4vw;
@@ -346,6 +344,7 @@ export default {
           background: #b2d7ff;
           color: #007aff;
           font-weight: 300;
+          font-size: 4.53vw;
         }
         button.on {
           background: #007aff;
@@ -373,7 +372,6 @@ export default {
         p,
         span {
           color: $fontSubCol;
-          font-size: 11px;
         }
       }
     }

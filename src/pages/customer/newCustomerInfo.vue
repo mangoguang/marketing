@@ -1,61 +1,57 @@
 <template>
-
   <div class="newCustomerInfo"
        ref='newTop'>
     <my-banner :title="'新建客户信息'">
       <div class="save"
            @click="creatNewCustomer">保存</div>
     </my-banner>
-    <div class="scroll">
-      <ul>
-        <li>
-          <div class="title">
-            <p></p>
-            <span>客户描述</span>
-          </div>
-        </li>
-        <new-descript :select='true'
-                      :fromName='fromName'
-                      :areaType='false' />
-      </ul>
-      <ul>
-        <li @click="controlDemand">
-          <div class="title">
-            <p></p>
-            <span>意向信息</span>
-          </div>
-          <div class="pullDown-icon">
-            <img src="../../assets/imgs/newPullDown.png"
-                 :class="{changSide:isShowDemand}">
-          </div>
-        </li>
-        <new-demand v-show="isShowDemand"
+    <ul>
+      <li>
+        <div class="title">
+          <p></p>
+          <span>客户描述</span>
+        </div>
+      </li>
+      <new-descript :select='true'
                     :fromName='fromName'
-                    :changeCode="change"
-                    :type='"demand"'
-                    :addressType='"newCustomer"' />
-      </ul>
-      <ul class="dealUl">
-        <li @click="controlDaal">
-          <div class="title">
-            <p></p>
-            <span>跟进情况</span>
-          </div>
-          <div class="pullDown-icon">
-            <img src="../../assets/imgs/newPullDown.png"
-                 :class="{changSide:isShowDeal}">
-          </div>
-        </li>
-        <new-record v-show="isShowDeal"
-                    :fromName='fromName' />
-      </ul>
+                    :areaType='false' />
+    </ul>
+    <ul>
+      <li @click="controlDemand">
+        <div class="title">
+          <p></p>
+          <span>意向信息</span>
+        </div>
+        <div class="pullDown-icon">
+          <img src="../../assets/imgs/newPullDown.png"
+               :class="{changSide:isShowDemand}">
+        </div>
+      </li>
+      <new-demand v-show="isShowDemand"
+                  :fromName='fromName'
+                  :changeCode="change"
+                  :type='"demand"'
+                  :addressType='"newCustomer"' />
+    </ul>
+    <ul class="dealUl">
+      <li @click="controlDaal">
+        <div class="title">
+          <p></p>
+          <span>跟进情况</span>
+        </div>
+        <div class="pullDown-icon">
+          <img src="../../assets/imgs/newPullDown.png"
+               :class="{changSide:isShowDeal}">
+        </div>
+      </li>
+      <new-record v-show="isShowDeal"
+                  :fromName='fromName' />
+    </ul>
 
-      <!-- <new-descript v-show="this.btns[0].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
-      <!-- <new-demand v-show="this.btns[1].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
-      <!-- <new-record v-show="this.btns[2].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
-      <!-- <records v-show="this.btns[2].status"/> -->
-
-    </div>
+    <!-- <new-descript v-show="this.btns[0].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
+    <!-- <new-demand v-show="this.btns[1].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
+    <!-- <new-record v-show="this.btns[2].status" :btns="btns" @changeBtnsStatus="changeBtnsStatus" /> -->
+    <!-- <records v-show="this.btns[2].status"/> -->
   </div>
 </template>
 
@@ -265,7 +261,7 @@ export default {
         MessageBox.alert('姓氏不存在')
         return
       }
-      let addressReg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+      let addressReg = /^[\u4E00-\u9FA5a-zA-Z0-9]{1,200}$/
       if (!addressReg.test(this.newCustomerInfo.address)) {
         MessageBox.alert('客户地址不能输入特殊字符及表情符号')
         return
@@ -293,7 +289,7 @@ export default {
         if (!checkQQ) {
           return
         }
-        let dutyReg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+        let dutyReg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
         if (
           this.newCustomerInfo.duty !== '' &&
           !dutyReg.test(this.newCustomerInfo.duty)
@@ -302,7 +298,7 @@ export default {
           return
         }
 
-        let reg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+        let reg = /^[\u4E00-\u9FA5a-zA-Z0-9\s，。？；：《》【】！、%]{1,}$/
         let remarkReg = /[\ud800-\udbff][\udc00-\udfff]/g
         if (
           this.newCustomerInfo.remark !== '' &&
@@ -507,7 +503,6 @@ export default {
                 }
                 this.setFiles([])
                 this.setPicVal([])
-                this.setUpLoadUrl('')
               })
             } else {
               MessageBox.alert('保存失败！')
@@ -621,28 +616,20 @@ export default {
 
 <style lang="scss" scoped>
 @import '../../assets/common.scss';
-input::-webkit-input-placeholder {
-  line-height: normal;
-}
-.wrapper {
-  height: calc(100vh-60px);
-  overflow: scroll;
-  -webkit-overflow-scrolling: touch;
-}
 .newCustomerInfo {
   background: $bgCol;
   padding-top: 16vw;
   // position: relative;
   width: 100vw;
-  // height: 100%;
-  // overflow: scroll;
+  height: 100%;
+  overflow: scroll;
   position: relative;
-  // -webkit-overflow-scrolling: touch;
   .save {
     color: #0071ff;
     width: 10vw;
     position: absolute;
     right: 0;
+    bottom: 10px;
   }
   .dealUl {
     margin-top: 2vw;

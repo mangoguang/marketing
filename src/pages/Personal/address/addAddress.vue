@@ -112,19 +112,12 @@ export default {
   },
   methods: {
     ...mapMutations('addAddress', ['updateTitle']),
-    textareatVal(temp) {
-      temp = temp.replace(/&lsquo;/g, '‘')
-      temp = temp.replace(/&rsquo;/g, '’')
-      temp = temp.replace(/&ldquo;/g, '“')
-      temp = temp.replace(/&rdquo;/g, '”')
-      return temp
-    },
     getAddress(id) {
       indexModel
         .getAddress(id)
         .then(res => {
           if (res.code === 0) {
-            this.form.address = this.textareatVal(res.data.address)
+            this.form.address = res.data.address
             this.form.remark = res.data.remark
             this.form.apartmentType = res.data.apartmentType
             this.form.elevator = res.data.elevator === 'Y' ? 'Y' : ''
@@ -231,10 +224,10 @@ export default {
         mango.tip('地址不能超过200字')
         return false
       }
-      let addressReg = /^[^\@\#\$\%\^\&\*\(\)\{\}\<\>]{1,}$/
+      let addressReg = /^[\u4E00-\u9FA5a-zA-Z0-9]{1,}$/
       let reg = /^[\u4E00-\u9FA5a-zA-Z0-9\s]{1,}$/
       if (!addressReg.test(this.form.address)) {
-        mango.tip('客户地址不能输入特殊字符及表情符号')
+        mango.tip('地址只能输入中英文或数字,不能包含空格')
         return false
       }
       if (this.form.remark.length > 200) {

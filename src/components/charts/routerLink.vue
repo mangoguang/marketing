@@ -44,10 +44,11 @@ export default {
 <style lang="scss" scoped>
   .routerLink{
     text-align: right;
-    font-size: 12px;
+    // font-size: 16px;
     padding: 0 2vw 2vw 2vw;
     button{
       color: #5ac8fa;
+       font-size: 16px;
     }
   }
 </style>
